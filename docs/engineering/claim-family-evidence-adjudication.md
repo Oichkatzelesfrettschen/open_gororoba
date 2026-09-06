@@ -10,8 +10,8 @@ and numerical results live in `data/output/audit/claim-family-evidence-adjudicat
 | Family | Measured result | Remaining obligation |
 | --- | --- | --- |
 | C-659 / C-834 | C-659 records p=0.5841584 and an inconclusive transition to Provisional. Seven signed SFWM reference tests pass; nominal ratio 0.0477442 passes 0.05, while the retained input envelope crosses the threshold. | Percolation producer identity and source-input robustness remain separate. |
-| Crossing detector | Joint simultaneous intervals across 120 paired contrasts favor 47 controls and leave 73 directions unresolved. All six matched-capacity geometric intervals cross zero. C-1744 records the bounded comparison. | Practical equivalence needs a declared margin. The separate 0.005 requirement remains unchanged. |
-| External crossing admission | Fresh provider bytes reproduce the retained backward timestamp and original SHA256. | Corrected provider evidence or a separately declared intake amendment must precede inference. |
+| Crossing detector | Joint simultaneous intervals across 120 paired contrasts favor 47 controls and leave 73 directions unresolved. All six matched-capacity geometric intervals cross zero. C-1744 records the bounded comparison. | Practical equivalence needs a declared margin. The historical 0.005 discrimination target has no established application-based justification and supplies no general scientific or practical-utility gate. |
+| External crossing admission | C-1754/E-315 admits all 166 dates through a separately declared retrospective timestamp amendment. Its approximate ROC-AUC increment interval [0.0007173, 0.0024898] supports a small positive increment and lies below the historical target. E-283 preserves the provider failure. | Whole-file selection uses lookahead. Online availability, ordinary-day false alarms and practical utility require separate evidence. |
 | Operational utility | Activation input inventory distinguishes whole-block labels, randomized review and actual receipt/alert timestamps. | Real observations and owner-supplied costs remain required; synthetic fixtures establish neither latency nor utility. |
 | Dark-matter force chain | Corrected drag units, density-weighted Guo forcing, SI magnetic/Parker conversions, strict IC admission and layout-aware inlet tests pass. A 90-row periodic force sweep distinguishes resolved and unresolved responses. | C-1746/E-297 independently verifies finite open-x transport and face-flux accounting. Physical outflow suitability, magnetic boundaries, gravitational frame, admitted spacecraft inputs and coupled numerical sensitivity still block a physical bound. |
 | LBM instruments | Real evolving CPU/CUDA and graph-reuse fixtures pass unchanged gates after time-level alignment and dependency repair. C-1745 records the bounded device result. Survival requires finite positive fields and explicit mass/Mach budgets. | E-298 retains 50 direct-step null trials and six step-1 Mach failures with the original executable. E-300/C-1748 fixes a shared MRT impulse defect that backend agreement missed. Paired physical resolutions and fractal interpretation remain unadmitted. |
@@ -20,6 +20,24 @@ and numerical results live in `data/output/audit/claim-family-evidence-adjudicat
 | Optics | Faithful replay retains 0.0159400 error against the 0.01 gate. Archive, extracted TeX and PDF identities are separate; primary TeX explicitly describes fitting. | Source-landmark discrepancy and a finite repository-wide receipt manifest remain open. |
 | QGP / NuFit | Population admission rejects collision-energy, species and centrality mismatches before QGP ranking. Independent minimization confirms the retained optimizer but exposes a different scoring formula; fitting and scoring now share the declared model. NuFit release/variant identity governs interval membership; historical composite references remain available explicitly. | QGP source curves, covariance and fitting freedoms require admission before model ranking. |
 | Finite algebra / Rocq | Exact rational-rank witnesses cover all 243 motif components at D=16,32,64,128,256. Maximum degree is D/2-4. Rocq assumption queries expose the kernel-equality axioms separately from skew-adjoint proofs. | Universal motif extension and source-general kernel equality remain unproved by the inspected artifacts. |
+
+The crossing reports separate effect evidence against zero, comparison with the
+historical discrimination target, and practical utility. Preserving the declared
+0.005 target preserves the historical question; preservation does not establish
+the target's relevance to an application. A positive effect below that target
+remains a positive effect under the stated inference assumptions. Utility requires
+a defined application and operating point, admitted prevalence and ordinary-day
+false alarms, missed-event and resource costs, and paired operational outcomes.
+The correction record is `data/output/audit/discrimination-target-interpretation/`.
+Historical protocols and result bundles retain their original bytes and labels;
+the canonical claim revisions and report schema version 2 carry the corrected
+interpretation. Consumers replace the old aggregate `decision` or
+`bootstrap_decision` field with `discrimination_assessment`, which separates
+`effect_assessment`, `target_comparison` and `practical_utility`.
+The redundant `small_positive_effect` flag is replaced by `effect_assessment`.
+Insufficient support retains its reason and per-year counts with an inconclusive
+effect assessment and unassessed target comparison; summary extraction refuses
+a missing assessment.
 
 The independent Ward oracle shares the physics tensors and quadrature with the
 producer. Its independence covers contraction order, lower-point assembly and

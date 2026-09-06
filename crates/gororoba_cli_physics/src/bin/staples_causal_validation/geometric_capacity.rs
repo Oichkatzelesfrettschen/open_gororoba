@@ -9,6 +9,14 @@ use std::{collections::BTreeSet, fs, path::Path};
 
 const GRAM_RANK_RELATIVE_TOLERANCE: f64 = 1e-10;
 
+fn admit_source_set(declared: &Value, compiled: &Value) -> Result<()> {
+    ensure!(
+        declared.is_object() && compiled.is_object() && declared == compiled,
+        "protocol source amendment differs from the compiled source set"
+    );
+    Ok(())
+}
+
 fn parent(directory: &Path, config: &Config) -> Result<(String, Value)> {
     let dataset: Value = serde_json::from_slice(&fs::read(directory.join("dataset.json"))?)?;
     let identity = dataset["identity"]
@@ -226,9 +234,9 @@ pub(super) fn run(args: &Args, config: &Config, sources: &Value) -> Result<()> {
         "geometric protocol checksum mismatch"
     );
     let protocol: Value = toml::from_str(std::str::from_utf8(&protocol_bytes)?)?;
+    admit_source_set(&protocol["admitted_sources"], sources)?;
     ensure!(
         protocol["parent_identity"] == parent_identity
-            && protocol["admitted_sources"] == *sources
             && protocol["parent_sources_sha256"]
                 == evidence::digest(&serde_json::to_vec(&dataset["provenance"]["sources"])?),
         "source amendment or parent identity mismatch"
@@ -473,7 +481,7 @@ pub(super) fn run(args: &Args, config: &Config, sources: &Value) -> Result<()> {
     ensure!(report["family_size"] == 120, "joint family incomplete");
     evidence::preserve(
         &args.out_dir.join("geometric-evaluation-identity.json"),
-        &json!({"identity":identity,"protocol_sha256":protocol_hash,"parent_identity":parent_identity,"recovery_identity":recovery_identity,"training_freeze_sha256":evidence::hash_file(&training.join("training-freeze.json"))?,"analysis_status":"post_hoc","family_size":120,"minimum_useful_increment":0.005,"equivalence_margin":null}),
+        &json!({"identity":identity,"protocol_sha256":protocol_hash,"parent_identity":parent_identity,"recovery_identity":recovery_identity,"training_freeze_sha256":evidence::hash_file(&training.join("training-freeze.json"))?,"analysis_status":"post_hoc","family_size":120,"declared_discrimination_target":super::metrics::target_declaration(config.minimum_increment),"practical_utility":super::metrics::practical_utility_boundary(),"equivalence_margin":null}),
     )?;
     Ok(())
 }
@@ -486,16 +494,25 @@ fn point_to_value(point: &metrics::PointMetrics) -> Result<Value> {
 mod tests {
     use super::*;
     #[test]
-    fn admitted_protocol_seals_actual_compiled_source_set() -> Result<()> {
-        let current = std::env::current_dir()?;
-        let root=current.ancestors().find(|path|path.join("data/output/audit/claim-family-evidence-adjudication/geometric-capacity-protocol.toml").is_file()).context("protocol checkout missing")?;
-        let protocol: Value = toml::from_str(&fs::read_to_string(root.join(
-            "data/output/audit/claim-family-evidence-adjudication/geometric-capacity-protocol.toml",
+    fn source_admission_rejects_changed_missing_and_extra_compiled_sources() -> Result<()> {
+        let protocol: Value = toml::from_str(&fs::read_to_string(repo_root::path!(
+            "data/output/audit/claim-family-evidence-adjudication/geometric-capacity-protocol.toml"
         ))?)?;
-        ensure!(
-            protocol["admitted_sources"] == evidence::source_identity()?,
-            "protocol source amendment is stale"
-        );
+        let compiled = evidence::source_identity()?;
+        assert!(admit_source_set(&protocol["admitted_sources"], &compiled).is_err());
+        admit_source_set(&compiled, &compiled)?;
+        for path in compiled.as_object().unwrap().keys() {
+            let mut changed = compiled.clone();
+            changed[path] = json!("changed-digest");
+            assert!(admit_source_set(&compiled, &changed).is_err());
+            let mut missing = compiled.clone();
+            missing.as_object_mut().unwrap().remove(path);
+            assert!(admit_source_set(&compiled, &missing).is_err());
+        }
+        let mut extra = compiled.clone();
+        extra["undeclared-source.rs"] = json!("extra-digest");
+        assert!(admit_source_set(&compiled, &extra).is_err());
+        assert!(admit_source_set(&Value::Null, &Value::Null).is_err());
         Ok(())
     }
     #[test]

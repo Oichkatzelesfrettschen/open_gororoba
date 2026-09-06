@@ -228,14 +228,36 @@ fn percentile(sorted: &[f64], quantile: f64) -> f64 {
     sorted[lower] + (sorted[upper] - sorted[lower]) * (position - lower as f64)
 }
 
-pub(super) fn threshold_decision(lower: f64, upper: f64, minimum: f64) -> &'static str {
-    if lower > minimum {
-        "supports_declared_useful_increment"
-    } else if upper < minimum {
-        "rejects_declared_useful_increment"
+pub(super) fn target_declaration(target: f64) -> Value {
+    json!({"value":target,"metric":"paired_roc_auc_increment","basis":"historical_investigator_declared_discrimination_target","application_based_justification":"unestablished","scope":"Target attainment is separate from effect evidence, algebra specificity and practical utility."})
+}
+
+pub(super) fn practical_utility_boundary() -> Value {
+    json!({"status":"unassessed","required_evidence":["Defined application and operating point","Admitted event prevalence and ordinary-day false alarms","Missed-event, false-alarm and resource costs","Paired operational outcomes"],"scope":"An aggregate ROC-AUC increment alone establishes neither usefulness nor uselessness."})
+}
+
+pub(super) fn discrimination_assessment(lower: f64, upper: f64, target: f64) -> Result<Value> {
+    ensure!(
+        lower.is_finite() && upper.is_finite() && target.is_finite() && lower <= upper,
+        "discrimination assessment requires finite ordered interval endpoints and target"
+    );
+    let effect = if lower > 0.0 {
+        "positive"
+    } else if upper < 0.0 {
+        "negative"
     } else {
         "inconclusive"
-    }
+    };
+    let target_comparison = if lower > target {
+        "above"
+    } else if upper < target {
+        "below"
+    } else {
+        "touches_or_crosses"
+    };
+    Ok(
+        json!({"schema_version":2,"assessment_status":"assessed","interval":[lower,upper],"effect_assessment":effect,"declared_discrimination_target":target_declaration(target),"target_comparison":target_comparison,"practical_utility":practical_utility_boundary()}),
+    )
 }
 
 pub(super) fn bootstrap(
@@ -274,7 +296,7 @@ pub(super) fn bootstrap(
         row["admitted_files"].as_u64().unwrap() < 30 || row["positive_files"].as_u64().unwrap() < 10
     }) {
         return Ok(
-            json!({"decision":"inconclusive_insufficient_support","support":support,"planned_draws":config.bootstrap_draws,"completed_draws":0,"interval":null}),
+            json!({"discrimination_assessment":{"schema_version":2,"assessment_status":"insufficient_support","reason":"Each final year requires at least 30 admitted files and 10 positive-containing files.","support":support,"interval":null,"effect_assessment":"inconclusive","declared_discrimination_target":target_declaration(config.minimum_increment),"target_comparison":"unassessed","practical_utility":practical_utility_boundary()},"support":support,"planned_draws":config.bootstrap_draws,"completed_draws":0,"interval":null}),
         );
     }
     let mut random = ChaCha8Rng::seed_from_u64(config.bootstrap_seed);
@@ -304,7 +326,7 @@ pub(super) fn bootstrap(
     let lower = percentile(&global, 0.025);
     let upper = percentile(&global, 0.975);
     Ok(
-        json!({"decision":threshold_decision(lower,upper,config.minimum_increment),"interval":[lower,upper],"median":percentile(&global,0.5),"minimum_increment":config.minimum_increment,"small_positive_effect":lower>0.0,"support":support,"planned_draws":config.bootstrap_draws,"completed_draws":records.len(),"monte_carlo_resolution":1.0/(config.bootstrap_draws+1) as f64,"uncertainty":"Approximate whole-file bootstrap conditional on frozen training estimates and observed final epochs; interday independence remains unestablished.","records":records}),
+        json!({"discrimination_assessment":discrimination_assessment(lower,upper,config.minimum_increment)?,"interval":[lower,upper],"median":percentile(&global,0.5),"support":support,"planned_draws":config.bootstrap_draws,"completed_draws":records.len(),"monte_carlo_resolution":1.0/(config.bootstrap_draws+1) as f64,"uncertainty":"Approximate whole-file bootstrap conditional on frozen training estimates and observed final epochs; interday independence remains unestablished.","records":records}),
     )
 }
 
@@ -338,15 +360,118 @@ mod tests {
         }
     }
     #[test]
-    fn useful_threshold_rejection_preserves_small_positive_effect_and_touching_uncertainty() {
-        assert_eq!(
-            threshold_decision(0.001, 0.003, 0.005),
-            "rejects_declared_useful_increment"
+    fn insufficient_support_survives_summary_extraction_without_target_or_utility_verdict() {
+        let config = super::super::test_config();
+        for (file_count, positive_file_count) in [(29_u16, 10_u16), (30, 9)] {
+            let kernel = AucKernel {
+                file_ids: (0..file_count).collect(),
+                positives: (0..file_count)
+                    .map(|index| u64::from(index < positive_file_count))
+                    .collect(),
+                negatives: vec![1; usize::from(file_count)],
+                wins: vec![0.0; usize::from(file_count).pow(2)],
+            };
+            let mut kernels = Vec::new();
+            for &width in &config.widths {
+                for &year in &config.final_years {
+                    kernels.push((width, year, kernel.clone(), kernel.clone()));
+                }
+            }
+            let bootstrap = bootstrap(&kernels, &config).unwrap();
+            let summary_assessment = super::super::assessment_from_bootstrap(&bootstrap).unwrap();
+            assert_eq!(bootstrap["completed_draws"], 0);
+            assert_eq!(
+                summary_assessment["assessment_status"],
+                "insufficient_support"
+            );
+            assert_eq!(summary_assessment["effect_assessment"], "inconclusive");
+            assert_eq!(summary_assessment["target_comparison"], "unassessed");
+            assert_eq!(
+                summary_assessment["practical_utility"]["status"],
+                "unassessed"
+            );
+            assert_eq!(
+                summary_assessment["support"][0]["admitted_files"],
+                file_count
+            );
+            assert!(
+                summary_assessment["reason"]
+                    .as_str()
+                    .unwrap()
+                    .contains("30 admitted files")
+            );
+        }
+        assert!(
+            super::super::assessment_from_bootstrap(
+                &json!({"decision":"inconclusive_insufficient_support"})
+            )
+            .is_err()
         );
-        assert_eq!(threshold_decision(0.005, 0.007, 0.005), "inconclusive");
-        assert_eq!(
-            threshold_decision(0.006, 0.007, 0.005),
-            "supports_declared_useful_increment"
-        );
+    }
+
+    #[test]
+    fn retained_internal_and_external_intervals_keep_positive_effect_below_target() {
+        for (claim, relative_path, interval_key) in [
+            (
+                "C-1743",
+                "data/output/audit/staples-causal-validation/findings.toml",
+                "primary_interval",
+            ),
+            (
+                "C-1754",
+                "data/output/audit/external-crossing-intake-amendment/findings.toml",
+                "global_minimum_increment_interval",
+            ),
+        ] {
+            let path = repo_root::path!(relative_path);
+            let source = std::fs::read_to_string(&path).unwrap();
+            let retained: toml::Value = toml::from_str(&source).unwrap();
+            let interval = retained[interval_key].as_array().unwrap();
+            let target = retained["minimum_increment"].as_float().unwrap();
+            let report = discrimination_assessment(
+                interval[0].as_float().unwrap(),
+                interval[1].as_float().unwrap(),
+                target,
+            )
+            .unwrap();
+            assert_eq!(report["effect_assessment"], "positive");
+            assert_eq!(report["target_comparison"], "below");
+            assert_eq!(report["practical_utility"]["status"], "unassessed");
+            println!(
+                "{}",
+                json!({"claim_id":claim,"source":relative_path,"source_sha256":super::super::evidence::hash_file(&path).unwrap(),"assessment":report})
+            );
+        }
+    }
+
+    #[test]
+    fn discrimination_target_cannot_adjudicate_effect_or_practical_utility() {
+        for (lower, upper, effect) in [
+            (0.001, 0.003, "positive"),
+            (-0.003, -0.001, "negative"),
+            (-0.001, 0.003, "inconclusive"),
+            (0.0, 0.003, "inconclusive"),
+            (-0.003, 0.0, "inconclusive"),
+        ] {
+            for (target, comparison) in [
+                (lower - 0.001, "above"),
+                (lower, "touches_or_crosses"),
+                (upper, "touches_or_crosses"),
+                (upper + 0.001, "below"),
+            ] {
+                let report = discrimination_assessment(lower, upper, target).unwrap();
+                assert_eq!(report["effect_assessment"], effect);
+                assert_eq!(report["target_comparison"], comparison);
+                assert_eq!(report["practical_utility"]["status"], "unassessed");
+            }
+        }
+        for (lower, upper, target) in [
+            (0.003, 0.001, 0.005),
+            (f64::NAN, 0.003, 0.005),
+            (0.001, f64::INFINITY, 0.005),
+            (0.001, 0.003, f64::NAN),
+        ] {
+            assert!(discrimination_assessment(lower, upper, target).is_err());
+        }
     }
 }

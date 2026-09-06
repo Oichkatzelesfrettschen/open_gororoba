@@ -1,0 +1,16 @@
+schema_version = 1
+focused_command = "cargo test -p gororoba_cli_physics --bin staples-causal-validation --profile validation --locked -- --nocapture"
+focused_tests_passed = 21
+publication_command = "make validate-local REPO_SHARE_PRIMARY_CACHE=1 CARGO_BUILD_JOBS=2"
+publication_exit = 0
+scoped_library_tests_passed = 99
+historical_files_verified = 721
+historical_prefix_tables_verified = 9
+canonical_claims_verified = 5
+unchanged_canonical_fields = ["Claim status", "Evidence layer and depth fields", "Fitted parameter branches", "Map names, branches and kinds", "Experiment IDs", "Sealed protocol paths and SHA256 values"]
+canonical_content_revisions = [754, 755, 756, 757, 758, 759]
+canonical_evidence_revisions = [128, 129, 130, 131, 132, 133, 134]
+experiment_note_revisions = [183, 184, 185]
+preservation_replay = "sha256sum --check historical-files.sha256 from the repository root verifies tracked historical files. For each history-prefixes.tsv row, query the named canonical table ordered by rowid through the retained maximum, serialize with sqlite3 -json and compare stdout SHA256 with the retained digest."
+source_seal_repair = "Tests exercise exact-source admission using matching and mutated fixtures while confirming refusal of historical seals against changed compiled sources. Historical protocols remain unchanged."
+log_normalization = "Retained test and validation logs normalize trailing blank lines; source and historical result artifacts retain exact bytes."

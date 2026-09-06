@@ -374,6 +374,14 @@ defines an adjudication rule; experiment evidence determines the claim outcome.
   untested; a cheap indecisive proxy manufactures confidence and is
   worse than silence.
 
+- Separate effect evidence, declared target attainment, mechanism specificity
+  and practical utility. An investigator-chosen discrimination target needs an
+  application-based justification before anyone calls it a usefulness threshold.
+  C-1743 and C-1754 retain positive effects below the historical 0.005 ROC-AUC
+  target; their practical utility remains unassessed. Preserve historical targets
+  and outcomes while correcting active interpretations through canonical revisions.
+  Target attainment alone supplies no general scientific pass/fail gate.
+
 ### Refuted structures as controls
 
 Refutations are retained permanently and their closure reason is typed
