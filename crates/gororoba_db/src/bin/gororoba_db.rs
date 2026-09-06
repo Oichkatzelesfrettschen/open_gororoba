@@ -89,7 +89,7 @@ fn main() -> Result<()> {
         Commands::ExportRequirements(args) => cmd_export_requirements(&store, &args),
         Commands::Planning(args) => cmd_planning_mutation(&mut store, &cli.repo_root, &args),
         Commands::Claim(args) => cmd_claim_mutation(&mut store, &cli.repo_root, &args),
-        Commands::Insight(args) => cmd_insight_mutation(&mut store, &args),
+        Commands::Insight(args) => cmd_insight_mutation(&mut store, &cli.repo_root, &args),
         Commands::Experiment(args) => cmd_experiment_mutation(&mut store, &cli.repo_root, &args),
         Commands::Binaries(args) => cmd_binaries_mutation(&mut store, &cli.repo_root, &args),
         Commands::Artifact(args) => cmd_artifact_mutation(&mut store, &cli.repo_root, &args),
@@ -1481,8 +1481,26 @@ fn resolve_cli_path(repo_root: &Path, path: &Path) -> PathBuf {
     }
 }
 
-fn cmd_insight_mutation(store: &mut ProvenanceStore, args: &InsightMutationArgs) -> Result<()> {
+fn cmd_insight_mutation(
+    store: &mut ProvenanceStore,
+    repo_root: &Path,
+    args: &InsightMutationArgs,
+) -> Result<()> {
     match &args.action {
+        InsightMutationAction::Admit {
+            spec,
+            actor,
+            reason,
+        } => {
+            let specification = ProvenanceStore::parse_insight_admission_spec(
+                &fs::read_to_string(repo_root.join(spec))?,
+            )?;
+            let revision = store.admit_insight(repo_root, &specification, actor, reason)?;
+            println!(
+                "{}",
+                serde_json::json!({"insight_id": specification.insight_id, "admission_revision": revision})
+            );
+        }
         InsightMutationAction::UpdateStatusNote {
             id,
             status_note,
@@ -1754,6 +1772,12 @@ fn cmd_artifact_mutation(
     args: &ArtifactArgs,
 ) -> Result<()> {
     match &args.action {
+        ArtifactAction::RecordSourceObservation { spec } => {
+            let specification: provenance_store::SourceObservationSpec =
+                toml::from_str(&fs::read_to_string(repo_root.join(spec))?)?;
+            let report = store.record_source_observation(repo_root, &specification)?;
+            println!("{}", serde_json::to_string_pretty(&report)?);
+        }
         ArtifactAction::RepairPaths { spec } => {
             let spec = repo_root.join(spec);
             let specification: provenance_store::ArtifactPathRepairSpec =

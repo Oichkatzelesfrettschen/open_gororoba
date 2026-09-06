@@ -439,6 +439,15 @@ pub(crate) struct InsightMutationArgs {
 
 #[derive(Subcommand, Debug)]
 pub(crate) enum InsightMutationAction {
+    /// Admit predicate-scoped evidence and corrected insight content atomically.
+    Admit {
+        #[arg(long)]
+        spec: PathBuf,
+        #[arg(long)]
+        actor: String,
+        #[arg(long)]
+        reason: String,
+    },
     UpdateStatusNote {
         #[arg(long)]
         id: String,
@@ -523,6 +532,11 @@ pub(crate) enum TheoremIdentityAction {
 
 #[derive(Subcommand, Debug)]
 pub(crate) enum ArtifactAction {
+    /// Retain a first source observation with explicit absent prior expectations.
+    RecordSourceObservation {
+        #[arg(long)]
+        spec: PathBuf,
+    },
     /// Record exact retrieval evidence and apply a digest-matched URL correction.
     RecordRetrieval {
         #[arg(long)]

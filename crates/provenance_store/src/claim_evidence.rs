@@ -420,7 +420,7 @@ fn admit_protocol(repo_root: &Path, spec: &ClaimEvidenceSpec) -> Result<String> 
 
 /// Parsed table positions belong to the source document. Clearing every nested
 /// position makes transplanted tables follow their owning claim during emission.
-fn clear_transplanted_table_positions(item: &mut toml_edit::Item) {
+pub(crate) fn clear_transplanted_table_positions(item: &mut toml_edit::Item) {
     match item {
         toml_edit::Item::Table(table) => {
             table.set_position(None);
@@ -440,7 +440,7 @@ fn clear_transplanted_table_positions(item: &mut toml_edit::Item) {
     }
 }
 
-fn checked_semantic_render(
+pub(crate) fn checked_semantic_render(
     document: &toml_edit::DocumentMut,
     expected: &toml::Value,
 ) -> Result<String> {

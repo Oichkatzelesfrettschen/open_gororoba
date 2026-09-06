@@ -1,5 +1,18 @@
 use super::*;
 
+fn refuse_untyped_insight_update(connection: &Connection, insight_id: &str) -> Result<()> {
+    let admitted: bool = connection.query_row(
+        "SELECT EXISTS(SELECT 1 FROM insight_evidence WHERE insight_id=?1)",
+        [insight_id],
+        |row| row.get(0),
+    )?;
+    anyhow::ensure!(
+        !admitted,
+        "insight {insight_id} has a typed admission; revise its complete contract through insight admit"
+    );
+    Ok(())
+}
+
 impl ProvenanceStore {
     /// Read-only accessor for the current status_note on a claim row.
     /// Returns Ok(None) if the row exists but the column is NULL,
@@ -158,6 +171,7 @@ impl ProvenanceStore {
         let tx = self
             .conn
             .transaction_with_behavior(rusqlite::TransactionBehavior::Immediate)?;
+        refuse_untyped_insight_update(&tx, id)?;
         let compat: String = tx
             .query_row(
                 "SELECT compat_toml_text FROM insights WHERE id = ?1",
@@ -310,6 +324,9 @@ impl ProvenanceStore {
             fk_col,
             field,
         } = target;
+        if table == "insights" {
+            refuse_untyped_insight_update(tx, id)?;
+        }
         let select_sql = format!("SELECT {field} FROM {table} WHERE id = ?1");
         let update_sql = format!("UPDATE {table} SET {field} = ?2 WHERE id = ?1");
         let insert_sql = format!(

@@ -11,6 +11,7 @@ anyhow = { workspace = true }
 blake3 = { workspace = true }
 camino = { workspace = true, features = ["serde1"] }
 chrono = { workspace = true }
+flate2 = { workspace = true }
 provenance_core = { path = "../provenance_core" }
 rusqlite = { workspace = true }
 rusqlite_migration = { workspace = true }

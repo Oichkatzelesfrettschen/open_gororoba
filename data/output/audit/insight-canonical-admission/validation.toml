@@ -1,0 +1,39 @@
+schema_version = 1
+status = "canonical_admission_and_local_validation_passed"
+baseline_commit = "8693d7f25be460863acad351be3a56749af76b46"
+baseline_database_sha256 = "49ab6870d67738b4af3cb665ee03313b0ef595201e2598b3e2d73172b5f235c8"
+admitted_database_sha256 = "d85114a8ca0f55a23bc0f2b9ebc651a947d77b44b90e08368bdb4b5943a8f591"
+canonical_target = "registry/canonical/control_plane.sqlite3"
+insight_count = 8
+predicate_count = 31
+role_count = 45
+historical_links_preserved = 37
+followup_links_added = 8
+source_observations = 8
+source_history_records = 10
+source_metadata_corrections = 2
+retained_source_bodies = 6
+failed_source_requests = 2
+admission_events = 9
+admission_event_scope = "Eight initial admissions plus one evidence-only I-212 revision that closes its completed administrative residual while retaining original-producer replay obligations."
+inspected_tables = 87
+preservation_result = "All 87 inspected tables preserve their baseline rows; 86 also have zero added rows. control_plane_runs appends export bookkeeping. Exact counts and table names are in preservation-results.json."
+insight_preservation = "All nonpilot insight rows, all original insight revision rows and all original normalized links remain. Normalized links match declared references in both directions."
+sqlite_integrity = "ok"
+foreign_key_violations = 0
+library_tests = 90
+library_test_result = "passed"
+clippy_result = "provenance_store all-targets passed with -D warnings"
+publication_gate = "Standalone make validate-local passes 586 tests, zero skips, warnings-as-errors and governance. Pre-push exposed inherited Git environment in insight fixtures; the isolation repair passes seven focused insight tests and the source refinement passes nine focused source tests. Pre-push reruns the required gate over the repaired result."
+format_result = "Scoped changed Rust files pass nightly rustfmt. Full-crate formatting also exposes a pre-existing unrelated claim_proofs.rs layout difference; that file remains unchanged."
+replay_result = "All sixteen initial admission reports reproduced exactly before the I-212 residual revision. The revised I-212 admission also reproduces exactly at its matching final poststate. Earlier I-212 replay intentionally rejects superseded live poststate."
+scientific_replays = 0
+scientific_boundary = "The contracts admit recorded audit assessments and source observations. They preserve source correction, historical-body recovery, original-producer replay, selection-aware null calibration and independent physical tests as explicit residuals."
+source_correspondence = "Successful wget observations retain operator association with matching size; methodology observations retain manifest digest association. Two append-only Li corrections replace the original matching-size wording with retained_failure_log_without_body. All effective records keep cryptographic_request_binding=false and document_identity=unresolved."
+
+[replay]
+baseline = "Restore the baseline database from git show 8693d7f25be460863acad351be3a56749af76b46:registry/canonical/control_plane.sqlite3 into .cache/insight-admission/before.sqlite3; verify its recorded SHA256."
+spec_generation = "cargo run -p gororoba_db --example insight_pilot_specs --profile validation -- REPO_ROOT BASELINE_DB"
+mutations = "Run gororoba-db insight admit for specs/I-001.toml through specs/I-212.toml, then followup-specs/I-212.toml; run artifact record-source-observation for the eight source specs followed by the two source corrections. Supply the intended repo root and database explicitly for rehearsal."
+export = "provenance export-control-plane; registry-emit insights-mirror; make registry-integrity REPO_SHARE_PRIMARY_CACHE=1"
+checks = "Run preservation-queries.sql and admission-queries.sql against the admitted database from the repository root. The queries attach the preserved baseline copy; compare their JSON with the retained results."

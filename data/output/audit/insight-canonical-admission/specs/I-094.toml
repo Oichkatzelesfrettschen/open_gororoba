@@ -1,0 +1,161 @@
+admission_id = "insight-reference-predicate-admission:I-094"
+insight_id = "I-094"
+disposition = "revise_physical_specificity_to_historical_hypothesis"
+falsifier = "Trace physical coordinates and transforms; require detection under a declared multiplicity/null procedure and matched band/path controls. The recorded corrected-statistics failures already invalidate the affirmative detection premises at registry-evidence level."
+successor = "A bounded distribution/selection diagnostic may survive after original result recovery."
+residual = "Historical numerical replay awaits recovered result bodies and input/runner hashes."
+
+[expected]
+title = "Sedenion Ghost Is L-Band and Large-Scale Specific"
+status = "verified"
+summary = "Cross-catalog rho-ghost-fft analysis (E-060, E-061) reveals the phi^{-1/2} ghost frequency is L-band/large-scale specific. Positive detections (SNR>4) occur in L-band radio catalogs (CHIME FRB, ATNF pulsars) and optical SNIa (Pantheon+), all probing megaparsec-scale path lengths. Ghost is NULL in S-band (2.25 GHz Wow! follow-up), nuclear (ALICE Pb-Pb), solar (SORCE TSI), geomagnetic (Swarm), and local stellar (Gaia DR3) regimes. Scale dependence suggests vacuum topology modulation over megaparsec path lengths or frequency-locking to the 21cm hydrogen line. The ghost sharpens with statistics: CHIME Cat2 (5045 sources) has FWHM=0.0008 vs Cat1 (600 sources) FWHM=0.016."
+confidence = "high"
+claim_refs = [
+    "C-784",
+    "C-785",
+    "C-786",
+    "C-787",
+    "C-788",
+    "C-789",
+]
+
+[revised]
+title = "Catalog spectral comparisons leave band and path-length specificity untested"
+status = "open"
+summary = "The registry retains cross-catalog spectral comparisons as research history. E-071 records corrected-statistics refutations of the positive C-784, C-785 and C-786 detection premises. Catalog differences in observable, noise, selection, transform and support confound the proposed band and path-length explanation. Local and nuclear nondetections remain bounded observations. For cycles-per-sample FWHM and effective FFT length 5045, 0.0008 exceeds 1/5045; original normalization and effective length await recovered result bodies. That conditional arithmetic correction leaves the refuted detection intact. Vacuum topology and 21 cm locking remain hypotheses requiring explicit physical maps and independently tested, matched predictions."
+confidence = "unassessed"
+status_note = "Open denotes an untested physical specificity hypothesis with failed historical detection premises. Canonical admission records source and registry review; historical numerical replay and independent physical tests remain outstanding."
+claim_refs = [
+    "C-784",
+    "C-785",
+    "C-786",
+    "C-787",
+    "C-788",
+    "C-789",
+]
+
+[[evidence_files]]
+path = "data/output/audit/insight-reference-role-pilot/findings.json"
+sha256 = "966a8448285da44f97ce3a2d8163657502279c9e1740b868a1d8280c3a5a6209"
+
+[[evidence_files]]
+path = "data/output/audit/insight-reference-role-pilot/canonical-snapshot.json"
+sha256 = "1d565e81877ca50adc6296bc4e1c8824178eb81e6d7d3a8d808fe998069c1dbd"
+
+[[evidence_files]]
+path = "data/output/audit/insight-reference-role-pilot/oracle-results.toml"
+sha256 = "184b735ff5e63a9f0358e5676a159c869f30841656bcf0f59822501bf25ad48f"
+
+[[evidence_files]]
+path = "data/output/audit/insight-reference-role-pilot/followup-claims.json"
+sha256 = "618bbedefd0ec92d76e7de93e5460e778a92637175f76a5a1e6e43d71274851a"
+
+[[predicates]]
+id = "detections"
+proposition = "Positive FRB, pulsar and SNIa detections establish L-band/large-scale specificity."
+kind = "asserted_proposition"
+evidence_layer = "phenomenological_mapping"
+outcome = "refuted"
+execution_status = "retained_result_review"
+boundary = "C-784/785/786 record E-071 corrected-statistics refutations. Shared transforms and heterogeneous catalog selection do not isolate band or path length."
+evidence_anchors = [
+    "registry/claims.toml:13046-13067; registry/experiments.toml:1823-1835",
+    "data/output/audit/insight-reference-role-pilot/findings.json#I-094/detections",
+]
+
+[[predicates.evidence_bindings]]
+path = "data/output/audit/insight-reference-role-pilot/findings.json"
+json_pointer = "/records/2/atomic_propositions/0"
+
+[[predicates]]
+id = "controls"
+proposition = "Local, solar and nuclear nondetections identify a physical scale."
+kind = "asserted_proposition"
+evidence_layer = "phenomenological_mapping"
+outcome = "inconclusive"
+execution_status = "source_review"
+boundary = "The recorded nondetections remain bounded observations. Catalogs differ in observable, noise, selection, transform and support; those controls do not isolate the proposed causal variable."
+evidence_anchors = [
+    "registry/claims.toml:13070-13083",
+    "data/output/audit/insight-reference-role-pilot/findings.json#I-094/controls",
+]
+
+[[predicates.evidence_bindings]]
+path = "data/output/audit/insight-reference-role-pilot/findings.json"
+json_pointer = "/records/2/atomic_propositions/1"
+
+[[predicates]]
+id = "sharpening"
+proposition = "FWHM=0.0008 versus 0.016 establishes statistical sharpening."
+kind = "asserted_proposition"
+evidence_layer = "implementation_conformance"
+outcome = "revised"
+execution_status = "retained_result_review"
+boundary = "C-789 is Refuted and its stated resolution arithmetic reverses an inequality if FWHM is in cycles/sample and effective FFT length is N=5045: 0.0008 exceeds 1/5045. Historical normalization and effective FFT length await original result recovery. The arithmetic correction does not restore a detection."
+evidence_anchors = [
+    "registry/claims.toml:13086-13090; oracle-results.toml",
+    "data/output/audit/insight-reference-role-pilot/findings.json#I-094/sharpening",
+]
+
+[[predicates.evidence_bindings]]
+path = "data/output/audit/insight-reference-role-pilot/findings.json"
+json_pointer = "/records/2/atomic_propositions/2"
+
+[[predicates]]
+id = "mechanism"
+proposition = "Vacuum topology or 21 cm frequency locking explains the comparisons."
+kind = "asserted_proposition"
+evidence_layer = "phenomenological_mapping"
+outcome = "untested"
+execution_status = "not_executed"
+boundary = "Exploratory explanations lack a traced physical map and matched distinguishing evidence in the inspected references."
+evidence_anchors = [
+    "registry/insights.toml:1078-1087",
+    "data/output/audit/insight-reference-role-pilot/findings.json#I-094/mechanism",
+]
+
+[[predicates.evidence_bindings]]
+path = "data/output/audit/insight-reference-role-pilot/findings.json"
+json_pointer = "/records/2/atomic_propositions/3"
+
+[[references]]
+claim_id = "C-784"
+predicate_id = "detections"
+role = "refutes"
+provenance = "Pilot role historical_positive_premise_refuted: FRB detection premise."
+boundary = "E-071 refutes corrected detection."
+
+[[references]]
+claim_id = "C-785"
+predicate_id = "detections"
+role = "refutes"
+provenance = "Pilot role historical_positive_premise_refuted: Pulsar detection premise."
+boundary = "E-071 refutes corrected detection."
+
+[[references]]
+claim_id = "C-786"
+predicate_id = "detections"
+role = "refutes"
+provenance = "Pilot role historical_positive_premise_refuted: SNIa detection premise."
+boundary = "E-071 refutes corrected detection."
+
+[[references]]
+claim_id = "C-787"
+predicate_id = "controls"
+role = "qualifies"
+provenance = "Pilot role contrasting_nondetection: Wow follow-up nondetection."
+boundary = "Heterogeneous comparison, not a matched band/path control."
+
+[[references]]
+claim_id = "C-788"
+predicate_id = "controls"
+role = "qualifies"
+provenance = "Pilot role contrasting_nondetection: Other-regime nondetections."
+boundary = "A pipeline-artifact exclusion exceeds those comparisons."
+
+[[references]]
+claim_id = "C-789"
+predicate_id = "sharpening"
+role = "historical_context"
+provenance = "Pilot role historical_sharpening_premise_refuted: Catalog-size/FWHM comparison."
+boundary = "The stated resolution arithmetic is reversed conditional on cycles/sample FWHM and effective N=5045; original normalization remains unresolved."

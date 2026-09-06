@@ -1,0 +1,162 @@
+admission_id = "insight-reference-predicate-admission:I-095"
+insight_id = "I-095"
+disposition = "retain_hypothesis_history_withdraw_verified_mechanism_reading"
+falsifier = "Require a physical observable, a derived or explicitly fitted coupling and a distinguishing controlled prediction. Existing null outcomes defeat claimed support, while untested mechanisms remain unverified hypotheses."
+successor = "A preregistered mechanism hypothesis may be retained separately from historical detection claims."
+residual = "Quantitative mechanism and independent test remain undeclared."
+
+[expected]
+title = "Ghost Is a Vacuum-Scale Resonance, Not a Universal Constant"
+status = "verified"
+summary = "The phi^{-1/2} Ghost is not a universal constant imprinted on all matter (like pi or e). It is a structure of the large-scale vacuum itself. Evidence: (1) Appears in FRBs/pulsars/SNIa that traverse Gpc/kpc of space, accumulating phase dispersion from the Sedenion ZD lattice. (2) Absent in local/short-range measurements (Wow! S-band, Swarm, SORCE) where path length is too short. (3) Absent in high-energy nuclear regime (ALICE) where deconfinement energy scale exceeds ZD coupling. (4) CWT analysis (E-062) confirms absence is physical, not methodological. (5) Marginal ALICE peak at 0.2105 (C-791) hints at QGP-scale coupling pending Run 3 statistics. The Ghost is a vacuum topology modulation over megaparsec path lengths, consistent with the 21cm hydrogen line as a resonant carrier."
+confidence = "high"
+claim_refs = [
+    "C-784",
+    "C-785",
+    "C-786",
+    "C-787",
+    "C-788",
+    "C-789",
+    "C-790",
+    "C-791",
+]
+
+[revised]
+title = "Vacuum-resonance interpretation remains an untested mechanism hypothesis"
+status = "open"
+summary = "The historical vacuum-resonance explanation remains a hypothesis candidate. Its cited positive detection premises are refuted in the registry. The inspected evidence supplies neither a defined vacuum observable nor a derived coupling. CWT nondetection cannot exclude shared preprocessing, support, sensitivity or selection failures; the later ALICE null supplies no positive evidence for QGP coupling. Path length, deconfinement and a 21 cm carrier require explicit predictions, units, intervening maps and matched controls. Declare a quantitative mechanism and demonstrate injection sensitivity before interpreting nondetection, then test independently acquired observations with matched processing."
+confidence = "unassessed"
+status_note = "Open and unassessed confidence replace the verified physical-mechanism reading. The admission preserves the hypothesis and failed premises while keeping quantitative mechanism design, original replays and independent confirmation unexecuted."
+claim_refs = [
+    "C-784",
+    "C-785",
+    "C-786",
+    "C-787",
+    "C-788",
+    "C-789",
+    "C-790",
+    "C-791",
+]
+
+[[evidence_files]]
+path = "data/output/audit/insight-reference-role-pilot/findings.json"
+sha256 = "966a8448285da44f97ce3a2d8163657502279c9e1740b868a1d8280c3a5a6209"
+
+[[evidence_files]]
+path = "data/output/audit/insight-reference-role-pilot/canonical-snapshot.json"
+sha256 = "1d565e81877ca50adc6296bc4e1c8824178eb81e6d7d3a8d808fe998069c1dbd"
+
+[[evidence_files]]
+path = "data/output/audit/insight-reference-role-pilot/oracle-results.toml"
+sha256 = "184b735ff5e63a9f0358e5676a159c869f30841656bcf0f59822501bf25ad48f"
+
+[[evidence_files]]
+path = "data/output/audit/insight-reference-role-pilot/followup-claims.json"
+sha256 = "618bbedefd0ec92d76e7de93e5460e778a92637175f76a5a1e6e43d71274851a"
+
+[[predicates]]
+id = "vacuum"
+proposition = "The ghost is a structure of large-scale vacuum."
+kind = "asserted_proposition"
+evidence_layer = "phenomenological_mapping"
+outcome = "untested"
+execution_status = "not_executed"
+boundary = "The cited positive detection premises are refuted; the inspected evidence establishes neither a vacuum observable nor a derived coupling."
+evidence_anchors = [
+    "registry/claims.toml:13046-13090",
+    "data/output/audit/insight-reference-role-pilot/findings.json#I-095/vacuum",
+]
+
+[[predicates.evidence_bindings]]
+path = "data/output/audit/insight-reference-role-pilot/findings.json"
+json_pointer = "/records/3/atomic_propositions/0"
+
+[[predicates]]
+id = "absence"
+proposition = "CWT confirms that absence is physical rather than methodological."
+kind = "asserted_proposition"
+evidence_layer = "phenomenological_mapping"
+outcome = "inconclusive"
+execution_status = "source_review"
+boundary = "A second estimator's nondetection cannot exclude shared preprocessing, support, sensitivity or selection failures."
+evidence_anchors = [
+    "registry/claims.toml:13094-13099",
+    "data/output/audit/insight-reference-role-pilot/findings.json#I-095/absence",
+]
+
+[[predicates.evidence_bindings]]
+path = "data/output/audit/insight-reference-role-pilot/findings.json"
+json_pointer = "/records/3/atomic_propositions/1"
+
+[[predicates]]
+id = "couplings"
+proposition = "Path length, deconfinement or 21 cm carrier explain the pattern."
+kind = "asserted_proposition"
+evidence_layer = "phenomenological_mapping"
+outcome = "untested"
+execution_status = "not_executed"
+boundary = "Hypotheses require explicit predictions, units, intervening maps and matched controls. C-791's later ALICE null result cannot positively establish QGP coupling."
+evidence_anchors = [
+    "registry/claims.toml:13102-13106",
+    "data/output/audit/insight-reference-role-pilot/findings.json#I-095/couplings",
+]
+
+[[predicates.evidence_bindings]]
+path = "data/output/audit/insight-reference-role-pilot/findings.json"
+json_pointer = "/records/3/atomic_propositions/2"
+
+[[references]]
+claim_id = "C-784"
+predicate_id = "vacuum"
+role = "historical_context"
+provenance = "Pilot role historical_positive_premise_refuted: FRB support for vacuum resonance."
+boundary = "Refuted detection premise."
+
+[[references]]
+claim_id = "C-785"
+predicate_id = "vacuum"
+role = "historical_context"
+provenance = "Pilot role historical_positive_premise_refuted: Pulsar support for vacuum resonance."
+boundary = "Refuted detection premise."
+
+[[references]]
+claim_id = "C-786"
+predicate_id = "vacuum"
+role = "historical_context"
+provenance = "Pilot role historical_positive_premise_refuted: SNIa support for vacuum resonance."
+boundary = "Refuted detection premise."
+
+[[references]]
+claim_id = "C-787"
+predicate_id = "couplings"
+role = "motivates"
+provenance = "Pilot role motivates: Short-path/band explanation."
+boundary = "Nondetection supplies no isolated path-length mechanism."
+
+[[references]]
+claim_id = "C-788"
+predicate_id = "couplings"
+role = "motivates"
+provenance = "Pilot role motivates: Local/nuclear-scale explanation."
+boundary = "Heterogeneous controls confound regime and measurement."
+
+[[references]]
+claim_id = "C-789"
+predicate_id = "vacuum"
+role = "historical_context"
+provenance = "Pilot role historical_context: Referenced sharpening context."
+boundary = "Summary assigns no distinct support argument to this link."
+
+[[references]]
+claim_id = "C-790"
+predicate_id = "absence"
+role = "qualifies"
+provenance = "Pilot role methodological_exclusion_asserted: CWT absence treated as physically decisive."
+boundary = "Exclusion fails without sensitivity and shared-pipeline controls."
+
+[[references]]
+claim_id = "C-791"
+predicate_id = "couplings"
+role = "motivates"
+provenance = "Pilot role motivates: Marginal ALICE peak motivates coupling."
+boundary = "Later null audit defeats promotion from the marginal peak."

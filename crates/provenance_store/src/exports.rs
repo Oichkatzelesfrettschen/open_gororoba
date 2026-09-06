@@ -251,7 +251,9 @@ impl ProvenanceStore {
             .unwrap_or_default();
         Ok(ControlPlaneCompatOutputs {
             claims: self.overlay_claim_evidence(render_claims_registry(&self.list_claims()?))?,
-            insights: render_insights_registry(&self.list_insights_for_compat()?),
+            insights: self.overlay_insight_evidence(render_insights_registry(
+                &self.list_insights_for_compat()?,
+            ))?,
             experiments: render_experiments_registry(
                 &experiments_meta,
                 &self.list_experiments_for_compat()?,

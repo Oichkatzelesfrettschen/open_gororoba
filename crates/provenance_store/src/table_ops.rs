@@ -13,6 +13,7 @@ use rusqlite::{Connection, params};
 
 pub(crate) fn refuse_artifact_path_history_loss(conn: &Connection) -> Result<()> {
     crate::artifact_retrieval::refuse_retrieval_history_loss(conn)?;
+    crate::source_observation::refuse_source_observation_history_loss(conn)?;
     let table_exists = |table: &str| -> Result<bool> {
         Ok(conn.query_row(
             "SELECT EXISTS(SELECT 1 FROM sqlite_master WHERE type='table' AND name=?1)",
@@ -116,6 +117,7 @@ pub(crate) const CONTROL_PLANE_SNAPSHOT_KINDS: [&str; 5] = [
 
 pub(crate) fn clear_control_plane_tables(conn: &Connection) -> Result<()> {
     crate::claim_evidence::refuse_claim_evidence_history_loss(conn)?;
+    crate::insight_admission::refuse_insight_admission_history_loss(conn)?;
     let kinds = CONTROL_PLANE_SNAPSHOT_KINDS
         .iter()
         .map(|kind| format!("'{kind}'"))

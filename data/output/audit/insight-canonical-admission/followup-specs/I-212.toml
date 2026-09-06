@@ -1,0 +1,206 @@
+expected_previous_evidence_sha256 = "93828b937bde942d1847e62c386fedf09d6298c3eb49ab9eac8f823a3b9afd2b"
+admission_id = "insight-reference-residual-admission:I-212"
+insight_id = "I-212"
+disposition = "preserve_ranking_lesson_refresh_followup_scope_and_links"
+falsifier = "Check each score's full data dependency including normalization and model fitting. A claimed unique contribution requires a declared model-independent information target; an AUC increment in one model class does not establish that target."
+successor = "A comparison contract records local numerator window, calibration context, fit context and uncertainty conditioning separately."
+residual = "Recover original angular-bootstrap result bodies and producer identity before numerical replay. Independent uniqueness and utility claims require separately declared targets and evidence."
+
+[expected]
+title = "Detector comparisons require local windows, calibration and fitting boundaries"
+status = "verified"
+summary = "The registry records six-sample angular controls maxrot6 and cumrot6 at ROC-AUC 0.8383 and 0.8352 versus associator 0.8274, reversing the one-step comparison on that benchmark. Original angular-bootstrap bodies require recovery before replay. Six consecutive rows specify sample count; equal timestamps and gaps prevent treating sample count as elapsed duration. Each comparison must separately declare local numerator window, calibration context, model-fit context and uncertainty conditioning. The later model includes two-sample dbdt/rotation features and full-day PVI calibration. Fixed-model AUC increments establish conditional discrimination in the tested model class; information-theoretic uniqueness and practical utility require separately defined targets and evidence."
+status_note = "C-1738 refines PVI calibration; C-1739 bounds the E-242 fixed-model/fold result. C-1734, C-1741 and C-1743 provide separately scoped descendants, with C-1744 and C-1754 retained held-out and external results. E-242's retained AUC changes from 0.8428282832626345 to 0.84481471574976. The 0.005 comparison is a historical investigator-declared discrimination target with unestablished application justification; practical utility remains unassessed. Superseded C-1731 remains a historical reference. The temporal-support lesson survives; original angular-bootstrap replay remains pending."
+claim_refs = [
+    "C-1628",
+    "C-1631",
+    "C-1633",
+    "C-1731",
+    "C-1734",
+    "C-1738",
+    "C-1739",
+    "C-1741",
+    "C-1743",
+    "C-1744",
+    "C-1754",
+]
+
+[revised]
+title = "Detector comparisons require local windows, calibration and fitting boundaries"
+status = "verified"
+summary = "The registry records six-sample angular controls maxrot6 and cumrot6 at ROC-AUC 0.8383 and 0.8352 versus associator 0.8274, reversing the one-step comparison on that benchmark. Original angular-bootstrap bodies require recovery before replay. Six consecutive rows specify sample count; equal timestamps and gaps prevent treating sample count as elapsed duration. Each comparison must separately declare local numerator window, calibration context, model-fit context and uncertainty conditioning. The later model includes two-sample dbdt/rotation features and full-day PVI calibration. Fixed-model AUC increments establish conditional discrimination in the tested model class; information-theoretic uniqueness and practical utility require separately defined targets and evidence."
+status_note = "C-1738 refines PVI calibration; C-1739 bounds the E-242 fixed-model/fold result. C-1734, C-1741 and C-1743 provide separately scoped descendants, with C-1744 and C-1754 retained held-out and external results. E-242's retained AUC changes from 0.8428282832626345 to 0.84481471574976. The 0.005 comparison is a historical investigator-declared discrimination target with unestablished application justification; practical utility remains unassessed. Superseded C-1731 remains a historical reference. The temporal-support lesson survives; original angular-bootstrap replay remains pending."
+claim_refs = [
+    "C-1628",
+    "C-1631",
+    "C-1633",
+    "C-1731",
+    "C-1734",
+    "C-1738",
+    "C-1739",
+    "C-1741",
+    "C-1743",
+    "C-1744",
+    "C-1754",
+]
+
+[[evidence_files]]
+path = "data/output/audit/insight-reference-role-pilot/findings.json"
+sha256 = "966a8448285da44f97ce3a2d8163657502279c9e1740b868a1d8280c3a5a6209"
+
+[[evidence_files]]
+path = "data/output/audit/insight-reference-role-pilot/canonical-snapshot.json"
+sha256 = "1d565e81877ca50adc6296bc4e1c8824178eb81e6d7d3a8d808fe998069c1dbd"
+
+[[evidence_files]]
+path = "data/output/audit/insight-reference-role-pilot/oracle-results.toml"
+sha256 = "184b735ff5e63a9f0358e5676a159c869f30841656bcf0f59822501bf25ad48f"
+
+[[evidence_files]]
+path = "data/output/audit/insight-reference-role-pilot/followup-claims.json"
+sha256 = "618bbedefd0ec92d76e7de93e5460e778a92637175f76a5a1e6e43d71274851a"
+
+[[predicates]]
+id = "ranking"
+proposition = "Equal local windows expose temporal support as a ranking confound."
+kind = "asserted_proposition"
+evidence_layer = "implementation_conformance"
+outcome = "supported"
+execution_status = "retained_result_review"
+boundary = "The retained claim C-1633 reports maxrot6 0.8383 and cumrot6 0.8352 versus associator 0.8274; source defines six-sample angular controls. Named historical rotation-bootstrap bodies were absent at inspected paths, so the exact ranking is registry evidence rather than a fresh replay. Six consecutive rows establish sample-count support. Equal timestamps and gaps recorded in the calibration audit prevent equating that count with equal elapsed duration."
+evidence_anchors = [
+    "canonical-snapshot.json; crates/gororoba_cli_physics/src/staple_controls.rs:1-34",
+    "data/output/audit/insight-reference-role-pilot/findings.json#I-212/ranking",
+]
+
+[[predicates.evidence_bindings]]
+path = "data/output/audit/insight-reference-role-pilot/findings.json"
+json_pointer = "/records/7/atomic_propositions/0"
+
+[[predicates]]
+id = "matched-context"
+proposition = "All six baseline features share six-sample support."
+kind = "asserted_proposition"
+evidence_layer = "implementation_conformance"
+outcome = "refuted"
+execution_status = "source_review"
+boundary = "False for the later model's complete dependency: dbdt/rot use two local samples and PVI uses complete-day RMS calibration. Canonical C-1738/C-1739 explicitly correct those scopes."
+evidence_anchors = [
+    "data/output/audit/claims-pvi-calibration-boundary/findings.toml; crates/gororoba_cli_physics/src/staple_controls.rs:24-34",
+    "data/output/audit/insight-reference-role-pilot/findings.json#I-212/matched-context",
+]
+
+[[predicates.evidence_bindings]]
+path = "data/output/audit/insight-reference-role-pilot/findings.json"
+json_pointer = "/records/7/atomic_propositions/1"
+
+[[predicates]]
+id = "unique-information"
+proposition = "E-242 proves a small nonzero unique associator contribution."
+kind = "asserted_proposition"
+evidence_layer = "phenomenological_mapping"
+outcome = "revised"
+execution_status = "retained_result_review"
+boundary = "Retained result bytes confirm ROC-AUC 0.8428282832626345 to 0.84481471574976. C-1739 narrows interpretation to fixed-model/fold predictive discrimination with frozen-prediction uncertainty; information-theoretic uniqueness is unsupported."
+evidence_anchors = [
+    "data/output/staples_incremental_information.json; followup-claims.json",
+    "data/output/audit/insight-reference-role-pilot/findings.json#I-212/unique-information",
+]
+
+[[predicates.evidence_bindings]]
+path = "data/output/audit/insight-reference-role-pilot/findings.json"
+json_pointer = "/records/7/atomic_propositions/2"
+
+[[predicates]]
+id = "lesson-survival"
+proposition = "Superseding C-1631 invalidates the temporal-support lesson."
+kind = "reviewer_counterfactual"
+evidence_layer = "source_proposition"
+outcome = "refuted"
+execution_status = "source_review"
+boundary = "The lesson survives. C-1631 has a PVI calibration correction and C-1731 has model-scope descendants. Their transitions refine separate predicates rather than erase the historical angular-control comparison."
+evidence_anchors = [
+    "canonical-snapshot.json; followup-claims.json",
+    "data/output/audit/insight-reference-role-pilot/findings.json#I-212/lesson-survival",
+]
+
+[[predicates.evidence_bindings]]
+path = "data/output/audit/insight-reference-role-pilot/findings.json"
+json_pointer = "/records/7/atomic_propositions/3"
+
+[[references]]
+claim_id = "C-1628"
+predicate_id = "ranking"
+role = "historical_context"
+provenance = "Pilot role contrast_baseline: Associator exceeds one-step rotation on the fixed benchmark."
+boundary = "Bounded deterministic comparison; temporal asymmetry limits interpretation."
+
+[[references]]
+claim_id = "C-1631"
+predicate_id = "matched-context"
+role = "historical_context"
+provenance = "Pilot role historical_comparison_refined: Associator exceeds implemented PVI/Gram controls."
+boundary = "Superseded by narrower evidence including C-1738; PVI calibration extends beyond its numerator window."
+
+[[references]]
+claim_id = "C-1633"
+predicate_id = "ranking"
+role = "supports"
+provenance = "Pilot role supports_negative_result_lesson: Matched local angular controls exceed associator."
+boundary = "Preserve reported ranking while distinguishing result-body recovery from source/registry inspection."
+
+[[references]]
+claim_id = "C-1731"
+predicate_id = "unique-information"
+role = "historical_context"
+provenance = "Canonical follow-up statement retained in followup-claims.json; the original eight-insight snapshot retains the C-1731 status-note reference."
+boundary = "Superseded historical follow-up; its uniqueness and matched-context wording is refined by the admitted descendants."
+
+[[references]]
+claim_id = "C-1734"
+predicate_id = "unique-information"
+role = "followup_result"
+provenance = "Canonical follow-up statement retained in followup-claims.json; the original eight-insight snapshot retains the C-1731 status-note reference."
+boundary = "Under a fixed linear-in-log-features logistic model (ridge 1e-6, Newton-Raphson, standardization fitted inside each training fold) with a fixed 5-fold assignment grouped by daily file (one ChaCha8 seed-42 shuffle), adding ln(assoc) to the six matched six-sample baselines ln(dbdt), ln(rot), ln(cumrot6), ln(maxrot6), ln(pvi6), ln(gram6) raises out-of-fold ROC-AUC on the deduplicated THEMIS-A Staples benchmark (23,664,374 samples, 578,320 positives, 813 daily files) from 0.8428 to 0.8448, an incremental predictive discrimination of +0.20 AUC percentage points with paired file-bootstrap 95 percent interval [+0.17, +0.23] over 1000 resamples and zero adverse resamples; PR-AUC rises by +0.05 percentage points [+0.01, +0.08] and log loss falls by 0.00012 [0.00007, 0.00018]. Every interval excludes zero in the associator's favor, and the increment is about 0.24 percent of the baseline AUC, an order of magnitude below the standalone margins C-1631 reports. The statement is about incremental discrimination under this model class and fold assignment, not about information-theoretic uniqueness."
+
+[[references]]
+claim_id = "C-1738"
+predicate_id = "matched-context"
+role = "followup_result"
+provenance = "Canonical follow-up statement retained in followup-claims.json; the original eight-insight snapshot retains the C-1731 status-note reference."
+boundary = "On the retained deduplicated THEMIS-A Staples crossing-day sample-localization benchmark (23,664,374 time points, 578,320 positives, 813 daily files), the normalized 16D staple-associator has pooled ROC-AUC 0.827449 with file-cluster-bootstrap 95 percent interval [0.820525, 0.834788]. It exceeds the implemented PVI and Gram-volume controls across the bulk and both predeclared gradient strata: simultaneous assoc-minus-PVI margin 0.043572 [0.036509, 0.050594] and assoc-minus-Gram margin 0.021609 [0.018430, 0.024935], from 2,000 intact-file resamples at seed 42. The associator and Gram statistic consume six local samples. PVI takes the maximum increment from those six samples and divides by the RMS increment of the complete daily file, including later samples. The comparison establishes superiority over these offline implementations; the PVI comparison includes unequal calibration context."
+
+[[references]]
+claim_id = "C-1739"
+predicate_id = "unique-information"
+role = "followup_result"
+provenance = "Canonical follow-up statement retained in followup-claims.json; the original eight-insight snapshot retains the C-1731 status-note reference."
+boundary = "On the retained deduplicated THEMIS-A Staples benchmark (23,664,374 samples, 578,320 positives, 813 daily files), adding ln(assoc) to a fixed logistic model on ln(dbdt), ln(rot), ln(cumrot6), ln(maxrot6), ln(pvi6), and ln(gram6) raises out-of-fold ROC-AUC from 0.8428282833 to 0.8448147157. The model uses ridge 1e-6, Newton-Raphson fitting, training-fold standardization, and one five-fold daily-file-grouped seed-42 assignment. The dbdt and rot features use two samples; cumrot6 and maxrot6 and gram6 use six; pvi6 uses a six-sample increment numerator with complete daily-file RMS calibration. A paired bootstrap of 1,000 file resamples of the frozen out-of-fold predictions gives a delta ROC-AUC interval [0.0016817229, 0.0023033193], with zero adverse ROC-AUC resamples. Delta PR-AUC has interval [0.0000948498, 0.0008139584], with five adverse resamples; delta log loss has interval [-0.0001824100, -0.0000688957]. The result measures incremental predictive discrimination for this offline feature set, model, and fold assignment; its uncertainty excludes variation from repeated model fitting."
+
+[[references]]
+claim_id = "C-1741"
+predicate_id = "unique-information"
+role = "followup_result"
+provenance = "Canonical follow-up statement retained in followup-claims.json; the original eight-insight snapshot retains the C-1731 status-note reference."
+boundary = "On 23,456,246 warmup-filtered THEMIS-A benchmark rows (574,716 positives, 813 files), adding logged staple-associator magnitude to the fixed six-feature ridge-logistic baseline yields positive pooled out-of-fold ROC-AUC increments in every one of five file-grouped five-fold assignments (seeds 42 through 46): daily-file RMS 0.0020033257278800898 to 0.0020158658710166533, training-file RMS 0.002394591060060347 to 0.002422900809169848, and preceding-256-increment RMS 0.0033726281856922835 to 0.0034006522849118204. Across 100 paired whole-train-file and whole-test-file bootstrap draws in the fixed seed-42 fold-0 partition, with RMS, standardization, and both models refitted in each arm and draw, the minimum incremental ROC-AUC across all three arms has median 0.0017528829999793327 and linear 2.5/97.5 percentile interval [0.0010345135981383064, 0.002696001071597234]. All 100 minima are positive, and all 750 planned fits converge. The CV ranges describe correlated split sensitivity; the interval supports a positive predictive increment only under the declared conditional procedure."
+
+[[references]]
+claim_id = "C-1743"
+predicate_id = "unique-information"
+role = "followup_result"
+provenance = "Canonical follow-up statement retained in followup-claims.json; the original eight-insight snapshot retains the C-1731 status-note reference."
+boundary = "On the timestamp-causal THEMIS-A crossing-day archive (22,263,526 admitted decisions, 543,911 positives, 813 daily files), training-only preprocessing and ridge-logistic fits on 2007-2012 produce a small positive canonical-associator increment over six matched geometric predictors in held-out 2015 and 2016. Across 2,000 paired whole-daily-file bootstrap draws, the global minimum ROC-AUC increment over calibration widths 64, 256 and 1024 and both final years has approximate 95 percent interval [0.0010149049086891153, 0.0029188809429172872]. The upper endpoint lies below the historical investigator-declared 0.005 discrimination target. The target has no established application-based justification; the below-target comparison leaves the positive-effect observation intact and practical utility unassessed. Fourteen to sixteen of nineteen exact-support sign controls equal or exceed canonical point ROC-AUC in every final panel; a declared post-hoc 120-contrast whole-file bootstrap comparison now finds 47 control-superiority intervals and 73 directionally inconclusive intervals, including all six matched-capacity geometric comparisons. Canonical superiority is unestablished; practical equivalence requires a declared margin. E-283 retains the native provider-product chronology failure. The separately declared retrospective external replication is reported by C-1754."
+
+[[references]]
+claim_id = "C-1744"
+predicate_id = "unique-information"
+role = "followup_result"
+provenance = "Canonical follow-up statement retained in followup-claims.json; the original eight-insight snapshot retains the C-1731 status-note reference."
+boundary = "On the admitted THEMIS-A final 2015/2016 archive, a declared post-hoc paired whole-daily-file bootstrap with 2000 draws and simultaneous 95 percent intervals across 120 canonical-minus-control ROC-AUC contrasts yields 47 control-superiority intervals, 73 intervals crossing zero, and zero canonical-superiority intervals. The family includes nineteen exact-support sign controls and one matched geometric-capacity control at widths 64, 256 and 1024 in each year. All six geometric intervals cross zero. Algebra-specific superiority is unestablished; practical equivalence is unadjudicated without a declared margin. The result conditions on frozen fits, admits no external replication, and retains the separate historical 0.005 discrimination target for the baseline comparison. That target has no established application-based justification and supplies neither a general scientific gate nor a practical-utility verdict."
+
+[[references]]
+claim_id = "C-1754"
+predicate_id = "unique-information"
+role = "followup_result"
+provenance = "Canonical follow-up statement retained in followup-claims.json; the original eight-insight snapshot retains the C-1731 status-note reference."
+boundary = "On all 166 THEMIS-D V2 crossing dates in 2015/2016, retrospective timestamp-only quarantine replaces four ambiguous timestamp fields while preserving original bytes by inverse reconstruction. The unchanged causal runner admits 4,219,790 decisions with 124,834 positives and evaluates 63 frozen THEMIS-A models with zero new training fits. Across 2,000 paired daily-file bootstrap draws, the global minimum canonical-associator ROC-AUC increment over the six-feature baseline across widths 64, 256 and 1024 and both years has approximate 95 percent interval [0.0007173048330896048, 0.0024898116600369224]. The interval supports a small positive external archive-conditional increment and lies below the historical investigator-declared 0.005 discrimination target. The target has no established application-based justification; the below-target comparison leaves practical utility unassessed. Independent support checks exclude quarantined rows and pre-reset history. Whole-file quality selection uses lookahead; online availability and ordinary-day false alerts remain unmeasured. E-283 retains its failed provider-product admission."

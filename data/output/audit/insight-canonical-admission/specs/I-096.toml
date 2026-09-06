@@ -1,0 +1,178 @@
+admission_id = "insight-reference-predicate-admission:I-096"
+insight_id = "I-096"
+disposition = "preserve_sorted_rank_lesson_correct_frequency_and_method_prescription"
+falsifier = "A method whose input is invariant under permutations cannot recover physical ordering removed by sorting. Match the reported frequency to the code's k/N units; inspect Li's actual proposition before prescribing its estimator."
+successor = "A distributional-shape statistic with declared rank coordinates and calibrated null ensemble is a bounded possible result."
+residual = "Li source admission, historical CSV recovery and calibration-denominator reconciliation remain pending."
+
+[expected]
+title = "FFT of Sorted Catalog Values Tests Distributional Shape, Not Physical Periodicity"
+status = "verified"
+summary = "FFT of sorted catalog values (the quantile function) measures regularity of the inverse CDF, not temporal or spatial periodicity. A peak at f~0.214 describes the curvature structure of the distribution at ~1/5 of its support, not a physical signal. This is methodologically analogous to the debunked redshift periodicity claims (Karlsson 1971), which were shown by Tang & Zhang 2005 and Hawkins et al. 2002 to arise from survey selection effects and distributional artifacts. The correct spectral method for sorted distributional data is the quantile periodogram (Li 2012), not standard FFT. Sprint 50 hardening via 7 independent methods (bootstrap null, BH-FDR, permutation test, Lomb-Scargle+Baluev, multitaper F-test, IAAFT surrogates, Stouffer combination) confirms: synthetic sorted distributions do NOT produce significant ghost peaks, and the existing detections (C-784..C-786) require re-verification on real data with corrected statistics."
+confidence = "high"
+claim_refs = [
+    "C-784",
+    "C-785",
+    "C-786",
+    "C-789",
+    "C-797",
+    "C-798",
+]
+
+[revised]
+title = "Sorted-value spectra retain distributional structure while discarding physical order"
+status = "verified"
+summary = "Sorting equal multisets produces equal estimator inputs regardless of their original physical ordering. A sorted-value FFT therefore describes the empirical distribution and declared preprocessing. The implementation reports k/N cycles per rank sample; frequency 0.214 corresponds to approximately 4.67 rank samples per cycle, rather than a location at one fifth of distributional support. Prescribing Li's quantile periodogram universally exceeds the inspected evidence; the cited body remains uninspected, and an estimator supplied t=i cannot recover discarded physical coordinates. E-071 records corrected real-data re-verification and C-784/C-785/C-786 refutations. Methods sharing input and preprocessing do not supply independent data confirmation. C-797 injection counts and uncertainty require reconciliation before interpreting calibration strength."
+confidence = "high"
+status_note = "Verified applies to the bounded ordering and frequency-unit lesson. Li source interpretation, calibration-denominator reconciliation and historical numerical replay remain open; high confidence applies to that bounded lesson rather than a physical detection."
+claim_refs = [
+    "C-784",
+    "C-785",
+    "C-786",
+    "C-789",
+    "C-797",
+    "C-798",
+]
+
+[[evidence_files]]
+path = "data/output/audit/insight-reference-role-pilot/findings.json"
+sha256 = "966a8448285da44f97ce3a2d8163657502279c9e1740b868a1d8280c3a5a6209"
+
+[[evidence_files]]
+path = "data/output/audit/insight-reference-role-pilot/canonical-snapshot.json"
+sha256 = "1d565e81877ca50adc6296bc4e1c8824178eb81e6d7d3a8d808fe998069c1dbd"
+
+[[evidence_files]]
+path = "data/output/audit/insight-reference-role-pilot/oracle-results.toml"
+sha256 = "184b735ff5e63a9f0358e5676a159c869f30841656bcf0f59822501bf25ad48f"
+
+[[evidence_files]]
+path = "data/output/audit/insight-reference-role-pilot/followup-claims.json"
+sha256 = "618bbedefd0ec92d76e7de93e5460e778a92637175f76a5a1e6e43d71274851a"
+
+[[predicates]]
+id = "representation"
+proposition = "Sorted-value FFT measures distributional structure rather than physical periodicity."
+kind = "asserted_proposition"
+evidence_layer = "implementation_conformance"
+outcome = "supported"
+execution_status = "source_review"
+boundary = "The insight correctly rejects that interpretation: equal multisets yield equal sorted inputs regardless of original order. Preserve the warning."
+evidence_anchors = [
+    "crates/spectral_core/src/ghost_spectral.rs:171-208,572-577",
+    "data/output/audit/insight-reference-role-pilot/findings.json#I-096/representation",
+]
+
+[[predicates.evidence_bindings]]
+path = "data/output/audit/insight-reference-role-pilot/findings.json"
+json_pointer = "/records/4/atomic_propositions/0"
+
+[[predicates]]
+id = "frequency"
+proposition = "f around 0.214 describes one fifth of distributional support."
+kind = "asserted_proposition"
+evidence_layer = "implementation_conformance"
+outcome = "refuted"
+execution_status = "retained_result_review"
+boundary = "The implementation emits k/N cycles per sample. Reciprocal frequency is about 4.67 rank samples per cycle; neither a location nor one fifth of support follows."
+evidence_anchors = [
+    "crates/spectral_core/src/ghost_spectral.rs:203-205; oracle-results.toml",
+    "data/output/audit/insight-reference-role-pilot/findings.json#I-096/frequency",
+]
+
+[[predicates.evidence_bindings]]
+path = "data/output/audit/insight-reference-role-pilot/findings.json"
+json_pointer = "/records/4/atomic_propositions/1"
+
+[[predicates]]
+id = "quantile-method"
+proposition = "Li's quantile periodogram is the correct spectral method for sorted distributional data."
+kind = "asserted_proposition"
+evidence_layer = "source_proposition"
+outcome = "inconclusive"
+execution_status = "source_review"
+boundary = "Universal prescription is unsupported. The implementation uses t=i and cannot recover discarded physical coordinates. The cited Li2012 body remains uninspected after recorded publisher HTTPS/HTTP failures."
+evidence_anchors = [
+    "crates/stats_core/src/quantile_regression.rs:117-131; crates/gororoba_cli_algebra/src/bin/quantile-periodogram.rs:85-105; source-receipts.toml",
+    "data/output/audit/insight-reference-role-pilot/findings.json#I-096/quantile-method",
+]
+
+[[predicates.evidence_bindings]]
+path = "data/output/audit/insight-reference-role-pilot/findings.json"
+json_pointer = "/records/4/atomic_propositions/2"
+
+[[predicates]]
+id = "historical-reverification"
+proposition = "Real-data corrected-statistics re-verification remains pending."
+kind = "asserted_proposition"
+evidence_layer = "source_proposition"
+outcome = "refuted"
+execution_status = "retained_result_review"
+boundary = "E-071 records completion and C-784/785/786 record refutations. Preserve the distinction between that recorded completion and this pilot's unexecuted numerical replay."
+evidence_anchors = [
+    "registry/experiments.toml:1823-1835",
+    "data/output/audit/insight-reference-role-pilot/findings.json#I-096/historical-reverification",
+]
+
+[[predicates.evidence_bindings]]
+path = "data/output/audit/insight-reference-role-pilot/findings.json"
+json_pointer = "/records/4/atomic_propositions/3"
+
+[[predicates]]
+id = "calibration"
+proposition = "Seven independent methods confirm the result."
+kind = "asserted_proposition"
+evidence_layer = "implementation_conformance"
+outcome = "revised"
+execution_status = "source_review"
+boundary = "Methods share input and preprocessing; methodological diversity alone establishes no independent datasets or error structure. C-797 also needs its injection denominator reconciled and uncertainty stated."
+evidence_anchors = [
+    "registry/claims.toml:13150-13163",
+    "data/output/audit/insight-reference-role-pilot/findings.json#I-096/calibration",
+]
+
+[[predicates.evidence_bindings]]
+path = "data/output/audit/insight-reference-role-pilot/findings.json"
+json_pointer = "/records/4/atomic_propositions/4"
+
+[[references]]
+claim_id = "C-784"
+predicate_id = "historical-reverification"
+role = "refutes"
+provenance = "Pilot role negative_result_about: Historical detection requiring statistical correction."
+boundary = "Preserve its later refutation."
+
+[[references]]
+claim_id = "C-785"
+predicate_id = "historical-reverification"
+role = "refutes"
+provenance = "Pilot role negative_result_about: Historical detection requiring statistical correction."
+boundary = "Preserve its later refutation."
+
+[[references]]
+claim_id = "C-786"
+predicate_id = "historical-reverification"
+role = "refutes"
+provenance = "Pilot role negative_result_about: Historical detection requiring statistical correction."
+boundary = "Preserve its later refutation."
+
+[[references]]
+claim_id = "C-789"
+predicate_id = "frequency"
+role = "historical_context"
+provenance = "Pilot role negative_result_about: Historical sharpening interpretation."
+boundary = "Correct the independent resolution arithmetic."
+
+[[references]]
+claim_id = "C-797"
+predicate_id = "calibration"
+role = "qualifies"
+provenance = "Pilot role supports_with_limits: Synthetic calibration result."
+boundary = "Injection counts and original retained bodies need reconciliation."
+
+[[references]]
+claim_id = "C-798"
+predicate_id = "representation"
+role = "qualifies"
+provenance = "Pilot role supports_with_limits: Rank/distribution interpretation."
+boundary = "Frequency units and universal quantile prescription exceed the inspected evidence."

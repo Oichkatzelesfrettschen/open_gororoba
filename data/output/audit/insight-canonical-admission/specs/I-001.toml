@@ -1,0 +1,110 @@
+admission_id = "insight-reference-predicate-admission:I-001"
+insight_id = "I-001"
+disposition = "revise_reference_and_qualify_source_conformance"
+falsifier = "Compare a source-derived electron-density integral with the actual routine under explicitly equal cosmological and host-frame assumptions; check inversion bracket and tolerance. The omitted explicit helium factor prevents establishing source conformance under the documented baryon-fraction convention. An effective fitted normalization would require its own evidence."
+successor = "A source-faithful mean-DM conversion with explicit electron/host conventions and uncertainty is a candidate implementation result."
+residual = "Source correction, caller convention audit and physical validation remain pending."
+
+[expected]
+title = "Macquart Relation Fills the Comoving Distance Gap"
+status = "verified"
+summary = "The Macquart relation connects FRB dispersion measures to redshift via integrated baryon density: DM_cosmic(z) = 935 * integral (1+z')/E(z') dz'. Bisection inversion (DM->z) converges in ~27 iterations. Foundation for comoving distance in ultrametric analysis."
+claim_refs = ["C-071"]
+
+[revised]
+title = "Mean-DM distance conversion requires explicit electron and host conventions"
+status = "partial"
+summary = "The implemented DM-to-redshift-to-comoving-distance construction supports a declared cosmology. Macquart et al. Eq. (2) defines a mean cosmic-DM relation with an explicit electron-density helium factor and diffuse baryon fraction; Eq. (1) separates Galactic, halo and redshift-scaled host contributions. The inspected routine omits the explicit 0.875 helium factor under its documented f_IGM convention. Its constants give 927.936546 rather than the approximate comment coefficient 935; multiplying by 0.875 gives only a conditional arithmetic value, 811.944478. An initial bisection bracket of width 10 requires 30 halvings to reach width 1e-8; expanded brackets require additional halvings. Caller host-frame conventions, scatter and physical calibration remain to be admitted. C-071 supplies research motivation rather than evidence for the Macquart formula or inversion convergence."
+status_note = "Partial denotes an implemented construction with unresolved source conformance. The retained primary source and arithmetic witness support the stated convention and iteration corrections. Source-faithful numerical repair, caller audit and independent astrophysical validation remain separate tasks."
+claim_refs = ["C-071"]
+
+[[evidence_files]]
+path = "data/output/audit/insight-reference-role-pilot/findings.json"
+sha256 = "966a8448285da44f97ce3a2d8163657502279c9e1740b868a1d8280c3a5a6209"
+
+[[evidence_files]]
+path = "data/output/audit/insight-reference-role-pilot/canonical-snapshot.json"
+sha256 = "1d565e81877ca50adc6296bc4e1c8824178eb81e6d7d3a8d808fe998069c1dbd"
+
+[[evidence_files]]
+path = "data/output/audit/insight-reference-role-pilot/oracle-results.toml"
+sha256 = "184b735ff5e63a9f0358e5676a159c869f30841656bcf0f59822501bf25ad48f"
+
+[[evidence_files]]
+path = "data/output/audit/insight-reference-role-pilot/followup-claims.json"
+sha256 = "618bbedefd0ec92d76e7de93e5460e778a92637175f76a5a1e6e43d71274851a"
+
+[[predicates]]
+id = "dm-redshift"
+proposition = "The Macquart relation connects mean cosmic DM and redshift."
+kind = "asserted_proposition"
+evidence_layer = "source_proposition"
+outcome = "supported"
+execution_status = "source_review"
+boundary = "Supported by the retrieved primary source Eq. (2), conditional on electron density, diffuse baryon fraction and cosmology."
+evidence_anchors = [
+    "sources/macquart-2005.13161v1.pdf, Eq. (2), printed pp. 4-5",
+    "data/output/audit/insight-reference-role-pilot/findings.json#I-001/dm-redshift",
+]
+
+[[predicates.evidence_bindings]]
+path = "data/output/audit/insight-reference-role-pilot/findings.json"
+json_pointer = "/records/0/atomic_propositions/0"
+
+[[predicates]]
+id = "coefficient"
+proposition = "DM_cosmic equals 935 times the stated integral."
+kind = "asserted_proposition"
+evidence_layer = "implementation_conformance"
+outcome = "revised"
+execution_status = "source_review"
+boundary = "Approximate code comment differs from evaluated constants (927.936546). Source Eq. (2) also includes (1-Y_He/2)=0.875, omitted by the routine while f_IGM=0.83 remains explicit. Treat source conformance as unresolved; 811.944478 merely applies that factor to the same constants."
+evidence_anchors = [
+    "crates/cosmology_core/src/distances.rs:53-88; oracle-results.toml",
+    "data/output/audit/insight-reference-role-pilot/findings.json#I-001/coefficient",
+]
+
+[[predicates.evidence_bindings]]
+path = "data/output/audit/insight-reference-role-pilot/findings.json"
+json_pointer = "/records/0/atomic_propositions/1"
+
+[[predicates]]
+id = "iterations"
+proposition = "Bisection converges in about 27 iterations."
+kind = "asserted_proposition"
+evidence_layer = "implementation_conformance"
+outcome = "refuted"
+execution_status = "retained_result_review"
+boundary = "The initial width 10 and absolute width tolerance 1e-8 require 30 halvings in the unexpanded bracket. Expanded brackets need additional halvings. Runtime convergence on arbitrary inputs remains unmeasured."
+evidence_anchors = [
+    "crates/cosmology_core/src/distances.rs:98-129; oracle-results.toml",
+    "data/output/audit/insight-reference-role-pilot/findings.json#I-001/iterations",
+]
+
+[[predicates.evidence_bindings]]
+path = "data/output/audit/insight-reference-role-pilot/findings.json"
+json_pointer = "/records/0/atomic_propositions/2"
+
+[[predicates]]
+id = "physical-distance"
+proposition = "The conversion supplies comoving distances for ultrametric analysis."
+kind = "asserted_proposition"
+evidence_layer = "phenomenological_mapping"
+outcome = "inconclusive"
+execution_status = "source_review"
+boundary = "Implementation path exists. Source Eq. (1) separates Galactic, halo and host terms; source host contribution scales with 1/(1+z). The routine directly subtracts caller-supplied host DM. Its caller convention, scatter and physical validity need explicit admission."
+evidence_anchors = [
+    "crates/cosmology_core/src/distances.rs:131-153; sources/macquart-2005.13161v1.pdf, Eqs. (1)-(2)",
+    "data/output/audit/insight-reference-role-pilot/findings.json#I-001/physical-distance",
+]
+
+[[predicates.evidence_bindings]]
+path = "data/output/audit/insight-reference-role-pilot/findings.json"
+json_pointer = "/records/0/atomic_propositions/3"
+
+[[references]]
+claim_id = "C-071"
+predicate_id = "physical-distance"
+role = "motivates"
+provenance = "Pilot role motivates: Distance representations were proposed in the FRB ultrametric research context."
+boundary = "C-071 asserts FRB ultrametric structure, not a Macquart formula or numerical-convergence result."

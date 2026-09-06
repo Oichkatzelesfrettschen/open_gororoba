@@ -233,7 +233,79 @@ for the consuming claim. Re-export compatibility lanes and refresh signatures
 after mutation; preserve the canonical database because destructive imports
 refuse retained retrieval history.
 
-## The render-row splice mechanism
+## Predicate-scoped insight admission
+
+`gororoba-db insight admit --spec <spec.toml> --actor <actor> --reason <reason>`
+changes insight content and its evidence contract in one immediate transaction.
+`InsightAdmissionSpec` pins the expected title, status, summary, confidence,
+status note, declared claim references and previous evidence-contract digest.
+An omitted previous digest declares first admission. The transaction preserves
+every historical reference, validates claim existence and exact role coverage,
+and updates the normalized reverse links together with the compatibility body.
+The insight FTS triggers delete indexed old values before indexing the new title
+and status.
+
+Each predicate separates its evidence layer, outcome and execution status.
+Reviewer counterfactuals retain their own kind. JSON-pointer bindings resolve
+inside retained, hash-verified evidence files; secondary source locators remain
+distinct from those admitted bodies. A binding to an audit assessment establishes
+the identity of that assessment. Original-producer replay and physical validation
+require their own evidence. Claim roles identify the predicate they bear on and
+retain their provenance and limits.
+
+`insight_admissions` retains full before/after content, the previous contract,
+actor and reason under append-only triggers. Changed fields also append to
+`insight_revisions`; `insight_evidence` holds the active contract. Repeating an
+admission key requires identical specification and matching live poststate.
+Export embeds the contract under `evidence_admission` and rejects drift between
+the live row and its admitted state. Admitted insights require the complete typed
+mutator for later edits. Destructive import guards protect the canonical history.
+
+The eight-insight application lives in
+`data/output/audit/insight-canonical-admission/specs/`. The retained decision
+inputs and `gororoba_db` example `insight_pilot_specs` reproduce the specifications
+from the baseline database. The application preserves 37 historical links and
+adds eight scoped I-212 follow-up links. I-001/I-002 become partial;
+I-094/I-095 remain open physical hypotheses; I-096/I-207/I-209/I-212 retain verified
+status for the narrowed methodological predicates.
+
+## First-observation source admission
+
+`gororoba-db artifact record-source-observation --spec <spec.toml>` appends to
+`source_observations`. The separate contract represents absent prerequest body
+expectations and an optional existing artifact association with a nullable URL
+prestate. The v1 historical retrieval/correction contract retains its stronger
+prior-expectation requirements. First observations change neither artifact
+catalog metadata nor scientific status.
+
+`SourceObservationSpec` verifies tracked regular-file storage identities,
+bounded gzip decoding, decoded digests and lengths, time precision and retained
+request witnesses. Methodology manifest rows bind the declared source URL, day
+and body digest while leaving individual response status and final URL unknown.
+The wget witness binds the logged request, HSTS behavior, day, status and terminal
+byte count. Its correspondence basis is operator association with matching size;
+the log supplies no cryptographic request/body binding. The report distinguishes
+that basis from retained-manifest digest association. Failed requests use
+`retained_failure_log_without_body`. Document attribution remains
+unresolved in both cases. Matching replay revalidates evidence and preserves the
+original receipt; history-loss guards reject destructive imports.
+
+`data/output/audit/insight-source-admission/` supplies six retained-body and two
+failed-request specifications. Li's failed HTTP-input request reached HTTPS through
+HSTS; the HTTP endpoint remains unmeasured. Original pilot receipts retain their
+historical admission-pending text. The newer canonical admission records resolve
+that administrative state while preserving their scientific limitations.
+
+Metadata corrections append a distinct key with `corrects_observation_key`.
+The transaction verifies the predecessor and preserves every acquisition field;
+each predecessor accepts one successor, so further corrections cite the latest
+record. Original rows remain immutable. The two Li corrections distinguish
+failure-log evidence from the body-size wording in their original receipts.
+`effective-source-queries.sql` in the insight admission bundle excludes corrected
+predecessors and returns eight effective acquisition records from ten history
+rows. Corrections represent metadata revisions rather than additional requests.
+
+## Compatibility row rendering
 
 The Layer-1-to-Layer-2 export does not regenerate each TOML row from
 SQLite columns alone -- the columns are a strict subset of the original

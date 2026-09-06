@@ -1,0 +1,28 @@
+schema_version = 1
+observation_key = "insight-pilot-first-observation-li-https"
+source_key = "li-quantile-periodograms"
+actor = "codex"
+reason = "Admit retained pilot source observation without fabricating prerequest body expectations or promoting scientific claims."
+requested_url = "https://www.tandfonline.com/doi/pdf/10.1080/01621459.2012.682815"
+final_url = "https://www.tandfonline.com/doi/pdf/10.1080/01621459.2012.682815"
+http_status = 403
+outcome = "request_failed"
+observed_at = "2026-09-06"
+time_precision = "day"
+tool = "GNU wget (retained log)"
+request_evidence_limit = "Retained wget log records request URL, response status and terminal completion or failure. Day precision preserves the log date without inventing local clock timezone."
+absent_prior_expectation_reason = "The retained audit declares observed body identities after retrieval; a hash-bound prerequest body expectation is absent."
+document_identity_limit = "Publisher attempts returned 403 and retained request logs; the requested document body and source proposition remain unassessed."
+
+[request_evidence]
+path = "data/output/audit/insight-reference-role-pilot/sources/li-wget.log.gz"
+storage_sha256 = "ee22113a6ee97709dfa2dd83b0d40cf4e09a029a432374b282022ad9ebb1bb46"
+encoding = "gzip"
+decoded_sha256 = "dfed0da38412104d7130cfc919f9e27b03d6c7aeb1587d469756d3efec706fee"
+decoded_bytes = 2380
+
+
+[artifact_prestate]
+artifact_id = "ASOT-0242"
+artifact_key = "doi:10.1080/01621459.2012.682815"
+canonical_url = "https://doi.org/10.1080/01621459.2012.682815"
