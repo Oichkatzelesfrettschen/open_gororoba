@@ -102,17 +102,18 @@ pub(super) fn apply_verified_retrievals(
     artifacts: &mut [UnifiedArtifact],
     identities: &HashMap<String, VerifiedRetrieval>,
     retention: &RetentionSet,
-) {
+) -> Result<()> {
     for artifact in artifacts {
         let Some(identity) = identities.get(&artifact.key) else {
             continue;
         };
+        retention.verify_archive_identity(&identity.path, &identity.sha256, identity.bytes)?;
         artifact.links.push(identity.url.clone());
         artifact.links = dedupe(std::mem::take(&mut artifact.links));
         artifact.canonical_functional_url = identity.url.clone();
         artifact.sha256 = identity.sha256.clone();
         artifact.byte_length = identity.bytes;
-        if retention.contains(&identity.path) {
+        if retention.is_retained(&identity.path) {
             artifact.downloaded_paths.push(identity.path.clone());
             artifact.downloaded_paths = dedupe(std::mem::take(&mut artifact.downloaded_paths));
             artifact.canonical_download_path = identity.path.clone();
@@ -132,6 +133,7 @@ pub(super) fn apply_verified_retrievals(
         artifact.manual_intervention_required = false;
         artifact.manual_intervention_reason.clear();
     }
+    Ok(())
 }
 
 #[cfg(test)]
@@ -178,7 +180,7 @@ mod tests {
             &mut artifacts,
             &identities,
             &RetentionSet::from_paths(["response.pdf"]),
-        );
+        )?;
         assert_eq!(artifacts[0].sha256, identity.sha256);
         assert_eq!(
             artifacts[0].canonical_functional_url,
@@ -201,6 +203,41 @@ mod tests {
             "version https://git-lfs.github.com/spec/v1\noid sha256:{}\nsize {}\n",
             identity.sha256, identity.byte_length
         )
+    }
+
+    #[test]
+    fn absent_archived_response_requires_canonical_hash_and_size_agreement() -> Result<()> {
+        let (fixture, identity) = fixture()?;
+        let root = fixture.path();
+        std::fs::remove_file(root.join("response.pdf"))?;
+        let identities = load_verified_retrievals(root)?;
+        for declared in [
+            artifact_retention::FileIdentity {
+                sha256: "0".repeat(64),
+                byte_length: identity.byte_length,
+            },
+            artifact_retention::FileIdentity {
+                sha256: identity.sha256.clone(),
+                byte_length: identity.byte_length + 1,
+            },
+            identity.clone(),
+        ] {
+            let retention = artifact_retention::archive_fixture(root, "response.pdf", &declared)?;
+            let mut artifacts = vec![UnifiedArtifact {
+                key: "artifact:a".into(),
+                ..Default::default()
+            }];
+            let result = apply_verified_retrievals(&mut artifacts, &identities, &retention);
+            if declared == identity {
+                result?;
+                assert_eq!(artifacts[0].status, "downloaded");
+                assert_eq!(artifacts[0].canonical_download_path, "response.pdf");
+                assert!(!retention.contains("response.pdf"));
+            } else {
+                assert!(result.is_err());
+            }
+        }
+        Ok(())
     }
 
     fn assert_unavailable_host_payload(root: &Path) {

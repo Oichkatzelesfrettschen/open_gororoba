@@ -1,11 +1,13 @@
-# Git LFS tracking rules
-# PDFs stored via LFS to avoid bloating git history
 papers/pdf/*.pdf    -text
 data/external/documents_ingest/**/*.pdf    -text
 data/external/documents_extracted/**/*.png    -text
 data/output/heliosphere/soho/celias_pm_native_5min.csv    -text
 # Canonical SQLite registry files are source artifacts; keep them as Git blobs.
 registry/canonical/*.sqlite3 -filter -diff -merge -text
+# Retention manifests bind their exact Git-index bytes across checkout platforms.
+data/retention/** -text
+# Preserve the independent source fixture's terminal blank line.
+crates/qgp_scaling/tests/fixtures/alice_pbpb_5020_raa_central.csv -text whitespace=-blank-at-eof
 *.csv    -text
 *.bin    -text
 # Hash-bound source and replay receipts preserve provider whitespace and line endings.
@@ -34,7 +36,6 @@ vendor/proc-macro-error2/** -text
 vendor/proc-macro-error2/LICENSE-APACHE whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
 # Unified-diff context markers are retained evidence bytes on empty lines.
 data/output/audit/staples-orbit-worktree-reconciliation/e8-uncommitted-before.patch whitespace=-blank-at-eol -text
-# Retained replay payloads stay materialized for numerical audits through LFS.
 data/output/audit/provenance-experiment-module-ownership/historical-replay/*.json    -text
 data/output/audit/claim-family-evidence-adjudication/euclid-physical-measurements.parquet    -text
 data/output/audit/claim-family-evidence-adjudication/**/*.f64le    -text

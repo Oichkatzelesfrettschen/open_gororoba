@@ -14,6 +14,10 @@ path = "src/bin/provenance.rs"
 name = "download-recovery"
 path = "src/bin/download_recovery.rs"
 
+[[bin]]
+name = "hydrate-scientific-payloads"
+path = "src/bin/hydrate_scientific_payloads.rs"
+
 [dependencies]
 anyhow = { workspace = true }
 chrono = { workspace = true }
@@ -27,9 +31,13 @@ provenance_store = { path = "../provenance_store" }
 regex = { workspace = true }
 serde = { workspace = true }
 serde_json = { workspace = true }
+sha2 = { workspace = true }
+tar = { workspace = true }
+tempfile = { workspace = true }
 tokio = { workspace = true }
 toml = { workspace = true }
 url = { workspace = true }
+zstd = "=0.13.3"
 
 [lints]
 workspace = true

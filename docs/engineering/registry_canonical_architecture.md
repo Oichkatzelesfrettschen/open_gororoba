@@ -365,3 +365,79 @@ canonical artifact history in SQLite.
 `provenance export-artifact-scan --reindex-after` check the import boundary
 before writing compatibility exports. A host scan without reindexing remains
 available for materialization reporting.
+
+## Scientific payload retention
+
+Scientific payloads exceed the repository's Git LFS budget. The repository
+keeps required compile-time fixtures as ordinary Git blobs and declares bulk
+evidence in `data/retention/scientific-payloads.json`. The manifest binds each original path
+to its SHA256, byte length, and object member in one zstd-compressed tar archive.
+The archive contains 4,989 historical objects. Main maps 2,202 current paths;
+the science continuation maps 3,419. Historical objects without a current path
+remain in the archive.
+
+The manifest's release URL is a retrieval locator. Manifest validation proves
+the declared identities and index binding; a successful download and complete
+archive verification establish materialization. A missing local payload remains
+missing even when its retention declaration is valid. Provider availability
+requires a separate retrieval observation.
+
+The source inventory's `downloaded` label means repository-managed retention:
+an ordinary Git blob or a member declared by an indexed, hash-bound archive
+manifest. The per-host `git_tracked` field continues to report actual Git-index
+membership. Archive membership does not make an ignored file Git-tracked.
+Scientific claim statuses and retained numerical results retain their own
+evidence contracts.
+
+`verified_local` in the historical object inventory records the original
+backup verification. That field does not describe the reader's checkout.
+
+### Materialize evidence
+
+Download the exact HTTPS asset named in `data/retention/scientific-payloads.json` using a
+bounded retry policy. A Mozilla user agent is appropriate for providers that
+reject generic download clients. Keep downloads outside tracked evidence paths.
+Run `hydrate-scientific-payloads` with the repository root, indexed manifest,
+and downloaded archive. The hydration command verifies archive size and SHA256
+before extraction, validates every historical object, and installs only current
+declared paths. Existing matching files are reused; conflicting bytes fail
+preflight. Destination installation is atomic per file, not across the entire
+collection. Run the command again after an interrupted installation.
+
+```bash
+mkdir -p .cache/retention
+wget --user-agent='Mozilla/5.0' --timeout=30 --tries=3 --continue \
+  --output-document=.cache/retention/scientific-payloads.tar.zst \
+  "$(jq -er '.archive.url' data/retention/scientific-payloads.json)"
+CARGO_TARGET_DIR="$(pwd)/.cache/gate-target" cargo run --offline --locked \
+  --profile validation -p gororoba_cli_provenance \
+  --bin hydrate-scientific-payloads -- \
+  --repo-root "$(pwd)" \
+  --manifest "$(pwd)/data/retention/scientific-payloads.json" \
+  --archive "$(pwd)/.cache/retention/scientific-payloads.tar.zst"
+```
+
+The archive member layout is `<first-two-hash-digits>/<next-two>/<sha256>`.
+Object hashes are independent of original filenames. The objects table retains
+historical payloads that the current files table does not install. Required
+compile-time fixtures also occur in the manifest so their ordinary Git bytes
+can be checked against the same retained identity.
+
+### Historical source identity
+
+`data/retention/history-commit-map.txt` and `data/retention/history-ref-map.txt` bind original Git identities
+to the pointer-free rewrite. `data/retention/historical-object-identities.json` binds original
+pointer blob IDs to payload hashes and sizes. A historical commit hash changes
+when an ancestor changes; the hash transition alone says nothing about a
+scientific source file's bytes. Compare each declared source hash independently.
+
+The rewrite removes pointer file versions by explicit deletion. Merely dropping
+a file modification can resurrect an older ordinary version. The retained
+rewrite verification compares every advertised ref tree against the original
+tree with only pointer entries removed and LFS attribute tokens stripped.
+
+Removing Git pointers does not reclaim GitHub's retained LFS storage. GitHub's
+[LFS removal documentation](https://docs.github.com/en/repositories/working-with-files/managing-large-files/removing-files-from-git-large-file-storage)
+requires repository deletion/recreation or Support intervention for provider
+object removal. Repository recreation also removes native issue/PR history and
+stars; local exports preserve records but do not restore those identities.

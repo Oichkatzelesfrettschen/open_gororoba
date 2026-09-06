@@ -43,7 +43,7 @@ hardware-specific tables are replaced with the scientific stack.
 | ----------------------------------------------------- | ----------------------------------------------------------------------------------------------------------- |
 | `Cargo.toml` (root)                                   | Workspace members + `[workspace.lints]` (warnings-as-errors source of truth)                                |
 | `rust-toolchain.toml`                                 | Stable pin (`1.97.0`); do not bump without coordinating repository validation.                               |
-| `.githooks/pre-push`                                  | Six-step validation chain (lfs, cache, ansi, terminology, rust-regression, registry policy).                 |
+| `.githooks/pre-push`                                  | Five-check validation chain (cache, ansi, terminology, rust-regression, registry policy).                 |
 | `Makefile`                                            | Top-level lanes (`make rust-clippy`, `make integrity`, `make cpd-audit`).                                   |
 | `registry/canonical/control_plane.sqlite3`            | Canonical write target for the claim/insight/experiment registry.                                           |
 | `registry/*.toml`                                     | AUTO-GENERATED read-only compat exports. Do NOT hand-edit.                                                  |
@@ -94,7 +94,7 @@ hardware-specific tables are replaced with the scientific stack.
 - **No symlinks** as workarounds. Use a separate `CARGO_TARGET_DIR`
   per worktree.
 - **Pre-push hook** at `.githooks/pre-push` (active via
-  `core.hooksPath`) runs `make validate-local`, the six-step local
+  `core.hooksPath`) runs `make validate-local`, the five-check local
   validation chain. Do not skip with
   `--no-verify` unless explicitly directed and rationale documented
   in the commit message.
@@ -207,16 +207,15 @@ CARGO_TARGET_DIR="$(pwd)/.cache/gate-target" cargo nextest run -p <crate> --lib 
 
 | # | Check                    | Purpose                                                                          |
 | - | ------------------------ | -------------------------------------------------------------------------------- |
-| 1 | git-lfs handoff          | Pre-push hook chains to lfs                                                      |
-| 2 | cache-check              | Soft cap (150G) + hard cap (200G) on `.cache/`                                   |
-| 3 | terminology-gate         | 8 banned legacy terms; prefer `sign_imbalance` for the renamed crate vocabulary. |
-| 4 | ansi-check               | Reject emojis and non-whitespace control characters; non-ASCII text passes       |
-| 5 | rust-regression-scoped   | Scoped clippy + nextest on changed-crate closure                                 |
-| 6 | validate-governance      | Verify registry policy, signatures, cross-references, and checked-in TOMLs      |
+| 1 | cache-check              | Soft cap (150G) + hard cap (200G) on `.cache/`                                   |
+| 2 | terminology-gate         | 8 banned legacy terms; prefer `sign_imbalance` for the renamed crate vocabulary. |
+| 3 | ansi-check               | Reject emojis and non-whitespace control characters; non-ASCII text passes       |
+| 4 | rust-regression-scoped   | Scoped clippy + nextest on changed-crate closure                                 |
+| 5 | validate-governance      | Verify registry policy, signatures, cross-references, and checked-in TOMLs      |
 
 Verify hook state: `git config --get core.hooksPath` should print
-`.githooks`. The file at `.git/hooks/pre-push` is an unused git-lfs
-stub kept for transparency.
+`.githooks`. The pre-push hook runs repository validation and skips
+the validation gate for pushes containing only branch deletions.
 
 ## Registry: SQLite-canonical (since 2026-03-23)
 
