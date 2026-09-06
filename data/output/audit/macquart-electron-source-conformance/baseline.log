@@ -1,0 +1,74 @@
+   Compiling cd_kernel v0.1.0 (<checkout>/crates/cd_kernel)
+    Checking gororoba_gpu_bridge v0.1.0 (<checkout>/crates/gororoba_gpu_bridge)
+    Checking verified_core v0.1.0 (<checkout>/crates/verified_core)
+    Checking repo_root v0.1.0 (<checkout>/crates/repo_root)
+    Checking lbm_core v0.1.0 (<checkout>/crates/lbm_core)
+    Checking gororoba_contracts v0.1.0 (<checkout>/crates/gororoba_contracts)
+    Checking gororoba_sparse_grid v0.1.0 (<checkout>/crates/gororoba_sparse_grid)
+    Checking moreno_1997 v0.1.0 (<checkout>/crates/moreno_1997)
+    Checking gororoba_structurable v0.1.0 (<checkout>/crates/gororoba_structurable)
+    Checking data_core v0.1.0 (<checkout>/crates/data_core)
+    Checking algebra_analysis v0.1.0 (<checkout>/crates/algebra_analysis)
+    Checking flavor_lifts v0.1.0 (<checkout>/crates/flavor_lifts)
+    Checking gororoba_algebra v0.1.0 (<checkout>/crates/gororoba_algebra)
+    Checking gr_core v0.1.0 (<checkout>/crates/gr_core)
+    Checking algebra_experimental v0.1.0 (<checkout>/crates/algebra_experimental)
+    Checking stats_core v0.1.0 (<checkout>/crates/stats_core)
+    Checking quantum_core v0.1.0 (<checkout>/crates/quantum_core)
+    Checking cosmology_core v0.1.0 (<checkout>/crates/cosmology_core)
+    Finished `validation` profile [optimized + debuginfo] target(s) in 10.42s
+lint_exit=0
+   Compiling cd_kernel v0.1.0 (<checkout>/crates/cd_kernel)
+   Compiling gororoba_gpu_bridge v0.1.0 (<checkout>/crates/gororoba_gpu_bridge)
+   Compiling verified_core v0.1.0 (<checkout>/crates/verified_core)
+   Compiling repo_root v0.1.0 (<checkout>/crates/repo_root)
+   Compiling lbm_core v0.1.0 (<checkout>/crates/lbm_core)
+   Compiling gororoba_contracts v0.1.0 (<checkout>/crates/gororoba_contracts)
+   Compiling gororoba_sparse_grid v0.1.0 (<checkout>/crates/gororoba_sparse_grid)
+   Compiling moreno_1997 v0.1.0 (<checkout>/crates/moreno_1997)
+   Compiling gororoba_structurable v0.1.0 (<checkout>/crates/gororoba_structurable)
+   Compiling data_core v0.1.0 (<checkout>/crates/data_core)
+   Compiling flavor_lifts v0.1.0 (<checkout>/crates/flavor_lifts)
+   Compiling algebra_analysis v0.1.0 (<checkout>/crates/algebra_analysis)
+   Compiling gororoba_algebra v0.1.0 (<checkout>/crates/gororoba_algebra)
+   Compiling gr_core v0.1.0 (<checkout>/crates/gr_core)
+   Compiling algebra_experimental v0.1.0 (<checkout>/crates/algebra_experimental)
+   Compiling stats_core v0.1.0 (<checkout>/crates/stats_core)
+   Compiling quantum_core v0.1.0 (<checkout>/crates/quantum_core)
+   Compiling cosmology_core v0.1.0 (<checkout>/crates/cosmology_core)
+    Finished `validation` profile [optimized + debuginfo] target(s) in 41.01s
+     Running tests/macquart_source_conformance.rs (<build-dir>/validation/deps/macquart_source_conformance-9937017135bfd270)
+
+running 4 tests
+
+thread 'mean_dm_matches_analytic_expansion_limits' (253742) panicked at crates/cosmology_core/tests/macquart_source_conformance.rs:57:13:
+assertion failed: (actual / (normalization * integral) - 1.0).abs() < 1e-10
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+thread 'distance_chain_uses_observer_frame_host_and_total_galactic_dm' (253740) panicked at crates/cosmology_core/tests/macquart_source_conformance.rs:83:5:
+assertion failed: (actual / expected - 1.0).abs() < 1e-8
+
+thread 'inverse_recovers_source_generated_cosmic_dm' (253741) panicked at crates/cosmology_core/tests/macquart_source_conformance.rs:67:9:
+0.008752825669944286 versus 0.01
+omega_m=0.3153 omega_b=0.0493 h0=67.36 z=0.01 source_dm=8.140676577970 actual_dm=9.303630374823 relative_error=1.428571428571e-1
+
+thread 'mean_dm_matches_independent_si_density_integral' (253743) panicked at crates/cosmology_core/tests/macquart_source_conformance.rs:42:13:
+z=0.01: 9.303630374822886 versus 8.140676577970027
+test distance_chain_uses_observer_frame_host_and_total_galactic_dm ... FAILED
+test mean_dm_matches_analytic_expansion_limits ... FAILED
+test inverse_recovers_source_generated_cosmic_dm ... FAILED
+test mean_dm_matches_independent_si_density_integral ... FAILED
+
+failures:
+
+failures:
+    distance_chain_uses_observer_frame_host_and_total_galactic_dm
+    inverse_recovers_source_generated_cosmic_dm
+    mean_dm_matches_analytic_expansion_limits
+    mean_dm_matches_independent_si_density_integral
+
+test result: FAILED. 0 passed; 4 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+error: test failed, to rerun pass `-p cosmology_core --test macquart_source_conformance`
+test_exit=101
+exit=0

@@ -1,0 +1,38 @@
+schema_version = 1
+status = "focused_scientific_and_canonical_checks_passed"
+baseline_commit = "26caa54ee7105af8f343f4602ff6b0a303ea855f"
+baseline_database_sha256 = "d85114a8ca0f55a23bc0f2b9ebc651a947d77b44b90e08368bdb4b5943a8f591"
+admitted_database_sha256 = "86ee9ab56b358e3aa8aad93fa717f7dc5a933e8c054e0db23e73bacd193cff16"
+source_conformance_tests = 4
+baseline_failures = 4
+corrected_passes = 4
+library_tests_passed = 355
+library_tests_skipped = 0
+clippy = "cosmology_core all-targets passes with -D warnings before and after correction."
+format = "Both changed cosmology files pass nightly rustfmt --check; git diff --check passes."
+canonical_admission_revision = 10
+canonical_replay = "The rehearsal copy admits revision 10. Canonical admission and same-poststate replay emit identical JSON."
+sqlite_integrity = "ok"
+foreign_key_violations = 0
+preservation = "All 87 tables enumerated in preservation-queries.sql retain baseline rows. control_plane_runs adds two export records; the other 86 tables have zero added rows. All previous insight admissions, insight revisions, source observations, normalized links and other insight states/contracts remain."
+pilot_inventory = "Eight admitted insights, 32 predicates, 45 roles and ten admission events. Claims remain 1570 and insights remain 183. The wider authority map remains pending."
+publication_boundary = "The focused receipt precedes publication. The required actual pre-push gate runs on the committed branch; its outcome is recorded in the associated pull request."
+physical_boundary = "Independent numerical conformance establishes the declared constant-fd implementation. Historical producer replays, catalog foreground provenance, physical calibration and new physical mechanisms remain open."
+
+[replay]
+cache = "Run make print-cache-roots REPO_SHARE_PRIMARY_CACHE=1 in the isolated checkout; export the printed REPO_CARGO_HOME, REPO_CARGO_TARGET_DIR and REPO_CARGO_BUILD_DIR values as CARGO_HOME, CARGO_TARGET_DIR and CARGO_BUILD_BUILD_DIR."
+test = "cargo test -p cosmology_core --profile validation --test macquart_source_conformance -- --nocapture"
+library = "cargo nextest run -p cosmology_core --lib --cargo-profile validation"
+lint = "cargo clippy -p cosmology_core --all-targets --profile validation -- -D warnings"
+baseline = "In a separate checkout at baseline_commit, add the retained macquart_source_conformance.rs integration test and run the test command. All four tests fail against baseline production; preserve that checkout's code identity."
+database_baseline = "mkdir -p .cache/macquart-conformance; git show 26caa54ee7105af8f343f4602ff6b0a303ea855f:registry/canonical/control_plane.sqlite3 > .cache/macquart-conformance/before.sqlite3; compare its SHA256 with baseline_database_sha256."
+mutation = "gororoba-db --repo-root . --db <copied-baseline-database> insight admit --spec data/output/audit/macquart-electron-source-conformance/I-001-admission.toml --actor codex --reason 'Verify conditional Macquart electron normalization against independent source oracles'"
+export = "provenance --repo-root . export-control-plane; registry-emit insights-mirror; make registry-integrity REPO_SHARE_PRIMARY_CACHE=1"
+sql = "From the repository root, run sqlite3 -readonly -json against the admitted database with admission-queries.sql and preservation-queries.sql from this bundle; compare their JSON with the retained results."
+tracking = "The mutator verifies Git-tracked evidence paths and hashes. Stage the declared new evidence files in a rehearsal checkout before admission."
+
+[historical_worktrees]
+claim_evidence_adjudication_head = "459c9a59dac536075178dfaddfc06bd5e65550a7"
+themis_frozen_model_source_head = "c86e943b608ccd0d0441bd3dd3b8361967fe1763"
+observations = "Initial and post-admission observations record the same detached HEADs and porcelain status entries. claim-evidence-adjudication retains two modified paths and two untracked entries; themis-frozen-model-source retains two untracked entries. The observations measure HEAD and status, rather than all file contents."
+operation_boundary = "Implementation, test builds and canonical mutation run in the new macquart-electron-source-conformance worktree. Historical worktree commands inspect status and caller sources. Both historical worktrees remain registered."

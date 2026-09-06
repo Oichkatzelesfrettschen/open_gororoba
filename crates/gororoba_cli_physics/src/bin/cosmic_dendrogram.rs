@@ -43,7 +43,7 @@ struct Cli {
     #[arg(long, default_value = "data/external/GWTC-3_confident.csv")]
     gws: PathBuf,
 
-    /// Host DM to subtract (pc/cm^3).
+    /// Fixed observer-frame host DM to subtract (pc/cm^3), already redshift-diluted.
     #[arg(long, default_value = "50.0")]
     dm_host: f64,
 

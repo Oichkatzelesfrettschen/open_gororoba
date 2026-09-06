@@ -1,0 +1,82 @@
+{
+  "schema_version": 1,
+  "insight_id": "I-001",
+  "status": "conditional_mean_dm_normalization_verified",
+  "baseline_commit": "26caa54ee7105af8f343f4602ff6b0a303ea855f",
+  "baseline_database_sha256": "d85114a8ca0f55a23bc0f2b9ebc651a947d77b44b90e08368bdb4b5943a8f591",
+  "normalization": {
+    "baseline_source_ratio": 1.1428571428571428,
+    "baseline_relative_error": 0.1428571428571,
+    "baseline_example": {
+      "z": 0.01,
+      "source_dm": 8.140676577970027,
+      "actual_dm": 9.303630374822886
+    },
+    "corrected_z1_dm": 900.751906538024,
+    "corrected_grid_cases": 12,
+    "maximum_relative_error": 2.886579864025e-15,
+    "relative_tolerance": 1e-10,
+    "electron_fraction": 0.875,
+    "diffuse_baryon_fraction": 0.83,
+    "helium_mass_fraction": 0.25,
+    "interpretation": "Macquart Eq. (2) under fixed fd=0.83 and doubly ionized helium. Model assumptions remain conditional; the source permits redshift-dependent fd."
+  },
+  "inverse": {
+    "source_generated_cases": 6,
+    "absolute_redshift_tolerance": 1e-8,
+    "outcome": "passed",
+    "boundary": "Only the declared positive finite grid is tested. Invalid inputs, upper-bracket exhaustion, extension to z=160 and ionization history remain separate obligations."
+  },
+  "foreground": {
+    "analytic_distance_test": "passed",
+    "wrong_host_frame_negative_control": "passed",
+    "relative_distance_tolerance": 1e-8,
+    "wrong_frame_minimum_relative_difference": 0.01,
+    "boundary": "The helper receives combined Galactic disk-plus-halo DM and observer-frame host DM. Existing catalog callers supply NE2001 excess and a fixed observer-frame subtraction; catalog halo treatment and source-frame host provenance remain unresolved."
+  },
+  "callers": [
+    {
+      "path": "crates/gororoba_cli_physics/src/bin/dm_ultrametric.rs",
+      "input": "event.dm_exc_ne2001",
+      "host": "Fixed observer-frame --dm-host, default 50 pc/cm^3",
+      "halo": "Separate halo subtraction absent in inspected caller",
+      "residual": "The declared --dm-column option is ignored; code always selects NE2001."
+    },
+    {
+      "path": "crates/gororoba_cli_physics/src/bin/cosmic_dendrogram.rs",
+      "input": "event.dm_exc_ne2001",
+      "host": "Fixed observer-frame --dm-host, default 50 pc/cm^3",
+      "halo": "Separate halo subtraction absent in inspected caller",
+      "boundary": "The FRB branch inherits the normalization change; the GW branch uses catalog redshift."
+    }
+  ],
+  "verification": {
+    "baseline_clippy_exit": 0,
+    "baseline_source_test_exit": 101,
+    "baseline_tests_failed": 4,
+    "corrected_clippy_exit": 0,
+    "corrected_source_test_exit": 0,
+    "corrected_source_tests_passed": 4,
+    "cosmology_library_tests_passed": 355,
+    "cosmology_library_tests_skipped": 0,
+    "toolchain": "rustc 1.97.0 (2d8144b78 2026-07-07); cargo 1.97.0 (c980f4866 2026-06-30)",
+    "logs": [
+      "baseline.log",
+      "corrected.log"
+    ],
+    "log_sanitization": "Absolute checkout and shared build-directory prefixes become <checkout> and <build-dir>. The tmux wrapper exits zero after printing each actual command exit; baseline test_exit=101 is the expected falsifier result.",
+    "test_source_boundary": "The baseline log precedes rustfmt layout normalization of the same test logic. The retained formatted test file replays all four comparisons."
+  },
+  "residuals": [
+    "Astrophysical calibration against independently admitted localized FRB observations and uncertainties.",
+    "Catalog Galactic halo treatment and physical host-frame provenance.",
+    "Inverse invalid-input handling, certified upper-bracket existence and quadrature accuracy beyond the declared grid.",
+    "Historical FRB producer/input/result recovery; changed comoving coordinates require newly admitted analysis outputs.",
+    "The dm-ultrametric --dm-column selection defect.",
+    "The monograph macquart_cosmology.rs repeats the omitted electron factor and unsupported physical interpretations; its scientific narrative requires a separately scoped source and claim audit.",
+    "Broad inventory authority mapping and source-traced family expansion.",
+    "All other pilot insight scientific residuals remain in the canonical admission contracts."
+  ],
+  "independent_review": "A read-only reviewer traced both callers and checked SI dimensions, redshift factors, analytic limits, source Eq. (1)-(2), negative control and the conditional physical boundary. Review found zero blocking oracle defects.",
+  "historical_disposition": "C-071 retains its historical refuted disposition. The eight-insight admission evidence and source observations remain historical artifacts. Both historical worktrees are retained."
+}

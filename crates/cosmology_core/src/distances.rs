@@ -50,35 +50,35 @@ pub fn comoving_distance(z: f64, omega_m: f64, h0: f64) -> f64 {
     (C_KM_S / h0) * integral
 }
 
-/// Macquart relation: cosmic DM contribution as a function of redshift.
+/// Mean cosmic DM in pc/cm^3 under a constant diffuse baryon fraction.
 ///
-/// DM_cosmic(z) = (3 * c * H_0 * Omega_b) / (8 * pi * G * m_p) *
+/// DM_cosmic(z) = (3 * c * H_0 * Omega_b * f_d * f_e) / (8 * pi * G * m_p) *
 ///                integral_0^z (1+z') / E(z') dz'
 ///
-/// The prefactor evaluates to approximately 935 pc/cm^3 for Planck 2018
-/// parameters (with f_IGM ~ 0.83, the fraction of baryons in the IGM).
+/// Macquart et al. (2020), Eq. (2), gives f_e = 1 - Y_He/2 = 0.875 for
+/// fully ionized hydrogen and doubly ionized helium with Y_He = 0.25.
+/// The fixed f_d = 0.83 is a model choice for the diffuse baryon mass fraction;
+/// the source permits f_d(z). With Planck 2018 parameters and the constants
+/// below, the prefactor is approximately 811.944478 pc/cm^3.
 ///
-/// This is the Macquart et al. (2020) relation that links FRB dispersion
-/// measures to cosmological redshift.
+/// The integral assumes flat matter-plus-Lambda expansion. A mean relation
+/// excludes line-of-sight scatter and the Galactic and host contributions.
+/// Extending the model across ionization epochs requires an electron history.
 pub fn macquart_dm_cosmic(z: f64, omega_m: f64, omega_b: f64, h0: f64) -> f64 {
     if z <= 0.0 {
         return 0.0;
     }
 
-    // Prefactor: 3 * c * H0 * Omega_b * f_IGM / (8 * pi * G * m_p)
-    // c = 2.998e10 cm/s, H0 in s^-1, Omega_b dimensionless,
-    // G = 6.674e-8 cm^3/(g s^2), m_p = 1.673e-24 g
-    // f_IGM = 0.83 (fraction of baryons in IGM, Macquart+ 2020)
-    //
-    // Numerical evaluation: prefactor ~ 935 * (Omega_b/0.0493) * (h0/67.36) pc/cm^3
     let h0_s = h0 * 1e5 / (3.0857e24); // H0 in s^-1 (km/s/Mpc -> 1/s)
     let c_cgs = 2.99792458e10; // cm/s
     let g_cgs = 6.67430e-8; // cm^3 / (g s^2)
     let m_p = 1.67262192e-24; // g
-    let f_igm = 0.83; // Macquart+ 2020
+    let diffuse_baryon_fraction = 0.83;
+    let helium_mass_fraction = 0.25;
+    let electrons_per_baryon = 1.0 - helium_mass_fraction / 2.0;
 
-    let prefactor =
-        3.0 * c_cgs * h0_s * omega_b * f_igm / (8.0 * std::f64::consts::PI * g_cgs * m_p);
+    let prefactor = 3.0 * c_cgs * h0_s * omega_b * diffuse_baryon_fraction * electrons_per_baryon
+        / (8.0 * std::f64::consts::PI * g_cgs * m_p);
 
     // Convert to pc/cm^3: 1 pc = 3.0857e18 cm
     let prefactor_pc = prefactor / 3.0857e18;
@@ -90,10 +90,17 @@ pub fn macquart_dm_cosmic(z: f64, omega_m: f64, omega_b: f64, h0: f64) -> f64 {
 
 /// Invert the Macquart relation: DM_excess -> approximate redshift.
 ///
-/// Uses bisection search on macquart_dm_cosmic. The DM_excess should
-/// have the Milky Way contribution already subtracted.
+/// Uses bisection search on [`macquart_dm_cosmic`]. Input DM in pc/cm^3
+/// represents the cosmic component after Galactic disk, Galactic halo and
+/// observer-frame host subtraction. Macquart et al. (2020), Eq. (1), weights
+/// a rest-frame host contribution by 1/(1+z); callers supply the converted term.
 ///
-/// Returns z such that macquart_dm_cosmic(z) ~ dm_excess.
+/// For a bracketed finite input, returns z such that macquart_dm_cosmic(z)
+/// approximates dm_excess. Width 10 reaches the 1e-8 tolerance in 30 halvings;
+/// expanded brackets need more. The search caps its expanded endpoint
+/// at z=160 and returns a value near that endpoint for larger inputs. Callers
+/// must establish a valid bracket and physical applicability before interpreting
+/// the result.
 pub fn dm_excess_to_redshift(dm_excess: f64, omega_m: f64, omega_b: f64, h0: f64) -> f64 {
     if dm_excess <= 0.0 {
         return 0.0;
@@ -129,20 +136,26 @@ pub fn dm_excess_to_redshift(dm_excess: f64, omega_m: f64, omega_b: f64, h0: f64
 
 /// Full DM -> comoving distance chain.
 ///
-/// 1. Subtract MW and host galaxy DM contributions
+/// 1. Subtract total Galactic and observer-frame host DM contributions
 /// 2. Invert Macquart relation to get redshift
 /// 3. Compute comoving distance at that redshift
 ///
-/// Returns comoving distance in Mpc. Returns 0 if DM_excess <= 0.
+/// `dm_mw` includes Galactic disk and halo. `dm_host_observer` is already in
+/// the observer frame; a rest-frame host estimate requires division by 1+z
+/// before calling. All DM arguments use pc/cm^3. A fixed subtraction defines
+/// a conditional distance estimate rather than a joint host/redshift inference.
+///
+/// Returns comoving distance in Mpc. Returns 0 if DM_excess <= 0. The inversion
+/// inherits the bracket and model assumptions of [`dm_excess_to_redshift`].
 pub fn dm_to_comoving(
     dm_obs: f64,
     dm_mw: f64,
-    dm_host_median: f64,
+    dm_host_observer: f64,
     omega_m: f64,
     omega_b: f64,
     h0: f64,
 ) -> f64 {
-    let dm_excess = dm_obs - dm_mw - dm_host_median;
+    let dm_excess = dm_obs - dm_mw - dm_host_observer;
     if dm_excess <= 0.0 {
         return 0.0;
     }
