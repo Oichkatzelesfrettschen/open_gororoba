@@ -1,0 +1,5 @@
+{
+  "crates/qgp_scaling/src/fragmentation.rs": "2ab37b116357416cbe049a8a9bda0dfdfa88974563aae3b89b327ef95a7b5273",
+  "crates/qgp_scaling/src/lib.rs": "27b53e3015c61cdd11df3cbe260aba6b6e6719066562311c58a4f48b138c4d82",
+  "crates/qgp_scaling/tests/dss_fragmentation_identity.rs": "fe2608b3818a2d1c1045fd11daefb7f936043fb19c1791cf3c2c452d5c7f3a8a"
+}

@@ -1,0 +1,39 @@
+schema_version = 1
+evidence_layer = "implementation_conformance"
+review_method = "Read production interpolation, independent comparator, frozen protocol and retained test output; reuse the recorded execution rather than rerunning tests."
+production = "crates/qgp_scaling/src/fragmentation.rs"
+comparator = "crates/qgp_scaling/tests/dss_fragmentation_identity.rs"
+execution_evidence = "independent-tests.log"
+disposition = "Inspected source and retained tests support the declared finite-mesh conformance predicate; additional physical and release-identity admission remains separate."
+
+[parser]
+checks = ["Exactly 816 records and nine ASCII width-10 fields", "Decimal parse errors and nonfinite overflow rejected", "Nonzero mantissa rounded to zero rejected as binary64 underflow", "Finite input whose endpoint normalization overflows rejected with the specific error", "Empty provenance rejected", "Signed NLO components retained"]
+repaired_review_gap = "Comparator includes the reachable endpoint-normalization overflow case and checks its exact error."
+
+[precision_and_measure]
+checks = ["Both z knots and exponent0.3 follow the selected default-real precision", "The real64 variant remains a declared compiler-precision amendment", "Returned measure is zD", "Charge average and charge sum remain distinct", "Charm and bottom denote individual parton channels with equal antiparton values"]
+identity_boundary = "DssGridIdentity supplies caller-declared hadron, order and provenance. Parsing validates numerical format; the identity object does not authenticate the source bytes, an author release, or a physical population."
+repaired_review_gap = "DefaultReal32 documentation explicitly names exponent0.3 as well as z knots."
+
+[finite_denominator]
+expected_rows_per_variant = 1152
+expected_channels_per_variant = 10368
+checks = ["Exact 13-column header", "Explicit two-order and four-charge vocabulary", "Bit-exact membership in 16 z values and 9 Q2 values", "Duplicate keys rejected", "Observed key set equals the independently constructed Cartesian product", "All reference values finite", "Every row traverses all nine channel comparisons"]
+mutation_checks = ["Missing row", "Duplicate replacing missing row", "Wrong header", "Wrong charge identity"]
+negative_control_predicates = "Both wrong_precision_failures>0 and wrong_charge_factor_failures>0 are assertions; counters alone cannot produce a passing test."
+observed_wrong_precision_failures_per_variant = 7535
+observed_wrong_charge_factor_failures_per_variant = 2153
+
+[range_and_endpoints]
+checks = ["Nonfinite and outside-domain queries rejected before logarithms", "Adjacent representable values outside each boundary rejected", "Boundary queries admitted", "Every charge-sum channel returns exact zero at z=1 over the frozen Q2 mesh", "All charge channels match the independent endpoint oracle", "Reverse instance construction and query order preserve compared output bits"]
+
+[overflow_scope]
+normalization = "The finite-normalized-value guard is exercised by a finite 1e308 field whose reduction overflows."
+analytic_bound = "Let M be the largest absolute admitted reduced value. In real arithmetic, bilinear interpolation with admitted log-cell weights is convex and bounded by M. Light endpoint factors peak at z=1/9 with value(8/9)^4/3<0.21. Heavy factors decrease for z>=0.05 and remain below0.29. Gluon factors peak at z=0.3/4.3 and remain below0.34. Promoted binary32 exponent0.3 is slightly larger than decimal64 and lowers factors for0<z<1, preserving these bounds."
+reconstruction = "Conditional on finite convex interpolation, unscaled light total-plus-valence magnitude is below0.42M and charged-sum gluon magnitude below0.68M. Final charge arithmetic has substantial overflow headroom; an artificial final-charge-overflow fixture is unwarranted."
+rounding_boundary = "The analytic bound is not an interval proof of every binary64 intermediate convex sum. A nonfinite intermediate that propagates to reconstruction is rejected by the final finite-value predicate. The retained tests do not establish reachability of intermediate convex-sum overflow after admission."
+
+[remaining_scope]
+unadmitted = ["Original-author-release authentication", "Reuse terms", "Matched physical parton production weights", "FF fit uncertainty", "Printed2017 fragmentation Jacobian convention", "Matched pp covariance", "Physical quenching agreement"]
+new_production_edits_by_reviewer = 0
+new_test_runs_by_reviewer = 0

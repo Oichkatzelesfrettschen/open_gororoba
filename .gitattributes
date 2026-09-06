@@ -82,3 +82,7 @@ data/output/audit/mhd-centered-induction-integrator/*.log -text whitespace=-blan
 data/output/audit/qgp-fragmentation-measure-identity/*.headers -text whitespace=-blank-at-eof,-blank-at-eol
 # Provider responses and mirrored reference files preserve retrieved bytes.
 data/output/audit/qgp-fragmentation-grid-intake/** -text whitespace=-blank-at-eof,-blank-at-eol,-space-before-tab,cr-at-eol
+data/output/audit/qgp-fragmentation-interpolation/*.log -text whitespace=-blank-at-eof,-blank-at-eol
+data/output/audit/qgp-fragmentation-interpolation/*.stdout -text whitespace=-blank-at-eof,-blank-at-eol
+data/output/audit/qgp-fragmentation-interpolation/*.stderr -text whitespace=-blank-at-eof,-blank-at-eol
+data/output/audit/qgp-fragmentation-interpolation/*-version.txt -text whitespace=-blank-at-eof,-blank-at-eol

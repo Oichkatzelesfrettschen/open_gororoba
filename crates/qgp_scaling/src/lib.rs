@@ -30,6 +30,7 @@ pub mod density_scaling;
 pub mod directional_path;
 pub mod epsilon_fit;
 pub mod flow_cumulants;
+pub mod fragmentation;
 pub mod glauber;
 pub mod hydro_wake;
 pub mod multiplicity;

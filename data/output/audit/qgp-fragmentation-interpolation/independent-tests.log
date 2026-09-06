@@ -1,0 +1,15 @@
+
+running 5 tests
+synthetic log-cell expected=1.28539683755797842e1 actual=1.28539683755797860e1 absolute_error=1.77635683940025046e-15
+test synthetic_log_cell_matches_independent_bilinear_expression ... ok
+test malformed_grids_and_outside_queries_reject ... ok
+immutable precision=DefaultReal32 reverse_order_bit_comparisons=10368
+test reference_coverage_validator_rejects_mutations ... ok
+DSS variant=default_real32 rows=1152 channels=10368 maxabs=1.33226762955018785e-15 max_gate_ratio=3.20429096743348986e-5 failures=0 wrong_precision_failures=7535 wrong_charge_factor_failures=2153
+immutable precision=DefaultReal64 reverse_order_bit_comparisons=10368
+test immutable_sets_charge_identities_and_endpoint_hold ... ok
+DSS variant=default_real64_knots_and_exponent_amendment rows=1152 channels=10368 maxabs=8.88178419700125232e-16 max_gate_ratio=2.16719038182633206e-5 failures=0 wrong_precision_failures=7535 wrong_charge_factor_failures=2153
+test both_precision_variants_match_every_frozen_reference_channel ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+

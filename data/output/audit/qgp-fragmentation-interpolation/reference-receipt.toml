@@ -1,0 +1,229 @@
+schema_version = 1
+evidence_layer = "implementation_conformance"
+scope = "Sequential unmodified pinned Fortran mirror replay through an original Rust FFI driver; physical calibration and original-author-release authentication remain unadmitted."
+execution_authorization = "Root reported frozen protocol, registered E314 and C1710 typed revision121 before reference compilation and replay."
+rows_per_variant = 1152
+channels_per_row = 9
+queries_per_variant = 864
+charge_sum_rows_per_variant = 288
+cache_reset = "COMMON FRAGINI reset once before each order; all calls sequential."
+grid_paths = "fdss/HLO.GRID and fdss/HNLO.GRID under the recorded cache working directory; byte copies, rather than symlinks."
+precision_amendment = "-fdefault-real-8 changes default-real z knots and exponent0.3; -fdefault-double-8 keeps D literals binary64."
+literal_bits_scope = "Rust stderr records decimal64 and promoted binary32 identities; it is a declared-literal model, not introspection of Fortran saved arrays."
+compiler_diagnostics = "All four Fortran/Rust compiler stdout and stderr streams are retained empty; both replay stderr streams contain literal metadata."
+
+[[commands]]
+variant = "default_real32"
+operation = "fortran-build"
+argv = ["gfortran","-O0","-std=legacy","-ffp-contract=off","-c","/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/data/output/audit/qgp-fragmentation-grid-intake/pinned-mirrors/jeffersonlab-fdss.f","-o","/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/.cache/dss-reference/default_real32.o"]
+working_directory = "/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication"
+exit_status = 0
+stdout = "data/output/audit/qgp-fragmentation-interpolation/default_real32-fortran-build.stdout"
+stderr = "data/output/audit/qgp-fragmentation-interpolation/default_real32-fortran-build.stderr"
+
+[[commands]]
+variant = "default_real32"
+operation = "rust-build"
+argv = ["rustc","--edition=2024","-D","warnings","-C","opt-level=0","-C","link-arg=/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/.cache/dss-reference/default_real32.o","-C","link-arg=-lgfortran","/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/data/output/audit/qgp-fragmentation-interpolation/reference-driver.rs","-o","/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/.cache/dss-reference/default_real32"]
+working_directory = "/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication"
+exit_status = 0
+stdout = "data/output/audit/qgp-fragmentation-interpolation/default_real32-rust-build.stdout"
+stderr = "data/output/audit/qgp-fragmentation-interpolation/default_real32-rust-build.stderr"
+
+[[commands]]
+variant = "default_real32"
+operation = "replay"
+argv = ["/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/.cache/dss-reference/default_real32"]
+working_directory = "/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/.cache/dss-reference"
+exit_status = 0
+stdout = "data/output/audit/qgp-fragmentation-interpolation/default_real32.csv"
+stderr = "data/output/audit/qgp-fragmentation-interpolation/default_real32-replay.stderr"
+
+[[commands]]
+variant = "default_real64_knots_and_exponent_amendment"
+operation = "fortran-build"
+argv = ["gfortran","-O0","-std=legacy","-ffp-contract=off","-fdefault-real-8","-fdefault-double-8","-c","/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/data/output/audit/qgp-fragmentation-grid-intake/pinned-mirrors/jeffersonlab-fdss.f","-o","/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/.cache/dss-reference/default_real64_knots_and_exponent_amendment.o"]
+working_directory = "/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication"
+exit_status = 0
+stdout = "data/output/audit/qgp-fragmentation-interpolation/default_real64_knots_and_exponent_amendment-fortran-build.stdout"
+stderr = "data/output/audit/qgp-fragmentation-interpolation/default_real64_knots_and_exponent_amendment-fortran-build.stderr"
+
+[[commands]]
+variant = "default_real64_knots_and_exponent_amendment"
+operation = "rust-build"
+argv = ["rustc","--edition=2024","-D","warnings","-C","opt-level=0","-C","link-arg=/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/.cache/dss-reference/default_real64_knots_and_exponent_amendment.o","-C","link-arg=-lgfortran","/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/data/output/audit/qgp-fragmentation-interpolation/reference-driver.rs","-o","/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/.cache/dss-reference/default_real64_knots_and_exponent_amendment"]
+working_directory = "/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication"
+exit_status = 0
+stdout = "data/output/audit/qgp-fragmentation-interpolation/default_real64_knots_and_exponent_amendment-rust-build.stdout"
+stderr = "data/output/audit/qgp-fragmentation-interpolation/default_real64_knots_and_exponent_amendment-rust-build.stderr"
+
+[[commands]]
+variant = "default_real64_knots_and_exponent_amendment"
+operation = "replay"
+argv = ["/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/.cache/dss-reference/default_real64_knots_and_exponent_amendment"]
+working_directory = "/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/.cache/dss-reference"
+exit_status = 0
+stdout = "data/output/audit/qgp-fragmentation-interpolation/default_real64_knots_and_exponent_amendment.csv"
+stderr = "data/output/audit/qgp-fragmentation-interpolation/default_real64_knots_and_exponent_amendment-replay.stderr"
+
+[[artifacts]]
+path = "/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/.cache/dss-reference/default_real32"
+sha256 = "cfef879179fe4349d2be573d4e815c3b39b07bd62331ac58361cb10ffc1ec592"
+bytes = 4422192
+retention = "temporary_rebuildable_cache"
+
+[[artifacts]]
+path = "/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/.cache/dss-reference/default_real32.o"
+sha256 = "72879805304be3d46a618ee251922072771428b1fff8886b98f99a9b972f3269"
+bytes = 17568
+retention = "temporary_rebuildable_cache"
+
+[[artifacts]]
+path = "/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/.cache/dss-reference/default_real64_knots_and_exponent_amendment"
+sha256 = "c00b3a6bd62c5706205db7b1e07b62c2c02583bfd6643ce76c363698824076c4"
+bytes = 4422192
+retention = "temporary_rebuildable_cache"
+
+[[artifacts]]
+path = "/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/.cache/dss-reference/default_real64_knots_and_exponent_amendment.o"
+sha256 = "a9560bef105d2a7ccef771a81ae9b4c5476d20d6008b4e46ee3f4555313ec05c"
+bytes = 17568
+retention = "temporary_rebuildable_cache"
+
+[[artifacts]]
+path = "/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/.cache/dss-reference/fdss/HLO.GRID"
+sha256 = "f6edf2403d54094338dd3b9da1dca00e83cbcebd613c82d227ee959952303f90"
+bytes = 74256
+retention = "temporary_rebuildable_cache"
+
+[[artifacts]]
+path = "/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/.cache/dss-reference/fdss/HNLO.GRID"
+sha256 = "16fd57fffd854c35e2ec086bd2b03d1706b5d422c94ac2306b075a1a2ddea2b2"
+bytes = 74256
+retention = "temporary_rebuildable_cache"
+
+[[artifacts]]
+path = "/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/.cache/dss-reference/rustfmt.toml"
+sha256 = "f32d2f03b3f4b1e295c79ed49d543f1205c7dac7c3dc74f05a5a27af4fea0584"
+bytes = 17
+retention = "temporary_rebuildable_cache"
+
+[[artifacts]]
+path = "data/output/audit/qgp-fragmentation-grid-intake/pinned-mirrors/jeffersonlab-HLO.GRID"
+sha256 = "f6edf2403d54094338dd3b9da1dca00e83cbcebd613c82d227ee959952303f90"
+bytes = 74256
+retention = "retained_artifact"
+
+[[artifacts]]
+path = "data/output/audit/qgp-fragmentation-grid-intake/pinned-mirrors/jeffersonlab-HNLO.GRID"
+sha256 = "16fd57fffd854c35e2ec086bd2b03d1706b5d422c94ac2306b075a1a2ddea2b2"
+bytes = 74256
+retention = "retained_artifact"
+
+[[artifacts]]
+path = "data/output/audit/qgp-fragmentation-grid-intake/pinned-mirrors/jeffersonlab-fdss.f"
+sha256 = "c66db60db93f8a336f1bc35c1dd8a699b6356f9cda3ee5055c4f504195c6177d"
+bytes = 9401
+retention = "retained_artifact"
+
+[[artifacts]]
+path = "data/output/audit/qgp-fragmentation-interpolation/default_real32-fortran-build.stderr"
+sha256 = "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+bytes = 0
+retention = "retained_artifact"
+
+[[artifacts]]
+path = "data/output/audit/qgp-fragmentation-interpolation/default_real32-fortran-build.stdout"
+sha256 = "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+bytes = 0
+retention = "retained_artifact"
+
+[[artifacts]]
+path = "data/output/audit/qgp-fragmentation-interpolation/default_real32-replay.stderr"
+sha256 = "4d873802f0ffc2779d47f73f9e713679c49df9291282c982850bc590471b00f3"
+bytes = 4145
+retention = "retained_artifact"
+
+[[artifacts]]
+path = "data/output/audit/qgp-fragmentation-interpolation/default_real32-rust-build.stderr"
+sha256 = "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+bytes = 0
+retention = "retained_artifact"
+
+[[artifacts]]
+path = "data/output/audit/qgp-fragmentation-interpolation/default_real32-rust-build.stdout"
+sha256 = "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+bytes = 0
+retention = "retained_artifact"
+
+[[artifacts]]
+path = "data/output/audit/qgp-fragmentation-interpolation/default_real32.csv"
+sha256 = "d8d07cfd75d96bb39ad7d21943d5ce63f14513321401703942f9ed5374c39ccc"
+bytes = 300748
+retention = "retained_artifact"
+
+[[artifacts]]
+path = "data/output/audit/qgp-fragmentation-interpolation/default_real64_knots_and_exponent_amendment-fortran-build.stderr"
+sha256 = "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+bytes = 0
+retention = "retained_artifact"
+
+[[artifacts]]
+path = "data/output/audit/qgp-fragmentation-interpolation/default_real64_knots_and_exponent_amendment-fortran-build.stdout"
+sha256 = "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+bytes = 0
+retention = "retained_artifact"
+
+[[artifacts]]
+path = "data/output/audit/qgp-fragmentation-interpolation/default_real64_knots_and_exponent_amendment-replay.stderr"
+sha256 = "4d873802f0ffc2779d47f73f9e713679c49df9291282c982850bc590471b00f3"
+bytes = 4145
+retention = "retained_artifact"
+
+[[artifacts]]
+path = "data/output/audit/qgp-fragmentation-interpolation/default_real64_knots_and_exponent_amendment-rust-build.stderr"
+sha256 = "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+bytes = 0
+retention = "retained_artifact"
+
+[[artifacts]]
+path = "data/output/audit/qgp-fragmentation-interpolation/default_real64_knots_and_exponent_amendment-rust-build.stdout"
+sha256 = "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+bytes = 0
+retention = "retained_artifact"
+
+[[artifacts]]
+path = "data/output/audit/qgp-fragmentation-interpolation/default_real64_knots_and_exponent_amendment.csv"
+sha256 = "c0f07708a8dedb7206b8944e58b5cee5ea414cc756b3fcee795b0c8d0ab32fda"
+bytes = 300748
+retention = "retained_artifact"
+
+[[artifacts]]
+path = "data/output/audit/qgp-fragmentation-interpolation/gfortran-version.txt"
+sha256 = "deec1711d9eb92b1d0a0aa916102475c89f2e06780a83c9988cf775f51e15dc0"
+bytes = 236
+retention = "retained_artifact"
+
+[[artifacts]]
+path = "data/output/audit/qgp-fragmentation-interpolation/protocol.toml"
+sha256 = "445f40bf3419240103637039ccbab9e37edc7dd622557536c20a4a2e88cb72c7"
+bytes = 3591
+retention = "retained_artifact"
+
+[[artifacts]]
+path = "data/output/audit/qgp-fragmentation-interpolation/reference-commands.json"
+sha256 = "5c92f76d8af8a14f254ebddd010bc21320479d0ed5f1156f72075305ef7127ca"
+bytes = 4940
+retention = "retained_artifact"
+
+[[artifacts]]
+path = "data/output/audit/qgp-fragmentation-interpolation/reference-driver.rs"
+sha256 = "9d1561371bd0b8a75ed70fd38a7422822904624cd3bd7b21c56d44442a1ee8ef"
+bytes = 3967
+retention = "retained_artifact"
+
+[[artifacts]]
+path = "data/output/audit/qgp-fragmentation-interpolation/rustc-version.txt"
+sha256 = "a90721a3b031e0e1c8bfc34ece79b6608d2ae53166cfb77dad281a0eb5fa6bc8"
+bytes = 196
+retention = "retained_artifact"

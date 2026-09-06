@@ -1,0 +1,32 @@
+schema_version = 1
+claim_id = "C-1710"
+evidence_layer = "implementation_conformance"
+source_identity = "../qgp-fragmentation-grid-intake/pinned-mirrors/retrieval.json"
+source_review = "../qgp-fragmentation-grid-intake/pinned-mirrors/source-review.toml"
+source_sha256 = "c66db60db93f8a336f1bc35c1dd8a699b6356f9cda3ee5055c4f504195c6177d"
+hlo_sha256 = "f6edf2403d54094338dd3b9da1dca00e83cbcebd613c82d227ee959952303f90"
+hnlo_sha256 = "16fd57fffd854c35e2ec086bd2b03d1706b5d422c94ac2306b075a1a2ddea2b2"
+hadron = "charged_total"
+orders = ["LO", "NLO"]
+charges = ["plus", "minus", "average", "sum"]
+channels = ["u", "ubar", "d", "dbar", "s", "sbar", "c", "b", "gluon"]
+measure = "zD per individual parton channel; c=cbar and b=bbar; sum=positive+negative hadrons"
+scale_measure = "Q2 in GeV squared"
+fitted_parameter_count = 0
+intervening_maps = ["fixed-width nine-column grid admission", "explicit source-real precision for z knots and exponent0.3", "endpoint-factor removal", "bilinear interpolation in log(z),log(Q2)", "endpoint-factor restoration", "flavor-total/valence reconstruction", "declared charge projection"]
+z_queries = [0.05,0.095,0.1,0.2,0.225,0.35,0.5,0.7,0.93,0.999,1.0,0.053,0.137,0.333,0.777,0.975]
+q2_queries = [1.0,1.25,10.0,100.0,100000.0,1.1,37.0,1777.0,99999.0]
+precision_variants = ["default_real32", "default_real64_knots_and_exponent_amendment"]
+rows_per_variant = 1152
+channel_comparisons_per_variant = 10368
+absolute_tolerance = 2e-12
+relative_tolerance = 2e-11
+predicate = "Every finite channel satisfies abs(rust-reference) <= absolute_tolerance + relative_tolerance*abs(reference)."
+source_execution = "Compile retained unmodified source in cache with gfortran -O0 -std=legacy -ffp-contract=off; second build adds -fdefault-real-8 -fdefault-double-8 so D literals remain binary64. Original Rust FFI driver initializes and resets COMMON FRAGINI for each order and computes sum from separate plus and minus results. Preserve compiler diagnostics and source hashes."
+reference_scope = "Pinned mirror implementation only; default-real64 is a separately declared compiler-precision amendment, not an authenticated original release."
+instrument_admission = "Exactly816 rows and nine width10 finite fields; reject malformed grids and queries outside z0.05..1,Q2 1..1e5 including NaN/Inf. Immutable grid instances identify hadron/order and caller-declared provenance; input declarations alone do not authenticate content."
+independent_controls = ["Separate immutable LO/NLO instances remain order-independent", "Charge sum equals positive plus negative and twice average", "z=1 returns exact zero", "Analytic synthetic interpolation checks separate algebra from retrieved data", "Malformed widths/row counts/nonfinite values fail admission", "Invalid query boundaries fail before logarithms", "Wrong charge factor and wrong precision comparisons retain discrepancies"]
+verification_outcome = "Both precision-matched variants pass every frozen channel gate and independent controls reject their declared defects."
+revision_outcome = "A precision, charge, range or interpolation mismatch requires corrected instrument identity and retained original output at unchanged gates."
+abandonment_outcome = "A retained source comparison exceeds its gate: abandon that finite-mesh conformance predicate until corrected and independently replayed."
+inconclusive_outcome = "Finite-mesh interpolation conformance leaves author-release authentication, source fit uncertainty, production channel weights,2017 Jacobian convention, pp covariance and physical quenching agreement unadmitted."

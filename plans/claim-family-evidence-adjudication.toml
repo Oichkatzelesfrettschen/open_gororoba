@@ -509,3 +509,31 @@ depends_on = ["fragmentation-provider-endpoint-recovery", "fragmentation-pinned-
 action = "Verify retained provider receipts and bounded intake findings"
 acceptance = "Artifact hashes, source locators and plan statuses agree; registry status changes require separately admitted numerical evidence."
 progress = "All142 manifest entries verify; all143 bundle files match staged Git bytes. Seven TOML files pass taplo; governance verifies281 experiment lineages. Numerical execution and canonical status changes remain false."
+
+[[task]]
+id = "fragmentation-interpolation-protocol"
+status = "completed"
+action = "Freeze mirror interpolation identity and independent numerical falsifiers"
+acceptance = "Register charge, measure, source-real precision, mesh and error gates before reference execution."
+
+[[task]]
+id = "fragmentation-immutable-grid-instrument"
+status = "completed"
+depends_on = ["fragmentation-interpolation-protocol"]
+action = "Implement strict immutable fragmentation grid admission"
+acceptance = "Malformed grids and invalid queries reject; immutable order identity prevents cache reuse; source-real precision is explicit."
+
+[[task]]
+id = "fragmentation-independent-reference-replay"
+status = "completed"
+depends_on = ["fragmentation-immutable-grid-instrument"]
+action = "Compare Rust interpolation with separately compiled retained source"
+acceptance = "Both source-real variants pass every frozen per-channel gate; mutation and identity checks discriminate failure."
+
+[[task]]
+id = "fragmentation-interpolation-canonical-validation"
+status = "completed"
+depends_on = ["fragmentation-independent-reference-replay"]
+action = "Retain and adjudicate bounded interpolation conformance"
+acceptance = "Canonical contracts and retained outcomes agree, focused checks and governance pass, and physical admission remains separately scoped."
+progress = "E314 and C1710 typed revision121 precede replay. Content revisions744/745 retain full prior statement/locator. Five independent tests, two module tests and clippy pass;32 evidence files match index/LFS identity and12 protected history hashes survive export/signature normalization. Governance verifies282 lineages. Original-author release and physical calibration remain unadmitted."

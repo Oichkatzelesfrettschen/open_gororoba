@@ -5,8 +5,8 @@
 updated = "2026-02-10"
 authoritative = true
 source_registry = "registry/experiments.toml"
-lineage_count = 281
-edge_count = 1543
+lineage_count = 282
+edge_count = 1547
 
 [[lineage]]
 id = "XL-001"
@@ -5113,6 +5113,24 @@ dataset_label_refs = []
 external_source_refs = []
 truth_surface_consumption = []
 replay_steps = ["Confirm required input paths are available.", "cargo test -p lbm_3d --profile validation --test mhd_rk3_identity -- --nocapture", "Verify expected outputs or stdout artifacts are produced."]
+acceptance_criteria = ["Claim references resolve in registry/claims.toml.", "Execution target is registered in registry/binaries.toml or the workspace bench catalog.", "Reproducibility class is explicitly declared."]
+
+[[lineage]]
+id = "XL-282"
+experiment_id = "E-314"
+binary = "cargo-test:qgp_scaling:dss_fragmentation_identity"
+deterministic = true
+gpu = false
+run_command = "cargo test -p qgp_scaling --profile validation --test dss_fragmentation_identity -- --nocapture"
+run_command_sha256 = "aee8a4dade62eba9fcecc2a8eeda13d42cd318c37387ee8587a14b4895015f0d"
+claim_refs = ["C-1710"]
+input_path_refs = ["data/output/audit/qgp-fragmentation-interpolation/protocol.toml"]
+output_path_refs = ["data/output/audit/qgp-fragmentation-interpolation/adjudication.toml"]
+dataset_refs = []
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
+replay_steps = ["Confirm required input paths are available.", "cargo test -p qgp_scaling --profile validation --test dss_fragmentation_identity -- --nocapture", "Verify expected outputs or stdout artifacts are produced."]
 acceptance_criteria = ["Claim references resolve in registry/claims.toml.", "Execution target is registered in registry/binaries.toml or the workspace bench catalog.", "Reproducibility class is explicitly declared."]
 
 [[edge]]
@@ -18998,6 +19016,42 @@ id = "XLE-01543"
 lineage_id = "XL-281"
 from_id = "E-313"
 to_ref = "data/output/audit/mhd-centered-induction-integrator/adjudication.toml"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-01544"
+lineage_id = "XL-282"
+from_id = "E-314"
+to_ref = "cargo-test:qgp_scaling:dss_fragmentation_identity"
+to_kind = "binary"
+edge_kind = "implemented_by_binary"
+verified = true
+
+[[edge]]
+id = "XLE-01545"
+lineage_id = "XL-282"
+from_id = "E-314"
+to_ref = "C-1710"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-01546"
+lineage_id = "XL-282"
+from_id = "E-314"
+to_ref = "data/output/audit/qgp-fragmentation-interpolation/protocol.toml"
+to_kind = "path"
+edge_kind = "consumes_path"
+verified = true
+
+[[edge]]
+id = "XLE-01547"
+lineage_id = "XL-282"
+from_id = "E-314"
+to_ref = "data/output/audit/qgp-fragmentation-interpolation/adjudication.toml"
 to_kind = "path"
 edge_kind = "produces_path"
 verified = true
