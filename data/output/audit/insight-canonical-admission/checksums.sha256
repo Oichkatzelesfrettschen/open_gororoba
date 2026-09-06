@@ -11,6 +11,7 @@ ad048d442528fef041e44944d03afff08e00767daa40006042a1c10b6d97ae91  data/output/au
 6137057e55c77cffea584e07ecd845a2464f832eedbe3f1382613dd263768202  data/output/audit/insight-canonical-admission/logs/clippy.log.gz
 00990d42a68d01eb06bde34c1be5d4448e7aca6f9fe227f522bd1c0e85a13352  data/output/audit/insight-canonical-admission/logs/hook-environment-failure.log.gz
 aa6f439f063366ecde58997c3d65d50459a16a2762f031790f875c8d7c1e30e4  data/output/audit/insight-canonical-admission/logs/hook-isolation-tests.log.gz
+487625c760020845747cac7058164bc76f7612dd082082c76f60aa1a13ceacc3  data/output/audit/insight-canonical-admission/logs/pre-push-validated.log.gz
 d837c15e4892bad8ab8c0d312b43aef379badf6bee82b793aebf15dd27ae4b03  data/output/audit/insight-canonical-admission/logs/source-correction-tests.log.gz
 ef01a1334ffe6b0476745a8a8eaba5493219fe7eb82275f00bf7ab307c3953b4  data/output/audit/insight-canonical-admission/logs/validate-local.log.gz
 57f18ea7538bf28334b2efde5644c7d7ac36ccfedbd15c0ec5293fbde7bdc7d6  data/output/audit/insight-canonical-admission/predicate-decisions.json
@@ -44,7 +45,7 @@ b7f0dbc73ad1367b9441e38729eebe7a3066f1a18f311bcafb4f5bd1996d28cd  data/output/au
 401b184c00100602834a74973a110dfd3dda75d0fc61726f47ed64e54eb300db  data/output/audit/insight-canonical-admission/specs/I-207.toml
 d293ff519de18e56e71b46c16a414b9ffdd750e82c25a0ee033feface41fbd8f  data/output/audit/insight-canonical-admission/specs/I-209.toml
 f5e20169f21a593c1ed0aa431f87f2615ab35b629b1257735b98192d28818347  data/output/audit/insight-canonical-admission/specs/I-212.toml
-1b84bc4bec5982de4e0f686d7d50aacd8ada3ffb0fce800614dbf45a3e1501e2  data/output/audit/insight-canonical-admission/validation.toml
+b8ddfe739aef7db5107887441e6718b3e9eb6aa0706ce5364620338989bdd752  data/output/audit/insight-canonical-admission/validation.toml
 11eee93a08488fabf54ec7c6bd4d33c551c84066be6779cc64f5fcfe594326e8  data/output/audit/insight-source-admission/README.toml
 c60083b7d14197a08af07ee9707bd14e900778003725d3ec1107615f4cb8550f  data/output/audit/insight-source-admission/asa-pvalues.toml
 5b36200deea4ec9e8c167d3ffff1350e5b0e7ac3097ef4bd14dd9d197e89e96c  data/output/audit/insight-source-admission/corrections/li-http-hsts.toml

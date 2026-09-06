@@ -102,8 +102,8 @@ mutation_rule = "Use gororoba-db owning commands, then export-control-plane, exe
 destructive_import_rule = "Do not rebuild/import the canonical database to refresh exports. Such operations can discard history."
 implementation_rule = "Pure Rust; warnings as errors; narrow source changes, meaningful tests and independent review. New Markdown requires the repository's allowance policy; prefer existing docs or TOML planning artifacts."
 cache_rule = "The retained handoff checkout supports REPO_SHARE_PRIMARY_CACHE=1. Pass absolute Cargo roots. Its source remains different from the historical frozen runner."
-publication_rule = "The next execution pass should use isolated changes, focused validation and the required full pre-push gate before PR integration. The present handoff is a local planning commit, not a scientific adjudication."
-preserve_worktrees = ["/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication contains another session's work; inspect and preserve", "/home/eirikr/worktrees/open_gororoba/themis-frozen-model-source is retained for exact historical runner identity"]
+publication_rule = "Canonical pilot admission is merged through PR 177 at 3d20f9969115235497afd6a8240f2f338e4514c2. The repaired pre-push gate passes 587 tests and governance. Future scientific campaigns use isolated changes, focused validation and the required publication gate."
+preserve_worktrees = ["/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication retains historical receipt-bound evidence", "/home/eirikr/worktrees/open_gororoba/themis-frozen-model-source retains exact historical runner identity"]
 
 [[next_task]]
 id = "verify-pilot-identity-and-authority"

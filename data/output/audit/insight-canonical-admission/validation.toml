@@ -1,5 +1,7 @@
 schema_version = 1
-status = "canonical_admission_and_local_validation_passed"
+status = "canonical_admission_published_and_verified"
+implementation_pr = 177
+implementation_merge = "3d20f9969115235497afd6a8240f2f338e4514c2"
 baseline_commit = "8693d7f25be460863acad351be3a56749af76b46"
 baseline_database_sha256 = "49ab6870d67738b4af3cb665ee03313b0ef595201e2598b3e2d73172b5f235c8"
 admitted_database_sha256 = "d85114a8ca0f55a23bc0f2b9ebc651a947d77b44b90e08368bdb4b5943a8f591"
@@ -24,7 +26,7 @@ foreign_key_violations = 0
 library_tests = 90
 library_test_result = "passed"
 clippy_result = "provenance_store all-targets passed with -D warnings"
-publication_gate = "Standalone make validate-local passes 586 tests, zero skips, warnings-as-errors and governance. Pre-push exposed inherited Git environment in insight fixtures; the isolation repair passes seven focused insight tests and the source refinement passes nine focused source tests. Pre-push reruns the required gate over the repaired result."
+publication_gate = "The repaired actual pre-push gate passes 587 tests, zero skips, warnings-as-errors and governance at 408e42992a32edb6a2500cfe32ac6b479ed4ec55. Seven focused insight tests and nine focused source tests also pass. The failed hook attempt and its isolation repair remain recorded."
 format_result = "Scoped changed Rust files pass nightly rustfmt. Full-crate formatting also exposes a pre-existing unrelated claim_proofs.rs layout difference; that file remains unchanged."
 replay_result = "All sixteen initial admission reports reproduced exactly before the I-212 residual revision. The revised I-212 admission also reproduces exactly at its matching final poststate. Earlier I-212 replay intentionally rejects superseded live poststate."
 scientific_replays = 0
