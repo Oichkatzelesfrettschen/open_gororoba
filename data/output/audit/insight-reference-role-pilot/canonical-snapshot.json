@@ -416,15 +416,15 @@
   "relations": [
     {
       "predecessor": "C-1631",
-      "successor": "C-1738",
-      "kind": "narrows",
-      "event": 193
-    },
-    {
-      "predecessor": "C-1631",
       "successor": "C-1731",
       "kind": "refines",
       "event": 189
+    },
+    {
+      "predecessor": "C-1631",
+      "successor": "C-1738",
+      "kind": "narrows",
+      "event": 193
     },
     {
       "predecessor": "C-1633",

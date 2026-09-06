@@ -24,8 +24,25 @@ WHERE NOT EXISTS (SELECT 1 FROM claims WHERE id = reference.value)
 UNION ALL
 SELECT 'normalized_rows_missing_reverse_declaration', count(*)
 FROM claim_insight_refs AS reference
-JOIN insights AS insight ON insight.id = reference.insight_id
+LEFT JOIN insights AS insight ON insight.id = reference.insight_id
 WHERE NOT EXISTS (
     SELECT 1 FROM json_each(insight.claim_refs_json) AS declared
     WHERE declared.value = reference.claim_id
+)
+UNION ALL
+SELECT 'normalized_rows_missing_claim', count(*)
+FROM claim_insight_refs AS reference
+LEFT JOIN claims AS claim ON claim.id = reference.claim_id
+WHERE claim.id IS NULL
+UNION ALL
+SELECT 'normalized_rows_missing_insight', count(*)
+FROM claim_insight_refs AS reference
+LEFT JOIN insights AS insight ON insight.id = reference.insight_id
+WHERE insight.id IS NULL
+UNION ALL
+SELECT 'declared_rows_missing_normalized_reference', count(*)
+FROM insights AS insight, json_each(insight.claim_refs_json) AS declared
+WHERE NOT EXISTS (
+    SELECT 1 FROM claim_insight_refs AS reference
+    WHERE reference.insight_id = insight.id AND reference.claim_id = declared.value
 );

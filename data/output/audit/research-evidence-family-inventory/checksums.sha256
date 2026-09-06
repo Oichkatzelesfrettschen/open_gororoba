@@ -3,7 +3,7 @@
 f870986ebd7a113b0d52d563d0dad228ee836109154a3d63c8cbcf8e4c86d3d5  data/output/audit/research-evidence-family-inventory/category-counts.json
 f68839e24f0bb7dc3fc73d3f9341a47aff94a0cf1f6c68586c3a7289a29de615  data/output/audit/research-evidence-family-inventory/insight-claim-review-candidates.json
 def48e86f5e63f4ed09eac8b6d1a1899793259f41bc58d94cb183451ceb0ec4f  data/output/audit/research-evidence-family-inventory/insights.json
-99c8b1c8637375125aaa0c2894a496d4cb7e674fca57fe157e271c97e04bbd6a  data/output/audit/research-evidence-family-inventory/inventory-queries.sql
+e469ccc48b108c5a74093149f7bfb27cec88d7267044b1cdabf854b4e0a13089  data/output/audit/research-evidence-family-inventory/inventory-queries.sql
 5490aeb65a9d44cbf8644f37ee25fbba9ee89b68111468d187c09b492778841e  data/output/audit/research-evidence-family-inventory/lacunae.json
 55c91d15435641c771980fc9ce0f5a09a2a8f497ba5526febeafa753e6d35356  data/output/audit/research-evidence-family-inventory/methodology-source-bodies/asa-p-values.pdf.gz
 c3d78e3bb0a75478dbe0182911a71e5dfb0546971fedfe5703801244d7a2f289  data/output/audit/research-evidence-family-inventory/methodology-source-bodies/cos-preregistration.html.gz
@@ -11,7 +11,8 @@ c3d78e3bb0a75478dbe0182911a71e5dfb0546971fedfe5703801244d7a2f289  data/output/au
 16583a0b7357b2eb9da191ec03101b2b50e6233e1d61926f729a02c86dd60db0  data/output/audit/research-evidence-family-inventory/methodology-source-bodies/prisma-2020.html.gz
 bc5f4634e50c50a769f4eec36667e233de79cdd4750ef4f6b680cefde8aee8da  data/output/audit/research-evidence-family-inventory/methodology-source-bodies/w3c-prov-overview.html.gz
 9593765b25441eaed068f3ee7629eb6fe07aba98faf0c27da62edba1a4c4ba79  data/output/audit/research-evidence-family-inventory/methodology-sources.toml
+86c11eb230612deaf639465ad9a6dd9e3983220a14e683772303377cf8175ac4  data/output/audit/research-evidence-family-inventory/reference-integrity-fixture.sql
 a2d9ff6bfd7b8a718b2d9295cc0544d906b1cf50cfee65a37b2b831987dea6c9  data/output/audit/research-evidence-family-inventory/status-counts.json
 4ab44f0efa0298da8c41473048221182e5e5fdb88360ed9f6294b37d5c86f92a  data/output/audit/research-evidence-family-inventory/unassigned-seed-records.json
-b2df2d990f196c369a9a75402a8cadb849620678f8cb3b1e1ddf1586c0fb011c  data/output/audit/research-evidence-family-inventory/validation.toml
+001165650f8646c36ca3f2ca3d88634d0bc4dd15dcfa14d4224e4f1d852cc92a  data/output/audit/research-evidence-family-inventory/validation.toml
 c3156751ec3114a1c262e48ea31075580f247736a1959f3dcf8376638a063a15  plans/research-evidence-audit-handoff.toml

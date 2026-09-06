@@ -13,11 +13,12 @@ SELECT json_object(
     'insights', json((SELECT json_group_array(json_object(
         'id', id, 'title', title, 'status', status,
         'claim_refs', json(claim_refs_json), 'status_note', status_note,
-        'compat_toml_text', compat_toml_text)) FROM pilot)),
+        'compat_toml_text', compat_toml_text) ORDER BY id) FROM pilot)),
     'references', json((SELECT json_group_array(json_object(
         'insight_id', pilot.id, 'claim_id', reference.value,
         'claim_status', claim.status, 'statement', claim.statement,
-        'where_stated', claim.where_stated, 'status_note', claim.status_note))
+        'where_stated', claim.where_stated, 'status_note', claim.status_note)
+        ORDER BY pilot.id, reference.value)
         FROM pilot JOIN json_each(pilot.claim_refs_json) AS reference
         LEFT JOIN claims AS claim ON claim.id = reference.value)),
     'counts', json_object('claims', (SELECT count(*) FROM claims),
@@ -25,6 +26,7 @@ SELECT json_object(
         'experiments', (SELECT count(*) FROM experiments_cp)),
     'relations', json((SELECT json_group_array(json_object(
         'predecessor', predecessor_claim_id, 'successor', successor_claim_id,
-        'kind', relation_kind, 'event', transition_event_id))
+        'kind', relation_kind, 'event', transition_event_id)
+        ORDER BY predecessor_claim_id, successor_claim_id, relation_kind, transition_event_id)
         FROM claim_relations WHERE predecessor_claim_id IN (SELECT id FROM related_claims)))
 ) AS snapshot;

@@ -12,3 +12,10 @@ database_sha256_before_and_after = "49ab6870d67738b4af3cb665ee03313b0ef595201e25
 primary_checkout = "main at d59c8fa086614dc248eeb22f5406cb8205c75464; git status --porcelain is empty"
 scientific_execution = "Zero canonical mutations, scientific source edits, model fits or new physical inference runs"
 checks = ["taplo check for the handoff, family list, methodology receipts and validation TOMLs", "jq parsing for seven inventory JSON files", "Every seeded claim/insight ID resolves in the canonical snapshot", "Experiment associations are drawn from canonical claim_experiment_refs", "All 22 unique source anchors exist", "Database SHA256 agrees before and after the inventory", "git diff --cached --check"]
+
+[publication_checks]
+reference_integrity = "The expanded inventory query checks missing claims, missing insights, undeclared normalized links and missing normalized declarations. All five integrity counts are zero on the canonical database."
+fixture = "sqlite3 :memory: -cmd '.read data/output/audit/research-evidence-family-inventory/reference-integrity-fixture.sql' '.read data/output/audit/research-evidence-family-inventory/inventory-queries.sql'"
+fixture_expected = "dangling_insight_claim_refs=2; normalized_rows_missing_reverse_declaration=2; normalized_rows_missing_claim=1; normalized_rows_missing_insight=1; declared_rows_missing_normalized_reference=1"
+hash_tool = "sha256sum (GNU coreutils) 9.11"
+hash_generator = "rg --files data/output/audit/research-evidence-family-inventory | rg -v '/checksums.sha256$' | LC_ALL=C sort | xargs sha256sum > .cache/insight-reference-role-pilot/inventory.next; sha256sum plans/research-evidence-audit-handoff.toml >> .cache/insight-reference-role-pilot/inventory.next; cp .cache/insight-reference-role-pilot/inventory.next data/output/audit/research-evidence-family-inventory/checksums.sha256"

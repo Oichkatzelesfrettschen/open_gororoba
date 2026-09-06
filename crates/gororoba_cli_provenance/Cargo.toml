@@ -18,6 +18,10 @@ path = "src/bin/download_recovery.rs"
 name = "hydrate-scientific-payloads"
 path = "src/bin/hydrate_scientific_payloads.rs"
 
+[[bin]]
+name = "verify-insight-reference-pilot"
+path = "src/bin/verify_insight_reference_pilot.rs"
+
 [dependencies]
 anyhow = { workspace = true }
 chrono = { workspace = true }

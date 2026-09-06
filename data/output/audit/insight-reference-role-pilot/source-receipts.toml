@@ -3,6 +3,15 @@ scope = "Two source questions prompted by the pilot; bounded primary-source retr
 retrieval_tool = "GNU wget with Mozilla/5.0 user agent"
 date = "2026-09-06"
 
+[canonical_admission]
+status = "first_observation_registration_pending"
+scope = "These are retained audit observations, not entries in artifact_retrieval_observations."
+owner = "crates/provenance_store/src/artifact_retrieval.rs::ArtifactRetrievalSpec and validate_evidence"
+constraint = "Version 1 requires an existing canonical artifact URL and a hash-bound prior expectation inventory with expected digest and size. The six new source identities lack that prerequest body expectation; Li is citation-only and also lacks an expected body."
+registration_limit = "artifact register-local creates a NULL canonical URL. record-retrieval requires its string URL prestate. Synthesizing prior expectations from newly observed bytes would misstate provenance."
+additional_requirements = "A first-observation contract must represent absent prior expectations, optional URL prestate, observation-time precision and encoded body storage while retaining v1 digest-correction guarantees."
+next_action = "Design and validate first-observation admission before promoting these audit receipts into canonical retrieval history. Source bodies, hashes and failed attempts remain retained in the pilot and methodology bundles."
+
 [[source]]
 id = "macquart-mean-electron-density"
 question = "Does the code implement the primary mean-DM electron-density convention?"
