@@ -27,3 +27,8 @@ verification = "nine source tests include immutable predecessor, pointer, change
 mechanism = "external-content-search-index-update"
 resolution = "The insight FTS update/delete triggers use the exact old indexed values in the FTS5 delete command before indexing revised content."
 verification = "populated legacy-index migration regression and FTS integrity check"
+
+[[finding]]
+mechanism = "fixture-git-hook-environment-isolation"
+resolution = "Fixture Git commands remove inherited GIT_* variables before initializing or staging their temporary repository. A subprocess regression supplies GIT_DIR, GIT_WORK_TREE and GIT_INDEX_FILE and records identical sentinel config, HEAD and index bytes afterward."
+verification = "Seven insight tests pass, including the hook-environment regression. The failed pre-push log is retained. Recovery restores core.bare=false and removes the staged fixture entry; main and origin/main remain 8693d7f2, main is clean and the admitted database retains its recorded digest. Loose-object storage was not compared."

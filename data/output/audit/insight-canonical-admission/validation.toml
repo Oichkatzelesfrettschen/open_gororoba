@@ -21,10 +21,10 @@ preservation_result = "All 87 inspected tables preserve their baseline rows; 86 
 insight_preservation = "All nonpilot insight rows, all original insight revision rows and all original normalized links remain. Normalized links match declared references in both directions."
 sqlite_integrity = "ok"
 foreign_key_violations = 0
-library_tests = 89
+library_tests = 90
 library_test_result = "passed"
 clippy_result = "provenance_store all-targets passed with -D warnings"
-publication_gate = "make validate-local REPO_SHARE_PRIMARY_CACHE=1 passed: 586 tests, zero skips, warnings-as-errors and governance. The source-correction actor refinement additionally passes all nine focused source tests; pre-push reruns the required gate over the committed result."
+publication_gate = "Standalone make validate-local passes 586 tests, zero skips, warnings-as-errors and governance. Pre-push exposed inherited Git environment in insight fixtures; the isolation repair passes seven focused insight tests and the source refinement passes nine focused source tests. Pre-push reruns the required gate over the repaired result."
 format_result = "Scoped changed Rust files pass nightly rustfmt. Full-crate formatting also exposes a pre-existing unrelated claim_proofs.rs layout difference; that file remains unchanged."
 replay_result = "All sixteen initial admission reports reproduced exactly before the I-212 residual revision. The revised I-212 admission also reproduces exactly at its matching final poststate. Earlier I-212 replay intentionally rejects superseded live poststate."
 scientific_replays = 0

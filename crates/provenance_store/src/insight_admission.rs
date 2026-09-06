@@ -473,6 +473,56 @@ pub(crate) fn refuse_insight_admission_history_loss(connection: &Connection) -> 
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    fn fixture_git(root: &Path, arguments: &[&str]) -> Result<()> {
+        let mut command = std::process::Command::new("git");
+        for (name, _) in std::env::vars_os() {
+            if name.as_encoded_bytes().starts_with(b"GIT_") {
+                command.env_remove(name);
+            }
+        }
+        anyhow::ensure!(
+            command
+                .arg("-C")
+                .arg(root)
+                .args(arguments)
+                .status()?
+                .success(),
+            "fixture git command failed"
+        );
+        Ok(())
+    }
+    #[test]
+    fn admission_fixture_preserves_inherited_hook_repository() -> Result<()> {
+        let (_store, _spec, root) = fixture()?;
+        let paths = [".git/config", ".git/HEAD", ".git/index"];
+        let before: Vec<_> = paths
+            .iter()
+            .map(|path| fs::read(root.join(path)))
+            .collect::<std::io::Result<_>>()?;
+        let result = std::process::Command::new(std::env::current_exe()?)
+            .args([
+                "--exact",
+                "insight_admission::tests::admission_roundtrip_replay_and_immutable_history",
+            ])
+            .env("GIT_DIR", root.join(".git"))
+            .env("GIT_WORK_TREE", &root)
+            .env("GIT_INDEX_FILE", root.join(".git/index"))
+            .output()?;
+        anyhow::ensure!(
+            result.status.success(),
+            "hook-environment child failed: {}",
+            String::from_utf8_lossy(&result.stderr)
+        );
+        let after: Vec<_> = paths
+            .iter()
+            .map(|path| fs::read(root.join(path)))
+            .collect::<std::io::Result<_>>()?;
+        assert_eq!(before, after);
+        fs::remove_dir_all(root)?;
+        Ok(())
+    }
+
     fn fixture() -> Result<(ProvenanceStore, InsightAdmissionSpec, PathBuf)> {
         let root = std::env::temp_dir().join(format!(
             "insight-admission-{}-{}",
@@ -482,24 +532,9 @@ mod tests {
                 .as_nanos()
         ));
         fs::create_dir_all(&root)?;
-        anyhow::ensure!(
-            std::process::Command::new("git")
-                .args(["init", "--quiet"])
-                .arg(&root)
-                .status()?
-                .success(),
-            "fixture git init failed"
-        );
+        fixture_git(&root, &["init", "--quiet"])?;
         fs::write(root.join("evidence.txt"), r#"{"lesson":"evidence"}"#)?;
-        anyhow::ensure!(
-            std::process::Command::new("git")
-                .arg("-C")
-                .arg(&root)
-                .args(["add", "evidence.txt"])
-                .status()?
-                .success(),
-            "fixture git add failed"
-        );
+        fixture_git(&root, &["add", "evidence.txt"])?;
         let store = ProvenanceStore::open(Path::new(":memory:"))?;
         store.conn.execute("INSERT INTO insights(id,title,status,claim_refs_json,compat_toml_text) VALUES ('I-1','old','open','[\"C-1\"]','extra = 42')",[])?;
         for claim in ["C-1", "C-2"] {

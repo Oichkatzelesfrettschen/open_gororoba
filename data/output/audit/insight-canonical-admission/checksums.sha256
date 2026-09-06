@@ -9,6 +9,8 @@ bdd71d766bb308ddb4042e535d6e83c74243570ad54cb630159c6ec079ace361  data/output/au
 d907c418014a99eac9d2f8eeb37dfb7d3f3c0fb0db7d60c59ebaddc5ca39bd12  data/output/audit/insight-canonical-admission/evidence-files.json
 ad048d442528fef041e44944d03afff08e00767daa40006042a1c10b6d97ae91  data/output/audit/insight-canonical-admission/followup-specs/I-212.toml
 6137057e55c77cffea584e07ecd845a2464f832eedbe3f1382613dd263768202  data/output/audit/insight-canonical-admission/logs/clippy.log.gz
+00990d42a68d01eb06bde34c1be5d4448e7aca6f9fe227f522bd1c0e85a13352  data/output/audit/insight-canonical-admission/logs/hook-environment-failure.log.gz
+aa6f439f063366ecde58997c3d65d50459a16a2762f031790f875c8d7c1e30e4  data/output/audit/insight-canonical-admission/logs/hook-isolation-tests.log.gz
 d837c15e4892bad8ab8c0d312b43aef379badf6bee82b793aebf15dd27ae4b03  data/output/audit/insight-canonical-admission/logs/source-correction-tests.log.gz
 ef01a1334ffe6b0476745a8a8eaba5493219fe7eb82275f00bf7ab307c3953b4  data/output/audit/insight-canonical-admission/logs/validate-local.log.gz
 57f18ea7538bf28334b2efde5644c7d7ac36ccfedbd15c0ec5293fbde7bdc7d6  data/output/audit/insight-canonical-admission/predicate-decisions.json
@@ -33,7 +35,7 @@ d3c75054d5bf13d2cfd740c8e56762ec4fbbb4574046d8e6004a5db21eef0555  data/output/au
 0b12f61cd6cebe37bee391c35d90bc7ab0cd027caca826e74fa1b215ad7ae16d  data/output/audit/insight-canonical-admission/reports/macquart-mean-electron-density.json
 7ed45da31f224591addedb48f4e8fef294f36ef552cce1cee2cfea368b52eacb  data/output/audit/insight-canonical-admission/reports/prisma-2020.json
 8b1c79d7c6f8328d52a2392453f8b9f34498b4cdd7b7dab4fb0725a7c7c713bd  data/output/audit/insight-canonical-admission/reports/w3c-prov.json
-65785537d6e71d3770be400781948fe10b9f34605bdb96dc96f662f6e411296a  data/output/audit/insight-canonical-admission/review.toml
+e17c13b61d4f261f1b573c6639d6e53ac45582b127453918cffa5fbd956b0edc  data/output/audit/insight-canonical-admission/review.toml
 9677c739a34145bd00dcbb08c0c21318b5d55810c44486a5eda6be453bd85765  data/output/audit/insight-canonical-admission/specs/I-001.toml
 b7f0dbc73ad1367b9441e38729eebe7a3066f1a18f311bcafb4f5bd1996d28cd  data/output/audit/insight-canonical-admission/specs/I-002.toml
 289ae5b3560b0f904ce35cb84c1cc72ade7527e8c388922d660b8fb545d20e26  data/output/audit/insight-canonical-admission/specs/I-094.toml
@@ -42,7 +44,7 @@ b7f0dbc73ad1367b9441e38729eebe7a3066f1a18f311bcafb4f5bd1996d28cd  data/output/au
 401b184c00100602834a74973a110dfd3dda75d0fc61726f47ed64e54eb300db  data/output/audit/insight-canonical-admission/specs/I-207.toml
 d293ff519de18e56e71b46c16a414b9ffdd750e82c25a0ee033feface41fbd8f  data/output/audit/insight-canonical-admission/specs/I-209.toml
 f5e20169f21a593c1ed0aa431f87f2615ab35b629b1257735b98192d28818347  data/output/audit/insight-canonical-admission/specs/I-212.toml
-31b65666977a466be2e08e586305fe3097f00c47d224d2dbf4ea16599f6d29c9  data/output/audit/insight-canonical-admission/validation.toml
+1b84bc4bec5982de4e0f686d7d50aacd8ada3ffb0fce800614dbf45a3e1501e2  data/output/audit/insight-canonical-admission/validation.toml
 11eee93a08488fabf54ec7c6bd4d33c551c84066be6779cc64f5fcfe594326e8  data/output/audit/insight-source-admission/README.toml
 c60083b7d14197a08af07ee9707bd14e900778003725d3ec1107615f4cb8550f  data/output/audit/insight-source-admission/asa-pvalues.toml
 5b36200deea4ec9e8c167d3ffff1350e5b0e7ac3097ef4bd14dd9d197e89e96c  data/output/audit/insight-source-admission/corrections/li-http-hsts.toml
