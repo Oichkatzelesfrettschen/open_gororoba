@@ -478,12 +478,13 @@ acceptance = "Three versioned PDFs, lossless text and rendered equations disting
 
 [[task]]
 id = "qgp-fragmentation-source-publication"
-status = "in_progress"
+status = "completed"
 action = "Publish canonical fragmentation reference repairs"
 acceptance = "Primary-source identity, retained comparisons, typed outcomes, source hashes and governance agree."
 
 [[task]]
 id = "qgp-fragmentation-numerical-intake"
 status = "pending"
+progress = "Bounded local inventory found source papers but no DSS grids, timelike evolution or NLO production adapters in Rust/manifests, docs/plans, QGP audit text and data/external. Ignored caches, other checkouts and network providers remain unsearched. Charged-source reference31 and pion/kaon reference48 offer an author-provided Fortran package; primary-provider retrieval remains the next intake step."
 action = "Admit evolved charged-total fragmentation grids and explicit measure map"
 acceptance = "Provider release, evolution/scale choice, species components and Jacobian convention have reproducible admission before matched quenching calculations."
