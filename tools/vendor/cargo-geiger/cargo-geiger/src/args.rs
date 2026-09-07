@@ -423,6 +423,14 @@ pub mod args_tests {
             ..Default::default()
         };
         let mut gctx = GlobalContext::default().unwrap();
+        // An omitted CLI color preserves Cargo's environment and configuration.
+        let expected_shell_color_choice = if args.color.is_none() {
+            gctx.configure(0, false, None, false, false, false, &None, &[], &[])
+                .unwrap();
+            gctx.shell().color_choice()
+        } else {
+            expected_shell_color_choice
+        };
         let target_dir_before = format!("{:?}", gctx.target_dir().unwrap());
         let update_config_result = args.update_config(&mut gctx);
 

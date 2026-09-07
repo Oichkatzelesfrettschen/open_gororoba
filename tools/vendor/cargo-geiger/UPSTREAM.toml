@@ -14,7 +14,7 @@ modifications = [
   "Resolve modern path-source URLs from manifest metadata rather than slicing legacy package IDs.",
   "Bound parser worker stacks and retain typed parse failures and syntax coverage limits in JSON.",
   "Repair mechanical Clippy diagnostics; retain an exact duplicate-package allowlist for the upstream locked dependency graph.",
-  "Make configuration tests preserve ambient target settings, and propagate README read failures.",
+  "Make configuration tests preserve ambient target and color settings, and propagate README read failures.",
 
   "Deduplicate Cargo clean package names before resolving package IDs to prevent duplicate cold downloads.",
   "Add explicit workspace-report mode with one compilation, a shared metric scan, and per-root dependency reports.",
