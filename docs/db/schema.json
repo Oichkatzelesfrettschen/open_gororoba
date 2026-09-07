@@ -1,6 +1,6 @@
 {
   "generated_from": "db/migrations/*.sql via SQLite pragma introspection",
-  "object_count": 72,
+  "object_count": 79,
   "objects": [
     {
       "schema": "main",
@@ -186,6 +186,259 @@
             },
             {
               "seqno": 3,
+              "cid": -1,
+              "name": null,
+              "descending": false,
+              "collation": "BINARY",
+              "key": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "schema": "main",
+      "name": "artifact_retrieval_observations",
+      "object_type": "table",
+      "column_count": 19,
+      "without_rowid": false,
+      "strict": false,
+      "columns": [
+        {
+          "cid": 0,
+          "name": "observation_key",
+          "declared_type": "TEXT",
+          "not_null": false,
+          "default_value": null,
+          "primary_key_position": 1,
+          "hidden": 0
+        },
+        {
+          "cid": 1,
+          "name": "artifact_id",
+          "declared_type": "TEXT",
+          "not_null": true,
+          "default_value": null,
+          "primary_key_position": 0,
+          "hidden": 0
+        },
+        {
+          "cid": 2,
+          "name": "artifact_key",
+          "declared_type": "TEXT",
+          "not_null": true,
+          "default_value": null,
+          "primary_key_position": 0,
+          "hidden": 0
+        },
+        {
+          "cid": 3,
+          "name": "original_url",
+          "declared_type": "TEXT",
+          "not_null": true,
+          "default_value": null,
+          "primary_key_position": 0,
+          "hidden": 0
+        },
+        {
+          "cid": 4,
+          "name": "requested_url",
+          "declared_type": "TEXT",
+          "not_null": true,
+          "default_value": null,
+          "primary_key_position": 0,
+          "hidden": 0
+        },
+        {
+          "cid": 5,
+          "name": "final_url",
+          "declared_type": "TEXT",
+          "not_null": true,
+          "default_value": null,
+          "primary_key_position": 0,
+          "hidden": 0
+        },
+        {
+          "cid": 6,
+          "name": "expected_sha256",
+          "declared_type": "TEXT",
+          "not_null": true,
+          "default_value": null,
+          "primary_key_position": 0,
+          "hidden": 0
+        },
+        {
+          "cid": 7,
+          "name": "expected_bytes",
+          "declared_type": "INTEGER",
+          "not_null": true,
+          "default_value": null,
+          "primary_key_position": 0,
+          "hidden": 0
+        },
+        {
+          "cid": 8,
+          "name": "response_path",
+          "declared_type": "TEXT",
+          "not_null": false,
+          "default_value": null,
+          "primary_key_position": 0,
+          "hidden": 0
+        },
+        {
+          "cid": 9,
+          "name": "observed_sha256",
+          "declared_type": "TEXT",
+          "not_null": false,
+          "default_value": null,
+          "primary_key_position": 0,
+          "hidden": 0
+        },
+        {
+          "cid": 10,
+          "name": "observed_bytes",
+          "declared_type": "INTEGER",
+          "not_null": true,
+          "default_value": null,
+          "primary_key_position": 0,
+          "hidden": 0
+        },
+        {
+          "cid": 11,
+          "name": "completed",
+          "declared_type": "INTEGER",
+          "not_null": true,
+          "default_value": null,
+          "primary_key_position": 0,
+          "hidden": 0
+        },
+        {
+          "cid": 12,
+          "name": "http_status",
+          "declared_type": "INTEGER",
+          "not_null": true,
+          "default_value": null,
+          "primary_key_position": 0,
+          "hidden": 0
+        },
+        {
+          "cid": 13,
+          "name": "digest_matches",
+          "declared_type": "INTEGER",
+          "not_null": true,
+          "default_value": null,
+          "primary_key_position": 0,
+          "hidden": 0
+        },
+        {
+          "cid": 14,
+          "name": "canonical_url_corrected",
+          "declared_type": "INTEGER",
+          "not_null": true,
+          "default_value": null,
+          "primary_key_position": 0,
+          "hidden": 0
+        },
+        {
+          "cid": 15,
+          "name": "document_identity",
+          "declared_type": "TEXT",
+          "not_null": true,
+          "default_value": null,
+          "primary_key_position": 0,
+          "hidden": 0
+        },
+        {
+          "cid": 16,
+          "name": "recorded_at",
+          "declared_type": "TEXT",
+          "not_null": true,
+          "default_value": null,
+          "primary_key_position": 0,
+          "hidden": 0
+        },
+        {
+          "cid": 17,
+          "name": "spec_sha256",
+          "declared_type": "TEXT",
+          "not_null": true,
+          "default_value": null,
+          "primary_key_position": 0,
+          "hidden": 0
+        },
+        {
+          "cid": 18,
+          "name": "report_json",
+          "declared_type": "TEXT",
+          "not_null": true,
+          "default_value": null,
+          "primary_key_position": 0,
+          "hidden": 0
+        }
+      ],
+      "foreign_keys": [
+        {
+          "id": 0,
+          "seq": 0,
+          "ref_table": "artifacts",
+          "from_column": "artifact_id",
+          "to_column": "id",
+          "on_update": "NO ACTION",
+          "on_delete": "NO ACTION",
+          "match_kind": "NONE"
+        }
+      ],
+      "indexes": [
+        {
+          "seq": 0,
+          "name": "artifact_retrieval_by_identity",
+          "unique": false,
+          "origin": "c",
+          "partial": false,
+          "columns": [
+            {
+              "seqno": 0,
+              "cid": 2,
+              "name": "artifact_key",
+              "descending": false,
+              "collation": "BINARY",
+              "key": true
+            },
+            {
+              "seqno": 1,
+              "cid": 13,
+              "name": "digest_matches",
+              "descending": false,
+              "collation": "BINARY",
+              "key": true
+            },
+            {
+              "seqno": 2,
+              "cid": -1,
+              "name": null,
+              "descending": false,
+              "collation": "BINARY",
+              "key": false
+            }
+          ]
+        },
+        {
+          "seq": 1,
+          "name": "sqlite_autoindex_artifact_retrieval_observations_1",
+          "unique": true,
+          "origin": "pk",
+          "partial": false,
+          "columns": [
+            {
+              "seqno": 0,
+              "cid": 0,
+              "name": "observation_key",
+              "descending": false,
+              "collation": "BINARY",
+              "key": true
+            },
+            {
+              "seqno": 1,
               "cid": -1,
               "name": null,
               "descending": false,
@@ -652,6 +905,244 @@
           "to_column": "id",
           "on_update": "NO ACTION",
           "on_delete": "CASCADE",
+          "match_kind": "NONE"
+        }
+      ],
+      "indexes": []
+    },
+    {
+      "schema": "main",
+      "name": "claim_evidence",
+      "object_type": "table",
+      "column_count": 2,
+      "without_rowid": false,
+      "strict": false,
+      "columns": [
+        {
+          "cid": 0,
+          "name": "claim_id",
+          "declared_type": "TEXT",
+          "not_null": false,
+          "default_value": null,
+          "primary_key_position": 1,
+          "hidden": 0
+        },
+        {
+          "cid": 1,
+          "name": "spec_json",
+          "declared_type": "TEXT",
+          "not_null": true,
+          "default_value": null,
+          "primary_key_position": 0,
+          "hidden": 0
+        }
+      ],
+      "foreign_keys": [
+        {
+          "id": 0,
+          "seq": 0,
+          "ref_table": "claims",
+          "from_column": "claim_id",
+          "to_column": "id",
+          "on_update": "NO ACTION",
+          "on_delete": "NO ACTION",
+          "match_kind": "NONE"
+        }
+      ],
+      "indexes": [
+        {
+          "seq": 0,
+          "name": "sqlite_autoindex_claim_evidence_1",
+          "unique": true,
+          "origin": "pk",
+          "partial": false,
+          "columns": [
+            {
+              "seqno": 0,
+              "cid": 0,
+              "name": "claim_id",
+              "descending": false,
+              "collation": "BINARY",
+              "key": true
+            },
+            {
+              "seqno": 1,
+              "cid": -1,
+              "name": null,
+              "descending": false,
+              "collation": "BINARY",
+              "key": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "schema": "main",
+      "name": "claim_evidence_revision_experiments",
+      "object_type": "table",
+      "column_count": 2,
+      "without_rowid": false,
+      "strict": false,
+      "columns": [
+        {
+          "cid": 0,
+          "name": "revision_id",
+          "declared_type": "INTEGER",
+          "not_null": true,
+          "default_value": null,
+          "primary_key_position": 1,
+          "hidden": 0
+        },
+        {
+          "cid": 1,
+          "name": "experiment_id",
+          "declared_type": "TEXT",
+          "not_null": true,
+          "default_value": null,
+          "primary_key_position": 2,
+          "hidden": 0
+        }
+      ],
+      "foreign_keys": [
+        {
+          "id": 0,
+          "seq": 0,
+          "ref_table": "experiments_cp",
+          "from_column": "experiment_id",
+          "to_column": "id",
+          "on_update": "NO ACTION",
+          "on_delete": "NO ACTION",
+          "match_kind": "NONE"
+        },
+        {
+          "id": 1,
+          "seq": 0,
+          "ref_table": "claim_evidence_revisions",
+          "from_column": "revision_id",
+          "to_column": "id",
+          "on_update": "NO ACTION",
+          "on_delete": "NO ACTION",
+          "match_kind": "NONE"
+        }
+      ],
+      "indexes": [
+        {
+          "seq": 0,
+          "name": "sqlite_autoindex_claim_evidence_revision_experiments_1",
+          "unique": true,
+          "origin": "pk",
+          "partial": false,
+          "columns": [
+            {
+              "seqno": 0,
+              "cid": 0,
+              "name": "revision_id",
+              "descending": false,
+              "collation": "BINARY",
+              "key": true
+            },
+            {
+              "seqno": 1,
+              "cid": 1,
+              "name": "experiment_id",
+              "descending": false,
+              "collation": "BINARY",
+              "key": true
+            },
+            {
+              "seqno": 2,
+              "cid": -1,
+              "name": null,
+              "descending": false,
+              "collation": "BINARY",
+              "key": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "schema": "main",
+      "name": "claim_evidence_revisions",
+      "object_type": "table",
+      "column_count": 7,
+      "without_rowid": false,
+      "strict": false,
+      "columns": [
+        {
+          "cid": 0,
+          "name": "id",
+          "declared_type": "INTEGER",
+          "not_null": false,
+          "default_value": null,
+          "primary_key_position": 1,
+          "hidden": 0
+        },
+        {
+          "cid": 1,
+          "name": "claim_id",
+          "declared_type": "TEXT",
+          "not_null": true,
+          "default_value": null,
+          "primary_key_position": 0,
+          "hidden": 0
+        },
+        {
+          "cid": 2,
+          "name": "previous_spec_json",
+          "declared_type": "TEXT",
+          "not_null": false,
+          "default_value": null,
+          "primary_key_position": 0,
+          "hidden": 0
+        },
+        {
+          "cid": 3,
+          "name": "new_spec_json",
+          "declared_type": "TEXT",
+          "not_null": true,
+          "default_value": null,
+          "primary_key_position": 0,
+          "hidden": 0
+        },
+        {
+          "cid": 4,
+          "name": "actor",
+          "declared_type": "TEXT",
+          "not_null": true,
+          "default_value": null,
+          "primary_key_position": 0,
+          "hidden": 0
+        },
+        {
+          "cid": 5,
+          "name": "reason",
+          "declared_type": "TEXT",
+          "not_null": true,
+          "default_value": null,
+          "primary_key_position": 0,
+          "hidden": 0
+        },
+        {
+          "cid": 6,
+          "name": "changed_at",
+          "declared_type": "TEXT",
+          "not_null": true,
+          "default_value": "strftime('%Y-%m-%dT%H:%M:%fZ','now')",
+          "primary_key_position": 0,
+          "hidden": 0
+        }
+      ],
+      "foreign_keys": [
+        {
+          "id": 0,
+          "seq": 0,
+          "ref_table": "claims",
+          "from_column": "claim_id",
+          "to_column": "id",
+          "on_update": "NO ACTION",
+          "on_delete": "NO ACTION",
           "match_kind": "NONE"
         }
       ],
@@ -4657,6 +5148,230 @@
     },
     {
       "schema": "main",
+      "name": "insight_admissions",
+      "object_type": "table",
+      "column_count": 12,
+      "without_rowid": false,
+      "strict": false,
+      "columns": [
+        {
+          "cid": 0,
+          "name": "id",
+          "declared_type": "INTEGER",
+          "not_null": false,
+          "default_value": null,
+          "primary_key_position": 1,
+          "hidden": 0
+        },
+        {
+          "cid": 1,
+          "name": "admission_id",
+          "declared_type": "TEXT",
+          "not_null": true,
+          "default_value": null,
+          "primary_key_position": 0,
+          "hidden": 0
+        },
+        {
+          "cid": 2,
+          "name": "insight_id",
+          "declared_type": "TEXT",
+          "not_null": true,
+          "default_value": null,
+          "primary_key_position": 0,
+          "hidden": 0
+        },
+        {
+          "cid": 3,
+          "name": "spec_json",
+          "declared_type": "TEXT",
+          "not_null": true,
+          "default_value": null,
+          "primary_key_position": 0,
+          "hidden": 0
+        },
+        {
+          "cid": 4,
+          "name": "before_json",
+          "declared_type": "TEXT",
+          "not_null": true,
+          "default_value": null,
+          "primary_key_position": 0,
+          "hidden": 0
+        },
+        {
+          "cid": 5,
+          "name": "after_json",
+          "declared_type": "TEXT",
+          "not_null": true,
+          "default_value": null,
+          "primary_key_position": 0,
+          "hidden": 0
+        },
+        {
+          "cid": 6,
+          "name": "before_compat",
+          "declared_type": "TEXT",
+          "not_null": true,
+          "default_value": null,
+          "primary_key_position": 0,
+          "hidden": 0
+        },
+        {
+          "cid": 7,
+          "name": "after_compat",
+          "declared_type": "TEXT",
+          "not_null": true,
+          "default_value": null,
+          "primary_key_position": 0,
+          "hidden": 0
+        },
+        {
+          "cid": 8,
+          "name": "previous_evidence_json",
+          "declared_type": "TEXT",
+          "not_null": false,
+          "default_value": null,
+          "primary_key_position": 0,
+          "hidden": 0
+        },
+        {
+          "cid": 9,
+          "name": "actor",
+          "declared_type": "TEXT",
+          "not_null": true,
+          "default_value": null,
+          "primary_key_position": 0,
+          "hidden": 0
+        },
+        {
+          "cid": 10,
+          "name": "reason",
+          "declared_type": "TEXT",
+          "not_null": true,
+          "default_value": null,
+          "primary_key_position": 0,
+          "hidden": 0
+        },
+        {
+          "cid": 11,
+          "name": "created_at",
+          "declared_type": "TEXT",
+          "not_null": true,
+          "default_value": "strftime('%Y-%m-%dT%H:%M:%fZ','now')",
+          "primary_key_position": 0,
+          "hidden": 0
+        }
+      ],
+      "foreign_keys": [
+        {
+          "id": 0,
+          "seq": 0,
+          "ref_table": "insights",
+          "from_column": "insight_id",
+          "to_column": "id",
+          "on_update": "NO ACTION",
+          "on_delete": "NO ACTION",
+          "match_kind": "NONE"
+        }
+      ],
+      "indexes": [
+        {
+          "seq": 0,
+          "name": "sqlite_autoindex_insight_admissions_1",
+          "unique": true,
+          "origin": "u",
+          "partial": false,
+          "columns": [
+            {
+              "seqno": 0,
+              "cid": 1,
+              "name": "admission_id",
+              "descending": false,
+              "collation": "BINARY",
+              "key": true
+            },
+            {
+              "seqno": 1,
+              "cid": -1,
+              "name": null,
+              "descending": false,
+              "collation": "BINARY",
+              "key": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "schema": "main",
+      "name": "insight_evidence",
+      "object_type": "table",
+      "column_count": 2,
+      "without_rowid": false,
+      "strict": false,
+      "columns": [
+        {
+          "cid": 0,
+          "name": "insight_id",
+          "declared_type": "TEXT",
+          "not_null": false,
+          "default_value": null,
+          "primary_key_position": 1,
+          "hidden": 0
+        },
+        {
+          "cid": 1,
+          "name": "spec_json",
+          "declared_type": "TEXT",
+          "not_null": true,
+          "default_value": null,
+          "primary_key_position": 0,
+          "hidden": 0
+        }
+      ],
+      "foreign_keys": [
+        {
+          "id": 0,
+          "seq": 0,
+          "ref_table": "insights",
+          "from_column": "insight_id",
+          "to_column": "id",
+          "on_update": "NO ACTION",
+          "on_delete": "NO ACTION",
+          "match_kind": "NONE"
+        }
+      ],
+      "indexes": [
+        {
+          "seq": 0,
+          "name": "sqlite_autoindex_insight_evidence_1",
+          "unique": true,
+          "origin": "pk",
+          "partial": false,
+          "columns": [
+            {
+              "seqno": 0,
+              "cid": 0,
+              "name": "insight_id",
+              "descending": false,
+              "collation": "BINARY",
+              "key": true
+            },
+            {
+              "seqno": 1,
+              "cid": -1,
+              "name": null,
+              "descending": false,
+              "collation": "BINARY",
+              "key": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "schema": "main",
       "name": "insight_revisions",
       "object_type": "table",
       "column_count": 10,
@@ -7227,6 +7942,109 @@
               "seqno": 0,
               "cid": 0,
               "name": "id",
+              "descending": false,
+              "collation": "BINARY",
+              "key": true
+            },
+            {
+              "seqno": 1,
+              "cid": -1,
+              "name": null,
+              "descending": false,
+              "collation": "BINARY",
+              "key": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "schema": "main",
+      "name": "source_observations",
+      "object_type": "table",
+      "column_count": 6,
+      "without_rowid": false,
+      "strict": false,
+      "columns": [
+        {
+          "cid": 0,
+          "name": "observation_key",
+          "declared_type": "TEXT",
+          "not_null": false,
+          "default_value": null,
+          "primary_key_position": 1,
+          "hidden": 0
+        },
+        {
+          "cid": 1,
+          "name": "source_key",
+          "declared_type": "TEXT",
+          "not_null": true,
+          "default_value": null,
+          "primary_key_position": 0,
+          "hidden": 0
+        },
+        {
+          "cid": 2,
+          "name": "artifact_id",
+          "declared_type": "TEXT",
+          "not_null": false,
+          "default_value": null,
+          "primary_key_position": 0,
+          "hidden": 0
+        },
+        {
+          "cid": 3,
+          "name": "spec_sha256",
+          "declared_type": "TEXT",
+          "not_null": true,
+          "default_value": null,
+          "primary_key_position": 0,
+          "hidden": 0
+        },
+        {
+          "cid": 4,
+          "name": "admitted_at",
+          "declared_type": "TEXT",
+          "not_null": true,
+          "default_value": null,
+          "primary_key_position": 0,
+          "hidden": 0
+        },
+        {
+          "cid": 5,
+          "name": "report_json",
+          "declared_type": "TEXT",
+          "not_null": true,
+          "default_value": null,
+          "primary_key_position": 0,
+          "hidden": 0
+        }
+      ],
+      "foreign_keys": [
+        {
+          "id": 0,
+          "seq": 0,
+          "ref_table": "artifacts",
+          "from_column": "artifact_id",
+          "to_column": "id",
+          "on_update": "NO ACTION",
+          "on_delete": "NO ACTION",
+          "match_kind": "NONE"
+        }
+      ],
+      "indexes": [
+        {
+          "seq": 0,
+          "name": "sqlite_autoindex_source_observations_1",
+          "unique": true,
+          "origin": "pk",
+          "partial": false,
+          "columns": [
+            {
+              "seqno": 0,
+              "cid": 0,
+              "name": "observation_key",
               "descending": false,
               "collation": "BINARY",
               "key": true

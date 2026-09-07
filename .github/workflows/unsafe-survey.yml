@@ -58,8 +58,9 @@ jobs:
           set -euo pipefail
           mkdir -p survey
           stage=compiler_identity
-          # The EXIT trap invokes the receipt writer for preflight and scan failures.
-          # shellcheck disable=SC2329
+          # The EXIT trap invokes the receipt writer; ShellCheck versions classify
+          # indirect trap calls as unreachable commands or an uninvoked function.
+          # shellcheck disable=SC2317,SC2329
           record_receipt() {
             command_status=$?
             trap - EXIT

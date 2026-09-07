@@ -19,6 +19,40 @@ CREATE TABLE artifact_paths (
     FOREIGN KEY(artifact_id) REFERENCES artifacts(id) ON DELETE CASCADE
 );
 
+CREATE TRIGGER artifact_retrieval_append_only_delete BEFORE DELETE ON artifact_retrieval_observations
+BEGIN SELECT RAISE(ABORT, 'artifact retrieval observations are append-only'); END;
+
+CREATE TRIGGER artifact_retrieval_append_only_update BEFORE UPDATE ON artifact_retrieval_observations
+BEGIN SELECT RAISE(ABORT, 'artifact retrieval observations are append-only'); END;
+
+CREATE TABLE artifact_retrieval_observations (
+    observation_key TEXT PRIMARY KEY,
+    artifact_id TEXT NOT NULL REFERENCES artifacts(id),
+    artifact_key TEXT NOT NULL,
+    original_url TEXT NOT NULL,
+    requested_url TEXT NOT NULL,
+    final_url TEXT NOT NULL,
+    expected_sha256 TEXT NOT NULL,
+    expected_bytes INTEGER NOT NULL CHECK(expected_bytes >= 0),
+    response_path TEXT,
+    observed_sha256 TEXT,
+    observed_bytes INTEGER NOT NULL CHECK(observed_bytes >= 0),
+    completed INTEGER NOT NULL CHECK(completed IN (0,1)),
+    http_status INTEGER NOT NULL,
+    digest_matches INTEGER NOT NULL CHECK(digest_matches IN (0,1)),
+    canonical_url_corrected INTEGER NOT NULL CHECK(canonical_url_corrected IN (0,1)),
+    document_identity TEXT NOT NULL CHECK(document_identity IN ('verified','unresolved')),
+    recorded_at TEXT NOT NULL,
+    spec_sha256 TEXT NOT NULL,
+    report_json TEXT NOT NULL,
+    CHECK(canonical_url_corrected = 0 OR (digest_matches = 1 AND completed = 1)),
+    CHECK(digest_matches = 0 OR (completed = 1 AND http_status BETWEEN 200 AND 299
+        AND expected_sha256 = observed_sha256 AND expected_bytes = observed_bytes
+        AND response_path IS NOT NULL))
+);
+
+CREATE INDEX artifact_retrieval_by_identity ON artifact_retrieval_observations(artifact_key, digest_matches);
+
 CREATE TABLE artifacts (
     id TEXT PRIMARY KEY,
     key TEXT NOT NULL UNIQUE,
@@ -86,6 +120,39 @@ CREATE TABLE citations (
     doi TEXT,
     canonical_url TEXT,
     FOREIGN KEY(artifact_id) REFERENCES artifacts(id) ON DELETE CASCADE
+);
+
+CREATE TABLE claim_evidence (
+    claim_id TEXT PRIMARY KEY REFERENCES claims(id),
+    spec_json TEXT NOT NULL CHECK(json_valid(spec_json))
+);
+
+CREATE TRIGGER claim_evidence_revision_experiments_no_delete BEFORE DELETE ON claim_evidence_revision_experiments
+BEGIN SELECT RAISE(ABORT, 'claim evidence experiment history is append-only'); END;
+
+CREATE TRIGGER claim_evidence_revision_experiments_no_update BEFORE UPDATE ON claim_evidence_revision_experiments
+BEGIN SELECT RAISE(ABORT, 'claim evidence experiment history is append-only'); END;
+
+CREATE TABLE claim_evidence_revision_experiments (
+    revision_id INTEGER NOT NULL REFERENCES claim_evidence_revisions(id),
+    experiment_id TEXT NOT NULL REFERENCES experiments_cp(id),
+    PRIMARY KEY (revision_id, experiment_id)
+);
+
+CREATE TRIGGER claim_evidence_revisions_no_delete BEFORE DELETE ON claim_evidence_revisions
+BEGIN SELECT RAISE(ABORT, 'claim evidence history is append-only'); END;
+
+CREATE TRIGGER claim_evidence_revisions_no_update BEFORE UPDATE ON claim_evidence_revisions
+BEGIN SELECT RAISE(ABORT, 'claim evidence history is append-only'); END;
+
+CREATE TABLE claim_evidence_revisions (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    claim_id TEXT NOT NULL REFERENCES claims(id),
+    previous_spec_json TEXT CHECK(previous_spec_json IS NULL OR json_valid(previous_spec_json)),
+    new_spec_json TEXT NOT NULL CHECK(json_valid(new_spec_json)),
+    actor TEXT NOT NULL CHECK(length(trim(actor)) > 0),
+    reason TEXT NOT NULL CHECK(length(trim(reason)) > 0),
+    changed_at TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ','now'))
 );
 
 CREATE TABLE claim_experiment_refs (
@@ -657,6 +724,32 @@ CREATE TABLE ingest_fingerprints (
     indexed_at TEXT NOT NULL
 );
 
+CREATE TRIGGER insight_admissions_no_delete BEFORE DELETE ON insight_admissions
+BEGIN SELECT RAISE(ABORT,'insight admissions are append-only'); END;
+
+CREATE TRIGGER insight_admissions_no_update BEFORE UPDATE ON insight_admissions
+BEGIN SELECT RAISE(ABORT,'insight admissions are append-only'); END;
+
+CREATE TABLE insight_admissions (
+ id INTEGER PRIMARY KEY,
+ admission_id TEXT NOT NULL UNIQUE,
+ insight_id TEXT NOT NULL REFERENCES insights(id),
+ spec_json TEXT NOT NULL,
+ before_json TEXT NOT NULL,
+ after_json TEXT NOT NULL,
+ before_compat TEXT NOT NULL,
+ after_compat TEXT NOT NULL,
+ previous_evidence_json TEXT,
+ actor TEXT NOT NULL,
+ reason TEXT NOT NULL,
+ created_at TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ','now'))
+);
+
+CREATE TABLE insight_evidence (
+ insight_id TEXT PRIMARY KEY REFERENCES insights(id),
+ spec_json TEXT NOT NULL
+);
+
 CREATE TABLE insight_revisions (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     insight_id TEXT NOT NULL,
@@ -675,9 +768,9 @@ CREATE INDEX insight_revisions_by_actor ON insight_revisions(actor, ts_utc);
 
 CREATE INDEX insight_revisions_by_insight ON insight_revisions(insight_id, ts_utc);
 
-CREATE TRIGGER insights_fts_ad
-AFTER DELETE ON insights BEGIN
-    DELETE FROM insights_fts WHERE rowid = old.rowid;
+CREATE TRIGGER insights_fts_ad AFTER DELETE ON insights BEGIN
+ INSERT INTO insights_fts(insights_fts,rowid,id,title,status)
+ VALUES ('delete',old.rowid,old.id,old.title,old.status);
 END;
 
 CREATE TRIGGER insights_fts_ai
@@ -686,11 +779,11 @@ AFTER INSERT ON insights BEGIN
     VALUES (new.rowid, new.id, new.title, new.status);
 END;
 
-CREATE TRIGGER insights_fts_au
-AFTER UPDATE ON insights BEGIN
-    DELETE FROM insights_fts WHERE rowid = old.rowid;
-    INSERT INTO insights_fts(rowid, id, title, status)
-    VALUES (new.rowid, new.id, new.title, new.status);
+CREATE TRIGGER insights_fts_au AFTER UPDATE ON insights BEGIN
+ INSERT INTO insights_fts(insights_fts,rowid,id,title,status)
+ VALUES ('delete',old.rowid,old.id,old.title,old.status);
+ INSERT INTO insights_fts(rowid,id,title,status)
+ VALUES (new.rowid,new.id,new.title,new.status);
 END;
 
 CREATE TABLE insights (
@@ -973,6 +1066,19 @@ CREATE TABLE roadmap_items (
     created_at TEXT NOT NULL DEFAULT (datetime('now')),
     updated_at TEXT NOT NULL DEFAULT (datetime('now'))
 , claims_json TEXT NOT NULL DEFAULT '[]', insight TEXT NOT NULL DEFAULT '');
+
+CREATE TRIGGER source_observations_no_delete BEFORE DELETE ON source_observations BEGIN SELECT RAISE(ABORT, 'source observations are append-only'); END;
+
+CREATE TRIGGER source_observations_no_update BEFORE UPDATE ON source_observations BEGIN SELECT RAISE(ABORT, 'source observations are append-only'); END;
+
+CREATE TABLE source_observations (
+    observation_key TEXT PRIMARY KEY,
+    source_key TEXT NOT NULL,
+    artifact_id TEXT REFERENCES artifacts(id),
+    spec_sha256 TEXT NOT NULL,
+    admitted_at TEXT NOT NULL,
+    report_json TEXT NOT NULL CHECK(json_valid(report_json))
+);
 
 CREATE TABLE source_of_truth_manifest (
     table_name TEXT PRIMARY KEY,
