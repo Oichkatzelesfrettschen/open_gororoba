@@ -68,6 +68,7 @@ members = [
     "crates/materials_core",
     "crates/materials_data",
     "crates/moreno_1997",
+    "crates/navier_stokes_verify",
     "crates/neural_homotopy",
     "crates/optics_core",
     "crates/pathion_ellip",
