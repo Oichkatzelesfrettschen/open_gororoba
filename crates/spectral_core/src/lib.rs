@@ -22,6 +22,7 @@ pub mod ghost_spectral;
 pub mod lomb_scargle;
 pub mod modular_chaos;
 pub mod multitaper;
+pub mod navier_stokes;
 pub mod ndfft;
 pub mod neg_dim;
 pub mod pde_surrogates;
