@@ -19,6 +19,9 @@ use std::{
 use clap::{Parser, ValueEnum};
 use data_core::registry::{ArtifactRegistry, LacunaeRegistry, MonographRegistry};
 use gororoba_cli::claims::schema::TOML_CLAIM_STATUSES;
+use gororoba_cli_data::execution_targets::{
+    execution_target_registered, load_workspace_execution_targets,
+};
 use provenance_store::{ControlPlaneCompatKind, ProvenanceStore};
 use walkdir::WalkDir;
 
@@ -1481,22 +1484,27 @@ fn main() {
             .as_ref()
             .map(|inventory| inventory.benches.clone())
             .unwrap_or_default();
-        let known_execution_targets = registry_binary_names
+        let mut known_execution_targets = registry_binary_names
             .iter()
             .cloned()
             .chain(workspace_bench_names.iter().cloned())
-            .collect::<HashSet<_>>();
+            .collect::<BTreeSet<_>>();
 
-        // Check experiment->binary cross-references. A binary that dispatches
-        // subcommands is named `<bin> <subcommand>` here, so the leading token is
-        // the registered execution target and the remainder identifies the lane
-        // that produced the evidence. Only the leading token carries a
-        // binaries.toml entry.
+        let execution_root = args.cargo_toml.parent().unwrap_or(&repo_root);
+        match load_workspace_execution_targets(execution_root) {
+            Ok(targets) => known_execution_targets.extend(targets),
+            Err(error) => {
+                eprintln!("ERROR: load workspace execution targets: {error:#}");
+                errors += 1;
+            }
+        }
+
+        // Typed test and external identities require exact matches; binary
+        // dispatchers retain their registered leading-token semantics.
         for (experiment_id, exp_binary) in &binary_names_from_experiments {
-            let exp_binary = exp_binary.split_whitespace().next().unwrap_or(exp_binary);
-            if !known_execution_targets.contains(exp_binary) {
+            if !execution_target_registered(exp_binary, &known_execution_targets) {
                 eprintln!(
-                    "ERROR: experiment {} references required execution target \"{}\" not in binaries.toml or workspace benches",
+                    "ERROR: experiment {} references unregistered execution target \"{}\"",
                     experiment_id, exp_binary
                 );
                 errors += 1;
@@ -1683,4 +1691,49 @@ fn main() {
     // Suppress unused variable warnings
     let _ = &insight_ids;
     let _ = &insight_count;
+}
+
+#[cfg(test)]
+mod execution_target_tests {
+    use super::*;
+
+    #[test]
+    fn typed_targets_require_exact_identities_while_dispatchers_accept_arguments() {
+        let registered = BTreeSet::from([
+            "cargo-test:sample:probe".to_string(),
+            "external:proof:1.0".to_string(),
+            "dispatcher".to_string(),
+        ]);
+        for target in [
+            "cargo-test:sample:probe",
+            "external:proof:1.0",
+            "dispatcher run",
+        ] {
+            assert!(execution_target_registered(target, &registered), "{target}");
+        }
+        for target in [
+            "cargo-test:sample:probe extra",
+            "cargo-test:other:probe",
+            "external:proof:1.0 extra",
+            "external:proof:2.0",
+            "missing run",
+        ] {
+            assert!(
+                !execution_target_registered(target, &registered),
+                "{target}"
+            );
+        }
+    }
+
+    #[test]
+    fn retained_scientific_execution_targets_resolve_from_shared_inventory() {
+        let targets = load_workspace_execution_targets(&repo_root::resolve!()).unwrap();
+        for target in [
+            "cargo-test:algebra_experimental:nufit_reference_identity",
+            "cargo-test:gr_core:ward_independent_residuals",
+            "external:rocq:9.1.1",
+        ] {
+            assert!(execution_target_registered(target, &targets), "{target}");
+        }
+    }
 }

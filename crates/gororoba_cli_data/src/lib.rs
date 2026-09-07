@@ -4,6 +4,7 @@
 //! dataset fetching, registry operations, publishing, and quality gates.
 
 pub mod acquisition_dossier;
+pub mod execution_targets;
 pub mod project_api_contract;
 
 // Re-export nanograv modules from data_core for backward compatibility.
