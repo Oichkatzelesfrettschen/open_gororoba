@@ -56,19 +56,22 @@ jobs:
       - name: Install compiler and data dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y clang mold libhdf5-dev pkg-config
+          sudo apt-get install -y clang mold glslc libcfitsio-dev libhdf5-dev libfontconfig1-dev libopenblas-dev libblas-dev liblapack-dev pkg-config
 
       - name: Cache Rust dependencies and validation artifacts
-        uses: actions/cache@v4
+        id: rust-cache
+        uses: actions/cache/restore@v4
         with:
           path: |
             ${{ env.CARGO_HOME }}/registry
             ${{ env.CARGO_HOME }}/git
             ${{ env.CARGO_TARGET_DIR }}
             ${{ github.workspace }}/.cache/gate-cbuild
-          key: ci-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('rust-toolchain.toml', 'Cargo.lock', '.cargo/config.toml', '.github/workflows/ci.yml') }}-${{ github.sha }}
+          key: ci-v2-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('rust-toolchain.toml', '.cargo/config.toml') }}-${{ hashFiles('Cargo.lock') }}-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
           restore-keys: |
-            ci-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('rust-toolchain.toml', 'Cargo.lock', '.cargo/config.toml', '.github/workflows/ci.yml') }}-
+            ci-v2-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('rust-toolchain.toml', '.cargo/config.toml') }}-${{ hashFiles('Cargo.lock') }}-${{ github.sha }}-
+            ci-v2-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('rust-toolchain.toml', '.cargo/config.toml') }}-${{ hashFiles('Cargo.lock') }}-
+            ci-v2-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('rust-toolchain.toml', '.cargo/config.toml') }}-
 
       - name: Resolve immutable comparison base and worker budget
         id: inputs
@@ -177,6 +180,17 @@ jobs:
         if: steps.paths.outputs.warp == 'true' && hashFiles('data/h5/**/*.h5') != ''
         run: cargo run --locked --profile validation -p gororoba_cli_warp --features gpu,hdf5-export --bin warp -- acceptance-gate "data/h5/**/*.h5"
 
+      - name: Retain compiled dependencies after validation failures
+        if: always() && steps.rust-cache.outputs.cache-primary-key != '' && steps.rust-cache.outputs.cache-hit != 'true'
+        uses: actions/cache/save@v4
+        with:
+          path: |
+            ${{ env.CARGO_HOME }}/registry
+            ${{ env.CARGO_HOME }}/git
+            ${{ env.CARGO_TARGET_DIR }}
+            ${{ github.workspace }}/.cache/gate-cbuild
+          key: ${{ steps.rust-cache.outputs.cache-primary-key }}
+
       - name: Upload validation reports
         if: always()
         uses: actions/upload-artifact@v4
@@ -200,9 +214,10 @@ jobs:
       - name: Install compiler and data dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y clang mold libhdf5-dev pkg-config
+          sudo apt-get install -y clang mold glslc libcfitsio-dev libhdf5-dev libfontconfig1-dev libopenblas-dev libblas-dev liblapack-dev pkg-config
       - name: Cache documentation dependencies and build artifacts
-        uses: actions/cache@v4
+        id: docs-cache
+        uses: actions/cache/restore@v4
         with:
           path: |
             ${{ env.CARGO_HOME }}/registry
@@ -211,11 +226,25 @@ jobs:
             ${{ github.workspace }}/.cache/gate-cbuild
             ${{ github.workspace }}/.cache/docs-cbuild
             ${{ github.workspace }}/target/docs-target
-          key: docs-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('rust-toolchain.toml', 'Cargo.lock', '.cargo/config.toml', '.github/workflows/ci.yml') }}-${{ github.sha }}
+          key: docs-v2-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('rust-toolchain.toml', '.cargo/config.toml') }}-${{ hashFiles('Cargo.lock') }}-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
           restore-keys: |
-            docs-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('rust-toolchain.toml', 'Cargo.lock', '.cargo/config.toml', '.github/workflows/ci.yml') }}-
+            docs-v2-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('rust-toolchain.toml', '.cargo/config.toml') }}-${{ hashFiles('Cargo.lock') }}-${{ github.sha }}-
+            docs-v2-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('rust-toolchain.toml', '.cargo/config.toml') }}-${{ hashFiles('Cargo.lock') }}-
+            docs-v2-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('rust-toolchain.toml', '.cargo/config.toml') }}-
       - name: Build default-feature docs and check freshness together
         run: make docs-freshness DOCS_CARGO_BUILD_DIR="$GITHUB_WORKSPACE/.cache/docs-cbuild"
+      - name: Retain documentation dependencies after validation failures
+        if: always() && steps.docs-cache.outputs.cache-primary-key != '' && steps.docs-cache.outputs.cache-hit != 'true'
+        uses: actions/cache/save@v4
+        with:
+          path: |
+            ${{ env.CARGO_HOME }}/registry
+            ${{ env.CARGO_HOME }}/git
+            ${{ env.CARGO_TARGET_DIR }}
+            ${{ github.workspace }}/.cache/gate-cbuild
+            ${{ github.workspace }}/.cache/docs-cbuild
+            ${{ github.workspace }}/target/docs-target
+          key: ${{ steps.docs-cache.outputs.cache-primary-key }}
       - uses: actions/upload-artifact@v4
         with:
           name: docs-site

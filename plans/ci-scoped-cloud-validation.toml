@@ -23,6 +23,7 @@ name = "Validate configuration and execute hosted checks"
 status = "in_progress"
 acceptance = "Actionlint, scope dispatch/error tests and actual hosted workflow execution pass without suppressed failures."
 local_result = "Actionlint, nine router tests and scoped Make dispatch/error tests pass. All four paper targets build with latexmk -Werror after exact historical input recovery."
+hosted_result = "At f9802be6, all four papers and both benchmark architectures pass. Rocq tool installation succeeds and is cached. Repository validation stops during fitsio-sys compilation because CFITSIO is missing; cargo-geiger panics in embedded Cargo 0.86 package resolution. Both failures require repair before integration."
 
 [[task]]
 name = "Resolve hosted dependency and container failures"

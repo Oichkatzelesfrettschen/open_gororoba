@@ -42,7 +42,7 @@ jobs:
       - name: Install linker dependencies
         run: |
           sudo apt-get update -qq
-          sudo apt-get install -y -qq mold clang
+          sudo apt-get install -y -qq mold clang glslc
       - uses: Swatinem/rust-cache@v2
         with:
           key: benchmark-${{ matrix.architecture }}
