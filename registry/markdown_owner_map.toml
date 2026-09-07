@@ -12,7 +12,7 @@ updated = "2026-08-01"
 authoritative = true
 status = "active"
 status_token = "ACTIVE"
-document_count = 141
+document_count = 153
 [[owner]]
 path = "README_GPU_STEPS.md"
 owner_group = "project"
@@ -821,3 +821,75 @@ removal_status = "active"
 path = "docs/engineering/magnonic-isolated-bundle-time-reversal.md"
 owner_group = "research"
 removal_status = "active"
+
+[[owner]]
+path = "tools/vendor/cargo-geiger/README.md"
+owner_group = "third_party"
+removal_status = "locked"
+removal_reason = "Retained cargo-geiger upstream documentation and required test fixtures; provenance and licenses are recorded in tools/vendor/cargo-geiger/UPSTREAM.toml."
+
+[[owner]]
+path = "tools/vendor/cargo-geiger/cargo-geiger-serde/README.md"
+owner_group = "third_party"
+removal_status = "locked"
+removal_reason = "Retained cargo-geiger upstream documentation and required test fixtures; provenance and licenses are recorded in tools/vendor/cargo-geiger/UPSTREAM.toml."
+
+[[owner]]
+path = "tools/vendor/cargo-geiger/cargo-geiger/README.md"
+owner_group = "third_party"
+removal_status = "locked"
+removal_reason = "Retained cargo-geiger upstream documentation and required test fixtures; provenance and licenses are recorded in tools/vendor/cargo-geiger/UPSTREAM.toml."
+
+[[owner]]
+path = "tools/vendor/cargo-geiger/geiger/README.md"
+owner_group = "third_party"
+removal_status = "locked"
+removal_reason = "Retained cargo-geiger upstream documentation and required test fixtures; provenance and licenses are recorded in tools/vendor/cargo-geiger/UPSTREAM.toml."
+
+[[owner]]
+path = "tools/vendor/cargo-geiger/test_crates/test1_package_with_no_deps/README.md"
+owner_group = "third_party"
+removal_status = "locked"
+removal_reason = "Retained cargo-geiger upstream documentation and required test fixtures; provenance and licenses are recorded in tools/vendor/cargo-geiger/UPSTREAM.toml."
+
+[[owner]]
+path = "tools/vendor/cargo-geiger/test_crates/test2_package_with_shallow_deps/README.md"
+owner_group = "third_party"
+removal_status = "locked"
+removal_reason = "Retained cargo-geiger upstream documentation and required test fixtures; provenance and licenses are recorded in tools/vendor/cargo-geiger/UPSTREAM.toml."
+
+[[owner]]
+path = "tools/vendor/cargo-geiger/test_crates/test3_package_with_nested_deps/README.md"
+owner_group = "third_party"
+removal_status = "locked"
+removal_reason = "Retained cargo-geiger upstream documentation and required test fixtures; provenance and licenses are recorded in tools/vendor/cargo-geiger/UPSTREAM.toml."
+
+[[owner]]
+path = "tools/vendor/cargo-geiger/test_crates/test4_workspace_with_top_level_package/README.md"
+owner_group = "third_party"
+removal_status = "locked"
+removal_reason = "Retained cargo-geiger upstream documentation and required test fixtures; provenance and licenses are recorded in tools/vendor/cargo-geiger/UPSTREAM.toml."
+
+[[owner]]
+path = "tools/vendor/cargo-geiger/test_crates/test6_cargo_lock_out_of_date/README_DIFFERENT_NAME.md"
+owner_group = "third_party"
+removal_status = "locked"
+removal_reason = "Retained cargo-geiger upstream documentation and required test fixtures; provenance and licenses are recorded in tools/vendor/cargo-geiger/UPSTREAM.toml."
+
+[[owner]]
+path = "tools/vendor/cargo-geiger/test_crates/test7_package_with_patched_dep/README_DIFFERENT_NAME.md"
+owner_group = "third_party"
+removal_status = "locked"
+removal_reason = "Retained cargo-geiger upstream documentation and required test fixtures; provenance and licenses are recorded in tools/vendor/cargo-geiger/UPSTREAM.toml."
+
+[[owner]]
+path = "tools/vendor/cargo-geiger/test_crates/test8_package_with_build_rs_no_deps/README.md"
+owner_group = "third_party"
+removal_status = "locked"
+removal_reason = "Retained cargo-geiger upstream documentation and required test fixtures; provenance and licenses are recorded in tools/vendor/cargo-geiger/UPSTREAM.toml."
+
+[[owner]]
+path = "tools/vendor/cargo-geiger/test_crates/test9_package_with_git_deps/README.md"
+owner_group = "third_party"
+removal_status = "locked"
+removal_reason = "Retained cargo-geiger upstream documentation and required test fixtures; provenance and licenses are recorded in tools/vendor/cargo-geiger/UPSTREAM.toml."

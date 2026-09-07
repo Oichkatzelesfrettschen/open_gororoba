@@ -24,7 +24,7 @@ pub struct Cli {
     #[arg(long)]
     stacked_csv: PathBuf,
 
-    /// STFT spectrogram CSV (x_center, k, power, phase, n_eff).
+    /// STFT spectrogram CSV with named x_center, k and power columns.
     #[arg(long)]
     stft_csv: Option<PathBuf>,
 
@@ -52,6 +52,7 @@ struct DerivRow {
 }
 
 /// An STFT row.
+#[derive(serde::Deserialize)]
 struct StftRow {
     x_center: f64,
     k: f64,
@@ -92,22 +93,35 @@ fn load_deriv(path: &Path) -> anyhow::Result<Vec<DerivRow>> {
 }
 
 fn load_stft(path: &Path) -> anyhow::Result<Vec<StftRow>> {
-    let mut rdr = csv::Reader::from_path(path).context("open STFT CSV")?;
+    read_stft(fs::File::open(path).context("open STFT CSV")?)
+}
+
+fn read_stft(input: impl std::io::Read) -> anyhow::Result<Vec<StftRow>> {
+    let mut rdr = csv::Reader::from_reader(input);
     let mut rows = Vec::new();
-    for result in rdr.records() {
-        let rec = result?;
-        let x: f64 = rec.get(0).unwrap_or("").trim().parse().unwrap_or(f64::NAN);
-        let k: f64 = rec.get(1).unwrap_or("").trim().parse().unwrap_or(f64::NAN);
-        let pow: f64 = rec.get(2).unwrap_or("").trim().parse().unwrap_or(f64::NAN);
-        if x.is_finite() && k.is_finite() && pow.is_finite() {
-            rows.push(StftRow {
-                x_center: x,
-                k,
-                power: pow,
-            });
-        }
+    for result in rdr.deserialize::<StftRow>() {
+        let row = result.context("read named STFT columns")?;
+        anyhow::ensure!(
+            row.x_center.is_finite()
+                && row.k.is_finite()
+                && row.power.is_finite()
+                && row.power >= 0.0,
+            "STFT coordinates must be finite and power nonnegative"
+        );
+        rows.push(row);
     }
     Ok(rows)
+}
+
+fn confidence_polygon(rows: &[&ProfileRow]) -> Vec<(f64, f64)> {
+    rows.iter()
+        .map(|row| (row.x, row.delta + 2.0 * row.err))
+        .chain(
+            rows.iter()
+                .rev()
+                .map(|row| (row.x, row.delta - 2.0 * row.err)),
+        )
+        .collect()
 }
 
 /// Generate the spatial residuals panel (Panel 3).
@@ -123,14 +137,19 @@ fn write_spatial_residuals(rows: &[ProfileRow], out: &Path) -> anyhow::Result<()
         .map(|r| format!("({:.4},{:.6})", r.x, r.delta))
         .collect::<Vec<_>>()
         .join(" ");
-    let upper: String = valid
+    anyhow::ensure!(
+        valid
+            .iter()
+            .all(|row| row.err.is_finite() && row.err >= 0.0),
+        "Profile uncertainty must be finite and nonnegative"
+    );
+    anyhow::ensure!(
+        valid.windows(2).all(|pair| pair[0].x < pair[1].x),
+        "Profile coordinates must increase strictly"
+    );
+    let band: String = confidence_polygon(&valid)
         .iter()
-        .map(|r| format!("({:.4},{:.6})", r.x, r.delta + 2.0 * r.err))
-        .collect::<Vec<_>>()
-        .join(" ");
-    let lower: String = valid
-        .iter()
-        .map(|r| format!("({:.4},{:.6})", r.x, r.delta - 2.0 * r.err))
+        .map(|(x, bound)| format!("({x:.4},{bound:.6})"))
         .collect::<Vec<_>>()
         .join(" ");
 
@@ -146,10 +165,7 @@ fn write_spatial_residuals(rows: &[ProfileRow], out: &Path) -> anyhow::Result<()
 ]
 % 2-sigma error band
 \addplot[fill=blue!15,draw=none,forget plot]
-  coordinates {{{upper}}}
-  \closedcycle;
-\addplot[fill=white,draw=none,forget plot]
-  coordinates {{{lower}}}
+  coordinates {{{band}}}
   \closedcycle;
 % Stacked profile
 \addplot[blue,thick] coordinates {{{coords}}};
@@ -158,7 +174,7 @@ fn write_spatial_residuals(rows: &[ProfileRow], out: &Path) -> anyhow::Result<()
 % Annotations
 \node[font=\tiny,above] at (axis cs:0.55,0.06) {{$+5\%$ bulge}};
 \node[font=\tiny,below] at (axis cs:0.75,-0.12) {{$-15\%$ cusp}};
-\node[font=\tiny,above] at (axis cs:0.953,0.31) {{$+29\%$ IFU}};
+\node[font=\tiny,below] at (axis cs:0.953,0.28) {{Historical $+29\%$ IFU}};
 \end{{axis}}
 \end{{tikzpicture}}
 "
@@ -263,27 +279,25 @@ fn write_stft_spectrogram(rows: &[StftRow], out: &Path) -> anyhow::Result<()> {
     // Build coordinate list for pgfplots matrix
     let coords: String = rows
         .iter()
-        .map(|r| format!("({:.4},{:.4},{:.6})", r.x_center, r.k, r.power))
+        .map(|r| format!("({:.4},{:.4},{:.8e})", r.x_center, r.k, r.power))
         .collect::<Vec<_>>()
         .join("\n  ");
 
+    let mode_count = k_vals.len();
     let tex = format!(
         r"\begin{{tikzpicture}}
 \begin{{axis}}[
   xlabel={{$x = r/r_s$}},
   ylabel={{Mode $k$}},
+  zlabel={{Power}},
   width=8cm, height=5cm,
   colormap/jet,
-  title={{STFT Spectrogram: Baryonic Localization at $x < 2$}},
+  title={{STFT power over retained radial samples}},
   point meta min=0,
 ]
-\addplot3[surf,shader=flat] coordinates {{
+\addplot3[surf,shader=flat,mesh/cols={mode_count}] coordinates {{
   {coords}
 }};
-% Baryonic boundary marker
-\draw[red,dashed] (axis cs:2.0,\pgfkeysvalueof{{/pgfplots/ymin}}) --
-                   (axis cs:2.0,\pgfkeysvalueof{{/pgfplots/ymax}})
-  node[above,font=\tiny] {{$x=2$}};
 \end{{axis}}
 \end{{tikzpicture}}
 "
@@ -337,4 +351,73 @@ pub fn run(cli: Cli) -> anyhow::Result<()> {
 
     eprintln!("Done. Three panels written to {:?}", cli.out_dir);
     Ok(())
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn stft_uses_named_power_and_wavenumber_columns() {
+        for csv in [
+            "x_center,mode,k,power,phase,n_eff\n0.5,1,0.897598,1.350001e-4,-2.566737,15.3942\n",
+            "power,k,mode,x_center\n1.350001e-4,0.897598,1,0.5\n",
+        ] {
+            let rows = read_stft(csv.as_bytes()).unwrap();
+            assert_eq!(rows.len(), 1);
+            assert_eq!(rows[0].x_center, 0.5);
+            assert_eq!(rows[0].k, 0.897598);
+            assert_eq!(rows[0].power, 1.350001e-4);
+        }
+        for csv in [
+            "x_center,mode,power\n0.5,1,0.1\n",
+            "x_center,k,power\n0.5,1,NaN\n",
+            "x_center,k,power\n0.5,1,-0.1\n",
+        ] {
+            assert!(read_stft(csv.as_bytes()).is_err());
+        }
+    }
+
+    #[test]
+    fn confidence_band_closes_between_bounds_without_diagonal_wedges() {
+        let rows = [
+            ProfileRow {
+                x: 0.0,
+                delta: 1.0,
+                err: 0.5,
+                n: 10,
+            },
+            ProfileRow {
+                x: 1.0,
+                delta: -1.0,
+                err: 1.0,
+                n: 10,
+            },
+            ProfileRow {
+                x: 2.0,
+                delta: 2.0,
+                err: 0.5,
+                n: 10,
+            },
+        ];
+        let polygon = confidence_polygon(&rows.iter().collect::<Vec<_>>());
+        assert_eq!(
+            polygon,
+            vec![
+                (0.0, 2.0),
+                (1.0, 1.0),
+                (2.0, 3.0),
+                (2.0, 1.0),
+                (1.0, -3.0),
+                (0.0, 0.0)
+            ]
+        );
+        let twice_area: f64 = polygon
+            .iter()
+            .zip(polygon.iter().cycle().skip(1))
+            .map(|(left, right)| left.0 * right.1 - right.0 * left.1)
+            .sum();
+        // Integrating the full width 4*err over the two intervals gives area six.
+        assert_eq!(twice_area.abs() / 2.0, 6.0);
+    }
 }

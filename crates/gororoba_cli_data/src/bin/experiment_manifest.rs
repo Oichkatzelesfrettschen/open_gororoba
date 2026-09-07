@@ -38,7 +38,7 @@ struct Cli {
 
 #[derive(Subcommand, Debug)]
 enum CommandLine {
-    /// Validate one [experiment] table or one [[experiment]] entry.
+    /// Validate one `[experiment]` table or one `[[experiment]]` entry.
     Verify {
         /// TOML manifest containing one experiment record.
         manifest: PathBuf,

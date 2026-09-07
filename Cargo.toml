@@ -31,6 +31,7 @@ members = [
     "crates/docpipe",
     "crates/fixed_point_lbm",
     "crates/flavor_lifts",
+    "crates/fwht",
     "crates/gororoba_algebra",
     "crates/gororoba_cli",
     "crates/gororoba_cli_algebra",
@@ -224,10 +225,8 @@ core_affinity = "0.8"
 # === Complementary Compute Stack ===
 # Each crate fills a strictly non-overlapping role:
 
-# Fast Walsh-Hadamard Transform (extracted standalone crate in cratesgororobas).
-# Pin by git rev so builds do not depend on a sibling local hub checkout.
-# After crates.io publish of fwht, switch to: fwht = "0.1"
-fwht = { git = "https://github.com/Oichkatzelesfrettschen/cratesgororobas", rev = "28b5310d3a6755b81b7c1ceb79f9f79f67f1af70" }
+# Normalized Walsh-Hadamard transforms and structured random rotations.
+fwht = { path = "crates/fwht" }
 
 # SIMD types + dispatch + distance
 pulp = "0.22" # Runtime-dispatched SIMD autovectorization (powers faer)

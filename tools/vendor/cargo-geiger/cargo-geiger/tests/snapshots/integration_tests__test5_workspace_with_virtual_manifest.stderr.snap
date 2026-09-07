@@ -1,0 +1,6 @@
+---
+source: cargo-geiger/tests/mod.rs
+expression: stderr
+---
+manifest path `{MANIFEST_PATH}` is a virtual manifest, but this command requires running against an actual package in this workspace
+

@@ -1,32 +1,49 @@
-# Standalone CI for LaTeX publication builds.
-#
-# This workflow is designed for the future open_gororoba_paper repository.
-# Until extraction, it runs in the monorepo on docs/latex/ changes only.
-#
-# When extracted to a separate repo, copy this file as .github/workflows/ci.yml,
-# remove the paths filter and working-directory settings, and adjust TEXINPUTS
-# paths for the standalone repo layout.
 name: paper
 
 on:
+  workflow_dispatch:
   push:
+    branches: [main]
     paths:
       - 'docs/latex/**'
+      - 'papers/bib/**'
+      - '.github/workflows/paper.yml'
   pull_request:
     paths:
       - 'docs/latex/**'
+      - 'papers/bib/**'
+      - '.github/workflows/paper.yml'
+
+permissions:
+  contents: read
 
 concurrency:
-  group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
     container:
-      image: texlive/texlive:latest
+      image: texlive/texlive@sha256:66446fb092ef02d6dc31bba079d9bdc83e8a6af00562c6062bb97ae8e91814ea
     steps:
       - uses: actions/checkout@v4
+
+      - name: Fetch pinned Astronomy and Astrophysics styles
+        run: |
+          AA_ROOT="$GITHUB_WORKSPACE/.cache/paper-aa"
+          mkdir -p "$AA_ROOT"
+          source_root=https://raw.githubusercontent.com/scottkosty/install-tl-ubuntu/d645e1ea3e730f65b0fc006dced43dc5558510a3/archive/aa-package
+          curl --fail --silent --show-error --location --retry 3 "$source_root/aa.cls" -o "$AA_ROOT/aa.cls"
+          curl --fail --silent --show-error --location --retry 3 "$source_root/bibtex/aa.bst" -o "$AA_ROOT/aa.bst"
+          curl --fail --silent --show-error --location --retry 3 "$source_root/linenoaa.sty" -o "$AA_ROOT/linenoaa.sty"
+          cd "$AA_ROOT"
+          sha256sum --check <<'HASHES'
+          e65a0f1f3b620fdd794d4fe7ea89fb094f4c87bc2959ec703a897864158147fd  aa.cls
+          7be30a1f0cda29f0c150101e52968723bd0e0ad2785213e3e15d08f25203eec9  aa.bst
+          4f79ce782f66edb783bce7f56d692ad725a5e6d7036b399ab7735ff07c5200f1  linenoaa.sty
+          HASHES
 
       - name: Build main paper
         working-directory: docs/latex
@@ -50,6 +67,10 @@ jobs:
       - name: Build MaNGA null result paper
         working-directory: docs/latex
         run: |
+          export TEXINPUTS=".:$GITHUB_WORKSPACE/.cache/paper-aa:"
+          export BSTINPUTS=".:$GITHUB_WORKSPACE/.cache/paper-aa:"
+          kpsewhich aa.cls
+          kpsewhich aa.bst
           latexmk -pdf -Werror -interaction=nonstopmode -halt-on-error \
             -output-directory=out manga_zd_null_result.tex
 
@@ -58,4 +79,5 @@ jobs:
         with:
           name: paper-pdfs
           path: docs/latex/out/*.pdf
-          retention-days: 30
+          if-no-files-found: error
+          retention-days: 14

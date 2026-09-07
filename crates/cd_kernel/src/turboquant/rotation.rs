@@ -36,8 +36,7 @@
 use rand::SeedableRng;
 use rand_chacha::ChaCha20Rng;
 use rand_distr::{Distribution, StandardNormal};
-// Note: WHT, Rademacher, and fast JL functions now delegate to the
-// standalone fwht crate (~/Github/cratesgororobas/fwht/).
+// WHT, Rademacher, and structured rotation functions delegate to fwht.
 
 /// Haar-distributed random orthogonal matrix via QR of Gaussian matrix.
 ///
@@ -135,11 +134,11 @@ pub fn unrotate(y: &[f64], pi: &[f64], d: usize, out: &mut [f64]) {
     }
 }
 
-// ---- Walsh-Hadamard Transform (via standalone fwht crate) ----
+// ---- Walsh-Hadamard Transform (via fwht) ----
 
 /// In-place Walsh-Hadamard Transform, normalized by 1/sqrt(d).
 ///
-/// Delegates to the standalone `fwht` crate (extracted from this module).
+/// Delegates to the workspace `fwht` crate.
 /// The crate provides the same algorithm: k-level butterfly for d = 2^k,
 /// normalized by 1/sqrt(d), self-inverse.
 ///
@@ -150,21 +149,21 @@ pub fn wht_inplace(data: &mut [f64]) {
 
 /// Generate random Rademacher sign vectors for fast JL rotation.
 ///
-/// Delegates to the standalone `fwht` crate.
+/// Delegates to the workspace `fwht` crate.
 pub fn generate_rademacher_diagonals(d: usize, seed: u64) -> (Vec<f64>, Vec<f64>) {
     fwht::generate_rademacher_diagonals(d, seed)
 }
 
 /// Fast JL rotation: y = D1 * WHT * D2 * x
 ///
-/// Delegates to the standalone `fwht` crate.
+/// Delegates to the workspace `fwht` crate.
 pub fn fast_jl_rotate(x: &[f64], d1: &[f64], d2: &[f64], buf: &mut [f64], out: &mut [f64]) {
     fwht::fast_jl_rotate(x, d1, d2, buf, out);
 }
 
 /// Inverse fast JL rotation: x = D2 * WHT * D1 * y
 ///
-/// Delegates to the standalone `fwht` crate.
+/// Delegates to the workspace `fwht` crate.
 pub fn fast_jl_unrotate(y: &[f64], d1: &[f64], d2: &[f64], buf: &mut [f64], out: &mut [f64]) {
     fwht::fast_jl_unrotate(y, d1, d2, buf, out);
 }

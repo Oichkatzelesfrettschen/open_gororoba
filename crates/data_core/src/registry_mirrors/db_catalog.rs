@@ -9,7 +9,7 @@
 //! - Source of truth: `db/schema.sql`
 //! - Canonical migrations: `db/migrations/*.sql`
 //! - Regenerate with: `cargo run -p xtask -- db-docs`
-//! - Objects: `72`
+//! - Objects: `79`
 //!
 //! ## `artifact_links` (table)
 //!
@@ -59,6 +59,47 @@
 //! | seq | name | unique | origin | partial | columns |
 //! | --- | --- | --- | --- | --- | --- |
 //! | 0 | `sqlite_autoindex_artifact_paths_1` | `true` | `pk` | `false` | `artifact_id, path, relation, <expr>` |
+//!
+//! ## `artifact_retrieval_observations` (table)
+//!
+//! - Strict: `false`
+//! - Without rowid: `false`
+//! - Declared columns: `19`
+//!
+//! | cid | name | type | not null | default | pk | hidden |
+//! | --- | --- | --- | --- | --- | --- | --- |
+//! | 0 | `observation_key` | `TEXT` | `false` | `` | `1` | `0` |
+//! | 1 | `artifact_id` | `TEXT` | `true` | `` | `0` | `0` |
+//! | 2 | `artifact_key` | `TEXT` | `true` | `` | `0` | `0` |
+//! | 3 | `original_url` | `TEXT` | `true` | `` | `0` | `0` |
+//! | 4 | `requested_url` | `TEXT` | `true` | `` | `0` | `0` |
+//! | 5 | `final_url` | `TEXT` | `true` | `` | `0` | `0` |
+//! | 6 | `expected_sha256` | `TEXT` | `true` | `` | `0` | `0` |
+//! | 7 | `expected_bytes` | `INTEGER` | `true` | `` | `0` | `0` |
+//! | 8 | `response_path` | `TEXT` | `false` | `` | `0` | `0` |
+//! | 9 | `observed_sha256` | `TEXT` | `false` | `` | `0` | `0` |
+//! | 10 | `observed_bytes` | `INTEGER` | `true` | `` | `0` | `0` |
+//! | 11 | `completed` | `INTEGER` | `true` | `` | `0` | `0` |
+//! | 12 | `http_status` | `INTEGER` | `true` | `` | `0` | `0` |
+//! | 13 | `digest_matches` | `INTEGER` | `true` | `` | `0` | `0` |
+//! | 14 | `canonical_url_corrected` | `INTEGER` | `true` | `` | `0` | `0` |
+//! | 15 | `document_identity` | `TEXT` | `true` | `` | `0` | `0` |
+//! | 16 | `recorded_at` | `TEXT` | `true` | `` | `0` | `0` |
+//! | 17 | `spec_sha256` | `TEXT` | `true` | `` | `0` | `0` |
+//! | 18 | `report_json` | `TEXT` | `true` | `` | `0` | `0` |
+//!
+//! Foreign keys:
+//!
+//! | id | seq | table | from | to | on update | on delete | match |
+//! | --- | --- | --- | --- | --- | --- | --- | --- |
+//! | 0 | 0 | `artifacts` | `artifact_id` | `id` | `NO ACTION` | `NO ACTION` | `NONE` |
+//!
+//! Indexes:
+//!
+//! | seq | name | unique | origin | partial | columns |
+//! | --- | --- | --- | --- | --- | --- |
+//! | 0 | `artifact_retrieval_by_identity` | `false` | `c` | `false` | `artifact_key, digest_matches, <expr>` |
+//! | 1 | `sqlite_autoindex_artifact_retrieval_observations_1` | `true` | `pk` | `false` | `observation_key, <expr>` |
 //!
 //! ## `artifacts` (table)
 //!
@@ -164,6 +205,75 @@
 //! | id | seq | table | from | to | on update | on delete | match |
 //! | --- | --- | --- | --- | --- | --- | --- | --- |
 //! | 0 | 0 | `artifacts` | `artifact_id` | `id` | `NO ACTION` | `CASCADE` | `NONE` |
+//!
+//! ## `claim_evidence` (table)
+//!
+//! - Strict: `false`
+//! - Without rowid: `false`
+//! - Declared columns: `2`
+//!
+//! | cid | name | type | not null | default | pk | hidden |
+//! | --- | --- | --- | --- | --- | --- | --- |
+//! | 0 | `claim_id` | `TEXT` | `false` | `` | `1` | `0` |
+//! | 1 | `spec_json` | `TEXT` | `true` | `` | `0` | `0` |
+//!
+//! Foreign keys:
+//!
+//! | id | seq | table | from | to | on update | on delete | match |
+//! | --- | --- | --- | --- | --- | --- | --- | --- |
+//! | 0 | 0 | `claims` | `claim_id` | `id` | `NO ACTION` | `NO ACTION` | `NONE` |
+//!
+//! Indexes:
+//!
+//! | seq | name | unique | origin | partial | columns |
+//! | --- | --- | --- | --- | --- | --- |
+//! | 0 | `sqlite_autoindex_claim_evidence_1` | `true` | `pk` | `false` | `claim_id, <expr>` |
+//!
+//! ## `claim_evidence_revision_experiments` (table)
+//!
+//! - Strict: `false`
+//! - Without rowid: `false`
+//! - Declared columns: `2`
+//!
+//! | cid | name | type | not null | default | pk | hidden |
+//! | --- | --- | --- | --- | --- | --- | --- |
+//! | 0 | `revision_id` | `INTEGER` | `true` | `` | `1` | `0` |
+//! | 1 | `experiment_id` | `TEXT` | `true` | `` | `2` | `0` |
+//!
+//! Foreign keys:
+//!
+//! | id | seq | table | from | to | on update | on delete | match |
+//! | --- | --- | --- | --- | --- | --- | --- | --- |
+//! | 0 | 0 | `experiments_cp` | `experiment_id` | `id` | `NO ACTION` | `NO ACTION` | `NONE` |
+//! | 1 | 0 | `claim_evidence_revisions` | `revision_id` | `id` | `NO ACTION` | `NO ACTION` | `NONE` |
+//!
+//! Indexes:
+//!
+//! | seq | name | unique | origin | partial | columns |
+//! | --- | --- | --- | --- | --- | --- |
+//! | 0 | `sqlite_autoindex_claim_evidence_revision_experiments_1` | `true` | `pk` | `false` | `revision_id, experiment_id, <expr>` |
+//!
+//! ## `claim_evidence_revisions` (table)
+//!
+//! - Strict: `false`
+//! - Without rowid: `false`
+//! - Declared columns: `7`
+//!
+//! | cid | name | type | not null | default | pk | hidden |
+//! | --- | --- | --- | --- | --- | --- | --- |
+//! | 0 | `id` | `INTEGER` | `false` | `` | `1` | `0` |
+//! | 1 | `claim_id` | `TEXT` | `true` | `` | `0` | `0` |
+//! | 2 | `previous_spec_json` | `TEXT` | `false` | `` | `0` | `0` |
+//! | 3 | `new_spec_json` | `TEXT` | `true` | `` | `0` | `0` |
+//! | 4 | `actor` | `TEXT` | `true` | `` | `0` | `0` |
+//! | 5 | `reason` | `TEXT` | `true` | `` | `0` | `0` |
+//! | 6 | `changed_at` | `TEXT` | `true` | `strftime('%Y-%m-%dT%H:%M:%fZ','now')` | `0` | `0` |
+//!
+//! Foreign keys:
+//!
+//! | id | seq | table | from | to | on update | on delete | match |
+//! | --- | --- | --- | --- | --- | --- | --- | --- |
+//! | 0 | 0 | `claims` | `claim_id` | `id` | `NO ACTION` | `NO ACTION` | `NONE` |
 //!
 //! ## `claim_experiment_refs` (table)
 //!
@@ -976,6 +1086,62 @@
 //! | --- | --- | --- | --- | --- | --- |
 //! | 0 | `sqlite_autoindex_ingest_fingerprints_1` | `true` | `pk` | `false` | `path, <expr>` |
 //!
+//! ## `insight_admissions` (table)
+//!
+//! - Strict: `false`
+//! - Without rowid: `false`
+//! - Declared columns: `12`
+//!
+//! | cid | name | type | not null | default | pk | hidden |
+//! | --- | --- | --- | --- | --- | --- | --- |
+//! | 0 | `id` | `INTEGER` | `false` | `` | `1` | `0` |
+//! | 1 | `admission_id` | `TEXT` | `true` | `` | `0` | `0` |
+//! | 2 | `insight_id` | `TEXT` | `true` | `` | `0` | `0` |
+//! | 3 | `spec_json` | `TEXT` | `true` | `` | `0` | `0` |
+//! | 4 | `before_json` | `TEXT` | `true` | `` | `0` | `0` |
+//! | 5 | `after_json` | `TEXT` | `true` | `` | `0` | `0` |
+//! | 6 | `before_compat` | `TEXT` | `true` | `` | `0` | `0` |
+//! | 7 | `after_compat` | `TEXT` | `true` | `` | `0` | `0` |
+//! | 8 | `previous_evidence_json` | `TEXT` | `false` | `` | `0` | `0` |
+//! | 9 | `actor` | `TEXT` | `true` | `` | `0` | `0` |
+//! | 10 | `reason` | `TEXT` | `true` | `` | `0` | `0` |
+//! | 11 | `created_at` | `TEXT` | `true` | `strftime('%Y-%m-%dT%H:%M:%fZ','now')` | `0` | `0` |
+//!
+//! Foreign keys:
+//!
+//! | id | seq | table | from | to | on update | on delete | match |
+//! | --- | --- | --- | --- | --- | --- | --- | --- |
+//! | 0 | 0 | `insights` | `insight_id` | `id` | `NO ACTION` | `NO ACTION` | `NONE` |
+//!
+//! Indexes:
+//!
+//! | seq | name | unique | origin | partial | columns |
+//! | --- | --- | --- | --- | --- | --- |
+//! | 0 | `sqlite_autoindex_insight_admissions_1` | `true` | `u` | `false` | `admission_id, <expr>` |
+//!
+//! ## `insight_evidence` (table)
+//!
+//! - Strict: `false`
+//! - Without rowid: `false`
+//! - Declared columns: `2`
+//!
+//! | cid | name | type | not null | default | pk | hidden |
+//! | --- | --- | --- | --- | --- | --- | --- |
+//! | 0 | `insight_id` | `TEXT` | `false` | `` | `1` | `0` |
+//! | 1 | `spec_json` | `TEXT` | `true` | `` | `0` | `0` |
+//!
+//! Foreign keys:
+//!
+//! | id | seq | table | from | to | on update | on delete | match |
+//! | --- | --- | --- | --- | --- | --- | --- | --- |
+//! | 0 | 0 | `insights` | `insight_id` | `id` | `NO ACTION` | `NO ACTION` | `NONE` |
+//!
+//! Indexes:
+//!
+//! | seq | name | unique | origin | partial | columns |
+//! | --- | --- | --- | --- | --- | --- |
+//! | 0 | `sqlite_autoindex_insight_evidence_1` | `true` | `pk` | `false` | `insight_id, <expr>` |
+//!
 //! ## `insight_revisions` (table)
 //!
 //! - Strict: `false`
@@ -1489,6 +1655,33 @@
 //! | seq | name | unique | origin | partial | columns |
 //! | --- | --- | --- | --- | --- | --- |
 //! | 0 | `sqlite_autoindex_roadmap_items_1` | `true` | `pk` | `false` | `id, <expr>` |
+//!
+//! ## `source_observations` (table)
+//!
+//! - Strict: `false`
+//! - Without rowid: `false`
+//! - Declared columns: `6`
+//!
+//! | cid | name | type | not null | default | pk | hidden |
+//! | --- | --- | --- | --- | --- | --- | --- |
+//! | 0 | `observation_key` | `TEXT` | `false` | `` | `1` | `0` |
+//! | 1 | `source_key` | `TEXT` | `true` | `` | `0` | `0` |
+//! | 2 | `artifact_id` | `TEXT` | `false` | `` | `0` | `0` |
+//! | 3 | `spec_sha256` | `TEXT` | `true` | `` | `0` | `0` |
+//! | 4 | `admitted_at` | `TEXT` | `true` | `` | `0` | `0` |
+//! | 5 | `report_json` | `TEXT` | `true` | `` | `0` | `0` |
+//!
+//! Foreign keys:
+//!
+//! | id | seq | table | from | to | on update | on delete | match |
+//! | --- | --- | --- | --- | --- | --- | --- | --- |
+//! | 0 | 0 | `artifacts` | `artifact_id` | `id` | `NO ACTION` | `NO ACTION` | `NONE` |
+//!
+//! Indexes:
+//!
+//! | seq | name | unique | origin | partial | columns |
+//! | --- | --- | --- | --- | --- | --- |
+//! | 0 | `sqlite_autoindex_source_observations_1` | `true` | `pk` | `false` | `observation_key, <expr>` |
 //!
 //! ## `source_of_truth_manifest` (table)
 //!

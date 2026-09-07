@@ -273,10 +273,10 @@ pub fn apply_gl4(matrix: &[u8; 4], v: usize) -> usize {
 
 /// Construct an algebra-isomorphic relabeling of the Cayley-Dickson twist.
 ///
-/// Under any linear automorphism pi in GL(4, Z_2) and signs s in {+1, -1}^16 (s[0]=+1):
-/// sigma'(i, j) = s[i] * s[j] * s[i ^ j] * sigma0(pi(i), pi(j)).
+/// Under any linear automorphism pi in GL(4, Z_2) and signs s in {+1, -1}^16 (`s[0]=+1`):
+/// `sigma'(i, j) = s[i] * s[j] * s[i ^ j] * sigma0(pi(i), pi(j))`.
 ///
-/// The map F: e_i -> s[i] * e_{pi(i)} is an algebra isomorphism from (A, sigma')
+/// The map `F: e_i -> s[i] * e_{pi(i)}` is an algebra isomorphism from (A, sigma')
 /// to (A, sigma0). Its associator tensor has identically 1848 terms (924 positive,
 /// 924 negative) with coefficients in {-2, +2}. GL relabelings can move the
 /// nonzero coordinate triples; equal cardinality does not imply equal support.

@@ -1,0 +1,50 @@
+schema_version = 1
+objective = "Move automatic validation to relevant, reproducible cloud workflows and minimize duplicate execution."
+repository_visibility = "GitHub reports PUBLIC; visibility change was unnecessary."
+automatic_local_validation = "Disabled through core.hooksPath=/dev/null and an inactive tracked pre-push hook. Manual validation remains available."
+
+[[task]]
+name = "Inspect workflow inputs, routing and required tools"
+status = "completed"
+result = "Identified removed makew calls, missing compiler tools, duplicate branch/PR runs, stale Warp binary, CUDA-dependent docs and missing paper bibliography."
+
+[[task]]
+name = "Enable hosted workflows and disable automatic local gates"
+status = "completed"
+result = "All five repository workflow files report active in GitHub; local hooksPath is /dev/null."
+
+[[task]]
+name = "Implement scoped CI and repair auxiliary workflow inputs"
+status = "completed"
+acceptance = "Use direct lint owners, reverse-dependency test closure including binaries, canonical checks, bounded caches, cancellation and input-scoped specialized workflows."
+
+[[task]]
+name = "Validate configuration and execute hosted checks"
+status = "in_progress"
+acceptance = "Actionlint, scope dispatch/error tests and actual hosted workflow execution pass without suppressed failures."
+local_result = "Actionlint, nine router tests and scoped Make dispatch/error tests pass. All four paper targets build with latexmk -Werror after exact historical input recovery."
+hosted_result = "At f9802be6, all four papers and both benchmark architectures pass. Rocq tool installation succeeds and is cached. Repository validation stops during fitsio-sys compilation because CFITSIO is missing; cargo-geiger panics in embedded Cargo 0.86 package resolution. Both failures require repair before integration."
+proof_result = "Hosted Rocq compilation passes. The subsequent substring admission check rejects comments and identifiers. A dependency-free Rust lexer passes five regression tests and scans 298 proof sources; hosted extraction verification remains pending."
+native_dependencies = "Declare CFITSIO, HDF5, fontconfig, BLAS/LAPACK/OpenBLAS and glslc from inspected build scripts and dependency paths. Both GLSL shaders compile to SPIR-V locally."
+cache_repair = "Retain compiler artifacts after failures; restore by source revision, lock and toolchain identities; use attempt-specific save keys so same-commit retries retain additional completed work."
+hygiene_repair = "Define the CUDA ownership prerequisite after XTASK_CACHE so clean caches build the tool. Remove the empty verify-no-reports-writes invocation left after commit 4549c252 deleted its Python verification directory and Make recipe. Workflow lint runs before compilation."
+documentation_result = "make docs-freshness passes across 450 Rustdoc targets, 29 generated canonical book pages and redirect checks. Quote mathematical notation and generate ignored book pages through registry-emit before mdBook."
+survey_result = "Retained cargo-geiger 0.13.0 source and lockfile under tools/vendor/cargo-geiger. All 187 library tests, workspace integration and Clippy pass locally. Full survey exits 0 in 303.54 seconds with 78 member reports and one compilation; five parse failures, 187 ignored paths and 721 used-but-unscanned sources remain explicit coverage limits."
+vendor_admission = "Register retained vendor Markdown through the authoritative markdown-registry CLI; retain upstream fixture filenames and provenance. Hosted release-profile checks remain pending."
+governance_result = "make validate-ci-registry passes after owner registration, project-counter refresh, canonical-derived claims/proof/derivation regeneration and signature refresh. The existing semantic payload stub warning leaves payload coverage unverified. make check also passes."
+runner_tool_repair = "Install actionlint 1.7.12 from its checksum-verified upstream Go release; validate the tested EXIT receipt writer with Ubuntu ShellCheck 0.9 as well as the local version."
+schema_result = "xtask db-docs regenerates retained schema SQL, JSON and Rust catalog from the canonical database; db-schema-drift-check passes. Workspace Clippy passes."
+review_result = "Shared execution-target resolution passes 11 tests and live registry verification. Embedded/vendor/rename routing passes 13 tests. Corrected STFT columns and confidence polygon pass producer tests, pointwise input comparison and warning-free rendering with unchanged historical input hashes."
+extraction_result = "Pinned Rocq regeneration refreshes quaternion operations added after the old golden. Generated OCaml matches the hosted diff and passes extraction replay plus OCaml warnings-as-errors compilation."
+
+[[task]]
+name = "Resolve hosted dependency and container failures"
+status = "completed_focused_checks_pass"
+observed = ["Public runner cannot fetch private fwht Git dependency", "Container TeX search path names host workspace instead of runtime workspace", "Rocq stdlib has an independent version and 9.1.1 is unavailable"]
+resolution = "Import pinned fwht implementation into crates/fwht under user authorization; derive TeX paths at runtime; pin the reference toolchain's compatible stdlib 9.1.0."
+validation = "fwht passes five unit tests, two doctests, eleven consumer rotation tests and all-target clippy. No Git sources remain in Cargo.lock. Forced MaNGA rebuild and opam resolution pass."
+
+[[task]]
+name = "Merge, synchronize main and retain publication evidence"
+status = "pending"
+acceptance = "Merge the reviewed passing head, verify remote/local parity, retain logs and remove only completed task worktrees."

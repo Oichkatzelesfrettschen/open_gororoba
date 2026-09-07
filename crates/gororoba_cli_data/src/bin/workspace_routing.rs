@@ -15,6 +15,36 @@ const CI_WORKSPACE_TRIGGERS: &[&str] = &[
     "agents.toml",
     "registry/test_taxonomy.toml",
     "registry/engineering_standards.toml",
+    ".github/workflows/ci.yml",
+    ".cargo/config.toml",
+    ".config/nextest.toml",
+];
+
+const CI_WORKSPACE_TRIGGER_PREFIXES: &[&str] = &["mk/"];
+
+// Patched dependencies can affect compilation across the workspace.
+const SHARED_WORKSPACE_TRIGGER_PREFIXES: &[&str] = &["vendor/"];
+
+// Embedded inputs outside crate directories participate in their owner's tests.
+const EMBEDDED_INPUT_OWNERS: &[(&str, &str)] = &[
+    ("db/migrations/", "provenance_store"),
+    ("apps/gororoba_studio/ui/", "gororoba_cli"),
+    (
+        "data/output/audit/qgp-pp-spectrum-calibration/",
+        "data_core",
+    ),
+    (
+        "data/output/audit/qgp-fragmentation-grid-intake/",
+        "qgp_scaling",
+    ),
+    (
+        "data/output/audit/qgp-fragmentation-interpolation/",
+        "qgp_scaling",
+    ),
+    (
+        "data/output/audit/qgp-participant-reference-intake/",
+        "qgp_scaling",
+    ),
 ];
 
 const LOCAL_SHARED_RUST_TRIGGERS: &[&str] = &[
@@ -49,10 +79,12 @@ const RUST_IRRELEVANT_PREFIXES: &[&str] = &[
 const RUST_IRRELEVANT_FILES: &[&str] = &[".gitignore", "pyproject.toml", "pytest.ini"];
 
 const GOVERNANCE_PREFIXES: &[&str] = &[
+    "db/migrations/",
     "registry/",
     "docs/",
     "reports/",
     "data/artifacts/",
+    "data/output/audit/",
     "proofs/",
     "bin/",
     "src/verification/",
@@ -119,11 +151,8 @@ struct ChangeClassification {
     force_workspace: bool,
     has_governance_changes: bool,
     has_shared_rust_changes: bool,
-    /// True when at least one changed file is non-source-code (markdown,
-    /// non-build TOML, shell scripts, configs, etc.) -- the file types
-    /// that `make check` (ansi-check + terminology-gate) actually scans
-    /// for hygiene violations. Pure Rust-source commits set this false
-    /// so validate-local can skip the `make check` rebuild entirely.
+    /// Any changed file can contain text covered by the hygiene gates,
+    /// including Rust comments and strings that clippy leaves unchecked.
     has_check_relevant_changes: bool,
 }
 
@@ -207,11 +236,20 @@ fn changed_files(
     if let Some(base_ref) = base {
         let (mut ok, mut committed, _) = git(
             root,
-            &["diff", "--name-only", &format!("{base_ref}...HEAD")],
+            &[
+                "diff",
+                "--no-renames",
+                "--name-only",
+                &format!("{base_ref}...HEAD"),
+            ],
         )
         .map_err(|err| BaseRefError(format!("failed to diff against base `{base_ref}`: {err}")))?;
         if !ok || committed.trim().is_empty() {
-            let retry = git(root, &["diff", "--name-only", base_ref, "HEAD"]).map_err(|err| {
+            let retry = git(
+                root,
+                &["diff", "--no-renames", "--name-only", base_ref, "HEAD"],
+            )
+            .map_err(|err| {
                 BaseRefError(format!("failed to diff against base `{base_ref}`: {err}"))
             })?;
             ok = retry.0;
@@ -230,7 +268,7 @@ fn changed_files(
             });
     }
 
-    let (_, working_tree, _) = git(root, &["diff", "--name-only", "HEAD"])
+    let (_, working_tree, _) = git(root, &["diff", "--no-renames", "--name-only", "HEAD"])
         .map_err(|err| BaseRefError(format!("failed to diff working tree: {err}")))?;
     working_tree
         .lines()
@@ -251,7 +289,7 @@ fn changed_files(
     Ok(paths.into_iter().collect())
 }
 
-fn parse_workspace_path_deps(root: &Path) -> Result<BTreeMap<String, String>> {
+fn parse_workspace_path_deps(root: &Path) -> Result<BTreeMap<String, PathBuf>> {
     let cargo_toml = fs::read_to_string(root.join("Cargo.toml")).context("read root Cargo.toml")?;
     let value: toml::Value = toml::from_str(&cargo_toml).context("parse root Cargo.toml")?;
     let Some(workspace) = value.get("workspace").and_then(toml::Value::as_table) else {
@@ -271,15 +309,49 @@ fn parse_workspace_path_deps(root: &Path) -> Result<BTreeMap<String, String>> {
         let Some(path) = dep_table.get("path").and_then(toml::Value::as_str) else {
             continue;
         };
-        let Some(crate_dir) = path.strip_prefix("crates/") else {
-            continue;
-        };
-        let crate_dir = crate_dir.trim_end_matches('/');
-        if !crate_dir.is_empty() {
-            path_map.insert(dep_name.clone(), crate_dir.to_string());
-        }
+        path_map.insert(
+            dep_name.clone(),
+            root.join(path)
+                .canonicalize()
+                .with_context(|| format!("resolve workspace dependency {dep_name}: {path}"))?,
+        );
     }
     Ok(path_map)
+}
+
+fn manifest_dependency_paths(
+    manifest_directory: &Path,
+    manifest: &toml::Value,
+    workspace_paths: &BTreeMap<String, PathBuf>,
+) -> Result<BTreeSet<PathBuf>> {
+    let target_tables = manifest
+        .get("target")
+        .and_then(toml::Value::as_table)
+        .into_iter()
+        .flat_map(|targets| targets.values());
+    let mut paths = BTreeSet::new();
+    for configuration in std::iter::once(manifest).chain(target_tables) {
+        for dependency_kind in ["dependencies", "dev-dependencies", "build-dependencies"] {
+            let Some(dependencies) = configuration
+                .get(dependency_kind)
+                .and_then(toml::Value::as_table)
+            else {
+                continue;
+            };
+            for (dependency_name, dependency) in dependencies {
+                if let Some(path) = dependency.get("path").and_then(toml::Value::as_str) {
+                    paths.insert(manifest_directory.join(path).canonicalize().with_context(
+                        || format!("resolve dependency {dependency_name}: {path}"),
+                    )?);
+                } else if dependency.get("workspace").and_then(toml::Value::as_bool) == Some(true)
+                    && let Some(path) = workspace_paths.get(dependency_name)
+                {
+                    paths.insert(path.clone());
+                }
+            }
+        }
+    }
+    Ok(paths)
 }
 
 fn build_dependency_graph(root: &Path) -> Result<DependencyGraph> {
@@ -311,13 +383,8 @@ fn build_dependency_graph(root: &Path) -> Result<DependencyGraph> {
     }
 
     let ws_path_map = parse_workspace_path_deps(root)?;
-    let inline_path_re =
-        regex::Regex::new(r#"(?m)^\s*([\w-]+)\s*=\s*\{[^}]*path\s*=\s*"\.\./([\w-]+)""#)
-            .expect("valid inline path regex");
-    let workspace_dep_re =
-        regex::Regex::new(r#"(?m)^\s*([\w-]+)\s*=\s*\{[^}]*workspace\s*=\s*true"#)
-            .expect("valid workspace dep regex");
-
+    let mut manifests = BTreeMap::new();
+    let mut owners = BTreeMap::new();
     for crate_name in &graph.all_crates {
         // xtask lives at root/xtask, not crates_root/xtask; every
         // other entry in all_crates is under crates_root.
@@ -328,29 +395,25 @@ fn build_dependency_graph(root: &Path) -> Result<DependencyGraph> {
         };
         let text = fs::read_to_string(&cargo_toml)
             .with_context(|| format!("read crate manifest {}", cargo_toml.display()))?;
-
-        for captures in inline_path_re.captures_iter(&text) {
-            let dep_dir = captures.get(2).map(|m| m.as_str()).unwrap_or_default();
-            if graph.all_crates.contains(dep_dir) {
-                graph
-                    .deps
-                    .entry(crate_name.clone())
-                    .or_default()
-                    .insert(dep_dir.to_string());
-            }
-        }
-
-        for captures in workspace_dep_re.captures_iter(&text) {
-            let dep_name = captures.get(1).map(|m| m.as_str()).unwrap_or_default();
-            if let Some(dep_dir) = ws_path_map.get(dep_name)
-                && dep_dir != crate_name
-                && graph.all_crates.contains(dep_dir)
+        let manifest: toml::Value = toml::from_str(&text)
+            .with_context(|| format!("parse crate manifest {}", cargo_toml.display()))?;
+        let directory = cargo_toml
+            .parent()
+            .context("manifest directory")?
+            .canonicalize()?;
+        owners.insert(directory.clone(), crate_name.clone());
+        manifests.insert(crate_name.clone(), (directory, manifest));
+    }
+    for (crate_name, (directory, manifest)) in manifests {
+        for path in manifest_dependency_paths(&directory, &manifest, &ws_path_map)? {
+            if let Some(dependency_name) = owners.get(&path)
+                && dependency_name != &crate_name
             {
                 graph
                     .deps
                     .entry(crate_name.clone())
                     .or_default()
-                    .insert(dep_dir.clone());
+                    .insert(dependency_name.clone());
             }
         }
     }
@@ -411,27 +474,8 @@ fn classify_changes(
     let mut classification = ChangeClassification::default();
 
     for file in files {
-        // Check-relevance: ansi-check + terminology-gate scan all repo
-        // files of certain types. A file is check-relevant if it is
-        // anything other than a Rust source file. Pure-Rust diffs can
-        // therefore skip `make check` entirely (the cached binary
-        // already passed on the prior commit's snapshot of those files).
-        //
-        // Rust source files are still subject to ansi-check via clippy
-        // (clippy itself rejects non-ASCII identifiers and most
-        // emoji-like Unicode in strings outside doc comments).
-        if !file.ends_with(".rs") {
-            classification.has_check_relevant_changes = true;
-        }
-
-        if workspace_triggers.contains(file.as_str()) {
-            classification.force_workspace = true;
-            continue;
-        }
-        if shared_rust_triggers.contains(file.as_str()) {
-            classification.has_shared_rust_changes = true;
-            continue;
-        }
+        // Source comments and strings need the same hygiene checks as prose.
+        classification.has_check_relevant_changes = true;
 
         if GOVERNANCE_PREFIXES
             .iter()
@@ -440,6 +484,33 @@ fn classify_changes(
             || is_cargo_manifest(file)
         {
             classification.has_governance_changes = true;
+        }
+
+        if workspace_triggers.contains(file.as_str())
+            || SHARED_WORKSPACE_TRIGGER_PREFIXES
+                .iter()
+                .any(|prefix| file.starts_with(prefix))
+            || (!local_mode
+                && CI_WORKSPACE_TRIGGER_PREFIXES
+                    .iter()
+                    .any(|prefix| file.starts_with(prefix)))
+        {
+            classification.force_workspace = true;
+            continue;
+        }
+        if shared_rust_triggers.contains(file.as_str()) {
+            classification.has_shared_rust_changes = true;
+            continue;
+        }
+
+        for &(prefix, owner) in EMBEDDED_INPUT_OWNERS {
+            if file.starts_with(prefix) {
+                if all_crates.contains(owner) {
+                    classification.affected_crates.insert(owner.to_string());
+                } else {
+                    classification.force_workspace = true;
+                }
+            }
         }
 
         if RUST_IRRELEVANT_FILES.contains(&file.as_str()) {
@@ -707,6 +778,322 @@ fn main() -> ExitCode {
 #[cfg(test)]
 mod tests {
     use super::is_cargo_manifest;
+
+    #[test]
+    fn vendored_dependencies_force_workspace_validation() {
+        for local_mode in [false, true] {
+            let classification = super::classify_changes(
+                &["vendor/proc-macro-error2/src/lib.rs".into()],
+                &Default::default(),
+                local_mode,
+            );
+            assert!(classification.force_workspace);
+            assert!(classification.has_check_relevant_changes);
+        }
+    }
+
+    #[test]
+    fn embedded_inputs_route_to_owners_and_consumers() -> anyhow::Result<()> {
+        let root = super::repo_root();
+        let graph = super::build_dependency_graph(&root)?;
+        let reverse = super::invert_graph(&graph.deps);
+        for (path, owner, consumer, governance) in [
+            (
+                "db/migrations/0001_provenance_index.sql",
+                "provenance_store",
+                "xtask",
+                true,
+            ),
+            (
+                "apps/gororoba_studio/ui/index.html",
+                "gororoba_cli",
+                "gororoba_cli_data",
+                false,
+            ),
+            (
+                "apps/gororoba_studio/ui/app.js",
+                "gororoba_cli",
+                "gororoba_cli_data",
+                false,
+            ),
+            (
+                "apps/gororoba_studio/ui/styles.css",
+                "gororoba_cli",
+                "gororoba_cli_data",
+                false,
+            ),
+            (
+                "data/output/audit/qgp-pp-spectrum-calibration/pp-table4.json",
+                "data_core",
+                "gororoba_cli_data",
+                true,
+            ),
+            (
+                "data/output/audit/qgp-pp-spectrum-calibration/pp-table4-yaml-reference.csv",
+                "data_core",
+                "gororoba_cli_data",
+                true,
+            ),
+            (
+                "data/output/audit/qgp-fragmentation-grid-intake/pinned-mirrors/jeffersonlab-HLO.GRID",
+                "qgp_scaling",
+                "gororoba_cli_physics",
+                true,
+            ),
+            (
+                "data/output/audit/qgp-fragmentation-interpolation/default_real32.csv",
+                "qgp_scaling",
+                "gororoba_cli_physics",
+                true,
+            ),
+            (
+                "data/output/audit/qgp-participant-reference-intake/table1-participant-rows.csv",
+                "qgp_scaling",
+                "gororoba_cli_physics",
+                true,
+            ),
+        ] {
+            assert!(root.join(path).is_file(), "{path}");
+            for local_mode in [false, true] {
+                let classification =
+                    super::classify_changes(&[path.into()], &graph.all_crates, local_mode);
+                assert_eq!(
+                    classification.affected_crates,
+                    [owner.to_string()].into(),
+                    "{path}"
+                );
+                assert!(!classification.force_workspace, "{path}");
+                assert_eq!(classification.has_governance_changes, governance, "{path}");
+                assert!(classification.has_check_relevant_changes, "{path}");
+                let closure = super::transitive_closure(&classification.affected_crates, &reverse);
+                assert!(closure.contains(consumer), "{path}: missing {consumer}");
+            }
+        }
+        Ok(())
+    }
+
+    #[test]
+    fn embedded_input_prefixes_are_bounded_and_missing_owners_fail_closed() {
+        for local_mode in [false, true] {
+            for path in [
+                "apps/gororoba_studio/ui-other/app.js",
+                "db/migrations-other/example.sql",
+                "data/output/audit/qgp-fragmentation-interpolation-other/data.csv",
+            ] {
+                let classification =
+                    super::classify_changes(&[path.into()], &Default::default(), local_mode);
+                assert!(classification.affected_crates.is_empty(), "{path}");
+                assert!(!classification.force_workspace, "{path}");
+            }
+            for &(prefix, _) in super::EMBEDDED_INPUT_OWNERS {
+                let classification = super::classify_changes(
+                    &[format!("{prefix}input")],
+                    &Default::default(),
+                    local_mode,
+                );
+                assert!(classification.force_workspace, "{prefix}");
+            }
+        }
+    }
+
+    #[test]
+    fn committed_and_staged_renames_route_source_and_destination_owners() -> anyhow::Result<()> {
+        struct Fixture(std::path::PathBuf);
+        impl Drop for Fixture {
+            fn drop(&mut self) {
+                let _ = std::fs::remove_dir_all(&self.0);
+            }
+        }
+        let nonce = std::time::SystemTime::now()
+            .duration_since(std::time::UNIX_EPOCH)?
+            .as_nanos();
+        let fixture = Fixture(std::env::temp_dir().join(format!(
+            "workspace-routing-renames-{}-{nonce}",
+            std::process::id()
+        )));
+        std::fs::create_dir(&fixture.0)?;
+        let run_git = |args: &[&str]| -> anyhow::Result<String> {
+            let (success, stdout, stderr) = super::git(&fixture.0, args)?;
+            anyhow::ensure!(success, "git {args:?}: {stderr}");
+            Ok(stdout)
+        };
+        run_git(&["init", "--quiet", "--initial-branch=main"])?;
+        run_git(&["config", "user.name", "Routing fixture"])?;
+        run_git(&["config", "user.email", "routing@example.invalid"])?;
+        run_git(&["config", "core.hooksPath", "/dev/null"])?;
+        let moves = [
+            ("crates/removed_owner/src/source.rs", "docs/source.rs"),
+            (
+                "crates/moved_owner/src/other.rs",
+                "crates/new_owner/src/other.rs",
+            ),
+        ];
+        for (source, destination) in moves {
+            std::fs::create_dir_all(fixture.0.join(source).parent().unwrap())?;
+            std::fs::create_dir_all(fixture.0.join(destination).parent().unwrap())?;
+            std::fs::write(fixture.0.join(source), format!("// {source}\n"))?;
+        }
+        run_git(&["add", "."])?;
+        run_git(&[
+            "-c",
+            "commit.gpgsign=false",
+            "commit",
+            "--quiet",
+            "-m",
+            "Source owners",
+        ])?;
+        let base = run_git(&["rev-parse", "HEAD"])?;
+        for (source, destination) in moves {
+            std::fs::rename(fixture.0.join(source), fixture.0.join(destination))?;
+        }
+        run_git(&["add", "-A"])?;
+        let detected = run_git(&["diff", "--cached", "--name-status", "--find-renames=100%"])?;
+        assert_eq!(
+            detected
+                .lines()
+                .filter(|line| line.starts_with("R100"))
+                .count(),
+            2
+        );
+        let expected: std::collections::BTreeSet<_> = moves
+            .into_iter()
+            .flat_map(|(source, destination)| [source.to_string(), destination.to_string()])
+            .collect();
+        for committed in [false, true] {
+            if committed {
+                run_git(&[
+                    "-c",
+                    "commit.gpgsign=false",
+                    "commit",
+                    "--quiet",
+                    "-m",
+                    "Move sources",
+                ])?;
+            }
+            let paths = super::changed_files(&fixture.0, Some(&base))
+                .map_err(|error| anyhow::anyhow!(error.to_string()))?;
+            assert_eq!(
+                paths
+                    .iter()
+                    .cloned()
+                    .collect::<std::collections::BTreeSet<_>>(),
+                expected
+            );
+            let owners = [
+                "removed_owner".to_string(),
+                "moved_owner".to_string(),
+                "new_owner".to_string(),
+            ]
+            .into();
+            let classification = super::classify_changes(&paths, &owners, false);
+            assert_eq!(classification.affected_crates, owners);
+            assert!(classification.has_governance_changes);
+        }
+        Ok(())
+    }
+
+    #[test]
+    fn root_member_dependencies_enter_reverse_closure() -> anyhow::Result<()> {
+        let graph = super::build_dependency_graph(&super::repo_root())?;
+        let reverse = super::invert_graph(&graph.deps);
+        for dependency in ["provenance_store", "verified_core", "repo_utilities"] {
+            assert!(graph.deps["xtask"].contains(dependency), "{dependency}");
+            let closure = super::transitive_closure(&[dependency.to_string()].into(), &reverse);
+            assert!(closure.contains("xtask"), "{dependency}");
+        }
+        Ok(())
+    }
+
+    #[test]
+    fn toml_dependency_tables_resolve_relative_paths_and_aliases() -> anyhow::Result<()> {
+        let root = super::repo_root();
+        let manifest: toml::Value = toml::from_str(
+            r#"
+            [dependencies.renamed]
+            package = "provenance_store"
+            path = "../crates/provenance_store"
+            [build-dependencies]
+            repo_root = { workspace = true }
+            [target.'cfg(unix)'.dev-dependencies]
+            verified_core = { path = "../crates/verified_core" }
+            [[bin]]
+            name = "foreign-source"
+            path = "../crates/gororoba_cli_data/src/bin/workspace_routing.rs"
+            "#,
+        )?;
+        let paths = super::manifest_dependency_paths(
+            &root.join("xtask"),
+            &manifest,
+            &super::parse_workspace_path_deps(&root)?,
+        )?;
+        let expected = ["provenance_store", "repo_root", "verified_core"]
+            .into_iter()
+            .map(|name| root.join("crates").join(name).canonicalize())
+            .collect::<std::io::Result<std::collections::BTreeSet<_>>>()?;
+        assert_eq!(paths, expected);
+        Ok(())
+    }
+
+    #[test]
+    fn rust_sources_trigger_hygiene_checks() {
+        for local_mode in [false, true] {
+            let classification = super::classify_changes(
+                &["crates/cosmology_core/src/distance.rs".to_string()],
+                &["cosmology_core".to_string()].into(),
+                local_mode,
+            );
+            assert!(classification.has_check_relevant_changes);
+        }
+    }
+
+    #[test]
+    fn workspace_triggers_retain_governance_classification() {
+        for local_mode in [false, true] {
+            for path in ["Cargo.toml", "registry/test_taxonomy.toml"] {
+                let classification =
+                    super::classify_changes(&[path.to_string()], &Default::default(), local_mode);
+                assert!(classification.has_governance_changes, "{path}");
+                assert_eq!(classification.force_workspace, !local_mode, "{path}");
+                assert_eq!(classification.has_shared_rust_changes, local_mode, "{path}");
+            }
+        }
+    }
+
+    #[test]
+    fn cloud_build_configuration_routes_to_the_workspace() {
+        for path in [
+            ".github/workflows/ci.yml",
+            ".cargo/config.toml",
+            ".config/nextest.toml",
+            "mk/cache_roots.mk",
+        ] {
+            let cloud = super::classify_changes(&[path.to_string()], &Default::default(), false);
+            assert!(cloud.force_workspace, "{path}");
+            let local = super::classify_changes(&[path.to_string()], &Default::default(), true);
+            assert!(!local.force_workspace, "{path}");
+        }
+        let paper = super::classify_changes(
+            &[".github/workflows/paper.yml".to_string()],
+            &Default::default(),
+            false,
+        );
+        assert!(!paper.force_workspace);
+    }
+
+    #[test]
+    fn audit_artifact_edits_trigger_governance_without_rust() {
+        for local_mode in [false, true] {
+            let classification = super::classify_changes(
+                &["data/output/audit/frb-physical-calibration-replay/findings.json".to_string()],
+                &Default::default(),
+                local_mode,
+            );
+            assert!(classification.has_governance_changes);
+            assert!(classification.has_check_relevant_changes);
+            assert!(!classification.force_workspace);
+            assert!(classification.affected_crates.is_empty());
+        }
+    }
 
     #[test]
     fn provenance_sources_route_to_compiling_owners() -> anyhow::Result<()> {

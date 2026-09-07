@@ -1,0 +1,76 @@
+schema_version = 1
+compiler = "rustc 1.97.0 (2d8144b78 2026-07-07)"
+library_tests_passed = 187
+workspace_integration_tests_passed = 1
+cold_fixture = "test_crates/test8_clean_name_versions"
+original_cold_result = "cargo-geiger 0.13.0 exited 101 at cargo 0.86.0 package.rs pending_ids.insert assertion"
+patched_cold_result = "workspace report exited 0 with one member and one compilation pass"
+original_cold_log_sha256 = "764a6122b387dc202326826fd2c0453ec7e64cedbf74cf8be160410401d8ac32"
+patched_cold_report_sha256 = "174d27efcc5c7e2b12289357ea693502bc267e4da51d0a27bf17066edfb6f8aa"
+local_logs = ".cache/ci-scoped-cloud-validation/geiger-*.log"
+
+[full_workspace_survey]
+exit_status = 0
+elapsed_seconds = 303.54
+workspace_members = 78
+root_reports = 78
+compilation_count = 1
+syntax_files_parsed = 39380
+syntax_files_failed = 5
+syntax_scan_complete = false
+ignored_paths = 187
+used_but_not_scanned_files = 721
+metadata_packages_outside_selected_graph = 214
+excluded_graph_packages_with_compiler_sources = 0
+mapping_failure_diagnostics = 0
+toolchain_sync_download_removal_diagnostics = 0
+report_sha256 = "d0592876f8eb14d1bd1fd394674eb41df7dcd635f7c4559ceeac5fb051ded355"
+log_sha256 = "28af3a7a1e6dac260f3e1a98b258600a504a534d3e34a1f5fc60848e764d570b"
+report = ".cache/ci-scoped-cloud-validation/geiger-workspace.json"
+log = ".cache/ci-scoped-cloud-validation/geiger-workspace.log"
+verification = "Exact reported roots equal live cargo metadata workspace members; every root labels compiler use as a workspace union."
+limits = "Five dependency sources failed syntax parsing; custom build scripts remain ignored and compiler-used unscanned files remain enumerated."
+local_profile = "Debug tool tests and executable; workspace Cargo Check with optimization inherited from repository and debug information disabled."
+hosted_profile = "CI release-profile tests reuse the integration-built survey executable; hosted execution remains a separate validation surface."
+
+[dependency_graph_probe]
+result = "Manifest-candidate enumeration emitted 87171 failed-match diagnostics for packages outside the resolved feature graph."
+mechanism = "Cargo resolve-node edges replace manifest candidate lookup, preserving exact selected package identities."
+regression = "Removing a resolve edge while retaining its metadata package excludes that candidate from the dependency report."
+superseded_report_sha256 = "477ad6e4517699412273c757826f7411ae30f21d80a892a1ddfd2c8ada60f103"
+superseded_log_sha256 = "d567766683bf562079c1357cb3fc68870170c58f953c77fea51d27e09a6bf0a3"
+resolved_candidates_result = "Exact resolve edges still emitted 45477 match diagnostics for candidates excluded by krates selected-feature reconstruction."
+selected_graph_policy = "Intersect Cargo resolve edges with krates package nodes; enumerate excluded packages and compiler-used source overlap."
+resolved_candidates_report_sha256 = "46ec1879d89e014522a43689e82ee39b642abfe908de1bdd7d24dc1318a0c34f"
+resolved_candidates_log_sha256 = "c192628ed8191c03d1383ab35c5adae303c57d697df9a90836f6302d8b27be61"
+
+[compiler_drift_probe]
+command_boundary = "Direct cargo-geiger workspace-report invocation with isolated .cache/geiger-workspace-target, without explicit RUSTUP_TOOLCHAIN or absolute RUSTC"
+result = "Failed with E0514 after dependency-local toolchain files selected different rustc versions"
+retained_log = ".cache/ci-scoped-cloud-validation/geiger-workspace-compiler-drift.log"
+log_sha256 = "b6daf9a729a4fa2a3d2045b5b96970940940a07486bd9f9fc92ce735dc349139"
+outside_target_boundary = "/home/eirikr/.rustup/toolchains"
+observed_effects = [
+  "rustup synchronized 1.83.0-x86_64-unknown-linux-gnu and reported downloading 6 components; subsequent direct binary query reports rustc 1.83.0 (90b35a623 2024-11-26).",
+  "rustup synchronized stable-x86_64-unknown-linux-gnu to the 1.98.1 release, reported removing previous rust-src, cargo, clippy, rust-docs, rust-std, rustc and rustfmt components, then downloading 8 components; subsequent direct binary query reports rustc 1.98.1 (48a229cea 2026-09-01).",
+]
+prestate_boundary = "The probe did not inventory prior toolchain versions or component hashes; original stable version and whether 1.83.0 existed before the probe remain unknown."
+cleanup = "The investigation retained installed toolchains and component state; removal requires a separate scoped decision."
+
+[compiler_pin]
+rustup_toolchain = "1.97.0"
+rustc_selection = "rustup which --toolchain 1.97.0 rustc"
+receipt = "The CI workflow records the absolute compiler path and rustc --version --verbose in survey/compiler-identity.txt."
+
+[parser_stack_probe]
+source = "typenum 1.19.0 src/gen/consts.rs"
+source_bytes = 280251
+source_lines = 6567
+source_sha256 = "9aa17739639f2e3f516cd9136e05beb19492491431df71a1e2aa4e3ec78e176c"
+small_stack_bytes = 2097152
+small_stack_result = "A deterministic single-thread source scan aborted on this file with stack overflow."
+large_stack_bytes = 16777216
+large_stack_result = "The same geiger library parsed the exact file successfully and returned metrics."
+worker_limit = 4
+maximum_reserved_worker_stack_bytes = 67108864
+memory_boundary = "The bound covers parser-worker stack reservation; source text, ASTs, report maps and compiler memory remain additional allocations."

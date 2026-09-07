@@ -1,0 +1,27 @@
+schema_version = 1
+status = "session_cutoff_user_authorized_merge"
+validated_publication_head = "786ef15b9a9c4f509f63cf72163446ced110d677"
+merge_boundary = "The user explicitly ended CI repair and requested immediate merge. Full workspace validation remains pending; auxiliary workflow success does not establish full CI success."
+repository_visibility = "public"
+automatic_local_push_gates = "disabled; manual validation remains available"
+completed = ["In-repository fwht and retained cargo-geiger packages with provenance", "Scoped hosted CI, native dependencies, failure-retaining caches and workflow repairs", "Hosted papers, both benchmark architectures, proof compilation/admission/extraction, survey tests and full survey pass at the publication head", "Local governance, schema, Rust integrity and focused regression checks pass"]
+full_ci_run = "https://github.com/Oichkatzelesfrettschen/open_gororoba/actions/runs/34081076959"
+full_ci_status_at_cutoff = "running in Rust validation"
+local_full_workspace_run = "Stopped on user request while compiling test executables; test execution success is unestablished."
+recovery_directory = "/home/eirikr/Github/open_gororoba/.cache/ci-session-handoff"
+recovery_patch = "unmerged-followup.patch"
+recovery_vendor_archive = "unmerged-gix-features.tar"
+recovery_checksums = "SHA256SUMS"
+logs_directory = "/home/eirikr/Github/open_gororoba/.cache/ci-session-handoff/logs"
+followup_policy = "Resume only in a separately authorized session; inspect the recovery patch before applying it. The saved manifest/lockfile patch is intentionally excluded from the merge because it is inconsistent and unvalidated."
+residuals = [
+  "Finish full hosted Rust tests and documentation validation; diagnose actual failures without assuming success.",
+  "Route db/schema.sql to integrity validation and registry/book_docs.toml to docs publication; saved changes need final verification.",
+  "Correct manuscript interpretations: retained IFU feature is about 9 percent, derivative spectrum is not monotonic k^-2, STFT radius ends near 1.216 and cannot adjudicate x>2; proof complexity CSV has unknown historical revision. Saved paper builds pass, but final producer equivalence remains unverified.",
+  "Add standalone cargo-geiger dependency policy. Baseline check reports 14 advisory errors. Compatible updates and an unvalidated gix-features SHA-1 backport are saved; patched manifest and lockfile remain unreconciled, and policy/provenance/tests are incomplete.",
+  "Review gix-date 0.9.3 advisory applicability against absent TimeBuf implementation; document bounded dispositions for unmaintained bitmaps, im-rc and sized-chunks.",
+  "Clarify cargo-geiger all-targets as target-triple graph matching, not compilation of every Cargo target kind; saved help clarification changes no behavior.",
+]
+historical_worktrees = ["/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication", "/home/eirikr/worktrees/open_gororoba/themis-frozen-model-source"]
+historical_preservation_boundary = "Retain both worktrees. Recorded HEAD/status observations identify preexisting changes; full tracked-file hash preservation was not measured."
+host_effect = "An earlier unpinned diagnostic invocation caused rustup to install 1.83.0 components and update stable to 1.98.1. Prior versions/components were not inventoried; toolchains were retained. Repository pin remains 1.97.0."

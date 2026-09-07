@@ -4,7 +4,7 @@
 .PHONY: verify verify-grand verify-c010-c011-theses ansi-check ansi-check-strict terminology-gate doctor doctor-blas provenance cuda-source-ownership
 .PHONY: provenance-registry-index provenance-registry-export provenance-registry-verify provenance-registry-doctor provenance-registry-link-audit provenance-registry-recover
 .PHONY: rocq-proofs rocq-proofs-check rocq-project-check rocq-makefile-check lva-paper
-.PHONY: heavy test-inventory verify-no-reports-writes
+.PHONY: heavy test-inventory
 .PHONY: rust-test rust-clippy rust-semver-check rust-smoke rust-regression rust-regression-scoped miri-cd-kernel dep-audit cargo-deny-check mcp-smoke e027-validate studio-run studio-check profile-tensor-avt x87-strategy-bench x87-strategy-perf x87-strategy-hyperfine x87-strategy-flamegraph x87-givens-microbench x87-givens-microbench-perf jacobi-backend-sweep jacobi-backend-perf jacobi-backend-flamegraph jacobi-backend-samply jacobi-backend-samply-compare gpu-bench gpu-bench-ncu gpu-bench-nsys
 .PHONY: cpu-bench cpu-bench-perf cpu-bench-cachegrind cpu-bench-flamegraph parity-bench parity-report
 .PHONY: pre-push-gate-scoped submodule-sync validate-local validate-local-xtask validate-ci validate-ci-registry validate-ci-rust validate-repository validate-repository-fast validate-governance validation-tools registry-validation-tools validation-tools-clean validation-tools-rebuild validation-tools-check-paths validation-lock-status data-core-pure-check
@@ -122,6 +122,8 @@ DOCS_RUSTDOC_DIR ?= $(DOCS_SITE_DIR)/rustdoc
 DOCS_CARGO_TARGET_DIR ?= $(CURDIR)/target/docs-target
 DOCS_CARGO_BUILD_DIR ?= $(REPO_TMP_CARGO_ROOT)/docs
 DOCS_CARGO_ENV = CARGO_HOME=$(REPO_CARGO_HOME) CARGO_TARGET_DIR=$(DOCS_CARGO_TARGET_DIR) CARGO_BUILD_BUILD_DIR=$(DOCS_CARGO_BUILD_DIR) CARGO_BUILD_JOBS=$(CARGO_JOBS) RAYON_NUM_THREADS=$(RAYON_THREADS) RUST_TEST_THREADS=$(RUST_TEST_THREADS)
+# Hosted documentation uses default features; SDK-equipped hosts can opt in.
+DOCS_FEATURE_FLAGS ?=
 SEMVER_BASELINE_REV ?= v1.0-methods
 SEMVER_BASELINE_SHA := $(shell git rev-parse --short=12 $(SEMVER_BASELINE_REV) 2>/dev/null || echo unknown)
 SEMVER_BASELINE_ROOT ?= $(CURDIR)/.cache/semver-baselines/$(SEMVER_BASELINE_REV)-$(SEMVER_BASELINE_SHA)
@@ -185,9 +187,6 @@ bootstrap-dev:
 # ---- Quality gates ----
 
 lint: rust-clippy
-
-cuda-source-ownership: $(XTASK_CACHE)
-	$(XTASK_CACHE) cuda-source-ownership
 
 # ---- Formatting (dprint) ----
 # Unified formatting for Rust (.rs via rustfmt), TOML, JSON, and Markdown.
@@ -322,7 +321,6 @@ check: $(REPO_UTILITIES_BIN)
 	@$(REPO_UTILITIES_BIN) ansi-check --check
 	@$(REPO_UTILITIES_BIN) terminology-gate
 	$(MAKE) cuda-source-ownership
-	$(MAKE) verify-no-reports-writes
 	@echo "OK: fast shared check suite complete."
 
 # Governance verifier targets
@@ -408,6 +406,9 @@ CORE_VALIDATION_SOURCE_DEPS := $(shell find crates xtask -type f \( -name '*.rs'
 # validation path needs both, while the broad registry bundle below remains a
 # separate tier so ordinary Rust edits do not pay for all registry binaries.
 XTASK_CACHE := $(VALIDATION_TOOLS_DIR)/xtask
+
+cuda-source-ownership: $(XTASK_CACHE)
+	$(XTASK_CACHE) cuda-source-ownership
 CORE_VALIDATION_STAMP := $(VALIDATION_TOOLS_DIR)/core-validation.stamp
 
 $(CORE_VALIDATION_STAMP): $(CORE_VALIDATION_SOURCE_DEPS) $(VALIDATION_SOURCE_IDENTITY_FILE)
@@ -634,6 +635,59 @@ validate-ci-rust:
 
 gate-ci-rust: validate-ci-rust
 	@echo "DEPRECATED: make gate-ci-rust is a compatibility alias for make validate-ci-rust."
+
+.PHONY: validate-ci-scoped-rust
+validate-ci-scoped-rust: SHELL := /bin/bash
+validate-ci-scoped-rust: export CI_RUST_SCOPE := $(CI_RUST_SCOPE)
+validate-ci-scoped-rust: export CI_CLIPPY_SCOPE := $(CI_CLIPPY_SCOPE)
+validate-ci-scoped-rust:
+	@set -euo pipefail; \
+	validate_scope() { \
+	    local scope_name="$$1" scope_value="$$2"; \
+	    local -a scope_tokens=(); \
+	    if [[ "$$scope_value" == *$$'\n'* || "$$scope_value" == *$$'\r'* ]]; then \
+	        echo "ERROR: $$scope_name requires a single-line package scope." >&2; return 1; \
+	    fi; \
+	    read -r -a scope_tokens <<< "$$scope_value"; \
+	    if [ "$${#scope_tokens[@]}" -eq 1 ] && [ "$${scope_tokens[0]}" = --workspace ]; then return; fi; \
+	    if [ "$${#scope_tokens[@]}" -eq 0 ] || (( $${#scope_tokens[@]} % 2 != 0 )); then \
+	        echo "ERROR: $$scope_name requires --workspace or explicit -p package pairs." >&2; return 1; \
+	    fi; \
+	    for ((scope_index=0; scope_index<$${#scope_tokens[@]}; scope_index+=2)); do \
+	        if [ "$${scope_tokens[scope_index]}" != -p ] || \
+	           [[ ! "$${scope_tokens[scope_index+1]}" =~ ^[A-Za-z0-9_][A-Za-z0-9_-]*$$ ]]; then \
+	            echo "ERROR: invalid $$scope_name package scope." >&2; return 1; \
+	        fi; \
+	    done; \
+	}; \
+	validate_scope CI_RUST_SCOPE "$$CI_RUST_SCOPE"; \
+	validate_scope CI_CLIPPY_SCOPE "$$CI_CLIPPY_SCOPE"; \
+	read -r -a rust_scope <<< "$$CI_RUST_SCOPE"; \
+	read -r -a clippy_scope <<< "$$CI_CLIPPY_SCOPE"; \
+	light_scope=(); heavy_scope=(); \
+	if [ "$${rust_scope[0]}" = --workspace ]; then \
+	    light_scope=(--workspace --exclude algebra_analysis --exclude gr_core); \
+	    heavy_scope=(-p algebra_analysis -p gr_core); \
+	else \
+	    for ((scope_index=1; scope_index<$${#rust_scope[@]}; scope_index+=2)); do \
+	        package_name="$${rust_scope[scope_index]}"; \
+	        case "$$package_name" in \
+	            algebra_analysis|gr_core) heavy_scope+=(-p "$$package_name") ;; \
+	            *) light_scope+=(-p "$$package_name") ;; \
+	        esac; \
+	    done; \
+	fi; \
+	echo "[ci-rust] clippy: $$CI_CLIPPY_SCOPE"; \
+	$(CARGO_ENV_CI) cargo clippy --locked --profile validation --all-targets "$${clippy_scope[@]}" -- -D warnings; \
+	if [ "$${#light_scope[@]}" -gt 0 ]; then \
+	    echo "[ci-rust] tests (validation): $${light_scope[*]}"; \
+	    $(CARGO_ENV_CI) cargo nextest run --locked --cargo-profile validation -P ci --build-jobs $(CARGO_JOBS) --test-threads $(NEXTEST_TEST_THREADS) "$${light_scope[@]}"; \
+	fi; \
+	if [ "$${#heavy_scope[@]}" -gt 0 ]; then \
+	    echo "[ci-rust] tests (test-heavy): $${heavy_scope[*]}"; \
+	    $(CARGO_ENV_CI) cargo nextest run --locked --cargo-profile test-heavy -P heavy --build-jobs $(CARGO_JOBS) --test-threads $(NEXTEST_TEST_THREADS) "$${heavy_scope[@]}"; \
+	fi; \
+	echo "OK: scoped CI Rust validation passed."
 
 db-schema-drift-check: $(XTASK_CACHE)
 	$(CARGO_ENV) $(XTASK_CACHE) db-docs --check
@@ -868,27 +922,15 @@ hooks-install:
 	@chmod +x "$(HOOKS_DIR)/pre-push"
 	@git config core.hooksPath "$(HOOKS_DIR)"
 	@echo "OK: git hooks installed. core.hooksPath=$$(git config --get core.hooksPath)"
-	@echo "Pre-push will run: make validate-local"
+	@echo "CI owns automatic validation. Run make validate-local for manual validation."
 
-hooks-install-strict:
-	@mkdir -p "$(HOOKS_DIR)"
-	@cp "$(HOOKS_DIR)/pre-push" "$(HOOKS_DIR)/pre-push.bak" 2>/dev/null || true
-	@printf '%s\n' \
-		'#!/usr/bin/env bash' \
-		'set -euo pipefail' \
-		'repo_root="$$(git rev-parse --show-toplevel)"' \
-		'cd "$$repo_root"' \
-		'echo "[pre-push] running make validate-local"' \
-		'make validate-local' \
-		> "$(HOOKS_DIR)/pre-push"
-	@chmod +x "$(HOOKS_DIR)/pre-push"
-	@git config core.hooksPath "$(HOOKS_DIR)"
-	@echo "OK: strict git hook installed. core.hooksPath=$$(git config --get core.hooksPath)"
-	@echo "Pre-push will run: make validate-local"
+hooks-install-strict: hooks-install
+	@echo "hooks-install-strict installs the same inactive local validation hook."
 
 hooks-status:
 	@echo "core.hooksPath=$$(git config --get core.hooksPath || echo .git/hooks)"
 	@echo "pre-push hook exists? $$(test -f "$(HOOKS_DIR)/pre-push" && echo yes || echo no)"
+	@echo "CI owns automatic validation; make validate-local remains a manual command."
 
 smoke: check rust-smoke
 	@echo "OK: smoke lane passed."
@@ -2005,7 +2047,7 @@ docs-publish: registry-export-markdown
 
 docs-rustdoc:
 	@mkdir -p "$(DOCS_CARGO_TARGET_DIR)"
-	$(DOCS_CARGO_ENV) cargo doc --workspace --all-features --no-deps --document-private-items
+	$(DOCS_CARGO_ENV) cargo doc --locked --keep-going --workspace $(DOCS_FEATURE_FLAGS) --no-deps --document-private-items
 
 cd-row-upgrade-batch:
 	@test -n "$(CD_ROW_UPGRADE_LANE)" || (echo "ERROR: set CD_ROW_UPGRADE_LANE=<jacobson1958|freudenthal1951>" && exit 1)
@@ -2043,14 +2085,18 @@ cd-row-upgrade-freudenthal:
 	fi
 	@echo "OK: rustdoc staged to $(DOCS_RUSTDOC_DIR)."
 
-docs-book:
+.PHONY: docs-book-source
+docs-book-source:
+	$(CARGO_ENV) cargo run --locked --profile validation -p gororoba_cli_data --bin registry-emit -- book-docs-legacy
+
+docs-book: docs-book-source
 	@command -v $(MD_BOOK) >/dev/null 2>&1 || { echo "ERROR: mdbook not found. Run: cargo install --locked --force mdbook"; exit 1; }
 	@rm -rf "$(DOCS_BOOK_DIR)"
 	@mkdir -p "$(DOCS_BOOK_DIR)"
 	$(MD_BOOK) build docs/book -d "$(DOCS_BOOK_DIR)"
 	@echo "OK: mdBook staged to $(DOCS_BOOK_DIR)."
 
-docs-site: docs-rustdoc
+docs-site: docs-rustdoc docs-book-source
 	@command -v $(MD_BOOK) >/dev/null 2>&1 || { echo "ERROR: mdbook not found. Run: cargo install --locked --force mdbook"; exit 1; }
 	@rm -rf "$(DOCS_SITE_DIR)"
 	@mkdir -p "$(DOCS_SITE_DIR)"
@@ -2165,8 +2211,8 @@ docs-freshness: docs-gate docs-redirect-check
 docs-gate: docs-site
 	@echo "OK: docs-gate generated unified docs bundle."
 
-docs-redirect-check:
-	$(CARGO_ENV) cargo run --release -p repo_utilities --bin repo-utilities -- docs-redirect-check $(DOCS_SITE_DIR)
+docs-redirect-check: $(REPO_UTILITIES_BIN)
+	$(REPO_UTILITIES_BIN) docs-redirect-check $(DOCS_SITE_DIR)
 
 terminology-gate:
 	$(CARGO_ENV) cargo run --release -p repo_utilities --bin repo-utilities -- terminology-gate

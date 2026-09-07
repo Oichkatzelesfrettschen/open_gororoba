@@ -1,5 +1,10 @@
 use anyhow::{Context, Result, bail};
 use clap::Parser;
+#[cfg(test)]
+use gororoba_cli_data::execution_targets::load_external_execution_targets;
+use gororoba_cli_data::execution_targets::{
+    execution_target_head, execution_target_registered, load_workspace_execution_targets,
+};
 use provenance_store::{ControlPlaneCompatKind, PlanningCompatTable, ProvenanceStore};
 use regex::Regex;
 use sha2::{Digest, Sha256};
@@ -2702,168 +2707,6 @@ fn load_requirements_compat_export(repo_root: &Path, db_rel_path: &Path) -> Resu
     Ok(Some(text))
 }
 
-fn load_workspace_execution_targets(repo_root: &Path) -> Result<BTreeSet<String>> {
-    let root_manifest = load_toml(&repo_root.join("Cargo.toml"))?;
-    let members = root_manifest
-        .get("workspace")
-        .and_then(Value::as_table)
-        .and_then(|workspace| workspace.get("members"))
-        .and_then(Value::as_array)
-        .cloned()
-        .unwrap_or_default();
-    let mut targets = BTreeSet::new();
-    for member in members {
-        let Some(member_rel) = member.as_str() else {
-            continue;
-        };
-        let manifest_path = if member_rel.ends_with("Cargo.toml") {
-            repo_root.join(member_rel)
-        } else {
-            repo_root.join(member_rel).join("Cargo.toml")
-        };
-        if !manifest_path.exists() {
-            continue;
-        }
-        let manifest = load_toml(&manifest_path)?;
-        let package = table_value(&manifest, "package");
-        let package_name = string_field(&package, "name");
-        let package_root = manifest_path.parent().context("package manifest parent")?;
-        let explicit_tests = table_array(&manifest, "test")?;
-        let mut test_names = BTreeSet::new();
-        let mut explicit_names = BTreeSet::new();
-        let mut explicit_paths = BTreeSet::new();
-        for target in &explicit_tests {
-            let name = string_field(target, "name");
-            let declared_path = string_field(target, "path");
-            let relative_path = if declared_path.is_empty() {
-                format!("tests/{name}.rs")
-            } else {
-                declared_path
-            };
-            explicit_names.insert(name.clone());
-            let target_path = package_root.join(relative_path);
-            if let Ok(canonical_path) = target_path.canonicalize() {
-                explicit_paths.insert(canonical_path);
-            }
-            if !name.is_empty() && target_path.is_file() {
-                test_names.insert(name);
-            }
-        }
-        if package.get("autotests").and_then(Value::as_bool) != Some(false) {
-            let tests_dir = package_root.join("tests");
-            if tests_dir.is_dir() {
-                for entry in fs::read_dir(tests_dir)? {
-                    let path = entry?.path();
-                    let name = if path.is_file() && path.extension().is_some_and(|ext| ext == "rs")
-                    {
-                        path.file_stem()
-                    } else if path.is_dir() && path.join("main.rs").is_file() {
-                        path.file_name()
-                    } else {
-                        None
-                    };
-                    if let Some(name) = name.and_then(|name| name.to_str()) {
-                        let source_path = if path.is_dir() {
-                            path.join("main.rs")
-                        } else {
-                            path.clone()
-                        };
-                        if explicit_names.contains(name)
-                            || explicit_paths.contains(&source_path.canonicalize()?)
-                        {
-                            continue;
-                        }
-                        test_names.insert(name.to_string());
-                    }
-                }
-            }
-        }
-        for name in test_names {
-            targets.insert(format!("cargo-test:{package_name}:{name}"));
-        }
-        for bench in table_array(&manifest, "bench")? {
-            let name = string_field(&bench, "name");
-            if !name.is_empty() {
-                targets.insert(name);
-            }
-        }
-    }
-    targets.extend(load_external_execution_targets(repo_root)?);
-    Ok(targets)
-}
-
-/// Admit retained external instrument receipts without executing their commands.
-fn load_external_execution_targets(repo_root: &Path) -> Result<BTreeSet<String>> {
-    let declaration = repo_root.join("plans/external-execution-targets.toml");
-    if !declaration.exists() {
-        return Ok(BTreeSet::new());
-    }
-    let mut targets = BTreeSet::new();
-    for row in table_array(&load_toml(&declaration)?, "external_target")? {
-        let name = string_field(&row, "name");
-        let version = string_field(&row, "version");
-        let executable = string_field(&row, "executable");
-        if name.is_empty()
-            || version.is_empty()
-            || !Path::new(&executable).is_absolute()
-            || name
-                .chars()
-                .chain(version.chars())
-                .any(|character| character.is_whitespace() || character == ':')
-        {
-            bail!("invalid external execution target identity: {name}");
-        }
-        let receipt_path = string_field(&row, "receipt");
-        let relative = Path::new(&receipt_path);
-        if relative.is_absolute()
-            || relative
-                .components()
-                .any(|component| !matches!(component, std::path::Component::Normal(_)))
-        {
-            bail!("external target receipt must be repository relative: {name}");
-        }
-        let bytes = fs::read(repo_root.join(relative))?;
-        if sha256_hex(&bytes) != string_field(&row, "receipt_sha256") {
-            bail!("external target receipt hash mismatch: {name}");
-        }
-        let receipt: Table = toml::from_str(std::str::from_utf8(&bytes)?)?;
-        for (field, expected) in [
-            ("name", &name),
-            ("version", &version),
-            ("executable", &executable),
-        ] {
-            if string_field(&receipt, field) != *expected {
-                bail!("external target receipt {field} mismatch: {name}");
-            }
-        }
-        let executable_hash = string_field(&receipt, "executable_sha256");
-        if executable_hash.len() != 64
-            || !executable_hash.bytes().all(|byte| byte.is_ascii_hexdigit())
-        {
-            bail!("external target receipt lacks executable digest: {name}");
-        }
-        let source_receipt = string_field(&receipt, "source_receipt");
-        let source_relative = Path::new(&source_receipt);
-        if source_receipt.is_empty()
-            || source_relative.is_absolute()
-            || source_relative
-                .components()
-                .any(|component| !matches!(component, std::path::Component::Normal(_)))
-        {
-            bail!("external source receipt must be repository relative: {name}");
-        }
-        if sha256_hex(&fs::read(repo_root.join(source_relative))?)
-            != string_field(&receipt, "source_receipt_sha256")
-        {
-            bail!("external source receipt hash mismatch: {name}");
-        }
-        if !targets.insert(format!("external:{name}:{version}")) {
-            bail!("duplicate external execution target: {name}");
-        }
-    }
-    Ok(targets)
-}
-
 fn sync_or_write_experiments_registry(repo_root: &Path, args: &Args, content: &str) -> Result<()> {
     let experiments_out_path = repo_root.join(&args.experiments_out);
     let canonical_experiments_path = repo_root.join("registry/experiments.toml");
@@ -3501,28 +3344,6 @@ fn table_value(root: &Table, key: &str) -> Table {
         .and_then(Value::as_table)
         .cloned()
         .unwrap_or_default()
-}
-
-/// The registered target inside an execution-target citation.
-///
-/// A cargo bin or bench target is one word. A dispatcher that collapsed a
-/// cluster of lanes into subcommands is cited with the lane appended, as in
-/// `turboquant bench` or `heliosphere predictive-eval`, and only the first word
-/// names a target cargo can build. Splitting on whitespace therefore recovers
-/// the buildable name while `registry/experiments.toml` keeps the lane in its
-/// `binary` field, which is what distinguishes one lane's evidence from
-/// another's.
-fn execution_target_head(target: &str) -> &str {
-    target.split_whitespace().next().unwrap_or(target)
-}
-
-/// Whether an execution-target citation names a registered target, accepting
-/// both the bare target and the dispatcher-plus-lane form.
-fn execution_target_registered(target: &str, registered: &BTreeSet<String>) -> bool {
-    if target.starts_with("cargo-test:") || target.starts_with("external:") {
-        return registered.contains(target);
-    }
-    registered.contains(target) || registered.contains(execution_target_head(target))
 }
 
 fn string_field(table: &Table, key: &str) -> String {

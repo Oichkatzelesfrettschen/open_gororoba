@@ -21,4 +21,5 @@ Require Extraction.
 Require Import ExtrOcamlBasic.
 
 (** Extract the abstract functor only -- no dependency on Rocq reals. *)
-Extraction "extraction/extracted_quat.ml" QuatOps.
+Set Extraction Output Directory "extraction".
+Extraction "extracted_quat.ml" QuatOps.

@@ -239,11 +239,13 @@ checks run under `validate-static`; registry-aware checks run under
 `rust-regression` once instead of requesting its Clippy prerequisite twice.
 The old `gate-*` and `audit-deep*` names remain compatibility aliases only.
 
-The pre-push hook invokes `make validate-local`. The Rust pre-push binary also
-invokes `make validate-local` directly instead of calling a missing `makew`
-wrapper. The CI workflow invokes `./makew validate-ci`, keeps the dedicated
-docs lane, and uploads `reports/validation/**` without launching a fresh
-failure-only full audit.
+GitHub Actions owns automatic validation. The tracked pre-push hook exits
+successfully, and local `make validate-local` remains an explicit diagnostic.
+The CI workflow calls Make directly, routes lint to changed owners and tests
+to their reverse dependency closure, and includes binary test targets. Weekly
+full validation covers workspace drift. Documentation builds and freshness
+checks share a runner; default features avoid requiring GPU SDKs for hosted
+documentation. Reports under `reports/validation/**` retain each executed lane.
 
 ## Post-refresh validation result
 

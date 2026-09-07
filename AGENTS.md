@@ -43,7 +43,7 @@ hardware-specific tables are replaced with the scientific stack.
 | ----------------------------------------------------- | ----------------------------------------------------------------------------------------------------------- |
 | `Cargo.toml` (root)                                   | Workspace members + `[workspace.lints]` (warnings-as-errors source of truth)                                |
 | `rust-toolchain.toml`                                 | Stable pin (`1.97.0`); do not bump without coordinating repository validation.                               |
-| `.githooks/pre-push`                                  | Five-check validation chain (cache, ansi, terminology, rust-regression, registry policy).                 |
+| `.github/workflows/ci.yml`                           | Automatic scoped CI; manual `make validate-local` remains available.                                     |
 | `Makefile`                                            | Top-level lanes (`make rust-clippy`, `make integrity`, `make cpd-audit`).                                   |
 | `registry/canonical/control_plane.sqlite3`            | Canonical write target for the claim/insight/experiment registry.                                           |
 | `registry/*.toml`                                     | AUTO-GENERATED read-only compat exports. Do NOT hand-edit.                                                  |
@@ -93,11 +93,11 @@ hardware-specific tables are replaced with the scientific stack.
   Rust binary.
 - **No symlinks** as workarounds. Use a separate `CARGO_TARGET_DIR`
   per worktree.
-- **Pre-push hook** at `.githooks/pre-push` (active via
-  `core.hooksPath`) runs `make validate-local`, the five-check local
-  validation chain. Do not skip with
-  `--no-verify` unless explicitly directed and rationale documented
-  in the commit message.
+- **Cloud CI owns automatic validation**. `.githooks/pre-push` exits
+  successfully without running checks. `make validate-local` remains an
+  explicit diagnostic command. GitHub Actions runs scoped lint, reverse
+  dependency tests including binaries, canonical governance and relevant
+  dependency policy checks. Scheduled full validation covers workspace drift.
 
 ## Build environment
 
@@ -203,7 +203,7 @@ CARGO_TARGET_DIR="$(pwd)/.cache/gate-target" cargo clippy -p <crate> --all-targe
 CARGO_TARGET_DIR="$(pwd)/.cache/gate-target" cargo nextest run -p <crate> --lib --cargo-profile validation
 ```
 
-### Pre-push validation chain
+### Manual local validation chain
 
 | # | Check                    | Purpose                                                                          |
 | - | ------------------------ | -------------------------------------------------------------------------------- |
@@ -213,9 +213,16 @@ CARGO_TARGET_DIR="$(pwd)/.cache/gate-target" cargo nextest run -p <crate> --lib 
 | 4 | rust-regression-scoped   | Scoped clippy + nextest on changed-crate closure                                 |
 | 5 | validate-governance      | Verify registry policy, signatures, cross-references, and checked-in TOMLs      |
 
-Verify hook state: `git config --get core.hooksPath` should print
-`.githooks`. The pre-push hook runs repository validation and skips
-the validation gate for pushes containing only branch deletions.
+`git config --get core.hooksPath` reports `/dev/null` when hooks are disabled
+locally, or `.githooks` for the repository's inactive pre-push hook. Both
+configurations leave automatic validation to CI. `make hooks-install` installs
+the inactive hook; manual `make validate-local` still runs the listed checks.
+
+CI runs on pull requests and main pushes, with superseded runs canceled per
+event and ref. The router tests affected consumers and lints directly changed
+owners; weekly full runs and explicit full dispatch cover the whole workspace.
+Default-feature documentation builds share freshness checks in one job. Set
+`DOCS_FEATURE_FLAGS=--all-features` only on a host with the required SDKs.
 
 ## Registry: SQLite-canonical (since 2026-03-23)
 

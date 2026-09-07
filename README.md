@@ -215,10 +215,15 @@ compilation vs O(hours) for monolithic `ring`.
 | Clippy      | `make rust-clippy`       | Warnings-as-errors (`-D warnings`) |
 | SemVer      | `make rust-semver-check` | Public API compatibility           |
 | Tests       | `cargo test --workspace` | Full suite, 0 tolerance            |
-| ASCII       | `make ansi-check`        | No Unicode/emoji in source         |
+| Text policy | `make ansi-check`        | Emoji and control-character checks |
 | Terminology | `make terminology-gate`  | 8 banned patterns                  |
 | Governance  | `make governance-gate`   | 7-check registry + integrity       |
-| Pre-push    | `make pre-push-gate`     | Scoped clippy + test + governance  |
+| Manual local | `make validate-local`  | Scoped clippy + test + governance  |
+
+GitHub Actions owns automatic validation. Local pushes run no validation gate.
+Pull requests and main pushes use affected-component checks; weekly full runs
+cover workspace drift. Documentation, proofs, papers and surveys run on their
+declared inputs, with superseded runs canceled.
 
 ## Toolchain
 
