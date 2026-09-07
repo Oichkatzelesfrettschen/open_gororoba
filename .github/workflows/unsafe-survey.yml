@@ -45,6 +45,7 @@ jobs:
         with:
           workspaces: tools/vendor/cargo-geiger -> ../../../target
           key: unsafe-survey-${{ hashFiles('tools/vendor/cargo-geiger/Cargo.lock') }}
+          cache-on-failure: true
       - name: Test the vendored survey package
         run: |
           cargo test --locked --release --manifest-path tools/vendor/cargo-geiger/Cargo.toml -p cargo-geiger --lib --test workspace_report
