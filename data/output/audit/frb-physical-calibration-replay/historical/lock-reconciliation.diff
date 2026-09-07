@@ -1,0 +1,18 @@
+--- original/Cargo.lock	2026-09-06 17:24:03.637042976 -0700
++++ reconstructed/Cargo.lock
+@@ -2829,7 +2829,6 @@
+  "criterion",
+  "faer 0.20.2",
+  "nalgebra 0.33.2",
+- "ndarray",
+  "num-complex 0.4.6",
+  "ordered-float",
+  "petgraph 0.7.1",
+@@ -2838,7 +2837,6 @@
+  "quantum",
+  "rand 0.8.5",
+  "rand_chacha 0.3.1",
+- "rayon",
+  "rustfft",
+  "thiserror 2.0.18",
+ ]

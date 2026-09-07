@@ -1,0 +1,20 @@
+{
+  "bytes": 613,
+  "client": "requests",
+  "client_version": "2.34.2",
+  "complete": true,
+  "content_type": "text/plain; charset=utf-8",
+  "decoded_filename": "frb20200430a.json",
+  "elapsed_seconds": 0.351404,
+  "encoding": "gzip; mtime=0; exact decoded response bytes",
+  "error": "",
+  "final_url": "https://raw.githubusercontent.com/FRBs/FRB/996fcda9b0b22431e3171208b4c8e1cf2798e823/frb/data/FRBs/FRB20200430A.json",
+  "path": "data/output/audit/frb-physical-calibration-replay/sources/frb20200430a.json.gz",
+  "retrieved_path": "data/output/audit/frb-physical-calibration-replay/sources/frb20200430a.json",
+  "retrieved_utc": "2026-09-07T00:25:15.746269+00:00",
+  "sha256": "22aa33053e2c714279f6ba7e66e79c8429687ebc28007356c2cd2616603867ee",
+  "status": 200,
+  "storage_bytes": 281,
+  "storage_sha256": "7de87db100bdb537c38916a467876dceebf97add33d4000b5bb3fbab636256fe",
+  "url": "https://raw.githubusercontent.com/FRBs/FRB/996fcda9b0b22431e3171208b4c8e1cf2798e823/frb/data/FRBs/FRB20200430A.json"
+}

@@ -1,0 +1,20 @@
+{
+  "bytes": 3738281,
+  "client": "urllib",
+  "client_version": "3.14.7",
+  "complete": true,
+  "content_type": "application/pdf",
+  "decoded_filename": "macquart2020.pdf",
+  "elapsed_seconds": 0.207587,
+  "encoding": "gzip; mtime=0; exact decoded response bytes",
+  "error": "",
+  "final_url": "https://arxiv.org/pdf/2005.13161",
+  "path": "data/output/audit/frb-physical-calibration-replay/sources/macquart2020.pdf.gz",
+  "retrieved_path": "data/output/audit/frb-physical-calibration-replay/sources/macquart2020.pdf",
+  "retrieved_utc": "2026-09-07T00:24:08.375250+00:00",
+  "sha256": "bd0bb66f9f5f5c635925b8f835590d75e80de70dc995156a42c55f172e238025",
+  "status": 200,
+  "storage_bytes": 3494615,
+  "storage_sha256": "c5ab3d09976661f0ab9c712030ec1dbb04c96ed6732dfaa72b13ce93198c522e",
+  "url": "https://arxiv.org/pdf/2005.13161"
+}

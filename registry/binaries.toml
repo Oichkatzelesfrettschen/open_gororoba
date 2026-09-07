@@ -763,6 +763,11 @@ crate = "gororoba_cli_data"
 description = "FRB temporal cascade (SOC) analysis"
 
 [[binary]]
+name = "frb-distance-calibration"
+crate = "gororoba_cli_physics"
+description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_physics; registry metadata pending."
+
+[[binary]]
 name = "frb-ultrametric"
 crate = "gororoba_cli_data"
 description = "FRB catalog ultrametric analysis"
@@ -1916,6 +1921,11 @@ description = "H2 hypothesis: Hartigan dip test on per-galaxy Fourier power dist
 name = "verify-artifact-source-of-truth"
 crate = "gororoba_cli_data"
 description = "Workspace binary discovered from crates/gororoba_cli_data/Cargo.toml; registry metadata pending."
+
+[[binary]]
+name = "verify-insight-reference-pilot"
+crate = "gororoba_cli_provenance"
+description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_provenance; registry metadata pending."
 
 [[binary]]
 name = "verify-project-csv-split"

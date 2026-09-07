@@ -1,0 +1,20 @@
+{
+  "bytes": 248650,
+  "client": "requests",
+  "client_version": "2.34.2",
+  "complete": true,
+  "content_type": "application/json; charset=utf-8",
+  "decoded_filename": "github-frb-tree.json",
+  "elapsed_seconds": 0.628447,
+  "encoding": "gzip; mtime=0; exact decoded response bytes",
+  "error": "",
+  "final_url": "https://api.github.com/repos/FRBs/FRB/git/trees/main?recursive=1",
+  "path": "data/output/audit/frb-physical-calibration-replay/sources/github-frb-tree.json.gz",
+  "retrieved_path": "data/output/audit/frb-physical-calibration-replay/sources/github-frb-tree.json",
+  "retrieved_utc": "2026-09-07T00:24:36.799314+00:00",
+  "sha256": "01e959b73668c80b4f08a82c6afcec1cddb78d84240ca670879c4feefed6d037",
+  "status": 200,
+  "storage_bytes": 45625,
+  "storage_sha256": "c38d2be0588e7429fc5720cc8b100ec6d78380ae652f4a2c777aa66b017a38bb",
+  "url": "https://api.github.com/repos/FRBs/FRB/git/trees/main?recursive=1"
+}

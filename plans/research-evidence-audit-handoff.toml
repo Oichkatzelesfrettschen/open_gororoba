@@ -1,5 +1,5 @@
 schema_version = 1
-status = "frb_numerical_repairs_and_synthetic_null_verified_physical_residuals_open"
+status = "frb_reconstructed_replay_verified_primary_finite_calibration_not_established"
 prepared_date = "2026-09-06"
 objective = "Audit related claims, insights and other research records together by shared mechanisms and evidence, preserve falsification results, and develop independently tested successor results."
 primary_checkout = "/home/eirikr/Github/open_gororoba"
@@ -167,8 +167,8 @@ acceptance = "Canonical changes, generated outputs, numerical/source tests, inde
 findings = "data/output/audit/insight-reference-role-pilot/findings.json"
 validation = "data/output/audit/insight-reference-role-pilot/validation.toml"
 source_receipts = "data/output/audit/insight-reference-role-pilot/source-receipts.toml"
-next_focus = "Read the combined FRB findings and canonical admissions. Recover the missing historical workspace-member source and actual invocation; admit foreground and source-selection conventions before a held-out physical comparison. The bounded inverse/catalog defects and synthetic dependence sensitivity are resolved within their declared implementation boundaries."
-scientific_boundary = "Canonical admission narrows the eight insight interpretations and preserves negative-result lessons. The Macquart mean-DM normalization passes independent numerical source oracles under constant diffuse fraction and declared ionization assumptions. Historical producer replay, new physical mechanisms and independently tested physical successors remain unexecuted."
+next_focus = "Read frb-physical-calibration-replay findings and admissions. Historical scalar reconstruction reproduces all retained CSV bytes. The frozen localized-FRB experiment yields an unbounded primary radius; a successor needs an independently justified foreground/scatter model and independent data before further physical inference."
+scientific_boundary = "Numerical source conformance and reconstructed historical replay establish implementation results. The executed physical comparison establishes a bounded negative finite-calibration outcome, with descriptive sensitivities. Physical hierarchy specificity and CHIME transport remain unestablished."
 canonical_admission = "data/output/audit/insight-canonical-admission/admission-results.json"
 source_admission = "data/output/audit/insight-source-admission/README.toml"
 validation_receipt = "data/output/audit/insight-canonical-admission/validation.toml"
@@ -198,6 +198,18 @@ historical_chain = "data/output/audit/frb-inversion-null-sensitivity/historical/
 historical_build_attempt = "data/output/audit/frb-inversion-null-sensitivity/historical/candidate-replay.toml"
 resolved = ["Typed invalid-input, bracket-exhaustion and underflow errors", "Independent mean-DM numerical checks through ceiling z=100", "Selected NE2001/YMW16 column and explicit exclusion denominator", "31 hash-verified historical bodies including five results and two exact CHIME inputs", "Frozen synthetic radial-angular dependence null and independent precision confirmation", "Explicit uncalibrated labels for geometry-preserving CLI relabeling diagnostics"]
 null_result = "Initial 100-replicate-per-family control precision acceptance fails at 6/100. The separately frozen 1000-replicate confirmation passes engineering thresholds with strong 1000/1000 and exchangeable 48/1000; flat and gradient alternatives also reject 1000/1000. The result measures dependence sensitivity and supplies neither hierarchy specificity nor physical FRB evidence. Both complete ensembles remain losslessly retained."
-historical_boundary = "The tracked scalar source snapshot omits its declared control_core workspace member. The locked build exits 101 before compilation. Tracked Git-tree recovery establishes artifact identity; build-source closure and the original invocation remain unresolved."
+historical_boundary = "The retained initial build fails on missing control_core. The subsequent frb-physical-calibration-replay bundle closes build-source reconstruction and reproduces all scalar CSV bytes; original invocation and executable attribution remain unidentified."
 canonical_boundary = "I-001 and I-002 retain partial status. C-071 retains Refuted. The macquart_source_conformance remaining list above records the earlier campaign frontier; resolved items are enumerated here."
-remaining = ["Recover historical control_core source and original invocation", "Admit halo and physical host-frame conventions", "Model repeat-source grouping and selection exchangeability strata", "Rebuild physical coordinate pipeline in each null draw", "Freeze catalog/column/representation choices and multiplicity", "Run a held-out localized-FRB calibration with uncertainties", "Audit monograph interpretation and broader family authority"]
+remaining = ["Identify original historical invocation and executable if further attribution evidence appears", "Justify selection exchangeability and CHIME transport", "Propagate foreground, redshift and intrinsic-scatter uncertainties", "Rebuild physical coordinate pipeline in each null draw", "Freeze physical catalog/column/representation multiplicity", "Audit monograph interpretation and broader family authority"]
+
+[frb_physical_calibration_replay]
+status = "canonical_admitted_scientific_adjudication_complete"
+findings = "data/output/audit/frb-physical-calibration-replay/findings.json"
+validation = "data/output/audit/frb-physical-calibration-replay/validation.toml"
+execution_protocol = "data/output/audit/frb-physical-calibration-replay/calibration-execution-protocol.toml"
+retrieval_followup = "data/output/audit/frb-physical-calibration-replay/retrieval-followup/followup.toml"
+historical_result = "Ten identified control_core files and two declared stale lock-edge removals enable the locked scalar build. Both catalog CSVs and their combined body reproduce historical bytes exactly. Original executable and invocation identity remain separate attribution residuals."
+physical_result = "The frozen 21-source cohort splits 11 calibration and 10 heldout. Primary halo50/observer-host50 has an unbounded 90 percent radius because FRB20230718A yields cosmic DM -19. The predeclared historical foreground convention with corrected mean-DM code yields 1670.44 Mpc and 9/10 heldout coverage. Sensitivities remain descriptive; unbounded coverage supplies no finite precision."
+retrieval_result = "Python urllib and requests retain primary sources. Mozilla wget completes the 5413920-byte v2 PDF; curl retrieves an identical official export.arxiv.org mirror. Wget, Python and GitHub blob API agree on corrected pinned frb/mw.py. All 23 attempts retain explicit dispositions; 20 source observations append canonically."
+canonical_result = "Eight admitted insights carry 38 predicates and 45 roles across 14 admission events. Source history contains 30 rows. I-001/I-002 remain partial, and C-071 remains Refuted. Queries retain historical rows, links and unrelated insights."
+successor_requirements = ["Independent foreground/scatter model justification", "Larger independent localized cohort", "Measurement uncertainty propagation", "Selection and target-population transport assumptions", "Structure-specific physical null controls"]

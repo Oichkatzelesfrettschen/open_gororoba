@@ -1,0 +1,166 @@
+{
+  "schema_version": 1,
+  "artifacts": [
+    {
+      "path": "data/output/audit/frb-physical-calibration-replay/historical/build-toolchain.txt.gz",
+      "encoding": "gzip",
+      "storage_sha256": "7c082dd1f765dc355ae7e2fbfe8404c0f3776b0ea3c36738337af7baa8dfd260",
+      "decoded_sha256": "9e83d1e0583255884af658325a5e57ed7a4761c10ee67bf7c6497e9c211b3eda",
+      "storage_bytes": 338,
+      "decoded_bytes": 539
+    },
+    {
+      "path": "data/output/audit/frb-physical-calibration-replay/historical/candidate-cat1.csv",
+      "encoding": "identity",
+      "storage_sha256": "772b818af4d6a8621d52a2c22455e59606df8a6b114307fc0fdc37748e6823ad",
+      "decoded_sha256": "772b818af4d6a8621d52a2c22455e59606df8a6b114307fc0fdc37748e6823ad",
+      "storage_bytes": 891,
+      "decoded_bytes": 891
+    },
+    {
+      "path": "data/output/audit/frb-physical-calibration-replay/historical/candidate-cat2.csv",
+      "encoding": "identity",
+      "storage_sha256": "ebbffd4610c945456562ace09d3e9d24f50f0dd4c03bddba5c1f36e88210d59b",
+      "decoded_sha256": "ebbffd4610c945456562ace09d3e9d24f50f0dd4c03bddba5c1f36e88210d59b",
+      "storage_bytes": 894,
+      "decoded_bytes": 894
+    },
+    {
+      "path": "data/output/audit/frb-physical-calibration-replay/historical/candidate-combined.csv",
+      "encoding": "identity",
+      "storage_sha256": "24ac0521efa856a6d22d86fd86e79f5101e3e8d44d72f743f16da84eeea9259c",
+      "decoded_sha256": "24ac0521efa856a6d22d86fd86e79f5101e3e8d44d72f743f16da84eeea9259c",
+      "storage_bytes": 1444,
+      "decoded_bytes": 1444
+    },
+    {
+      "path": "data/output/audit/frb-physical-calibration-replay/historical/cat1.stderr.log.gz",
+      "encoding": "gzip",
+      "storage_sha256": "5159846175d3e99d5ae60fbd7e726a4daaa1c9e7a4c0327045c72969fc02f7dc",
+      "decoded_sha256": "6c089c429996b98f7c9a62e7b5a57811fdfab8ba4704e681a745bc53937553c6",
+      "storage_bytes": 746,
+      "decoded_bytes": 2931
+    },
+    {
+      "path": "data/output/audit/frb-physical-calibration-replay/historical/cat1.stdout.jsonl.gz",
+      "encoding": "gzip",
+      "storage_sha256": "6baa2600e3fe31fbaaa1827cb382bd75c33d7ac281ec850980aad1adcb9008fa",
+      "decoded_sha256": "393296bc56247838798ff17cd04bf2e23e9a285e7c47a6992389e9b40a57c122",
+      "storage_bytes": 222,
+      "decoded_bytes": 532
+    },
+    {
+      "path": "data/output/audit/frb-physical-calibration-replay/historical/cat1.time.gz",
+      "encoding": "gzip",
+      "storage_sha256": "68ac1b5c48cec0dbfd16a0a1019de8860b9191b83964561ee2cc483c9402ba9a",
+      "decoded_sha256": "ef931182379d03a74f2f088e96447b936ad06f5ec623d9a9a49fbcbfce35a082",
+      "storage_bytes": 499,
+      "decoded_bytes": 941
+    },
+    {
+      "path": "data/output/audit/frb-physical-calibration-replay/historical/cat2.stderr.log.gz",
+      "encoding": "gzip",
+      "storage_sha256": "8abdcd27ebc203a5a017e413c61913615aed8c5d4a07fe52348b435512b6a87a",
+      "decoded_sha256": "095acfed88b5b55663431eb241d6c16c24a8b09069905e7c489262521776a94f",
+      "storage_bytes": 795,
+      "decoded_bytes": 3044
+    },
+    {
+      "path": "data/output/audit/frb-physical-calibration-replay/historical/cat2.stdout.jsonl.gz",
+      "encoding": "gzip",
+      "storage_sha256": "a0917fe022e1441eda6e2e98d4d4f83c0af6b85f7968880a84ef08654560af7e",
+      "decoded_sha256": "18545b4cc95532c4a36819a08b117826c07d7567ccd31fcaa6d3303cf716ee2e",
+      "storage_bytes": 222,
+      "decoded_bytes": 532
+    },
+    {
+      "path": "data/output/audit/frb-physical-calibration-replay/historical/cat2.time.gz",
+      "encoding": "gzip",
+      "storage_sha256": "d50409e4b5e5d0b77d2e435ff011d83dea91d2fc3bb9721ac056d10621f4e870",
+      "decoded_sha256": "971e5e52d7aa6788ebef1814073da1270619a12f100bfd8247838a7d5700efe7",
+      "storage_bytes": 498,
+      "decoded_bytes": 941
+    },
+    {
+      "path": "data/output/audit/frb-physical-calibration-replay/historical/control-core-files.jsonl",
+      "encoding": "identity",
+      "storage_sha256": "da73b5b91d16ebd0ca4f4312c86134b9ddb7c103551da4a6ebabe4c2822dc750",
+      "decoded_sha256": "da73b5b91d16ebd0ca4f4312c86134b9ddb7c103551da4a6ebabe4c2822dc750",
+      "storage_bytes": 1870,
+      "decoded_bytes": 1870
+    },
+    {
+      "path": "data/output/audit/frb-physical-calibration-replay/historical/control-core-source.tar.gz",
+      "encoding": "gzip",
+      "storage_sha256": "f44e65ebb7122d51702eead3b70803b76a86ec1728cd1c21ca8102b57814f1c0",
+      "decoded_sha256": "d3df04a6c25b9cbf62954754d0298f2a58446e7789e6db1376404979b93c9163",
+      "storage_bytes": 22272,
+      "decoded_bytes": 112640
+    },
+    {
+      "path": "data/output/audit/frb-physical-calibration-replay/historical/lock-reconciliation.diff",
+      "encoding": "identity",
+      "storage_sha256": "c40ab1c136aac89ff04c2dd2bf9515483ffd67758222f94d9180fb0873575b96",
+      "decoded_sha256": "c40ab1c136aac89ff04c2dd2bf9515483ffd67758222f94d9180fb0873575b96",
+      "storage_bytes": 362,
+      "decoded_bytes": 362
+    },
+    {
+      "path": "data/output/audit/frb-physical-calibration-replay/historical/member-overlay-build.log.gz",
+      "encoding": "gzip",
+      "storage_sha256": "d6aa9305ebfc3551dcb77369bd81fe0be8369157c7c110734249e65057e779e2",
+      "decoded_sha256": "95e71a037d30e751ce62c41718e52f63002a09e3d7fe1f406a7f3f6af68f9eca",
+      "storage_bytes": 194,
+      "decoded_bytes": 265
+    },
+    {
+      "path": "data/output/audit/frb-physical-calibration-replay/historical/reconciled-Cargo.lock.gz",
+      "encoding": "gzip",
+      "storage_sha256": "31e01e9432f0ff6e485fdbc029fcbb496e7d98cf625c1b19ca90097ad9dcea5d",
+      "decoded_sha256": "35d322d94d8563502d28b97e41e6e23523973a0d931e356661798db435a3800f",
+      "storage_bytes": 25836,
+      "decoded_bytes": 104136
+    },
+    {
+      "path": "data/output/audit/frb-physical-calibration-replay/historical/reconciled-build.log.gz",
+      "encoding": "gzip",
+      "storage_sha256": "a8325c0c87e1a2f57defb70116c3b93b681769f745e4f8ba8dcc73beb3ee3a99",
+      "decoded_sha256": "febb8f819ec6f97e11b69f9c2830268102d3eb553532b8fd089a567ca791f6e4",
+      "storage_bytes": 3060,
+      "decoded_bytes": 12594
+    },
+    {
+      "path": "data/output/audit/frb-physical-calibration-replay/historical/reconstructed-frb-ultrametric.gz",
+      "encoding": "gzip",
+      "storage_sha256": "3bd75a0478b04125cfbef30f2436e2443840539a4a17acf32536dbdb025290a8",
+      "decoded_sha256": "81ef0edbdd6399f01782dd52fdd50fa5c107eb1c55a46ca8f36d4ba85c6fe578",
+      "storage_bytes": 426656,
+      "decoded_bytes": 972304
+    },
+    {
+      "path": "data/output/audit/frb-physical-calibration-replay/historical/reconstruction.toml",
+      "encoding": "identity",
+      "storage_sha256": "25c4a30cf5453bfc7db47cbd6e679813dc83f19ceee22adfbe541dce8bfe577a",
+      "decoded_sha256": "25c4a30cf5453bfc7db47cbd6e679813dc83f19ceee22adfbe541dce8bfe577a",
+      "storage_bytes": 3066,
+      "decoded_bytes": 3066
+    },
+    {
+      "path": "data/output/audit/frb-physical-calibration-replay/historical/recovery.toml",
+      "encoding": "identity",
+      "storage_sha256": "7c659ef7fb608b86992a2c8956b33e77fe117e0d126a63a8d16205298ef1049b",
+      "decoded_sha256": "7c659ef7fb608b86992a2c8956b33e77fe117e0d126a63a8d16205298ef1049b",
+      "storage_bytes": 4860,
+      "decoded_bytes": 4860
+    },
+    {
+      "path": "data/output/audit/frb-physical-calibration-replay/historical/replay.toml",
+      "encoding": "identity",
+      "storage_sha256": "f81c3d64b337d6ebdcf7ea30012fc368f239d1e4ae3c1a9d544d31e5e7ad9ed1",
+      "decoded_sha256": "f81c3d64b337d6ebdcf7ea30012fc368f239d1e4ae3c1a9d544d31e5e7ad9ed1",
+      "storage_bytes": 2974,
+      "decoded_bytes": 2974
+    }
+  ],
+  "verification": "Every retained compressed stream passed gzip validation; stored and decoded identities measured. Candidate outputs passed direct cmp against all three historical Git result bodies."
+}

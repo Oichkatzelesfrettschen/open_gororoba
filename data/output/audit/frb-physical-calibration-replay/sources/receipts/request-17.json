@@ -1,0 +1,20 @@
+{
+  "bytes": 14,
+  "client": "requests",
+  "client_version": "2.34.2",
+  "complete": true,
+  "content_type": "text/plain; charset=utf-8",
+  "decoded_filename": "milky-way-model.py.txt",
+  "elapsed_seconds": 0.320125,
+  "encoding": "gzip; mtime=0; exact decoded response bytes",
+  "error": "",
+  "final_url": "https://raw.githubusercontent.com/FRBs/FRB/996fcda9b0b22431e3171208b4c8e1cf2798e823/frb/dm/mw.py",
+  "path": "data/output/audit/frb-physical-calibration-replay/sources/milky-way-model.py.txt.gz",
+  "retrieved_path": "data/output/audit/frb-physical-calibration-replay/sources/milky-way-model.py.txt",
+  "retrieved_utc": "2026-09-07T00:31:45.236717+00:00",
+  "sha256": "d5558cd419c8d46bdc958064cb97f963d1ea793866414c025906ec15033512ed",
+  "status": 404,
+  "storage_bytes": 34,
+  "storage_sha256": "31678b1a3bd22f5f3095c4681e61e9058f7c79aa8eea8813a0d0b4ff72004275",
+  "url": "https://raw.githubusercontent.com/FRBs/FRB/996fcda9b0b22431e3171208b4c8e1cf2798e823/frb/dm/mw.py"
+}

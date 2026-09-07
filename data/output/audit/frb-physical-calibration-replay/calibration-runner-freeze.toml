@@ -1,0 +1,11 @@
+schema_version = 1
+recorded_before_first_physical_execution_utc = "2026-09-07T00:57:30Z"
+execution_protocol_sha256 = "886ea2e70f80506293d35561ae04f1be29a00864ff08ddeca7b07ec860be2d46"
+evaluator_source_sha256 = "078e1a04e6a20fa5c4d5549c97ceeae081248b3399623914ebe95b06eaa56ca9"
+calibration_kernel_sha256 = "b95e3fa3c6b7c556c223280fa370cd31323d5c62abe0fc6fcca15beee709bfd0"
+distance_kernel_sha256 = "a8cfe1152c5a4624f3b6840e868eea3770a9be15732bb9d3d77ee795c372477b"
+cargo_lock_sha256 = "25f07f6ac698ddc06cba2a00c1a3d53dc761b8e628136e7917caefc806aaa645"
+binary_sha256 = "d3dc72388f6bb5b76082c9b5fe891ed85c9c76bbbfaca927f9a4c79999cf0ce3"
+build = "cargo build -p gororoba_cli_physics --bin frb-distance-calibration --profile validation on Rust1.97.0"
+command = "frb-distance-calibration --repo-root <checkout> --protocol data/output/audit/frb-physical-calibration-replay/calibration-execution-protocol.toml --expected-protocol-sha256 886ea2e70f80506293d35561ae04f1be29a00864ff08ddeca7b07ec860be2d46 --output <fresh-output.json>"
+verification_before_execution = "Five synthetic evaluator tests and focused clippy pass; independent protocol and source-grouping review completed. Physical calibration outcomes remained unexecuted."

@@ -1,0 +1,48 @@
+schema_version = 1
+status = "21_distinct_primary_source_positions_verified"
+cohort_sha256 = "b63c0e1c85f7310b90aa8ff11b1a16dca4b7a058a53fb06479c900790b3cbbf2"
+primary = "Shannon et al. (2024), arXiv:2408.02083v1, Section 5 and Appendix A Table 2"
+primary_storage = "shannon2024.html.gz"
+primary_decoded_sha256 = "d88cfaf7d2b734621d2122f3ce13f2b731a8edf6883642ab40435fb00d7e6331"
+primary_table_anchor = "A1.T2"
+row_anchor_convention = "html_row counts tr elements from 1, including two header rows; each source row is matched by TNS identifier"
+source_statement_anchor = "S5.p1.1"
+source_statement = "To the end of April 2024, the CRAFT/ICS survey detected 43 unique sources."
+repeat_statement_anchor = "S5.SS1.p7.1"
+repeat_statement = "The paper identifies FRB20190711A as the only ICS-discovered FRB observed to repeat in its follow-up; S5.p1.1 separately identifies the CHIME-discovered repeating source FRB20201124A. Both source identifiers are outside the frozen 21-row cohort."
+repeat_boundary = "Absence of observed repetition is not proof that a source cannot repeat. Distinct-source grouping follows the Table 2 positions and source-level paper mapping, rather than a non-repeater classification."
+coordinate_convention = "J2000 interferometric RA/Dec; RA sexagesimal hours converted to degrees, Dec sexagesimal degrees; uncertainty columns are reported arcseconds. HTML duplicate minus signs from math annotations normalize to one minus without changing the printed coordinate."
+uncertainty_rule = "Compare all pairwise great-circle separations to ten times the sum of both sources reported RA and Dec coordinate uncertainties. The sum is a conservative geometric scale diagnostic, not a confidence-region or independence theorem."
+uncertainty_boundary = "Reported coordinate uncertainties establish a separation scale. Unmeasured astrometric tails or shared survey systematics are not assumed absent. The negative minor-axis entry printed for FRB20200906A is unused; its two coordinate uncertainty entries are positive."
+rows = 21
+unique_source_ids = 21
+pairwise_comparisons = 210
+closest_pair = ["FRB20220501C", "FRB20220610A"]
+minimum_separation_arcsec = 5395.438662813338
+minimum_separation_over_summed_coordinate_uncertainty = 3136.8829434961267
+all_pairs_exceed_ten_uncertainty_widths = true
+statistical_boundary = "The cohort contains 21 spatially distinct source positions rather than identified repeat bursts of the same source. Independence and exchangeability of astrophysical contributions, host association errors and survey selection remain modeling assumptions; shared survey calibration can correlate outcomes."
+outcome_blind_boundary = "Only source identifiers, sky positions and localization uncertainties enter the calculation. DM values, redshift residuals and calibration predictors are not evaluated."
+positions = [
+  { source_id = "FRB20200906A", html_row = 14, ra = "03:33:58.93", dec = "-14:04:58.8", sigma_ra_arcsec = 0.49, sigma_dec_arcsec = 0.49 },
+  { source_id = "FRB20210117A", html_row = 15, ra = "22:39:55.01", dec = "-16:09:05.2", sigma_ra_arcsec = 0.42, sigma_dec_arcsec = 0.42 },
+  { source_id = "FRB20210320C", html_row = 17, ra = "13:37:50.10", dec = "-16:07:21.6", sigma_ra_arcsec = 0.46, sigma_dec_arcsec = 0.46 },
+  { source_id = "FRB20210807D", html_row = 19, ra = "19:56:53.07", dec = "-00:45:44.1", sigma_ra_arcsec = 0.6, sigma_dec_arcsec = 0.6 },
+  { source_id = "FRB20211127I", html_row = 22, ra = "13:19:14.12", dec = "-18:50:16.5", sigma_ra_arcsec = 0.51, sigma_dec_arcsec = 0.51 },
+  { source_id = "FRB20211203C", html_row = 23, ra = "13:38:15.00", dec = "-31:22:49.0", sigma_ra_arcsec = 0.44, sigma_dec_arcsec = 0.44 },
+  { source_id = "FRB20211212A", html_row = 24, ra = "10:29:24.19", dec = "+01:21:37.6", sigma_ra_arcsec = 0.48, sigma_dec_arcsec = 0.48 },
+  { source_id = "FRB20220105A", html_row = 25, ra = "13:55:12.81", dec = "+22:27:58.4", sigma_ra_arcsec = 1.05, sigma_dec_arcsec = 1.37 },
+  { source_id = "FRB20220501C", html_row = 26, ra = "23:29:31.00", dec = "-32:29:26.6", sigma_ra_arcsec = 0.42, sigma_dec_arcsec = 0.42 },
+  { source_id = "FRB20220610A", html_row = 28, ra = "23:24:17.58", dec = "-33:30:49.9", sigma_ra_arcsec = 0.44, sigma_dec_arcsec = 0.44 },
+  { source_id = "FRB20220725A", html_row = 29, ra = "23:33:15.65", dec = "-35:59:24.9", sigma_ra_arcsec = 0.46, sigma_dec_arcsec = 0.45 },
+  { source_id = "FRB20220918A", html_row = 30, ra = "01:10:22.11", dec = "-70:48:41.0", sigma_ra_arcsec = 0.43, sigma_dec_arcsec = 0.45 },
+  { source_id = "FRB20221106A", html_row = 31, ra = "03:46:49.15", dec = "-25:34:11.3", sigma_ra_arcsec = 0.58, sigma_dec_arcsec = 0.55 },
+  { source_id = "FRB20230526A", html_row = 33, ra = "01:28:55.83", dec = "-52:43:02.4", sigma_ra_arcsec = 0.43, sigma_dec_arcsec = 0.42 },
+  { source_id = "FRB20230708A", html_row = 34, ra = "20:12:27.73", dec = "-55:21:22.6", sigma_ra_arcsec = 0.46, sigma_dec_arcsec = 0.44 },
+  { source_id = "FRB20230718A", html_row = 35, ra = "08:32:38.86", dec = "-40:27:07.0", sigma_ra_arcsec = 0.6, sigma_dec_arcsec = 0.61 },
+  { source_id = "FRB20230902A", html_row = 37, ra = "03:28:33.55", dec = "-47:20:00.6", sigma_ra_arcsec = 0.68, sigma_dec_arcsec = 0.57 },
+  { source_id = "FRB20231226A", html_row = 39, ra = "10:21:27.30", dec = "+06:06:36.9", sigma_ra_arcsec = 0.48, sigma_dec_arcsec = 0.51 },
+  { source_id = "FRB20240201A", html_row = 40, ra = "09:59:37.34", dec = "+14:05:16.9", sigma_ra_arcsec = 0.48, sigma_dec_arcsec = 0.51 },
+  { source_id = "FRB20240210A", html_row = 42, ra = "00:35:07.10", dec = "-28:16:14.7", sigma_ra_arcsec = 0.53, sigma_dec_arcsec = 0.51 },
+  { source_id = "FRB20240310A", html_row = 44, ra = "01:10:29.25", dec = "-44:26:21.9", sigma_ra_arcsec = 0.57, sigma_dec_arcsec = 0.57 },
+]

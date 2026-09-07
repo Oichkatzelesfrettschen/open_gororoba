@@ -1,0 +1,632 @@
+{
+  "schema_version": 1,
+  "scope": "I-001/I-002 historical reconstruction and finite localized-FRB distance-calibration adjudication",
+  "historical_replay": {
+    "evidence_layer": "implementation_conformance",
+    "status": "reconstructed_producer_reproduces_historical_outputs",
+    "original_commit": "eab375e82ca82da9df8a9cb0ca0084801684e6eb",
+    "missing_member": "control_core",
+    "member_commit": "882a6d119df37ab53de2f6e90713038379683f8d",
+    "member_files": 10,
+    "source_delta": "Add only the ten recovered member files. Historical producer, statistical engine and root manifest remain byte-identical.",
+    "lock_delta": "Remove only two unrepresented quantum_core dependency edges, ndarray and rayon. Every package version and registry checksum remains unchanged.",
+    "causality": "The original commit captured lock dependencies ahead of the corresponding tracked source. The control_core source and quantum manifest updates appear in identified later commits.",
+    "build": "Rust1.97.0, release, --locked, warnings denied; build exit0",
+    "binary_sha256": "81ef0edbdd6399f01782dd52fdd50fa5c107eb1c55a46ca8f36d4ba85c6fe578",
+    "cat1": {
+      "exit": 0,
+      "wall_seconds": 136.67,
+      "sha256": "772b818af4d6a8621d52a2c22455e59606df8a6b114307fc0fdc37748e6823ad"
+    },
+    "cat2": {
+      "exit": 0,
+      "wall_seconds": 133.25,
+      "sha256": "ebbffd4610c945456562ace09d3e9d24f50f0dd4c03bddba5c1f36e88210d59b"
+    },
+    "combined_sha256": "24ac0521efa856a6d22d86fd86e79f5101e3e8d44d72f743f16da84eeea9259c",
+    "comparison": "All three complete CSV bodies match retained historical bytes exactly.",
+    "boundary": "Declared reconstruction establishes reproducibility. Original invocation, executable and untracked workspace identities remain unidentified; output equality cannot uniquely recover them. Replayed historical FAIL verdicts retain their geometry-preserving null-power limitation and C-071 disposition.",
+    "evidence": [
+      "historical/recovery.toml",
+      "historical/reconstruction.toml",
+      "historical/replay.toml",
+      "historical/artifact-checks.json"
+    ]
+  },
+  "source_acquisition": {
+    "evidence_layer": "source_proposition",
+    "initial_attempts": 19,
+    "followup_attempts": 4,
+    "python_clients": [
+      "urllib.request3.14.7",
+      "requests2.34.2"
+    ],
+    "followup_mechanisms": [
+      "GNU Wget1.25.0 with Mozilla/5.0",
+      "curl8.21.0 with Mozilla/5.0",
+      "official versioned arXiv export mirror",
+      "GitHub Git blob API"
+    ],
+    "canonical_observations_added": 20,
+    "canonical_observation_boundary": "17 complete Python responses and one Python HTTP failure, plus two completed wget primary-body acquisitions. The initial incomplete PDF and two curl identity crosschecks remain hash-bound bundle evidence. Every one of23 attempts has an explicit disposition.",
+    "initial_shannon_crosscheck": "Two Python clients independently retained byte-identical primary Shannon HTML.",
+    "pdf_recovery": {
+      "status": "complete",
+      "bytes": 5413920,
+      "pages": 27,
+      "version": "arXiv2108.01282v2",
+      "sha256": "e1a125fdcd524669b48995376ce641db0699aacce83dc24abb74983274fe36cd",
+      "prefix_bytes": 5000001,
+      "comparison": "Primary wget and official mirror bodies match exactly; the initial capped response matches the exact prefix.",
+      "limit": "Earlier retained HTML is v1. The v2 PDF is a distinct identified source body; HTTP ETag differs from measured digest and supplies no matching body-hash proof."
+    },
+    "wrong_path_recovery": {
+      "status": "corrected_same_commit_path_verified",
+      "wrong_path": "frb/dm/mw.py",
+      "correct_path": "frb/mw.py",
+      "commit": "996fcda9b0b22431e3171208b4c8e1cf2798e823",
+      "git_blob": "0096529b7c1f11727b8f93fa8b83ba86e447fc37",
+      "sha256": "abe51d9f95ae95596761472a5a3ad4f6dfada3556a44cd9d1bd4b2469f349c2d",
+      "comparison": "Pinned untruncated tree omits the wrong path; wget, decoded Git blob API and prior Python bytes match the correct path."
+    },
+    "attribution": "Structured receipts verify operator-recorded correspondence, timestamp, status, client, decoded and storage identities. They do not independently authenticate the network or add independent astrophysical observations."
+  },
+  "foreground": {
+    "evidence_layer": "source_proposition",
+    "source": "Macquart2020 Eq1, Shannon2024 Table1, CHIME Catalog1 Table2",
+    "equation": "DM_observed = DM_disk + DM_halo + DM_cosmic(z) + DM_host_rest/(1+z)",
+    "halo": "NE2001 supplies disk/ISM DM; halo remains a separate contribution. Macquart fixes50pc/cm^3 and discusses50-100 uncertainty.",
+    "host": "The plotted Macquart host50/(1+z) is distinct from the retained observer-host50 computational predictor and from the fitted lognormal host likelihood.",
+    "chime": "Catalog1 dm_exc_ne2001/ymw16 uses FITBURST DM minus a Galactic model at the best-fit position. Sub-burst rows can share fitted DM and require event/source grouping. Catalog2-specific selection provenance is outside the retrieved primary-source boundary.",
+    "identifiability": "For fixed observer-frame foregrounds, nine halo/host pairs collapse to five sums. These tests identify neither separate halo nor host contributions.",
+    "intervening_maps": [
+      "Galactic disk-model subtraction",
+      "Fixed total halo/observer-host subtraction",
+      "Constant-fd mean-DM inversion",
+      "Planck comoving-distance transform",
+      "Absolute-error order-statistic calibration"
+    ],
+    "intervening_map_count": 5,
+    "point_predictor_fitted_parameters": 0,
+    "empirical_calibration": "One scalar radius per fixed predictor and coverage level is learned from11 calibration labels; sensitivity settings are fixed alternatives, not optimized parameters."
+  },
+  "calibration": {
+    "evidence_layer": "phenomenological_mapping",
+    "disposition": "primary_finite_distance_calibration_not_established",
+    "protocol_sha256": "886ea2e70f80506293d35561ae04f1be29a00864ff08ddeca7b07ec860be2d46",
+    "cohort_sha256": "b63c0e1c85f7310b90aa8ff11b1a16dca4b7a058a53fb06479c900790b3cbbf2",
+    "source_grouping_sha256": "45d473c5ad1e555087978f8d23f4651f5f76141b587c16532be3a426dd152b73",
+    "generator_source_sha256": "078e1a04e6a20fa5c4d5549c97ceeae081248b3399623914ebe95b06eaa56ca9",
+    "results_sha256": "492dc673aefec1a04a2ab126bfadef368b60b101d1281ef10a504081386a0edc",
+    "source_population": 43,
+    "admitted_sources": 21,
+    "selection": "Every post2020-05-28 Shannon Table1 discovery with a numeric measured redshift; the43-row selection ledger records all exclusions before residual evaluation.",
+    "source_grouping": "All21 sources have distinct primary Table2 positions; every pair exceeds10 times summed coordinate errors. Distinctness does not establish statistical independence.",
+    "calibration_source_ids": [
+      "FRB20230718A",
+      "FRB20220610A",
+      "FRB20240310A",
+      "FRB20211212A",
+      "FRB20220501C",
+      "FRB20240210A",
+      "FRB20231226A",
+      "FRB20230526A",
+      "FRB20211127I",
+      "FRB20220725A",
+      "FRB20230708A"
+    ],
+    "heldout_source_ids": [
+      "FRB20210117A",
+      "FRB20220918A",
+      "FRB20210807D",
+      "FRB20230902A",
+      "FRB20240201A",
+      "FRB20211203C",
+      "FRB20200906A",
+      "FRB20221106A",
+      "FRB20220105A",
+      "FRB20210320C"
+    ],
+    "primary": {
+      "halo_dm": 50,
+      "observer_host_dm": 50,
+      "assessments": [
+        {
+          "nominal_coverage": 0.8,
+          "primary": false,
+          "calibration": {
+            "count": 11,
+            "prediction_failures": 1,
+            "quantile": {
+              "kind": "finite",
+              "radius_mpc": 1494.0495440869158
+            },
+            "rank": 10
+          },
+          "heldout": {
+            "binomial_lower_tail_p_value": 0.8926258176000003,
+            "clopper_pearson_two_sided_95": [
+              0.5549838829718056,
+              0.9974714214555382
+            ],
+            "covered": 9,
+            "empirical_coverage": 0.9,
+            "prediction_failures": 0,
+            "total": 10
+          },
+          "inference": "descriptive_sensitivity_only"
+        },
+        {
+          "nominal_coverage": 0.9,
+          "primary": true,
+          "calibration": {
+            "count": 11,
+            "prediction_failures": 1,
+            "quantile": {
+              "kind": "unbounded",
+              "radius_mpc": null
+            },
+            "rank": 11
+          },
+          "heldout": {
+            "binomial_lower_tail_p_value": 1,
+            "clopper_pearson_two_sided_95": [
+              0.6915028921812394,
+              1
+            ],
+            "covered": 10,
+            "empirical_coverage": 1,
+            "prediction_failures": 0,
+            "total": 10
+          },
+          "inference": "undercoverage_not_detected"
+        },
+        {
+          "nominal_coverage": 0.95,
+          "primary": false,
+          "calibration": {
+            "count": 11,
+            "prediction_failures": 1,
+            "quantile": {
+              "kind": "unbounded",
+              "radius_mpc": null
+            },
+            "rank": 12
+          },
+          "heldout": {
+            "binomial_lower_tail_p_value": 1,
+            "clopper_pearson_two_sided_95": [
+              0.6915028921812394,
+              1
+            ],
+            "covered": 10,
+            "empirical_coverage": 1,
+            "prediction_failures": 0,
+            "total": 10
+          },
+          "inference": "descriptive_sensitivity_only"
+        }
+      ],
+      "historical_scale_comparisons": [
+        {
+          "calibration_finite_errors_exceeding_radius": 9,
+          "calibration_prediction_failures": 1,
+          "calibration_total": 11,
+          "heldout_finite_errors_exceeding_radius": 8,
+          "heldout_prediction_failures": 0,
+          "heldout_total": 10,
+          "radius_mpc": 50
+        },
+        {
+          "calibration_finite_errors_exceeding_radius": 8,
+          "calibration_prediction_failures": 1,
+          "calibration_total": 11,
+          "heldout_finite_errors_exceeding_radius": 8,
+          "heldout_prediction_failures": 0,
+          "heldout_total": 10,
+          "radius_mpc": 100
+        },
+        {
+          "calibration_finite_errors_exceeding_radius": 7,
+          "calibration_prediction_failures": 1,
+          "calibration_total": 11,
+          "heldout_finite_errors_exceeding_radius": 7,
+          "heldout_prediction_failures": 0,
+          "heldout_total": 10,
+          "radius_mpc": 200
+        },
+        {
+          "calibration_finite_errors_exceeding_radius": 4,
+          "calibration_prediction_failures": 1,
+          "calibration_total": 11,
+          "heldout_finite_errors_exceeding_radius": 4,
+          "heldout_prediction_failures": 0,
+          "heldout_total": 10,
+          "radius_mpc": 500
+        }
+      ],
+      "failed_rows": [
+        {
+          "absolute_error_mpc": null,
+          "calibration_score_kind": "positive_infinity_prediction_failure",
+          "catalog_distance_mpc": 154.47343691319855,
+          "partition": "calibration",
+          "prediction": null,
+          "prediction_error": "Nonpositive cosmic-DM residual",
+          "raw": {
+            "discovery_utc_as_reported": "2023-07-18 07:02:08.041",
+            "dm_disk_ne2001": 396,
+            "dm_error": 0.5,
+            "dm_observed": 477,
+            "frequency_mhz": 1271.5,
+            "redshift": 0.035,
+            "redshift_kind": "measured_table_redshift",
+            "reference": "Shannon2024_A1.T1_row_33",
+            "source_id": "FRB20230718A",
+            "telescope": "ASKAP/CRAFT-ICS"
+          },
+          "signed_error_mpc": null
+        }
+      ]
+    },
+    "historical_estimator": {
+      "halo_dm": 0,
+      "observer_host_dm": 50,
+      "assessments": [
+        {
+          "nominal_coverage": 0.8,
+          "primary": false,
+          "calibration": {
+            "count": 11,
+            "prediction_failures": 0,
+            "quantile": {
+              "kind": "finite",
+              "radius_mpc": 1119.841680382322
+            },
+            "rank": 10
+          },
+          "heldout": {
+            "binomial_lower_tail_p_value": 0.6241903615999905,
+            "clopper_pearson_two_sided_95": [
+              0.4439045376923565,
+              0.9747892736731664
+            ],
+            "covered": 8,
+            "empirical_coverage": 0.8,
+            "prediction_failures": 0,
+            "total": 10
+          },
+          "inference": "descriptive_sensitivity_only"
+        },
+        {
+          "nominal_coverage": 0.9,
+          "primary": false,
+          "calibration": {
+            "count": 11,
+            "prediction_failures": 0,
+            "quantile": {
+              "kind": "finite",
+              "radius_mpc": 1670.4395029257498
+            },
+            "rank": 11
+          },
+          "heldout": {
+            "binomial_lower_tail_p_value": 0.651321559899998,
+            "clopper_pearson_two_sided_95": [
+              0.5549838829718056,
+              0.9974714214555382
+            ],
+            "covered": 9,
+            "empirical_coverage": 0.9,
+            "prediction_failures": 0,
+            "total": 10
+          },
+          "inference": "descriptive_sensitivity_only"
+        },
+        {
+          "nominal_coverage": 0.95,
+          "primary": false,
+          "calibration": {
+            "count": 11,
+            "prediction_failures": 0,
+            "quantile": {
+              "kind": "unbounded",
+              "radius_mpc": null
+            },
+            "rank": 12
+          },
+          "heldout": {
+            "binomial_lower_tail_p_value": 1,
+            "clopper_pearson_two_sided_95": [
+              0.6915028921812394,
+              1
+            ],
+            "covered": 10,
+            "empirical_coverage": 1,
+            "prediction_failures": 0,
+            "total": 10
+          },
+          "inference": "descriptive_sensitivity_only"
+        }
+      ],
+      "historical_scale_comparisons": [
+        {
+          "calibration_finite_errors_exceeding_radius": 9,
+          "calibration_prediction_failures": 0,
+          "calibration_total": 11,
+          "heldout_finite_errors_exceeding_radius": 10,
+          "heldout_prediction_failures": 0,
+          "heldout_total": 10,
+          "radius_mpc": 50
+        },
+        {
+          "calibration_finite_errors_exceeding_radius": 9,
+          "calibration_prediction_failures": 0,
+          "calibration_total": 11,
+          "heldout_finite_errors_exceeding_radius": 10,
+          "heldout_prediction_failures": 0,
+          "heldout_total": 10,
+          "radius_mpc": 100
+        },
+        {
+          "calibration_finite_errors_exceeding_radius": 8,
+          "calibration_prediction_failures": 0,
+          "calibration_total": 11,
+          "heldout_finite_errors_exceeding_radius": 8,
+          "heldout_prediction_failures": 0,
+          "heldout_total": 10,
+          "radius_mpc": 200
+        },
+        {
+          "calibration_finite_errors_exceeding_radius": 6,
+          "calibration_prediction_failures": 0,
+          "calibration_total": 11,
+          "heldout_finite_errors_exceeding_radius": 5,
+          "heldout_prediction_failures": 0,
+          "heldout_total": 10,
+          "radius_mpc": 500
+        }
+      ],
+      "failed_rows": [],
+      "implementation_boundary": "Historical halo0/observer-host50 foreground convention evaluated with the corrected current mean-DM implementation; the historical transformed producer is a distinct implementation."
+    },
+    "sensitivity": [
+      {
+        "halo_dm": 0,
+        "observer_host_dm": 0,
+        "summed_foreground_dm": 0,
+        "calibration90": {
+          "count": 11,
+          "prediction_failures": 0,
+          "quantile": {
+            "kind": "finite",
+            "radius_mpc": 1840.8910211001335
+          },
+          "rank": 11
+        },
+        "heldout90": {
+          "binomial_lower_tail_p_value": 0.651321559899998,
+          "clopper_pearson_two_sided_95": [
+            0.5549838829718056,
+            0.9974714214555382
+          ],
+          "covered": 9,
+          "empirical_coverage": 0.9,
+          "prediction_failures": 0,
+          "total": 10
+        }
+      },
+      {
+        "halo_dm": 0,
+        "observer_host_dm": 50,
+        "summed_foreground_dm": 50,
+        "calibration90": {
+          "count": 11,
+          "prediction_failures": 0,
+          "quantile": {
+            "kind": "finite",
+            "radius_mpc": 1670.4395029257498
+          },
+          "rank": 11
+        },
+        "heldout90": {
+          "binomial_lower_tail_p_value": 0.651321559899998,
+          "clopper_pearson_two_sided_95": [
+            0.5549838829718056,
+            0.9974714214555382
+          ],
+          "covered": 9,
+          "empirical_coverage": 0.9,
+          "prediction_failures": 0,
+          "total": 10
+        }
+      },
+      {
+        "halo_dm": 0,
+        "observer_host_dm": 100,
+        "summed_foreground_dm": 100,
+        "calibration90": {
+          "count": 11,
+          "prediction_failures": 1,
+          "quantile": {
+            "kind": "unbounded",
+            "radius_mpc": null
+          },
+          "rank": 11
+        },
+        "heldout90": {
+          "binomial_lower_tail_p_value": 1,
+          "clopper_pearson_two_sided_95": [
+            0.6915028921812394,
+            1
+          ],
+          "covered": 10,
+          "empirical_coverage": 1,
+          "prediction_failures": 0,
+          "total": 10
+        }
+      },
+      {
+        "halo_dm": 50,
+        "observer_host_dm": 0,
+        "summed_foreground_dm": 50,
+        "calibration90": {
+          "count": 11,
+          "prediction_failures": 0,
+          "quantile": {
+            "kind": "finite",
+            "radius_mpc": 1670.4395029257498
+          },
+          "rank": 11
+        },
+        "heldout90": {
+          "binomial_lower_tail_p_value": 0.651321559899998,
+          "clopper_pearson_two_sided_95": [
+            0.5549838829718056,
+            0.9974714214555382
+          ],
+          "covered": 9,
+          "empirical_coverage": 0.9,
+          "prediction_failures": 0,
+          "total": 10
+        }
+      },
+      {
+        "halo_dm": 50,
+        "observer_host_dm": 50,
+        "summed_foreground_dm": 100,
+        "calibration90": {
+          "count": 11,
+          "prediction_failures": 1,
+          "quantile": {
+            "kind": "unbounded",
+            "radius_mpc": null
+          },
+          "rank": 11
+        },
+        "heldout90": {
+          "binomial_lower_tail_p_value": 1,
+          "clopper_pearson_two_sided_95": [
+            0.6915028921812394,
+            1
+          ],
+          "covered": 10,
+          "empirical_coverage": 1,
+          "prediction_failures": 0,
+          "total": 10
+        }
+      },
+      {
+        "halo_dm": 50,
+        "observer_host_dm": 100,
+        "summed_foreground_dm": 150,
+        "calibration90": {
+          "count": 11,
+          "prediction_failures": 1,
+          "quantile": {
+            "kind": "unbounded",
+            "radius_mpc": null
+          },
+          "rank": 11
+        },
+        "heldout90": {
+          "binomial_lower_tail_p_value": 0.651321559899998,
+          "clopper_pearson_two_sided_95": [
+            0.5549838829718056,
+            0.9974714214555382
+          ],
+          "covered": 9,
+          "empirical_coverage": 0.9,
+          "prediction_failures": 1,
+          "total": 10
+        }
+      },
+      {
+        "halo_dm": 100,
+        "observer_host_dm": 0,
+        "summed_foreground_dm": 100,
+        "calibration90": {
+          "count": 11,
+          "prediction_failures": 1,
+          "quantile": {
+            "kind": "unbounded",
+            "radius_mpc": null
+          },
+          "rank": 11
+        },
+        "heldout90": {
+          "binomial_lower_tail_p_value": 1,
+          "clopper_pearson_two_sided_95": [
+            0.6915028921812394,
+            1
+          ],
+          "covered": 10,
+          "empirical_coverage": 1,
+          "prediction_failures": 0,
+          "total": 10
+        }
+      },
+      {
+        "halo_dm": 100,
+        "observer_host_dm": 50,
+        "summed_foreground_dm": 150,
+        "calibration90": {
+          "count": 11,
+          "prediction_failures": 1,
+          "quantile": {
+            "kind": "unbounded",
+            "radius_mpc": null
+          },
+          "rank": 11
+        },
+        "heldout90": {
+          "binomial_lower_tail_p_value": 0.651321559899998,
+          "clopper_pearson_two_sided_95": [
+            0.5549838829718056,
+            0.9974714214555382
+          ],
+          "covered": 9,
+          "empirical_coverage": 0.9,
+          "prediction_failures": 1,
+          "total": 10
+        }
+      },
+      {
+        "halo_dm": 100,
+        "observer_host_dm": 100,
+        "summed_foreground_dm": 200,
+        "calibration90": {
+          "count": 11,
+          "prediction_failures": 4,
+          "quantile": {
+            "kind": "unbounded",
+            "radius_mpc": null
+          },
+          "rank": 11
+        },
+        "heldout90": {
+          "binomial_lower_tail_p_value": 0.651321559899998,
+          "clopper_pearson_two_sided_95": [
+            0.5549838829718056,
+            0.9974714214555382
+          ],
+          "covered": 9,
+          "empirical_coverage": 0.9,
+          "prediction_failures": 1,
+          "total": 10
+        }
+      }
+    ],
+    "interpretation": "The primary 90 percent radius is unbounded because FRB20230718A yields477-396-100=-19pc/cm^3 and remains an infinite calibration failure score. Its10/10 coverage is trivial and establishes no finite distance precision. The historical estimator's predeclared sensitivity gives1670.44Mpc radius and9/10 heldout coverage, with broad confidence limits. Eight of10 primary heldout point errors exceed100Mpc and four exceed500Mpc. These scale comparisons provide no application-derived usefulness threshold.",
+    "replay": "The complete303011-byte result JSON replays byte-for-byte. Source membership,split,foregrounds,thresholds and model remain fixed after outcome inspection.",
+    "chronology_boundary": "The session records the protocol and runner freeze before its first physical evaluation. Retained declarations and hashes establish declared execution identity; hashes alone cannot prove absence of all possible earlier outcome inspection."
+  },
+  "limitations": {
+    "physical_calibration": "Calibration targets selected reported redshift labels. Missing redshift, disk, halo and host uncertainty distributions remain unmodeled; source-association correctness and exchangeability remain assumptions.",
+    "operational_coverage": "Failed predictions remain in denominators. Infinite calibration scores do not guarantee coverage for a pipeline that supplies no set on failed test sources.",
+    "population_inference": "Ten heldout sources have weak undercoverage-test power; even10/10 cannot establish a population coverage rate>=0.9. Confidence limits and p-values require the stated independent common-coverage model.",
+    "transport": "CHIME sensitivity,frequency,source grouping and host follow-up differ. A calibrated CHIME physical distance distribution and hierarchy-specific inference remain unestablished.",
+    "successor": "A physically useful successor requires a separately frozen foreground/scatter/selection model and new independent validation sources; selecting a favorable sensitivity row or dropping the failed source would not validate that successor.",
+    "historical_identity": "Reconstructed result reproduction is complete. The original invocation/executable/untracked workspace identity remains a historical attribution question, distinct from the resolved build and replay blocker."
+  }
+}

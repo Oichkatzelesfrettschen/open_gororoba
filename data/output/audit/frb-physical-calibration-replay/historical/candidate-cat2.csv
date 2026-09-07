@@ -1,0 +1,4 @@
+catalog,dm_column,n_events,n_triples,ultrametric_fraction,null_fraction_mean,null_fraction_std,fraction_p_value,fraction_ci_lower,fraction_ci_upper,mean_defect,null_mean_defect,defect_p_value,padic_p2_p_value,padic_p3_p_value,padic_p5_p_value,padic_p7_p_value,padic_p11_p_value,padic_p13_p_value,bonferroni_threshold,any_significant,verdict
+cat2,bonsai_dm,5045,100000,0.130500,0.130506,0.001028,0.995005,0.124700,0.136800,0.361350,0.363230,0.020979,1.000000,1.000000,1.000000,1.000000,1.000000,1.000000,0.006250,false,FAIL
+cat2,dm_exc_ne2001,5045,100000,0.121310,0.121885,0.001029,0.589411,0.115000,0.128500,0.368243,0.370097,0.021978,1.000000,1.000000,1.000000,1.000000,1.000000,1.000000,0.006250,false,FAIL
+cat2,dm_exc_ymw16,5045,100000,0.116410,0.118273,0.000983,0.052947,0.112300,0.124800,0.373114,0.374162,0.117882,1.000000,1.000000,1.000000,1.000000,1.000000,1.000000,0.006250,false,FAIL

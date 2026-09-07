@@ -1,0 +1,48 @@
+schema_version = 1
+status = "both_followup_targets_resolved_with_independent_identity_crosschecks"
+scope = "Complete the capped primary PDF response and verify the corrected pinned Milky Way source path."
+receipts = "receipts.jsonl"
+receipts_sha256 = "d07cdf6fbb4a7fa5b287a345908686be6fd14bb52625693840be08eac18c7b20"
+requests = 4
+maximum_requests = 20
+retained_response_bytes = 10832706
+maximum_total_response_bytes = 100000000
+per_response_cap_bytes = 31457280
+per_request_timeout_seconds = 60
+user_agent = "Mozilla/5.0"
+mechanisms = ["GNU Wget 1.25.0 over HTTPS", "curl 8.21.0 over HTTPS", "Official export.arxiv.org versioned mirror", "GitHub Git blob API and local Git-object identity reconstruction"]
+retention = "Every new response body and complete raw request log is retained as deterministic gzip. Each receipt records storage and decoded hashes and sizes. Original failed/capped receipts remain separate historical observations."
+
+[pdf]
+original_source_manifest_request = 11
+original_request_url = "https://arxiv.org/pdf/2108.01282"
+original_outcome = "HTTP200 body capped at5000001bytes under the initial5MB retention limit"
+new_outcome = "HTTP200 complete5413920-byte PDF; pdfinfo parses27pages; title-page text identifies arXiv2108.01282v2"
+primary_method = "wget --user-agent=Mozilla/5.0 --timeout=30 --tries=2, server-response logging and outer60-second timeout"
+independent_url = "https://export.arxiv.org/pdf/2108.01282v2"
+independent_method = "curl with Mozilla user agent, headers and finalURL/status retention"
+complete_sha256 = "e1a125fdcd524669b48995376ce641db0699aacce83dc24abb74983274fe36cd"
+original_prefix_sha256 = "8738118db2bb2c646e0f76ca14fcba4d3c68ed657cf8b00bfaa931c1e2fba7e3"
+comparisons = "The complete primary response and complete official-mirror response are byte-identical. The first5000001bytes exactly equal the original capped body."
+identity_evidence = "pdf-identity.json binds retained title-page text and pdfinfo output; both HTTP responses identify2108.01282v2 in Content-Disposition."
+version_boundary = "The separately retained Bhandari HTML response names v1. The recovered complete PDF is v2; the follow-up does not substitute its content into the frozen cohort or earlier v1 source interpretation."
+etag_boundary = "HTTP ETag sha256:d7f3f35b2f22d718ab7935be60455c65c7fc4c6e0bb5a3b62bd5a5041fab94ba differs from the measured body digest. Body identity rests on retained bytes, complete independent-client/mirror equality, title-page identification and exact original-prefix correspondence, rather than an ETag equality claim."
+
+[milky_way_source]
+original_source_manifest_request = 17
+already_corrected_source_manifest_request = 18
+original_wrong_path = "frb/dm/mw.py"
+correct_path = "frb/mw.py"
+pinned_commit = "996fcda9b0b22431e3171208b4c8e1cf2798e823"
+original_outcome = "HTTP404 for the wrong path; the subsequent original request18 already retrieved the correct path successfully"
+tree_evidence = "The retained github-frb-tree.json.gz reports truncated=false, contains frb/mw.py, and has zero entries for frb/dm/mw.py."
+git_blob = "0096529b7c1f11727b8f93fa8b83ba86e447fc37"
+decoded_bytes = 1927
+decoded_sha256 = "abe51d9f95ae95596761472a5a3ad4f6dfada3556a44cd9d1bd4b2469f349c2d"
+crosscheck = "Mozilla wget correct-path bytes equal base64-decoded GitHub Git blob API bytes and the original successful request18 body. SHA1 over the Git blob header plus1927body bytes equals the pinned-tree/API blob ID."
+interpretation = "The original404 establishes wrong-path absence at the pinned commit, not unavailability of the Milky Way implementation."
+
+[boundaries]
+source_use = "Acquisition and identity verification only; downloaded code was not executed and calibration outcomes were not recomputed."
+write_set = [".cache/frb-retrieval-followup", "data/output/audit/frb-physical-calibration-replay/retrieval-followup"]
+frozen_evidence = "Original sources manifest, retrieval receipts, protocols and cohort remain outside the follow-up write set."

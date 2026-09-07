@@ -1,0 +1,20 @@
+{
+  "bytes": 26704,
+  "client": "requests",
+  "client_version": "2.34.2",
+  "complete": true,
+  "content_type": "application/json; charset=utf-8",
+  "decoded_filename": "github-master-commit.json",
+  "elapsed_seconds": 0.431916,
+  "encoding": "gzip; mtime=0; exact decoded response bytes",
+  "error": "",
+  "final_url": "https://api.github.com/repos/FRBs/FRB/commits/main",
+  "path": "data/output/audit/frb-physical-calibration-replay/sources/github-master-commit.json.gz",
+  "retrieved_path": "data/output/audit/frb-physical-calibration-replay/sources/github-master-commit.json",
+  "retrieved_utc": "2026-09-07T00:24:22.878143+00:00",
+  "sha256": "8b7ca3056bdf39465b5a55cf21b1b5652d7d3587837d0028089c70d65de4a3f6",
+  "status": 200,
+  "storage_bytes": 7737,
+  "storage_sha256": "766311011b4c88b378c0873007af9062edf4c2dd41928bf0825adc303e592483",
+  "url": "https://api.github.com/repos/FRBs/FRB/commits/main"
+}

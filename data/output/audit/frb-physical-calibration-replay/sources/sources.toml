@@ -1,0 +1,454 @@
+schema_version = 1
+scope = "Bounded primary-source acquisition and outcome-blind extraction for localized FRB physical calibration"
+work_boundary = "Source retrieval, metadata inspection and table extraction only; calibration residuals, parameter fitting and predictor evaluation were excluded"
+publication_stage = "Source evidence and cohort freeze; canonical admission is separate"
+retrieval_attempts = 19
+maximum_retrieval_attempts = 20
+maximum_total_response_bytes = 50000000
+per_response_stop_threshold_bytes = 5000000
+per_response_read_overshoot_bound_bytes = 65536
+per_read_timeout_seconds = 15
+elapsed_read_deadline_seconds = 45
+total_retained_response_bytes = 11592676
+clients = ["Python urllib.request 3.14.7", "Python requests 2.34.2"]
+github_commit = "996fcda9b0b22431e3171208b4c8e1cf2798e823"
+github_role = "Pinned secondary machine-readable catalog and provenance corroboration; the primary cohort uses Shannon Table 1 uniformly"
+retrieval_log = "retrievals.jsonl"
+retention = "Every HTTP body, including a truncated PDF and a 404 body, is retained separately as deterministic gzip. Decoded hashes identify response bytes; storage hashes identify gzip bodies."
+cross_client_primary_check = "requests and urllib independently retrieved Shannon2024 HTML; complete response bytes match SHA256 d88cfaf7d2b734621d2122f3ce13f2b731a8edf6883642ab40435fb00d7e6331"
+
+[cohort]
+path = "localized-frb-cohort.csv"
+sha256 = "b63c0e1c85f7310b90aa8ff11b1a16dca4b7a058a53fb06479c900790b3cbbf2"
+rows = 21
+unique_source_ids = 21
+parent = "shannon2024.html.gz"
+parent_decoded_sha256 = "d88cfaf7d2b734621d2122f3ce13f2b731a8edf6883642ab40435fb00d7e6331"
+primary_reference = "Shannon et al., The Commensal Real-time ASKAP Fast Transient incoherent-sum survey, arXiv:2408.02083v1, Appendix A Table 1 (HTML A1.T1)"
+fields = ["source_id", "dm_observed", "dm_error", "dm_disk_ne2001", "redshift", "telescope", "frequency_mhz", "redshift_kind", "reference", "discovery_utc_as_reported"]
+selection = "Include every Table 1 source whose TNS discovery-date prefix is strictly after 2020-05-28 and whose redshift field is numeric; preserve all predictor failures subsequently"
+exclusion = "Exclude all pre-cutoff sources and the published n/a, n/h and p redshift markers. Apply no DM, inferred distance, host-DM, fit residual or posterior-probability cut."
+source_population_rows = 43
+selection_ledger = "shannon-table1-selection.csv"
+selection_ledger_sha256 = "9e3879d2dca34ae1043257bd4ce7297fe1b482673377df946d470feb0453bdf9"
+row_anchors = "reference gives the one-based data row beneath the two HTML header rows in A1.T1"
+normalization = "Preserve primary central DM, NE2001 disk DM and redshift decimals. Convert parenthetical DM uncertainty digits to their place value; retain the source uncertainty convention rather than assigning a confidence level."
+uncertainty_boundary = "Table 1 supplies parenthetical DM uncertainties but omits rowwise NE2001 systematic errors, halo DM, host DM and redshift uncertainties. Those quantities remain unavailable, not zero."
+label_boundary = "Measured Table 1 redshifts label the selected observed host cohort; host-association correctness and exchangeability remain assumptions, not mechanically established truth."
+cutoff_boundary = "The temporal cut excludes the Macquart2020 development sample and additional early sources; it does not imply independence from later host-association methodological choices."
+raw_table_cells = "shannon-source-table-cells.json"
+source_typo = "FRB20240201A has a reported UTC of 2024-02-08 20:00:54.246 in Table 1. Preserve that field verbatim; use its TNS identifier for the predeclared temporal cut."
+
+[development_sample]
+source = "macquart2020.pdf.gz"
+primary_reference = "Macquart et al. (2020), arXiv:2005.13161, Eq. (1), Eq. (2), Table 1 and Methods Sample Selection"
+gold_sources = ["FRB20180924B", "FRB20181112A", "FRB20190102C", "FRB20190608B", "FRB20190711A"]
+original_exclusions = "The primary analysis excludes FRB121102 and FRB190523 for discovery selection bias, FRB180916 for low Galactic latitude, and FRB190611 for tentative host association."
+foreground_convention = "Eq. (1) separates Galactic ISM, Galactic halo, cosmic and observer-frame host DM. The text fixes halo DM=50 pc/cm^3 while discussing an approximate 50-100 range."
+host_convention = "The plotted illustrative host subtraction is 50/(1+z) pc/cm^3. The likelihood separately fits a rest-frame lognormal host distribution and applies 1/(1+z). A fixed observer-frame 50 term is a computational estimator choice, not the source physical host prescription."
+host_identity_rule = "Methods demands less than 1 percent misidentification without invoking the DM-z relation; triggering sensitivity and Galactic foreground cuts also matter."
+galactic_uncertainty = "Methods describes several-tens-of-percent Galactic-model distance errors and restricts its gold sample to predicted disk DM below100 pc/cm^3, conservatively high Galactic latitude. The later frozen cohort deliberately differs and retains its full specified population."
+
+[survey_selection]
+source = "shannon2024.html.gz"
+host_method = "Section4.2 PATH uses positions, localization regions, galaxy magnitudes, unseen-host and angular-offset priors; the stated inputs omit DM-z."
+prior_learning_boundary = "The offset scale prior was revised using a subset of Bhandari sources and new survey sources. Shared association machinery and prior fitting limit claims of independent host-label validation."
+followup = "Section4.3 obtains optical spectroscopy for probable hosts; FRB20230718A host identification uses MeerKAT21-cm HI emission. Table2 supplies interferometric positions for every selected source."
+discovery_heterogeneity = "The CRAFT/ICS survey includes multiple observing bands, changing antenna counts, commensal and filler modes, and targeted repeat searches. FRB20200906A arose during a repeat search for another source. Localization and measurable-host selection are not an IID sky sample."
+primary_inference_boundary = "A source-disjoint split tests this fixed selected measured-redshift cohort conditionally. Marginal conformal coverage requires exchangeability; survey membership alone does not prove that condition or transport to CHIME."
+
+[chime_transport]
+source = "chime-catalog1.html.gz"
+primary_reference = "CHIME/FRB Collaboration, arXiv:2106.04352v1, Sections II-III, Table2 fields26-27, Table5 and Figure11"
+column_definition = "dm_exc_ne2001 and dm_exc_ymw16 are fitburst DM minus the Galactic model evaluated at the best-fit sky position; they are not bonsai DM minus the model."
+halo_boundary = "The published excess definition subtracts the Galactic electron-density model only. Shannon identifies NE2001 as a disk contribution, and Macquart Eq. (1) treats halo separately. An additional halo correction requires its own explicit assumption; the excess column does not document a halo subtraction."
+grouping = "Table5 includes multiple sub-bursts from one event; fitted DM and scattering parameters are shared across sub-bursts. Burst rows require event/source grouping for independent-sample reasoning."
+selection = "CHIME operates at400-800MHz and its sensitivity, localization probability regions and Galactic-DM selection differ from CRAFT/ICS; the source explicitly warns that survey transfer functions create strong cross-survey biases."
+boundary = "The source audit covers Catalog1 definitions. Catalog2 source-specific column and selection provenance remains outside this bounded acquisition."
+
+[extraction_checks]
+cohort_count = "21 numeric-redshift post-cutoff rows, 21 distinct source IDs"
+field_checks = "Every selected DM parses parenthetical last-digit uncertainty; every selected disk DM and redshift parses a finite numeric field"
+raw_body_check = "Every stored gzip decodes to its recorded response hash and byte count"
+residual_policy = "The acquisition worker calculated no calibration residuals and applied no residual-based exclusions."
+selection_counts = "included=21; precutoff_discovery=10; redshift_n/a=6; redshift_n/h=2; redshift_p=4"
+
+[[source]]
+id = 1
+role = "Repository identity and default branch"
+url = "https://api.github.com/repos/FRBs/FRB"
+final_url = "https://api.github.com/repos/FRBs/FRB"
+client = "requests"
+client_version = "2.34.2"
+retrieved_utc = "2026-09-07T00:24:07.924838+00:00"
+http_status = 200
+complete = true
+usable_body = true
+body = "github-repository.json.gz"
+decoded_filename = "github-repository.json"
+decoded_bytes = 5777
+decoded_sha256 = "ab7f46c4cc011c29d2bd9b7182559a8ac9c9469a45922a8318c9be633ba6058d"
+storage_bytes = 1370
+storage_sha256 = "1376f93fe4dc3ffa86231ff6ef137e4833310582386a6af6c0dfda308adf9ec8"
+elapsed_seconds = 0.29316
+error = ""
+
+[[source]]
+id = 2
+role = "Primary mean-DM model, development sample and selection"
+url = "https://arxiv.org/pdf/2005.13161"
+final_url = "https://arxiv.org/pdf/2005.13161"
+client = "urllib"
+client_version = "3.14.7"
+retrieved_utc = "2026-09-07T00:24:08.375250+00:00"
+http_status = 200
+complete = true
+usable_body = true
+body = "macquart2020.pdf.gz"
+decoded_filename = "macquart2020.pdf"
+decoded_bytes = 3738281
+decoded_sha256 = "bd0bb66f9f5f5c635925b8f835590d75e80de70dc995156a42c55f172e238025"
+storage_bytes = 3494615
+storage_sha256 = "c5ab3d09976661f0ab9c712030ec1dbb04c96ed6732dfaa72b13ce93198c522e"
+elapsed_seconds = 0.207587
+error = ""
+
+[[source]]
+id = 3
+role = "Pinned repository commit metadata"
+url = "https://api.github.com/repos/FRBs/FRB/commits/main"
+final_url = "https://api.github.com/repos/FRBs/FRB/commits/main"
+client = "requests"
+client_version = "2.34.2"
+retrieved_utc = "2026-09-07T00:24:22.878143+00:00"
+http_status = 200
+complete = true
+usable_body = true
+body = "github-master-commit.json.gz"
+decoded_filename = "github-master-commit.json"
+decoded_bytes = 26704
+decoded_sha256 = "8b7ca3056bdf39465b5a55cf21b1b5652d7d3587837d0028089c70d65de4a3f6"
+storage_bytes = 7737
+storage_sha256 = "766311011b4c88b378c0873007af9062edf4c2dd41928bf0825adc303e592483"
+elapsed_seconds = 0.431916
+error = ""
+
+[[source]]
+id = 4
+role = "Repository path discovery; tracked metadata only"
+url = "https://api.github.com/repos/FRBs/FRB/git/trees/main?recursive=1"
+final_url = "https://api.github.com/repos/FRBs/FRB/git/trees/main?recursive=1"
+client = "requests"
+client_version = "2.34.2"
+retrieved_utc = "2026-09-07T00:24:36.799314+00:00"
+http_status = 200
+complete = true
+usable_body = true
+body = "github-frb-tree.json.gz"
+decoded_filename = "github-frb-tree.json"
+decoded_bytes = 248650
+decoded_sha256 = "01e959b73668c80b4f08a82c6afcec1cddb78d84240ca670879c4feefed6d037"
+storage_bytes = 45625
+storage_sha256 = "c38d2be0588e7429fc5720cc8b100ec6d78380ae652f4a2c777aa66b017a38bb"
+elapsed_seconds = 0.628447
+error = ""
+
+[[source]]
+id = 5
+role = "Repository overview"
+url = "https://raw.githubusercontent.com/FRBs/FRB/996fcda9b0b22431e3171208b4c8e1cf2798e823/README.md"
+final_url = "https://raw.githubusercontent.com/FRBs/FRB/996fcda9b0b22431e3171208b4c8e1cf2798e823/README.md"
+client = "urllib"
+client_version = "3.14.7"
+retrieved_utc = "2026-09-07T00:25:15.189958+00:00"
+http_status = 200
+complete = true
+usable_body = true
+body = "frb-readme.md.gz"
+decoded_filename = "frb-readme.md"
+decoded_bytes = 474
+decoded_sha256 = "93deab3f5c7a2d93358b7ec0f8246ad3f0ab5d611de7b82b789e23db457db222"
+storage_bytes = 333
+storage_sha256 = "8e9510132a09fcd5fc87ce10241cfeb57676236ce94710320925ffb2092cf745"
+elapsed_seconds = 0.387992
+error = ""
+
+[[source]]
+id = 6
+role = "Secondary object schema example; pre-cutoff, excluded from primary cohort"
+url = "https://raw.githubusercontent.com/FRBs/FRB/996fcda9b0b22431e3171208b4c8e1cf2798e823/frb/data/FRBs/FRB20200430A.json"
+final_url = "https://raw.githubusercontent.com/FRBs/FRB/996fcda9b0b22431e3171208b4c8e1cf2798e823/frb/data/FRBs/FRB20200430A.json"
+client = "requests"
+client_version = "2.34.2"
+retrieved_utc = "2026-09-07T00:25:15.746269+00:00"
+http_status = 200
+complete = true
+usable_body = true
+body = "frb20200430a.json.gz"
+decoded_filename = "frb20200430a.json"
+decoded_bytes = 613
+decoded_sha256 = "22aa33053e2c714279f6ba7e66e79c8429687ebc28007356c2cd2616603867ee"
+storage_bytes = 281
+storage_sha256 = "7de87db100bdb537c38916a467876dceebf97add33d4000b5bb3fbab636256fe"
+elapsed_seconds = 0.351404
+error = ""
+
+[[source]]
+id = 7
+role = "Secondary FRB measurements and reference crosswalk"
+url = "https://raw.githubusercontent.com/FRBs/FRB/996fcda9b0b22431e3171208b4c8e1cf2798e823/frb/data/FRBs/FRBs_base.csv"
+final_url = "https://raw.githubusercontent.com/FRBs/FRB/996fcda9b0b22431e3171208b4c8e1cf2798e823/frb/data/FRBs/FRBs_base.csv"
+client = "requests"
+client_version = "2.34.2"
+retrieved_utc = "2026-09-07T00:25:38.510732+00:00"
+http_status = 200
+complete = true
+usable_body = true
+body = "frbs-base.csv.gz"
+decoded_filename = "frbs-base.csv"
+decoded_bytes = 22154
+decoded_sha256 = "ef4f6f0f61d81717851249bda28bb8f36868a2682c68a73461b1ab9ce71200a0"
+storage_bytes = 7900
+storage_sha256 = "f914b3e0a356f5f23162e98bbac37d26ffc7e6ee44f7117f0a948a0c386bc56c"
+elapsed_seconds = 0.36295
+error = ""
+
+[[source]]
+id = 8
+role = "Secondary host association and redshift provenance"
+url = "https://raw.githubusercontent.com/FRBs/FRB/996fcda9b0b22431e3171208b4c8e1cf2798e823/frb/data/Galaxies/public_hosts.csv"
+final_url = "https://raw.githubusercontent.com/FRBs/FRB/996fcda9b0b22431e3171208b4c8e1cf2798e823/frb/data/Galaxies/public_hosts.csv"
+client = "urllib"
+client_version = "3.14.7"
+retrieved_utc = "2026-09-07T00:25:39.038871+00:00"
+http_status = 200
+complete = true
+usable_body = true
+body = "public-hosts.csv.gz"
+decoded_filename = "public-hosts.csv"
+decoded_bytes = 9902
+decoded_sha256 = "9349eadc88d1742f5e2a4088b5d07dbc2d71c77c4af22bd49f75a43ef5d1b2d3"
+storage_bytes = 3695
+storage_sha256 = "0c1b3bf4d0da7b03e3fad4ad2c2a9ba51cecc75a7c7ba7fa3164f09c3de696e2"
+elapsed_seconds = 0.370052
+error = ""
+
+[[source]]
+id = 9
+role = "Primary-publication reference crosswalk"
+url = "https://raw.githubusercontent.com/FRBs/FRB/996fcda9b0b22431e3171208b4c8e1cf2798e823/frb/data/Galaxies/Literature/all_refs.csv"
+final_url = "https://raw.githubusercontent.com/FRBs/FRB/996fcda9b0b22431e3171208b4c8e1cf2798e823/frb/data/Galaxies/Literature/all_refs.csv"
+client = "requests"
+client_version = "2.34.2"
+retrieved_utc = "2026-09-07T00:25:39.570712+00:00"
+http_status = 200
+complete = true
+usable_body = true
+body = "galaxy-references.csv.gz"
+decoded_filename = "galaxy-references.csv"
+decoded_bytes = 1795
+decoded_sha256 = "f306317c5c126d78e64f2f0c493899fa1895a2c01ae1eeabd169b8150a72813a"
+storage_bytes = 608
+storage_sha256 = "3cc944b7d3807a6e918bfa2ad47c1ba9ccd91f6214fccf5fa7de415158da297f"
+elapsed_seconds = 0.368512
+error = ""
+
+[[source]]
+id = 10
+role = "Primary selected-survey data and methodology"
+url = "https://arxiv.org/html/2408.02083v1"
+final_url = "https://arxiv.org/html/2408.02083v1"
+client = "requests"
+client_version = "2.34.2"
+retrieved_utc = "2026-09-07T00:26:17.101562+00:00"
+http_status = 200
+complete = true
+usable_body = true
+body = "shannon2024.html.gz"
+decoded_filename = "shannon2024.html"
+decoded_bytes = 653803
+decoded_sha256 = "d88cfaf7d2b734621d2122f3ce13f2b731a8edf6883642ab40435fb00d7e6331"
+storage_bytes = 95309
+storage_sha256 = "3c2939dcd4d9cc4b9b6381a8bb286ed0a126637bbe1e4fe44589a63e2689d401"
+elapsed_seconds = 0.136985
+error = ""
+
+[[source]]
+id = 11
+role = "Truncated primary-source retrieval; excluded from interpretation"
+url = "https://arxiv.org/pdf/2108.01282"
+final_url = "https://arxiv.org/pdf/2108.01282"
+client = "urllib"
+client_version = "3.14.7"
+retrieved_utc = "2026-09-07T00:26:18.526354+00:00"
+http_status = 200
+complete = false
+usable_body = false
+body = "bhandari2021.pdf.gz"
+decoded_filename = "bhandari2021.pdf"
+decoded_bytes = 5000001
+decoded_sha256 = "8738118db2bb2c646e0f76ca14fcba4d3c68ed657cf8b00bfaa931c1e2fba7e3"
+storage_bytes = 2045372
+storage_sha256 = "4a6b15883dac4c08edbe249e82c020b8ccfe6fb943a277ce7c7d734047827214"
+elapsed_seconds = 1.09664
+error = "bounded response limit reached"
+
+[[source]]
+id = 12
+role = "Upstream construction source; NE2001 ISM assignment"
+url = "https://raw.githubusercontent.com/FRBs/FRB/996fcda9b0b22431e3171208b4c8e1cf2798e823/frb/builds/build_frbs.py"
+final_url = "https://raw.githubusercontent.com/FRBs/FRB/996fcda9b0b22431e3171208b4c8e1cf2798e823/frb/builds/build_frbs.py"
+client = "requests"
+client_version = "2.34.2"
+retrieved_utc = "2026-09-07T00:26:19.809341+00:00"
+http_status = 200
+complete = true
+usable_body = true
+body = "build-frbs.py.txt.gz"
+decoded_filename = "build-frbs.py"
+decoded_bytes = 4998
+decoded_sha256 = "01424edb15534756df3589ed4d4fe48893888b3821af9855e636b3068fbeaf56"
+storage_bytes = 1716
+storage_sha256 = "37780f902dba594576192f0f710796490f6226d58f9f4c9908bd4815bbf0edc3"
+elapsed_seconds = 0.624818
+error = ""
+
+[[source]]
+id = 13
+role = "Complete primary later host-association source"
+url = "https://arxiv.org/html/2108.01282v1"
+final_url = "https://arxiv.org/html/2108.01282v1"
+client = "requests"
+client_version = "2.34.2"
+retrieved_utc = "2026-09-07T00:27:02.110364+00:00"
+http_status = 200
+complete = true
+usable_body = true
+body = "bhandari2021.html.gz"
+decoded_filename = "bhandari2021.html"
+decoded_bytes = 378484
+decoded_sha256 = "b6d270c02f5d7ec350ebbd2b7ec45e4c3372dd3be8caafcfffe3fec6a164f10e"
+storage_bytes = 60255
+storage_sha256 = "29efe150e1d4f7c2fdc550aed9c1c85121c678fc3680caa0245feb9f22c69e5a"
+elapsed_seconds = 0.273247
+error = ""
+
+[[source]]
+id = 14
+role = "Upstream object schema and DMISM setter"
+url = "https://raw.githubusercontent.com/FRBs/FRB/996fcda9b0b22431e3171208b4c8e1cf2798e823/frb/frb.py"
+final_url = "https://raw.githubusercontent.com/FRBs/FRB/996fcda9b0b22431e3171208b4c8e1cf2798e823/frb/frb.py"
+client = "urllib"
+client_version = "3.14.7"
+retrieved_utc = "2026-09-07T00:27:30.721306+00:00"
+http_status = 200
+complete = true
+usable_body = true
+body = "frb-class.py.txt.gz"
+decoded_filename = "frb-class.py"
+decoded_bytes = 16327
+decoded_sha256 = "90ebc3b096c0a5c49cef4efc2652e28b7310af36114091817f525291aed81605"
+storage_bytes = 4441
+storage_sha256 = "2893ed8e27b034e8f304a5df6acf86449c24a44721e74aafc5c07a12c3843d0d"
+elapsed_seconds = 0.375307
+error = ""
+
+[[source]]
+id = 15
+role = "Secondary host prior and association annotation"
+url = "https://raw.githubusercontent.com/FRBs/FRB/996fcda9b0b22431e3171208b4c8e1cf2798e823/frb/data/Galaxies/PATH/adopted.csv"
+final_url = "https://raw.githubusercontent.com/FRBs/FRB/996fcda9b0b22431e3171208b4c8e1cf2798e823/frb/data/Galaxies/PATH/adopted.csv"
+client = "requests"
+client_version = "2.34.2"
+retrieved_utc = "2026-09-07T00:27:31.255774+00:00"
+http_status = 200
+complete = true
+usable_body = true
+body = "path-adopted.csv.gz"
+decoded_filename = "path-adopted.csv"
+decoded_bytes = 5170
+decoded_sha256 = "2437b6382c931a6429177a272852d50bd8e52f8ae73fb469b3f1caa6a39940af"
+storage_bytes = 2453
+storage_sha256 = "2c0f72ae7f6f251e9355463a1b11df4aa4fc71daf9cee730ed439e36fb8949e6"
+elapsed_seconds = 0.393248
+error = ""
+
+[[source]]
+id = 16
+role = "Primary CHIME columns, grouping and selection documentation"
+url = "https://arxiv.org/html/2106.04352v1"
+final_url = "https://arxiv.org/html/2106.04352v1"
+client = "requests"
+client_version = "2.34.2"
+retrieved_utc = "2026-09-07T00:29:45.146200+00:00"
+http_status = 200
+complete = true
+usable_body = true
+body = "chime-catalog1.html.gz"
+decoded_filename = "chime-catalog1.html"
+decoded_bytes = 823799
+decoded_sha256 = "9d9d50b210a40bef31c9cfcc8dbdc69077ecdf664acacef7b78a17d3d8cd9568"
+storage_bytes = 121912
+storage_sha256 = "856189494245e41bee44c0e0c8a8e0962d82ced6fdaac203c4b90a0ecd9b7641"
+elapsed_seconds = 0.22949
+error = ""
+
+[[source]]
+id = 17
+role = "404 response from incorrect path; excluded from interpretation"
+url = "https://raw.githubusercontent.com/FRBs/FRB/996fcda9b0b22431e3171208b4c8e1cf2798e823/frb/dm/mw.py"
+final_url = "https://raw.githubusercontent.com/FRBs/FRB/996fcda9b0b22431e3171208b4c8e1cf2798e823/frb/dm/mw.py"
+client = "requests"
+client_version = "2.34.2"
+retrieved_utc = "2026-09-07T00:31:45.236717+00:00"
+http_status = 404
+complete = true
+usable_body = false
+body = "milky-way-model.py.txt.gz"
+decoded_filename = "milky-way-model.py.txt"
+decoded_bytes = 14
+decoded_sha256 = "d5558cd419c8d46bdc958064cb97f963d1ea793866414c025906ec15033512ed"
+storage_bytes = 34
+storage_sha256 = "31678b1a3bd22f5f3095c4681e61e9058f7c79aa8eea8813a0d0b4ff72004275"
+elapsed_seconds = 0.320125
+error = ""
+
+[[source]]
+id = 18
+role = "Upstream distinct ISM and halo functions"
+url = "https://raw.githubusercontent.com/FRBs/FRB/996fcda9b0b22431e3171208b4c8e1cf2798e823/frb/mw.py"
+final_url = "https://raw.githubusercontent.com/FRBs/FRB/996fcda9b0b22431e3171208b4c8e1cf2798e823/frb/mw.py"
+client = "urllib"
+client_version = "3.14.7"
+retrieved_utc = "2026-09-07T00:31:56.927175+00:00"
+http_status = 200
+complete = true
+usable_body = true
+body = "milky-way-ne2001.py.txt.gz"
+decoded_filename = "milky-way-ne2001.py.txt"
+decoded_bytes = 1927
+decoded_sha256 = "abe51d9f95ae95596761472a5a3ad4f6dfada3556a44cd9d1bd4b2469f349c2d"
+storage_bytes = 881
+storage_sha256 = "f9980708a5bde69b81cf4fd4de089c4af83285fcbec664396bcd16875b56bd19"
+elapsed_seconds = 0.381363
+error = ""
+
+[[source]]
+id = 19
+role = "Independent urllib retrieval of primary selected-survey source"
+url = "https://arxiv.org/html/2408.02083v1"
+final_url = "https://arxiv.org/html/2408.02083v1"
+client = "urllib"
+client_version = "3.14.7"
+retrieved_utc = "2026-09-07T00:32:59.091765+00:00"
+http_status = 200
+complete = true
+usable_body = true
+body = "shannon2024-urllib.html.gz"
+decoded_filename = "shannon2024-urllib.html"
+decoded_bytes = 653803
+decoded_sha256 = "d88cfaf7d2b734621d2122f3ce13f2b731a8edf6883642ab40435fb00d7e6331"
+storage_bytes = 95309
+storage_sha256 = "3c2939dcd4d9cc4b9b6381a8bb286ed0a126637bbe1e4fe44589a63e2689d401"
+elapsed_seconds = 0.156544
+error = ""

@@ -1,0 +1,4 @@
+added frb-distance-calibration
+added verify-insight-reference-pilot
+Synced binaries_cp by codex (Register FRB calibration evaluator and reconcile preexisting insight-reference verifier inventory omission): 396 retained, 2 added, 0 removed, 0 owner changes.
+Exported control-plane compatibility outputs: claims=1570 insights=183 experiments=285 binaries=398 theorems=162

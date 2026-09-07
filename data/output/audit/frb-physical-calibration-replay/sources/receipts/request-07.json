@@ -1,0 +1,20 @@
+{
+  "bytes": 22154,
+  "client": "requests",
+  "client_version": "2.34.2",
+  "complete": true,
+  "content_type": "text/plain; charset=utf-8",
+  "decoded_filename": "frbs-base.csv",
+  "elapsed_seconds": 0.36295,
+  "encoding": "gzip; mtime=0; exact decoded response bytes",
+  "error": "",
+  "final_url": "https://raw.githubusercontent.com/FRBs/FRB/996fcda9b0b22431e3171208b4c8e1cf2798e823/frb/data/FRBs/FRBs_base.csv",
+  "path": "data/output/audit/frb-physical-calibration-replay/sources/frbs-base.csv.gz",
+  "retrieved_path": "data/output/audit/frb-physical-calibration-replay/sources/frbs-base.csv",
+  "retrieved_utc": "2026-09-07T00:25:38.510732+00:00",
+  "sha256": "ef4f6f0f61d81717851249bda28bb8f36868a2682c68a73461b1ab9ce71200a0",
+  "status": 200,
+  "storage_bytes": 7900,
+  "storage_sha256": "f914b3e0a356f5f23162e98bbac37d26ffc7e6ee44f7117f0a948a0c386bc56c",
+  "url": "https://raw.githubusercontent.com/FRBs/FRB/996fcda9b0b22431e3171208b4c8e1cf2798e823/frb/data/FRBs/FRBs_base.csv"
+}

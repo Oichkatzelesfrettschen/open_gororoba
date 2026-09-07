@@ -24,11 +24,11 @@ id = "SIG-0002"
 path = "registry/binaries.toml"
 top_level_keys = ["binary"]
 schema_version = "v1"
-schema_sha256 = "2bb45dfb3056e59f23f78bcd50603bdb90f8c42aae2c6b22ff77627e652fcca3"
-content_sha256 = "87eb80a6f299ce213dced143e3828b4a7f22b7901a0cf441c2f91a4da82f7bd2"
+schema_sha256 = "25c85dbd4442bb4c26c5de4c62f30869956e7ac4c831eaa6cd568e6fc68efd00"
+content_sha256 = "ea0be9dd110f1a7267ded1f7e3b0a170125af8ad33fd43110ac0bd1e63a9d940"
 array_table_count = 1
 table_count = 0
-shape_json = "{\"path\":\"registry/binaries.toml\",\"shapes\":{\"binary\":{\"entry_kind\":\"table\",\"required_keys\":[\"crate\",\"description\",\"name\"],\"row_count\":396,\"type\":\"array\",\"union_keys\":[\"crate\",\"description\",\"experiment\",\"name\"]}},\"top_level_keys\":[\"binary\"]}"
+shape_json = "{\"path\":\"registry/binaries.toml\",\"shapes\":{\"binary\":{\"entry_kind\":\"table\",\"required_keys\":[\"crate\",\"description\",\"name\"],\"row_count\":398,\"type\":\"array\",\"union_keys\":[\"crate\",\"description\",\"experiment\",\"name\"]}},\"top_level_keys\":[\"binary\"]}"
 
 [[signature]]
 id = "SIG-0003"
@@ -91,7 +91,7 @@ path = "registry/insights.toml"
 top_level_keys = ["insight"]
 schema_version = "v1"
 schema_sha256 = "8c78fea579dbab7e722f884811a062b2df43020fe3bd8f0c471e29e193721684"
-content_sha256 = "b190fa0495e5ff361743773f5de819dcad33fd9bf3decb66bc26bed20d5cd926"
+content_sha256 = "43ef393ac57cb953356cddab4d361d105bc197d6d91c4cdfdd804967d4a07300"
 array_table_count = 1
 table_count = 0
 shape_json = "{\"path\":\"registry/insights.toml\",\"shapes\":{\"insight\":{\"entry_kind\":\"table\",\"required_keys\":[\"id\",\"title\"],\"row_count\":183,\"type\":\"array\",\"union_keys\":[\"body\",\"claims\",\"confidence\",\"date\",\"description\",\"evidence_admission\",\"experimental_support\",\"extension_sprint\",\"id\",\"insight\",\"mechanism_sprint\",\"phase\",\"related_claims\",\"related_insights\",\"sprint\",\"status\",\"status_note\",\"summary\",\"supporting_evidence\",\"title\",\"verified_date\"]}},\"top_level_keys\":[\"insight\"]}"

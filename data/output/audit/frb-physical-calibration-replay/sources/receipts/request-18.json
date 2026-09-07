@@ -1,0 +1,20 @@
+{
+  "bytes": 1927,
+  "client": "urllib",
+  "client_version": "3.14.7",
+  "complete": true,
+  "content_type": "text/plain; charset=utf-8",
+  "decoded_filename": "milky-way-ne2001.py.txt",
+  "elapsed_seconds": 0.381363,
+  "encoding": "gzip; mtime=0; exact decoded response bytes",
+  "error": "",
+  "final_url": "https://raw.githubusercontent.com/FRBs/FRB/996fcda9b0b22431e3171208b4c8e1cf2798e823/frb/mw.py",
+  "path": "data/output/audit/frb-physical-calibration-replay/sources/milky-way-ne2001.py.txt.gz",
+  "retrieved_path": "data/output/audit/frb-physical-calibration-replay/sources/milky-way-ne2001.py.txt",
+  "retrieved_utc": "2026-09-07T00:31:56.927175+00:00",
+  "sha256": "abe51d9f95ae95596761472a5a3ad4f6dfada3556a44cd9d1bd4b2469f349c2d",
+  "status": 200,
+  "storage_bytes": 881,
+  "storage_sha256": "f9980708a5bde69b81cf4fd4de089c4af83285fcbec664396bcd16875b56bd19",
+  "url": "https://raw.githubusercontent.com/FRBs/FRB/996fcda9b0b22431e3171208b4c8e1cf2798e823/frb/mw.py"
+}

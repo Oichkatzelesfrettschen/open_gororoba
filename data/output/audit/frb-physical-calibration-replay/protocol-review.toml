@@ -1,0 +1,13 @@
+schema_version = 1
+review = "Independent numerical and statistical preflight before physical residual execution"
+initial_protocol_sha256 = "d987b66c070a452e667a5c5aeaaa642d96ae8c19e4b9e992a4f26906c2a158b9"
+execution_protocol_sha256 = "886ea2e70f80506293d35561ae04f1be29a00864ff08ddeca7b07ec860be2d46"
+clarifications = ["Strictly positive cosmic residual matches the existing CLI selection; failures remain counted", "Nine halo/observer-host scenarios collapse to five summed foregrounds", "Primary Table2 positions distinguish all21 astrophysical sources"]
+calibration_count = 11
+heldout_count = 10
+rank_at_80_percent = 10
+rank_at_90_percent = 11
+rank_at_95_percent = 12
+statistical_boundary = "The95 percent interval is unbounded at this calibration count. The10-source primary binomial diagnostic detects only severe undercoverage; even10/10 cannot establish population coverage>=0.9. The diagnostic concerns a frozen artifact under independent common-coverage assumptions; conformal theory concerns marginal coverage over exchangeable calibration draws."
+source_boundary = "Distinct astrophysical-source positions establish grouping. Survey heterogeneity, common host-association methods and unknown measurement uncertainties remain explicit limitations."
+residual_evaluations_at_review = 0

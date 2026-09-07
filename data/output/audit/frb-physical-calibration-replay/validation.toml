@@ -1,0 +1,48 @@
+schema_version = 1
+status = "canonical_admitted_focused_checks_pass_publication_gate_separate"
+scope = "I-001/I-002 reconstructed historical replay, source acquisition and frozen localized-FRB calibration"
+findings = "findings.json"
+scientific_result = "Reconstructed scalar replay reproduces historical bytes. The primary finite calibration radius is unbounded. Physical measurement uncertainty, selection and CHIME transport remain residuals."
+
+[replay]
+historical_build_exit = 0
+historical_catalog_runs = 2
+historical_matching_csv_bodies = 3
+calibration_result_sha256 = "492dc673aefec1a04a2ab126bfadef368b60b101d1281ef10a504081386a0edc"
+calibration_replay = "Exact byte equality against a second execution of the frozen evaluator"
+
+[retrieval]
+attempts = 23
+canonical_observations_added = 20
+followup_requests = 4
+followup_verified_artifact_entries = 12
+followup_result = "All four requests exit 0 and return complete HTTP200 bodies; retained storage and decoded hashes match. PDF and corrected pinned-source crosschecks agree across clients and endpoints."
+
+[focused_checks]
+evaluator_tests_passed = 5
+evaluator_tests_failed = 0
+evaluator_tests_log = "evaluator-tests.log"
+evaluator_clippy_exit = 0
+evaluator_clippy_log = "evaluator-clippy.log"
+source_conformance_tests_passed = 8
+source_conformance_tests_failed = 0
+source_conformance_log = "source-conformance.log"
+independent_scientific_review = "Findings and both final admission specs pass independent read-only review; primary coverage is distinguished from finite precision and measurement-error propagation."
+
+[canonical]
+insight_admissions = [13, 14]
+admitted_insights = 8
+predicates = 38
+roles = 45
+source_history_rows = 30
+idempotent_insight_replay_database_sha256 = "335651254488fd5160cdd39d0a079d0516564437fdabd4f179b315566f2b53ca"
+idempotence_boundary = "Database digest is identical immediately before and after replay of both insight admissions; subsequent binary inventory synchronization has a separately retained delta."
+preservation = "All prior source/admission/revision history and links remain present; unrelated insights remain identical. The pre-inventory comparison records identical row sets in 87 enumerated tables."
+binary_inventory_delta = "396 existing binaries retained; frb-distance-calibration added and the preexisting verify-insight-reference-pilot inventory omission reconciled through the owning sync command."
+post_inventory_delta = "The final comparison retains all baseline rows, adds two binaries_cp rows and six control_plane_runs export receipts; the other 85 enumerated table row sets remain identical."
+queries = ["admission-queries.sql", "preservation-queries.sql"]
+results = ["admission-counts.json", "preservation-counts.json", "post-inventory-preservation-counts.json", "binary-inventory-sync.log"]
+
+[publication]
+status = "required_pre_push_gate_recorded_by_publication"
+boundary = "Focused checks and canonical admission do not substitute for the required publication gate."

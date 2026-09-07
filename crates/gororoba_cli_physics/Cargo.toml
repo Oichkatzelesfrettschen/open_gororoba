@@ -74,7 +74,7 @@ path = "src/bin/lattice_hawking_sweep.rs"
 name = "ppn-bound-sweep"
 path = "src/bin/ppn_bound_sweep.rs"
 
-# ---- Cosmology (6) ----
+# ---- Cosmology (7) ----
 
 [[bin]]
 name = "real-cosmo-fit"
@@ -91,6 +91,10 @@ path = "src/bin/cosmic_dendrogram.rs"
 [[bin]]
 name = "dm-ultrametric"
 path = "src/bin/dm_ultrametric.rs"
+
+[[bin]]
+name = "frb-distance-calibration"
+path = "src/bin/frb_distance_calibration.rs"
 
 [[bin]]
 name = "snia-ddt"

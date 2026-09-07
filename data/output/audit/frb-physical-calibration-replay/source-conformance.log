@@ -1,0 +1,16 @@
+   Compiling cosmology_core v0.1.0 (/home/eirikr/worktrees/open_gororoba/frb-physical-calibration-replay/crates/cosmology_core)
+    Finished `validation` profile [optimized + debuginfo] target(s) in 22.84s
+     Running tests/macquart_source_conformance.rs (/home/eirikr/Github/open_gororoba/.cache/gate-cbuild/8ee62ced707fec8e/validation/deps/macquart_source_conformance-9937017135bfd270)
+
+running 8 tests
+test mean_dm_matches_analytic_expansion_limits ... ok
+test inverse_rejects_invalid_values_and_unbracketed_dm ... ok
+test public_comoving_distance_matches_expanded_analytic_limits ... ok
+test distance_chain_uses_observer_frame_host_and_total_galactic_dm ... ok
+test positive_cosmic_dm_rejects_distance_underflow ... ok
+test bounded_inverse_matches_analytic_limits_from_tiny_to_ceiling ... ok
+test inverse_recovers_source_generated_cosmic_dm ... ok
+test mean_dm_matches_independent_si_density_integral ... ok
+
+test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+

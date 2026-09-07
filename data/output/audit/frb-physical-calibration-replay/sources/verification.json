@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "source_bodies_verified": 19,
+  "decoded_hash_size_checks": 19,
+  "storage_hash_size_checks": 19,
+  "primary_row_correspondence_checks": 21,
+  "unique_cohort_sources": 21,
+  "finite_numeric_fields_checked": 84,
+  "calibration_residuals_evaluated": 0,
+  "cohort_sha256": "b63c0e1c85f7310b90aa8ff11b1a16dca4b7a058a53fb06479c900790b3cbbf2",
+  "sources_manifest_sha256": "cd4580abf995a07e6178e948aedfc6c92a0aaa8a7bd1553e89c9e1d365d52166",
+  "status": "passed"
+}

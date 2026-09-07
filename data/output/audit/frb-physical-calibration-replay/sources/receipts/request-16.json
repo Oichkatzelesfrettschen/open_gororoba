@@ -1,0 +1,20 @@
+{
+  "bytes": 823799,
+  "client": "requests",
+  "client_version": "2.34.2",
+  "complete": true,
+  "content_type": "text/html; charset=utf-8",
+  "decoded_filename": "chime-catalog1.html",
+  "elapsed_seconds": 0.22949,
+  "encoding": "gzip; mtime=0; exact decoded response bytes",
+  "error": "",
+  "final_url": "https://arxiv.org/html/2106.04352v1",
+  "path": "data/output/audit/frb-physical-calibration-replay/sources/chime-catalog1.html.gz",
+  "retrieved_path": "data/output/audit/frb-physical-calibration-replay/sources/chime-catalog1.html",
+  "retrieved_utc": "2026-09-07T00:29:45.146200+00:00",
+  "sha256": "9d9d50b210a40bef31c9cfcc8dbdc69077ecdf664acacef7b78a17d3d8cd9568",
+  "status": 200,
+  "storage_bytes": 121912,
+  "storage_sha256": "856189494245e41bee44c0e0c8a8e0962d82ced6fdaac203c4b90a0ecd9b7641",
+  "url": "https://arxiv.org/html/2106.04352v1"
+}

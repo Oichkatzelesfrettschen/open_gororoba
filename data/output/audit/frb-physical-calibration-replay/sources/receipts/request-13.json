@@ -1,0 +1,20 @@
+{
+  "bytes": 378484,
+  "client": "requests",
+  "client_version": "2.34.2",
+  "complete": true,
+  "content_type": "text/html; charset=utf-8",
+  "decoded_filename": "bhandari2021.html",
+  "elapsed_seconds": 0.273247,
+  "encoding": "gzip; mtime=0; exact decoded response bytes",
+  "error": "",
+  "final_url": "https://arxiv.org/html/2108.01282v1",
+  "path": "data/output/audit/frb-physical-calibration-replay/sources/bhandari2021.html.gz",
+  "retrieved_path": "data/output/audit/frb-physical-calibration-replay/sources/bhandari2021.html",
+  "retrieved_utc": "2026-09-07T00:27:02.110364+00:00",
+  "sha256": "b6d270c02f5d7ec350ebbd2b7ec45e4c3372dd3be8caafcfffe3fec6a164f10e",
+  "status": 200,
+  "storage_bytes": 60255,
+  "storage_sha256": "29efe150e1d4f7c2fdc550aed9c1c85121c678fc3680caa0245feb9f22c69e5a",
+  "url": "https://arxiv.org/html/2108.01282v1"
+}

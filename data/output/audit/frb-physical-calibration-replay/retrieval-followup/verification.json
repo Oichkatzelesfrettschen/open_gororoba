@@ -1,0 +1,12 @@
+{
+  "schema_version": 1,
+  "receipts": 4,
+  "verified_artifact_entries": 12,
+  "all_storage_and_decoded_hashes_and_sizes_pass": true,
+  "all_complete_status_200_and_exit_zero": true,
+  "complete_pdf_mirror_byte_equality": true,
+  "original_pdf_prefix_byte_equality": true,
+  "mw_original_corrected_and_api_byte_equality": true,
+  "pinned_git_blob_identity_equal": true,
+  "followup_sha256": "5a98e1694e82cec140afd4c69b0b8ace91fb7d80d9a6d0732f4fa1634fb2c1a5"
+}

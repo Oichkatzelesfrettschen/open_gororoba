@@ -1,0 +1,17 @@
+schema_version = 1
+observation_key = "frb-physical-calibration-retrieval-02"
+source_key = "url:https://arxiv.org/pdf/2005.13161"
+actor = "codex"
+reason = "Retain the requested Python-client source observation with exact measured body identity and bounded operator attribution."
+requested_url = "https://arxiv.org/pdf/2005.13161"
+final_url = "https://arxiv.org/pdf/2005.13161"
+http_status = 200
+outcome = "body_retained"
+observed_at = "2026-09-07T00:24:08.375250+00:00"
+time_precision = "timestamp"
+tool = "Python urllib 3.14.7 (structured receipt)"
+request_evidence = { path = "data/output/audit/frb-physical-calibration-replay/sources/receipts/request-02.json", storage_sha256 = "748c18c9034ba9a95ade69df8fbbef69b8b2d6f5b92098371999f69047b0aa95", encoding = "identity", decoded_sha256 = "748c18c9034ba9a95ade69df8fbbef69b8b2d6f5b92098371999f69047b0aa95", decoded_bytes = 834 }
+request_evidence_limit = "The operator-generated structured receipt binds recorded client, URL, timestamp, status, body digest and length. Hash verification establishes the retained declaration rather than independent cryptographic network authentication. A failed HTTP response body remains separately retained in the source manifest."
+absent_prior_expectation_reason = "These retrievals establish observed response identities; the requests carried no prerequest expected body digest."
+document_identity_limit = "URL-keyed source observation does not establish scholarly identity or independent scientific evidence. sources/sources.toml records primary publication/version attribution, source selection, duplicate retrieval correspondence and document-specific limits."
+body = { path = "data/output/audit/frb-physical-calibration-replay/sources/macquart2020.pdf.gz", storage_sha256 = "c5ab3d09976661f0ab9c712030ec1dbb04c96ed6732dfaa72b13ce93198c522e", encoding = "gzip", decoded_sha256 = "bd0bb66f9f5f5c635925b8f835590d75e80de70dc995156a42c55f172e238025", decoded_bytes = 3738281 }

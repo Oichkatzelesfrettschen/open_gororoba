@@ -1,0 +1,20 @@
+{
+  "bytes": 5170,
+  "client": "requests",
+  "client_version": "2.34.2",
+  "complete": true,
+  "content_type": "text/plain; charset=utf-8",
+  "decoded_filename": "path-adopted.csv",
+  "elapsed_seconds": 0.393248,
+  "encoding": "gzip; mtime=0; exact decoded response bytes",
+  "error": "",
+  "final_url": "https://raw.githubusercontent.com/FRBs/FRB/996fcda9b0b22431e3171208b4c8e1cf2798e823/frb/data/Galaxies/PATH/adopted.csv",
+  "path": "data/output/audit/frb-physical-calibration-replay/sources/path-adopted.csv.gz",
+  "retrieved_path": "data/output/audit/frb-physical-calibration-replay/sources/path-adopted.csv",
+  "retrieved_utc": "2026-09-07T00:27:31.255774+00:00",
+  "sha256": "2437b6382c931a6429177a272852d50bd8e52f8ae73fb469b3f1caa6a39940af",
+  "status": 200,
+  "storage_bytes": 2453,
+  "storage_sha256": "2c0f72ae7f6f251e9355463a1b11df4aa4fc71daf9cee730ed439e36fb8949e6",
+  "url": "https://raw.githubusercontent.com/FRBs/FRB/996fcda9b0b22431e3171208b4c8e1cf2798e823/frb/data/Galaxies/PATH/adopted.csv"
+}
