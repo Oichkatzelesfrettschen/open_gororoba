@@ -4,7 +4,7 @@
 //! - 2D/3D FFT and inverse FFT via dimension-by-dimension decomposition (rustfft)
 //! - Radially-binned isotropic power spectrum P(k)
 //! - Triad extraction: wavevector triplets (k, p, q) with k + p + q = 0
-//! - Energy transfer T(k|p,q) between spectral modes
+//! - Signed vector Navier-Stokes transfer on the normalized 2pi-periodic torus
 //! - Clustering coefficient of the triad interaction graph
 //! - Synthetic turbulence generation with Kolmogorov energy spectrum
 //!
@@ -26,7 +26,8 @@ pub struct SpectralTriad {
     pub p: [i32; 2],
     /// Wavevector indices of mode q = -(k + p)
     pub q: [i32; 2],
-    /// Energy transfer T(k|p,q) for this triad
+    /// Signed transfer into k from the unordered inputs -p and -q.
+    /// The closed-triad convention is k + p + q = 0.
     pub energy_transfer: f64,
 }
 
@@ -39,7 +40,8 @@ pub struct SpectralTriad3D {
     pub p: [i32; 3],
     /// Wavevector indices of mode q
     pub q: [i32; 3],
-    /// Energy transfer T(k|p,q) for this triad
+    /// Signed transfer into k from the unordered inputs -p and -q.
+    /// The closed-triad convention is k + p + q = 0.
     pub energy_transfer: f64,
 }
 
@@ -86,6 +88,8 @@ impl SpectralField3D {
 /// Compute 2D FFT of a real scalar field.
 pub fn fft2d(field: &Array2<f64>) -> SpectralField {
     let (nx, ny) = field.dim();
+    assert!(nx > 0 && ny > 0, "FFT needs a nonempty grid");
+    assert!(field.iter().all(|x| x.is_finite()), "nonfinite FFT input");
     let mut planner = FftPlanner::new();
 
     let mut transformed = Array2::<Complex<f64>>::zeros((nx, ny));
@@ -110,6 +114,12 @@ pub fn fft2d(field: &Array2<f64>) -> SpectralField {
         }
     }
 
+    assert!(
+        transformed
+            .iter()
+            .all(|z| z.re.is_finite() && z.im.is_finite()),
+        "nonfinite FFT arithmetic"
+    );
     SpectralField {
         coeffs: transformed,
         nx,
@@ -120,6 +130,8 @@ pub fn fft2d(field: &Array2<f64>) -> SpectralField {
 /// Compute 3D FFT of a real scalar field.
 pub fn fft3d(field: &Array3<f64>) -> SpectralField3D {
     let (nx, ny, nz) = field.dim();
+    assert!(nx > 0 && ny > 0 && nz > 0, "FFT needs a nonempty grid");
+    assert!(field.iter().all(|x| x.is_finite()), "nonfinite FFT input");
     let mut planner = FftPlanner::new();
 
     let mut transformed = Array3::<Complex<f64>>::zeros((nx, ny, nz));
@@ -172,6 +184,12 @@ pub fn fft3d(field: &Array3<f64>) -> SpectralField3D {
         }
     }
 
+    assert!(
+        transformed
+            .iter()
+            .all(|z| z.re.is_finite() && z.im.is_finite()),
+        "nonfinite FFT arithmetic"
+    );
     SpectralField3D {
         coeffs: transformed,
         nx,
@@ -180,15 +198,42 @@ pub fn fft3d(field: &Array3<f64>) -> SpectralField3D {
     }
 }
 
-/// Compute radially-binned isotropic power spectrum P(k).
+/// Radial shell statistics for one scalar velocity component.
+#[derive(Debug, Clone)]
+pub struct PowerSpectrumShell {
+    /// Rounded integer wavevector magnitude on a 2pi-periodic domain.
+    pub wavenumber: usize,
+    pub mode_count: usize,
+    /// Mean squared normalized Fourier coefficient in the shell.
+    pub mean_power: f64,
+    /// Sum of squared normalized Fourier coefficients in the shell.
+    pub integrated_power: f64,
+    /// Half the integrated power, the kinetic energy of this component.
+    pub kinetic_energy: f64,
+}
+
+/// Complete shell accounting using Fourier coefficients F/N.
 ///
-/// Returns (k_bins, power) where k_bins`[i]` is the wavenumber magnitude
-/// and power`[i]` is the average |F(kx,ky)|^2 / N^2 in that radial shell.
-/// The DC component (k=0) is excluded.
-pub fn power_spectrum(field: &Array2<f64>) -> (Vec<f64>, Vec<f64>) {
+/// DC power plus all shell integrated powers equals the grid mean of u^2
+/// up to floating-point error. Sum three component spectra for vector
+/// kinetic energy; multiply by (2pi)^D for an unnormalized spatial integral.
+#[derive(Debug, Clone)]
+pub struct PowerSpectrum {
+    pub sample_count: usize,
+    pub dc_power: f64,
+    pub shells: Vec<PowerSpectrumShell>,
+}
+
+/// Preserve every FFT mode, including corners beyond the axial Nyquist radius.
+pub fn power_spectrum_details(field: &Array2<f64>) -> PowerSpectrum {
     let (nx, ny) = field.dim();
+    assert!(nx > 0 && ny > 0, "power spectrum needs a nonempty grid");
+    assert!(
+        field.iter().all(|x| x.is_finite()),
+        "nonfinite spectrum input"
+    );
     let spec = fft2d(field);
-    let n_bins = nx.max(ny) / 2;
+    let n_bins = ((nx / 2) as f64).hypot((ny / 2) as f64).round() as usize;
     let norm_sq = (nx * ny) as f64 * (nx * ny) as f64;
 
     let mut bin_sum = vec![0.0; n_bins + 1];
@@ -218,16 +263,38 @@ pub fn power_spectrum(field: &Array2<f64>) -> (Vec<f64>, Vec<f64>) {
         }
     }
 
-    let mut k_bins = Vec::new();
-    let mut power = Vec::new();
+    let mut shells = Vec::new();
     for bin in 1..=n_bins {
         if bin_count[bin] > 0 {
-            k_bins.push(bin as f64);
-            power.push(bin_sum[bin] / bin_count[bin] as f64);
+            shells.push(PowerSpectrumShell {
+                wavenumber: bin,
+                mode_count: bin_count[bin],
+                mean_power: bin_sum[bin] / bin_count[bin] as f64,
+                integrated_power: bin_sum[bin],
+                kinetic_energy: 0.5 * bin_sum[bin],
+            });
         }
     }
+    let dc_power = spec.coeffs[[0, 0]].norm_sqr() / norm_sq;
+    assert!(
+        dc_power.is_finite() && bin_sum.iter().all(|x| x.is_finite()),
+        "nonfinite power arithmetic"
+    );
+    PowerSpectrum {
+        sample_count: nx * ny,
+        dc_power,
+        shells,
+    }
+}
 
-    (k_bins, power)
+/// Compatibility view of non-DC shell means; use details for energy accounting.
+pub fn power_spectrum(field: &Array2<f64>) -> (Vec<f64>, Vec<f64>) {
+    let spectrum = power_spectrum_details(field);
+    spectrum
+        .shells
+        .iter()
+        .map(|shell| (shell.wavenumber as f64, shell.mean_power))
+        .unzip()
 }
 
 /// Compute 3D inverse FFT of spectral coefficients to real-space field.
@@ -297,7 +364,11 @@ pub fn ifft3d(spectral: &Array3<Complex<f64>>) -> Array3<f64> {
     })
 }
 
-/// Extract dominant triads from 3D velocity field components.
+/// Extract amplitude-screened closed triples on a 2pi-periodic domain.
+///
+/// Emit all three receiving modes per unordered triple. Each record reports
+/// one signed transfer; including every receiver avoids a coordinate-dependent
+/// choice of destination. The restricted search is not a full modal balance.
 pub fn extract_dominant_triads_3d(
     u: &Array3<f64>,
     v: &Array3<f64>,
@@ -305,6 +376,9 @@ pub fn extract_dominant_triads_3d(
     threshold: f64,
 ) -> Vec<SpectralTriad3D> {
     let (nx, ny, nz) = u.dim();
+    assert_eq!(u.dim(), v.dim(), "velocity component shapes differ");
+    assert_eq!(u.dim(), w.dim(), "velocity component shapes differ");
+    assert!(threshold.is_finite() && threshold >= 0.0);
     let u_hat = fft3d(u);
     let v_hat = fft3d(v);
     let w_hat = fft3d(w);
@@ -331,9 +405,6 @@ pub fn extract_dominant_triads_3d(
                     continue;
                 }
                 let a_k = amplitude(kx1, ky1, kz1);
-                if a_k < threshold * 0.1 {
-                    continue;
-                }
 
                 for kx2 in -kx_max..=kx_max {
                     for ky2 in -ky_max..=ky_max {
@@ -366,14 +437,34 @@ pub fn extract_dominant_triads_3d(
                             let a_p = amplitude(kx2, ky2, kz2);
                             let a_q = amplitude(qx, qy, qz);
                             let product = a_k * a_p * a_q;
+                            assert!(product.is_finite(), "nonfinite triad amplitude arithmetic");
 
                             if product > threshold {
-                                triads.push(SpectralTriad3D {
-                                    k: [kx1, ky1, kz1],
-                                    p: [kx2, ky2, kz2],
-                                    q: [qx, qy, qz],
-                                    energy_transfer: 0.0, // Placeholder
-                                });
+                                let wavevectors = [[kx1, ky1, kz1], [kx2, ky2, kz2], [qx, qy, qz]];
+                                let velocity = |[x, y, z]: [i32; 3]| {
+                                    [u_hat.get(x, y, z), v_hat.get(x, y, z), w_hat.get(x, y, z)]
+                                        .map(|a| a / norm)
+                                };
+                                for receiver in 0..3 {
+                                    let k = wavevectors[receiver];
+                                    let p = wavevectors[(receiver + 1) % 3];
+                                    let q = wavevectors[(receiver + 2) % 3];
+                                    let incoming_p = p.map(|x| -x);
+                                    let incoming_q = q.map(|x| -x);
+                                    triads.push(SpectralTriad3D {
+                                        k,
+                                        p,
+                                        q,
+                                        energy_transfer: calculate_triad_energy_transfer(
+                                            k,
+                                            incoming_p,
+                                            incoming_q,
+                                            velocity(k),
+                                            velocity(incoming_p),
+                                            velocity(incoming_q),
+                                        ),
+                                    });
+                                }
                             }
                         }
                     }
@@ -389,7 +480,10 @@ pub fn extract_dominant_triads_3d(
 ///
 /// A triad (k, p, q) satisfies wavevector closure k + p + q = 0.
 /// We select triads where the product |u(k)|*|u(p)|*|u(q)| exceeds
-/// the given threshold, indicating significant nonlinear interaction.
+/// the given threshold. This amplitude screening does not imply nonzero transfer.
+/// Returned transfers describe the Leray-projected velocity on a 2pi torus.
+/// The selected subset is a diagnostic, not the complete modal energy balance.
+/// All three receiving modes are emitted for each unordered closed triple.
 ///
 /// The search is restricted to wavenumbers |kx| <= nx/4, |ky| <= ny/4
 /// for efficiency (the most energetic modes in turbulence).
@@ -399,6 +493,8 @@ pub fn extract_dominant_triads(
     threshold: f64,
 ) -> Vec<SpectralTriad> {
     let (nx, ny) = u.dim();
+    assert_eq!(u.dim(), v.dim(), "velocity component shapes differ");
+    assert!(threshold.is_finite() && threshold >= 0.0);
     let u_hat = fft2d(u);
     let v_hat = fft2d(v);
     let norm = (nx * ny) as f64;
@@ -451,21 +547,32 @@ pub fn extract_dominant_triads(
                     let a_p = amplitude(kx2, ky2);
                     let a_q = amplitude(qx, qy);
                     let product = a_k * a_p * a_q;
+                    assert!(product.is_finite(), "nonfinite triad amplitude arithmetic");
 
                     if product > threshold {
-                        let t = calculate_triad_energy_transfer(
-                            u_hat.get(kx1, ky1),
-                            u_hat.get(kx2, ky2),
-                            u_hat.get(qx, qy),
-                            [kx2 as f64, ky2 as f64],
-                        );
-
-                        triads.push(SpectralTriad {
-                            k: [kx1, ky1],
-                            p: [kx2, ky2],
-                            q: [qx, qy],
-                            energy_transfer: t / (norm * norm * norm),
-                        });
+                        let wavevectors = [[kx1, ky1], [kx2, ky2], [qx, qy]];
+                        let velocity =
+                            |[x, y]: [i32; 2]| [u_hat.get(x, y), v_hat.get(x, y)].map(|a| a / norm);
+                        for receiver in 0..3 {
+                            let k = wavevectors[receiver];
+                            let p = wavevectors[(receiver + 1) % 3];
+                            let q = wavevectors[(receiver + 2) % 3];
+                            let incoming_p = p.map(|x| -x);
+                            let incoming_q = q.map(|x| -x);
+                            triads.push(SpectralTriad {
+                                k,
+                                p,
+                                q,
+                                energy_transfer: calculate_triad_energy_transfer(
+                                    k,
+                                    incoming_p,
+                                    incoming_q,
+                                    velocity(k),
+                                    velocity(incoming_p),
+                                    velocity(incoming_q),
+                                ),
+                            });
+                        }
                     }
                 }
             }
@@ -475,24 +582,69 @@ pub fn extract_dominant_triads(
     triads
 }
 
-/// Calculate energy transfer for a specific triad.
+/// Apply the Leray projector to one vector Fourier coefficient.
 ///
-/// T(k|p,q) = -Im`[ conj(u_hat(k)) * (p . u_hat(p)) * u_hat(q) ]`
+/// The zero mode is removed explicitly for the zero-mean baseline problem.
+/// Ordinary f64 arithmetic provides simulation evidence only.
+pub fn leray_project<const D: usize>(k: [i32; D], u: [Complex<f64>; D]) -> [Complex<f64>; D] {
+    assert!(D == 2 || D == 3, "expected a 2D or 3D velocity");
+    assert!(u.iter().all(|z| z.re.is_finite() && z.im.is_finite()));
+    let norm_sq: f64 = k.iter().map(|&x| f64::from(x).powi(2)).sum();
+    if norm_sq == 0.0 {
+        return [Complex::new(0.0, 0.0); D];
+    }
+    let longitudinal: Complex<f64> = k.iter().zip(u).map(|(&x, z)| z * f64::from(x)).sum();
+    let projected = std::array::from_fn(|j| u[j] - longitudinal * (f64::from(k[j]) / norm_sq));
+    assert!(
+        projected
+            .iter()
+            .all(|z: &Complex<f64>| z.re.is_finite() && z.im.is_finite()),
+        "nonfinite projection arithmetic"
+    );
+    projected
+}
+
+/// Signed transfer into k from an unordered input pair with p + q = k.
 ///
-/// This is a simplified scalar form of the nonlinear transfer term.
-/// The vector p modulates the advection (p . u_hat(p)) representing
-/// the gradient operator in Fourier space.
-pub fn calculate_triad_energy_transfer(
-    uk: Complex<f64>,
-    up: Complex<f64>,
-    uq: Complex<f64>,
-    p_vec: [f64; 2],
+/// Coefficients use u(x) = sum_k u_hat(k) exp(i k.x), so a raw forward
+/// FFT must first be divided by its sample count. All input modes are
+/// Leray-projected; a compressible input therefore describes its solenoidal
+/// part. Both ordered contractions are included once when p != q.
+/// Summing over every unordered input pair gives Re(conj(u_k).N_k),
+/// where N_k = -i P_k sum_(p+q=k) (q.u_p) u_q.
+/// This p + q = k API differs from the extractor's closed-triad labels.
+pub fn calculate_triad_energy_transfer<const D: usize>(
+    k: [i32; D],
+    p: [i32; D],
+    q: [i32; D],
+    uk: [Complex<f64>; D],
+    up: [Complex<f64>; D],
+    uq: [Complex<f64>; D],
 ) -> f64 {
-    // (p . u_hat(p)): scalar product of wavevector p with velocity mode
-    let p_dot_up = Complex::new(p_vec[0] + p_vec[1], 0.0) * up;
-    // T = -Im[ conj(uk) * (p.up) * uq ]
-    let triple = uk.conj() * p_dot_up * uq;
-    -triple.im
+    assert!(
+        (0..D).all(|j| i64::from(p[j]) + i64::from(q[j]) == i64::from(k[j])),
+        "triad must satisfy p + q = k"
+    );
+    let uk = leray_project(k, uk);
+    let up = leray_project(p, up);
+    let uq = leray_project(q, uq);
+    let q_dot_up: Complex<f64> = (0..D).map(|j| up[j] * f64::from(q[j])).sum();
+    let p_dot_uq: Complex<f64> = (0..D).map(|j| uq[j] * f64::from(p[j])).sum();
+    let nonlinear = leray_project(
+        k,
+        std::array::from_fn(|j| {
+            let advection = q_dot_up * uq[j]
+                + if p != q {
+                    p_dot_uq * up[j]
+                } else {
+                    Complex::new(0.0, 0.0)
+                };
+            Complex::new(0.0, -1.0) * advection
+        }),
+    );
+    let transfer: f64 = (0..D).map(|j| (uk[j].conj() * nonlinear[j]).re).sum();
+    assert!(transfer.is_finite(), "nonfinite transfer arithmetic");
+    transfer
 }
 
 /// Compute clustering coefficient of the triad interaction graph.
@@ -655,11 +807,10 @@ mod tests {
 
     #[test]
     fn test_energy_transfer_finite() {
-        let uk = Complex::new(1.0, 0.5);
-        let up = Complex::new(0.3, -0.2);
-        let uq = Complex::new(-0.4, 0.1);
-        let p = [1.0, 2.0];
-        let t = calculate_triad_energy_transfer(uk, up, uq, p);
+        let uk = [Complex::new(1.0, 0.5); 2];
+        let up = [Complex::new(0.3, -0.2); 2];
+        let uq = [Complex::new(-0.4, 0.1); 2];
+        let t = calculate_triad_energy_transfer([1, 1], [1, 0], [0, 1], uk, up, uq);
         assert!(t.is_finite());
     }
 
