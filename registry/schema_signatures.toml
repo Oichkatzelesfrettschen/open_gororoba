@@ -101,11 +101,11 @@ id = "SIG-0009"
 path = "registry/knowledge/derivation_steps.toml"
 top_level_keys = ["knowledge_derivation_steps", "step"]
 schema_version = "v1"
-schema_sha256 = "82892dfc866f1c1b8f8a5867363fe2b46e46ab5f5dac259563bfc04c65307332"
-content_sha256 = "aa032dda3df677e7211c6879fbc00d7e955231bf894759c86f0ffad5904a7c8b"
+schema_sha256 = "15df0e31de361ee5613aa84ff6b68f4673356008feb32f38dc2b0babc561cf71"
+content_sha256 = "a855dadcb7c8bfc2d57b12e370f7f6dbde93f84d74e037e8be0a9bcfdb60c678"
 array_table_count = 1
 table_count = 1
-shape_json = "{\"path\":\"registry/knowledge/derivation_steps.toml\",\"shapes\":{\"knowledge_derivation_steps\":{\"keys\":[\"authoritative\",\"claim_linked_step_count\",\"max_steps_per_skeleton\",\"skeleton_count\",\"skeleton_with_steps_count\",\"source_registry\",\"step_count\",\"updated\"],\"type\":\"table\"},\"step\":{\"entry_kind\":\"table\",\"required_keys\":[\"claim_id\",\"claim_refs\",\"depends_on_step_ids\",\"equation_refs\",\"id\",\"key_tokens\",\"line_end\",\"line_start\",\"numeric_constants\",\"skeleton_id\",\"skeleton_kind\",\"source_path\",\"source_uid\",\"step_index\",\"step_kind\",\"symbol_refs\",\"text\",\"text_sha256\"],\"row_count\":5472,\"type\":\"array\",\"union_keys\":[\"claim_id\",\"claim_refs\",\"depends_on_step_ids\",\"equation_refs\",\"id\",\"key_tokens\",\"line_end\",\"line_start\",\"numeric_constants\",\"skeleton_id\",\"skeleton_kind\",\"source_path\",\"source_uid\",\"step_index\",\"step_kind\",\"symbol_refs\",\"text\",\"text_sha256\"]}},\"top_level_keys\":[\"knowledge_derivation_steps\",\"step\"]}"
+shape_json = "{\"path\":\"registry/knowledge/derivation_steps.toml\",\"shapes\":{\"knowledge_derivation_steps\":{\"keys\":[\"authoritative\",\"claim_linked_step_count\",\"max_steps_per_skeleton\",\"skeleton_count\",\"skeleton_with_steps_count\",\"source_registry\",\"step_count\",\"updated\"],\"type\":\"table\"},\"step\":{\"entry_kind\":\"table\",\"required_keys\":[\"claim_id\",\"claim_refs\",\"depends_on_step_ids\",\"equation_refs\",\"id\",\"key_tokens\",\"line_end\",\"line_start\",\"numeric_constants\",\"skeleton_id\",\"skeleton_kind\",\"source_path\",\"source_uid\",\"step_index\",\"step_kind\",\"symbol_refs\",\"text\",\"text_sha256\"],\"row_count\":5718,\"type\":\"array\",\"union_keys\":[\"claim_id\",\"claim_refs\",\"depends_on_step_ids\",\"equation_refs\",\"id\",\"key_tokens\",\"line_end\",\"line_start\",\"numeric_constants\",\"skeleton_id\",\"skeleton_kind\",\"source_path\",\"source_uid\",\"step_index\",\"step_kind\",\"symbol_refs\",\"text\",\"text_sha256\"]}},\"top_level_keys\":[\"knowledge_derivation_steps\",\"step\"]}"
 
 [[signature]]
 id = "SIG-0010"
@@ -134,11 +134,11 @@ id = "SIG-0012"
 path = "registry/knowledge/proof_skeletons.toml"
 top_level_keys = ["knowledge_proof_skeletons", "skeleton"]
 schema_version = "v1"
-schema_sha256 = "6f9f2b62124c4797d3d7f03ab95a200527c04c4de80c7183c278ec655fbd5564"
-content_sha256 = "7707ff3af1abc8bef0a1b06124006f8168e9dd8d6f2da36509632c7e01ffde3e"
+schema_sha256 = "692ba07d1da9a78d12bc94c7dee3870a0af83c9c747770f136a7c454491a1b54"
+content_sha256 = "4a2e1dcb056aed23ad4f84a4e0a451a6c02b7f7be3cb39baa1928b7298f60282"
 array_table_count = 1
 table_count = 1
-shape_json = "{\"path\":\"registry/knowledge/proof_skeletons.toml\",\"shapes\":{\"knowledge_proof_skeletons\":{\"keys\":[\"authoritative\",\"skeleton_count\",\"updated\"],\"type\":\"table\"},\"skeleton\":{\"entry_kind\":\"table\",\"required_keys\":[\"assumptions\",\"claim_id\",\"claim_refs\",\"conclusion\",\"decision_rule\",\"derivation_steps\",\"evidence_refs\",\"id\",\"line_end\",\"line_start\",\"obligations\",\"skeleton_kind\",\"source_path\",\"source_registry\",\"source_uid\",\"theorem_label\"],\"row_count\":1565,\"type\":\"array\",\"union_keys\":[\"assumptions\",\"claim_id\",\"claim_refs\",\"conclusion\",\"decision_rule\",\"derivation_steps\",\"evidence_refs\",\"id\",\"line_end\",\"line_start\",\"obligations\",\"skeleton_kind\",\"source_path\",\"source_registry\",\"source_uid\",\"theorem_label\"]}},\"top_level_keys\":[\"knowledge_proof_skeletons\",\"skeleton\"]}"
+shape_json = "{\"path\":\"registry/knowledge/proof_skeletons.toml\",\"shapes\":{\"knowledge_proof_skeletons\":{\"keys\":[\"authoritative\",\"skeleton_count\",\"updated\"],\"type\":\"table\"},\"skeleton\":{\"entry_kind\":\"table\",\"required_keys\":[\"assumptions\",\"claim_id\",\"claim_refs\",\"conclusion\",\"decision_rule\",\"derivation_steps\",\"evidence_refs\",\"id\",\"line_end\",\"line_start\",\"obligations\",\"skeleton_kind\",\"source_path\",\"source_registry\",\"source_uid\",\"theorem_label\"],\"row_count\":1578,\"type\":\"array\",\"union_keys\":[\"assumptions\",\"claim_id\",\"claim_refs\",\"conclusion\",\"decision_rule\",\"derivation_steps\",\"evidence_refs\",\"id\",\"line_end\",\"line_start\",\"obligations\",\"skeleton_kind\",\"source_path\",\"source_registry\",\"source_uid\",\"theorem_label\"]}},\"top_level_keys\":[\"knowledge_proof_skeletons\",\"skeleton\"]}"
 
 [[signature]]
 id = "SIG-0013"
