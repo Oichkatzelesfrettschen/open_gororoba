@@ -1,0 +1,64 @@
+schema_version = 1
+scope = "Historical scalar-FRB and DM-transformed producer association and exact-byte recovery"
+manifest = "manifest.json"
+artifact_records = "artifacts.jsonl"
+artifact_count = 31
+storage = "Every retained body uses gzip -n; decoding restores original source or result bytes, including historical comments."
+execution_status = "Historical producer code was read and recovered; historical producer execution was not performed."
+association_boundary = "Commits co-retain source and result bodies. Co-retention and matching historical result digests establish source association, not a certified historical executable or command invocation."
+dependency_boundary = "The manifest records the full commit and root tree object for every Git artifact. Selected decisive source files and Cargo.lock are retained. The referenced Git trees supply the rest of the historical source closure; compiler binaries, external dependencies and historical executable identities require separate admission."
+
+[[chains]]
+id = "scalar-frb"
+insight = "I-002"
+claim = "C-071"
+commit = "eab375e82ca82da9df8a9cb0ca0084801684e6eb"
+producer = "crates/gororoba_cli/src/bin/frb_ultrametric.rs"
+engine = "crates/stats_core/src/ultrametric.rs"
+historical_result_digest_comparison = "All three decoded result hashes equal insight-reference-role-pilot/retention-locators.json."
+known_source_defaults = "n_triples=100000; n_permutations=1000; primes=2,3,5,7,11,13; seed=42; dm_column=bonsai_dm; --all-columns selects three DM columns."
+observed_result_fields = "Two catalogs, three DM columns each, n_events=600 or 5045, n_triples=100000, Bonferroni threshold=0.006250."
+actual_invocation = "unresolved"
+invocation_boundary = "Retained CSVs omit the command line, seed and permutation count. Defaults and printed p-values support candidate replay settings only."
+canonical_experiment_boundary = "C-071 links E-002, a later multi-dataset GPU sweep. E-002 is distinct from the scalar frb-ultrametric producer recovered here."
+
+[[chains]]
+id = "dm-comoving-local"
+insight = "I-001"
+commit = "280ba9a181d36bd8d717bb53dcaf912b6a741c46"
+producer = "crates/gororoba_cli/src/bin/dm_ultrametric.rs"
+result = "data/csv/c071b_dm_comoving_ultrametric.csv"
+known_source_defaults = "CHIME Cat2; dm_host=50; epsilons=50,100,200,500 Mpc; n_samples=1000; n_permutations=100; hard-coded seed=42; dendrogram subsample cap=200."
+observed_result_fields = "4996 FRBs, four epsilon rows and a 200-point dendrogram row."
+actual_invocation = "unresolved"
+physical_boundary = "The historical routine omits the 0.875 electron factor. The output retains historical numerical values and cannot establish corrected-normalization results."
+
+[[chains]]
+id = "cosmic-dendrogram"
+insight = "I-001"
+commit = "280ba9a181d36bd8d717bb53dcaf912b6a741c46"
+producer = "crates/gororoba_cli/src/bin/cosmic_dendrogram.rs"
+result = "data/csv/c071f_cosmic_dendrogram.csv"
+known_source_defaults = "CHIME Cat2 and GWTC-3_confident.csv; dm_host=50; max_points=300; n_permutations=200; GW directions use ChaCha8 seeds from DefaultHasher of event names."
+observed_result_fields = "4996 FRBs; 35 GW events; redshift range [0.0029,13.3878]."
+actual_invocation = "unresolved"
+physical_boundary = "GW positions use generated directions, rather than observed sky localization. Hash implementation and RNG dependencies belong to the historical replay environment."
+
+[input_correspondence]
+chime_cat1_original_sha256 = "affd86573fee8fe94be9d0d85e73cc787fa260b2497ccec5d9d93e1d26610ed5"
+chime_cat2_original_sha256 = "5108ada779d279a2547d9f9e73ae25bfdd40d8496d6ba7255ec29c6629057a48"
+comparison = "Main CHIME input bytes match the original source-provenance digests. Appending CR before each LF in the historical Git blobs produces those same digests exactly. Both LF blobs and original CRLF bodies are retained."
+gwtc_git_blob_sha256 = "96b5292325bef325a3df686f21e3103560f625933f63aec684ba8c28ff7bb0eb"
+gwtc_main_crlf_sha256 = "6e154917fa65b4f0c41e5bc57123aa1e8fa09a3ff027bd7f0c00a7ca82f7766b"
+gwtc_comparison = "The retained historical LF Git blob, with CR appended before each LF, exactly matches main GWTC-3_confident.csv bytes. Its original download receipt and historical execution-input binding remain unresolved."
+
+[invocation_search]
+surfaces = ["Markdown files under /home/eirikr/.claude/projects/-home-eirikr-Github-open-gororoba/memory", "All-ref Git history for the original scalar and transformed result paths", "Historical C071_FRB_ULTRAMETRIC_SOURCES.md", "insight-reference-role-pilot retained text and JSON", "Paths in the transformed producer commit matching FRB/C071/ultrametric execution-log or JSON names"]
+queries = ["frb-ultrametric", "c071b_dm", "c071_frb_ultrametric", "frb-ultrametric followed by --input or --all-columns", "dm-ultrametric followed by an option"]
+result = "The bounded search recovered producer defaults, a usage example and commit narratives. A historical execution receipt identifying the actual command, executable, environment and input digests was absent from these searched surfaces."
+intake_condition = "Admit a retained execution log or receipt with historical command, source/executable identity and input digests; otherwise register a candidate reconstruction and compare its results without claiming the original invocation was recovered."
+
+[historical_worktrees]
+preservation_boundary = "Recovery reads Git objects and main input bodies. Recovery writes only the owned historical artifact directory in the new worktree."
+claim_evidence_adjudication = "All three scalar result paths exist and match historical digests; inspected CHIME Cat1 and Cat2 paths are absent."
+themis_frozen_model_source = "The three inspected scalar result paths and two CHIME input paths are absent."

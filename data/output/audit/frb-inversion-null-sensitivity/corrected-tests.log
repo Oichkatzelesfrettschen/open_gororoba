@@ -1,0 +1,86 @@
+   Compiling cosmology_core v0.1.0 (<checkout>/crates/cosmology_core)
+    Finished `validation` profile [optimized + debuginfo] target(s) in 9.40s
+     Running tests/macquart_source_conformance.rs (<build-dir>/validation/deps/macquart_source_conformance-9937017135bfd270)
+
+running 8 tests
+test mean_dm_matches_analytic_expansion_limits ... ok
+test inverse_rejects_invalid_values_and_unbracketed_dm ... ok
+test public_comoving_distance_matches_expanded_analytic_limits ... ok
+test distance_chain_uses_observer_frame_host_and_total_galactic_dm ... ok
+omega_m=0.3153 omega_b=0.0493 h0=67.36 z=0.01 source_dm=8.140676577970 actual_dm=8.140676577970 relative_error=5.995204332976e-15
+test positive_cosmic_dm_rejects_distance_underflow ... ok
+omega_m=0.3153 omega_b=0.0493 h0=67.36 z=0.1 source_dm=83.171547071684 actual_dm=83.171547071685 relative_error=1.842970220878e-14
+omega_m=0.3153 omega_b=0.0493 h0=67.36 z=0.5 source_dm=441.059634793045 actual_dm=441.059634793047 relative_error=3.108624468950e-15
+omega_m=0.3153 omega_b=0.0493 h0=67.36 z=1 source_dm=900.751906538016 actual_dm=900.751906538024 relative_error=8.881784197001e-15
+test bounded_inverse_matches_analytic_limits_from_tiny_to_ceiling ... ok
+omega_m=0.3153 omega_b=0.0493 h0=67.36 z=2 source_dm=1757.129786211003 actual_dm=1757.129786210996 relative_error=4.107825191113e-15
+omega_m=0.3153 omega_b=0.0493 h0=67.36 z=3 source_dm=2512.206199794281 actual_dm=2512.206199794316 relative_error=1.398881011028e-14
+omega_m=0.3153 omega_b=0.0493 h0=67.36 z=20 source_dm=9961.855435268042 actual_dm=9961.855435268057 relative_error=1.554312234475e-15
+omega_m=0.3153 omega_b=0.0493 h0=67.36 z=80 source_dm=22736.630356611964 actual_dm=22736.630356612412 relative_error=1.976196983833e-14
+omega_m=0.3153 omega_b=0.0493 h0=67.36 z=100 source_dm=25772.838557008396 actual_dm=25772.838557008094 relative_error=1.176836406103e-14
+test inverse_recovers_source_generated_cosmic_dm ... ok
+omega_m=0.25 omega_b=0.04 h0=73 z=0.01 source_dm=7.161557134053 actual_dm=7.161557134053 relative_error=3.885780586188e-15
+omega_m=0.25 omega_b=0.04 h0=73 z=0.1 source_dm=73.496823993645 actual_dm=73.496823993645 relative_error=1.887379141863e-15
+omega_m=0.25 omega_b=0.04 h0=73 z=0.5 source_dm=397.493211192816 actual_dm=397.493211192817 relative_error=8.881784197001e-16
+omega_m=0.25 omega_b=0.04 h0=73 z=1 source_dm=828.030515326100 actual_dm=828.030515326098 relative_error=2.331468351713e-15
+omega_m=0.25 omega_b=0.04 h0=73 z=2 source_dm=1653.436404036261 actual_dm=1653.436404036224 relative_error=2.253752739989e-14
+omega_m=0.25 omega_b=0.04 h0=73 z=3 source_dm=2391.994044609277 actual_dm=2391.994044609256 relative_error=8.548717289614e-15
+omega_m=0.25 omega_b=0.04 h0=73 z=20 source_dm=9741.253009766120 actual_dm=9741.253009766198 relative_error=7.993605777301e-15
+omega_m=0.25 omega_b=0.04 h0=73 z=80 source_dm=22355.902863018924 actual_dm=22355.902863018899 relative_error=1.110223024625e-15
+omega_m=0.25 omega_b=0.04 h0=73 z=100 source_dm=25354.078960892108 actual_dm=25354.078960892253 relative_error=5.773159728051e-15
+test mean_dm_matches_independent_si_density_integral ... ok
+
+test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+source_exit=0
+   Compiling verified_core v0.1.0 (<checkout>/crates/verified_core)
+   Compiling anise v0.9.6
+   Compiling lbm_core v0.1.0 (<checkout>/crates/lbm_core)
+   Compiling materials_data v0.1.0 (<checkout>/crates/materials_data)
+   Compiling provenance_core v0.1.0 (<checkout>/crates/provenance_core)
+   Compiling optics_core v0.1.0 (<checkout>/crates/optics_core)
+   Compiling gororoba_gpu_vulkan v0.1.0 (<checkout>/crates/gororoba_gpu_vulkan)
+   Compiling data_artifacts_core v0.1.0 (<checkout>/crates/data_artifacts_core)
+   Compiling tensor_core v0.1.0 (<checkout>/crates/tensor_core)
+   Compiling snia_core v0.1.0 (<checkout>/crates/snia_core)
+   Compiling grmhd_core v0.1.0 (<checkout>/crates/grmhd_core)
+   Compiling casimir_core v0.1.0 (<checkout>/crates/casimir_core)
+   Compiling cr_transport v0.1.0 (<checkout>/crates/cr_transport)
+   Compiling qgp_scaling v0.1.0 (<checkout>/crates/qgp_scaling)
+   Compiling lit_search v0.1.0 (<checkout>/crates/lit_search)
+   Compiling gororoba_pipeline v0.1.0 (<checkout>/crates/gororoba_pipeline)
+   Compiling docpipe v0.1.0 (<checkout>/crates/docpipe)
+   Compiling scrolls_core v0.1.0 (<checkout>/crates/scrolls_core)
+   Compiling lbm_vulkan v0.1.0 (<checkout>/crates/lbm_vulkan)
+   Compiling cd_kernel v0.1.0 (<checkout>/crates/cd_kernel)
+   Compiling provenance_store v0.1.0 (<checkout>/crates/provenance_store)
+   Compiling moreno_1997 v0.1.0 (<checkout>/crates/moreno_1997)
+   Compiling gororoba_structurable v0.1.0 (<checkout>/crates/gororoba_structurable)
+   Compiling data_core v0.1.0 (<checkout>/crates/data_core)
+   Compiling flavor_lifts v0.1.0 (<checkout>/crates/flavor_lifts)
+   Compiling algebra_analysis v0.1.0 (<checkout>/crates/algebra_analysis)
+   Compiling provenance_ops v0.1.0 (<checkout>/crates/provenance_ops)
+   Compiling gororoba_db v0.1.0 (<checkout>/crates/gororoba_db)
+   Compiling gororoba_algebra v0.1.0 (<checkout>/crates/gororoba_algebra)
+   Compiling algebra_experimental v0.1.0 (<checkout>/crates/algebra_experimental)
+   Compiling gr_core v0.1.0 (<checkout>/crates/gr_core)
+   Compiling stats_core v0.1.0 (<checkout>/crates/stats_core)
+   Compiling spin_tomography_core v0.1.0 (<checkout>/crates/spin_tomography_core)
+   Compiling materials_core v0.1.0 (<checkout>/crates/materials_core)
+   Compiling gororoba_cli_provenance v0.1.0 (<checkout>/crates/gororoba_cli_provenance)
+   Compiling quantum_core v0.1.0 (<checkout>/crates/quantum_core)
+   Compiling pathion_ellip v0.1.0 (<checkout>/crates/pathion_ellip)
+   Compiling cosmology_core v0.1.0 (<checkout>/crates/cosmology_core)
+   Compiling sign_imbalance v0.1.0 (<checkout>/crates/sign_imbalance)
+   Compiling lbm_3d v0.1.0 (<checkout>/crates/lbm_3d)
+   Compiling neural_homotopy v0.1.0 (<checkout>/crates/neural_homotopy)
+   Compiling spectral_core v0.1.0 (<checkout>/crates/spectral_core)
+   Compiling cd_spin_bridge v0.1.0 (<checkout>/crates/cd_spin_bridge)
+   Compiling lattice_filtration v0.1.0 (<checkout>/crates/lattice_filtration)
+   Compiling gororoba_cli_physics v0.1.0 (<checkout>/crates/gororoba_cli_physics)
+   Compiling gororoba_engine v0.1.0 (<checkout>/crates/gororoba_engine)
+   Compiling gororoba_cli v0.1.0 (<checkout>/crates/gororoba_cli)
+   Compiling gororoba_cli_data v0.1.0 (<checkout>/crates/gororoba_cli_data)
+    Finished `validation` profile [optimized + debuginfo] target(s) in 2m 02s
+build_exit=0
+exit=0

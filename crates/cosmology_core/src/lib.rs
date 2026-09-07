@@ -133,8 +133,8 @@ pub use observational::{
 };
 
 pub use distances::{
-    angular_diameter_distance, comoving_distance, dm_excess_to_redshift, dm_to_comoving,
-    macquart_dm_cosmic, radec_to_cartesian,
+    DmInversionError, MAX_MACQUART_REDSHIFT, angular_diameter_distance, comoving_distance,
+    dm_excess_to_redshift, dm_to_comoving, macquart_dm_cosmic, radec_to_cartesian,
 };
 
 pub use eos::{

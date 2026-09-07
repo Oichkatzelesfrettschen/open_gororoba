@@ -60,6 +60,15 @@ fn parse_bool(s: &str) -> bool {
 
 /// Parse a CHIME/FRB catalog CSV file.
 pub fn parse_chime_csv(path: &Path) -> Result<Vec<FrbEvent>, FetchError> {
+    parse_chime_csv_with_required_columns(path, &[])
+}
+
+/// Parse a CHIME catalog after checking each required header occurs exactly once.
+/// Rows retain the positive, finite bonsai-DM selection of [`parse_chime_csv`].
+pub fn parse_chime_csv_with_required_columns(
+    path: &Path,
+    required_columns: &[&str],
+) -> Result<Vec<FrbEvent>, FetchError> {
     let mut reader = csv::ReaderBuilder::new()
         .flexible(true)
         .has_headers(true)
@@ -72,6 +81,15 @@ pub fn parse_chime_csv(path: &Path) -> Result<Vec<FrbEvent>, FetchError> {
         .clone();
 
     let col = |name: &str| -> Option<usize> { headers.iter().position(|h| h == name) };
+
+    for required in required_columns {
+        let occurrences = headers.iter().filter(|header| header == required).count();
+        if occurrences != 1 {
+            return Err(FetchError::Validation(format!(
+                "CHIME column {required} must occur exactly once; found {occurrences}"
+            )));
+        }
+    }
 
     let idx_tns = col("tns_name");
     let idx_rep = col("repeater_name");
@@ -285,6 +303,23 @@ E4,,90.0,10.0,20.0,30.0,300.0,299.0,280.0,270.0,20.0,1.5,3.0,0.003,0.0,58300.0,0
         let f = write_temp_csv(csv);
         let events = parse_chime_csv(f.path()).unwrap();
         assert!(events.is_empty(), "Empty CSV should produce no events");
+    }
+
+    #[test]
+    fn required_columns_reject_missing_and_ambiguous_headers() {
+        for content in [
+            "bonsai_dm,dm_exc_ne2001\n100,80\n",
+            "bonsai_dm,dm_exc_ymw16,dm_exc_ymw16\n100,80,70\n",
+        ] {
+            let catalog = write_temp_csv(content);
+            assert!(
+                parse_chime_csv_with_required_columns(catalog.path(), &["dm_exc_ymw16"]).is_err()
+            );
+        }
+        let catalog = write_temp_csv("bonsai_dm,dm_exc_ymw16\n100,70\n");
+        let events =
+            parse_chime_csv_with_required_columns(catalog.path(), &["dm_exc_ymw16"]).unwrap();
+        assert_eq!(events[0].dm_exc_ymw16, 70.0);
     }
 
     #[test]

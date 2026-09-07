@@ -1,0 +1,18 @@
+=== Direction 1: FRB DM -> Comoving + Local Ultrametricity ===
+Input: data/output/audit/frb-inversion-null-sensitivity/cli-fixture.csv
+DM column: dm_exc_ymw16; observer-frame host: 50 pc/cm^3
+Parsed positive-bonsai rows: 12; excluded excess: 0; excluded sky: 0; nonpositive cosmic DM: 0
+Valid events with DM + position: 12
+Redshift range: [1.5091, 1.7043]
+Comoving distance range: [4501, 4848] Mpc
+
+--- Local Ultrametricity Tests ---
+  epsilon = 100 Mpc ...
+    testable: 0, mean_idx: NaN, null: NaN, p=1.0000, "UncalibratedGeometryRelabeling"
+
+--- Dendrogram Analysis ---
+  Cophenetic correlation: 0.4580 (null: 0.4580 +/- 0.0000)
+  p-value: 1.0000
+  Diagnostic status: UncalibratedGeometryRelabeling
+
+Results written to .cache/frb-inversion-null-sensitivity/cli-ymw.csv

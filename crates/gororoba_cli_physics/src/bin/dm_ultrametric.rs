@@ -20,10 +20,9 @@
 use clap::Parser;
 use std::path::PathBuf;
 
-use cosmology_core::distances::{
-    comoving_distance, dm_excess_to_redshift, planck2018, radec_to_cartesian,
+use gororoba_cli_physics::frb_distances::{
+    DmExcessColumn, RELABELING_DIAGNOSTIC, load_frb_distances,
 };
-use data_core::catalogs::chime::parse_chime_csv;
 use stats_core::ultrametric::{
     dendrogram::{euclidean_distance_matrix_3d, hierarchical_ultrametric_test},
     local::local_ultrametricity_test,
@@ -38,8 +37,8 @@ struct Cli {
     input: PathBuf,
 
     /// DM column to use for excess (after MW subtraction).
-    #[arg(long, default_value = "dm_exc_ne2001")]
-    dm_column: String,
+    #[arg(long, value_enum, default_value = "dm_exc_ne2001")]
+    dm_column: DmExcessColumn,
 
     /// Fixed observer-frame host DM to subtract (pc/cm^3), already redshift-diluted.
     #[arg(long, default_value = "50.0")]
@@ -62,56 +61,40 @@ struct Cli {
     output: PathBuf,
 }
 
-fn main() {
+fn main() -> anyhow::Result<()> {
     let cli = Cli::parse();
 
     eprintln!("=== Direction 1: FRB DM -> Comoving + Local Ultrametricity ===");
     eprintln!("Input: {}", cli.input.display());
 
-    // 1. Load CHIME events
-    let events = parse_chime_csv(&cli.input).unwrap_or_else(|e| {
-        eprintln!("Failed to parse CHIME CSV: {}", e);
-        std::process::exit(1);
-    });
-
-    eprintln!("Loaded {} total FRB events", events.len());
-
-    // 2. Extract valid events with DM excess, RA, Dec
-    let omega_m = planck2018::OMEGA_M;
-    let omega_b = planck2018::OMEGA_B;
-    let h0 = planck2018::H0;
-
-    let mut coords_3d: Vec<(f64, f64, f64)> = Vec::new();
-    let mut redshifts: Vec<f64> = Vec::new();
-    let mut comoving_dists: Vec<f64> = Vec::new();
-
-    for event in &events {
-        let dm_exc = event.dm_exc_ne2001;
-        if dm_exc.is_nan() || dm_exc <= 0.0 {
-            continue;
-        }
-        if event.ra.is_nan() || event.dec.is_nan() {
-            continue;
-        }
-
-        // NE2001 catalog excess and fixed observer-frame host define the inputs.
-        // Galactic halo subtraction and host-frame provenance require calibration.
-        let dm_cosmic = dm_exc - cli.dm_host;
-        if dm_cosmic <= 0.0 {
-            continue;
-        }
-
-        // DM -> redshift -> comoving distance
-        let z = dm_excess_to_redshift(dm_cosmic, omega_m, omega_b, h0);
-        let d_c = comoving_distance(z, omega_m, h0);
-
-        // (RA, Dec, d_C) -> (x, y, z) in Mpc
-        let (x, y, z_coord) = radec_to_cartesian(event.ra, event.dec, d_c);
-
-        coords_3d.push((x, y, z_coord));
-        redshifts.push(z);
-        comoving_dists.push(d_c);
-    }
+    let sample = load_frb_distances(&cli.input, cli.dm_column, cli.dm_host)?;
+    eprintln!(
+        "DM column: {}; observer-frame host: {} pc/cm^3",
+        cli.dm_column.header(),
+        cli.dm_host
+    );
+    eprintln!(
+        "Parsed positive-bonsai rows: {}; excluded excess: {}; excluded sky: {}; nonpositive cosmic DM: {}",
+        sample.parsed_rows,
+        sample.invalid_excess,
+        sample.invalid_sky_position,
+        sample.nonpositive_cosmic_dm
+    );
+    let coords_3d: Vec<_> = sample
+        .distances
+        .iter()
+        .map(|point| point.cartesian_mpc)
+        .collect();
+    let redshifts: Vec<_> = sample
+        .distances
+        .iter()
+        .map(|point| point.redshift)
+        .collect();
+    let comoving_dists: Vec<_> = sample
+        .distances
+        .iter()
+        .map(|point| point.comoving_mpc)
+        .collect();
 
     eprintln!("Valid events with DM + position: {}", coords_3d.len());
 
@@ -173,7 +156,7 @@ fn main() {
             result.mean_local_index,
             result.null_mean_index,
             result.p_value,
-            result.verdict,
+            RELABELING_DIAGNOSTIC,
         );
 
         wtr.write_record([
@@ -184,7 +167,7 @@ fn main() {
             &format!("{:.6}", result.mean_local_index),
             &format!("{:.6}", result.null_mean_index),
             &format!("{:.6}", result.p_value),
-            &format!("{:?}", result.verdict),
+            RELABELING_DIAGNOSTIC,
         ])
         .unwrap();
     }
@@ -217,7 +200,7 @@ fn main() {
         dend_result.null_cophenetic_std,
     );
     eprintln!("  p-value: {:.4}", dend_result.p_value);
-    eprintln!("  Verdict: {:?}", dend_result.verdict);
+    eprintln!("  Diagnostic status: {RELABELING_DIAGNOSTIC}");
 
     wtr.write_record([
         "dendrogram_cophenetic",
@@ -227,11 +210,12 @@ fn main() {
         &format!("{:.6}", dend_result.cophenetic_correlation),
         &format!("{:.6}", dend_result.null_cophenetic_mean),
         &format!("{:.6}", dend_result.p_value),
-        &format!("{:?}", dend_result.verdict),
+        RELABELING_DIAGNOSTIC,
     ])
     .unwrap();
 
     wtr.flush().unwrap();
 
     eprintln!("\nResults written to {}", cli.output.display());
+    Ok(())
 }

@@ -1,0 +1,7 @@
+schema_version = 1
+reviewer = "independent dm_caller_audit agent"
+scope = "Numerical inverse, selected-column callers, historical source identity and frozen synthetic interpretation"
+blocking_code_findings_remaining = 0
+resolved_finding = "A positive cosmic-DM witness returned zero comoving distance through floating-point underflow. The regression failed before the repair and passed after the positive-distance check."
+evidence_clarifications = ["Frozen decoded result filenames map to gzip storage through retention.toml", "Recovered Git-tree contents establish tracked source identity; missing control_core leaves historical build closure incomplete"]
+scientific_boundary = "The independent confirmation supports the engineering dependence-sensitivity gate. Initial failed precision acceptance remains retained; flat and gradient rejection forbids hierarchy-specific inference."

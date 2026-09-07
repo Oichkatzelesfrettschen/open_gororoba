@@ -1,0 +1,143 @@
+    Checking gororoba_gpu_bridge v0.1.0 (<checkout>/crates/gororoba_gpu_bridge)
+    Checking verified_core v0.1.0 (<checkout>/crates/verified_core)
+    Checking gororoba_contracts v0.1.0 (<checkout>/crates/gororoba_contracts)
+    Checking lbm_core v0.1.0 (<checkout>/crates/lbm_core)
+   Compiling proc-macro-error2 v2.0.1 (<checkout>/vendor/proc-macro-error2)
+   Compiling materials_data v0.1.0 (<checkout>/crates/materials_data)
+    Checking gororoba_gpu_readback v0.1.0 (<checkout>/crates/gororoba_gpu_readback)
+    Checking optics_core v0.1.0 (<checkout>/crates/optics_core)
+    Checking cosmic_scheduler v0.1.0 (<checkout>/crates/cosmic_scheduler)
+    Checking tensor_core v0.1.0 (<checkout>/crates/tensor_core)
+    Checking snia_core v0.1.0 (<checkout>/crates/snia_core)
+    Checking grmhd_core v0.1.0 (<checkout>/crates/grmhd_core)
+    Checking gororoba_gpu_vulkan v0.1.0 (<checkout>/crates/gororoba_gpu_vulkan)
+    Checking gororoba_view_core v0.1.0 (<checkout>/crates/gororoba_view_core)
+    Checking data_artifacts_core v0.1.0 (<checkout>/crates/data_artifacts_core)
+    Checking casimir_core v0.1.0 (<checkout>/crates/casimir_core)
+    Checking gororoba_view_raster v0.1.0 (<checkout>/crates/gororoba_view_raster)
+    Checking qgp_scaling v0.1.0 (<checkout>/crates/qgp_scaling)
+    Checking cr_transport v0.1.0 (<checkout>/crates/cr_transport)
+   Compiling tabled_derive v0.11.0
+    Checking cd_kernel v0.1.0 (<checkout>/crates/cd_kernel)
+    Checking lbm_vulkan v0.1.0 (<checkout>/crates/lbm_vulkan)
+    Checking tabled v0.20.0
+    Checking moreno_1997 v0.1.0 (<checkout>/crates/moreno_1997)
+    Checking gororoba_structurable v0.1.0 (<checkout>/crates/gororoba_structurable)
+    Checking data_core v0.1.0 (<checkout>/crates/data_core)
+    Checking algebra_analysis v0.1.0 (<checkout>/crates/algebra_analysis)
+    Checking flavor_lifts v0.1.0 (<checkout>/crates/flavor_lifts)
+    Checking anise v0.9.6
+    Checking gororoba_algebra v0.1.0 (<checkout>/crates/gororoba_algebra)
+    Checking algebra_experimental v0.1.0 (<checkout>/crates/algebra_experimental)
+    Checking gr_core v0.1.0 (<checkout>/crates/gr_core)
+    Checking stats_core v0.1.0 (<checkout>/crates/stats_core)
+    Checking spin_tomography_core v0.1.0 (<checkout>/crates/spin_tomography_core)
+    Checking materials_core v0.1.0 (<checkout>/crates/materials_core)
+    Checking quantum_core v0.1.0 (<checkout>/crates/quantum_core)
+    Checking pathion_ellip v0.1.0 (<checkout>/crates/pathion_ellip)
+    Checking cosmology_core v0.1.0 (<checkout>/crates/cosmology_core)
+    Checking sign_imbalance v0.1.0 (<checkout>/crates/sign_imbalance)
+    Checking lbm_3d v0.1.0 (<checkout>/crates/lbm_3d)
+    Checking neural_homotopy v0.1.0 (<checkout>/crates/neural_homotopy)
+    Checking cd_spin_bridge v0.1.0 (<checkout>/crates/cd_spin_bridge)
+    Checking spectral_core v0.1.0 (<checkout>/crates/spectral_core)
+    Checking gororoba_cli_physics v0.1.0 (<checkout>/crates/gororoba_cli_physics)
+    Finished `validation` profile [optimized + debuginfo] target(s) in 26.85s
+clippy_exit=0
+   Compiling gororoba_gpu_bridge v0.1.0 (<checkout>/crates/gororoba_gpu_bridge)
+   Compiling verified_core v0.1.0 (<checkout>/crates/verified_core)
+   Compiling gororoba_contracts v0.1.0 (<checkout>/crates/gororoba_contracts)
+   Compiling lbm_core v0.1.0 (<checkout>/crates/lbm_core)
+   Compiling materials_data v0.1.0 (<checkout>/crates/materials_data)
+   Compiling gororoba_gpu_readback v0.1.0 (<checkout>/crates/gororoba_gpu_readback)
+   Compiling tabled v0.20.0
+   Compiling optics_core v0.1.0 (<checkout>/crates/optics_core)
+   Compiling cosmic_scheduler v0.1.0 (<checkout>/crates/cosmic_scheduler)
+   Compiling snia_core v0.1.0 (<checkout>/crates/snia_core)
+   Compiling tensor_core v0.1.0 (<checkout>/crates/tensor_core)
+   Compiling grmhd_core v0.1.0 (<checkout>/crates/grmhd_core)
+   Compiling gororoba_gpu_vulkan v0.1.0 (<checkout>/crates/gororoba_gpu_vulkan)
+   Compiling gororoba_view_core v0.1.0 (<checkout>/crates/gororoba_view_core)
+   Compiling data_artifacts_core v0.1.0 (<checkout>/crates/data_artifacts_core)
+   Compiling casimir_core v0.1.0 (<checkout>/crates/casimir_core)
+   Compiling gororoba_view_raster v0.1.0 (<checkout>/crates/gororoba_view_raster)
+   Compiling qgp_scaling v0.1.0 (<checkout>/crates/qgp_scaling)
+   Compiling cr_transport v0.1.0 (<checkout>/crates/cr_transport)
+   Compiling cd_kernel v0.1.0 (<checkout>/crates/cd_kernel)
+   Compiling lbm_vulkan v0.1.0 (<checkout>/crates/lbm_vulkan)
+   Compiling anise v0.9.6
+   Compiling moreno_1997 v0.1.0 (<checkout>/crates/moreno_1997)
+   Compiling gororoba_structurable v0.1.0 (<checkout>/crates/gororoba_structurable)
+   Compiling data_core v0.1.0 (<checkout>/crates/data_core)
+   Compiling flavor_lifts v0.1.0 (<checkout>/crates/flavor_lifts)
+   Compiling algebra_analysis v0.1.0 (<checkout>/crates/algebra_analysis)
+   Compiling gororoba_algebra v0.1.0 (<checkout>/crates/gororoba_algebra)
+   Compiling algebra_experimental v0.1.0 (<checkout>/crates/algebra_experimental)
+   Compiling gr_core v0.1.0 (<checkout>/crates/gr_core)
+   Compiling stats_core v0.1.0 (<checkout>/crates/stats_core)
+   Compiling spin_tomography_core v0.1.0 (<checkout>/crates/spin_tomography_core)
+   Compiling materials_core v0.1.0 (<checkout>/crates/materials_core)
+   Compiling quantum_core v0.1.0 (<checkout>/crates/quantum_core)
+   Compiling pathion_ellip v0.1.0 (<checkout>/crates/pathion_ellip)
+   Compiling cosmology_core v0.1.0 (<checkout>/crates/cosmology_core)
+   Compiling sign_imbalance v0.1.0 (<checkout>/crates/sign_imbalance)
+   Compiling lbm_3d v0.1.0 (<checkout>/crates/lbm_3d)
+   Compiling neural_homotopy v0.1.0 (<checkout>/crates/neural_homotopy)
+   Compiling spectral_core v0.1.0 (<checkout>/crates/spectral_core)
+   Compiling cd_spin_bridge v0.1.0 (<checkout>/crates/cd_spin_bridge)
+   Compiling gororoba_cli_physics v0.1.0 (<checkout>/crates/gororoba_cli_physics)
+    Finished `validation` profile [optimized + debuginfo] target(s) in 1m 10s
+────────────
+ Nextest run ID 38270a88-e605-442e-993f-06a3ceb9f088 with nextest profile: default
+    Starting 999 tests across 3 binaries
+────────────
+     Summary [   0.590s] 999 tests run: 999 passed, 0 skipped
+library_exit=0
+    Blocking waiting for file lock on build directory
+    Finished `validation` profile [optimized + debuginfo] target(s) in 16.20s
+     Running tests/macquart_source_conformance.rs (<build-dir>/validation/deps/macquart_source_conformance-9937017135bfd270)
+
+running 8 tests
+test mean_dm_matches_analytic_expansion_limits ... ok
+test inverse_rejects_invalid_values_and_unbracketed_dm ... ok
+test public_comoving_distance_matches_expanded_analytic_limits ... ok
+test distance_chain_uses_observer_frame_host_and_total_galactic_dm ... ok
+omega_m=0.3153 omega_b=0.0493 h0=67.36 z=0.01 source_dm=8.140676577970 actual_dm=8.140676577970 relative_error=5.995204332976e-15
+
+thread 'positive_cosmic_dm_rejects_distance_underflow' (1793130) panicked at crates/cosmology_core/tests/macquart_source_conformance.rs:228:5:
+assertion `left == right` failed
+  left: Ok(0.0)
+ right: Err(NumericalFailure)
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+omega_m=0.3153 omega_b=0.0493 h0=67.36 z=0.1 source_dm=83.171547071684 actual_dm=83.171547071685 relative_error=1.842970220878e-14
+test positive_cosmic_dm_rejects_distance_underflow ... FAILED
+omega_m=0.3153 omega_b=0.0493 h0=67.36 z=0.5 source_dm=441.059634793045 actual_dm=441.059634793047 relative_error=3.108624468950e-15
+omega_m=0.3153 omega_b=0.0493 h0=67.36 z=1 source_dm=900.751906538016 actual_dm=900.751906538024 relative_error=8.881784197001e-15
+test bounded_inverse_matches_analytic_limits_from_tiny_to_ceiling ... ok
+omega_m=0.3153 omega_b=0.0493 h0=67.36 z=2 source_dm=1757.129786211003 actual_dm=1757.129786210996 relative_error=4.107825191113e-15
+omega_m=0.3153 omega_b=0.0493 h0=67.36 z=3 source_dm=2512.206199794281 actual_dm=2512.206199794316 relative_error=1.398881011028e-14
+omega_m=0.3153 omega_b=0.0493 h0=67.36 z=20 source_dm=9961.855435268042 actual_dm=9961.855435268057 relative_error=1.554312234475e-15
+omega_m=0.3153 omega_b=0.0493 h0=67.36 z=80 source_dm=22736.630356611964 actual_dm=22736.630356612412 relative_error=1.976196983833e-14
+omega_m=0.3153 omega_b=0.0493 h0=67.36 z=100 source_dm=25772.838557008396 actual_dm=25772.838557008094 relative_error=1.176836406103e-14
+omega_m=0.25 omega_b=0.04 h0=73 z=0.01 source_dm=7.161557134053 actual_dm=7.161557134053 relative_error=3.885780586188e-15
+test inverse_recovers_source_generated_cosmic_dm ... ok
+omega_m=0.25 omega_b=0.04 h0=73 z=0.1 source_dm=73.496823993645 actual_dm=73.496823993645 relative_error=1.887379141863e-15
+omega_m=0.25 omega_b=0.04 h0=73 z=0.5 source_dm=397.493211192816 actual_dm=397.493211192817 relative_error=8.881784197001e-16
+omega_m=0.25 omega_b=0.04 h0=73 z=1 source_dm=828.030515326100 actual_dm=828.030515326098 relative_error=2.331468351713e-15
+omega_m=0.25 omega_b=0.04 h0=73 z=2 source_dm=1653.436404036261 actual_dm=1653.436404036224 relative_error=2.253752739989e-14
+omega_m=0.25 omega_b=0.04 h0=73 z=3 source_dm=2391.994044609277 actual_dm=2391.994044609256 relative_error=8.548717289614e-15
+omega_m=0.25 omega_b=0.04 h0=73 z=20 source_dm=9741.253009766120 actual_dm=9741.253009766198 relative_error=7.993605777301e-15
+omega_m=0.25 omega_b=0.04 h0=73 z=80 source_dm=22355.902863018924 actual_dm=22355.902863018899 relative_error=1.110223024625e-15
+omega_m=0.25 omega_b=0.04 h0=73 z=100 source_dm=25354.078960892108 actual_dm=25354.078960892253 relative_error=5.773159728051e-15
+test mean_dm_matches_independent_si_density_integral ... ok
+
+failures:
+
+failures:
+    positive_cosmic_dm_rejects_distance_underflow
+
+test result: FAILED. 7 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+error: test failed, to rerun pass `-p cosmology_core --test macquart_source_conformance`
+source_test_exit=101
+exit=0

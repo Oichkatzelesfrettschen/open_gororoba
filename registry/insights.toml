@@ -9,31 +9,31 @@ date = "2026-02-06"
 id = "I-001"
 sprint = 6
 status = "partial"
-status_note = "Partial records conditional implementation conformance on the declared finite grid. The correction resolves the missing electron factor and documents numerical foreground conventions. Inverse invalid inputs and upper-bracket exhaustion, ionization/diffuse-fraction evolution, scatter, independent astrophysical calibration and historical FRB producer replays remain open. Source tests establish their implementation layer; they supply no new ultrametric or physical-structure evidence."
-summary = "The mean cosmic-DM implementation includes the Macquart Eq. (2) electron factor 0.875 for helium mass fraction 0.25 and doubly ionized helium. A constant diffuse baryon mass fraction 0.83 specializes the source's fd(z). Independent SI-density quadrature agrees across 12 declared cases to relative error at most 2.9e-15; analytic expansion controls, source-generated inversion and an analytic foreground-subtracted distance test pass. Baseline production fails all four tests, including a measured 8/7 normalization excess. The tested mean-DM value at z=1 is 900.751906538024 pc/cm^3 for the declared Planck parameters. Both FRB callers subtract a fixed observer-frame host from NE2001 excess; catalog halo treatment and physical host-frame provenance remain unresolved. C-071 supplies motivation and retains its refuted disposition."
+status_note = "Partial records tested numerical construction and catalog selection. Synthetic radial-angular dependence sensitivity establishes an instrument under one synthetic exchangeability stratum. Physical FRB inference remains unexecuted. C-071 retains its historical refuted disposition."
+summary = "The constant-fd Macquart mean cosmic-DM implementation retains electron factor 0.875. Independent SI quadrature agrees across 18 cases through numerical redshift ceiling 100 within relative tolerance 1e-10. Source-generated inversions, exact-zero, near-zero, ceiling, invalid-input and positive-distance-underflow contracts pass. Typed catalog selection uses the chosen NE2001 or YMW16 excess and reports exclusions; both callers propagate conversion errors and identify relabeling outputs as uncalibrated diagnostics. The numerical ceiling supplies no physical validity bound. Halo treatment, host-frame provenance, evolving ionization/diffuse fraction, scatter and localized-FRB calibration remain unresolved."
 title = "Mean-DM distance conversion requires explicit electron and host conventions"
 
 [insight.evidence_admission]
-admission_id = "macquart-electron-source-conformance:I-001"
+admission_id = "frb-inversion-null-sensitivity:I-001"
 insight_id = "I-001"
-expected_previous_evidence_sha256 = "50597c5cb7560817d86bacca5b745df18c31e49a64a86245de02edba993e41ef"
-disposition = "verify_conditional_electron_normalization_preserve_physical_residuals"
-falsifier = "The source-derived SI-density integral, analytic expansion limits and source-generated inverse must agree with production under matched cosmology and foreground frames. Relative DM tolerance is 1e-10; absolute inverse-redshift tolerance is 1e-8. All four tests fail baseline and pass corrected production."
-successor = "A tested constant-fd mean-DM implementation with explicit electron and observer-frame foreground conventions; independent physical calibration remains a candidate experiment."
-residual = "Recover original FRB producers and result bodies; admit catalog halo/host provenance and localized-FRB calibration with uncertainties. Repair inverse invalid-input/bracket behavior and ignored dm-column selection under separate regression contracts. Audit the monograph interpretation and broader family authority map."
+expected_previous_evidence_sha256 = "80bcb223a432a5bf6597e4c4978630f205b92caac1b9be7103b5fe7e95d49bf1"
+disposition = "retain_partial_status_admit_bounded_frb_instrument_and_recovered_history"
+falsifier = "Independent numerical oracles and catalog error/selection fixtures adjudicate implementation. Synthetic acceptance uses fixed generators, 199 permutations and one-sided Wilson bounds, with retained initial failure and independent confirmation. Flat/gradient rejection defeats hierarchy specificity."
+successor = "A bounded numerical FRB distance construction and a sensitivity-tested conditional radial-angular dependence instrument, with explicit physical deployment prerequisites."
+residual = "Recover the historical missing control_core source and actual invocation; admit halo/host conventions, repeat-source grouping, selection exchangeability and coordinate rebuild per null draw; freeze multiplicity and a held-out localized-FRB physical comparison before physical inference."
 
 [insight.evidence_admission.expected]
 title = "Mean-DM distance conversion requires explicit electron and host conventions"
 status = "partial"
-summary = "The implemented DM-to-redshift-to-comoving-distance construction supports a declared cosmology. Macquart et al. Eq. (2) defines a mean cosmic-DM relation with an explicit electron-density helium factor and diffuse baryon fraction; Eq. (1) separates Galactic, halo and redshift-scaled host contributions. The inspected routine omits the explicit 0.875 helium factor under its documented f_IGM convention. Its constants give 927.936546 rather than the approximate comment coefficient 935; multiplying by 0.875 gives only a conditional arithmetic value, 811.944478. An initial bisection bracket of width 10 requires 30 halvings to reach width 1e-8; expanded brackets require additional halvings. Caller host-frame conventions, scatter and physical calibration remain to be admitted. C-071 supplies research motivation rather than evidence for the Macquart formula or inversion convergence."
-status_note = "Partial denotes an implemented construction with unresolved source conformance. The retained primary source and arithmetic witness support the stated convention and iteration corrections. Source-faithful numerical repair, caller audit and independent astrophysical validation remain separate tasks."
+summary = "The mean cosmic-DM implementation includes the Macquart Eq. (2) electron factor 0.875 for helium mass fraction 0.25 and doubly ionized helium. A constant diffuse baryon mass fraction 0.83 specializes the source's fd(z). Independent SI-density quadrature agrees across 12 declared cases to relative error at most 2.9e-15; analytic expansion controls, source-generated inversion and an analytic foreground-subtracted distance test pass. Baseline production fails all four tests, including a measured 8/7 normalization excess. The tested mean-DM value at z=1 is 900.751906538024 pc/cm^3 for the declared Planck parameters. Both FRB callers subtract a fixed observer-frame host from NE2001 excess; catalog halo treatment and physical host-frame provenance remain unresolved. C-071 supplies motivation and retains its refuted disposition."
+status_note = "Partial records conditional implementation conformance on the declared finite grid. The correction resolves the missing electron factor and documents numerical foreground conventions. Inverse invalid inputs and upper-bracket exhaustion, ionization/diffuse-fraction evolution, scatter, independent astrophysical calibration and historical FRB producer replays remain open. Source tests establish their implementation layer; they supply no new ultrametric or physical-structure evidence."
 claim_refs = ["C-071"]
 
 [insight.evidence_admission.revised]
 title = "Mean-DM distance conversion requires explicit electron and host conventions"
 status = "partial"
-summary = "The mean cosmic-DM implementation includes the Macquart Eq. (2) electron factor 0.875 for helium mass fraction 0.25 and doubly ionized helium. A constant diffuse baryon mass fraction 0.83 specializes the source's fd(z). Independent SI-density quadrature agrees across 12 declared cases to relative error at most 2.9e-15; analytic expansion controls, source-generated inversion and an analytic foreground-subtracted distance test pass. Baseline production fails all four tests, including a measured 8/7 normalization excess. The tested mean-DM value at z=1 is 900.751906538024 pc/cm^3 for the declared Planck parameters. Both FRB callers subtract a fixed observer-frame host from NE2001 excess; catalog halo treatment and physical host-frame provenance remain unresolved. C-071 supplies motivation and retains its refuted disposition."
-status_note = "Partial records conditional implementation conformance on the declared finite grid. The correction resolves the missing electron factor and documents numerical foreground conventions. Inverse invalid inputs and upper-bracket exhaustion, ionization/diffuse-fraction evolution, scatter, independent astrophysical calibration and historical FRB producer replays remain open. Source tests establish their implementation layer; they supply no new ultrametric or physical-structure evidence."
+summary = "The constant-fd Macquart mean cosmic-DM implementation retains electron factor 0.875. Independent SI quadrature agrees across 18 cases through numerical redshift ceiling 100 within relative tolerance 1e-10. Source-generated inversions, exact-zero, near-zero, ceiling, invalid-input and positive-distance-underflow contracts pass. Typed catalog selection uses the chosen NE2001 or YMW16 excess and reports exclusions; both callers propagate conversion errors and identify relabeling outputs as uncalibrated diagnostics. The numerical ceiling supplies no physical validity bound. Halo treatment, host-frame provenance, evolving ionization/diffuse fraction, scatter and localized-FRB calibration remain unresolved."
+status_note = "Partial records tested numerical construction and catalog selection. Synthetic radial-angular dependence sensitivity establishes an instrument under one synthetic exchangeability stratum. Physical FRB inference remains unexecuted. C-071 retains its historical refuted disposition."
 claim_refs = ["C-071"]
 
 [[insight.evidence_admission.evidence_files]]
@@ -70,23 +70,275 @@ sha256 = "8dee34492ade1e326e66a86e6bcb5bd20c9802b74f6b80b312ba5d349562001f"
 
 [[insight.evidence_admission.evidence_files]]
 path = "crates/cosmology_core/src/distances.rs"
-sha256 = "61b266f3f1b20a4ac382da15e6fa8c6a55b6f99d56d5717f5f0054df984d5486"
+sha256 = "a8cfe1152c5a4624f3b6840e868eea3770a9be15732bb9d3d77ee795c372477b"
 
 [[insight.evidence_admission.evidence_files]]
 path = "crates/cosmology_core/tests/macquart_source_conformance.rs"
-sha256 = "6dcb0d1d39d59cf11cd40e298251fe2c1cfdf7722ef6ecc28d5bf5849cbc8e8a"
+sha256 = "251353e469af200384fce253c06066f245227c62adf166e7f3d7245e39dd1df7"
 
 [[insight.evidence_admission.evidence_files]]
 path = "crates/gororoba_cli_physics/src/bin/dm_ultrametric.rs"
-sha256 = "3f3545f63c07fad40dbb3c43082c4f1a96bef78a7662ed262144edde6b47c29b"
+sha256 = "13822925ac9ea26df407872e54b8e0e39a17fd90d8c42a3e14b13f326a43d666"
 
 [[insight.evidence_admission.evidence_files]]
 path = "crates/gororoba_cli_physics/src/bin/cosmic_dendrogram.rs"
-sha256 = "e319d8b2e3ddb4c407061e72b9df85b08369f472fe9a5ef717b9161d8e87ccfa"
+sha256 = "0bb018e9bc200ba41943a65d30d59599a10e227161808b2fad3ffb29a24b5072"
 
 [[insight.evidence_admission.evidence_files]]
 path = "data/output/audit/insight-reference-role-pilot/sources/macquart-2005.13161v1.pdf"
 sha256 = "bd0bb66f9f5f5c635925b8f835590d75e80de70dc995156a42c55f172e238025"
+
+[[insight.evidence_admission.evidence_files]]
+path = "crates/stats_core/examples/frb_null_sensitivity.rs"
+sha256 = "ae466c131d0af206af5e87b3495c0f740f99024f031a699402d9d76bbcce844a"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-inversion-null-sensitivity/null-sensitivity-results.toml.gz"
+sha256 = "8fbde9a621562c97bd1aaaca0a045bab385e943f0027ca4c728ca585e509391d"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-inversion-null-sensitivity/cli-ymw.csv"
+sha256 = "d32b602bea330951f3f3b24a270e7342744e7bd76ba19b55b5f37992d340e133"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-inversion-null-sensitivity/cli-ymw.log"
+sha256 = "ea19aac45afba2a26aa4a509c3b1e58711b45b7a72c766e082c4df11e4f6c395"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-inversion-null-sensitivity/invalid-column.log"
+sha256 = "9b1552bfffe5343ebc8630ca796122704339febed3fc57e35296a2585eb44259"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-inversion-null-sensitivity/confirmation-protocol.toml"
+sha256 = "4a213725f3e58c1a259e74aaf7e41efcb6331e108b7028544c4551859b01bfd1"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-inversion-null-sensitivity/confirmation-results.toml.gz"
+sha256 = "97b1e68638113ef4c5789ff78daeb089f2d8888b6e02098f0bdc0a767a36a56a"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-inversion-null-sensitivity/cli-cosmic.log"
+sha256 = "0b93fb58de5e61993b5c2fcb5aacaa8a4f38e68559d0007ae6187ae1448df7b9"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-inversion-null-sensitivity/final-clippy.log"
+sha256 = "d78e7de5d48f17d72639bc08b998049d9b510988bc7f4568de99575e185fdfa2"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-inversion-null-sensitivity/null-protocol.toml"
+sha256 = "d39ef2336d579b9384f81eb4b2bdecfa50cfe736d574e9b98e956f2b77612779"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-inversion-null-sensitivity/findings.json"
+sha256 = "3225665210dd6a34d8e765004fbf30a787f32c39820305254f179bf595e9727a"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-inversion-null-sensitivity/corrected-tests.log"
+sha256 = "0b6a1a03a78b124ae7548d6c10cb023f68c5fe3929e054f1c6b7ebf9a2894800"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-inversion-null-sensitivity/cli-cosmic.csv"
+sha256 = "349518fedae1e2b9f8dee8d69a4cd646f53f36ad9cd7d995c87133af0297ac81"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-inversion-null-sensitivity/invalid-host.log"
+sha256 = "87667f0118b10a65446e40cf17cb26175d3d51c5dd466f82cf77e0c1a0eb7fea"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-inversion-null-sensitivity/review.toml"
+sha256 = "1ce935460330e0d1bd556c30f0425ac005b4fc67317e08fda4ba8c94f1807812"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-inversion-null-sensitivity/cli-ne.log"
+sha256 = "76681828dc4471056d64d3d9a8d4571f9ccfb2ac9a43de3edaf9cef315f9d653"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-inversion-null-sensitivity/admission-queries.sql"
+sha256 = "66d68895298e28db1dd986ff134cdb0809a1607ebdea3ba15467d888f3651cb0"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-inversion-null-sensitivity/pre-underflow-fix.log"
+sha256 = "2191293b9ec795c3fe9aca73cf15bcbc4027f3d4d6a9c585ada69fbccc3c8b6b"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-inversion-null-sensitivity/null-baseline-runner.rs.gz"
+sha256 = "c7c4f134a586b7b115702d15afad2dc2090af108382a5713547f437e595df9f4"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-inversion-null-sensitivity/preservation-queries.sql"
+sha256 = "90bd9bbf903dc858c4405e06f3c9cbfe81ee22c4ae317faeba2a005163dd427b"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-inversion-null-sensitivity/cli-fixture.csv"
+sha256 = "90577cb00675ac74eb7ab959f51ef7bb2b269f67e0396f42654cc2e83a136e17"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-inversion-null-sensitivity/cli-ne.csv"
+sha256 = "ab1b30029af33aad9d50bcfdda49b8ea068c4b5e31f41f6fc34551fa874e81a6"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-inversion-null-sensitivity/historical/candidate-replay.toml"
+sha256 = "c45fe5893089b2f487db20ef5474b2d67cabd846431b1f209bdfeccc04eda8d1"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-inversion-null-sensitivity/historical/candidate-replay-build.log.gz"
+sha256 = "7932891cb8e7be4220d4cccf62dee73a61b1439fc1a99e4ea8b796bc27c6067a"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-inversion-null-sensitivity/historical/inputs/chime_frb_cat2.csv.gz"
+sha256 = "630654708759afa83c9cc2f4a058f2e9e8ffe0d6ca61710de7fd66e9df38d44d"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-inversion-null-sensitivity/historical/inputs/chime_frb_cat1.csv.gz"
+sha256 = "5f3c797eab00036f04fbb71723cfc986a0728ebf86d14fa9681aedb00799bdf3"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-inversion-null-sensitivity/historical/chain.toml"
+sha256 = "1a2362d796c6e25704214131852c10253c30cb05266259d0788eb3ee484db4f2"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-inversion-null-sensitivity/historical/artifacts.jsonl"
+sha256 = "9bd735b2fc641cffbabd419cf4569181760337d7529b73a9dccd0e2e4bceb670"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-inversion-null-sensitivity/historical/verification.json"
+sha256 = "1ca6293b53c6ed10196396bf8423e055313a9852d34b7e884be387fe51a3c341"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-inversion-null-sensitivity/historical/candidate-replay-toolchain.txt.gz"
+sha256 = "7c082dd1f765dc355ae7e2fbfe8404c0f3776b0ea3c36738337af7baa8dfd260"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-inversion-null-sensitivity/historical/manifest.json"
+sha256 = "05967805be2237efdf4920432ecee4b4512b556907443dad6ac076e299db4f25"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-inversion-null-sensitivity/historical/scalar/docs/external_sources/C071_FRB_ULTRAMETRIC_SOURCES.md.gz"
+sha256 = "fbc68af1b7195215583474fe76f07ddc86921eb5c47af7ae8f2b15869b5c6144"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-inversion-null-sensitivity/historical/scalar/Cargo.lock.gz"
+sha256 = "35826ea7c91d57a561b8a5ab84ee0f7e2f7ca79f74cf2f3f8a5cef7ff796e867"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-inversion-null-sensitivity/historical/scalar/data/csv/c071_frb_ultrametric.csv.gz"
+sha256 = "e0839c1d82bf659a04b4e520702f769d24df3c8f9c69847f2e5ff4ad95b01976"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-inversion-null-sensitivity/historical/scalar/data/csv/c071_frb_ultrametric_cat1.csv.gz"
+sha256 = "b17ac9603b8f1ad830255a4e11624120b3d783ce3e3b90bf2e8da900b1948ce9"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-inversion-null-sensitivity/historical/scalar/data/csv/c071_frb_ultrametric_cat2.csv.gz"
+sha256 = "ac3a67f3752e4fb6ca8d10edec7d74b19bab06acb4b32d4e39fd0f27c9968306"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-inversion-null-sensitivity/historical/scalar/crates/stats_core/src/ultrametric.rs.gz"
+sha256 = "9855d1ca0484c7c6ce605a8527a1c0ee7d5f7607fe03636352c3f71a4d550cca"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-inversion-null-sensitivity/historical/scalar/crates/stats_core/src/lib.rs.gz"
+sha256 = "7c3e18d4553c2a2634e9561bac81c4f8fd49c8b3b4e5200d045064ad4784c929"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-inversion-null-sensitivity/historical/scalar/crates/stats_core/Cargo.toml.gz"
+sha256 = "03c2242c11c16fe83bec5aab0fe0db717d4cd4b6d03b02d1cbd5cd696a29a847"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-inversion-null-sensitivity/historical/scalar/crates/gororoba_cli/src/bin/frb_ultrametric.rs.gz"
+sha256 = "461bb233f9ae151036226d1fe74248e1582d51dea7388c003b55dc6d89bce7d8"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-inversion-null-sensitivity/historical/scalar/crates/gororoba_cli/src/bin/fetch_chime_frb.rs.gz"
+sha256 = "cc9a571aea245af421aeb22d42e0c15275d5dd22eb37b6175da797e6dca887bb"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-inversion-null-sensitivity/historical/scalar/crates/gororoba_cli/Cargo.toml.gz"
+sha256 = "b3bcc240ac02e6ebf4d5823cc331ee4c576f78287f36d9a92848e4e57616db36"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-inversion-null-sensitivity/historical/scalar/Cargo.toml.gz"
+sha256 = "a2fe4b6284179c2b5055c97853b978354e4db23b0b96bfc82f883eb5f65c0667"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-inversion-null-sensitivity/historical/transformed/Cargo.lock.gz"
+sha256 = "5e27315e65a967c73da42a6dcc7c185133c6f7850afdd41e6b9087f295f6de24"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-inversion-null-sensitivity/historical/transformed/data/external/GWTC-3_confident.csv.gz"
+sha256 = "10b24c353312876e875a1dcff8cae93080446c9a1f3d81323e1eefcac2c0668a"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-inversion-null-sensitivity/historical/transformed/data/external/chime_frb_cat2.csv.gz"
+sha256 = "37209eafdb90b6e7c494e3e2a953605ffdff53e6ec2096a4c4cd4f388c2e9b87"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-inversion-null-sensitivity/historical/transformed/data/external/chime_frb_cat1.csv.gz"
+sha256 = "da15f7536b65afa03bf6140bc23e3a3930b8181428bb0bc9d8fb256c6b1ee83b"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-inversion-null-sensitivity/historical/transformed/data/csv/c071b_dm_comoving_ultrametric.csv.gz"
+sha256 = "96651297f7a5ba5497a574058af3206db9a19e381582b5e4dcb39c4092e9deed"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-inversion-null-sensitivity/historical/transformed/data/csv/c071f_cosmic_dendrogram.csv.gz"
+sha256 = "d922321ad302e25ea456533e606211a41de3c887acb109f8f5629a5bfa5bfc36"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-inversion-null-sensitivity/historical/transformed/crates/data_core/src/catalogs/gwtc.rs.gz"
+sha256 = "515f6b2a2fd37ee05f04b6a7039b390fc19542c1e9b5681db6ec0d6dc03ee18d"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-inversion-null-sensitivity/historical/transformed/crates/data_core/src/catalogs/chime.rs.gz"
+sha256 = "418865cb9e78f9d7bd3f87b6111579bb41c75eaf93250029e4cdecd1457c6ad2"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-inversion-null-sensitivity/historical/transformed/crates/stats_core/src/ultrametric/dendrogram.rs.gz"
+sha256 = "7fd451eb8eee42c12831025abdc25f9570cd5ed533a7e5629f3542683de38aa0"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-inversion-null-sensitivity/historical/transformed/crates/stats_core/src/ultrametric/mod.rs.gz"
+sha256 = "fe2a16f6d973b8915b54cf022938ec09c45bf6b67f159a20c0f47a5096efe025"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-inversion-null-sensitivity/historical/transformed/crates/stats_core/src/ultrametric/local.rs.gz"
+sha256 = "9beda0186e084dea5a8f54d5552f20f0fca2bd98caf615dad330800727779533"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-inversion-null-sensitivity/historical/transformed/crates/gororoba_cli/src/bin/cosmic_dendrogram.rs.gz"
+sha256 = "59cec5c2a77989836a1fc1000771901f944d8d0a5c63ad474958157865f41415"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-inversion-null-sensitivity/historical/transformed/crates/gororoba_cli/src/bin/dm_ultrametric.rs.gz"
+sha256 = "388808b9ad229c864a609dc01290a6176de35f9b6da97d92dd7d8d004b105341"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-inversion-null-sensitivity/historical/transformed/crates/cosmology_core/src/bounce.rs.gz"
+sha256 = "7207af5e81578f87874c390108a1d82d898a24d1f93b4587a9dbf27e3ab9b024"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-inversion-null-sensitivity/historical/transformed/crates/cosmology_core/src/distances.rs.gz"
+sha256 = "bcf17eafc1c29c4719c996189bc1814aaa26e800e14652dcd4ff77102df177dd"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-inversion-null-sensitivity/historical/transformed/crates/cosmology_core/src/lib.rs.gz"
+sha256 = "5c9297b4d403d139c742ad50b10bb9d7e32e6fb8c56cc2add64a69403d6a7ef7"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-inversion-null-sensitivity/historical/transformed/Cargo.toml.gz"
+sha256 = "5a20695e2da696a2ca5ef99279c198f97ef529723de3f2f4fadfda059ee0a633"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-inversion-null-sensitivity/retention.toml"
+sha256 = "49cd0b7465999d1a104bee27fe6e7ba16904275ed297f1b42787d60860f37565"
+
+[[insight.evidence_admission.evidence_files]]
+path = "crates/gororoba_cli_physics/src/frb_distances.rs"
+sha256 = "2ec039d8091ded47d2f2b4b29b0a5ae4fc553761f9659d411ab4c8f853ee4cdf"
+
+[[insight.evidence_admission.evidence_files]]
+path = "crates/data_core/src/catalogs/chime.rs"
+sha256 = "bf0557dbfbbe35409f19fe881f6163a22fd14a3d003186e26d02ffb4e723e708"
 
 [[insight.evidence_admission.predicates]]
 id = "dm-redshift"
@@ -109,11 +361,11 @@ kind = "asserted_proposition"
 evidence_layer = "implementation_conformance"
 outcome = "supported"
 execution_status = "replayed"
-boundary = "Independent SI-density integration agrees on 12 declared cases with maximum relative error 2.9e-15. Analytic expansion controls pass. The baseline actual/source ratio is 8/7; multiplying production by 0.875 resolves the defect under fixed fd=0.83, Y_He=0.25 and retained constants."
-evidence_anchors = ["data/output/audit/macquart-electron-source-conformance/protocol.toml", "data/output/audit/macquart-electron-source-conformance/baseline.log", "data/output/audit/macquart-electron-source-conformance/corrected.log"]
+boundary = "Independent SI integration agrees across 18 declared cases through z=100; maximum observed relative discrepancy 2.253752739989e-14 is below 1e-10. Constant fd=0.83, Y_He=0.25 and doubly ionized helium specialize the source; physical validity across that numerical domain remains unassessed."
+evidence_anchors = ["data/output/audit/frb-inversion-null-sensitivity/findings.json#normalization"]
 
 [[insight.evidence_admission.predicates.evidence_bindings]]
-path = "data/output/audit/macquart-electron-source-conformance/findings.json"
+path = "data/output/audit/frb-inversion-null-sensitivity/findings.json"
 json_pointer = "/normalization"
 
 [[insight.evidence_admission.predicates]]
@@ -137,30 +389,40 @@ kind = "asserted_proposition"
 evidence_layer = "phenomenological_mapping"
 outcome = "inconclusive"
 execution_status = "source_review"
-boundary = "The helper's observer-frame host and total Galactic subtraction passes an analytic distance test and a wrong-frame negative control. Both production callers use NE2001 excess and fixed observer-frame host subtraction; catalog halo treatment and physical host-frame provenance remain unresolved. The numerical test establishes the helper contract; physical calibration remains unexecuted."
-evidence_anchors = ["data/output/audit/macquart-electron-source-conformance/findings.json#foreground", "data/output/audit/macquart-electron-source-conformance/findings.json#callers"]
+boundary = "Both FRB callers use the selected NE2001 or YMW16 excess and subtract a declared observer-frame host. The numerical conversion is tested; catalog halo treatment, physical host-frame provenance and independent localized-FRB calibration remain unresolved."
+evidence_anchors = ["data/output/audit/frb-inversion-null-sensitivity/findings.json#catalog"]
 
 [[insight.evidence_admission.predicates.evidence_bindings]]
-path = "data/output/audit/macquart-electron-source-conformance/findings.json"
-json_pointer = "/foreground"
-
-[[insight.evidence_admission.predicates.evidence_bindings]]
-path = "data/output/audit/macquart-electron-source-conformance/findings.json"
-json_pointer = "/callers"
+path = "data/output/audit/frb-inversion-null-sensitivity/findings.json"
+json_pointer = "/catalog"
 
 [[insight.evidence_admission.predicates]]
 id = "source-generated-inversion"
-proposition = "Source-generated cosmic DM recovers redshift on the declared finite grid."
+proposition = "The bounded mean-DM inverse returns tested redshifts or typed errors under declared numerical contracts."
 kind = "asserted_proposition"
 evidence_layer = "implementation_conformance"
 outcome = "supported"
 execution_status = "replayed"
-boundary = "Six declared source-generated inputs recover redshift within absolute 1e-8. Invalid inputs, upper-bracket exhaustion and larger-redshift quadrature remain open."
-evidence_anchors = ["data/output/audit/macquart-electron-source-conformance/protocol.toml", "data/output/audit/macquart-electron-source-conformance/corrected.log"]
+boundary = "Nine source-generated cases through z=99.9, analytic near-zero and exact-ceiling witnesses, invalid inputs, bracket exhaustion and distance underflow are covered by eight passing integration tests. The inverse uses relative DM tolerance 1e-12 and ceiling z=100; those numerical bounds do not establish physical validity."
+evidence_anchors = ["data/output/audit/frb-inversion-null-sensitivity/findings.json#inverse"]
 
 [[insight.evidence_admission.predicates.evidence_bindings]]
-path = "data/output/audit/macquart-electron-source-conformance/findings.json"
+path = "data/output/audit/frb-inversion-null-sensitivity/findings.json"
 json_pointer = "/inverse"
+
+[[insight.evidence_admission.predicates]]
+id = "catalog-selection"
+proposition = "Both FRB callers honor the declared excess column and expose numerical selection outcomes."
+kind = "asserted_proposition"
+evidence_layer = "implementation_conformance"
+outcome = "supported"
+execution_status = "replayed"
+boundary = "Synthetic NE2001 and YMW16 CLI runs yield distinct expected redshift/distance ranges. Required headers occur exactly once; invalid host and unsupported raw-DM column fail; exclusions partition the parser-selected positive-finite-bonsai population. Inversion failures abort conversion."
+evidence_anchors = ["data/output/audit/frb-inversion-null-sensitivity/findings.json#catalog"]
+
+[[insight.evidence_admission.predicates.evidence_bindings]]
+path = "data/output/audit/frb-inversion-null-sensitivity/findings.json"
+json_pointer = "/catalog"
 
 [[insight.evidence_admission.references]]
 claim_id = "C-071"
@@ -175,29 +437,31 @@ date = "2026-02-06"
 id = "I-002"
 sprint = 6
 status = "partial"
-status_note = "The metric and relabeling lessons are supported by inspected code and retained independent witnesses. Partial preserves the unresolved attribution and power of the original C-071 experiment; canonical admission changes the insight interpretation and leaves the claim disposition intact."
-summary = "C-071 retains its historical refuted disposition. The inspected raw-scalar permutation null preserves the full population of unordered triple distances, so Monte Carlo triple sampling alone supplies no demonstrated power to destroy a proposed physical structure. A retained exhaustive witness preserves 5 qualifying triples of 20 across all 720 permutations. Scalar values with a p-adic metric can be ultrametric; three distinct Euclidean real scalars form a different metric case. Alternative Baire, temporal and dendrogram representations exist, but implementation existence establishes neither detection nor physical validation. Recover the original result bodies and producer identity, inspect every statistic and selection procedure, and demonstrate injection sensitivity before re-adjudicating the historical claim."
+status_note = "Partial preserves the supported metric and null-sensitivity lessons, recovered tracked-tree evidence and failed exact-source build. Synthetic confirmation establishes implementation sensitivity under declared generators; physical calibration and historical re-adjudication remain open."
+summary = "C-071 retains its historical refuted disposition. Original scalar and transformed producers, lockfiles, five results and two exact CHIME inputs are retained with verified hashes. The original scalar build fails before compilation because its tracked workspace omits control_core; actual historical invocation and execution replay remain unresolved. Geometry-preserving relabeling nulls supply diagnostics with unestablished physical power. A separately frozen radial-angular dependence instrument passes an independent 1000-replicate-per-family engineering confirmation after the initial 100-replicate control precision gate failed. Flat and gradient alternatives also reject, restricting interpretation to dependence rather than hierarchy. Scalar p-adic and Euclidean metrics remain distinct cases."
 title = "Ultrametric inference depends on the metric, representation and null sensitivity"
 
 [insight.evidence_admission]
-admission_id = "insight-reference-predicate-admission:I-002"
+admission_id = "frb-inversion-null-sensitivity:I-002"
 insight_id = "I-002"
-disposition = "preserve_representation_lesson_revise_definitive_refutation"
-falsifier = "A valid decisive null must destroy a declared alternative while preserving nuisance structure. Exact relabeling invariance and imposed p-adic ultrametricity defeat that requirement for the inspected raw-scalar fraction tests."
-successor = "Specify the observable geometry and a null with demonstrated sensitivity before interpreting a raw-DM result."
-residual = "Recover hash-bound results and original runner identity; inspect all test statistics and selection procedures before canonical re-adjudication."
+expected_previous_evidence_sha256 = "f5f5ea64b6050f492ea9baa1294de9847793e4c499cef31bbcc9d293a668e4b3"
+disposition = "retain_partial_status_admit_bounded_frb_instrument_and_recovered_history"
+falsifier = "Independent numerical oracles and catalog error/selection fixtures adjudicate implementation. Synthetic acceptance uses fixed generators, 199 permutations and one-sided Wilson bounds, with retained initial failure and independent confirmation. Flat/gradient rejection defeats hierarchy specificity."
+successor = "A bounded numerical FRB distance construction and a sensitivity-tested conditional radial-angular dependence instrument, with explicit physical deployment prerequisites."
+residual = "Recover the historical missing control_core source and actual invocation; admit halo/host conventions, repeat-source grouping, selection exchangeability and coordinate rebuild per null draw; freeze multiplicity and a held-out localized-FRB physical comparison before physical inference."
 
 [insight.evidence_admission.expected]
-title = "Ultrametric Structure Lives in Representations, Not Scalars"
-status = "verified"
-summary = "C-071 (FRB DMs exhibit p-adic ultrametric structure) definitively refuted using raw DM values. Ultrametricity is a property of hierarchical organization, not scalar distributions. This motivated five new analysis directions testing multi-attribute encodings, temporal cascades, and transformed coordinate spaces."
+title = "Ultrametric inference depends on the metric, representation and null sensitivity"
+status = "partial"
+summary = "C-071 retains its historical refuted disposition. The inspected raw-scalar permutation null preserves the full population of unordered triple distances, so Monte Carlo triple sampling alone supplies no demonstrated power to destroy a proposed physical structure. A retained exhaustive witness preserves 5 qualifying triples of 20 across all 720 permutations. Scalar values with a p-adic metric can be ultrametric; three distinct Euclidean real scalars form a different metric case. Alternative Baire, temporal and dendrogram representations exist, but implementation existence establishes neither detection nor physical validation. Recover the original result bodies and producer identity, inspect every statistic and selection procedure, and demonstrate injection sensitivity before re-adjudicating the historical claim."
+status_note = "The metric and relabeling lessons are supported by inspected code and retained independent witnesses. Partial preserves the unresolved attribution and power of the original C-071 experiment; canonical admission changes the insight interpretation and leaves the claim disposition intact."
 claim_refs = ["C-071"]
 
 [insight.evidence_admission.revised]
 title = "Ultrametric inference depends on the metric, representation and null sensitivity"
 status = "partial"
-summary = "C-071 retains its historical refuted disposition. The inspected raw-scalar permutation null preserves the full population of unordered triple distances, so Monte Carlo triple sampling alone supplies no demonstrated power to destroy a proposed physical structure. A retained exhaustive witness preserves 5 qualifying triples of 20 across all 720 permutations. Scalar values with a p-adic metric can be ultrametric; three distinct Euclidean real scalars form a different metric case. Alternative Baire, temporal and dendrogram representations exist, but implementation existence establishes neither detection nor physical validation. Recover the original result bodies and producer identity, inspect every statistic and selection procedure, and demonstrate injection sensitivity before re-adjudicating the historical claim."
-status_note = "The metric and relabeling lessons are supported by inspected code and retained independent witnesses. Partial preserves the unresolved attribution and power of the original C-071 experiment; canonical admission changes the insight interpretation and leaves the claim disposition intact."
+summary = "C-071 retains its historical refuted disposition. Original scalar and transformed producers, lockfiles, five results and two exact CHIME inputs are retained with verified hashes. The original scalar build fails before compilation because its tracked workspace omits control_core; actual historical invocation and execution replay remain unresolved. Geometry-preserving relabeling nulls supply diagnostics with unestablished physical power. A separately frozen radial-angular dependence instrument passes an independent 1000-replicate-per-family engineering confirmation after the initial 100-replicate control precision gate failed. Flat and gradient alternatives also reject, restricting interpretation to dependence rather than hierarchy. Scalar p-adic and Euclidean metrics remain distinct cases."
+status_note = "Partial preserves the supported metric and null-sensitivity lessons, recovered tracked-tree evidence and failed exact-source build. Synthetic confirmation establishes implementation sensitivity under declared generators; physical calibration and historical re-adjudication remain open."
 claim_refs = ["C-071"]
 
 [[insight.evidence_admission.evidence_files]]
@@ -216,6 +480,274 @@ sha256 = "184b735ff5e63a9f0358e5676a159c869f30841656bcf0f59822501bf25ad48f"
 path = "data/output/audit/insight-reference-role-pilot/followup-claims.json"
 sha256 = "618bbedefd0ec92d76e7de93e5460e778a92637175f76a5a1e6e43d71274851a"
 
+[[insight.evidence_admission.evidence_files]]
+path = "crates/stats_core/examples/frb_null_sensitivity.rs"
+sha256 = "ae466c131d0af206af5e87b3495c0f740f99024f031a699402d9d76bbcce844a"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-inversion-null-sensitivity/null-sensitivity-results.toml.gz"
+sha256 = "8fbde9a621562c97bd1aaaca0a045bab385e943f0027ca4c728ca585e509391d"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-inversion-null-sensitivity/cli-ymw.csv"
+sha256 = "d32b602bea330951f3f3b24a270e7342744e7bd76ba19b55b5f37992d340e133"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-inversion-null-sensitivity/cli-ymw.log"
+sha256 = "ea19aac45afba2a26aa4a509c3b1e58711b45b7a72c766e082c4df11e4f6c395"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-inversion-null-sensitivity/invalid-column.log"
+sha256 = "9b1552bfffe5343ebc8630ca796122704339febed3fc57e35296a2585eb44259"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-inversion-null-sensitivity/confirmation-protocol.toml"
+sha256 = "4a213725f3e58c1a259e74aaf7e41efcb6331e108b7028544c4551859b01bfd1"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-inversion-null-sensitivity/confirmation-results.toml.gz"
+sha256 = "97b1e68638113ef4c5789ff78daeb089f2d8888b6e02098f0bdc0a767a36a56a"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-inversion-null-sensitivity/cli-cosmic.log"
+sha256 = "0b93fb58de5e61993b5c2fcb5aacaa8a4f38e68559d0007ae6187ae1448df7b9"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-inversion-null-sensitivity/final-clippy.log"
+sha256 = "d78e7de5d48f17d72639bc08b998049d9b510988bc7f4568de99575e185fdfa2"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-inversion-null-sensitivity/null-protocol.toml"
+sha256 = "d39ef2336d579b9384f81eb4b2bdecfa50cfe736d574e9b98e956f2b77612779"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-inversion-null-sensitivity/findings.json"
+sha256 = "3225665210dd6a34d8e765004fbf30a787f32c39820305254f179bf595e9727a"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-inversion-null-sensitivity/corrected-tests.log"
+sha256 = "0b6a1a03a78b124ae7548d6c10cb023f68c5fe3929e054f1c6b7ebf9a2894800"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-inversion-null-sensitivity/cli-cosmic.csv"
+sha256 = "349518fedae1e2b9f8dee8d69a4cd646f53f36ad9cd7d995c87133af0297ac81"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-inversion-null-sensitivity/invalid-host.log"
+sha256 = "87667f0118b10a65446e40cf17cb26175d3d51c5dd466f82cf77e0c1a0eb7fea"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-inversion-null-sensitivity/review.toml"
+sha256 = "1ce935460330e0d1bd556c30f0425ac005b4fc67317e08fda4ba8c94f1807812"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-inversion-null-sensitivity/cli-ne.log"
+sha256 = "76681828dc4471056d64d3d9a8d4571f9ccfb2ac9a43de3edaf9cef315f9d653"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-inversion-null-sensitivity/admission-queries.sql"
+sha256 = "66d68895298e28db1dd986ff134cdb0809a1607ebdea3ba15467d888f3651cb0"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-inversion-null-sensitivity/pre-underflow-fix.log"
+sha256 = "2191293b9ec795c3fe9aca73cf15bcbc4027f3d4d6a9c585ada69fbccc3c8b6b"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-inversion-null-sensitivity/null-baseline-runner.rs.gz"
+sha256 = "c7c4f134a586b7b115702d15afad2dc2090af108382a5713547f437e595df9f4"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-inversion-null-sensitivity/preservation-queries.sql"
+sha256 = "90bd9bbf903dc858c4405e06f3c9cbfe81ee22c4ae317faeba2a005163dd427b"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-inversion-null-sensitivity/cli-fixture.csv"
+sha256 = "90577cb00675ac74eb7ab959f51ef7bb2b269f67e0396f42654cc2e83a136e17"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-inversion-null-sensitivity/cli-ne.csv"
+sha256 = "ab1b30029af33aad9d50bcfdda49b8ea068c4b5e31f41f6fc34551fa874e81a6"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-inversion-null-sensitivity/historical/candidate-replay.toml"
+sha256 = "c45fe5893089b2f487db20ef5474b2d67cabd846431b1f209bdfeccc04eda8d1"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-inversion-null-sensitivity/historical/candidate-replay-build.log.gz"
+sha256 = "7932891cb8e7be4220d4cccf62dee73a61b1439fc1a99e4ea8b796bc27c6067a"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-inversion-null-sensitivity/historical/inputs/chime_frb_cat2.csv.gz"
+sha256 = "630654708759afa83c9cc2f4a058f2e9e8ffe0d6ca61710de7fd66e9df38d44d"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-inversion-null-sensitivity/historical/inputs/chime_frb_cat1.csv.gz"
+sha256 = "5f3c797eab00036f04fbb71723cfc986a0728ebf86d14fa9681aedb00799bdf3"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-inversion-null-sensitivity/historical/chain.toml"
+sha256 = "1a2362d796c6e25704214131852c10253c30cb05266259d0788eb3ee484db4f2"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-inversion-null-sensitivity/historical/artifacts.jsonl"
+sha256 = "9bd735b2fc641cffbabd419cf4569181760337d7529b73a9dccd0e2e4bceb670"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-inversion-null-sensitivity/historical/verification.json"
+sha256 = "1ca6293b53c6ed10196396bf8423e055313a9852d34b7e884be387fe51a3c341"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-inversion-null-sensitivity/historical/candidate-replay-toolchain.txt.gz"
+sha256 = "7c082dd1f765dc355ae7e2fbfe8404c0f3776b0ea3c36738337af7baa8dfd260"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-inversion-null-sensitivity/historical/manifest.json"
+sha256 = "05967805be2237efdf4920432ecee4b4512b556907443dad6ac076e299db4f25"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-inversion-null-sensitivity/historical/scalar/docs/external_sources/C071_FRB_ULTRAMETRIC_SOURCES.md.gz"
+sha256 = "fbc68af1b7195215583474fe76f07ddc86921eb5c47af7ae8f2b15869b5c6144"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-inversion-null-sensitivity/historical/scalar/Cargo.lock.gz"
+sha256 = "35826ea7c91d57a561b8a5ab84ee0f7e2f7ca79f74cf2f3f8a5cef7ff796e867"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-inversion-null-sensitivity/historical/scalar/data/csv/c071_frb_ultrametric.csv.gz"
+sha256 = "e0839c1d82bf659a04b4e520702f769d24df3c8f9c69847f2e5ff4ad95b01976"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-inversion-null-sensitivity/historical/scalar/data/csv/c071_frb_ultrametric_cat1.csv.gz"
+sha256 = "b17ac9603b8f1ad830255a4e11624120b3d783ce3e3b90bf2e8da900b1948ce9"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-inversion-null-sensitivity/historical/scalar/data/csv/c071_frb_ultrametric_cat2.csv.gz"
+sha256 = "ac3a67f3752e4fb6ca8d10edec7d74b19bab06acb4b32d4e39fd0f27c9968306"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-inversion-null-sensitivity/historical/scalar/crates/stats_core/src/ultrametric.rs.gz"
+sha256 = "9855d1ca0484c7c6ce605a8527a1c0ee7d5f7607fe03636352c3f71a4d550cca"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-inversion-null-sensitivity/historical/scalar/crates/stats_core/src/lib.rs.gz"
+sha256 = "7c3e18d4553c2a2634e9561bac81c4f8fd49c8b3b4e5200d045064ad4784c929"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-inversion-null-sensitivity/historical/scalar/crates/stats_core/Cargo.toml.gz"
+sha256 = "03c2242c11c16fe83bec5aab0fe0db717d4cd4b6d03b02d1cbd5cd696a29a847"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-inversion-null-sensitivity/historical/scalar/crates/gororoba_cli/src/bin/frb_ultrametric.rs.gz"
+sha256 = "461bb233f9ae151036226d1fe74248e1582d51dea7388c003b55dc6d89bce7d8"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-inversion-null-sensitivity/historical/scalar/crates/gororoba_cli/src/bin/fetch_chime_frb.rs.gz"
+sha256 = "cc9a571aea245af421aeb22d42e0c15275d5dd22eb37b6175da797e6dca887bb"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-inversion-null-sensitivity/historical/scalar/crates/gororoba_cli/Cargo.toml.gz"
+sha256 = "b3bcc240ac02e6ebf4d5823cc331ee4c576f78287f36d9a92848e4e57616db36"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-inversion-null-sensitivity/historical/scalar/Cargo.toml.gz"
+sha256 = "a2fe4b6284179c2b5055c97853b978354e4db23b0b96bfc82f883eb5f65c0667"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-inversion-null-sensitivity/historical/transformed/Cargo.lock.gz"
+sha256 = "5e27315e65a967c73da42a6dcc7c185133c6f7850afdd41e6b9087f295f6de24"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-inversion-null-sensitivity/historical/transformed/data/external/GWTC-3_confident.csv.gz"
+sha256 = "10b24c353312876e875a1dcff8cae93080446c9a1f3d81323e1eefcac2c0668a"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-inversion-null-sensitivity/historical/transformed/data/external/chime_frb_cat2.csv.gz"
+sha256 = "37209eafdb90b6e7c494e3e2a953605ffdff53e6ec2096a4c4cd4f388c2e9b87"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-inversion-null-sensitivity/historical/transformed/data/external/chime_frb_cat1.csv.gz"
+sha256 = "da15f7536b65afa03bf6140bc23e3a3930b8181428bb0bc9d8fb256c6b1ee83b"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-inversion-null-sensitivity/historical/transformed/data/csv/c071b_dm_comoving_ultrametric.csv.gz"
+sha256 = "96651297f7a5ba5497a574058af3206db9a19e381582b5e4dcb39c4092e9deed"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-inversion-null-sensitivity/historical/transformed/data/csv/c071f_cosmic_dendrogram.csv.gz"
+sha256 = "d922321ad302e25ea456533e606211a41de3c887acb109f8f5629a5bfa5bfc36"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-inversion-null-sensitivity/historical/transformed/crates/data_core/src/catalogs/gwtc.rs.gz"
+sha256 = "515f6b2a2fd37ee05f04b6a7039b390fc19542c1e9b5681db6ec0d6dc03ee18d"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-inversion-null-sensitivity/historical/transformed/crates/data_core/src/catalogs/chime.rs.gz"
+sha256 = "418865cb9e78f9d7bd3f87b6111579bb41c75eaf93250029e4cdecd1457c6ad2"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-inversion-null-sensitivity/historical/transformed/crates/stats_core/src/ultrametric/dendrogram.rs.gz"
+sha256 = "7fd451eb8eee42c12831025abdc25f9570cd5ed533a7e5629f3542683de38aa0"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-inversion-null-sensitivity/historical/transformed/crates/stats_core/src/ultrametric/mod.rs.gz"
+sha256 = "fe2a16f6d973b8915b54cf022938ec09c45bf6b67f159a20c0f47a5096efe025"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-inversion-null-sensitivity/historical/transformed/crates/stats_core/src/ultrametric/local.rs.gz"
+sha256 = "9beda0186e084dea5a8f54d5552f20f0fca2bd98caf615dad330800727779533"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-inversion-null-sensitivity/historical/transformed/crates/gororoba_cli/src/bin/cosmic_dendrogram.rs.gz"
+sha256 = "59cec5c2a77989836a1fc1000771901f944d8d0a5c63ad474958157865f41415"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-inversion-null-sensitivity/historical/transformed/crates/gororoba_cli/src/bin/dm_ultrametric.rs.gz"
+sha256 = "388808b9ad229c864a609dc01290a6176de35f9b6da97d92dd7d8d004b105341"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-inversion-null-sensitivity/historical/transformed/crates/cosmology_core/src/bounce.rs.gz"
+sha256 = "7207af5e81578f87874c390108a1d82d898a24d1f93b4587a9dbf27e3ab9b024"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-inversion-null-sensitivity/historical/transformed/crates/cosmology_core/src/distances.rs.gz"
+sha256 = "bcf17eafc1c29c4719c996189bc1814aaa26e800e14652dcd4ff77102df177dd"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-inversion-null-sensitivity/historical/transformed/crates/cosmology_core/src/lib.rs.gz"
+sha256 = "5c9297b4d403d139c742ad50b10bb9d7e32e6fb8c56cc2add64a69403d6a7ef7"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-inversion-null-sensitivity/historical/transformed/Cargo.toml.gz"
+sha256 = "5a20695e2da696a2ca5ef99279c198f97ef529723de3f2f4fadfda059ee0a633"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-inversion-null-sensitivity/retention.toml"
+sha256 = "49cd0b7465999d1a104bee27fe6e7ba16904275ed297f1b42787d60860f37565"
+
+[[insight.evidence_admission.evidence_files]]
+path = "crates/cosmology_core/src/distances.rs"
+sha256 = "a8cfe1152c5a4624f3b6840e868eea3770a9be15732bb9d3d77ee795c372477b"
+
+[[insight.evidence_admission.evidence_files]]
+path = "crates/cosmology_core/tests/macquart_source_conformance.rs"
+sha256 = "251353e469af200384fce253c06066f245227c62adf166e7f3d7245e39dd1df7"
+
+[[insight.evidence_admission.evidence_files]]
+path = "crates/gororoba_cli_physics/src/bin/dm_ultrametric.rs"
+sha256 = "13822925ac9ea26df407872e54b8e0e39a17fd90d8c42a3e14b13f326a43d666"
+
+[[insight.evidence_admission.evidence_files]]
+path = "crates/gororoba_cli_physics/src/bin/cosmic_dendrogram.rs"
+sha256 = "0bb018e9bc200ba41943a65d30d59599a10e227161808b2fad3ffb29a24b5072"
+
+[[insight.evidence_admission.evidence_files]]
+path = "crates/gororoba_cli_physics/src/frb_distances.rs"
+sha256 = "2ec039d8091ded47d2f2b4b29b0a5ae4fc553761f9659d411ab4c8f853ee4cdf"
+
+[[insight.evidence_admission.evidence_files]]
+path = "crates/data_core/src/catalogs/chime.rs"
+sha256 = "bf0557dbfbbe35409f19fe881f6163a22fd14a3d003186e26d02ffb4e723e708"
+
 [[insight.evidence_admission.predicates]]
 id = "historical-outcome"
 proposition = "The registry records a refutation of C-071 on two CHIME catalogs."
@@ -223,12 +755,12 @@ kind = "asserted_proposition"
 evidence_layer = "source_proposition"
 outcome = "supported"
 execution_status = "retained_result_review"
-boundary = "The source dossier reports three columns and eight tests per column. Original CSV result bodies are archive-declared but absent at the inspected checkout paths; report identity differs from reproduced data evidence."
-evidence_anchors = ["docs/external_sources/C071_FRB_ULTRAMETRIC_SOURCES.md; retention-locators.json", "data/output/audit/insight-reference-role-pilot/findings.json#I-002/historical-outcome"]
+boundary = "Three recovered scalar result digests match historical retention locators. C-071 remains Refuted. Retained historical results are distinct from replay evidence: the exact scalar producer build fails on an absent workspace member before compilation."
+evidence_anchors = ["data/output/audit/frb-inversion-null-sensitivity/findings.json#historical"]
 
 [[insight.evidence_admission.predicates.evidence_bindings]]
-path = "data/output/audit/insight-reference-role-pilot/findings.json"
-json_pointer = "/records/1/atomic_propositions/0"
+path = "data/output/audit/frb-inversion-null-sensitivity/findings.json"
+json_pointer = "/historical"
 
 [[insight.evidence_admission.predicates]]
 id = "null-power"
@@ -271,6 +803,34 @@ evidence_anchors = ["crates/stats_core/src/ultrametric/mod.rs:47-124", "data/out
 [[insight.evidence_admission.predicates.evidence_bindings]]
 path = "data/output/audit/insight-reference-role-pilot/findings.json"
 json_pointer = "/records/1/atomic_propositions/3"
+
+[[insight.evidence_admission.predicates]]
+id = "historical-producer-chain"
+proposition = "Recovered source and result artifacts establish bounded historical producer and input identities."
+kind = "asserted_proposition"
+evidence_layer = "source_proposition"
+outcome = "supported"
+execution_status = "retained_result_review"
+boundary = "31 retained bodies have verified decoded/storage identities: 29 Git bodies and two exact CRLF inputs. Tracked Git trees identify source snapshots; build-source closure is incomplete because control_core is absent. Original invocation and candidate runtime remain unresolved."
+evidence_anchors = ["data/output/audit/frb-inversion-null-sensitivity/findings.json#historical"]
+
+[[insight.evidence_admission.predicates.evidence_bindings]]
+path = "data/output/audit/frb-inversion-null-sensitivity/findings.json"
+json_pointer = "/historical"
+
+[[insight.evidence_admission.predicates]]
+id = "synthetic-dependence-sensitivity"
+proposition = "A frozen conditional radius-angle null shows sensitivity to declared synthetic dependence alternatives."
+kind = "asserted_proposition"
+evidence_layer = "implementation_conformance"
+outcome = "supported"
+execution_status = "replayed"
+boundary = "Initial control precision acceptance fails at 6/100 with Wilson upper 0.111841. A separately frozen confirmation yields strong 1000/1000 and control 48/1000 with upper 0.0603904, passing declared engineering thresholds. Flat and gradient 1000/1000 forbid hierarchy-specific interpretation. One synthetic stratum supplies no physical exchangeability evidence."
+evidence_anchors = ["data/output/audit/frb-inversion-null-sensitivity/findings.json#null_sensitivity"]
+
+[[insight.evidence_admission.predicates.evidence_bindings]]
+path = "data/output/audit/frb-inversion-null-sensitivity/findings.json"
+json_pointer = "/null_sensitivity"
 
 [[insight.evidence_admission.references]]
 claim_id = "C-071"

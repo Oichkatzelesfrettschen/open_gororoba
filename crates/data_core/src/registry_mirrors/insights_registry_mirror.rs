@@ -15,7 +15,7 @@
 //! - Sprint: 6
 //! - Claims: C-071
 //!
-//! The mean cosmic-DM implementation includes the Macquart Eq. (2) electron factor 0.875 for helium mass fraction 0.25 and doubly ionized helium. A constant diffuse baryon mass fraction 0.83 specializes the source's fd(z). Independent SI-density quadrature agrees across 12 declared cases to relative error at most 2.9e-15; analytic expansion controls, source-generated inversion and an analytic foreground-subtracted distance test pass. Baseline production fails all four tests, including a measured 8/7 normalization excess. The tested mean-DM value at z=1 is 900.751906538024 pc/cm^3 for the declared Planck parameters. Both FRB callers subtract a fixed observer-frame host from NE2001 excess; catalog halo treatment and physical host-frame provenance remain unresolved. C-071 supplies motivation and retains its refuted disposition.
+//! The constant-fd Macquart mean cosmic-DM implementation retains electron factor 0.875. Independent SI quadrature agrees across 18 cases through numerical redshift ceiling 100 within relative tolerance 1e-10. Source-generated inversions, exact-zero, near-zero, ceiling, invalid-input and positive-distance-underflow contracts pass. Typed catalog selection uses the chosen NE2001 or YMW16 excess and reports exclusions; both callers propagate conversion errors and identify relabeling outputs as uncalibrated diagnostics. The numerical ceiling supplies no physical validity bound. Halo treatment, host-frame provenance, evolving ionization/diffuse fraction, scatter and localized-FRB calibration remain unresolved.
 //!
 //! ## I-002: Ultrametric inference depends on the metric, representation and null sensitivity
 //!
@@ -24,7 +24,7 @@
 //! - Sprint: 6
 //! - Claims: C-071
 //!
-//! C-071 retains its historical refuted disposition. The inspected raw-scalar permutation null preserves the full population of unordered triple distances, so Monte Carlo triple sampling alone supplies no demonstrated power to destroy a proposed physical structure. A retained exhaustive witness preserves 5 qualifying triples of 20 across all 720 permutations. Scalar values with a p-adic metric can be ultrametric; three distinct Euclidean real scalars form a different metric case. Alternative Baire, temporal and dendrogram representations exist, but implementation existence establishes neither detection nor physical validation. Recover the original result bodies and producer identity, inspect every statistic and selection procedure, and demonstrate injection sensitivity before re-adjudicating the historical claim.
+//! C-071 retains its historical refuted disposition. Original scalar and transformed producers, lockfiles, five results and two exact CHIME inputs are retained with verified hashes. The original scalar build fails before compilation because its tracked workspace omits control_core; actual historical invocation and execution replay remain unresolved. Geometry-preserving relabeling nulls supply diagnostics with unestablished physical power. A separately frozen radial-angular dependence instrument passes an independent 1000-replicate-per-family engineering confirmation after the initial 100-replicate control precision gate failed. Flat and gradient alternatives also reject, restricting interpretation to dependence rather than hierarchy. Scalar p-adic and Euclidean metrics remain distinct cases.
 //!
 //! ## I-003: Existing Rust Crate Ecosystem for Cosmological Analysis
 //!

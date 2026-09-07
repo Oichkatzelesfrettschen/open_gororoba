@@ -14,6 +14,71 @@ use crate::{
     gl_integrate,
 };
 
+/// Numerical inversion ceiling; ionization history limits physical applicability separately.
+pub const MAX_MACQUART_REDSHIFT: f64 = 100.0;
+
+/// Failure to infer a bounded conditional distance from dispersion measures.
+#[derive(Debug, Clone, PartialEq)]
+pub enum DmInversionError {
+    InvalidDm { component: &'static str },
+    InvalidCosmology,
+    NegativeResidual,
+    OutOfRange { maximum_dm: f64 },
+    NumericalFailure,
+}
+
+impl std::fmt::Display for DmInversionError {
+    fn fmt(&self, formatter: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            Self::InvalidDm { component } => {
+                write!(formatter, "{component} DM must be finite and nonnegative")
+            }
+            Self::InvalidCosmology => write!(
+                formatter,
+                "cosmology requires finite omega_m in [0,1], omega_b in (0,1], and h0 > 0"
+            ),
+            Self::NegativeResidual => write!(
+                formatter,
+                "foreground subtraction produces negative cosmic DM"
+            ),
+            Self::OutOfRange { maximum_dm } => write!(
+                formatter,
+                "cosmic DM exceeds {maximum_dm} at the numerical redshift ceiling {MAX_MACQUART_REDSHIFT}"
+            ),
+            Self::NumericalFailure => write!(
+                formatter,
+                "cosmological evaluation exceeds finite numerical precision"
+            ),
+        }
+    }
+}
+
+impl std::error::Error for DmInversionError {}
+
+fn valid_cosmology(omega_m: f64, omega_b: f64, h0: f64) -> bool {
+    (0.0..=1.0).contains(&omega_m)
+        && omega_b.is_finite()
+        && omega_b > 0.0
+        && omega_b <= 1.0
+        && h0.is_finite()
+        && h0 > 0.0
+}
+
+fn bounded_integral(integrand: impl Fn(f64) -> f64, redshift: f64) -> f64 {
+    let quadrature = gauss_quad::GaussLegendre::new(std::num::NonZeroUsize::new(20).unwrap());
+    let segments = redshift.ceil().max(1.0) as u32;
+    let width = redshift / f64::from(segments);
+    (0..segments)
+        .map(|index| {
+            quadrature.integrate(
+                f64::from(index) * width,
+                f64::from(index + 1) * width,
+                &integrand,
+            )
+        })
+        .sum()
+}
+
 /// Planck 2018 TT,TE,EE+lowE+lensing best-fit parameters.
 /// Canonical values for cosmological distance calculations.
 pub mod planck2018 {
@@ -40,12 +105,18 @@ pub mod planck2018 {
 /// This is the line-of-sight comoving distance -- the distance between
 /// two objects at the same epoch that would be measured by a ruler
 /// (if such a ruler could exist) between them today.
+/// The interval 0 < z <= 100 uses composite quadrature shared with DM inversion.
 pub fn comoving_distance(z: f64, omega_m: f64, h0: f64) -> f64 {
     if z <= 0.0 {
         return 0.0;
     }
 
-    let integral = gl_integrate(|zp| 1.0 / hubble_e_lcdm(zp, omega_m), 0.0, z, 50);
+    let integrand = |zp| 1.0 / hubble_e_lcdm(zp, omega_m);
+    let integral = if z <= MAX_MACQUART_REDSHIFT {
+        bounded_integral(integrand, z)
+    } else {
+        gl_integrate(integrand, 0.0, z, 50)
+    };
 
     (C_KM_S / h0) * integral
 }
@@ -64,8 +135,13 @@ pub fn comoving_distance(z: f64, omega_m: f64, h0: f64) -> f64 {
 /// The integral assumes flat matter-plus-Lambda expansion. A mean relation
 /// excludes line-of-sight scatter and the Galactic and host contributions.
 /// Extending the model across ionization epochs requires an electron history.
+/// Invalid cosmology or redshift outside [0, 100] returns NaN. The numerical
+/// interval does not establish physical validity across ionization epochs.
 pub fn macquart_dm_cosmic(z: f64, omega_m: f64, omega_b: f64, h0: f64) -> f64 {
-    if z <= 0.0 {
+    if !(0.0..=MAX_MACQUART_REDSHIFT).contains(&z) || !valid_cosmology(omega_m, omega_b, h0) {
+        return f64::NAN;
+    }
+    if z == 0.0 {
         return 0.0;
     }
 
@@ -83,7 +159,7 @@ pub fn macquart_dm_cosmic(z: f64, omega_m: f64, omega_b: f64, h0: f64) -> f64 {
     // Convert to pc/cm^3: 1 pc = 3.0857e18 cm
     let prefactor_pc = prefactor / 3.0857e18;
 
-    let integral = gl_integrate(|zp| (1.0 + zp) / hubble_e_lcdm(zp, omega_m), 0.0, z, 50);
+    let integral = bounded_integral(|zp| (1.0 + zp) / hubble_e_lcdm(zp, omega_m), z);
 
     prefactor_pc * integral
 }
@@ -95,43 +171,67 @@ pub fn macquart_dm_cosmic(z: f64, omega_m: f64, omega_b: f64, h0: f64) -> f64 {
 /// observer-frame host subtraction. Macquart et al. (2020), Eq. (1), weights
 /// a rest-frame host contribution by 1/(1+z); callers supply the converted term.
 ///
-/// For a bracketed finite input, returns z such that macquart_dm_cosmic(z)
-/// approximates dm_excess. Width 10 reaches the 1e-8 tolerance in 30 halvings;
-/// expanded brackets need more. The search caps its expanded endpoint
-/// at z=160 and returns a value near that endpoint for larger inputs. Callers
-/// must establish a valid bracket and physical applicability before interpreting
-/// the result.
-pub fn dm_excess_to_redshift(dm_excess: f64, omega_m: f64, omega_b: f64, h0: f64) -> f64 {
-    if dm_excess <= 0.0 {
-        return 0.0;
+/// Returns an error for invalid inputs or DM above the value at the numerical
+/// ceiling z=100. Bisection uses relative DM tolerance 1e-12, including near
+/// zero; the numerical bracket supplies no physical calibration.
+pub fn dm_excess_to_redshift(
+    dm_excess: f64,
+    omega_m: f64,
+    omega_b: f64,
+    h0: f64,
+) -> Result<f64, DmInversionError> {
+    if !valid_cosmology(omega_m, omega_b, h0) {
+        return Err(DmInversionError::InvalidCosmology);
     }
-
-    // Bisection search over z in [0, 10]
+    if !dm_excess.is_finite() || dm_excess < 0.0 {
+        return Err(DmInversionError::InvalidDm {
+            component: "cosmic",
+        });
+    }
+    if dm_excess == 0.0 {
+        return Ok(0.0);
+    }
     let mut z_lo = 0.0;
-    let mut z_hi = 10.0;
-
-    // Expand upper bound if needed
-    while macquart_dm_cosmic(z_hi, omega_m, omega_b, h0) < dm_excess && z_hi < 100.0 {
-        z_hi *= 2.0;
+    let mut z_hi = 1.0;
+    loop {
+        let upper_dm = macquart_dm_cosmic(z_hi, omega_m, omega_b, h0);
+        if !upper_dm.is_finite() || upper_dm <= 0.0 {
+            return Err(DmInversionError::NumericalFailure);
+        }
+        if dm_excess == upper_dm {
+            return Ok(z_hi);
+        }
+        if dm_excess < upper_dm {
+            break;
+        }
+        if z_hi == MAX_MACQUART_REDSHIFT {
+            return Err(DmInversionError::OutOfRange {
+                maximum_dm: upper_dm,
+            });
+        }
+        z_lo = z_hi;
+        z_hi = (2.0 * z_hi).min(MAX_MACQUART_REDSHIFT);
     }
-
-    // Bisection
-    for _ in 0..100 {
-        let z_mid = 0.5 * (z_lo + z_hi);
+    // A finite f64 exponent range needs at most 1082 halvings from z=100.
+    for _ in 0..1100 {
+        let z_mid = z_lo + 0.5 * (z_hi - z_lo);
         let dm_mid = macquart_dm_cosmic(z_mid, omega_m, omega_b, h0);
-
+        if !dm_mid.is_finite() {
+            return Err(DmInversionError::NumericalFailure);
+        }
+        if z_mid == z_lo || z_mid == z_hi {
+            return Err(DmInversionError::NumericalFailure);
+        }
+        if dm_mid == dm_excess || (dm_mid / dm_excess - 1.0).abs() <= 1e-12 {
+            return Ok(z_mid);
+        }
         if dm_mid < dm_excess {
             z_lo = z_mid;
         } else {
             z_hi = z_mid;
         }
-
-        if (z_hi - z_lo).abs() < 1e-8 {
-            break;
-        }
     }
-
-    0.5 * (z_lo + z_hi)
+    Err(DmInversionError::NumericalFailure)
 }
 
 /// Full DM -> comoving distance chain.
@@ -145,7 +245,7 @@ pub fn dm_excess_to_redshift(dm_excess: f64, omega_m: f64, omega_b: f64, h0: f64
 /// before calling. All DM arguments use pc/cm^3. A fixed subtraction defines
 /// a conditional distance estimate rather than a joint host/redshift inference.
 ///
-/// Returns comoving distance in Mpc. Returns 0 if DM_excess <= 0. The inversion
+/// Returns comoving distance in Mpc. Negative residuals are errors. The inversion
 /// inherits the bracket and model assumptions of [`dm_excess_to_redshift`].
 pub fn dm_to_comoving(
     dm_obs: f64,
@@ -154,14 +254,30 @@ pub fn dm_to_comoving(
     omega_m: f64,
     omega_b: f64,
     h0: f64,
-) -> f64 {
-    let dm_excess = dm_obs - dm_mw - dm_host_observer;
-    if dm_excess <= 0.0 {
-        return 0.0;
+) -> Result<f64, DmInversionError> {
+    for (component, value) in [
+        ("observed", dm_obs),
+        ("Galactic", dm_mw),
+        ("observer-frame host", dm_host_observer),
+    ] {
+        if !value.is_finite() || value < 0.0 {
+            return Err(DmInversionError::InvalidDm { component });
+        }
     }
-
-    let z = dm_excess_to_redshift(dm_excess, omega_m, omega_b, h0);
-    comoving_distance(z, omega_m, h0)
+    let dm_excess = dm_obs - dm_mw - dm_host_observer;
+    if dm_excess < 0.0 {
+        return Err(DmInversionError::NegativeResidual);
+    }
+    let redshift = dm_excess_to_redshift(dm_excess, omega_m, omega_b, h0)?;
+    if redshift == 0.0 {
+        return Ok(0.0);
+    }
+    let distance = comoving_distance(redshift, omega_m, h0);
+    if distance.is_finite() && distance > 0.0 {
+        Ok(distance)
+    } else {
+        Err(DmInversionError::NumericalFailure)
+    }
 }
 
 /// Angular diameter distance d_A(z) in Mpc for flat Lambda-CDM.
@@ -255,7 +371,7 @@ mod tests {
         // DM -> z -> DM should roundtrip
         let z_true = 0.5;
         let dm = macquart_dm_cosmic(z_true, 0.3153, 0.0493, 67.36);
-        let z_recovered = dm_excess_to_redshift(dm, 0.3153, 0.0493, 67.36);
+        let z_recovered = dm_excess_to_redshift(dm, 0.3153, 0.0493, 67.36).unwrap();
 
         assert_relative_eq!(z_recovered, z_true, epsilon = 1e-4);
     }
@@ -264,7 +380,7 @@ mod tests {
     fn test_macquart_inversion_high_z() {
         let z_true = 2.0;
         let dm = macquart_dm_cosmic(z_true, 0.3153, 0.0493, 67.36);
-        let z_recovered = dm_excess_to_redshift(dm, 0.3153, 0.0493, 67.36);
+        let z_recovered = dm_excess_to_redshift(dm, 0.3153, 0.0493, 67.36).unwrap();
 
         assert_relative_eq!(z_recovered, z_true, epsilon = 1e-3);
     }
@@ -272,7 +388,7 @@ mod tests {
     #[test]
     fn test_dm_to_comoving_positive() {
         // Typical CHIME FRB: DM_obs = 500, DM_MW ~ 100, DM_host ~ 50
-        let d = dm_to_comoving(500.0, 100.0, 50.0, 0.3153, 0.0493, 67.36);
+        let d = dm_to_comoving(500.0, 100.0, 50.0, 0.3153, 0.0493, 67.36).unwrap();
         assert!(d > 0.0, "d_C should be positive for DM_excess > 0");
         assert!(
             d < 10000.0,
@@ -282,7 +398,7 @@ mod tests {
 
     #[test]
     fn test_dm_to_comoving_zero_excess() {
-        let d = dm_to_comoving(100.0, 100.0, 50.0, 0.3153, 0.0493, 67.36);
+        let d = dm_to_comoving(150.0, 100.0, 50.0, 0.3153, 0.0493, 67.36).unwrap();
         assert_relative_eq!(d, 0.0, epsilon = 1e-10);
     }
 

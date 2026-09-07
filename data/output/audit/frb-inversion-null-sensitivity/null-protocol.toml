@@ -1,0 +1,39 @@
+schema_version = 1
+protocol_id = "frb-conditional-radius-angle-dependence"
+freeze_status = "declared_before_first_execution"
+execution_surface = "CPU-only synthetic instrumentation; one homogeneous synthetic exchangeability stratum"
+target = "Dependence between radial values and sky directions under conditional radial assignment"
+interpretation = "Sensitivity to dependence does not establish unique hierarchy, p-adic structure, FRB evidence, or physical calibration."
+statistic = "Biased squared distance correlation: double-center radial absolute-distance and angular unit-vector chord-distance matrices, then divide their Frobenius inner product by the product of their Frobenius norms."
+statistic_direction = "upper_tail"
+statistic_support = "All ordered pairs including the zero distance diagonal; deterministic canonical directional row order"
+points = 32
+permutations = 199
+validation_replicates_per_family = 100
+alpha = 0.05
+p_value = "(1 + number of null scores >= observed score) / 200; ties are inclusive"
+null = "Uniform Fisher-Yates permutation of radii among fixed unit-vector directions; reset from original radii before every draw"
+preserved = ["sample count", "radial multiset including multiplicities", "joint sky-direction vectors", "single synthetic stratum", "statistic and full pair support"]
+destroyed = "Assignment of radii to sky directions"
+generator = "ChaCha8Rng; balanced two-parent, two-child angular/radial clusters with bounded independent angular and radial jitter"
+angular_geometry = "Unit vectors with longitude parent*1.6-0.8 + child*0.12-0.06 + Uniform[-0.01,0.01]; latitude Uniform[-0.01,0.01]"
+radial_geometry = "1000 + parent*600 + child*30 + Uniform[-5,5]"
+weak_injection = "Keep the first eight balanced interleaved leaves coupled; uniformly permute radii of the other 24 rows"
+flat_stress = "Two coupled parent clusters, omitting child offsets; same sample count and jitter bounds"
+gradient_stress = "Longitude -1 + 2*row/31 plus angular jitter; radius 1000 + 600*row/31 plus radial jitter"
+exchangeable_control = "Generate nested marginal values, then independently permute all radii before computing the observed statistic"
+families = ["nested_strong", "nested_weak", "exchangeable_control", "flat_coupled_stress", "continuous_gradient_stress"]
+family_indices = [0, 1, 2, 3, 4]
+validation_data_seed = "100000 + family_index*1000 + replicate_index; replicate_index=0..99"
+validation_permutation_seed = "200000 + family_index*1000 + replicate_index; replicate_index=0..99"
+development_data_seeds_reserved_unused = [1000, 1001, 1002, 1003, 1004]
+development_permutation_seeds_reserved_unused = [2000, 2001, 2002, 2003, 2004]
+seed_policy = "All validation seeds are held out from tuning. Preserve every outcome. Changing a generator, score or threshold requires a new protocol and new held-out seeds."
+interval = "Wilson one-sided 95 percent bounds, z=1.6448536269514722"
+false_positive_acceptance = "exchangeable_control rejection-rate upper bound <= 0.10"
+strong_power_acceptance = "nested_strong rejection-rate lower bound >= 0.80"
+acceptance_meaning = "Engineering instrument acceptance thresholds, not proof of exact 0.05 size or physical utility"
+weak_and_stress_rule = "Report all rates and intervals without acceptance thresholds or per-seed monotonicity requirements; rejection of flat or gradient controls forbids hierarchy-specific interpretation"
+self_checks = ["Every permutation preserves sorted radial bits", "Canonical row relabeling preserves score bits", "Independent reconstruction with the same data seed preserves rows and score bits", "Permutation seed replay preserves first shuffled radial assignment", "All scores and output numbers are finite", "Unit vectors have norm one within 1e-12"]
+physical_deployment_prerequisites = ["Admitted catalog hashes and actual producer chain", "Explicit Galactic halo and host-frame conventions", "Source-level dependence and repeat-burst grouping", "Justified source/selection exchangeability strata", "Rebuild coordinate pipeline inside each null draw", "Freeze all catalog, column, tolerance and representation selection before outcomes", "Separate held-out physical comparison and multiplicity policy"]
+historical_claim_policy = "Retain C-071 disposition. This protocol does not reproduce or re-adjudicate the historical raw-DM statistic."

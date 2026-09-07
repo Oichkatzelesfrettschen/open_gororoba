@@ -1,0 +1,251 @@
+{
+  "schema_version": 1,
+  "scope": "I-001/I-002 FRB implementation, historical producer recovery and synthetic conditional-dependence calibration",
+  "evidence_stage": "Prepared implementation and retained evidence; canonical admission and publication are separate operations",
+  "normalization": {
+    "evidence_layer": "implementation_conformance",
+    "mechanism": "The mean cosmic-DM relation retains the admitted 0.875 electron factor and fixed diffuse baryon mass fraction 0.83. Composite 20-node Gauss-Legendre integration over segments of width at most one extends numerical conformance over the declared redshift interval.",
+    "source": "Macquart et al. (2020), Eq. (2), specialized to fully ionized hydrogen, doubly ionized helium and constant diffuse fraction",
+    "tested_cosmologies": [
+      {
+        "omega_m": 0.3153,
+        "omega_b": 0.0493,
+        "h0": 67.36
+      },
+      {
+        "omega_m": 0.25,
+        "omega_b": 0.04,
+        "h0": 73
+      }
+    ],
+    "tested_redshifts": [
+      0.01,
+      0.1,
+      0.5,
+      1,
+      2,
+      3,
+      20,
+      80,
+      100
+    ],
+    "independent_si_quadrature_cases": 18,
+    "maximum_observed_relative_error": 2.253752739989e-14,
+    "planck_mean_cosmic_dm_at_redshift_one": 900.751906538024,
+    "dm_units": "pc/cm^3",
+    "validation": "All eight macquart_source_conformance integration tests pass, including independent SI-density Simpson quadrature and analytic expansion controls.",
+    "evidence": [
+      "crates/cosmology_core/src/distances.rs",
+      "crates/cosmology_core/tests/macquart_source_conformance.rs",
+      "data/output/audit/frb-inversion-null-sensitivity/corrected-tests.log"
+    ],
+    "boundary": "The numerical interval through redshift 100 does not establish physical validity across ionization epochs. The constant diffuse fraction, helium history and line-of-sight scatter require physical calibration."
+  },
+  "inverse": {
+    "evidence_layer": "implementation_conformance",
+    "mechanism": "Typed Result errors distinguish invalid DM, invalid cosmology, negative foreground residual, upper-bracket excess and numerical failure. A doubling bracket ends at redshift 100; bisection uses relative DM tolerance 1e-12 with a finite iteration bound and stagnation detection.",
+    "domain": "Finite omega_m in [0,1], omega_b in (0,1], h0 > 0; finite nonnegative cosmic DM within the modeled value at redshift 100",
+    "foreground_contract": "dm_to_comoving subtracts total Galactic disk plus halo DM and an observer-frame host contribution. A rest-frame host requires division by 1+z before calling.",
+    "exact_boundary_behavior": "Exact zero cosmic DM returns zero distance. Exact DM at the numerical ceiling returns redshift 100. DM above the ceiling returns OutOfRange. Positive cosmic DM whose distance underflows returns NumericalFailure.",
+    "independent_checks": [
+      "Source-generated inversion at redshifts 0.01 through 99.9",
+      "Matter-only and constant-Hubble analytic forward, inverse and distance limits at redshifts 1e-14 through 99.999",
+      "Public comoving-distance analytic checks at redshifts 20, 80 and 100",
+      "Invalid finite/nonfinite inputs, negative residuals, exact ceiling and next representable DM above ceiling",
+      "Positive-DM distance underflow"
+    ],
+    "decisive_underflow_witness": {
+      "before": "positive_cosmic_dm_rejects_distance_underflow fails: production returns Ok(0.0), oracle requires Err(NumericalFailure)",
+      "before_test_exit": 101,
+      "after": "The same test passes after enforcing a positive finite distance for positive inferred redshift.",
+      "evidence": [
+        "data/output/audit/frb-inversion-null-sensitivity/pre-underflow-fix.log",
+        "data/output/audit/frb-inversion-null-sensitivity/corrected-tests.log"
+      ]
+    },
+    "boundary": "Analytic and independent numerical checks establish the conditional calculation. They leave catalog foreground provenance and independent localized-FRB calibration unresolved."
+  },
+  "catalog": {
+    "evidence_layer": "implementation_conformance",
+    "mechanism": "Both FRB coordinate callers route through load_frb_distances. Typed column selection reads dm_exc_ne2001 or dm_exc_ymw16; required-column validation rejects missing or duplicate selected headers.",
+    "callers": [
+      "dm-ultrametric",
+      "cosmic-dendrogram"
+    ],
+    "observer_frame_host_dm": 50,
+    "selection": "The parser's positive finite bonsai-DM rows form the denominator. The loader separately counts invalid selected excess, invalid sky position and nonpositive cosmic residual.",
+    "fixture_rows": 12,
+    "ne2001": {
+      "accepted_rows": 12,
+      "redshift_range_from_log": [
+        0.5097,
+        0.6288
+      ],
+      "comoving_mpc_range_from_log": [
+        1985,
+        2369
+      ],
+      "cophenetic_correlation_from_csv": 0.512044
+    },
+    "ymw16": {
+      "accepted_rows": 12,
+      "redshift_range_from_log": [
+        1.5091,
+        1.7043
+      ],
+      "comoving_mpc_range_from_log": [
+        4501,
+        4848
+      ],
+      "cophenetic_correlation_from_csv": 0.457953
+    },
+    "cosmic_dendrogram": {
+      "selected_column": "dm_exc_ymw16",
+      "frb_rows": 12,
+      "gw_rows": 0,
+      "redshift_range_from_csv": [
+        1.5091,
+        1.7043
+      ],
+      "cophenetic_correlation_from_csv": 0.457953
+    },
+    "invalid_input_observations": [
+      "The CLI rejects bonsai_dm as a cosmic-excess column and lists the two supported excess columns.",
+      "The loader rejects an invalid observer-frame host with a finite/nonnegative diagnostic."
+    ],
+    "diagnostic_policy": "Whole-point local shuffles and distance-label dendrogram shuffles preserve geometry. Both callers label numerical output UncalibratedGeometryRelabeling instead of a calibrated scientific verdict.",
+    "empty_neighborhood_observation": "The 100 Mpc smoke fixture has zero testable local neighborhoods and retains NaN metric summaries. Those entries represent undefined diagnostics.",
+    "evidence": [
+      "crates/gororoba_cli_physics/src/frb_distances.rs",
+      "crates/data_core/src/catalogs/chime.rs",
+      "data/output/audit/frb-inversion-null-sensitivity/cli-fixture.csv",
+      "data/output/audit/frb-inversion-null-sensitivity/cli-ne.log",
+      "data/output/audit/frb-inversion-null-sensitivity/cli-ne.csv",
+      "data/output/audit/frb-inversion-null-sensitivity/cli-ymw.log",
+      "data/output/audit/frb-inversion-null-sensitivity/cli-ymw.csv",
+      "data/output/audit/frb-inversion-null-sensitivity/cli-cosmic.log",
+      "data/output/audit/frb-inversion-null-sensitivity/cli-cosmic.csv",
+      "data/output/audit/frb-inversion-null-sensitivity/invalid-column.log",
+      "data/output/audit/frb-inversion-null-sensitivity/invalid-host.log"
+    ],
+    "boundary": "The fixture demonstrates actual column-dependent conversion and diagnostic labeling. Catalog halo completeness, host provenance and physical FRB inference remain separate."
+  },
+  "historical": {
+    "evidence_layer": "retained_source_and_result_provenance",
+    "recovered_artifacts": 31,
+    "verified_checks": {
+      "storage_hashes": 31,
+      "decoded_hashes": 31,
+      "decoded_sizes": 31,
+      "git_blob_comparisons": 29,
+      "main_input_comparisons": 2,
+      "historical_scalar_digest_comparisons": 3,
+      "chime_lf_to_crlf_comparisons": 2,
+      "gwtc_lf_to_crlf_comparisons": 1
+    },
+    "scalar_source_commit": "eab375e82ca82da9df8a9cb0ca0084801684e6eb",
+    "transformed_source_commit": "280ba9a181d36bd8d717bb53dcaf912b6a741c46",
+    "scalar_results": "All three retained scalar CSV bodies match the previously recorded historical digests. Rows describe two catalogs of 600 and 5045 events, three DM columns, 100000 triples and a 0.006250 per-column Bonferroni threshold.",
+    "transformed_results": "The retained local/comoving output describes 4996 FRBs. The cosmic dendrogram output describes 4996 FRBs and 35 GW events; its GW directions are generated rather than observed localizations.",
+    "source_association": "Co-retained Git source and results establish source association. Actual historical command lines, executable identities and runtime input receipts remain unresolved.",
+    "experiment_identity": "Canonical E-002 denotes a later multi-dataset GPU sweep and remains distinct from the recovered scalar producer.",
+    "input_correspondence": "Retained CHIME LF Git blobs convert byte-exactly to the original recorded CRLF input digests. The retained GWTC LF blob converts byte-exactly to the main CRLF input.",
+    "candidate_replay": {
+      "outcome": "blocked_missing_historical_workspace_member",
+      "build_exit": 101,
+      "missing_path": "crates/control_core/Cargo.toml",
+      "mechanism": "The exact archived root manifest lists crates/control_core, while that commit contains zero tracked entries beneath the member. Cargo fails during workspace-manifest loading, before dependency compilation or producer execution.",
+      "historical_producer_executions": 0,
+      "source_repair_performed": false,
+      "lockfile_update_performed": false,
+      "preservation": "Archived Cargo.lock and scalar producer SHA256 values remain identical before and after the build attempt.",
+      "intake_condition": "Recover the missing historical workspace member and establish association with the original run. An amended workspace constitutes a separately declared reconstruction."
+    },
+    "closure_boundary": "The chain.toml statement that referenced Git trees supply the rest of the source closure means tracked Git-tree contents only. Build closure remains incomplete because control_core is absent; external dependencies, compiler and historical executable also require admission.",
+    "evidence": [
+      "data/output/audit/frb-inversion-null-sensitivity/historical/manifest.json",
+      "data/output/audit/frb-inversion-null-sensitivity/historical/verification.json",
+      "data/output/audit/frb-inversion-null-sensitivity/historical/chain.toml",
+      "data/output/audit/frb-inversion-null-sensitivity/historical/candidate-replay.toml",
+      "data/output/audit/frb-inversion-null-sensitivity/historical/candidate-replay-build.log.gz"
+    ],
+    "claim_policy": "C-071 retains its historical disposition; recovered result bodies and the synthetic successor do not re-adjudicate that claim."
+  },
+  "null_sensitivity": {
+    "evidence_layer": "synthetic_instrument_calibration",
+    "target": "Conditional radial-angular dependence",
+    "statistic": "Biased squared distance correlation between radial absolute-distance and angular unit-vector chord-distance matrices; deterministic full-pair support",
+    "points": 32,
+    "permutations": 199,
+    "alpha": 0.05,
+    "preserved": [
+      "Radial multiset including multiplicities",
+      "Joint angular unit-vector directions",
+      "Sample count",
+      "One homogeneous synthetic exchangeability stratum",
+      "Statistic and pair support"
+    ],
+    "destroyed": "Assignment of radii to directions",
+    "initial": {
+      "replicates_per_family": 100,
+      "rejections": {
+        "nested_strong": 100,
+        "nested_weak": 22,
+        "exchangeable_control": 6,
+        "flat_coupled_stress": 100,
+        "continuous_gradient_stress": 100
+      },
+      "strong_power_lower": 0.9736572792168257,
+      "false_positive_upper": 0.11184096522645968,
+      "instrument_accepted": false,
+      "interpretation": "The frozen precision criterion fails. Six percent rejection with this interval does not establish violation of nominal 0.05 size.",
+      "decoded_sha256": "df0578a9bf9729e9078a5f638e6e9c5e0bb46e8265de66acdae15440c704d974"
+    },
+    "confirmation": {
+      "replicates_per_family": 1000,
+      "rejections": {
+        "nested_strong": 1000,
+        "nested_weak": 225,
+        "exchangeable_control": 48,
+        "flat_coupled_stress": 1000,
+        "continuous_gradient_stress": 1000
+      },
+      "strong_power_lower": 0.9973017567602394,
+      "false_positive_upper": 0.06039038755281992,
+      "instrument_accepted": true,
+      "interpretation": "A separately frozen ensemble of fresh disjoint seeds satisfies the unchanged engineering thresholds. Acceptance uses only the new ensemble; the initial failed outcome remains retained.",
+      "decoded_sha256": "529f36e7856624a89e04c3819d2b4d2f44617d3848c06cbcccf7daea9ab54e9d"
+    },
+    "stopping_rule": "Exactly one 1000-replicate confirmation per family; deterministic replay verifies identity. The study ends at the declared denominator.",
+    "specificity": "Flat coupling and continuous gradients reject in all confirmation replicates. The measurement supports dependence sensitivity and does not distinguish unique hierarchy or p-adic structure.",
+    "verification": {
+      "initial_row_identity_checks": 500,
+      "confirmation_row_identity_checks": 5000,
+      "initial_radial_multiset_checks": 99500,
+      "confirmation_radial_multiset_checks": 995000,
+      "analytic_score_oracles": 3,
+      "initial_finite_score_checks": 100500,
+      "confirmation_finite_score_checks": 1005000,
+      "exact_result_replays": "Both ensemble stdout hashes reproduce their retained decoded digests."
+    },
+    "retention_mapping": "The frozen confirmation protocol names parent_results=null-sensitivity-results.toml. retention.toml resolves that decoded filename to null-sensitivity-results.toml.gz and its decoded SHA256. confirmation-results.toml likewise resolves to confirmation-results.toml.gz. The protocols retain their pre-execution bytes.",
+    "evidence": [
+      "data/output/audit/frb-inversion-null-sensitivity/null-protocol.toml",
+      "data/output/audit/frb-inversion-null-sensitivity/null-sensitivity-results.toml.gz",
+      "data/output/audit/frb-inversion-null-sensitivity/confirmation-protocol.toml",
+      "data/output/audit/frb-inversion-null-sensitivity/confirmation-results.toml.gz",
+      "data/output/audit/frb-inversion-null-sensitivity/null-baseline-runner.rs.gz",
+      "data/output/audit/frb-inversion-null-sensitivity/retention.toml",
+      "crates/stats_core/examples/frb_null_sensitivity.rs"
+    ]
+  },
+  "limitations": {
+    "physical_calibration": "Independent localized-FRB calibration, uncertainty, Galactic halo completeness and host-frame provenance remain unresolved.",
+    "selection": "Physical deployment requires admitted source grouping, repeated-burst dependence and defensible source/selection exchangeability strata.",
+    "inference": "Synthetic sensitivity establishes instrument behavior only. The successor statistic differs from the historical raw-scalar ultrametric statistic.",
+    "history": "Exact historical invocation and executable identity remain unresolved; the recovered source snapshot fails manifest loading because control_core is missing.",
+    "multiplicity": "A physical comparison must freeze catalog, column, representation and selection choices plus multiplicity handling before outcomes.",
+    "interpretation_depth": "DM correction, mean-relation inversion and geometric representation intervene between catalog entries and tested coordinates; successful numerical checks do not establish the physical mapping.",
+    "publication": "This artifact records bounded findings and verification; canonical admission, repository-wide validation and publication require their own completion records."
+  }
+}

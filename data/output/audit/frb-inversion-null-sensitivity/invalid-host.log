@@ -1,0 +1,3 @@
+=== Direction 1: FRB DM -> Comoving + Local Ultrametricity ===
+Input: data/output/audit/frb-inversion-null-sensitivity/cli-fixture.csv
+Error: observer-frame host DM must be finite and nonnegative
