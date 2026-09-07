@@ -25,6 +25,13 @@ acceptance = "Actionlint, scope dispatch/error tests and actual hosted workflow 
 local_result = "Actionlint, nine router tests and scoped Make dispatch/error tests pass. All four paper targets build with latexmk -Werror after exact historical input recovery."
 
 [[task]]
+name = "Resolve hosted dependency and container failures"
+status = "completed_focused_checks_pass"
+observed = ["Public runner cannot fetch private fwht Git dependency", "Container TeX search path names host workspace instead of runtime workspace", "Rocq stdlib has an independent version and 9.1.1 is unavailable"]
+resolution = "Import pinned fwht implementation into crates/fwht under user authorization; derive TeX paths at runtime; pin the reference toolchain's compatible stdlib 9.1.0."
+validation = "fwht passes five unit tests, two doctests, eleven consumer rotation tests and all-target clippy. No Git sources remain in Cargo.lock. Forced MaNGA rebuild and opam resolution pass."
+
+[[task]]
 name = "Merge, synchronize main and retain publication evidence"
 status = "pending"
 acceptance = "Merge the reviewed passing head, verify remote/local parity, retain logs and remove only completed task worktrees."

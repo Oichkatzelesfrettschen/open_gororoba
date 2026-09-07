@@ -31,9 +31,8 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Fetch pinned Astronomy and Astrophysics styles
-        env:
-          AA_ROOT: ${{ github.workspace }}/.cache/paper-aa
         run: |
+          AA_ROOT="$GITHUB_WORKSPACE/.cache/paper-aa"
           mkdir -p "$AA_ROOT"
           source_root=https://raw.githubusercontent.com/scottkosty/install-tl-ubuntu/d645e1ea3e730f65b0fc006dced43dc5558510a3/archive/aa-package
           curl --fail --silent --show-error --location --retry 3 "$source_root/aa.cls" -o "$AA_ROOT/aa.cls"
@@ -66,11 +65,12 @@ jobs:
             -output-directory=out MATHEMATICAL_FORMALISM.tex
 
       - name: Build MaNGA null result paper
-        env:
-          TEXINPUTS: '.:${{ github.workspace }}/.cache/paper-aa:'
-          BSTINPUTS: '.:${{ github.workspace }}/.cache/paper-aa:'
         working-directory: docs/latex
         run: |
+          export TEXINPUTS=".:$GITHUB_WORKSPACE/.cache/paper-aa:"
+          export BSTINPUTS=".:$GITHUB_WORKSPACE/.cache/paper-aa:"
+          kpsewhich aa.cls
+          kpsewhich aa.bst
           latexmk -pdf -Werror -interaction=nonstopmode -halt-on-error \
             -output-directory=out manga_zd_null_result.tex
 

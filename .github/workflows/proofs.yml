@@ -31,12 +31,12 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y opam
 
-      - name: Cache opam
+      - name: Restore opam
         id: opam-cache
-        uses: actions/cache@v4
+        uses: actions/cache/restore@v4
         with:
           path: ~/.opam
-          key: opam-${{ runner.os }}-${{ runner.arch }}-ubuntu24-ocaml5.4.0-rocq9.1.1-flocq4.2.2-v1
+          key: opam-${{ runner.os }}-${{ runner.arch }}-ubuntu24-ocaml5.4.0-rocq9.1.1-stdlib9.1.0-flocq4.2.2-v1
 
       - name: Install Rocq 9.1
         if: steps.opam-cache.outputs.cache-hit != 'true'
@@ -45,7 +45,14 @@ jobs:
           opam switch create rocq-9.1.1 ocaml-base-compiler.5.4.0 --yes
           opam repository add rocq-released https://rocq-prover.org/opam/released --switch=rocq-9.1.1 --yes
           eval "$(opam env --switch=rocq-9.1.1)"
-          opam install rocq-core.9.1.1 rocq-stdlib.9.1.1 coq-flocq.4.2.2 --yes
+          opam install rocq-core.9.1.1 rocq-stdlib.9.1.0 coq-flocq.4.2.2 --yes
+
+      - name: Save installed proof toolchain
+        if: steps.opam-cache.outputs.cache-hit != 'true'
+        uses: actions/cache/save@v4
+        with:
+          path: ~/.opam
+          key: ${{ steps.opam-cache.outputs.cache-primary-key }}
 
       - name: Compile all proofs
         working-directory: proofs

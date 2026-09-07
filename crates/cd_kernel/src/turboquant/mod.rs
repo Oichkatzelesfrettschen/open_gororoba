@@ -67,7 +67,7 @@
 //! - **dyn-stack**: Reusable scratch workspace
 //! - **bytemuck**: Zero-copy Pod/cast_slice
 //! - **smallvec**: Inline small buffers (d<=16)
-//! - **fwht**: Standalone WHT crate (extracted from this module)
+//! - **fwht**: Workspace crate for normalized WHT and structured rotations
 //!
 //! # Paper References
 //!

@@ -1,0 +1,71 @@
+schema_version = 1
+package = "fwht"
+source_repository = "https://github.com/Oichkatzelesfrettschen/cratesgororobas"
+source_revision = "28b5310d3a6755b81b7c1ceb79f9f79f67f1af70"
+source_directory = "fwht"
+source_license_expression = "MIT OR Apache-2.0"
+retained_license_expression = "MIT OR Apache-2.0"
+source_member_count = 4
+imported_member_count = 3
+source_license_basis = "The pinned Cargo.toml declares MIT OR Apache-2.0. The four-member source tree contains no separate license file."
+purpose = "Keep the scientific transform source and its tests in the consuming workspace so builds resolve the package without a separate Git repository."
+
+metadata_changes = [
+  "Replace the package repository URL with workspace repository metadata.",
+  "Describe the implemented normalized transform and unchanged-dimension rotation.",
+  "Inherit workspace lint policy while retaining the original dual-license expression.",
+  "Use the workspace criterion dependency, resolved to 0.8.2, in place of the standalone 0.5 requirement.",
+  "Use std::hint::black_box in the benchmark because criterion 0.8 deprecates its re-export.",
+  "Replace the workspace Git dependency with crates/fwht and register the package as a workspace member.",
+  "Omit the standalone Cargo.lock; the workspace lock changes only the fwht source identity and adds its criterion development edge.",
+]
+documentation_changes = [
+  "Remove the unsupported crates.io uniqueness claim and dated throughput comparison.",
+  "Describe the implementation as a structured rotation; dimension-reducing Johnson-Lindenstrauss projection guarantees require separate machinery.",
+  "Count butterfly pairs rather than multiply-adds and remove the unsupported TurboQuant venue assertion.",
+  "Replace time-relative example wording and external package-location comments with mechanism descriptions.",
+]
+
+[implementation_comparison]
+library_comparison = "Remove lines matching ^[[:space:]]*// from both lib.rs files, retaining every remaining byte."
+library_original_sha256 = "714dc81c79e342cb5bb82796cf243481eb3c6661b1afb237a155dc0e49e6d44c"
+library_imported_sha256 = "714dc81c79e342cb5bb82796cf243481eb3c6661b1afb237a155dc0e49e6d44c"
+benchmark_comparison = "Remove lines beginning with use followed by a space from both benchmark files, retaining every remaining byte."
+benchmark_original_sha256 = "f8df81cb77924dcca5d941ef119355f7030e74d1c7aa62901d20d16ea4df8e7e"
+benchmark_imported_sha256 = "f8df81cb77924dcca5d941ef119355f7030e74d1c7aa62901d20d16ea4df8e7e"
+result = "Library implementation and test bodies match under the declared comment filter; benchmark bodies match under the declared import filter."
+
+[validation]
+toolchain = "rustc 1.97.0"
+package_test_command = "cargo test --locked --offline --profile validation -p fwht"
+unit_tests_passed = 5
+doctests_passed = 2
+clippy_command = "cargo clippy --locked --offline --profile validation -p fwht --all-targets -- -D warnings"
+clippy_exit_code = 0
+consumer_test_command = "cargo test --locked --offline --profile validation -p cd_kernel --lib turboquant::rotation::tests"
+consumer_tests_passed = 11
+consumer_tests_filtered_out = 384
+runtime_dependency_versions = ["rand 0.9.3", "rand_chacha 0.9.0", "rand_distr 0.5.1"]
+
+[[source_members]]
+path = "Cargo.toml"
+sha256 = "bf86cdbb342e177b37eb2a09044aa7552c0d503409651e359ea89a760a0faa17"
+disposition = "Adapt workspace metadata and development dependency."
+imported_sha256 = "dbc1f205aa48b4014e35bdbbe8de6d6edc788583c9346d46163d36c4519564c0"
+
+[[source_members]]
+path = "Cargo.lock"
+sha256 = "a8132c110e7bbe944bf428a33fc6647ad68805993f77b88351ccc9f9fca3da44"
+disposition = "Use the consuming workspace lockfile."
+
+[[source_members]]
+path = "src/lib.rs"
+sha256 = "c5eb6b645ee4622b124c6d24ecbd1a604a4e654affba409ea56cea52c97393f8"
+disposition = "Import implementation and tests with documentation corrections."
+imported_sha256 = "551a6e48b72e1865c7b6cb9198308d17fd32247f206c4af91b29dda7f5fd5d90"
+
+[[source_members]]
+path = "benches/fwht_bench.rs"
+sha256 = "50104e0e11f6a9ac02de8da11e7d3b5529f94a83f6a28124ce9a322f42fc6105"
+disposition = "Import benchmark with the standard-library black_box import."
+imported_sha256 = "45c3a2d5ddf3951976f4e2b9a01673b9c82aa96c2e1a716448b7efd49426f17a"

@@ -1,0 +1,24 @@
+[package]
+name = "fwht"
+version = "0.1.0"
+edition = "2024"
+description = "Normalized Walsh-Hadamard transforms and structured random rotations"
+license = "MIT OR Apache-2.0"
+repository = { workspace = true }
+keywords = ["walsh-hadamard", "fwht", "simd", "jl-transform", "quantization"]
+categories = ["algorithms", "mathematics", "science"]
+
+[dependencies]
+rand = "0.9"
+rand_chacha = "0.9"
+rand_distr = "0.5"
+
+[dev-dependencies]
+criterion = { workspace = true }
+
+[[bench]]
+name = "fwht_bench"
+harness = false
+
+[lints]
+workspace = true
