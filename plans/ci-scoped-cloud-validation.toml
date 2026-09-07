@@ -32,6 +32,10 @@ documentation_result = "make docs-freshness passes across 450 Rustdoc targets, 2
 survey_result = "Retained cargo-geiger 0.13.0 source and lockfile under tools/vendor/cargo-geiger. All 187 library tests, workspace integration and Clippy pass locally. Full survey exits 0 in 303.54 seconds with 78 member reports and one compilation; five parse failures, 187 ignored paths and 721 used-but-unscanned sources remain explicit coverage limits."
 vendor_admission = "Register retained vendor Markdown through the authoritative markdown-registry CLI; retain upstream fixture filenames and provenance. Hosted release-profile checks remain pending."
 governance_result = "make validate-ci-registry passes after owner registration, project-counter refresh, canonical-derived claims/proof/derivation regeneration and signature refresh. The existing semantic payload stub warning leaves payload coverage unverified. make check also passes."
+runner_tool_repair = "Install actionlint 1.7.12 from its checksum-verified upstream Go release; validate the tested EXIT receipt writer with Ubuntu ShellCheck 0.9 as well as the local version."
+schema_result = "xtask db-docs regenerates retained schema SQL, JSON and Rust catalog from the canonical database; db-schema-drift-check passes. Workspace Clippy passes."
+review_result = "Shared execution-target resolution passes 11 tests and live registry verification. Embedded/vendor/rename routing passes 13 tests. Corrected STFT columns and confidence polygon pass producer tests, pointwise input comparison and warning-free rendering with unchanged historical input hashes."
+extraction_result = "Pinned Rocq regeneration refreshes quaternion operations added after the old golden. Generated OCaml matches the hosted diff and passes extraction replay plus OCaml warnings-as-errors compilation."
 
 [[task]]
 name = "Resolve hosted dependency and container failures"
