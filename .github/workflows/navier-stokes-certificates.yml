@@ -1,0 +1,63 @@
+name: navier-stokes-certificates
+
+on:
+  pull_request:
+    paths:
+      - 'crates/navier_stokes_verify/**'
+      - 'Cargo.toml'
+      - 'Cargo.lock'
+      - 'rust-toolchain.toml'
+      - '.cargo/config.toml'
+      - '.github/workflows/navier-stokes-certificates.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'crates/navier_stokes_verify/**'
+      - 'Cargo.toml'
+      - 'Cargo.lock'
+      - 'rust-toolchain.toml'
+      - '.cargo/config.toml'
+      - '.github/workflows/navier-stokes-certificates.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ns-certificate-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  exact-verifier:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    env:
+      RUSTC_WRAPPER: ''
+      CARGO_TARGET_X86_64_UNKNOWN_LINUX_GNU_LINKER: cc
+      CARGO_ENCODED_RUSTFLAGS: ''
+      CARGO_TARGET_DIR: ${{ github.workspace }}/.cache/ns-certificate-target
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@1.97.0
+        with:
+          components: clippy
+      - name: Test exact arithmetic, residuals, majorants and certificates
+        run: cargo test --locked -p navier_stokes_verify
+      - name: Lint verifier and example
+        run: cargo clippy --locked -p navier_stokes_verify --all-targets -- -D warnings
+      - name: Certify a nonzero Beltrami perturbation and replay in another process
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/ns-certificate"
+          rustc -Vv > "$RUNNER_TEMP/ns-certificate/compiler.txt"
+          NS_VERIFY_COMMIT="$(git rev-parse HEAD)"
+          export NS_VERIFY_COMMIT
+          cargo run --quiet --locked -p navier_stokes_verify --example verify -- verify crates/navier_stokes_verify/fixtures/beltrami_neighborhood.json > "$RUNNER_TEMP/ns-certificate/certificate.json" 2> "$RUNNER_TEMP/ns-certificate/report.txt"
+          cargo run --quiet --locked -p navier_stokes_verify --example verify -- replay "$RUNNER_TEMP/ns-certificate/certificate.json" > "$RUNNER_TEMP/ns-certificate/replay.json"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: beltrami-neighborhood-certificate
+          path: ${{ runner.temp }}/ns-certificate/
+          if-no-files-found: error
+          retention-days: 30

@@ -1,0 +1,38 @@
+{
+  "schema_version": 1,
+  "equation": "unforced_constant_viscosity_navier_stokes",
+  "norm": "homogeneous_h3_normalized_torus2_pi",
+  "viscosity": "1",
+  "precision_bits": 128,
+  "tails": "complete_polynomial",
+  "provenance": {
+    "input_source": "Exact ABC amplitudes A=B=C=1/8, with a nonzero rational perturbation at +/- (2,1,0) in the z component. All absent coefficients are exactly zero.",
+    "solver_commit": null,
+    "verifier_commit": null
+  },
+  "initial": {
+    "modes": [
+      {"k": [1,0,0], "u": [{"re":"0","im":"0"},{"re":"0","im":"-1/16"},{"re":"1/16","im":"0"}]},
+      {"k": [-1,0,0], "u": [{"re":"0","im":"0"},{"re":"0","im":"1/16"},{"re":"1/16","im":"0"}]},
+      {"k": [0,1,0], "u": [{"re":"1/16","im":"0"},{"re":"0","im":"0"},{"re":"0","im":"-1/16"}]},
+      {"k": [0,-1,0], "u": [{"re":"1/16","im":"0"},{"re":"0","im":"0"},{"re":"0","im":"1/16"}]},
+      {"k": [0,0,1], "u": [{"re":"0","im":"-1/16"},{"re":"1/16","im":"0"},{"re":"0","im":"0"}]},
+      {"k": [0,0,-1], "u": [{"re":"0","im":"1/16"},{"re":"1/16","im":"0"},{"re":"0","im":"0"}]},
+      {"k": [2,1,0], "u": [{"re":"0","im":"0"},{"re":"0","im":"0"},{"re":"1/1267650600228229401496703205376","im":"0"}]},
+      {"k": [-2,-1,0], "u": [{"re":"0","im":"0"},{"re":"0","im":"0"},{"re":"1/1267650600228229401496703205376","im":"0"}]}
+    ]
+  },
+  "reference": {
+    "kind": "beltrami_neighborhood",
+    "center": {
+      "modes": [
+        {"k": [1,0,0], "u": [{"re":"0","im":"0"},{"re":"0","im":"-1/16"},{"re":"1/16","im":"0"}]},
+        {"k": [-1,0,0], "u": [{"re":"0","im":"0"},{"re":"0","im":"1/16"},{"re":"1/16","im":"0"}]},
+        {"k": [0,1,0], "u": [{"re":"1/16","im":"0"},{"re":"0","im":"0"},{"re":"0","im":"-1/16"}]},
+        {"k": [0,-1,0], "u": [{"re":"1/16","im":"0"},{"re":"0","im":"0"},{"re":"0","im":"1/16"}]},
+        {"k": [0,0,1], "u": [{"re":"0","im":"-1/16"},{"re":"1/16","im":"0"},{"re":"0","im":"0"}]},
+        {"k": [0,0,-1], "u": [{"re":"0","im":"1/16"},{"re":"1/16","im":"0"},{"re":"0","im":"0"}]}
+      ]
+    }
+  }
+}
