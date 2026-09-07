@@ -1,0 +1,15 @@
+[package]
+authors = ["anderejd <rajder@gmail.com>"]
+categories = ["development-tools"]
+description = "TODO: Write description"
+edition = "2018"
+license = "Apache-2.0 OR MIT"
+keywords = ["unsafe"]
+name = "cargo-geiger-serde"
+repository = "https://github.com/rust-secure-code/cargo-geiger"
+version = "0.3.0"
+
+[dependencies]
+semver = { version = "1.0.17", features = ["serde"] }
+serde = { version = "1.0.132", features = ["derive"] }
+url = { version = "2.3.1", features = ["serde"] }

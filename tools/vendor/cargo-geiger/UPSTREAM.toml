@@ -1,0 +1,104 @@
+schema_version = 1
+repository = "https://github.com/geiger-rs/cargo-geiger"
+revision = "08543ac0b48ff6eec12c0a1f2478ef9c3259cd4d"
+tag = "cargo-geiger-0.13.0"
+archive_url = "https://codeload.github.com/geiger-rs/cargo-geiger/tar.gz/refs/tags/cargo-geiger-0.13.0"
+archive_sha256 = "02a3999b58e45527932cc9fa60503b3197f011778dc1954909fb5fe9dd168f72"
+licenses = ["Apache-2.0", "MIT"]
+retained = ["Cargo.toml", "Cargo.lock", "README.md", "rustfmt.toml", "cargo-geiger", "cargo-geiger-serde", "geiger", "test_crates"]
+modifications = [
+  "Materialize the upstream package README symlink as a regular copy to follow repository build-path policy.",
+  "Enumerate dependency identities from Cargo resolve-node edges instead of inactive manifest candidates or ambiguous version matches.",
+  "Intersect dependency candidates with krates selected-feature nodes; enumerate excluded package IDs and any compiler-used source overlap.",
+  "Use Cargo Check required-feature filtering for workspace mode, preserving disabled optional GPU targets.",
+  "Resolve modern path-source URLs from manifest metadata rather than slicing legacy package IDs.",
+  "Bound parser worker stacks and retain typed parse failures and syntax coverage limits in JSON.",
+  "Repair mechanical Clippy diagnostics; retain an exact duplicate-package allowlist for the upstream locked dependency graph.",
+  "Make configuration tests preserve ambient target settings, and propagate README read failures.",
+
+  "Deduplicate Cargo clean package names before resolving package IDs to prevent duplicate cold downloads.",
+  "Add explicit workspace-report mode with one compilation, a shared metric scan, and per-root dependency reports.",
+  "Declare workspace-union used-source scope, compile filter, feature selection and lexical test inclusion in reports.",
+  "Add regression tests for duplicate versions, complete workspace roots and member compilation failure.",
+  "Encode functional symbols with Rust Unicode escapes; normalize decorative README symbols and snapshot display text to ASCII without changing scanner metrics.",
+]
+
+maintenance_notes = '''
+# Workspace unsafe survey package
+
+The package retains cargo-geiger 0.13.0 and its two source libraries under an
+independent workspace. `UPSTREAM.toml` identifies the upstream archive and local
+changes. Each package retains its upstream Apache and MIT license files. The
+root workspace lockfile and dependency checks do not cover this separate graph;
+builds use the retained local `Cargo.lock` with `--locked`.
+
+Cargo-geiger converted every resolved package ID to a bare package name before
+calling Cargo clean. Multiple versions repeated the name, so Cargo expanded the
+same identities repeatedly and its downloader asserted on duplicate pending IDs.
+Deduplicating names matches Cargo's name-scoped cleaning API. Full ID qualifiers
+produce warnings because that API ignores qualifiers when deleting artifacts.
+
+`--workspace-report` compiles the workspace once and scans source metrics once.
+Dependency identities follow Cargo's resolved edges. Manifest-only optional
+dependencies and alternate versions cannot introduce unresolved graph nodes.
+The graph intersects those edges with krates' selected-feature package nodes.
+JSON enumerates metadata packages outside that graph and compiler-used paths
+under their source directories; CI rejects exclusions containing compiler-used
+sources. Those lists make weak optional dependency filtering inspectable.
+Each member receives a dependency report. The used-source counters describe the
+union of compiler-selected workspace units, rather than isolated per-member
+builds. Legacy per-root invocation remains available. Cargo Check's default
+target filter excludes test compilation; `--include-tests` includes test syntax
+in the lexical scan. `--all-targets` affects dependency graph platform selection.
+Reports record feature selection, unscanned used files, and ignored files.
+Unsafe counts describe syntax and compiler source use, not vulnerability status.
+
+Run the focused package checks from this directory:
+
+```
+cargo test --locked -p cargo-geiger --lib
+cargo test --locked -p cargo-geiger --test workspace_report
+```
+
+The cold-cache fixture is `test_crates/test8_clean_name_versions`. With an empty
+Cargo home and an isolated target directory, upstream 0.13.0 panics while loading
+its optional itoa 0.4.8 and 1.0.15 dependencies. The retained tool completes the
+same fixture and records one workspace compilation. The fixture has its own
+lockfile and requests neither optional feature.
+
+Source symbols use Unicode escapes to preserve upstream rendering behavior while
+keeping source bytes emoji-free. README and snapshot decorations use ASCII; the
+snapshot assertion normalizes those decorations before comparison.
+
+The embedded Cargo executor changes into dependency directories before invoking
+rustc. Direct executable invocation must set `RUSTUP_TOOLCHAIN` and an absolute
+`RUSTC` path selected by `rustup which --toolchain`. Otherwise dependency-local
+rust-toolchain files can select different compiler versions, download toolchain
+components, and produce incompatible metadata in one target directory. The CI
+workflow records the selected absolute compiler and verbose version before the
+survey. `VALIDATION.toml` records the observed effects of the diagnostic run that
+identified the missing compiler pin.
+
+Parsing uses at most four workers with 16 MiB stacks (64 MiB reserved worker
+stack capacity). The extra stack accommodates deeply nested generated Rust
+expressions while retaining every selected source. The integration fixture scans
+768 nested unsafe blocks, records intentionally malformed uncompiled source,
+and verifies compiler failure propagation. `parse_errors` records file paths and
+errors, `syntax_files_failed` counts them, and `syntax_scan_complete` remains
+false when any parse fails. `ignored_paths` separately records upstream's omitted
+custom build scripts. A completed survey therefore need not be a complete syntax
+inventory; compiler-used files without metrics remain separately enumerated.
+
+The concrete parser-stack witness is typenum 1.19.0 `src/gen/consts.rs`, with
+280251 source bytes. A deterministic 2 MiB worker aborts while parsing that file;
+the identical parser and source succeed with a 16 MiB worker. The validation
+receipt records the source hash and stack bounds. Those bounds cover worker
+stacks rather than total process memory.
+
+CI runs the library and workspace integration tests in the release profile. The
+integration target builds the release executable that performs the survey, so CI
+checks executable presence and reuses it. Clippy separately checks the vendored
+library and binary with warnings denied. The exact duplicate-crate allowlist in
+`clippy.toml` documents the retained upstream lock graph rather than suppressing
+other dependency or source diagnostics.
+'''

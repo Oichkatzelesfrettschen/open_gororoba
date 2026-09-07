@@ -1,0 +1,7 @@
+[package]
+name = "survey-fixture"
+version = "0.1.0"
+edition = "2021"
+[dependencies]
+old = {package = "itoa", version = "=0.4.8", optional = true}
+new = {package = "itoa", version = "=1.0.15", optional = true}

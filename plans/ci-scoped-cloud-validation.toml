@@ -28,6 +28,10 @@ proof_result = "Hosted Rocq compilation passes. The subsequent substring admissi
 native_dependencies = "Declare CFITSIO, HDF5, fontconfig, BLAS/LAPACK/OpenBLAS and glslc from inspected build scripts and dependency paths. Both GLSL shaders compile to SPIR-V locally."
 cache_repair = "Retain compiler artifacts after failures; restore by source revision, lock and toolchain identities; use attempt-specific save keys so same-commit retries retain additional completed work."
 hygiene_repair = "Define the CUDA ownership prerequisite after XTASK_CACHE so clean caches build the tool. Remove the empty verify-no-reports-writes invocation left after commit 4549c252 deleted its Python verification directory and Make recipe. Workflow lint runs before compilation."
+documentation_result = "make docs-freshness passes across 450 Rustdoc targets, 29 generated canonical book pages and redirect checks. Quote mathematical notation and generate ignored book pages through registry-emit before mdBook."
+survey_result = "Retained cargo-geiger 0.13.0 source and lockfile under tools/vendor/cargo-geiger. All 187 library tests, workspace integration and Clippy pass locally. Full survey exits 0 in 303.54 seconds with 78 member reports and one compilation; five parse failures, 187 ignored paths and 721 used-but-unscanned sources remain explicit coverage limits."
+vendor_admission = "Register retained vendor Markdown through the authoritative markdown-registry CLI; retain upstream fixture filenames and provenance. Hosted release-profile checks remain pending."
+governance_result = "make validate-ci-registry passes after owner registration, project-counter refresh, canonical-derived claims/proof/derivation regeneration and signature refresh. The existing semantic payload stub warning leaves payload coverage unverified. make check also passes."
 
 [[task]]
 name = "Resolve hosted dependency and container failures"
