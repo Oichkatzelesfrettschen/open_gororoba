@@ -1,0 +1,52 @@
+schema_version = 1
+purpose = "Retain the exact historical input needed to render the existing proof-complexity figure."
+source_path = "/home/eirikr/Github/open_gororoba/proofs/metrics/compile_times.csv"
+retained_path = "docs/latex/data/compile_times.csv"
+sha256 = "5cc0215f89e5ce13a906a765a4baf025ea7f39548f4f12cfc344f4775d44d2d0"
+bytes = 4822
+acquisition_provenance = "unknown"
+compiler_provenance = "unknown"
+interpretation = "Historical rendering input only; these retained bytes do not establish fresh compilation success or validated timing measurements."
+
+[bibliography]
+source_git_revision = "8c7985c41892dfc8fd644480295944360f52ccc2^"
+source_path = "papers/bib/cayley_dickson.bib"
+retained_path = "docs/latex/cayley_dickson.bib"
+sha256 = "470829f5f7d2a8b0bb6cbd81ac7e1a4efb064ae915d6ff237f7763bfc9a78c6c"
+interpretation = "Exact bibliography before its removal during offsite migration."
+
+[manga_figures]
+source_git_revision = "3676dc6c3dcc68d7378176c3be867679675abe5b"
+source_directory = "data/results/e183"
+retained_directory = "docs/latex/data"
+producer = "crates/gororoba_cli_physics/src/bin/harmonic_halo/visualize.rs"
+producer_sha256 = "77a3bd3d8131cfa11a75f34bc1368f192558817760cbdd468763c6537b6ca5de"
+command = "cargo run --locked --profile validation -p gororoba_cli_physics --bin harmonic-halo -- visualize --stacked-csv docs/latex/data/manga_stack_D16.csv --stft-csv docs/latex/data/stft_full.csv --deriv-csv docs/latex/data/deriv_full.csv --out-dir docs/latex/figs"
+interpretation = "The retained CSVs equal the historical Git objects. Figure generation renders those inputs through the existing producer; the build does not re-adjudicate the scientific claims."
+
+[[manga_figures.inputs]]
+path = "manga_stack_D16.csv"
+sha256 = "3cca6bad89c845b5b8829a4b58bc80d488b157fafa05be5955cf19327ae6e3ce"
+bytes = 7519
+
+[[manga_figures.inputs]]
+path = "stft_full.csv"
+sha256 = "1e4d8e130559a543aff9a9cb452365d58afbc4c530bd89e69bd029af8c1b6a2e"
+bytes = 11138
+
+[[manga_figures.inputs]]
+path = "deriv_full.csv"
+sha256 = "bd4c014a57a9aaf312891a3af160528ac2d05a96114a1c1943439949ba5c0d40"
+bytes = 388
+
+[[manga_figures.outputs]]
+path = "docs/latex/figs/spatial_residuals.tex"
+sha256 = "db67b4ef73a2485719ca72bf45e41ec923da9631b2ef495f96ea133d0c0642a4"
+
+[[manga_figures.outputs]]
+path = "docs/latex/figs/derivative_dft.tex"
+sha256 = "994af63d77b34e6d07b8d6a5811ef0e261458a7d8241bcf7ebe81b3b5074eba9"
+
+[[manga_figures.outputs]]
+path = "docs/latex/figs/stft_spectrogram.tex"
+sha256 = "bab191adf11f47b4884318da9ba11c48ddb3a6e15557330907706de7ad8ac01c"

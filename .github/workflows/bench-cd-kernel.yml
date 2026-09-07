@@ -3,98 +3,64 @@ name: CD Kernel Multi-Platform Benchmark
 on:
   workflow_dispatch:
   push:
+    branches: [main]
     paths:
       - 'crates/cd_kernel/**'
+      - 'crates/verified_core/**'
+      - 'crates/gororoba_gpu_bridge/**'
+      - 'Cargo.lock'
+      - 'Cargo.toml'
+      - 'rust-toolchain.toml'
+      - '.cargo/config.toml'
       - '.github/workflows/bench-cd-kernel.yml'
 
 permissions:
   contents: read
 
-jobs:
-  bench-x86:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Install system dependencies
-        run: |
-          sudo apt-get update -qq
-          sudo apt-get install -y -qq mold clang
-      - uses: actions/checkout@v4
-      - uses: dtolnay/rust-toolchain@1.97.0
-      - name: System info
-        run: |
-          lscpu | grep -E "Model name|L1d|L2|L3|CPU|Thread|Architecture"
-          free -h
-          uname -a
-      - name: Prepare sibling crate and build-dir
-        id: prepare
-        run: |
-          auth_header="$(printf 'x-access-token:%s' "$GITHUB_TOKEN" | base64 -w0)"
-          if git -c http.https://github.com/.extraheader="AUTHORIZATION: basic ${auth_header}" \
-            clone --depth 1 https://github.com/Oichkatzelesfrettschen/cratesgororobas.git ../cratesgororobas; then
-            echo "bench_ready=true" >> "$GITHUB_OUTPUT"
-          else
-            echo "::warning::Skipping cd_kernel benchmark because cratesgororobas could not be cloned with workflow credentials."
-            echo "bench_ready=false" >> "$GITHUB_OUTPUT"
-          fi
-          sed -i 's|build-dir = .*|build-dir = "target/ambient"|' .cargo/config.toml
-        env:
-          GITHUB_TOKEN: ${{ github.token }}
-      - name: Build benchmark binary
-        if: steps.prepare.outputs.bench_ready == 'true'
-        run: cargo build --release -p cd_kernel --test bench_multiplatform
-        env:
-          CARGO_TARGET_DIR: target
-      - name: Run CD kernel benchmark
-        if: steps.prepare.outputs.bench_ready == 'true'
-        run: cargo test --release -p cd_kernel -- bench_multiplatform --nocapture 2>&1 | tee bench_x86.txt
-        env:
-          CARGO_TARGET_DIR: target
-      - uses: actions/upload-artifact@v4
-        if: steps.prepare.outputs.bench_ready == 'true'
-        with:
-          name: bench-x86
-          path: bench_x86.txt
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
-  bench-arm:
-    runs-on: ubuntu-24.04-arm
+jobs:
+  benchmark:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - runner: ubuntu-24.04
+            architecture: x86
+          - runner: ubuntu-24.04-arm
+            architecture: arm
+    runs-on: ${{ matrix.runner }}
+    timeout-minutes: 30
+    env:
+      CARGO_TARGET_DIR: ${{ github.workspace }}/target
+      RUSTC_WRAPPER: ''
     steps:
-      - name: Install system dependencies
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@1.97.0
+      - name: Install linker dependencies
         run: |
           sudo apt-get update -qq
           sudo apt-get install -y -qq mold clang
-      - uses: actions/checkout@v4
-      - uses: dtolnay/rust-toolchain@1.97.0
-      - name: System info
+      - uses: Swatinem/rust-cache@v2
+        with:
+          key: benchmark-${{ matrix.architecture }}
+      - name: Record execution host
         run: |
-          lscpu | grep -E "Model name|L1d|L2|L3|CPU|Thread|Architecture"
+          lscpu
           free -h
           uname -a
-      - name: Prepare sibling crate and build-dir
-        id: prepare
+          rustc --version --verbose
+      - name: Build and run the benchmark target
+        shell: bash
         run: |
-          auth_header="$(printf 'x-access-token:%s' "$GITHUB_TOKEN" | base64 -w0)"
-          if git -c http.https://github.com/.extraheader="AUTHORIZATION: basic ${auth_header}" \
-            clone --depth 1 https://github.com/Oichkatzelesfrettschen/cratesgororobas.git ../cratesgororobas; then
-            echo "bench_ready=true" >> "$GITHUB_OUTPUT"
-          else
-            echo "::warning::Skipping cd_kernel benchmark because cratesgororobas could not be cloned with workflow credentials."
-            echo "bench_ready=false" >> "$GITHUB_OUTPUT"
-          fi
-          sed -i 's|build-dir = .*|build-dir = "target/ambient"|' .cargo/config.toml
-        env:
-          GITHUB_TOKEN: ${{ github.token }}
-      - name: Build benchmark binary
-        if: steps.prepare.outputs.bench_ready == 'true'
-        run: cargo build --release -p cd_kernel --test bench_multiplatform
-        env:
-          CARGO_TARGET_DIR: target
-      - name: Run CD kernel benchmark
-        if: steps.prepare.outputs.bench_ready == 'true'
-        run: cargo test --release -p cd_kernel -- bench_multiplatform --nocapture 2>&1 | tee bench_arm.txt
-        env:
-          CARGO_TARGET_DIR: target
+          set -o pipefail
+          cargo test --locked --release -p cd_kernel --test bench_multiplatform -- --nocapture --test-threads=1 2>&1 | tee bench.txt
       - uses: actions/upload-artifact@v4
-        if: steps.prepare.outputs.bench_ready == 'true'
+        if: always()
         with:
-          name: bench-arm
-          path: bench_arm.txt
+          name: bench-${{ matrix.architecture }}
+          path: bench.txt
+          if-no-files-found: warn
+          retention-days: 14

@@ -1,0 +1,30 @@
+schema_version = 1
+objective = "Move automatic validation to relevant, reproducible cloud workflows and minimize duplicate execution."
+repository_visibility = "GitHub reports PUBLIC; visibility change was unnecessary."
+automatic_local_validation = "Disabled through core.hooksPath=/dev/null and an inactive tracked pre-push hook. Manual validation remains available."
+
+[[task]]
+name = "Inspect workflow inputs, routing and required tools"
+status = "completed"
+result = "Identified removed makew calls, missing compiler tools, duplicate branch/PR runs, stale Warp binary, CUDA-dependent docs and missing paper bibliography."
+
+[[task]]
+name = "Enable hosted workflows and disable automatic local gates"
+status = "completed"
+result = "All five repository workflow files report active in GitHub; local hooksPath is /dev/null."
+
+[[task]]
+name = "Implement scoped CI and repair auxiliary workflow inputs"
+status = "completed"
+acceptance = "Use direct lint owners, reverse-dependency test closure including binaries, canonical checks, bounded caches, cancellation and input-scoped specialized workflows."
+
+[[task]]
+name = "Validate configuration and execute hosted checks"
+status = "in_progress"
+acceptance = "Actionlint, scope dispatch/error tests and actual hosted workflow execution pass without suppressed failures."
+local_result = "Actionlint, nine router tests and scoped Make dispatch/error tests pass. All four paper targets build with latexmk -Werror after exact historical input recovery."
+
+[[task]]
+name = "Merge, synchronize main and retain publication evidence"
+status = "pending"
+acceptance = "Merge the reviewed passing head, verify remote/local parity, retain logs and remove only completed task worktrees."

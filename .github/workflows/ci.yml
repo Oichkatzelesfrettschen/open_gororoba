@@ -2,46 +2,63 @@ name: ci
 
 on:
   push:
+    branches: [main]
   pull_request:
+  workflow_dispatch:
+    inputs:
+      full:
+        description: Validate the complete workspace and dependency policy
+        type: boolean
+        default: false
+  schedule:
+    - cron: '23 5 * * 1'
 
 permissions:
   contents: read
 
+defaults:
+  run:
+    shell: bash
+
 concurrency:
-  group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
+  group: ${{ github.workflow }}-${{ github.event_name }}-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true
+
+env:
+  CARGO_HOME: ${{ github.workspace }}/.cache/cargo-home
+  CARGO_TARGET_DIR: ${{ github.workspace }}/.cache/gate-target
+  CARGO_INCREMENTAL: '0'
+  CARGO_PROFILE_VALIDATION_DEBUG: '0'
+  CARGO_PROFILE_DEV_DEBUG: '0'
+  CARGO_PROFILE_TEST_DEBUG: '0'
+  CARGO_PROFILE_RELEASE_DEBUG: '0'
+  RUST_BACKTRACE: '1'
 
 jobs:
   validation:
-    runs-on: ubuntu-latest
-    env:
-      CARGO_HOME: ${{ github.workspace }}/.cache/cargo-home
-      CARGO_TARGET_DIR: ${{ github.workspace }}/.cache/gate-target
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    outputs:
+      docs: ${{ steps.paths.outputs.docs }}
     steps:
       - uses: actions/checkout@v4
-
-      - name: Detect worker budget from logical threads / 2
-        run: |
-          WORKER_BUDGET="$(sh scripts/detect_worker_budget.sh)"
-          echo "WORKER_BUDGET=$WORKER_BUDGET" >> "$GITHUB_ENV"
-          echo "RAYON_THREADS=$WORKER_BUDGET" >> "$GITHUB_ENV"
-          echo "CARGO_JOBS=$WORKER_BUDGET" >> "$GITHUB_ENV"
-          echo "NEXTEST_TEST_THREADS=$WORKER_BUDGET" >> "$GITHUB_ENV"
-          echo "RUST_TEST_THREADS=$WORKER_BUDGET" >> "$GITHUB_ENV"
-          echo "Detected worker budget $WORKER_BUDGET from logical threads / 2."
-
-      - name: Install Rust toolchain (stable 1.97.0, with clippy)
-        uses: dtolnay/rust-toolchain@1.97.0
         with:
-          components: clippy
+          fetch-depth: 0
 
-      - name: Install cargo-nextest
-        uses: taiki-e/install-action@nextest
+      - uses: dtolnay/rust-toolchain@1.97.0
+        with:
+          components: clippy, rustfmt
 
-      - name: Install cargo-deny
-        uses: taiki-e/install-action@cargo-deny
+      - uses: taiki-e/install-action@v2
+        with:
+          tool: cargo-nextest@0.9.143,sccache@0.15.0
 
-      - name: Cache cargo registry and build artifacts
+      - name: Install compiler and data dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y clang mold libhdf5-dev pkg-config
+
+      - name: Cache Rust dependencies and validation artifacts
         uses: actions/cache@v4
         with:
           path: |
@@ -49,139 +66,182 @@ jobs:
             ${{ env.CARGO_HOME }}/git
             ${{ env.CARGO_TARGET_DIR }}
             ${{ github.workspace }}/.cache/gate-cbuild
-          key: rust-${{ runner.os }}-${{ hashFiles('Cargo.lock') }}
-          restore-keys: rust-${{ runner.os }}-
+          key: ci-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('rust-toolchain.toml', 'Cargo.lock', '.cargo/config.toml', '.github/workflows/ci.yml') }}-${{ github.sha }}
+          restore-keys: |
+            ci-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('rust-toolchain.toml', 'Cargo.lock', '.cargo/config.toml', '.github/workflows/ci.yml') }}-
 
-      - name: Install system dependencies
+      - name: Resolve immutable comparison base and worker budget
+        id: inputs
+        env:
+          EVENT_BASE: ${{ github.event.pull_request.base.sha || github.event.before }}
+          FULL: ${{ github.event_name == 'schedule' || inputs.full == true }}
         run: |
-          sudo apt-get update
-          sudo apt-get install -y libhdf5-dev pkg-config
-
-      - name: Single-session repository validation
-        run: ./makew validate-ci
-
-      # Validation-timing regression check. Reads
-      # data/output/audit/<date>/validation-timing-*.jsonl artifacts from
-      # prior runs, filters by the artifact timestamp rather than
-      # checkout mtime, and compares the latest run's per-phase
-      # elapsed_sec against the baseline median.
-      #
-      # HARD GATE: the 2-week observation window has elapsed. The check
-      # is warmup-guarded -- a phase with fewer than --min-samples baseline
-      # records is reported as "warmup" and never fails -- so the gate stays
-      # dormant until enough committed history accrues, then catches a phase
-      # whose latest elapsed_sec exceeds --threshold x the baseline median.
-      - name: Validation-timing regression check
-        run: |
-          if [ -d data/output/audit ]; then
-            "$CARGO_TARGET_DIR/validation-tools/xtask" validation-timing-regression-check \
-              --baseline-days 14 \
-              --threshold 2.0 \
-              --min-samples 5
+          set -euo pipefail
+          worker_budget="$(sh scripts/detect_worker_budget.sh)"
+          for variable in WORKER_BUDGET CARGO_JOBS NEXTEST_TEST_THREADS RUST_TEST_THREADS RAYON_THREADS; do
+            echo "$variable=$worker_budget" >> "$GITHUB_ENV"
+          done
+          if [ "$FULL" = true ]; then
+            echo 'full=true' >> "$GITHUB_OUTPUT"
           else
-            echo "No validation-timing JSONL history yet; skipping regression check."
+            comparison_base="$EVENT_BASE"
+            if [ -z "$comparison_base" ] || [ "$comparison_base" = 0000000000000000000000000000000000000000 ]; then
+              comparison_base="$(git rev-parse HEAD^)"
+            fi
+            git cat-file -e "$comparison_base^{commit}"
+            echo "DIFF_BASE=$comparison_base" >> "$GITHUB_ENV"
+            echo 'full=false' >> "$GITHUB_OUTPUT"
+          fi
+          mkdir -p reports/validation
+
+      - name: Classify documentation, dependency and artifact changes
+        id: paths
+        env:
+          FULL: ${{ steps.inputs.outputs.full }}
+        run: |
+          set -euo pipefail
+          if [ "$FULL" = true ]; then
+            printf 'docs=true\ndependencies=true\nwarp=true\n' >> "$GITHUB_OUTPUT"
+          else
+            git diff --name-only "$DIFF_BASE" HEAD > reports/validation/changed-paths.txt
+            for lane in docs dependencies warp; do
+              case "$lane" in
+                docs) pattern='^(docs/book/|crates/|xtask/|Cargo\.(toml|lock)$|rust-toolchain\.toml$|Makefile$|mk/|\.cargo/|\.github/workflows/ci\.yml$)' ;;
+                dependencies) pattern='(^|/)Cargo\.(toml|lock)$|(^|/)deny\.toml$|^rust-toolchain\.toml$|^\.github/workflows/ci\.yml$' ;;
+                warp) pattern='^data/h5/|^crates/gororoba_cli_warp/|^crates/data_artifacts_core/|^\.github/workflows/ci\.yml$' ;;
+              esac
+              if grep -Eq "$pattern" reports/validation/changed-paths.txt; then
+                echo "$lane=true" >> "$GITHUB_OUTPUT"
+              else
+                echo "$lane=false" >> "$GITHUB_OUTPUT"
+              fi
+            done
           fi
 
-      - name: Warp artifact acceptance gate (when HDF5 artifacts are present)
-        if: ${{ hashFiles('data/h5/**/*.h5') != '' }}
+      - name: Build the repository scope router
+        run: make "$CARGO_TARGET_DIR/validation-tools/workspace-routing"
+
+      - name: Route reverse dependency test closure
+        id: route
+        env:
+          FULL: ${{ steps.inputs.outputs.full }}
         run: |
-          cargo run -p gororoba_cli_warp --features gpu,hdf5-export --bin warp-acceptance-gate --allow-empty -- "data/h5/**/*.h5"
+          if [ "$FULL" = true ]; then
+            printf 'rust_scope=--workspace\nrun_rust=true\nrun_check=true\nrun_governance=true\n' >> "$GITHUB_OUTPUT"
+          else
+            "$CARGO_TARGET_DIR/validation-tools/workspace-routing" --base "$DIFF_BASE" --verbose
+          fi
+
+      - name: Route directly changed lint owners
+        id: lint
+        if: steps.route.outputs.run_rust == 'true'
+        env:
+          FULL: ${{ steps.inputs.outputs.full }}
+        run: |
+          if [ "$FULL" = true ]; then
+            echo 'rust_scope=--workspace' >> "$GITHUB_OUTPUT"
+          else
+            "$CARGO_TARGET_DIR/validation-tools/workspace-routing" --base "$DIFF_BASE" --direct-only
+          fi
+
+      - name: Check repository hygiene
+        if: steps.route.outputs.run_check == 'true'
+        run: make check 2>&1 | tee reports/validation/hygiene.log
+
+      - name: Validate canonical evidence and governance
+        if: steps.route.outputs.run_governance == 'true'
+        run: make validate-ci-registry 2>&1 | tee reports/validation/governance.log
+
+      - name: Lint owners and test affected consumers including binaries
+        if: steps.route.outputs.run_rust == 'true'
+        env:
+          CI_RUST_SCOPE: ${{ steps.route.outputs.rust_scope }}
+          CI_CLIPPY_SCOPE: ${{ steps.lint.outputs.rust_scope }}
+        run: make validate-ci-scoped-rust 2>&1 | tee reports/validation/rust.log
+
+      - name: Verify provider inventory and database schema documentation
+        if: steps.route.outputs.run_rust == 'true' || steps.route.outputs.run_governance == 'true'
+        run: make validate-rust-integrity db-schema-drift-check 2>&1 | tee reports/validation/integrity.log
+
+      - name: Install dependency policy verifier
+        if: steps.paths.outputs.dependencies == 'true'
+        uses: taiki-e/install-action@v2
+        with:
+          tool: cargo-deny@0.20.2
+
+      - name: Verify dependency policy
+        if: steps.paths.outputs.dependencies == 'true'
+        run: make cargo-deny-check 2>&1 | tee reports/validation/dependencies.log
+
+      - name: Validate retained Warp HDF5 artifacts
+        if: steps.paths.outputs.warp == 'true' && hashFiles('data/h5/**/*.h5') != ''
+        run: cargo run --locked --profile validation -p gororoba_cli_warp --features gpu,hdf5-export --bin warp -- acceptance-gate "data/h5/**/*.h5"
 
       - name: Upload validation reports
-        if: ${{ always() }}
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: repository-validation-reports
           path: reports/validation/**
-          if-no-files-found: ignore
+          if-no-files-found: warn
+          retention-days: 14
 
   docs-gate:
-    runs-on: ubuntu-latest
-    env:
-      CARGO_HOME: ${{ github.workspace }}/.cache/cargo-home
-      CARGO_TARGET_DIR: ${{ github.workspace }}/target
+    needs: validation
+    if: needs.validation.outputs.docs == 'true'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-
-      - name: Detect worker budget from logical threads / 2
+      - uses: dtolnay/rust-toolchain@1.97.0
+      - uses: taiki-e/install-action@v2
+        with:
+          tool: mdbook@0.4.40,sccache@0.15.0
+      - name: Install compiler and data dependencies
         run: |
-          WORKER_BUDGET="$(sh scripts/detect_worker_budget.sh)"
-          echo "WORKER_BUDGET=$WORKER_BUDGET" >> "$GITHUB_ENV"
-          echo "RAYON_THREADS=$WORKER_BUDGET" >> "$GITHUB_ENV"
-          echo "CARGO_JOBS=$WORKER_BUDGET" >> "$GITHUB_ENV"
-          echo "NEXTEST_TEST_THREADS=$WORKER_BUDGET" >> "$GITHUB_ENV"
-          echo "RUST_TEST_THREADS=$WORKER_BUDGET" >> "$GITHUB_ENV"
-          echo "Detected worker budget $WORKER_BUDGET from logical threads / 2."
-
-      - name: Install Rust toolchain (stable 1.97.0)
-        uses: dtolnay/rust-toolchain@1.97.0
-
-      - name: Cache cargo registry and docs artifacts
+          sudo apt-get update
+          sudo apt-get install -y clang mold libhdf5-dev pkg-config
+      - name: Cache documentation dependencies and build artifacts
         uses: actions/cache@v4
         with:
           path: |
             ${{ env.CARGO_HOME }}/registry
             ${{ env.CARGO_HOME }}/git
-            ${{ env.CARGO_HOME }}/bin
             ${{ env.CARGO_TARGET_DIR }}
-          key: rust-docs-${{ runner.os }}-${{ hashFiles('Cargo.lock') }}
-          restore-keys: rust-docs-${{ runner.os }}-
-
-      - name: Install mdBook
-        run: cargo install --force --version 0.4.40 mdbook
-
-      - name: Build publishable documentation bundle
-        run: ./makew docs-gate
-
-      - name: Upload docs artifact
-        uses: actions/upload-artifact@v4
+            ${{ github.workspace }}/.cache/gate-cbuild
+            ${{ github.workspace }}/.cache/docs-cbuild
+            ${{ github.workspace }}/target/docs-target
+          key: docs-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('rust-toolchain.toml', 'Cargo.lock', '.cargo/config.toml', '.github/workflows/ci.yml') }}-${{ github.sha }}
+          restore-keys: |
+            docs-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('rust-toolchain.toml', 'Cargo.lock', '.cargo/config.toml', '.github/workflows/ci.yml') }}-
+      - name: Build default-feature docs and check freshness together
+        run: make docs-freshness DOCS_CARGO_BUILD_DIR="$GITHUB_WORKSPACE/.cache/docs-cbuild"
+      - uses: actions/upload-artifact@v4
         with:
           name: docs-site
           path: target/site-docs
-
-  docs-freshness:
-    needs:
-      - validation
-      - docs-gate
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Download documentation artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: docs-site
-          path: docs-site
-
-      - name: Verify docs freshness and redirect wiring
-        run: cargo run --release -p repo_utilities --bin repo-utilities -- docs-redirect-check docs-site
+          retention-days: 7
 
   docs-deploy:
-    needs:
-      - docs-freshness
-    if: github.ref == 'refs/heads/main'
+    needs: docs-gate
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     permissions:
       pages: write
       id-token: write
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
     environment:
       name: github-pages
       url: ${{ steps.deploy.outputs.page_url }}
     steps:
-      - name: Download documentation artifact
-        uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v4
         with:
           name: docs-site
           path: docs-site
-
-      - name: Configure GitHub Pages
-        uses: actions/configure-pages@v5
-
-      - name: Prepare GitHub Pages artifact
-        uses: actions/upload-pages-artifact@v4
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v4
         with:
           path: docs-site
-
       - name: Deploy to GitHub Pages
         id: deploy
         uses: actions/deploy-pages@v4

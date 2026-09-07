@@ -218,7 +218,12 @@ compilation vs O(hours) for monolithic `ring`.
 | ASCII       | `make ansi-check`        | No Unicode/emoji in source         |
 | Terminology | `make terminology-gate`  | 8 banned patterns                  |
 | Governance  | `make governance-gate`   | 7-check registry + integrity       |
-| Pre-push    | `make pre-push-gate`     | Scoped clippy + test + governance  |
+| Manual local | `make validate-local`  | Scoped clippy + test + governance  |
+
+GitHub Actions owns automatic validation. Local pushes run no validation gate.
+Pull requests and main pushes use affected-component checks; weekly full runs
+cover workspace drift. Documentation, proofs, papers and surveys run on their
+declared inputs, with superseded runs canceled.
 
 ## Toolchain
 

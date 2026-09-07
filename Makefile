@@ -122,6 +122,8 @@ DOCS_RUSTDOC_DIR ?= $(DOCS_SITE_DIR)/rustdoc
 DOCS_CARGO_TARGET_DIR ?= $(CURDIR)/target/docs-target
 DOCS_CARGO_BUILD_DIR ?= $(REPO_TMP_CARGO_ROOT)/docs
 DOCS_CARGO_ENV = CARGO_HOME=$(REPO_CARGO_HOME) CARGO_TARGET_DIR=$(DOCS_CARGO_TARGET_DIR) CARGO_BUILD_BUILD_DIR=$(DOCS_CARGO_BUILD_DIR) CARGO_BUILD_JOBS=$(CARGO_JOBS) RAYON_NUM_THREADS=$(RAYON_THREADS) RUST_TEST_THREADS=$(RUST_TEST_THREADS)
+# Hosted documentation uses default features; SDK-equipped hosts can opt in.
+DOCS_FEATURE_FLAGS ?=
 SEMVER_BASELINE_REV ?= v1.0-methods
 SEMVER_BASELINE_SHA := $(shell git rev-parse --short=12 $(SEMVER_BASELINE_REV) 2>/dev/null || echo unknown)
 SEMVER_BASELINE_ROOT ?= $(CURDIR)/.cache/semver-baselines/$(SEMVER_BASELINE_REV)-$(SEMVER_BASELINE_SHA)
@@ -635,6 +637,59 @@ validate-ci-rust:
 gate-ci-rust: validate-ci-rust
 	@echo "DEPRECATED: make gate-ci-rust is a compatibility alias for make validate-ci-rust."
 
+.PHONY: validate-ci-scoped-rust
+validate-ci-scoped-rust: SHELL := /bin/bash
+validate-ci-scoped-rust: export CI_RUST_SCOPE := $(CI_RUST_SCOPE)
+validate-ci-scoped-rust: export CI_CLIPPY_SCOPE := $(CI_CLIPPY_SCOPE)
+validate-ci-scoped-rust:
+	@set -euo pipefail; \
+	validate_scope() { \
+	    local scope_name="$$1" scope_value="$$2"; \
+	    local -a scope_tokens=(); \
+	    if [[ "$$scope_value" == *$$'\n'* || "$$scope_value" == *$$'\r'* ]]; then \
+	        echo "ERROR: $$scope_name requires a single-line package scope." >&2; return 1; \
+	    fi; \
+	    read -r -a scope_tokens <<< "$$scope_value"; \
+	    if [ "$${#scope_tokens[@]}" -eq 1 ] && [ "$${scope_tokens[0]}" = --workspace ]; then return; fi; \
+	    if [ "$${#scope_tokens[@]}" -eq 0 ] || (( $${#scope_tokens[@]} % 2 != 0 )); then \
+	        echo "ERROR: $$scope_name requires --workspace or explicit -p package pairs." >&2; return 1; \
+	    fi; \
+	    for ((scope_index=0; scope_index<$${#scope_tokens[@]}; scope_index+=2)); do \
+	        if [ "$${scope_tokens[scope_index]}" != -p ] || \
+	           [[ ! "$${scope_tokens[scope_index+1]}" =~ ^[A-Za-z0-9_][A-Za-z0-9_-]*$$ ]]; then \
+	            echo "ERROR: invalid $$scope_name package scope." >&2; return 1; \
+	        fi; \
+	    done; \
+	}; \
+	validate_scope CI_RUST_SCOPE "$$CI_RUST_SCOPE"; \
+	validate_scope CI_CLIPPY_SCOPE "$$CI_CLIPPY_SCOPE"; \
+	read -r -a rust_scope <<< "$$CI_RUST_SCOPE"; \
+	read -r -a clippy_scope <<< "$$CI_CLIPPY_SCOPE"; \
+	light_scope=(); heavy_scope=(); \
+	if [ "$${rust_scope[0]}" = --workspace ]; then \
+	    light_scope=(--workspace --exclude algebra_analysis --exclude gr_core); \
+	    heavy_scope=(-p algebra_analysis -p gr_core); \
+	else \
+	    for ((scope_index=1; scope_index<$${#rust_scope[@]}; scope_index+=2)); do \
+	        package_name="$${rust_scope[scope_index]}"; \
+	        case "$$package_name" in \
+	            algebra_analysis|gr_core) heavy_scope+=(-p "$$package_name") ;; \
+	            *) light_scope+=(-p "$$package_name") ;; \
+	        esac; \
+	    done; \
+	fi; \
+	echo "[ci-rust] clippy: $$CI_CLIPPY_SCOPE"; \
+	$(CARGO_ENV_CI) cargo clippy --locked --profile validation --all-targets "$${clippy_scope[@]}" -- -D warnings; \
+	if [ "$${#light_scope[@]}" -gt 0 ]; then \
+	    echo "[ci-rust] tests (validation): $${light_scope[*]}"; \
+	    $(CARGO_ENV_CI) cargo nextest run --locked --cargo-profile validation -P ci --build-jobs $(CARGO_JOBS) --test-threads $(NEXTEST_TEST_THREADS) "$${light_scope[@]}"; \
+	fi; \
+	if [ "$${#heavy_scope[@]}" -gt 0 ]; then \
+	    echo "[ci-rust] tests (test-heavy): $${heavy_scope[*]}"; \
+	    $(CARGO_ENV_CI) cargo nextest run --locked --cargo-profile test-heavy -P heavy --build-jobs $(CARGO_JOBS) --test-threads $(NEXTEST_TEST_THREADS) "$${heavy_scope[@]}"; \
+	fi; \
+	echo "OK: scoped CI Rust validation passed."
+
 db-schema-drift-check: $(XTASK_CACHE)
 	$(CARGO_ENV) $(XTASK_CACHE) db-docs --check
 	@echo "OK: db-schema-drift-check passed."
@@ -868,27 +923,15 @@ hooks-install:
 	@chmod +x "$(HOOKS_DIR)/pre-push"
 	@git config core.hooksPath "$(HOOKS_DIR)"
 	@echo "OK: git hooks installed. core.hooksPath=$$(git config --get core.hooksPath)"
-	@echo "Pre-push will run: make validate-local"
+	@echo "CI owns automatic validation. Run make validate-local for manual validation."
 
-hooks-install-strict:
-	@mkdir -p "$(HOOKS_DIR)"
-	@cp "$(HOOKS_DIR)/pre-push" "$(HOOKS_DIR)/pre-push.bak" 2>/dev/null || true
-	@printf '%s\n' \
-		'#!/usr/bin/env bash' \
-		'set -euo pipefail' \
-		'repo_root="$$(git rev-parse --show-toplevel)"' \
-		'cd "$$repo_root"' \
-		'echo "[pre-push] running make validate-local"' \
-		'make validate-local' \
-		> "$(HOOKS_DIR)/pre-push"
-	@chmod +x "$(HOOKS_DIR)/pre-push"
-	@git config core.hooksPath "$(HOOKS_DIR)"
-	@echo "OK: strict git hook installed. core.hooksPath=$$(git config --get core.hooksPath)"
-	@echo "Pre-push will run: make validate-local"
+hooks-install-strict: hooks-install
+	@echo "hooks-install-strict installs the same inactive local validation hook."
 
 hooks-status:
 	@echo "core.hooksPath=$$(git config --get core.hooksPath || echo .git/hooks)"
 	@echo "pre-push hook exists? $$(test -f "$(HOOKS_DIR)/pre-push" && echo yes || echo no)"
+	@echo "CI owns automatic validation; make validate-local remains a manual command."
 
 smoke: check rust-smoke
 	@echo "OK: smoke lane passed."
@@ -2005,7 +2048,7 @@ docs-publish: registry-export-markdown
 
 docs-rustdoc:
 	@mkdir -p "$(DOCS_CARGO_TARGET_DIR)"
-	$(DOCS_CARGO_ENV) cargo doc --workspace --all-features --no-deps --document-private-items
+	$(DOCS_CARGO_ENV) cargo doc --locked --workspace $(DOCS_FEATURE_FLAGS) --no-deps --document-private-items
 
 cd-row-upgrade-batch:
 	@test -n "$(CD_ROW_UPGRADE_LANE)" || (echo "ERROR: set CD_ROW_UPGRADE_LANE=<jacobson1958|freudenthal1951>" && exit 1)
