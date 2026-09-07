@@ -6,6 +6,7 @@ on:
     branches: [main]
     paths:
       - 'crates/cd_kernel/**'
+      - 'crates/fwht/**'
       - 'crates/verified_core/**'
       - 'crates/gororoba_gpu_bridge/**'
       - 'Cargo.lock'

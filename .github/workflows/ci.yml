@@ -116,7 +116,7 @@ jobs:
           if [ "$FULL" = true ]; then
             printf 'docs=true\ndependencies=true\nwarp=true\n' >> "$GITHUB_OUTPUT"
           else
-            git diff --name-only "$DIFF_BASE" HEAD > reports/validation/changed-paths.txt
+            git diff --no-renames --name-only "$DIFF_BASE" HEAD > reports/validation/changed-paths.txt
             for lane in docs dependencies warp; do
               case "$lane" in
                 docs) pattern='^(docs/book/|crates/|xtask/|Cargo\.(toml|lock)$|rust-toolchain\.toml$|Makefile$|mk/|\.cargo/|\.github/workflows/ci\.yml$)' ;;

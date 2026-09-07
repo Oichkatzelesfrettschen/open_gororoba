@@ -22,6 +22,31 @@ const CI_WORKSPACE_TRIGGERS: &[&str] = &[
 
 const CI_WORKSPACE_TRIGGER_PREFIXES: &[&str] = &["mk/"];
 
+// Patched dependencies can affect compilation across the workspace.
+const SHARED_WORKSPACE_TRIGGER_PREFIXES: &[&str] = &["vendor/"];
+
+// Embedded inputs outside crate directories participate in their owner's tests.
+const EMBEDDED_INPUT_OWNERS: &[(&str, &str)] = &[
+    ("db/migrations/", "provenance_store"),
+    ("apps/gororoba_studio/ui/", "gororoba_cli"),
+    (
+        "data/output/audit/qgp-pp-spectrum-calibration/",
+        "data_core",
+    ),
+    (
+        "data/output/audit/qgp-fragmentation-grid-intake/",
+        "qgp_scaling",
+    ),
+    (
+        "data/output/audit/qgp-fragmentation-interpolation/",
+        "qgp_scaling",
+    ),
+    (
+        "data/output/audit/qgp-participant-reference-intake/",
+        "qgp_scaling",
+    ),
+];
+
 const LOCAL_SHARED_RUST_TRIGGERS: &[&str] = &[
     "Cargo.toml",
     "Cargo.lock",
@@ -54,6 +79,7 @@ const RUST_IRRELEVANT_PREFIXES: &[&str] = &[
 const RUST_IRRELEVANT_FILES: &[&str] = &[".gitignore", "pyproject.toml", "pytest.ini"];
 
 const GOVERNANCE_PREFIXES: &[&str] = &[
+    "db/migrations/",
     "registry/",
     "docs/",
     "reports/",
@@ -210,11 +236,20 @@ fn changed_files(
     if let Some(base_ref) = base {
         let (mut ok, mut committed, _) = git(
             root,
-            &["diff", "--name-only", &format!("{base_ref}...HEAD")],
+            &[
+                "diff",
+                "--no-renames",
+                "--name-only",
+                &format!("{base_ref}...HEAD"),
+            ],
         )
         .map_err(|err| BaseRefError(format!("failed to diff against base `{base_ref}`: {err}")))?;
         if !ok || committed.trim().is_empty() {
-            let retry = git(root, &["diff", "--name-only", base_ref, "HEAD"]).map_err(|err| {
+            let retry = git(
+                root,
+                &["diff", "--no-renames", "--name-only", base_ref, "HEAD"],
+            )
+            .map_err(|err| {
                 BaseRefError(format!("failed to diff against base `{base_ref}`: {err}"))
             })?;
             ok = retry.0;
@@ -233,7 +268,7 @@ fn changed_files(
             });
     }
 
-    let (_, working_tree, _) = git(root, &["diff", "--name-only", "HEAD"])
+    let (_, working_tree, _) = git(root, &["diff", "--no-renames", "--name-only", "HEAD"])
         .map_err(|err| BaseRefError(format!("failed to diff working tree: {err}")))?;
     working_tree
         .lines()
@@ -452,6 +487,9 @@ fn classify_changes(
         }
 
         if workspace_triggers.contains(file.as_str())
+            || SHARED_WORKSPACE_TRIGGER_PREFIXES
+                .iter()
+                .any(|prefix| file.starts_with(prefix))
             || (!local_mode
                 && CI_WORKSPACE_TRIGGER_PREFIXES
                     .iter()
@@ -463,6 +501,16 @@ fn classify_changes(
         if shared_rust_triggers.contains(file.as_str()) {
             classification.has_shared_rust_changes = true;
             continue;
+        }
+
+        for &(prefix, owner) in EMBEDDED_INPUT_OWNERS {
+            if file.starts_with(prefix) {
+                if all_crates.contains(owner) {
+                    classification.affected_crates.insert(owner.to_string());
+                } else {
+                    classification.force_workspace = true;
+                }
+            }
         }
 
         if RUST_IRRELEVANT_FILES.contains(&file.as_str()) {
@@ -730,6 +778,219 @@ fn main() -> ExitCode {
 #[cfg(test)]
 mod tests {
     use super::is_cargo_manifest;
+
+    #[test]
+    fn vendored_dependencies_force_workspace_validation() {
+        for local_mode in [false, true] {
+            let classification = super::classify_changes(
+                &["vendor/proc-macro-error2/src/lib.rs".into()],
+                &Default::default(),
+                local_mode,
+            );
+            assert!(classification.force_workspace);
+            assert!(classification.has_check_relevant_changes);
+        }
+    }
+
+    #[test]
+    fn embedded_inputs_route_to_owners_and_consumers() -> anyhow::Result<()> {
+        let root = super::repo_root();
+        let graph = super::build_dependency_graph(&root)?;
+        let reverse = super::invert_graph(&graph.deps);
+        for (path, owner, consumer, governance) in [
+            (
+                "db/migrations/0001_provenance_index.sql",
+                "provenance_store",
+                "xtask",
+                true,
+            ),
+            (
+                "apps/gororoba_studio/ui/index.html",
+                "gororoba_cli",
+                "gororoba_cli_data",
+                false,
+            ),
+            (
+                "apps/gororoba_studio/ui/app.js",
+                "gororoba_cli",
+                "gororoba_cli_data",
+                false,
+            ),
+            (
+                "apps/gororoba_studio/ui/styles.css",
+                "gororoba_cli",
+                "gororoba_cli_data",
+                false,
+            ),
+            (
+                "data/output/audit/qgp-pp-spectrum-calibration/pp-table4.json",
+                "data_core",
+                "gororoba_cli_data",
+                true,
+            ),
+            (
+                "data/output/audit/qgp-pp-spectrum-calibration/pp-table4-yaml-reference.csv",
+                "data_core",
+                "gororoba_cli_data",
+                true,
+            ),
+            (
+                "data/output/audit/qgp-fragmentation-grid-intake/pinned-mirrors/jeffersonlab-HLO.GRID",
+                "qgp_scaling",
+                "gororoba_cli_physics",
+                true,
+            ),
+            (
+                "data/output/audit/qgp-fragmentation-interpolation/default_real32.csv",
+                "qgp_scaling",
+                "gororoba_cli_physics",
+                true,
+            ),
+            (
+                "data/output/audit/qgp-participant-reference-intake/table1-participant-rows.csv",
+                "qgp_scaling",
+                "gororoba_cli_physics",
+                true,
+            ),
+        ] {
+            assert!(root.join(path).is_file(), "{path}");
+            for local_mode in [false, true] {
+                let classification =
+                    super::classify_changes(&[path.into()], &graph.all_crates, local_mode);
+                assert_eq!(
+                    classification.affected_crates,
+                    [owner.to_string()].into(),
+                    "{path}"
+                );
+                assert!(!classification.force_workspace, "{path}");
+                assert_eq!(classification.has_governance_changes, governance, "{path}");
+                assert!(classification.has_check_relevant_changes, "{path}");
+                let closure = super::transitive_closure(&classification.affected_crates, &reverse);
+                assert!(closure.contains(consumer), "{path}: missing {consumer}");
+            }
+        }
+        Ok(())
+    }
+
+    #[test]
+    fn embedded_input_prefixes_are_bounded_and_missing_owners_fail_closed() {
+        for local_mode in [false, true] {
+            for path in [
+                "apps/gororoba_studio/ui-other/app.js",
+                "db/migrations-other/example.sql",
+                "data/output/audit/qgp-fragmentation-interpolation-other/data.csv",
+            ] {
+                let classification =
+                    super::classify_changes(&[path.into()], &Default::default(), local_mode);
+                assert!(classification.affected_crates.is_empty(), "{path}");
+                assert!(!classification.force_workspace, "{path}");
+            }
+            for &(prefix, _) in super::EMBEDDED_INPUT_OWNERS {
+                let classification = super::classify_changes(
+                    &[format!("{prefix}input")],
+                    &Default::default(),
+                    local_mode,
+                );
+                assert!(classification.force_workspace, "{prefix}");
+            }
+        }
+    }
+
+    #[test]
+    fn committed_and_staged_renames_route_source_and_destination_owners() -> anyhow::Result<()> {
+        struct Fixture(std::path::PathBuf);
+        impl Drop for Fixture {
+            fn drop(&mut self) {
+                let _ = std::fs::remove_dir_all(&self.0);
+            }
+        }
+        let nonce = std::time::SystemTime::now()
+            .duration_since(std::time::UNIX_EPOCH)?
+            .as_nanos();
+        let fixture = Fixture(std::env::temp_dir().join(format!(
+            "workspace-routing-renames-{}-{nonce}",
+            std::process::id()
+        )));
+        std::fs::create_dir(&fixture.0)?;
+        let run_git = |args: &[&str]| -> anyhow::Result<String> {
+            let (success, stdout, stderr) = super::git(&fixture.0, args)?;
+            anyhow::ensure!(success, "git {args:?}: {stderr}");
+            Ok(stdout)
+        };
+        run_git(&["init", "--quiet", "--initial-branch=main"])?;
+        run_git(&["config", "user.name", "Routing fixture"])?;
+        run_git(&["config", "user.email", "routing@example.invalid"])?;
+        run_git(&["config", "core.hooksPath", "/dev/null"])?;
+        let moves = [
+            ("crates/removed_owner/src/source.rs", "docs/source.rs"),
+            (
+                "crates/moved_owner/src/other.rs",
+                "crates/new_owner/src/other.rs",
+            ),
+        ];
+        for (source, destination) in moves {
+            std::fs::create_dir_all(fixture.0.join(source).parent().unwrap())?;
+            std::fs::create_dir_all(fixture.0.join(destination).parent().unwrap())?;
+            std::fs::write(fixture.0.join(source), format!("// {source}\n"))?;
+        }
+        run_git(&["add", "."])?;
+        run_git(&[
+            "-c",
+            "commit.gpgsign=false",
+            "commit",
+            "--quiet",
+            "-m",
+            "Source owners",
+        ])?;
+        let base = run_git(&["rev-parse", "HEAD"])?;
+        for (source, destination) in moves {
+            std::fs::rename(fixture.0.join(source), fixture.0.join(destination))?;
+        }
+        run_git(&["add", "-A"])?;
+        let detected = run_git(&["diff", "--cached", "--name-status", "--find-renames=100%"])?;
+        assert_eq!(
+            detected
+                .lines()
+                .filter(|line| line.starts_with("R100"))
+                .count(),
+            2
+        );
+        let expected: std::collections::BTreeSet<_> = moves
+            .into_iter()
+            .flat_map(|(source, destination)| [source.to_string(), destination.to_string()])
+            .collect();
+        for committed in [false, true] {
+            if committed {
+                run_git(&[
+                    "-c",
+                    "commit.gpgsign=false",
+                    "commit",
+                    "--quiet",
+                    "-m",
+                    "Move sources",
+                ])?;
+            }
+            let paths = super::changed_files(&fixture.0, Some(&base))
+                .map_err(|error| anyhow::anyhow!(error.to_string()))?;
+            assert_eq!(
+                paths
+                    .iter()
+                    .cloned()
+                    .collect::<std::collections::BTreeSet<_>>(),
+                expected
+            );
+            let owners = [
+                "removed_owner".to_string(),
+                "moved_owner".to_string(),
+                "new_owner".to_string(),
+            ]
+            .into();
+            let classification = super::classify_changes(&paths, &owners, false);
+            assert_eq!(classification.affected_crates, owners);
+            assert!(classification.has_governance_changes);
+        }
+        Ok(())
+    }
 
     #[test]
     fn root_member_dependencies_enter_reverse_closure() -> anyhow::Result<()> {
