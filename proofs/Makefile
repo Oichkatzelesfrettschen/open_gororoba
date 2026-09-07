@@ -136,11 +136,27 @@ clean: Makefile.rocq
 	rm -f Makefile.rocq Makefile.rocq.conf .Makefile.rocq.d
 	rm -f Makefile.coq Makefile.coq.conf .Makefile.coq.d
 
-check: all
-	@echo "Checking for admitted proofs..."
-	@if grep -rn 'Admitted\.\|admit\.' theories/ verified/; then \
-	  echo "FAIL: admitted proofs found"; exit 1; \
-	else echo "CLEAN: all proofs complete"; fi
+RUSTC ?= rustc
+ADMISSION_CHECK_DIR := $(CURDIR)/../.cache/proof-admission-check
+ADMISSION_CHECK := $(ADMISSION_CHECK_DIR)/admission-check
+ADMISSION_CHECK_TEST := $(ADMISSION_CHECK_DIR)/admission-check-tests
+
+$(ADMISSION_CHECK): admission_check.rs
+	@mkdir -p "$(ADMISSION_CHECK_DIR)"
+	$(RUSTC) --edition=2024 -D warnings $< -o "$@"
+
+$(ADMISSION_CHECK_TEST): admission_check.rs
+	@mkdir -p "$(ADMISSION_CHECK_DIR)"
+	$(RUSTC) --edition=2024 -D warnings --test $< -o "$@"
+
+.PHONY: check-admissions test-admission-check
+test-admission-check: $(ADMISSION_CHECK_TEST)
+	"$(ADMISSION_CHECK_TEST)"
+
+check-admissions: test-admission-check $(ADMISSION_CHECK)
+	"$(ADMISSION_CHECK)" theories/ verified/
+
+check: all check-admissions
 
 extract: all
 	@echo "Extracting OCaml code from Rocq..."
