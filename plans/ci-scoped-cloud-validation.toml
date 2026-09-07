@@ -24,6 +24,10 @@ status = "in_progress"
 acceptance = "Actionlint, scope dispatch/error tests and actual hosted workflow execution pass without suppressed failures."
 local_result = "Actionlint, nine router tests and scoped Make dispatch/error tests pass. All four paper targets build with latexmk -Werror after exact historical input recovery."
 hosted_result = "At f9802be6, all four papers and both benchmark architectures pass. Rocq tool installation succeeds and is cached. Repository validation stops during fitsio-sys compilation because CFITSIO is missing; cargo-geiger panics in embedded Cargo 0.86 package resolution. Both failures require repair before integration."
+proof_result = "Hosted Rocq compilation passes. The subsequent substring admission check rejects comments and identifiers. A dependency-free Rust lexer passes five regression tests and scans 298 proof sources; hosted extraction verification remains pending."
+native_dependencies = "Declare CFITSIO, HDF5, fontconfig, BLAS/LAPACK/OpenBLAS and glslc from inspected build scripts and dependency paths. Both GLSL shaders compile to SPIR-V locally."
+cache_repair = "Retain compiler artifacts after failures; restore by source revision, lock and toolchain identities; use attempt-specific save keys so same-commit retries retain additional completed work."
+hygiene_repair = "Define the CUDA ownership prerequisite after XTASK_CACHE so clean caches build the tool. Remove the empty verify-no-reports-writes invocation left after commit 4549c252 deleted its Python verification directory and Make recipe. Workflow lint runs before compilation."
 
 [[task]]
 name = "Resolve hosted dependency and container failures"

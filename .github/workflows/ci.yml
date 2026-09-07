@@ -51,12 +51,15 @@ jobs:
 
       - uses: taiki-e/install-action@v2
         with:
-          tool: cargo-nextest@0.9.143,sccache@0.15.0
+          tool: cargo-nextest@0.9.143,sccache@0.15.0,actionlint@1.7.12
 
       - name: Install compiler and data dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y clang mold glslc libcfitsio-dev libhdf5-dev libfontconfig1-dev libopenblas-dev libblas-dev liblapack-dev pkg-config
+          sudo apt-get install -y clang mold glslc libcfitsio-dev libhdf5-dev libfontconfig1-dev libopenblas-dev libblas-dev liblapack-dev pkg-config shellcheck
+
+      - name: Validate workflow syntax and embedded shell
+        run: actionlint
 
       - name: Cache Rust dependencies and validation artifacts
         id: rust-cache

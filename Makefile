@@ -4,7 +4,7 @@
 .PHONY: verify verify-grand verify-c010-c011-theses ansi-check ansi-check-strict terminology-gate doctor doctor-blas provenance cuda-source-ownership
 .PHONY: provenance-registry-index provenance-registry-export provenance-registry-verify provenance-registry-doctor provenance-registry-link-audit provenance-registry-recover
 .PHONY: rocq-proofs rocq-proofs-check rocq-project-check rocq-makefile-check lva-paper
-.PHONY: heavy test-inventory verify-no-reports-writes
+.PHONY: heavy test-inventory
 .PHONY: rust-test rust-clippy rust-semver-check rust-smoke rust-regression rust-regression-scoped miri-cd-kernel dep-audit cargo-deny-check mcp-smoke e027-validate studio-run studio-check profile-tensor-avt x87-strategy-bench x87-strategy-perf x87-strategy-hyperfine x87-strategy-flamegraph x87-givens-microbench x87-givens-microbench-perf jacobi-backend-sweep jacobi-backend-perf jacobi-backend-flamegraph jacobi-backend-samply jacobi-backend-samply-compare gpu-bench gpu-bench-ncu gpu-bench-nsys
 .PHONY: cpu-bench cpu-bench-perf cpu-bench-cachegrind cpu-bench-flamegraph parity-bench parity-report
 .PHONY: pre-push-gate-scoped submodule-sync validate-local validate-local-xtask validate-ci validate-ci-registry validate-ci-rust validate-repository validate-repository-fast validate-governance validation-tools registry-validation-tools validation-tools-clean validation-tools-rebuild validation-tools-check-paths validation-lock-status data-core-pure-check
@@ -188,9 +188,6 @@ bootstrap-dev:
 
 lint: rust-clippy
 
-cuda-source-ownership: $(XTASK_CACHE)
-	$(XTASK_CACHE) cuda-source-ownership
-
 # ---- Formatting (dprint) ----
 # Unified formatting for Rust (.rs via rustfmt), TOML, JSON, and Markdown.
 # Install: cargo install dprint
@@ -324,7 +321,6 @@ check: $(REPO_UTILITIES_BIN)
 	@$(REPO_UTILITIES_BIN) ansi-check --check
 	@$(REPO_UTILITIES_BIN) terminology-gate
 	$(MAKE) cuda-source-ownership
-	$(MAKE) verify-no-reports-writes
 	@echo "OK: fast shared check suite complete."
 
 # Governance verifier targets
@@ -410,6 +406,9 @@ CORE_VALIDATION_SOURCE_DEPS := $(shell find crates xtask -type f \( -name '*.rs'
 # validation path needs both, while the broad registry bundle below remains a
 # separate tier so ordinary Rust edits do not pay for all registry binaries.
 XTASK_CACHE := $(VALIDATION_TOOLS_DIR)/xtask
+
+cuda-source-ownership: $(XTASK_CACHE)
+	$(XTASK_CACHE) cuda-source-ownership
 CORE_VALIDATION_STAMP := $(VALIDATION_TOOLS_DIR)/core-validation.stamp
 
 $(CORE_VALIDATION_STAMP): $(CORE_VALIDATION_SOURCE_DEPS) $(VALIDATION_SOURCE_IDENTITY_FILE)
