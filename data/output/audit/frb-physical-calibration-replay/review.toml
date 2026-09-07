@@ -1,0 +1,7 @@
+schema_version = 1
+reviewer = "frb_null_design independent agent"
+status = "passed_bounded_scientific_review"
+scope = "Findings against retained execution protocol, calibration results and historical reconstruction receipts."
+checks = ["All nine sensitivity records match results", "Partitions and source/protocol hashes match", "Failed predictions remain in denominators", "Primary unbounded coverage is distinguished from finite precision", "Historical replay declares its composite source identity", "Sensitivity results remain descriptive", "Population inference retains exchangeability and common-coverage assumptions"]
+clarification = "The historical_estimator field names the historical foreground convention evaluated with corrected current mean-DM code, rather than the old transformed producer."
+remaining = "Canonical admission and publication verification are separate gates."

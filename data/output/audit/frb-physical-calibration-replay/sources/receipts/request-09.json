@@ -1,0 +1,20 @@
+{
+  "bytes": 1795,
+  "client": "requests",
+  "client_version": "2.34.2",
+  "complete": true,
+  "content_type": "text/plain; charset=utf-8",
+  "decoded_filename": "galaxy-references.csv",
+  "elapsed_seconds": 0.368512,
+  "encoding": "gzip; mtime=0; exact decoded response bytes",
+  "error": "",
+  "final_url": "https://raw.githubusercontent.com/FRBs/FRB/996fcda9b0b22431e3171208b4c8e1cf2798e823/frb/data/Galaxies/Literature/all_refs.csv",
+  "path": "data/output/audit/frb-physical-calibration-replay/sources/galaxy-references.csv.gz",
+  "retrieved_path": "data/output/audit/frb-physical-calibration-replay/sources/galaxy-references.csv",
+  "retrieved_utc": "2026-09-07T00:25:39.570712+00:00",
+  "sha256": "f306317c5c126d78e64f2f0c493899fa1895a2c01ae1eeabd169b8150a72813a",
+  "status": 200,
+  "storage_bytes": 608,
+  "storage_sha256": "3cc944b7d3807a6e918bfa2ad47c1ba9ccd91f6214fccf5fa7de415158da297f",
+  "url": "https://raw.githubusercontent.com/FRBs/FRB/996fcda9b0b22431e3171208b4c8e1cf2798e823/frb/data/Galaxies/Literature/all_refs.csv"
+}

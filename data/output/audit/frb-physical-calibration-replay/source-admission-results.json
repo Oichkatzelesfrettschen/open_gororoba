@@ -1,0 +1,182 @@
+[
+  {
+    "observation_key": "frb-retrieval-followup-complete_original_pdf",
+    "source_key": "url:https://arxiv.org/pdf/2108.01282",
+    "outcome": "body_retained",
+    "spec_sha256": "d572a9c5d24a5ad6d4e590c37b1f6c9cc2a9360945a442b9b2e55d2a27600a3d",
+    "correspondence_basis": "operator_association_with_matching_size",
+    "cryptographic_request_binding": false,
+    "scientific_promotion": false
+  },
+  {
+    "observation_key": "frb-retrieval-followup-corrected_same_commit_source_path",
+    "source_key": "url:https://raw.githubusercontent.com/FRBs/FRB/996fcda9b0b22431e3171208b4c8e1cf2798e823/frb/mw.py",
+    "outcome": "body_retained",
+    "spec_sha256": "071fab758ec11d0d35a566d95e189b9f77835e386cceeaee2a25ce433798a13a",
+    "correspondence_basis": "operator_association_with_matching_size",
+    "cryptographic_request_binding": false,
+    "scientific_promotion": false
+  },
+  {
+    "observation_key": "frb-physical-calibration-retrieval-01",
+    "source_key": "url:https://api.github.com/repos/FRBs/FRB",
+    "outcome": "body_retained",
+    "spec_sha256": "050d7b22485833ca18097b1032c26c2a121ba304642817a39bfe065a2c3fbe0e",
+    "correspondence_basis": "operator_recorded_structured_receipt_correspondence",
+    "cryptographic_request_binding": false,
+    "scientific_promotion": false
+  },
+  {
+    "observation_key": "frb-physical-calibration-retrieval-02",
+    "source_key": "url:https://arxiv.org/pdf/2005.13161",
+    "outcome": "body_retained",
+    "spec_sha256": "c8f05c70ed941f7d704c13246c13da8ac07b026b5e56424d8cadb8136586a127",
+    "correspondence_basis": "operator_recorded_structured_receipt_correspondence",
+    "cryptographic_request_binding": false,
+    "scientific_promotion": false
+  },
+  {
+    "observation_key": "frb-physical-calibration-retrieval-03",
+    "source_key": "url:https://api.github.com/repos/FRBs/FRB/commits/main",
+    "outcome": "body_retained",
+    "spec_sha256": "85ead45f0e3498013e82a5c14c589ce388a9fa0ace1e7d7ba5e3faa2a56f1cb2",
+    "correspondence_basis": "operator_recorded_structured_receipt_correspondence",
+    "cryptographic_request_binding": false,
+    "scientific_promotion": false
+  },
+  {
+    "observation_key": "frb-physical-calibration-retrieval-04",
+    "source_key": "url:https://api.github.com/repos/FRBs/FRB/git/trees/main?recursive=1",
+    "outcome": "body_retained",
+    "spec_sha256": "cacdbe6f3e5385ed9d689d0170e0d219883ac50feea4c81d1c8f6f4e15e1aae3",
+    "correspondence_basis": "operator_recorded_structured_receipt_correspondence",
+    "cryptographic_request_binding": false,
+    "scientific_promotion": false
+  },
+  {
+    "observation_key": "frb-physical-calibration-retrieval-05",
+    "source_key": "url:https://raw.githubusercontent.com/FRBs/FRB/996fcda9b0b22431e3171208b4c8e1cf2798e823/README.md",
+    "outcome": "body_retained",
+    "spec_sha256": "da2881934aedbe74600430278fe316ec44a0b4fa2d7ec61f4e3d10cd16d30a51",
+    "correspondence_basis": "operator_recorded_structured_receipt_correspondence",
+    "cryptographic_request_binding": false,
+    "scientific_promotion": false
+  },
+  {
+    "observation_key": "frb-physical-calibration-retrieval-06",
+    "source_key": "url:https://raw.githubusercontent.com/FRBs/FRB/996fcda9b0b22431e3171208b4c8e1cf2798e823/frb/data/FRBs/FRB20200430A.json",
+    "outcome": "body_retained",
+    "spec_sha256": "f465750e588aa654b184cc6db0b9cbf79fa712efb960243c8360fd7392491f1a",
+    "correspondence_basis": "operator_recorded_structured_receipt_correspondence",
+    "cryptographic_request_binding": false,
+    "scientific_promotion": false
+  },
+  {
+    "observation_key": "frb-physical-calibration-retrieval-07",
+    "source_key": "url:https://raw.githubusercontent.com/FRBs/FRB/996fcda9b0b22431e3171208b4c8e1cf2798e823/frb/data/FRBs/FRBs_base.csv",
+    "outcome": "body_retained",
+    "spec_sha256": "f0232f66c949c4451b36c79c662ddc6919b38251780102b7017a7da29c2692ec",
+    "correspondence_basis": "operator_recorded_structured_receipt_correspondence",
+    "cryptographic_request_binding": false,
+    "scientific_promotion": false
+  },
+  {
+    "observation_key": "frb-physical-calibration-retrieval-08",
+    "source_key": "url:https://raw.githubusercontent.com/FRBs/FRB/996fcda9b0b22431e3171208b4c8e1cf2798e823/frb/data/Galaxies/public_hosts.csv",
+    "outcome": "body_retained",
+    "spec_sha256": "068b30e388a9303b0f72e011f583bfafd6d6b327e5fe65d922514847af5895b1",
+    "correspondence_basis": "operator_recorded_structured_receipt_correspondence",
+    "cryptographic_request_binding": false,
+    "scientific_promotion": false
+  },
+  {
+    "observation_key": "frb-physical-calibration-retrieval-09",
+    "source_key": "url:https://raw.githubusercontent.com/FRBs/FRB/996fcda9b0b22431e3171208b4c8e1cf2798e823/frb/data/Galaxies/Literature/all_refs.csv",
+    "outcome": "body_retained",
+    "spec_sha256": "2cc1654759978490dc64812b22e7a2e84497142ac737710879327bf85de68a45",
+    "correspondence_basis": "operator_recorded_structured_receipt_correspondence",
+    "cryptographic_request_binding": false,
+    "scientific_promotion": false
+  },
+  {
+    "observation_key": "frb-physical-calibration-retrieval-10",
+    "source_key": "url:https://arxiv.org/html/2408.02083v1",
+    "outcome": "body_retained",
+    "spec_sha256": "d187ab3c78e7614d4504c0d1b408c2fc81ff06fd9b34926a998278784945f67c",
+    "correspondence_basis": "operator_recorded_structured_receipt_correspondence",
+    "cryptographic_request_binding": false,
+    "scientific_promotion": false
+  },
+  {
+    "observation_key": "frb-physical-calibration-retrieval-12",
+    "source_key": "url:https://raw.githubusercontent.com/FRBs/FRB/996fcda9b0b22431e3171208b4c8e1cf2798e823/frb/builds/build_frbs.py",
+    "outcome": "body_retained",
+    "spec_sha256": "d895dbcffefa79c8b1b09d7833b7c75a2ee6ca967be097299e8ea264c8f6c9f2",
+    "correspondence_basis": "operator_recorded_structured_receipt_correspondence",
+    "cryptographic_request_binding": false,
+    "scientific_promotion": false
+  },
+  {
+    "observation_key": "frb-physical-calibration-retrieval-13",
+    "source_key": "url:https://arxiv.org/html/2108.01282v1",
+    "outcome": "body_retained",
+    "spec_sha256": "81141f911e797da7987f13e8d64365fa5e1ae20d597a7a0083434704f130e2d7",
+    "correspondence_basis": "operator_recorded_structured_receipt_correspondence",
+    "cryptographic_request_binding": false,
+    "scientific_promotion": false
+  },
+  {
+    "observation_key": "frb-physical-calibration-retrieval-14",
+    "source_key": "url:https://raw.githubusercontent.com/FRBs/FRB/996fcda9b0b22431e3171208b4c8e1cf2798e823/frb/frb.py",
+    "outcome": "body_retained",
+    "spec_sha256": "22651c9fc1c6f30583f8684ce7784fd739f50b180c970b6feebd9f04222a4e84",
+    "correspondence_basis": "operator_recorded_structured_receipt_correspondence",
+    "cryptographic_request_binding": false,
+    "scientific_promotion": false
+  },
+  {
+    "observation_key": "frb-physical-calibration-retrieval-15",
+    "source_key": "url:https://raw.githubusercontent.com/FRBs/FRB/996fcda9b0b22431e3171208b4c8e1cf2798e823/frb/data/Galaxies/PATH/adopted.csv",
+    "outcome": "body_retained",
+    "spec_sha256": "416e7cff3e9dcf8755185e14e00624fb1cfc8b6e587c5b66ad3db42bc932cde2",
+    "correspondence_basis": "operator_recorded_structured_receipt_correspondence",
+    "cryptographic_request_binding": false,
+    "scientific_promotion": false
+  },
+  {
+    "observation_key": "frb-physical-calibration-retrieval-16",
+    "source_key": "url:https://arxiv.org/html/2106.04352v1",
+    "outcome": "body_retained",
+    "spec_sha256": "f1f2a18b433a924e2d7684c96d06073e45f3ddbfb9fc89405d48faa864db3320",
+    "correspondence_basis": "operator_recorded_structured_receipt_correspondence",
+    "cryptographic_request_binding": false,
+    "scientific_promotion": false
+  },
+  {
+    "observation_key": "frb-physical-calibration-retrieval-17",
+    "source_key": "url:https://raw.githubusercontent.com/FRBs/FRB/996fcda9b0b22431e3171208b4c8e1cf2798e823/frb/dm/mw.py",
+    "outcome": "request_failed",
+    "spec_sha256": "1b744c6ef0596e92a392f019cbd99a8b22599ce4aa6a912999dc7fe45bcc7fee",
+    "correspondence_basis": "operator_recorded_structured_receipt_correspondence",
+    "cryptographic_request_binding": false,
+    "scientific_promotion": false
+  },
+  {
+    "observation_key": "frb-physical-calibration-retrieval-18",
+    "source_key": "url:https://raw.githubusercontent.com/FRBs/FRB/996fcda9b0b22431e3171208b4c8e1cf2798e823/frb/mw.py",
+    "outcome": "body_retained",
+    "spec_sha256": "c6dc6936320d2aaac321201c098348bdcde93fdd227fcf762d1c880f67cfc6c5",
+    "correspondence_basis": "operator_recorded_structured_receipt_correspondence",
+    "cryptographic_request_binding": false,
+    "scientific_promotion": false
+  },
+  {
+    "observation_key": "frb-physical-calibration-retrieval-19",
+    "source_key": "url:https://arxiv.org/html/2408.02083v1",
+    "outcome": "body_retained",
+    "spec_sha256": "8269cee345cf32af29631245eb0629dc3ed739f9ba3d76639bf2096d43453e9d",
+    "correspondence_basis": "operator_recorded_structured_receipt_correspondence",
+    "cryptographic_request_binding": false,
+    "scientific_promotion": false
+  }
+]

@@ -290,6 +290,22 @@ that basis from retained-manifest digest association. Failed requests use
 unresolved in both cases. Matching replay revalidates evidence and preserves the
 original receipt; history-loss guards reject destructive imports.
 
+Python `requests` and `urllib` observations use a single structured JSON request
+witness. The witness requires `url`, explicitly nullable `final_url` and `status`,
+`retrieved_utc`, `client`, `client_version`, `complete`, `error`, `path`, `sha256`,
+`bytes` and `storage_sha256`. The specification uses timestamp precision and tool
+`Python <client> <version> (structured receipt)`. Successful admission matches the
+complete 2xx receipt to the retained body's path, decoded digest and length, and
+storage digest. Failed HTTP requests retain their response status; transport
+failures require an explicit error and absent status. Incomplete 2xx bodies remain
+retained acquisition evidence and fail successful-source admission. The report
+uses `operator_recorded_structured_receipt_correspondence` and keeps
+`cryptographic_request_binding=false`: an operator-recorded digest association
+establishes file correspondence, while network authenticity and scholarly document
+identity require separate evidence. The FRB calibration bundle retains both
+independent clients' byte-identical primary HTML acquisitions and the excluded
+partial response.
+
 `data/output/audit/insight-source-admission/` supplies six retained-body and two
 failed-request specifications. Li's failed HTTP-input request reached HTTPS through
 HSTS; the HTTP endpoint remains unmeasured. Original pilot receipts retain their

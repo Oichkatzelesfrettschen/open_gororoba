@@ -1,0 +1,24 @@
+{
+  "title_page": {
+    "path": "bhandari-title-page.txt.gz",
+    "encoding": "gzip",
+    "decoded_bytes": 4252,
+    "decoded_sha256": "0aa519e3e8c5c33ad041bcc4ab6f04e9160c947fa0a61b60015f4ecac02b4ebf",
+    "storage_bytes": 2081,
+    "storage_sha256": "28a7325c6cb4304cb255176b78e4cb6f324584d1868be21a45dff0a6adb6579a"
+  },
+  "pdfinfo": {
+    "path": "bhandari-pdfinfo.txt.gz",
+    "encoding": "gzip",
+    "decoded_bytes": 547,
+    "decoded_sha256": "04b31272901c86435192d21d8036df9225fd39bc02ff8c1e611e748b7081b7d1",
+    "storage_bytes": 308,
+    "storage_sha256": "cb0ffc2d3a51c3b775d8bf01a68ea3ddc3f8bb49f40a21340a2c6e0c7451533e"
+  },
+  "paper": "Characterizing the FRB host galaxy population and its connection to transients in the local and extragalactic Universe",
+  "arxiv": "2108.01282v2",
+  "pages": 27,
+  "original_prefix_bytes": 5000001,
+  "original_prefix_equal": true,
+  "mirror_complete_equal": true
+}

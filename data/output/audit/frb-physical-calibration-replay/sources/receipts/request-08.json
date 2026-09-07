@@ -1,0 +1,20 @@
+{
+  "bytes": 9902,
+  "client": "urllib",
+  "client_version": "3.14.7",
+  "complete": true,
+  "content_type": "text/plain; charset=utf-8",
+  "decoded_filename": "public-hosts.csv",
+  "elapsed_seconds": 0.370052,
+  "encoding": "gzip; mtime=0; exact decoded response bytes",
+  "error": "",
+  "final_url": "https://raw.githubusercontent.com/FRBs/FRB/996fcda9b0b22431e3171208b4c8e1cf2798e823/frb/data/Galaxies/public_hosts.csv",
+  "path": "data/output/audit/frb-physical-calibration-replay/sources/public-hosts.csv.gz",
+  "retrieved_path": "data/output/audit/frb-physical-calibration-replay/sources/public-hosts.csv",
+  "retrieved_utc": "2026-09-07T00:25:39.038871+00:00",
+  "sha256": "9349eadc88d1742f5e2a4088b5d07dbc2d71c77c4af22bd49f75a43ef5d1b2d3",
+  "status": 200,
+  "storage_bytes": 3695,
+  "storage_sha256": "0c1b3bf4d0da7b03e3fad4ad2c2a9ba51cecc75a7c7ba7fa3164f09c3de696e2",
+  "url": "https://raw.githubusercontent.com/FRBs/FRB/996fcda9b0b22431e3171208b4c8e1cf2798e823/frb/data/Galaxies/public_hosts.csv"
+}

@@ -121,8 +121,98 @@ fn artifact_snapshot(connection: &Connection, expected: &SourceArtifactPrestate)
     }
     Ok(json!({"artifact_id":expected.artifact_id,"key":row.0,"canonical_url":row.1}))
 }
+
+/// Operator-recorded HTTP metadata binds declared fields to retained bytes;
+/// metadata correspondence does not authenticate a network exchange.
+#[derive(Deserialize)]
+struct PythonHttpReceipt {
+    url: String,
+    #[serde(deserialize_with = "required_nullable")]
+    final_url: Option<String>,
+    #[serde(deserialize_with = "required_nullable")]
+    status: Option<u16>,
+    retrieved_utc: String,
+    client: String,
+    client_version: String,
+    complete: bool,
+    error: String,
+    path: String,
+    sha256: String,
+    bytes: u64,
+    storage_sha256: String,
+}
+
+fn required_nullable<'de, T: Deserialize<'de>, D: serde::Deserializer<'de>>(
+    deserializer: D,
+) -> std::result::Result<Option<T>, D::Error> {
+    Option::<T>::deserialize(deserializer)
+}
+
+fn verify_python_receipt(spec: &SourceObservationSpec, text: &str) -> Result<&'static str> {
+    let receipt: PythonHttpReceipt = serde_json::from_str(text)
+        .context("Python request evidence requires one structured HTTP receipt object")?;
+    for value in std::iter::once(receipt.url.as_str()).chain(receipt.final_url.as_deref()) {
+        if !matches!(url::Url::parse(value)?.scheme(), "http" | "https") {
+            bail!("Python HTTP receipt requires HTTP or HTTPS URLs");
+        }
+    }
+    if !matches!(receipt.client.as_str(), "requests" | "urllib")
+        || receipt.client_version.trim().is_empty()
+        || receipt.client_version.chars().any(char::is_whitespace)
+        || spec.tool
+            != format!(
+                "Python {} {} (structured receipt)",
+                receipt.client, receipt.client_version
+            )
+        || !matches!(spec.time_precision, SourceTimePrecision::Timestamp)
+        || receipt.url != spec.requested_url
+        || receipt.final_url != spec.final_url
+        || receipt.status != spec.http_status
+        || receipt.retrieved_utc != spec.observed_at
+    {
+        bail!("Python receipt URL, status, timestamp or client attribution mismatch");
+    }
+    match spec.outcome {
+        SourceTransportOutcome::BodyRetained => {
+            let body = spec
+                .body
+                .as_ref()
+                .context("Python success requires retained body")?;
+            if !receipt.complete
+                || !receipt.error.is_empty()
+                || !receipt
+                    .status
+                    .is_some_and(|status| (200..300).contains(&status))
+                || receipt.final_url.is_none()
+                || receipt.path != body.path
+                || receipt.sha256 != body.decoded_sha256
+                || receipt.bytes != body.decoded_bytes
+                || receipt.storage_sha256 != body.storage_sha256
+            {
+                bail!("Python receipt lacks complete successful body correspondence");
+            }
+        }
+        SourceTransportOutcome::RequestFailed => {
+            if spec.body.is_some()
+                || !match receipt.status {
+                    Some(status) => !(200..300).contains(&status),
+                    None => !receipt.error.trim().is_empty(),
+                }
+            {
+                bail!(
+                    "Python failure requires non-success status or an explicit transport error without status"
+                );
+            }
+        }
+    }
+    Ok("operator_recorded_structured_receipt_correspondence")
+}
+
 fn verify_request(spec: &SourceObservationSpec, bytes: &[u8]) -> Result<&'static str> {
     let text = std::str::from_utf8(bytes)?;
+    if text.trim_start().starts_with('{') || spec.tool.starts_with("Python ") {
+        return verify_python_receipt(spec, text);
+    }
     if let Ok(manifest) = toml::from_str::<toml::Value>(text) {
         let date = manifest.get("retrieval_date").and_then(toml::Value::as_str);
         let sources = manifest
@@ -381,6 +471,183 @@ mod tests {
         sync::atomic::{AtomicUsize, Ordering},
     };
     static NEXT: AtomicUsize = AtomicUsize::new(0);
+    fn write_structured_receipt(fixture: &mut Fixture, receipt: &Value) {
+        let bytes = serde_json::to_vec(receipt).unwrap();
+        fs::write(fixture.root.join("request.txt"), &bytes).unwrap();
+        fixture.spec.request_evidence.storage_sha256 = digest(&bytes);
+        fixture.spec.request_evidence.decoded_sha256 = digest(&bytes);
+        fixture.spec.request_evidence.decoded_bytes = bytes.len() as u64;
+    }
+
+    fn structured_fixture(client: &str) -> (Fixture, Value) {
+        let mut fixture = fixture();
+        fixture.spec.time_precision = SourceTimePrecision::Timestamp;
+        fixture.spec.observed_at = "2026-09-07T00:24:07.924838+00:00".into();
+        fixture.spec.tool = format!("Python {client} 3.14.7 (structured receipt)");
+        fixture.spec.final_url = Some("https://example.org/redirected".into());
+        let body = fixture.spec.body.as_ref().unwrap();
+        let receipt = json!({
+            "url": fixture.spec.requested_url, "final_url": fixture.spec.final_url,
+            "status": 200, "retrieved_utc": fixture.spec.observed_at,
+            "client": client, "client_version": "3.14.7", "complete": true,
+            "error": "", "path": body.path, "sha256": body.decoded_sha256,
+            "bytes": body.decoded_bytes, "storage_sha256": body.storage_sha256,
+            "elapsed_seconds": 0.25,
+        });
+        write_structured_receipt(&mut fixture, &receipt);
+        (fixture, receipt)
+    }
+
+    #[test]
+    fn python_receipts_preserve_replay_and_append_only_history() {
+        for client in ["requests", "urllib"] {
+            let (mut fixture, _) = structured_fixture(client);
+            let report = fixture
+                .store
+                .record_source_observation(&fixture.root, &fixture.spec)
+                .unwrap();
+            assert_eq!(
+                report["correspondence_basis"],
+                "operator_recorded_structured_receipt_correspondence"
+            );
+            assert_eq!(report["cryptographic_request_binding"], false);
+            assert_eq!(
+                fixture
+                    .store
+                    .record_source_observation(&fixture.root, &fixture.spec)
+                    .unwrap(),
+                report
+            );
+            assert!(refuse_source_observation_history_loss(&fixture.store.conn).is_err());
+            for sql in [
+                "UPDATE source_observations SET source_key='changed'",
+                "DELETE FROM source_observations",
+            ] {
+                assert!(fixture.store.conn.execute(sql, []).is_err());
+            }
+            fs::write(fixture.root.join("request.txt"), b"changed").unwrap();
+            assert!(
+                fixture
+                    .store
+                    .record_source_observation(&fixture.root, &fixture.spec)
+                    .is_err()
+            );
+            let retained: String = fixture
+                .store
+                .conn
+                .query_row("SELECT report_json FROM source_observations", [], |row| {
+                    row.get(0)
+                })
+                .unwrap();
+            assert_eq!(serde_json::from_str::<Value>(&retained).unwrap(), report);
+        }
+    }
+
+    #[test]
+    fn python_receipt_tampering_is_rejected_before_mutation() {
+        for (field, replacement) in [
+            ("url", json!("https://different.example")),
+            ("final_url", json!("https://different.example")),
+            ("status", json!(201)),
+            ("retrieved_utc", json!("2026-09-07T00:24:07.924839+00:00")),
+            ("client", json!("curl")),
+            ("client_version", json!("9.9")),
+            ("complete", json!(false)),
+            ("error", json!("truncated")),
+            ("path", json!("different.gz")),
+            ("sha256", json!("0".repeat(64))),
+            ("bytes", json!(1)),
+            ("storage_sha256", json!("0".repeat(64))),
+        ] {
+            let (mut fixture, mut receipt) = structured_fixture("requests");
+            receipt[field] = replacement;
+            write_structured_receipt(&mut fixture, &receipt);
+            assert!(
+                fixture
+                    .store
+                    .record_source_observation(&fixture.root, &fixture.spec)
+                    .is_err(),
+                "field {field}"
+            );
+            let count: i64 = fixture
+                .store
+                .conn
+                .query_row("SELECT count(*) FROM source_observations", [], |row| {
+                    row.get(0)
+                })
+                .unwrap();
+            assert_eq!(count, 0);
+        }
+        for field in [
+            "url",
+            "final_url",
+            "status",
+            "retrieved_utc",
+            "client",
+            "client_version",
+            "complete",
+            "error",
+            "path",
+            "sha256",
+            "bytes",
+            "storage_sha256",
+        ] {
+            let (mut fixture, mut receipt) = structured_fixture("urllib");
+            receipt.as_object_mut().unwrap().remove(field);
+            write_structured_receipt(&mut fixture, &receipt);
+            assert!(
+                fixture
+                    .store
+                    .record_source_observation(&fixture.root, &fixture.spec)
+                    .is_err(),
+                "missing {field}"
+            );
+        }
+    }
+
+    #[test]
+    fn python_failures_require_http_failure_or_transport_error() {
+        for transport in [false, true] {
+            let (mut fixture, mut receipt) = structured_fixture("urllib");
+            fixture.spec.body = None;
+            fixture.spec.outcome = SourceTransportOutcome::RequestFailed;
+            fixture.spec.http_status = if transport { None } else { Some(404) };
+            receipt["status"] = json!(fixture.spec.http_status);
+            if transport {
+                receipt["complete"] = json!(false);
+                receipt["error"] = json!("connection timed out");
+            }
+            write_structured_receipt(&mut fixture, &receipt);
+            assert!(
+                fixture
+                    .store
+                    .record_source_observation(&fixture.root, &fixture.spec)
+                    .is_ok()
+            );
+        }
+        let (mut fixture, mut receipt) = structured_fixture("requests");
+        fixture.spec.body = None;
+        fixture.spec.outcome = SourceTransportOutcome::RequestFailed;
+        receipt["complete"] = json!(false);
+        receipt["error"] = json!("response exceeded bound");
+        write_structured_receipt(&mut fixture, &receipt);
+        assert!(
+            fixture
+                .store
+                .record_source_observation(&fixture.root, &fixture.spec)
+                .is_err()
+        );
+        fixture.spec.http_status = None;
+        receipt["status"] = Value::Null;
+        receipt["error"] = json!("");
+        write_structured_receipt(&mut fixture, &receipt);
+        assert!(
+            fixture
+                .store
+                .record_source_observation(&fixture.root, &fixture.spec)
+                .is_err()
+        );
+    }
     struct Fixture {
         root: PathBuf,
         store: ProvenanceStore,

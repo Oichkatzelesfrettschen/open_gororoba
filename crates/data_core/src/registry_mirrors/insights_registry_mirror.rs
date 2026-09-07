@@ -15,7 +15,7 @@
 //! - Sprint: 6
 //! - Claims: C-071
 //!
-//! The constant-fd Macquart mean cosmic-DM implementation retains electron factor 0.875. Independent SI quadrature agrees across 18 cases through numerical redshift ceiling 100 within relative tolerance 1e-10. Source-generated inversions, exact-zero, near-zero, ceiling, invalid-input and positive-distance-underflow contracts pass. Typed catalog selection uses the chosen NE2001 or YMW16 excess and reports exclusions; both callers propagate conversion errors and identify relabeling outputs as uncalibrated diagnostics. The numerical ceiling supplies no physical validity bound. Halo treatment, host-frame provenance, evolving ionization/diffuse fraction, scatter and localized-FRB calibration remain unresolved.
+//! The corrected constant-fd mean-DM inverse retains tested numerical contracts. Primary sources separate NE2001 disk DM, halo DM and rest-frame host DM. A frozen 21-source localized cohort supplies 11 calibration and 10 heldout sources. The primary halo50/observer-host50 predictor has an unbounded 90 percent radius because a retained calibration row yields negative cosmic DM. The predeclared halo0/observer-host50 sensitivity has a 1670.44 Mpc radius and 9/10 heldout coverage. Finite primary precision and CHIME transport remain unestablished.
 //!
 //! ## I-002: Ultrametric inference depends on the metric, representation and null sensitivity
 //!
@@ -24,7 +24,7 @@
 //! - Sprint: 6
 //! - Claims: C-071
 //!
-//! C-071 retains its historical refuted disposition. Original scalar and transformed producers, lockfiles, five results and two exact CHIME inputs are retained with verified hashes. The original scalar build fails before compilation because its tracked workspace omits control_core; actual historical invocation and execution replay remain unresolved. Geometry-preserving relabeling nulls supply diagnostics with unestablished physical power. A separately frozen radial-angular dependence instrument passes an independent 1000-replicate-per-family engineering confirmation after the initial 100-replicate control precision gate failed. Flat and gradient alternatives also reject, restricting interpretation to dependence rather than hierarchy. Scalar p-adic and Euclidean metrics remain distinct cases.
+//! A declared reconstruction adds ten recovered control_core files and removes two stale quantum_core lock edges while preserving every package version/checksum and the original scalar producer. The locked release build and full candidate runs reproduce all three historical CSV bodies byte-for-byte. Original invocation and executable identity remain unidentified. The historical geometry-preserving null and C-071 disposition remain unchanged. Synthetic radius-angle sensitivity is an instrument result; localized distance calibration establishes an unbounded primary uncertainty radius.
 //!
 //! ## I-003: Existing Rust Crate Ecosystem for Cosmological Analysis
 //!

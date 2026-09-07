@@ -1,0 +1,54 @@
+schema_version = 1
+objective = "Adjudicate physical FRB distance calibration and reconstruct the historical scalar producer from identified source bodies."
+baseline_commit = "db2c6a4bc9cb535d19810bc7f5e116d62adbfab9"
+evidence_root = "data/output/audit/frb-physical-calibration-replay"
+retrieval_authorization = "The user explicitly requests multiple Python download tools; retrieval uses independent clients with versioned receipts. Scientific implementation remains Rust."
+historical_preservation = ["claim-evidence-adjudication", "themis-frozen-model-source"]
+
+[[frontier]]
+id = "historical-member-source-closure"
+status = "completed_declared_reconstruction"
+question = "Can identified control_core source satisfy the original locked workspace?"
+gate = "Retain member chronology and hashes, declare the exact overlay, preserve original producer and lock hashes, and execute the locked reconstructed build."
+falsifier = "A changed producer/lock or mismatched dependency contract defeats the proposed minimal reconstruction."
+
+[[frontier]]
+id = "historical-scalar-result-replay"
+status = "completed_byte_identical_outputs"
+depends_on = ["historical-member-source-closure"]
+gate = "Run the reconstructed producer against hash-bound inputs with declared candidate arguments; compare every output field against retained historical results."
+falsifier = "A numerical mismatch disproves exact result replay under the candidate invocation; agreement alone does not recover the original invocation."
+
+[[frontier]]
+id = "localized-frb-source-admission"
+status = "completed_frozen_primary_cohort"
+gate = "Retain primary data, source redshifts, DM conventions, source grouping, uncertainties and selection documentation with independent download receipts."
+falsifier = "Untraced or outcome-selected rows fail admission to the physical calibration denominator."
+
+[[frontier]]
+id = "foreground-and-selection-protocol"
+status = "completed_frozen_with_independent_preflight"
+depends_on = ["localized-frb-source-admission"]
+gate = "Freeze target population, halo/host conventions, independent sample partition, uncertainty model, multiplicity and outcome rules before residual evaluation."
+falsifier = "Measured host redshift used as an estimator input invalidates a held-out distance-prediction test."
+
+[[frontier]]
+id = "physical-distance-calibration"
+status = "completed_primary_finite_precision_not_established"
+depends_on = ["foreground-and-selection-protocol"]
+gate = "Execute finite physical calibration and independent validation with retained predictions, uncertainty checks and all exclusions; adjudicate each estimator at its supported population boundary."
+falsifier = "Failed held-out calibration or unsupported sample exchangeability prevents a general CHIME distance-validity claim."
+
+[[frontier]]
+id = "canonical-admission-and-integration"
+status = "in_progress"
+depends_on = ["historical-scalar-result-replay", "physical-distance-calibration", "retrieval-failure-followup"]
+gate = "Admit supported outcomes through SQLite owner commands; retain residuals, verify histories and exports, review, test, publish and synchronize main."
+falsifier = "Evidence-layer promotion, history loss or mismatched artifact hashes prevents publication."
+
+[[frontier]]
+id = "retrieval-failure-followup"
+status = "completed_four_successful_requests_with_identity_crosschecks"
+question = "Can corrected pinned paths and alternate transfer mechanisms resolve the404 source request and complete the size-limited primary PDF?"
+gate = "Retain Mozilla-user-agent wget logs plus independently identified alternate transport/source checks; preserve original failures, identify any corrected path, and verify complete response bodies."
+falsifier = "A different source version or partial body cannot satisfy an exact-source recovery claim."

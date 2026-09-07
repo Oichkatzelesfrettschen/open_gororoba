@@ -1,0 +1,17 @@
+schema_version = 1
+observation_key = "frb-physical-calibration-retrieval-06"
+source_key = "url:https://raw.githubusercontent.com/FRBs/FRB/996fcda9b0b22431e3171208b4c8e1cf2798e823/frb/data/FRBs/FRB20200430A.json"
+actor = "codex"
+reason = "Retain the requested Python-client source observation with exact measured body identity and bounded operator attribution."
+requested_url = "https://raw.githubusercontent.com/FRBs/FRB/996fcda9b0b22431e3171208b4c8e1cf2798e823/frb/data/FRBs/FRB20200430A.json"
+final_url = "https://raw.githubusercontent.com/FRBs/FRB/996fcda9b0b22431e3171208b4c8e1cf2798e823/frb/data/FRBs/FRB20200430A.json"
+http_status = 200
+outcome = "body_retained"
+observed_at = "2026-09-07T00:25:15.746269+00:00"
+time_precision = "timestamp"
+tool = "Python requests 2.34.2 (structured receipt)"
+request_evidence = { path = "data/output/audit/frb-physical-calibration-replay/sources/receipts/request-06.json", storage_sha256 = "92103112d01f0b5dc39e6e1cc896e917c7356f9840614632f764dddfb4d4da7c", encoding = "identity", decoded_sha256 = "92103112d01f0b5dc39e6e1cc896e917c7356f9840614632f764dddfb4d4da7c", decoded_bytes = 1007 }
+request_evidence_limit = "The operator-generated structured receipt binds recorded client, URL, timestamp, status, body digest and length. Hash verification establishes the retained declaration rather than independent cryptographic network authentication. A failed HTTP response body remains separately retained in the source manifest."
+absent_prior_expectation_reason = "These retrievals establish observed response identities; the requests carried no prerequest expected body digest."
+document_identity_limit = "URL-keyed source observation does not establish scholarly identity or independent scientific evidence. sources/sources.toml records primary publication/version attribution, source selection, duplicate retrieval correspondence and document-specific limits."
+body = { path = "data/output/audit/frb-physical-calibration-replay/sources/frb20200430a.json.gz", storage_sha256 = "7de87db100bdb537c38916a467876dceebf97add33d4000b5bb3fbab636256fe", encoding = "gzip", decoded_sha256 = "22aa33053e2c714279f6ba7e66e79c8429687ebc28007356c2cd2616603867ee", decoded_bytes = 613 }

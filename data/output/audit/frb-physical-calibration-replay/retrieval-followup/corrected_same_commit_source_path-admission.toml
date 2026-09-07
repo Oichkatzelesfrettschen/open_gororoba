@@ -1,0 +1,17 @@
+schema_version = 1
+observation_key = "frb-retrieval-followup-corrected_same_commit_source_path"
+source_key = "url:https://raw.githubusercontent.com/FRBs/FRB/996fcda9b0b22431e3171208b4c8e1cf2798e823/frb/mw.py"
+actor = "codex"
+reason = "Admit a completed Mozilla-user-agent wget follow-up and retain the earlier failed or capped acquisition separately."
+requested_url = "https://raw.githubusercontent.com/FRBs/FRB/996fcda9b0b22431e3171208b4c8e1cf2798e823/frb/mw.py"
+final_url = "https://raw.githubusercontent.com/FRBs/FRB/996fcda9b0b22431e3171208b4c8e1cf2798e823/frb/mw.py"
+http_status = 200
+outcome = "body_retained"
+observed_at = "2026-09-06"
+time_precision = "day"
+tool = "GNU wget (retained log)"
+request_evidence_limit = "The raw wget log records local day, URL, status and completed byte count. The follow-up receipt also records UTC conversion and client version. Independent mirror/blob comparisons are separately hash-bound evidence, not cryptographic network authentication."
+absent_prior_expectation_reason = "This source-observation record declares no artifact-catalog prerequest hash precondition. The complete PDF is compared against an earlier retained prefix; the corrected Milky Way body is compared against an earlier successful source response. Those historical comparison identities remain explicit in followup.toml."
+document_identity_limit = "The PDF title page identifies arXiv2108.01282v2; the older retained HTML is v1 and remains separate. The corrected Milky Way body matches the pinned Git blob. The generic source-observation report retains document attribution as a separate evidence layer."
+request_evidence = { path = "data/output/audit/frb-physical-calibration-replay/retrieval-followup/mw-wget.log.gz", storage_sha256 = "06836feab008f65bed29fe779ff7d2ac315580e2239761e05f738f195a028b02", encoding = "gzip", decoded_sha256 = "72e45e17a271ff010f32d596ac324b01cbce4d9f8d7f9d6c96cfc82fa1691938", decoded_bytes = 1802 }
+body = { path = "data/output/audit/frb-physical-calibration-replay/retrieval-followup/mw-raw.py.gz", storage_sha256 = "f9980708a5bde69b81cf4fd4de089c4af83285fcbec664396bcd16875b56bd19", encoding = "gzip", decoded_sha256 = "abe51d9f95ae95596761472a5a3ad4f6dfada3556a44cd9d1bd4b2469f349c2d", decoded_bytes = 1927 }

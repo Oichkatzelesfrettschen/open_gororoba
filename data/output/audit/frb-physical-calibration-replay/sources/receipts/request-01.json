@@ -1,0 +1,20 @@
+{
+  "bytes": 5777,
+  "client": "requests",
+  "client_version": "2.34.2",
+  "complete": true,
+  "content_type": "application/json; charset=utf-8",
+  "decoded_filename": "github-repository.json",
+  "elapsed_seconds": 0.29316,
+  "encoding": "gzip; mtime=0; exact decoded response bytes",
+  "error": "",
+  "final_url": "https://api.github.com/repos/FRBs/FRB",
+  "path": "data/output/audit/frb-physical-calibration-replay/sources/github-repository.json.gz",
+  "retrieved_path": "data/output/audit/frb-physical-calibration-replay/sources/github-repository.json",
+  "retrieved_utc": "2026-09-07T00:24:07.924838+00:00",
+  "sha256": "ab7f46c4cc011c29d2bd9b7182559a8ac9c9469a45922a8318c9be633ba6058d",
+  "status": 200,
+  "storage_bytes": 1370,
+  "storage_sha256": "1376f93fe4dc3ffa86231ff6ef137e4833310582386a6af6c0dfda308adf9ec8",
+  "url": "https://api.github.com/repos/FRBs/FRB"
+}

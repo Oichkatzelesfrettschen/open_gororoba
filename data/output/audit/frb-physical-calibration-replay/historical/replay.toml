@@ -1,0 +1,27 @@
+schema_version = 1
+status = "declared_reconstruction_reproduces_both_catalogs_byte_exactly"
+reconstruction = "reconstruction.toml"
+execution_surface = "CPU, x86_64 Linux; one sequential tmux session; installed rustc1.97.0; release binary retained as reconstructed-frb-ultrametric.gz"
+binary_sha256 = "81ef0edbdd6399f01782dd52fdd50fa5c107eb1c55a46ca8f36d4ba85c6fe578"
+command_template = "/usr/bin/time -v -o <recovery-root>/catN.time timeout 600 <recovery-root>/target/release/frb-ultrametric --input <recovery-root>/inputs/chime_frb_catN.csv --all-columns --seed 42 --n-triples 100000 --n-permutations 1000 --output <recovery-root>/candidate-catN.csv"
+command_instances = "N=1 followed by N=2; stdout and stderr captured separately per catalog; paths resolve under .cache/frb-historical-recovery in the execution checkout."
+cat1_exit = 0
+cat2_exit = 0
+cat1_wall_seconds = 136.67
+cat2_wall_seconds = 133.25
+cat1_cpu_user_seconds = 101.57
+cat2_cpu_user_seconds = 97.45
+cat1_maximum_rss_kib = 5604
+cat2_maximum_rss_kib = 12380
+cat1_input_sha256 = "affd86573fee8fe94be9d0d85e73cc787fa260b2497ccec5d9d93e1d26610ed5"
+cat2_input_sha256 = "5108ada779d279a2547d9f9e73ae25bfdd40d8496d6ba7255ec29c6629057a48"
+cat1_output_sha256 = "772b818af4d6a8621d52a2c22455e59606df8a6b114307fc0fdc37748e6823ad"
+cat2_output_sha256 = "ebbffd4610c945456562ace09d3e9d24f50f0dd4c03bddba5c1f36e88210d59b"
+combined_output_sha256 = "24ac0521efa856a6d22d86fd86e79f5101e3e8d44d72f743f16da84eeea9259c"
+comparison = "cmp verifies complete byte equality between each candidate CSV and its retained historical Git blob at eab375e82ca82da9df8a9cb0ca0084801684e6eb. Concatenating Cat1 with Cat2 rows after its header reproduces the historical combined CSV byte-for-byte."
+rows = "Three columns per catalog; 600 Cat1 events and 5045 Cat2 events; six complete result rows."
+preservation = "Post-run binary, reconciled lock and both input hashes equal their pre-run identities. The original source/lock archive and the two historical worktrees were outside the replay write set."
+retained_logs = ["cat1.stdout.jsonl.gz", "cat1.stderr.log.gz", "cat1.time.gz", "cat2.stdout.jsonl.gz", "cat2.stderr.log.gz", "cat2.time.gz"]
+log_sanitization = "Public logs replace the absolute owned cache root with <recovery-root>; private raw logs remain in .cache/frb-historical-recovery. CSV result bytes remain verbatim."
+historical_boundary = "This establishes reproduction by the declared composite source, two-edge lock reconciliation, installed compiler and explicit candidate command. Historical invocation, original executable and exact untracked workspace identities remain unresolved. Matching outputs do not uniquely recover those identities."
+scientific_boundary = "Reproduced FAIL verdicts retain the original statistic and geometry-preserving permutation null. Byte identity establishes implementation reproducibility; it supplies no newly demonstrated physical null power, calibrated FRB evidence or reversal of C-071."

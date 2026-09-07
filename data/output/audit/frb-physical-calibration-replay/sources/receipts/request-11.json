@@ -1,0 +1,20 @@
+{
+  "bytes": 5000001,
+  "client": "urllib",
+  "client_version": "3.14.7",
+  "complete": false,
+  "content_type": "application/pdf",
+  "decoded_filename": "bhandari2021.pdf",
+  "elapsed_seconds": 1.09664,
+  "encoding": "gzip; mtime=0; exact decoded response bytes",
+  "error": "bounded response limit reached",
+  "final_url": "https://arxiv.org/pdf/2108.01282",
+  "path": "data/output/audit/frb-physical-calibration-replay/sources/bhandari2021.pdf.gz",
+  "retrieved_path": "data/output/audit/frb-physical-calibration-replay/sources/bhandari2021.pdf",
+  "retrieved_utc": "2026-09-07T00:26:18.526354+00:00",
+  "sha256": "8738118db2bb2c646e0f76ca14fcba4d3c68ed657cf8b00bfaa931c1e2fba7e3",
+  "status": 200,
+  "storage_bytes": 2045372,
+  "storage_sha256": "4a6b15883dac4c08edbe249e82c020b8ccfe6fb943a277ce7c7d734047827214",
+  "url": "https://arxiv.org/pdf/2108.01282"
+}

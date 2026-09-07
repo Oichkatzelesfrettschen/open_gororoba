@@ -1,0 +1,17 @@
+schema_version = 1
+observation_key = "frb-retrieval-followup-complete_original_pdf"
+source_key = "url:https://arxiv.org/pdf/2108.01282"
+actor = "codex"
+reason = "Admit a completed Mozilla-user-agent wget follow-up and retain the earlier failed or capped acquisition separately."
+requested_url = "https://arxiv.org/pdf/2108.01282"
+final_url = "https://arxiv.org/pdf/2108.01282"
+http_status = 200
+outcome = "body_retained"
+observed_at = "2026-09-06"
+time_precision = "day"
+tool = "GNU wget (retained log)"
+request_evidence_limit = "The raw wget log records local day, URL, status and completed byte count. The follow-up receipt also records UTC conversion and client version. Independent mirror/blob comparisons are separately hash-bound evidence, not cryptographic network authentication."
+absent_prior_expectation_reason = "This source-observation record declares no artifact-catalog prerequest hash precondition. The complete PDF is compared against an earlier retained prefix; the corrected Milky Way body is compared against an earlier successful source response. Those historical comparison identities remain explicit in followup.toml."
+document_identity_limit = "The PDF title page identifies arXiv2108.01282v2; the older retained HTML is v1 and remains separate. The corrected Milky Way body matches the pinned Git blob. The generic source-observation report retains document attribution as a separate evidence layer."
+request_evidence = { path = "data/output/audit/frb-physical-calibration-replay/retrieval-followup/bhandari-wget.log.gz", storage_sha256 = "3c0c1e04d3b20bcecb1aaf34af7704c7b4f941bc14f31200fbd2f305476afcf2", encoding = "gzip", decoded_sha256 = "77b58c4f8bae7162011cb75f66102e3bb0bfb0e8ee27a2427dd9758f752b12c0", decoded_bytes = 9524 }
+body = { path = "data/output/audit/frb-physical-calibration-replay/retrieval-followup/bhandari-complete.pdf.gz", storage_sha256 = "ff14bc5187a763fff0c8cbb4771cf648881300abf123631d929c99437d38e723", encoding = "gzip", decoded_sha256 = "e1a125fdcd524669b48995376ce641db0699aacce83dc24abb74983274fe36cd", decoded_bytes = 5413920 }

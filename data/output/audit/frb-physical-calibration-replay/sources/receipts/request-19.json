@@ -1,0 +1,20 @@
+{
+  "bytes": 653803,
+  "client": "urllib",
+  "client_version": "3.14.7",
+  "complete": true,
+  "content_type": "text/html; charset=utf-8",
+  "decoded_filename": "shannon2024-urllib.html",
+  "elapsed_seconds": 0.156544,
+  "encoding": "gzip; mtime=0; exact decoded response bytes",
+  "error": "",
+  "final_url": "https://arxiv.org/html/2408.02083v1",
+  "path": "data/output/audit/frb-physical-calibration-replay/sources/shannon2024-urllib.html.gz",
+  "retrieved_path": "data/output/audit/frb-physical-calibration-replay/sources/shannon2024-urllib.html",
+  "retrieved_utc": "2026-09-07T00:32:59.091765+00:00",
+  "sha256": "d88cfaf7d2b734621d2122f3ce13f2b731a8edf6883642ab40435fb00d7e6331",
+  "status": 200,
+  "storage_bytes": 95309,
+  "storage_sha256": "3c2939dcd4d9cc4b9b6381a8bb286ed0a126637bbe1e4fe44589a63e2689d401",
+  "url": "https://arxiv.org/html/2408.02083v1"
+}

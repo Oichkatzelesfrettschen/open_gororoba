@@ -1,0 +1,13 @@
+   Compiling gororoba_cli_physics v0.1.0 (/home/eirikr/worktrees/open_gororoba/frb-physical-calibration-replay/crates/gororoba_cli_physics)
+    Finished `validation` profile [optimized + debuginfo] target(s) in 10.60s
+     Running unittests src/bin/frb_distance_calibration.rs (/home/eirikr/Github/open_gororoba/.cache/gate-cbuild/8ee62ced707fec8e/validation/deps/frb_distance_calibration-6d6274ebda4b734b)
+
+running 5 tests
+test tests::hashes_membership_duplicates_and_nonfinite_values_fail_closed ... ok
+test tests::equal_foreground_totals_preserve_predictions_and_calibration ... ok
+test tests::failures_retain_denominators_and_unbounded_intervals_remain_explicit ... ok
+test tests::source_order_preserves_every_result ... ok
+test tests::heldout_label_mutation_preserves_predictions_quantiles_and_membership ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+

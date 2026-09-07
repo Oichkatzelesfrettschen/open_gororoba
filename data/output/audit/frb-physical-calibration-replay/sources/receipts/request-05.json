@@ -1,0 +1,20 @@
+{
+  "bytes": 474,
+  "client": "urllib",
+  "client_version": "3.14.7",
+  "complete": true,
+  "content_type": "text/plain; charset=utf-8",
+  "decoded_filename": "frb-readme.md",
+  "elapsed_seconds": 0.387992,
+  "encoding": "gzip; mtime=0; exact decoded response bytes",
+  "error": "",
+  "final_url": "https://raw.githubusercontent.com/FRBs/FRB/996fcda9b0b22431e3171208b4c8e1cf2798e823/README.md",
+  "path": "data/output/audit/frb-physical-calibration-replay/sources/frb-readme.md.gz",
+  "retrieved_path": "data/output/audit/frb-physical-calibration-replay/sources/frb-readme.md",
+  "retrieved_utc": "2026-09-07T00:25:15.189958+00:00",
+  "sha256": "93deab3f5c7a2d93358b7ec0f8246ad3f0ab5d611de7b82b789e23db457db222",
+  "status": 200,
+  "storage_bytes": 333,
+  "storage_sha256": "8e9510132a09fcd5fc87ce10241cfeb57676236ce94710320925ffb2092cf745",
+  "url": "https://raw.githubusercontent.com/FRBs/FRB/996fcda9b0b22431e3171208b4c8e1cf2798e823/README.md"
+}

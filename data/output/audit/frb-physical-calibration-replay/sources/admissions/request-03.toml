@@ -1,0 +1,17 @@
+schema_version = 1
+observation_key = "frb-physical-calibration-retrieval-03"
+source_key = "url:https://api.github.com/repos/FRBs/FRB/commits/main"
+actor = "codex"
+reason = "Retain the requested Python-client source observation with exact measured body identity and bounded operator attribution."
+requested_url = "https://api.github.com/repos/FRBs/FRB/commits/main"
+final_url = "https://api.github.com/repos/FRBs/FRB/commits/main"
+http_status = 200
+outcome = "body_retained"
+observed_at = "2026-09-07T00:24:22.878143+00:00"
+time_precision = "timestamp"
+tool = "Python requests 2.34.2 (structured receipt)"
+request_evidence = { path = "data/output/audit/frb-physical-calibration-replay/sources/receipts/request-03.json", storage_sha256 = "f26be4453938243f2dbdbc3a369bca753d0b3933771545f5e620e2d7e447d70a", encoding = "identity", decoded_sha256 = "f26be4453938243f2dbdbc3a369bca753d0b3933771545f5e620e2d7e447d70a", decoded_bytes = 910 }
+request_evidence_limit = "The operator-generated structured receipt binds recorded client, URL, timestamp, status, body digest and length. Hash verification establishes the retained declaration rather than independent cryptographic network authentication. A failed HTTP response body remains separately retained in the source manifest."
+absent_prior_expectation_reason = "These retrievals establish observed response identities; the requests carried no prerequest expected body digest."
+document_identity_limit = "URL-keyed source observation does not establish scholarly identity or independent scientific evidence. sources/sources.toml records primary publication/version attribution, source selection, duplicate retrieval correspondence and document-specific limits."
+body = { path = "data/output/audit/frb-physical-calibration-replay/sources/github-master-commit.json.gz", storage_sha256 = "766311011b4c88b378c0873007af9062edf4c2dd41928bf0825adc303e592483", encoding = "gzip", decoded_sha256 = "8b7ca3056bdf39465b5a55cf21b1b5652d7d3587837d0028089c70d65de4a3f6", decoded_bytes = 26704 }

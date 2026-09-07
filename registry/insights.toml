@@ -9,31 +9,31 @@ date = "2026-02-06"
 id = "I-001"
 sprint = 6
 status = "partial"
-status_note = "Partial records tested numerical construction and catalog selection. Synthetic radial-angular dependence sensitivity establishes an instrument under one synthetic exchangeability stratum. Physical FRB inference remains unexecuted. C-071 retains its historical refuted disposition."
-summary = "The constant-fd Macquart mean cosmic-DM implementation retains electron factor 0.875. Independent SI quadrature agrees across 18 cases through numerical redshift ceiling 100 within relative tolerance 1e-10. Source-generated inversions, exact-zero, near-zero, ceiling, invalid-input and positive-distance-underflow contracts pass. Typed catalog selection uses the chosen NE2001 or YMW16 excess and reports exclusions; both callers propagate conversion errors and identify relabeling outputs as uncalibrated diagnostics. The numerical ceiling supplies no physical validity bound. Halo treatment, host-frame provenance, evolving ionization/diffuse fraction, scatter and localized-FRB calibration remain unresolved."
+status_note = "Partial retains numerical conformance and an executed negative finite-calibration outcome. Unbounded 10/10 coverage supplies no finite precision; sensitivities remain descriptive. C-071 remains Refuted."
+summary = "The corrected constant-fd mean-DM inverse retains tested numerical contracts. Primary sources separate NE2001 disk DM, halo DM and rest-frame host DM. A frozen 21-source localized cohort supplies 11 calibration and 10 heldout sources. The primary halo50/observer-host50 predictor has an unbounded 90 percent radius because a retained calibration row yields negative cosmic DM. The predeclared halo0/observer-host50 sensitivity has a 1670.44 Mpc radius and 9/10 heldout coverage. Finite primary precision and CHIME transport remain unestablished."
 title = "Mean-DM distance conversion requires explicit electron and host conventions"
 
 [insight.evidence_admission]
-admission_id = "frb-inversion-null-sensitivity:I-001"
+admission_id = "frb-physical-calibration-replay:I-001"
 insight_id = "I-001"
-expected_previous_evidence_sha256 = "80bcb223a432a5bf6597e4c4978630f205b92caac1b9be7103b5fe7e95d49bf1"
-disposition = "retain_partial_status_admit_bounded_frb_instrument_and_recovered_history"
-falsifier = "Independent numerical oracles and catalog error/selection fixtures adjudicate implementation. Synthetic acceptance uses fixed generators, 199 permutations and one-sided Wilson bounds, with retained initial failure and independent confirmation. Flat/gradient rejection defeats hierarchy specificity."
-successor = "A bounded numerical FRB distance construction and a sensitivity-tested conditional radial-angular dependence instrument, with explicit physical deployment prerequisites."
-residual = "Recover the historical missing control_core source and actual invocation; admit halo/host conventions, repeat-source grouping, selection exchangeability and coordinate rebuild per null draw; freeze multiplicity and a held-out localized-FRB physical comparison before physical inference."
+expected_previous_evidence_sha256 = "432d9ef0a5c027309e64695827bade3365fb30fb9237da8391cf02e194471cff"
+disposition = "retain_partial_admit_reconstructed_replay_and_finite_calibration_negative_result"
+falsifier = "The frozen split, foreground grid, failure handling and conformal ranks adjudicate finite radius. A finite primary result would contradict the retained negative-DM calibration witness. General population coverage additionally requires declared exchangeability assumptions."
+successor = "Reproducible historical scalar results and a frozen assessment of the corrected mean-DM predictor's physical limitations."
+residual = "Original executable and invocation identity remain unidentified. Physical successors require a defensible foreground/scatter model, larger independent localized samples, uncertainty propagation and selection/transport justification before CHIME inference. C-071 retains its refuted disposition."
 
 [insight.evidence_admission.expected]
 title = "Mean-DM distance conversion requires explicit electron and host conventions"
 status = "partial"
-summary = "The mean cosmic-DM implementation includes the Macquart Eq. (2) electron factor 0.875 for helium mass fraction 0.25 and doubly ionized helium. A constant diffuse baryon mass fraction 0.83 specializes the source's fd(z). Independent SI-density quadrature agrees across 12 declared cases to relative error at most 2.9e-15; analytic expansion controls, source-generated inversion and an analytic foreground-subtracted distance test pass. Baseline production fails all four tests, including a measured 8/7 normalization excess. The tested mean-DM value at z=1 is 900.751906538024 pc/cm^3 for the declared Planck parameters. Both FRB callers subtract a fixed observer-frame host from NE2001 excess; catalog halo treatment and physical host-frame provenance remain unresolved. C-071 supplies motivation and retains its refuted disposition."
-status_note = "Partial records conditional implementation conformance on the declared finite grid. The correction resolves the missing electron factor and documents numerical foreground conventions. Inverse invalid inputs and upper-bracket exhaustion, ionization/diffuse-fraction evolution, scatter, independent astrophysical calibration and historical FRB producer replays remain open. Source tests establish their implementation layer; they supply no new ultrametric or physical-structure evidence."
+summary = "The constant-fd Macquart mean cosmic-DM implementation retains electron factor 0.875. Independent SI quadrature agrees across 18 cases through numerical redshift ceiling 100 within relative tolerance 1e-10. Source-generated inversions, exact-zero, near-zero, ceiling, invalid-input and positive-distance-underflow contracts pass. Typed catalog selection uses the chosen NE2001 or YMW16 excess and reports exclusions; both callers propagate conversion errors and identify relabeling outputs as uncalibrated diagnostics. The numerical ceiling supplies no physical validity bound. Halo treatment, host-frame provenance, evolving ionization/diffuse fraction, scatter and localized-FRB calibration remain unresolved."
+status_note = "Partial records tested numerical construction and catalog selection. Synthetic radial-angular dependence sensitivity establishes an instrument under one synthetic exchangeability stratum. Physical FRB inference remains unexecuted. C-071 retains its historical refuted disposition."
 claim_refs = ["C-071"]
 
 [insight.evidence_admission.revised]
 title = "Mean-DM distance conversion requires explicit electron and host conventions"
 status = "partial"
-summary = "The constant-fd Macquart mean cosmic-DM implementation retains electron factor 0.875. Independent SI quadrature agrees across 18 cases through numerical redshift ceiling 100 within relative tolerance 1e-10. Source-generated inversions, exact-zero, near-zero, ceiling, invalid-input and positive-distance-underflow contracts pass. Typed catalog selection uses the chosen NE2001 or YMW16 excess and reports exclusions; both callers propagate conversion errors and identify relabeling outputs as uncalibrated diagnostics. The numerical ceiling supplies no physical validity bound. Halo treatment, host-frame provenance, evolving ionization/diffuse fraction, scatter and localized-FRB calibration remain unresolved."
-status_note = "Partial records tested numerical construction and catalog selection. Synthetic radial-angular dependence sensitivity establishes an instrument under one synthetic exchangeability stratum. Physical FRB inference remains unexecuted. C-071 retains its historical refuted disposition."
+summary = "The corrected constant-fd mean-DM inverse retains tested numerical contracts. Primary sources separate NE2001 disk DM, halo DM and rest-frame host DM. A frozen 21-source localized cohort supplies 11 calibration and 10 heldout sources. The primary halo50/observer-host50 predictor has an unbounded 90 percent radius because a retained calibration row yields negative cosmic DM. The predeclared halo0/observer-host50 sensitivity has a 1670.44 Mpc radius and 9/10 heldout coverage. Finite primary precision and CHIME transport remain unestablished."
+status_note = "Partial retains numerical conformance and an executed negative finite-calibration outcome. Unbounded 10/10 coverage supplies no finite precision; sensitivities remain descriptive. C-071 remains Refuted."
 claim_refs = ["C-071"]
 
 [[insight.evidence_admission.evidence_files]]
@@ -340,6 +340,486 @@ sha256 = "2ec039d8091ded47d2f2b4b29b0a5ae4fc553761f9659d411ab4c8f853ee4cdf"
 path = "crates/data_core/src/catalogs/chime.rs"
 sha256 = "bf0557dbfbbe35409f19fe881f6163a22fd14a3d003186e26d02ffb4e723e708"
 
+[[insight.evidence_admission.evidence_files]]
+path = "crates/cosmology_core/src/frb_calibration.rs"
+sha256 = "b95e3fa3c6b7c556c223280fa370cd31323d5c62abe0fc6fcca15beee709bfd0"
+
+[[insight.evidence_admission.evidence_files]]
+path = "crates/gororoba_cli_physics/src/bin/frb_distance_calibration.rs"
+sha256 = "078e1a04e6a20fa5c4d5549c97ceeae081248b3399623914ebe95b06eaa56ca9"
+
+[[insight.evidence_admission.evidence_files]]
+path = "crates/provenance_store/src/source_observation.rs"
+sha256 = "7ecb3ba324f4c915d197ab70e8a9ddc0635f41f3d391d52d0ffc62132086d496"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-physical-calibration-replay/admission-queries.sql"
+sha256 = "8f9c7026dc22490fca24623540711379444bf155c4fcb253ec1b4472db83bb2b"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-physical-calibration-replay/calibration-execution-protocol.toml"
+sha256 = "886ea2e70f80506293d35561ae04f1be29a00864ff08ddeca7b07ec860be2d46"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-physical-calibration-replay/calibration-protocol.toml"
+sha256 = "d987b66c070a452e667a5c5aeaaa642d96ae8c19e4b9e992a4f26906c2a158b9"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-physical-calibration-replay/calibration-results.json"
+sha256 = "492dc673aefec1a04a2ab126bfadef368b60b101d1281ef10a504081386a0edc"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-physical-calibration-replay/calibration-runner-freeze.toml"
+sha256 = "06cd701a4728ecc2afc43ac9eb8c5b9d60af82e35b6d2d02e0c33d075602d6af"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-physical-calibration-replay/evaluator-build.log"
+sha256 = "6a28a2a5c53aff047ccc779cf60bcec6f06416e3c9d59179116e6dd8f76fa932"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-physical-calibration-replay/evaluator-clippy.log"
+sha256 = "20035a60038008b289f01ea81a547936a2590fef8a07fc34a194042b8d9bc3c1"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-physical-calibration-replay/evaluator-tests.log"
+sha256 = "59e5e5a91a217345dff575eef1e7a555805de1f499a04df3ba6f1c1e0d9c8c55"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-physical-calibration-replay/findings.json"
+sha256 = "58d0c53554d710a0bfaee266ca6ce1072c93c71024033d02972023a4274bb613"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-physical-calibration-replay/historical/artifact-checks.json"
+sha256 = "3c38863b7a150a23bfa05c7edf3ecaaeb39e0f934276c237cd908dd12c3b1489"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-physical-calibration-replay/historical/build-toolchain.txt.gz"
+sha256 = "7c082dd1f765dc355ae7e2fbfe8404c0f3776b0ea3c36738337af7baa8dfd260"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-physical-calibration-replay/historical/candidate-cat1.csv"
+sha256 = "772b818af4d6a8621d52a2c22455e59606df8a6b114307fc0fdc37748e6823ad"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-physical-calibration-replay/historical/candidate-cat2.csv"
+sha256 = "ebbffd4610c945456562ace09d3e9d24f50f0dd4c03bddba5c1f36e88210d59b"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-physical-calibration-replay/historical/candidate-combined.csv"
+sha256 = "24ac0521efa856a6d22d86fd86e79f5101e3e8d44d72f743f16da84eeea9259c"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-physical-calibration-replay/historical/cat1.stderr.log.gz"
+sha256 = "5159846175d3e99d5ae60fbd7e726a4daaa1c9e7a4c0327045c72969fc02f7dc"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-physical-calibration-replay/historical/cat1.stdout.jsonl.gz"
+sha256 = "6baa2600e3fe31fbaaa1827cb382bd75c33d7ac281ec850980aad1adcb9008fa"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-physical-calibration-replay/historical/cat1.time.gz"
+sha256 = "68ac1b5c48cec0dbfd16a0a1019de8860b9191b83964561ee2cc483c9402ba9a"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-physical-calibration-replay/historical/cat2.stderr.log.gz"
+sha256 = "8abdcd27ebc203a5a017e413c61913615aed8c5d4a07fe52348b435512b6a87a"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-physical-calibration-replay/historical/cat2.stdout.jsonl.gz"
+sha256 = "a0917fe022e1441eda6e2e98d4d4f83c0af6b85f7968880a84ef08654560af7e"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-physical-calibration-replay/historical/cat2.time.gz"
+sha256 = "d50409e4b5e5d0b77d2e435ff011d83dea91d2fc3bb9721ac056d10621f4e870"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-physical-calibration-replay/historical/control-core-files.jsonl"
+sha256 = "da73b5b91d16ebd0ca4f4312c86134b9ddb7c103551da4a6ebabe4c2822dc750"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-physical-calibration-replay/historical/control-core-source.tar.gz"
+sha256 = "f44e65ebb7122d51702eead3b70803b76a86ec1728cd1c21ca8102b57814f1c0"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-physical-calibration-replay/historical/lock-reconciliation.diff"
+sha256 = "c40ab1c136aac89ff04c2dd2bf9515483ffd67758222f94d9180fb0873575b96"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-physical-calibration-replay/historical/member-overlay-build.log.gz"
+sha256 = "d6aa9305ebfc3551dcb77369bd81fe0be8369157c7c110734249e65057e779e2"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-physical-calibration-replay/historical/reconciled-Cargo.lock.gz"
+sha256 = "31e01e9432f0ff6e485fdbc029fcbb496e7d98cf625c1b19ca90097ad9dcea5d"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-physical-calibration-replay/historical/reconciled-build.log.gz"
+sha256 = "a8325c0c87e1a2f57defb70116c3b93b681769f745e4f8ba8dcc73beb3ee3a99"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-physical-calibration-replay/historical/reconstructed-frb-ultrametric.gz"
+sha256 = "3bd75a0478b04125cfbef30f2436e2443840539a4a17acf32536dbdb025290a8"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-physical-calibration-replay/historical/reconstruction.toml"
+sha256 = "25c4a30cf5453bfc7db47cbd6e679813dc83f19ceee22adfbe541dce8bfe577a"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-physical-calibration-replay/historical/recovery.toml"
+sha256 = "7c659ef7fb608b86992a2c8956b33e77fe117e0d126a63a8d16205298ef1049b"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-physical-calibration-replay/historical/replay.toml"
+sha256 = "f81c3d64b337d6ebdcf7ea30012fc368f239d1e4ae3c1a9d544d31e5e7ad9ed1"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-physical-calibration-replay/preservation-queries.sql"
+sha256 = "1bd41f6001f623834f12a113ff11f1d60d8999e3c1a5d5b633e2a70cf1d6b5ca"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-physical-calibration-replay/protocol-review.toml"
+sha256 = "fd6f5465070c762f9c9036b86806dac34d3d4fc419dba0424337365b06035180"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-physical-calibration-replay/retrieval-followup/bhandari-complete.pdf.gz"
+sha256 = "ff14bc5187a763fff0c8cbb4771cf648881300abf123631d929c99437d38e723"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-physical-calibration-replay/retrieval-followup/bhandari-export.pdf.gz"
+sha256 = "ff14bc5187a763fff0c8cbb4771cf648881300abf123631d929c99437d38e723"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-physical-calibration-replay/retrieval-followup/bhandari-pdfinfo.txt.gz"
+sha256 = "cb0ffc2d3a51c3b775d8bf01a68ea3ddc3f8bb49f40a21340a2c6e0c7451533e"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-physical-calibration-replay/retrieval-followup/bhandari-title-page.txt.gz"
+sha256 = "28a7325c6cb4304cb255176b78e4cb6f324584d1868be21a45dff0a6adb6579a"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-physical-calibration-replay/retrieval-followup/bhandari-wget.log.gz"
+sha256 = "3c0c1e04d3b20bcecb1aaf34af7704c7b4f941bc14f31200fbd2f305476afcf2"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-physical-calibration-replay/retrieval-followup/complete_original_pdf-admission.toml"
+sha256 = "fbcd5d9b0064dde958b479707213820ee6f4ca8ab5f5996db67c368c9a923487"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-physical-calibration-replay/retrieval-followup/corrected_same_commit_source_path-admission.toml"
+sha256 = "adedb7b6958804265528e06f87369043fa437e51105dc4242d65b9c70f4c9253"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-physical-calibration-replay/retrieval-followup/followup.toml"
+sha256 = "5a98e1694e82cec140afd4c69b0b8ace91fb7d80d9a6d0732f4fa1634fb2c1a5"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-physical-calibration-replay/retrieval-followup/mw-api.headers.gz"
+sha256 = "110446ed498ca0b221a7e385d1a56a9ca7680fff3eaab66b80f8f215b95b2a6c"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-physical-calibration-replay/retrieval-followup/mw-api.log.gz"
+sha256 = "845c794f7f906ba225ad8651bcca6ffca7b5500ea11c3d6217638db91a80151d"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-physical-calibration-replay/retrieval-followup/mw-api.status.gz"
+sha256 = "35aa3b0d27060755d0bc4ca0f1c8d86359adf15db54694142a933c7db39f9d9a"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-physical-calibration-replay/retrieval-followup/mw-blob.json.gz"
+sha256 = "3f13f917ad78a8efb91917ae6ac6d903c0c68ea74cc5e1fa39622c281457b076"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-physical-calibration-replay/retrieval-followup/mw-raw.py.gz"
+sha256 = "f9980708a5bde69b81cf4fd4de089c4af83285fcbec664396bcd16875b56bd19"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-physical-calibration-replay/retrieval-followup/mw-wget.log.gz"
+sha256 = "06836feab008f65bed29fe779ff7d2ac315580e2239761e05f738f195a028b02"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-physical-calibration-replay/retrieval-followup/pdf-export.headers.gz"
+sha256 = "c92ce4a818a5b013c2bca61a320e45ec6a47e2703c2177456c1da9bef425cd96"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-physical-calibration-replay/retrieval-followup/pdf-export.log.gz"
+sha256 = "27c313401f30d89590e222923ffb4e40dcda2e5f16bad4a38b8eaf72f372565a"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-physical-calibration-replay/retrieval-followup/pdf-export.status.gz"
+sha256 = "2f6468ddc592dca4d1fde17346bdbba7d7064acc970207c6be095e8fcb56f38b"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-physical-calibration-replay/retrieval-followup/pdf-identity.json"
+sha256 = "6b0979df3425cf75dbecf57761f82864efeebde36b24ab95438f4cd51f008fc6"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-physical-calibration-replay/retrieval-followup/receipts.jsonl"
+sha256 = "d07cdf6fbb4a7fa5b287a345908686be6fd14bb52625693840be08eac18c7b20"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-physical-calibration-replay/retrieval-followup/verification.json"
+sha256 = "50b85832dbc7ffa6c764aebe9e508be00a952a0923ac285be06d3b16a265e46d"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-physical-calibration-replay/review.toml"
+sha256 = "97ab5a63eef1f0e5d7c6153facc8481663ad3f3b5cde8da5b775608b9eaf2d93"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-physical-calibration-replay/source-admission-results.json"
+sha256 = "ba187fb89134af1d2936f7d33096eb9bf23e9bb57c4bb8d9d5400d752c445d84"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-physical-calibration-replay/sources/admissions/request-01.toml"
+sha256 = "d07456c007248d8cd91a2d7f184cc0224b1ba9059a30622e186889c30d868642"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-physical-calibration-replay/sources/admissions/request-02.toml"
+sha256 = "946b46e12839155043ffb492fcce4d83c7f3fb8d0fa0f93f85ec8c7741857b6e"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-physical-calibration-replay/sources/admissions/request-03.toml"
+sha256 = "8ff4c02bed7ec203d1f5c76f462b362c81fbdbfb8f4deeaf559414890765ac8f"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-physical-calibration-replay/sources/admissions/request-04.toml"
+sha256 = "da47772508ae4692695e68505b4b10d2b743b8f9906a2d4f999dd982082ace44"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-physical-calibration-replay/sources/admissions/request-05.toml"
+sha256 = "295ae9ce59ac951295ab85e7ae3ad1630ef4f9e720c794f9bd9108707391bca1"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-physical-calibration-replay/sources/admissions/request-06.toml"
+sha256 = "5b53d699ea987749d3ab6ee0a551ba2417b25d9d3928aaf92c8da4e845ae23e4"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-physical-calibration-replay/sources/admissions/request-07.toml"
+sha256 = "06cce5725b58342f299eb95d57369c1f53b6e4161102c875ef75c5eb75a9d4a2"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-physical-calibration-replay/sources/admissions/request-08.toml"
+sha256 = "57d869c38b4f20f10bdffdd0cde209df5d6ba451e53231f5098167c3d23f88bb"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-physical-calibration-replay/sources/admissions/request-09.toml"
+sha256 = "eff6c73ca1bc96e339dd28485425779f1acc88037b1e0238603b93aebf18548e"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-physical-calibration-replay/sources/admissions/request-10.toml"
+sha256 = "ac4546c41d38107e1c0f69986662ad204b1ca4238956aeb8e4ef91b4b3e10767"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-physical-calibration-replay/sources/admissions/request-12.toml"
+sha256 = "ad5f23e65e8796a0bc8ac329f9145698745984e2db01b313457fd794925e5196"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-physical-calibration-replay/sources/admissions/request-13.toml"
+sha256 = "76cb06f91c98b5ae05b76d993356cf18685605abddd0dac98a4409d6b4bd2922"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-physical-calibration-replay/sources/admissions/request-14.toml"
+sha256 = "7c66b1f4676379919e69c1d6398df08b79154024e01007d30f1a6af1d900d018"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-physical-calibration-replay/sources/admissions/request-15.toml"
+sha256 = "6fe07bd93d29acd8e5483c5dbda307ef03d554a1f7162e9eccd1045207609e3e"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-physical-calibration-replay/sources/admissions/request-16.toml"
+sha256 = "aea6d6301222f3c29d5b8a1cce484befccc7870d3b5956bc765b0e38102f3c0f"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-physical-calibration-replay/sources/admissions/request-17.toml"
+sha256 = "198a1779e283046c9b3f3989a633cf22ae5b0514f7c512c3220d9194b980900d"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-physical-calibration-replay/sources/admissions/request-18.toml"
+sha256 = "f5e52457f475fc18487c5d560a4720afa06d8ff1ac2623dc6710c78d952a48d2"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-physical-calibration-replay/sources/admissions/request-19.toml"
+sha256 = "dbc8126a5966fd3652a659300f56fff8fe71fda1fec44689bc3dd1ec8d8bf500"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-physical-calibration-replay/sources/bhandari2021.html.gz"
+sha256 = "29efe150e1d4f7c2fdc550aed9c1c85121c678fc3680caa0245feb9f22c69e5a"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-physical-calibration-replay/sources/bhandari2021.pdf.gz"
+sha256 = "4a6b15883dac4c08edbe249e82c020b8ccfe6fb943a277ce7c7d734047827214"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-physical-calibration-replay/sources/build-frbs.py.txt.gz"
+sha256 = "37780f902dba594576192f0f710796490f6226d58f9f4c9908bd4815bbf0edc3"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-physical-calibration-replay/sources/chime-catalog1.html.gz"
+sha256 = "856189494245e41bee44c0e0c8a8e0962d82ced6fdaac203c4b90a0ecd9b7641"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-physical-calibration-replay/sources/frb-class.py.txt.gz"
+sha256 = "2893ed8e27b034e8f304a5df6acf86449c24a44721e74aafc5c07a12c3843d0d"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-physical-calibration-replay/sources/frb-readme.md.gz"
+sha256 = "8e9510132a09fcd5fc87ce10241cfeb57676236ce94710320925ffb2092cf745"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-physical-calibration-replay/sources/frb20200430a.json.gz"
+sha256 = "7de87db100bdb537c38916a467876dceebf97add33d4000b5bb3fbab636256fe"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-physical-calibration-replay/sources/frbs-base.csv.gz"
+sha256 = "f914b3e0a356f5f23162e98bbac37d26ffc7e6ee44f7117f0a948a0c386bc56c"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-physical-calibration-replay/sources/galaxy-references.csv.gz"
+sha256 = "3cc944b7d3807a6e918bfa2ad47c1ba9ccd91f6214fccf5fa7de415158da297f"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-physical-calibration-replay/sources/github-frb-tree.json.gz"
+sha256 = "c38d2be0588e7429fc5720cc8b100ec6d78380ae652f4a2c777aa66b017a38bb"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-physical-calibration-replay/sources/github-master-commit.json.gz"
+sha256 = "766311011b4c88b378c0873007af9062edf4c2dd41928bf0825adc303e592483"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-physical-calibration-replay/sources/github-repository.json.gz"
+sha256 = "1376f93fe4dc3ffa86231ff6ef137e4833310582386a6af6c0dfda308adf9ec8"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-physical-calibration-replay/sources/localized-frb-cohort.csv"
+sha256 = "b63c0e1c85f7310b90aa8ff11b1a16dca4b7a058a53fb06479c900790b3cbbf2"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-physical-calibration-replay/sources/macquart2020.pdf.gz"
+sha256 = "c5ab3d09976661f0ab9c712030ec1dbb04c96ed6732dfaa72b13ce93198c522e"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-physical-calibration-replay/sources/milky-way-model.py.txt.gz"
+sha256 = "31678b1a3bd22f5f3095c4681e61e9058f7c79aa8eea8813a0d0b4ff72004275"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-physical-calibration-replay/sources/milky-way-ne2001.py.txt.gz"
+sha256 = "f9980708a5bde69b81cf4fd4de089c4af83285fcbec664396bcd16875b56bd19"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-physical-calibration-replay/sources/path-adopted.csv.gz"
+sha256 = "2c0f72ae7f6f251e9355463a1b11df4aa4fc71daf9cee730ed439e36fb8949e6"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-physical-calibration-replay/sources/public-hosts.csv.gz"
+sha256 = "0c1b3bf4d0da7b03e3fad4ad2c2a9ba51cecc75a7c7ba7fa3164f09c3de696e2"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-physical-calibration-replay/sources/receipts/request-01.json"
+sha256 = "11623b6fbe5acf5c5640a36cc1fbdce17a3606e58cfaceae48f4ed3ac06a9f9c"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-physical-calibration-replay/sources/receipts/request-02.json"
+sha256 = "748c18c9034ba9a95ade69df8fbbef69b8b2d6f5b92098371999f69047b0aa95"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-physical-calibration-replay/sources/receipts/request-03.json"
+sha256 = "f26be4453938243f2dbdbc3a369bca753d0b3933771545f5e620e2d7e447d70a"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-physical-calibration-replay/sources/receipts/request-04.json"
+sha256 = "4e58b206f912d5cfc73e0cc902f88bbb36ef63df651a755072ac033dfe8b29a9"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-physical-calibration-replay/sources/receipts/request-05.json"
+sha256 = "39cbe3a82bd7374df837380f05e2adf69d2e8ff524c56a7d1fccd8ea0e392650"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-physical-calibration-replay/sources/receipts/request-06.json"
+sha256 = "92103112d01f0b5dc39e6e1cc896e917c7356f9840614632f764dddfb4d4da7c"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-physical-calibration-replay/sources/receipts/request-07.json"
+sha256 = "953fcce81776ee3affef368f1a5d1a9397e9734389cca4c737aae1a3f1c2e660"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-physical-calibration-replay/sources/receipts/request-08.json"
+sha256 = "79f278e9be909473bb3163a975cb4044028e08e719c8a95432e82810e03b16f1"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-physical-calibration-replay/sources/receipts/request-09.json"
+sha256 = "fcb976d59a9de5cc8cda819475fc856ccb1def1eeb1ba429acccbd185324cfb8"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-physical-calibration-replay/sources/receipts/request-10.json"
+sha256 = "7fe1eb7cea31da8047b4cca6e947956437ef4899d087a3de7c3b4679705c4639"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-physical-calibration-replay/sources/receipts/request-11.json"
+sha256 = "4a84b3bdcf993ef80a29cfda1c3e723d730761f18db31b5d73e7d05835572823"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-physical-calibration-replay/sources/receipts/request-12.json"
+sha256 = "9c7020d8e2b14d46fbe10016af3460ec7b106c16867e053581eef11d4266e488"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-physical-calibration-replay/sources/receipts/request-13.json"
+sha256 = "ff776ea51278ec08a9dc3130eae3ca43e0dab93049fb664a85367df779bb63b8"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-physical-calibration-replay/sources/receipts/request-14.json"
+sha256 = "a0672db8c5ea4907e24f862db791631312cdd86015c43c3e6f5bc00fa9bba7bd"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-physical-calibration-replay/sources/receipts/request-15.json"
+sha256 = "1987dc97a69572a1eb00be68bac20b86d4e26f3710a6dc4f15855ba7b467798c"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-physical-calibration-replay/sources/receipts/request-16.json"
+sha256 = "612c3355d83507f3cb1808e58c3e7a33c1de7269e2da40a9712e381e01847816"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-physical-calibration-replay/sources/receipts/request-17.json"
+sha256 = "257cc2d4a42caec68a2c6adb3faba27d950a71a819c9d45c9524078b90349c36"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-physical-calibration-replay/sources/receipts/request-18.json"
+sha256 = "665595dd7209b4f754471429fe53bb221a1a72e1ef480635c988dff61ca9d799"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-physical-calibration-replay/sources/receipts/request-19.json"
+sha256 = "7801929417c6ce13a33efbaded6331f6c005b00d0e53a29a25f25441134ff319"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-physical-calibration-replay/sources/retrievals.jsonl"
+sha256 = "4657f9dcbfc27b8848fe2f0e742a0d4c4f5547ada7530d93dc6e33a19a12de08"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-physical-calibration-replay/sources/shannon-source-table-cells.json"
+sha256 = "b0fc1dbd4588b6550e2154f2d6bf6fd8077d024d7579be13422d829d4496caeb"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-physical-calibration-replay/sources/shannon-table1-selection.csv"
+sha256 = "9e3879d2dca34ae1043257bd4ce7297fe1b482673377df946d470feb0453bdf9"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-physical-calibration-replay/sources/shannon2024-urllib.html.gz"
+sha256 = "3c2939dcd4d9cc4b9b6381a8bb286ed0a126637bbe1e4fe44589a63e2689d401"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-physical-calibration-replay/sources/shannon2024.html.gz"
+sha256 = "3c2939dcd4d9cc4b9b6381a8bb286ed0a126637bbe1e4fe44589a63e2689d401"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-physical-calibration-replay/sources/source-grouping.toml"
+sha256 = "45d473c5ad1e555087978f8d23f4651f5f76141b587c16532be3a426dd152b73"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-physical-calibration-replay/sources/sources.toml"
+sha256 = "cd4580abf995a07e6178e948aedfc6c92a0aaa8a7bd1553e89c9e1d365d52166"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-physical-calibration-replay/sources/verification.json"
+sha256 = "342201471e9d4ffc590980f86fbec3625c232c33e3f5d3d07b6afd817f502f81"
+
 [[insight.evidence_admission.predicates]]
 id = "dm-redshift"
 proposition = "The Macquart relation connects mean cosmic DM and redshift."
@@ -388,13 +868,13 @@ proposition = "The conversion supplies comoving distances for ultrametric analys
 kind = "asserted_proposition"
 evidence_layer = "phenomenological_mapping"
 outcome = "inconclusive"
-execution_status = "source_review"
-boundary = "Both FRB callers use the selected NE2001 or YMW16 excess and subtract a declared observer-frame host. The numerical conversion is tested; catalog halo treatment, physical host-frame provenance and independent localized-FRB calibration remain unresolved."
-evidence_anchors = ["data/output/audit/frb-inversion-null-sensitivity/findings.json#catalog"]
+execution_status = "replayed"
+boundary = "The corrected predictor was assessed on 21 localized sources under a frozen protocol. Primary 90 percent radius is unbounded; eight of ten primary heldout errors exceed 100 Mpc. The predeclared historical foreground sensitivity gives radius 1670.44 Mpc and 9/10 coverage. Selection, measurement uncertainties and CHIME transport remain unresolved."
+evidence_anchors = ["data/output/audit/frb-physical-calibration-replay/findings.json#calibration"]
 
 [[insight.evidence_admission.predicates.evidence_bindings]]
-path = "data/output/audit/frb-inversion-null-sensitivity/findings.json"
-json_pointer = "/catalog"
+path = "data/output/audit/frb-physical-calibration-replay/findings.json"
+json_pointer = "/calibration"
 
 [[insight.evidence_admission.predicates]]
 id = "source-generated-inversion"
@@ -424,6 +904,34 @@ evidence_anchors = ["data/output/audit/frb-inversion-null-sensitivity/findings.j
 path = "data/output/audit/frb-inversion-null-sensitivity/findings.json"
 json_pointer = "/catalog"
 
+[[insight.evidence_admission.predicates]]
+id = "foreground-source-conventions"
+proposition = "Disk, halo and rest-frame host dispersion measures are distinct contributions."
+kind = "asserted_proposition"
+evidence_layer = "source_proposition"
+outcome = "supported"
+execution_status = "source_review"
+boundary = "Macquart Eq1 distinguishes halo and host50/(1+z); CHIME Catalog1 excess uses FITBURST DM minus a Galactic model. Fixed observer-host50 remains a computational convention. Nine fixed foreground pairs collapse to five total subtractions."
+evidence_anchors = ["data/output/audit/frb-physical-calibration-replay/findings.json#foreground"]
+
+[[insight.evidence_admission.predicates.evidence_bindings]]
+path = "data/output/audit/frb-physical-calibration-replay/findings.json"
+json_pointer = "/foreground"
+
+[[insight.evidence_admission.predicates]]
+id = "finite-localized-calibration"
+proposition = "The primary frozen predictor supplies a finite 90 percent calibrated distance radius on the admitted cohort."
+kind = "asserted_proposition"
+evidence_layer = "phenomenological_mapping"
+outcome = "refuted"
+execution_status = "replayed"
+boundary = "The finite-radius proposition fails under the frozen protocol: FRB20230718A yields cosmic DM -19 and an infinite calibration score; rank11 of11 is unbounded. All failures remain included. The outcome neither establishes a universal impossibility nor selects another sensitivity as a replacement."
+evidence_anchors = ["data/output/audit/frb-physical-calibration-replay/findings.json#calibration"]
+
+[[insight.evidence_admission.predicates.evidence_bindings]]
+path = "data/output/audit/frb-physical-calibration-replay/findings.json"
+json_pointer = "/calibration"
+
 [[insight.evidence_admission.references]]
 claim_id = "C-071"
 predicate_id = "physical-distance"
@@ -437,31 +945,31 @@ date = "2026-02-06"
 id = "I-002"
 sprint = 6
 status = "partial"
-status_note = "Partial preserves the supported metric and null-sensitivity lessons, recovered tracked-tree evidence and failed exact-source build. Synthetic confirmation establishes implementation sensitivity under declared generators; physical calibration and historical re-adjudication remain open."
-summary = "C-071 retains its historical refuted disposition. Original scalar and transformed producers, lockfiles, five results and two exact CHIME inputs are retained with verified hashes. The original scalar build fails before compilation because its tracked workspace omits control_core; actual historical invocation and execution replay remain unresolved. Geometry-preserving relabeling nulls supply diagnostics with unestablished physical power. A separately frozen radial-angular dependence instrument passes an independent 1000-replicate-per-family engineering confirmation after the initial 100-replicate control precision gate failed. Flat and gradient alternatives also reject, restricting interpretation to dependence rather than hierarchy. Scalar p-adic and Euclidean metrics remain distinct cases."
+status_note = "Partial records completed reconstructed replay, tested synthetic null sensitivity and explicit physical deployment limits. Output equality supplies reproducibility, while original executable attribution and physical structure inference remain separate questions."
+summary = "A declared reconstruction adds ten recovered control_core files and removes two stale quantum_core lock edges while preserving every package version/checksum and the original scalar producer. The locked release build and full candidate runs reproduce all three historical CSV bodies byte-for-byte. Original invocation and executable identity remain unidentified. The historical geometry-preserving null and C-071 disposition remain unchanged. Synthetic radius-angle sensitivity is an instrument result; localized distance calibration establishes an unbounded primary uncertainty radius."
 title = "Ultrametric inference depends on the metric, representation and null sensitivity"
 
 [insight.evidence_admission]
-admission_id = "frb-inversion-null-sensitivity:I-002"
+admission_id = "frb-physical-calibration-replay:I-002"
 insight_id = "I-002"
-expected_previous_evidence_sha256 = "f5f5ea64b6050f492ea9baa1294de9847793e4c499cef31bbcc9d293a668e4b3"
-disposition = "retain_partial_status_admit_bounded_frb_instrument_and_recovered_history"
-falsifier = "Independent numerical oracles and catalog error/selection fixtures adjudicate implementation. Synthetic acceptance uses fixed generators, 199 permutations and one-sided Wilson bounds, with retained initial failure and independent confirmation. Flat/gradient rejection defeats hierarchy specificity."
-successor = "A bounded numerical FRB distance construction and a sensitivity-tested conditional radial-angular dependence instrument, with explicit physical deployment prerequisites."
-residual = "Recover the historical missing control_core source and actual invocation; admit halo/host conventions, repeat-source grouping, selection exchangeability and coordinate rebuild per null draw; freeze multiplicity and a held-out localized-FRB physical comparison before physical inference."
+expected_previous_evidence_sha256 = "352b5a082a751f6057d6855384a246d905128eb63bb58f2cbad5c31ccd77c599"
+disposition = "retain_partial_admit_reconstructed_replay_and_finite_calibration_negative_result"
+falsifier = "Any historical CSV byte mismatch refutes declared exact replay. Equal output cannot uniquely identify the original invocation. Physical hierarchy inference requires separate matched controls and justified physical calibration."
+successor = "Reproducible historical scalar results and a frozen assessment of the corrected mean-DM predictor's physical limitations."
+residual = "Original executable and invocation identity remain unidentified. Physical successors require a defensible foreground/scatter model, larger independent localized samples, uncertainty propagation and selection/transport justification before CHIME inference. C-071 retains its refuted disposition."
 
 [insight.evidence_admission.expected]
 title = "Ultrametric inference depends on the metric, representation and null sensitivity"
 status = "partial"
-summary = "C-071 retains its historical refuted disposition. The inspected raw-scalar permutation null preserves the full population of unordered triple distances, so Monte Carlo triple sampling alone supplies no demonstrated power to destroy a proposed physical structure. A retained exhaustive witness preserves 5 qualifying triples of 20 across all 720 permutations. Scalar values with a p-adic metric can be ultrametric; three distinct Euclidean real scalars form a different metric case. Alternative Baire, temporal and dendrogram representations exist, but implementation existence establishes neither detection nor physical validation. Recover the original result bodies and producer identity, inspect every statistic and selection procedure, and demonstrate injection sensitivity before re-adjudicating the historical claim."
-status_note = "The metric and relabeling lessons are supported by inspected code and retained independent witnesses. Partial preserves the unresolved attribution and power of the original C-071 experiment; canonical admission changes the insight interpretation and leaves the claim disposition intact."
+summary = "C-071 retains its historical refuted disposition. Original scalar and transformed producers, lockfiles, five results and two exact CHIME inputs are retained with verified hashes. The original scalar build fails before compilation because its tracked workspace omits control_core; actual historical invocation and execution replay remain unresolved. Geometry-preserving relabeling nulls supply diagnostics with unestablished physical power. A separately frozen radial-angular dependence instrument passes an independent 1000-replicate-per-family engineering confirmation after the initial 100-replicate control precision gate failed. Flat and gradient alternatives also reject, restricting interpretation to dependence rather than hierarchy. Scalar p-adic and Euclidean metrics remain distinct cases."
+status_note = "Partial preserves the supported metric and null-sensitivity lessons, recovered tracked-tree evidence and failed exact-source build. Synthetic confirmation establishes implementation sensitivity under declared generators; physical calibration and historical re-adjudication remain open."
 claim_refs = ["C-071"]
 
 [insight.evidence_admission.revised]
 title = "Ultrametric inference depends on the metric, representation and null sensitivity"
 status = "partial"
-summary = "C-071 retains its historical refuted disposition. Original scalar and transformed producers, lockfiles, five results and two exact CHIME inputs are retained with verified hashes. The original scalar build fails before compilation because its tracked workspace omits control_core; actual historical invocation and execution replay remain unresolved. Geometry-preserving relabeling nulls supply diagnostics with unestablished physical power. A separately frozen radial-angular dependence instrument passes an independent 1000-replicate-per-family engineering confirmation after the initial 100-replicate control precision gate failed. Flat and gradient alternatives also reject, restricting interpretation to dependence rather than hierarchy. Scalar p-adic and Euclidean metrics remain distinct cases."
-status_note = "Partial preserves the supported metric and null-sensitivity lessons, recovered tracked-tree evidence and failed exact-source build. Synthetic confirmation establishes implementation sensitivity under declared generators; physical calibration and historical re-adjudication remain open."
+summary = "A declared reconstruction adds ten recovered control_core files and removes two stale quantum_core lock edges while preserving every package version/checksum and the original scalar producer. The locked release build and full candidate runs reproduce all three historical CSV bodies byte-for-byte. Original invocation and executable identity remain unidentified. The historical geometry-preserving null and C-071 disposition remain unchanged. Synthetic radius-angle sensitivity is an instrument result; localized distance calibration establishes an unbounded primary uncertainty radius."
+status_note = "Partial records completed reconstructed replay, tested synthetic null sensitivity and explicit physical deployment limits. Output equality supplies reproducibility, while original executable attribution and physical structure inference remain separate questions."
 claim_refs = ["C-071"]
 
 [[insight.evidence_admission.evidence_files]]
@@ -748,6 +1256,486 @@ sha256 = "2ec039d8091ded47d2f2b4b29b0a5ae4fc553761f9659d411ab4c8f853ee4cdf"
 path = "crates/data_core/src/catalogs/chime.rs"
 sha256 = "bf0557dbfbbe35409f19fe881f6163a22fd14a3d003186e26d02ffb4e723e708"
 
+[[insight.evidence_admission.evidence_files]]
+path = "crates/cosmology_core/src/frb_calibration.rs"
+sha256 = "b95e3fa3c6b7c556c223280fa370cd31323d5c62abe0fc6fcca15beee709bfd0"
+
+[[insight.evidence_admission.evidence_files]]
+path = "crates/gororoba_cli_physics/src/bin/frb_distance_calibration.rs"
+sha256 = "078e1a04e6a20fa5c4d5549c97ceeae081248b3399623914ebe95b06eaa56ca9"
+
+[[insight.evidence_admission.evidence_files]]
+path = "crates/provenance_store/src/source_observation.rs"
+sha256 = "7ecb3ba324f4c915d197ab70e8a9ddc0635f41f3d391d52d0ffc62132086d496"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-physical-calibration-replay/admission-queries.sql"
+sha256 = "8f9c7026dc22490fca24623540711379444bf155c4fcb253ec1b4472db83bb2b"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-physical-calibration-replay/calibration-execution-protocol.toml"
+sha256 = "886ea2e70f80506293d35561ae04f1be29a00864ff08ddeca7b07ec860be2d46"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-physical-calibration-replay/calibration-protocol.toml"
+sha256 = "d987b66c070a452e667a5c5aeaaa642d96ae8c19e4b9e992a4f26906c2a158b9"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-physical-calibration-replay/calibration-results.json"
+sha256 = "492dc673aefec1a04a2ab126bfadef368b60b101d1281ef10a504081386a0edc"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-physical-calibration-replay/calibration-runner-freeze.toml"
+sha256 = "06cd701a4728ecc2afc43ac9eb8c5b9d60af82e35b6d2d02e0c33d075602d6af"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-physical-calibration-replay/evaluator-build.log"
+sha256 = "6a28a2a5c53aff047ccc779cf60bcec6f06416e3c9d59179116e6dd8f76fa932"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-physical-calibration-replay/evaluator-clippy.log"
+sha256 = "20035a60038008b289f01ea81a547936a2590fef8a07fc34a194042b8d9bc3c1"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-physical-calibration-replay/evaluator-tests.log"
+sha256 = "59e5e5a91a217345dff575eef1e7a555805de1f499a04df3ba6f1c1e0d9c8c55"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-physical-calibration-replay/findings.json"
+sha256 = "58d0c53554d710a0bfaee266ca6ce1072c93c71024033d02972023a4274bb613"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-physical-calibration-replay/historical/artifact-checks.json"
+sha256 = "3c38863b7a150a23bfa05c7edf3ecaaeb39e0f934276c237cd908dd12c3b1489"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-physical-calibration-replay/historical/build-toolchain.txt.gz"
+sha256 = "7c082dd1f765dc355ae7e2fbfe8404c0f3776b0ea3c36738337af7baa8dfd260"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-physical-calibration-replay/historical/candidate-cat1.csv"
+sha256 = "772b818af4d6a8621d52a2c22455e59606df8a6b114307fc0fdc37748e6823ad"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-physical-calibration-replay/historical/candidate-cat2.csv"
+sha256 = "ebbffd4610c945456562ace09d3e9d24f50f0dd4c03bddba5c1f36e88210d59b"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-physical-calibration-replay/historical/candidate-combined.csv"
+sha256 = "24ac0521efa856a6d22d86fd86e79f5101e3e8d44d72f743f16da84eeea9259c"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-physical-calibration-replay/historical/cat1.stderr.log.gz"
+sha256 = "5159846175d3e99d5ae60fbd7e726a4daaa1c9e7a4c0327045c72969fc02f7dc"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-physical-calibration-replay/historical/cat1.stdout.jsonl.gz"
+sha256 = "6baa2600e3fe31fbaaa1827cb382bd75c33d7ac281ec850980aad1adcb9008fa"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-physical-calibration-replay/historical/cat1.time.gz"
+sha256 = "68ac1b5c48cec0dbfd16a0a1019de8860b9191b83964561ee2cc483c9402ba9a"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-physical-calibration-replay/historical/cat2.stderr.log.gz"
+sha256 = "8abdcd27ebc203a5a017e413c61913615aed8c5d4a07fe52348b435512b6a87a"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-physical-calibration-replay/historical/cat2.stdout.jsonl.gz"
+sha256 = "a0917fe022e1441eda6e2e98d4d4f83c0af6b85f7968880a84ef08654560af7e"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-physical-calibration-replay/historical/cat2.time.gz"
+sha256 = "d50409e4b5e5d0b77d2e435ff011d83dea91d2fc3bb9721ac056d10621f4e870"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-physical-calibration-replay/historical/control-core-files.jsonl"
+sha256 = "da73b5b91d16ebd0ca4f4312c86134b9ddb7c103551da4a6ebabe4c2822dc750"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-physical-calibration-replay/historical/control-core-source.tar.gz"
+sha256 = "f44e65ebb7122d51702eead3b70803b76a86ec1728cd1c21ca8102b57814f1c0"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-physical-calibration-replay/historical/lock-reconciliation.diff"
+sha256 = "c40ab1c136aac89ff04c2dd2bf9515483ffd67758222f94d9180fb0873575b96"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-physical-calibration-replay/historical/member-overlay-build.log.gz"
+sha256 = "d6aa9305ebfc3551dcb77369bd81fe0be8369157c7c110734249e65057e779e2"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-physical-calibration-replay/historical/reconciled-Cargo.lock.gz"
+sha256 = "31e01e9432f0ff6e485fdbc029fcbb496e7d98cf625c1b19ca90097ad9dcea5d"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-physical-calibration-replay/historical/reconciled-build.log.gz"
+sha256 = "a8325c0c87e1a2f57defb70116c3b93b681769f745e4f8ba8dcc73beb3ee3a99"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-physical-calibration-replay/historical/reconstructed-frb-ultrametric.gz"
+sha256 = "3bd75a0478b04125cfbef30f2436e2443840539a4a17acf32536dbdb025290a8"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-physical-calibration-replay/historical/reconstruction.toml"
+sha256 = "25c4a30cf5453bfc7db47cbd6e679813dc83f19ceee22adfbe541dce8bfe577a"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-physical-calibration-replay/historical/recovery.toml"
+sha256 = "7c659ef7fb608b86992a2c8956b33e77fe117e0d126a63a8d16205298ef1049b"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-physical-calibration-replay/historical/replay.toml"
+sha256 = "f81c3d64b337d6ebdcf7ea30012fc368f239d1e4ae3c1a9d544d31e5e7ad9ed1"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-physical-calibration-replay/preservation-queries.sql"
+sha256 = "1bd41f6001f623834f12a113ff11f1d60d8999e3c1a5d5b633e2a70cf1d6b5ca"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-physical-calibration-replay/protocol-review.toml"
+sha256 = "fd6f5465070c762f9c9036b86806dac34d3d4fc419dba0424337365b06035180"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-physical-calibration-replay/retrieval-followup/bhandari-complete.pdf.gz"
+sha256 = "ff14bc5187a763fff0c8cbb4771cf648881300abf123631d929c99437d38e723"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-physical-calibration-replay/retrieval-followup/bhandari-export.pdf.gz"
+sha256 = "ff14bc5187a763fff0c8cbb4771cf648881300abf123631d929c99437d38e723"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-physical-calibration-replay/retrieval-followup/bhandari-pdfinfo.txt.gz"
+sha256 = "cb0ffc2d3a51c3b775d8bf01a68ea3ddc3f8bb49f40a21340a2c6e0c7451533e"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-physical-calibration-replay/retrieval-followup/bhandari-title-page.txt.gz"
+sha256 = "28a7325c6cb4304cb255176b78e4cb6f324584d1868be21a45dff0a6adb6579a"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-physical-calibration-replay/retrieval-followup/bhandari-wget.log.gz"
+sha256 = "3c0c1e04d3b20bcecb1aaf34af7704c7b4f941bc14f31200fbd2f305476afcf2"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-physical-calibration-replay/retrieval-followup/complete_original_pdf-admission.toml"
+sha256 = "fbcd5d9b0064dde958b479707213820ee6f4ca8ab5f5996db67c368c9a923487"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-physical-calibration-replay/retrieval-followup/corrected_same_commit_source_path-admission.toml"
+sha256 = "adedb7b6958804265528e06f87369043fa437e51105dc4242d65b9c70f4c9253"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-physical-calibration-replay/retrieval-followup/followup.toml"
+sha256 = "5a98e1694e82cec140afd4c69b0b8ace91fb7d80d9a6d0732f4fa1634fb2c1a5"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-physical-calibration-replay/retrieval-followup/mw-api.headers.gz"
+sha256 = "110446ed498ca0b221a7e385d1a56a9ca7680fff3eaab66b80f8f215b95b2a6c"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-physical-calibration-replay/retrieval-followup/mw-api.log.gz"
+sha256 = "845c794f7f906ba225ad8651bcca6ffca7b5500ea11c3d6217638db91a80151d"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-physical-calibration-replay/retrieval-followup/mw-api.status.gz"
+sha256 = "35aa3b0d27060755d0bc4ca0f1c8d86359adf15db54694142a933c7db39f9d9a"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-physical-calibration-replay/retrieval-followup/mw-blob.json.gz"
+sha256 = "3f13f917ad78a8efb91917ae6ac6d903c0c68ea74cc5e1fa39622c281457b076"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-physical-calibration-replay/retrieval-followup/mw-raw.py.gz"
+sha256 = "f9980708a5bde69b81cf4fd4de089c4af83285fcbec664396bcd16875b56bd19"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-physical-calibration-replay/retrieval-followup/mw-wget.log.gz"
+sha256 = "06836feab008f65bed29fe779ff7d2ac315580e2239761e05f738f195a028b02"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-physical-calibration-replay/retrieval-followup/pdf-export.headers.gz"
+sha256 = "c92ce4a818a5b013c2bca61a320e45ec6a47e2703c2177456c1da9bef425cd96"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-physical-calibration-replay/retrieval-followup/pdf-export.log.gz"
+sha256 = "27c313401f30d89590e222923ffb4e40dcda2e5f16bad4a38b8eaf72f372565a"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-physical-calibration-replay/retrieval-followup/pdf-export.status.gz"
+sha256 = "2f6468ddc592dca4d1fde17346bdbba7d7064acc970207c6be095e8fcb56f38b"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-physical-calibration-replay/retrieval-followup/pdf-identity.json"
+sha256 = "6b0979df3425cf75dbecf57761f82864efeebde36b24ab95438f4cd51f008fc6"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-physical-calibration-replay/retrieval-followup/receipts.jsonl"
+sha256 = "d07cdf6fbb4a7fa5b287a345908686be6fd14bb52625693840be08eac18c7b20"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-physical-calibration-replay/retrieval-followup/verification.json"
+sha256 = "50b85832dbc7ffa6c764aebe9e508be00a952a0923ac285be06d3b16a265e46d"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-physical-calibration-replay/review.toml"
+sha256 = "97ab5a63eef1f0e5d7c6153facc8481663ad3f3b5cde8da5b775608b9eaf2d93"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-physical-calibration-replay/source-admission-results.json"
+sha256 = "ba187fb89134af1d2936f7d33096eb9bf23e9bb57c4bb8d9d5400d752c445d84"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-physical-calibration-replay/sources/admissions/request-01.toml"
+sha256 = "d07456c007248d8cd91a2d7f184cc0224b1ba9059a30622e186889c30d868642"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-physical-calibration-replay/sources/admissions/request-02.toml"
+sha256 = "946b46e12839155043ffb492fcce4d83c7f3fb8d0fa0f93f85ec8c7741857b6e"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-physical-calibration-replay/sources/admissions/request-03.toml"
+sha256 = "8ff4c02bed7ec203d1f5c76f462b362c81fbdbfb8f4deeaf559414890765ac8f"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-physical-calibration-replay/sources/admissions/request-04.toml"
+sha256 = "da47772508ae4692695e68505b4b10d2b743b8f9906a2d4f999dd982082ace44"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-physical-calibration-replay/sources/admissions/request-05.toml"
+sha256 = "295ae9ce59ac951295ab85e7ae3ad1630ef4f9e720c794f9bd9108707391bca1"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-physical-calibration-replay/sources/admissions/request-06.toml"
+sha256 = "5b53d699ea987749d3ab6ee0a551ba2417b25d9d3928aaf92c8da4e845ae23e4"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-physical-calibration-replay/sources/admissions/request-07.toml"
+sha256 = "06cce5725b58342f299eb95d57369c1f53b6e4161102c875ef75c5eb75a9d4a2"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-physical-calibration-replay/sources/admissions/request-08.toml"
+sha256 = "57d869c38b4f20f10bdffdd0cde209df5d6ba451e53231f5098167c3d23f88bb"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-physical-calibration-replay/sources/admissions/request-09.toml"
+sha256 = "eff6c73ca1bc96e339dd28485425779f1acc88037b1e0238603b93aebf18548e"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-physical-calibration-replay/sources/admissions/request-10.toml"
+sha256 = "ac4546c41d38107e1c0f69986662ad204b1ca4238956aeb8e4ef91b4b3e10767"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-physical-calibration-replay/sources/admissions/request-12.toml"
+sha256 = "ad5f23e65e8796a0bc8ac329f9145698745984e2db01b313457fd794925e5196"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-physical-calibration-replay/sources/admissions/request-13.toml"
+sha256 = "76cb06f91c98b5ae05b76d993356cf18685605abddd0dac98a4409d6b4bd2922"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-physical-calibration-replay/sources/admissions/request-14.toml"
+sha256 = "7c66b1f4676379919e69c1d6398df08b79154024e01007d30f1a6af1d900d018"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-physical-calibration-replay/sources/admissions/request-15.toml"
+sha256 = "6fe07bd93d29acd8e5483c5dbda307ef03d554a1f7162e9eccd1045207609e3e"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-physical-calibration-replay/sources/admissions/request-16.toml"
+sha256 = "aea6d6301222f3c29d5b8a1cce484befccc7870d3b5956bc765b0e38102f3c0f"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-physical-calibration-replay/sources/admissions/request-17.toml"
+sha256 = "198a1779e283046c9b3f3989a633cf22ae5b0514f7c512c3220d9194b980900d"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-physical-calibration-replay/sources/admissions/request-18.toml"
+sha256 = "f5e52457f475fc18487c5d560a4720afa06d8ff1ac2623dc6710c78d952a48d2"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-physical-calibration-replay/sources/admissions/request-19.toml"
+sha256 = "dbc8126a5966fd3652a659300f56fff8fe71fda1fec44689bc3dd1ec8d8bf500"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-physical-calibration-replay/sources/bhandari2021.html.gz"
+sha256 = "29efe150e1d4f7c2fdc550aed9c1c85121c678fc3680caa0245feb9f22c69e5a"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-physical-calibration-replay/sources/bhandari2021.pdf.gz"
+sha256 = "4a6b15883dac4c08edbe249e82c020b8ccfe6fb943a277ce7c7d734047827214"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-physical-calibration-replay/sources/build-frbs.py.txt.gz"
+sha256 = "37780f902dba594576192f0f710796490f6226d58f9f4c9908bd4815bbf0edc3"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-physical-calibration-replay/sources/chime-catalog1.html.gz"
+sha256 = "856189494245e41bee44c0e0c8a8e0962d82ced6fdaac203c4b90a0ecd9b7641"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-physical-calibration-replay/sources/frb-class.py.txt.gz"
+sha256 = "2893ed8e27b034e8f304a5df6acf86449c24a44721e74aafc5c07a12c3843d0d"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-physical-calibration-replay/sources/frb-readme.md.gz"
+sha256 = "8e9510132a09fcd5fc87ce10241cfeb57676236ce94710320925ffb2092cf745"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-physical-calibration-replay/sources/frb20200430a.json.gz"
+sha256 = "7de87db100bdb537c38916a467876dceebf97add33d4000b5bb3fbab636256fe"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-physical-calibration-replay/sources/frbs-base.csv.gz"
+sha256 = "f914b3e0a356f5f23162e98bbac37d26ffc7e6ee44f7117f0a948a0c386bc56c"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-physical-calibration-replay/sources/galaxy-references.csv.gz"
+sha256 = "3cc944b7d3807a6e918bfa2ad47c1ba9ccd91f6214fccf5fa7de415158da297f"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-physical-calibration-replay/sources/github-frb-tree.json.gz"
+sha256 = "c38d2be0588e7429fc5720cc8b100ec6d78380ae652f4a2c777aa66b017a38bb"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-physical-calibration-replay/sources/github-master-commit.json.gz"
+sha256 = "766311011b4c88b378c0873007af9062edf4c2dd41928bf0825adc303e592483"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-physical-calibration-replay/sources/github-repository.json.gz"
+sha256 = "1376f93fe4dc3ffa86231ff6ef137e4833310582386a6af6c0dfda308adf9ec8"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-physical-calibration-replay/sources/localized-frb-cohort.csv"
+sha256 = "b63c0e1c85f7310b90aa8ff11b1a16dca4b7a058a53fb06479c900790b3cbbf2"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-physical-calibration-replay/sources/macquart2020.pdf.gz"
+sha256 = "c5ab3d09976661f0ab9c712030ec1dbb04c96ed6732dfaa72b13ce93198c522e"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-physical-calibration-replay/sources/milky-way-model.py.txt.gz"
+sha256 = "31678b1a3bd22f5f3095c4681e61e9058f7c79aa8eea8813a0d0b4ff72004275"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-physical-calibration-replay/sources/milky-way-ne2001.py.txt.gz"
+sha256 = "f9980708a5bde69b81cf4fd4de089c4af83285fcbec664396bcd16875b56bd19"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-physical-calibration-replay/sources/path-adopted.csv.gz"
+sha256 = "2c0f72ae7f6f251e9355463a1b11df4aa4fc71daf9cee730ed439e36fb8949e6"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-physical-calibration-replay/sources/public-hosts.csv.gz"
+sha256 = "0c1b3bf4d0da7b03e3fad4ad2c2a9ba51cecc75a7c7ba7fa3164f09c3de696e2"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-physical-calibration-replay/sources/receipts/request-01.json"
+sha256 = "11623b6fbe5acf5c5640a36cc1fbdce17a3606e58cfaceae48f4ed3ac06a9f9c"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-physical-calibration-replay/sources/receipts/request-02.json"
+sha256 = "748c18c9034ba9a95ade69df8fbbef69b8b2d6f5b92098371999f69047b0aa95"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-physical-calibration-replay/sources/receipts/request-03.json"
+sha256 = "f26be4453938243f2dbdbc3a369bca753d0b3933771545f5e620e2d7e447d70a"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-physical-calibration-replay/sources/receipts/request-04.json"
+sha256 = "4e58b206f912d5cfc73e0cc902f88bbb36ef63df651a755072ac033dfe8b29a9"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-physical-calibration-replay/sources/receipts/request-05.json"
+sha256 = "39cbe3a82bd7374df837380f05e2adf69d2e8ff524c56a7d1fccd8ea0e392650"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-physical-calibration-replay/sources/receipts/request-06.json"
+sha256 = "92103112d01f0b5dc39e6e1cc896e917c7356f9840614632f764dddfb4d4da7c"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-physical-calibration-replay/sources/receipts/request-07.json"
+sha256 = "953fcce81776ee3affef368f1a5d1a9397e9734389cca4c737aae1a3f1c2e660"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-physical-calibration-replay/sources/receipts/request-08.json"
+sha256 = "79f278e9be909473bb3163a975cb4044028e08e719c8a95432e82810e03b16f1"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-physical-calibration-replay/sources/receipts/request-09.json"
+sha256 = "fcb976d59a9de5cc8cda819475fc856ccb1def1eeb1ba429acccbd185324cfb8"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-physical-calibration-replay/sources/receipts/request-10.json"
+sha256 = "7fe1eb7cea31da8047b4cca6e947956437ef4899d087a3de7c3b4679705c4639"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-physical-calibration-replay/sources/receipts/request-11.json"
+sha256 = "4a84b3bdcf993ef80a29cfda1c3e723d730761f18db31b5d73e7d05835572823"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-physical-calibration-replay/sources/receipts/request-12.json"
+sha256 = "9c7020d8e2b14d46fbe10016af3460ec7b106c16867e053581eef11d4266e488"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-physical-calibration-replay/sources/receipts/request-13.json"
+sha256 = "ff776ea51278ec08a9dc3130eae3ca43e0dab93049fb664a85367df779bb63b8"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-physical-calibration-replay/sources/receipts/request-14.json"
+sha256 = "a0672db8c5ea4907e24f862db791631312cdd86015c43c3e6f5bc00fa9bba7bd"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-physical-calibration-replay/sources/receipts/request-15.json"
+sha256 = "1987dc97a69572a1eb00be68bac20b86d4e26f3710a6dc4f15855ba7b467798c"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-physical-calibration-replay/sources/receipts/request-16.json"
+sha256 = "612c3355d83507f3cb1808e58c3e7a33c1de7269e2da40a9712e381e01847816"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-physical-calibration-replay/sources/receipts/request-17.json"
+sha256 = "257cc2d4a42caec68a2c6adb3faba27d950a71a819c9d45c9524078b90349c36"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-physical-calibration-replay/sources/receipts/request-18.json"
+sha256 = "665595dd7209b4f754471429fe53bb221a1a72e1ef480635c988dff61ca9d799"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-physical-calibration-replay/sources/receipts/request-19.json"
+sha256 = "7801929417c6ce13a33efbaded6331f6c005b00d0e53a29a25f25441134ff319"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-physical-calibration-replay/sources/retrievals.jsonl"
+sha256 = "4657f9dcbfc27b8848fe2f0e742a0d4c4f5547ada7530d93dc6e33a19a12de08"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-physical-calibration-replay/sources/shannon-source-table-cells.json"
+sha256 = "b0fc1dbd4588b6550e2154f2d6bf6fd8077d024d7579be13422d829d4496caeb"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-physical-calibration-replay/sources/shannon-table1-selection.csv"
+sha256 = "9e3879d2dca34ae1043257bd4ce7297fe1b482673377df946d470feb0453bdf9"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-physical-calibration-replay/sources/shannon2024-urllib.html.gz"
+sha256 = "3c2939dcd4d9cc4b9b6381a8bb286ed0a126637bbe1e4fe44589a63e2689d401"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-physical-calibration-replay/sources/shannon2024.html.gz"
+sha256 = "3c2939dcd4d9cc4b9b6381a8bb286ed0a126637bbe1e4fe44589a63e2689d401"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-physical-calibration-replay/sources/source-grouping.toml"
+sha256 = "45d473c5ad1e555087978f8d23f4651f5f76141b587c16532be3a426dd152b73"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-physical-calibration-replay/sources/sources.toml"
+sha256 = "cd4580abf995a07e6178e948aedfc6c92a0aaa8a7bd1553e89c9e1d365d52166"
+
+[[insight.evidence_admission.evidence_files]]
+path = "data/output/audit/frb-physical-calibration-replay/sources/verification.json"
+sha256 = "342201471e9d4ffc590980f86fbec3625c232c33e3f5d3d07b6afd817f502f81"
+
 [[insight.evidence_admission.predicates]]
 id = "historical-outcome"
 proposition = "The registry records a refutation of C-071 on two CHIME catalogs."
@@ -811,12 +1799,12 @@ kind = "asserted_proposition"
 evidence_layer = "source_proposition"
 outcome = "supported"
 execution_status = "retained_result_review"
-boundary = "31 retained bodies have verified decoded/storage identities: 29 Git bodies and two exact CRLF inputs. Tracked Git trees identify source snapshots; build-source closure is incomplete because control_core is absent. Original invocation and candidate runtime remain unresolved."
-evidence_anchors = ["data/output/audit/frb-inversion-null-sensitivity/findings.json#historical"]
+boundary = "Identified later control_core source closes the missing member. Two stale lock edges are removed with all package versions/checksums preserved. Original producer, statistical engine and root manifest remain byte-identical. The declared reconstruction reproduces retained results; original invocation/executable identities remain unidentified."
+evidence_anchors = ["data/output/audit/frb-physical-calibration-replay/findings.json#historical_replay"]
 
 [[insight.evidence_admission.predicates.evidence_bindings]]
-path = "data/output/audit/frb-inversion-null-sensitivity/findings.json"
-json_pointer = "/historical"
+path = "data/output/audit/frb-physical-calibration-replay/findings.json"
+json_pointer = "/historical_replay"
 
 [[insight.evidence_admission.predicates]]
 id = "synthetic-dependence-sensitivity"
@@ -831,6 +1819,20 @@ evidence_anchors = ["data/output/audit/frb-inversion-null-sensitivity/findings.j
 [[insight.evidence_admission.predicates.evidence_bindings]]
 path = "data/output/audit/frb-inversion-null-sensitivity/findings.json"
 json_pointer = "/null_sensitivity"
+
+[[insight.evidence_admission.predicates]]
+id = "reconstructed-scalar-replay"
+proposition = "The declared reconstructed scalar producer reproduces the retained historical outputs."
+kind = "asserted_proposition"
+evidence_layer = "implementation_conformance"
+outcome = "supported"
+execution_status = "replayed"
+boundary = "Locked release build exits 0. Candidate runs with all columns, seed42, 100000 triples and 1000 permutations reproduce both catalog CSVs and their combined body exactly. Reproduction preserves the historical null's geometry-preserving limitation and adds no physical evidence."
+evidence_anchors = ["data/output/audit/frb-physical-calibration-replay/findings.json#historical_replay"]
+
+[[insight.evidence_admission.predicates.evidence_bindings]]
+path = "data/output/audit/frb-physical-calibration-replay/findings.json"
+json_pointer = "/historical_replay"
 
 [[insight.evidence_admission.references]]
 claim_id = "C-071"

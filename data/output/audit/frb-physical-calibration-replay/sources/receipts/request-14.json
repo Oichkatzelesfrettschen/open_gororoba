@@ -1,0 +1,20 @@
+{
+  "bytes": 16327,
+  "client": "urllib",
+  "client_version": "3.14.7",
+  "complete": true,
+  "content_type": "text/plain; charset=utf-8",
+  "decoded_filename": "frb-class.py",
+  "elapsed_seconds": 0.375307,
+  "encoding": "gzip; mtime=0; exact decoded response bytes",
+  "error": "",
+  "final_url": "https://raw.githubusercontent.com/FRBs/FRB/996fcda9b0b22431e3171208b4c8e1cf2798e823/frb/frb.py",
+  "path": "data/output/audit/frb-physical-calibration-replay/sources/frb-class.py.txt.gz",
+  "retrieved_path": "data/output/audit/frb-physical-calibration-replay/sources/frb-class.py",
+  "retrieved_utc": "2026-09-07T00:27:30.721306+00:00",
+  "sha256": "90ebc3b096c0a5c49cef4efc2652e28b7310af36114091817f525291aed81605",
+  "status": 200,
+  "storage_bytes": 4441,
+  "storage_sha256": "2893ed8e27b034e8f304a5df6acf86449c24a44721e74aafc5c07a12c3843d0d",
+  "url": "https://raw.githubusercontent.com/FRBs/FRB/996fcda9b0b22431e3171208b4c8e1cf2798e823/frb/frb.py"
+}

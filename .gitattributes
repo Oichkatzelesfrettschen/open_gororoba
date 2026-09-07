@@ -12,6 +12,7 @@ crates/qgp_scaling/tests/fixtures/alice_pbpb_5020_raa_central.csv -text whitespa
 *.bin    -text
 # Hash-bound source and replay receipts preserve provider whitespace and line endings.
 data/output/audit/claim-family-evidence-adjudication/*.log -text whitespace=-blank-at-eof
+data/output/audit/frb-physical-calibration-replay/*.log -text whitespace=-blank-at-eof
 data/output/audit/claim-family-evidence-adjudication/*replay.txt -text whitespace=-blank-at-eof
 data/output/audit/claim-family-evidence-adjudication/moreno-zero-divisors-source.tex -text whitespace=-blank-at-eol,-blank-at-eof
 data/output/audit/claim-family-evidence-adjudication/*.headers -text whitespace=-blank-at-eol,-blank-at-eof
