@@ -2047,7 +2047,7 @@ docs-publish: registry-export-markdown
 
 docs-rustdoc:
 	@mkdir -p "$(DOCS_CARGO_TARGET_DIR)"
-	$(DOCS_CARGO_ENV) cargo doc --locked --workspace $(DOCS_FEATURE_FLAGS) --no-deps --document-private-items
+	$(DOCS_CARGO_ENV) cargo doc --locked --keep-going --workspace $(DOCS_FEATURE_FLAGS) --no-deps --document-private-items
 
 cd-row-upgrade-batch:
 	@test -n "$(CD_ROW_UPGRADE_LANE)" || (echo "ERROR: set CD_ROW_UPGRADE_LANE=<jacobson1958|freudenthal1951>" && exit 1)
@@ -2085,14 +2085,18 @@ cd-row-upgrade-freudenthal:
 	fi
 	@echo "OK: rustdoc staged to $(DOCS_RUSTDOC_DIR)."
 
-docs-book:
+.PHONY: docs-book-source
+docs-book-source:
+	$(CARGO_ENV) cargo run --locked --profile validation -p gororoba_cli_data --bin registry-emit -- book-docs-legacy
+
+docs-book: docs-book-source
 	@command -v $(MD_BOOK) >/dev/null 2>&1 || { echo "ERROR: mdbook not found. Run: cargo install --locked --force mdbook"; exit 1; }
 	@rm -rf "$(DOCS_BOOK_DIR)"
 	@mkdir -p "$(DOCS_BOOK_DIR)"
 	$(MD_BOOK) build docs/book -d "$(DOCS_BOOK_DIR)"
 	@echo "OK: mdBook staged to $(DOCS_BOOK_DIR)."
 
-docs-site: docs-rustdoc
+docs-site: docs-rustdoc docs-book-source
 	@command -v $(MD_BOOK) >/dev/null 2>&1 || { echo "ERROR: mdbook not found. Run: cargo install --locked --force mdbook"; exit 1; }
 	@rm -rf "$(DOCS_SITE_DIR)"
 	@mkdir -p "$(DOCS_SITE_DIR)"
@@ -2207,8 +2211,8 @@ docs-freshness: docs-gate docs-redirect-check
 docs-gate: docs-site
 	@echo "OK: docs-gate generated unified docs bundle."
 
-docs-redirect-check:
-	$(CARGO_ENV) cargo run --release -p repo_utilities --bin repo-utilities -- docs-redirect-check $(DOCS_SITE_DIR)
+docs-redirect-check: $(REPO_UTILITIES_BIN)
+	$(REPO_UTILITIES_BIN) docs-redirect-check $(DOCS_SITE_DIR)
 
 terminology-gate:
 	$(CARGO_ENV) cargo run --release -p repo_utilities --bin repo-utilities -- terminology-gate

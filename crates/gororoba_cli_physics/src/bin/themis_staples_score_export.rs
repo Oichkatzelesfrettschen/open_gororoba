@@ -15,7 +15,7 @@
 //! concatenates everything into one flat CSV of
 //! (file_id, assoc, dbdt, rot, bmag, label), where file_id names the
 //! source daily file -- the intact cluster a file-aware bootstrap
-//! resamples on. A sidecar <out>.files.csv maps file_id to path.
+//! resamples on. A sidecar `<out>.files.csv` maps file_id to path.
 //!
 //! HOW:
 //!   cargo run --release -p gororoba_cli_physics \

@@ -51,9 +51,9 @@ struct Cli {
 /// in HAPI dataset, cache subdirectory and filename tag.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, ValueEnum)]
 enum Instrument {
-    /// `th<p>_fgm_<year>_<doy>.csv` under `themis/`, dataset TH<P>_L2_FGM@0.
+    /// `th<p>_fgm_<year>_<doy>.csv` under `themis/`, dataset `TH<P>_L2_FGM@0`.
     Fgm,
-    /// `th<p>_esa_<year>_<doy>.csv` under `themis_esa/`, dataset TH<P>_L2_ESA@0.
+    /// `th<p>_esa_<year>_<doy>.csv` under `themis_esa/`, dataset `TH<P>_L2_ESA@0`.
     Esa,
 }
 

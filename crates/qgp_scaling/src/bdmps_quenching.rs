@@ -274,7 +274,7 @@ impl OutgoingBdmps {
             outer_quadrature_change: (fine.0 - coarse.0).abs(),
         })
     }
-    /// Mean-loss coordinate v=pT/<epsilon>, mapped to u=v*<epsilon>/omega_c.
+    /// Mean-loss coordinate `v=pT/<epsilon>`, mapped to `u=v*<epsilon>/omega_c`.
     pub fn raa_mean_loss(
         &self,
         v: f64,

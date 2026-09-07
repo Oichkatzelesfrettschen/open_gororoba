@@ -215,7 +215,7 @@ compilation vs O(hours) for monolithic `ring`.
 | Clippy      | `make rust-clippy`       | Warnings-as-errors (`-D warnings`) |
 | SemVer      | `make rust-semver-check` | Public API compatibility           |
 | Tests       | `cargo test --workspace` | Full suite, 0 tolerance            |
-| ASCII       | `make ansi-check`        | No Unicode/emoji in source         |
+| Text policy | `make ansi-check`        | Emoji and control-character checks |
 | Terminology | `make terminology-gate`  | 8 banned patterns                  |
 | Governance  | `make governance-gate`   | 7-check registry + integrity       |
 | Manual local | `make validate-local`  | Scoped clippy + test + governance  |
