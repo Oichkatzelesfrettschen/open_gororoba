@@ -1,0 +1,23 @@
+schema_version = 1
+scope = "Lossless storage of the two finite synthetic null ensembles"
+encoding = "gzip -n; gzip -cd reproduces each original TOML body byte for byte"
+classification = "raw-exact-target-evidence; the initial failed precision study remains retained"
+generator = "crates/stats_core/examples/frb_null_sensitivity.rs"
+replay = "cargo run -p stats_core --profile validation --example frb_null_sensitivity; add -- --confirmatory-precision for the independent confirmation. Compare stdout SHA256 to decoded_sha256."
+cleanup = "The two uncompressed generated copies move to recoverable trash after compressed and decoded hash verification. The gzip bodies preserve every replicate; the protocol and canonical generator remain tracked."
+
+[[artifact]]
+path = "data/output/audit/frb-inversion-null-sensitivity/null-sensitivity-results.toml.gz"
+decoded_name = "null-sensitivity-results.toml"
+decoded_bytes = 148934
+decoded_sha256 = "df0578a9bf9729e9078a5f638e6e9c5e0bb46e8265de66acdae15440c704d974"
+storage_sha256 = "8fbde9a621562c97bd1aaaca0a045bab385e943f0027ca4c728ca585e509391d"
+replicates = 500
+
+[[artifact]]
+path = "data/output/audit/frb-inversion-null-sensitivity/confirmation-results.toml.gz"
+decoded_name = "confirmation-results.toml"
+decoded_bytes = 1489326
+decoded_sha256 = "529f36e7856624a89e04c3819d2b4d2f44617d3848c06cbcccf7daea9ab54e9d"
+storage_sha256 = "97b1e68638113ef4c5789ff78daeb089f2d8888b6e02098f0bdc0a767a36a56a"
+replicates = 5000

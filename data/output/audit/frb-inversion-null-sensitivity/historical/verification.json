@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "verified_artifacts": 31,
+  "storage_sha256_checks": "passed",
+  "decoded_sha256_checks": "passed",
+  "decoded_size_checks": "passed",
+  "git_blob_to_decoded_comparisons": 29,
+  "main_input_to_decoded_comparisons": 2,
+  "historical_scalar_locator_comparisons": 3,
+  "chime_lf_to_crlf_digest_comparisons": 2,
+  "gwtc_lf_to_main_crlf_digest_comparisons": 1,
+  "historical_code_executions": 0,
+  "manifest_sha256": "05967805be2237efdf4920432ecee4b4512b556907443dad6ac076e299db4f25",
+  "chain_sha256": "1a2362d796c6e25704214131852c10253c30cb05266259d0788eb3ee484db4f2"
+}

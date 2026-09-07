@@ -1,5 +1,5 @@
 schema_version = 1
-status = "insight_pilot_admitted_macquart_normalization_verified_scientific_residuals_open"
+status = "frb_numerical_repairs_and_synthetic_null_verified_physical_residuals_open"
 prepared_date = "2026-09-06"
 objective = "Audit related claims, insights and other research records together by shared mechanisms and evidence, preserve falsification results, and develop independently tested successor results."
 primary_checkout = "/home/eirikr/Github/open_gororoba"
@@ -167,7 +167,7 @@ acceptance = "Canonical changes, generated outputs, numerical/source tests, inde
 findings = "data/output/audit/insight-reference-role-pilot/findings.json"
 validation = "data/output/audit/insight-reference-role-pilot/validation.toml"
 source_receipts = "data/output/audit/insight-reference-role-pilot/source-receipts.toml"
-next_focus = "Recover original input/result bodies and exact producers; repair DM inverse boundary handling and catalog selection under explicit contracts; admit physical foreground conventions; preregister decisive null-power and selection tests before expanding candidate families. The Macquart electron normalization passes its separate finite source-conformance test."
+next_focus = "Read the combined FRB findings and canonical admissions. Recover the missing historical workspace-member source and actual invocation; admit foreground and source-selection conventions before a held-out physical comparison. The bounded inverse/catalog defects and synthetic dependence sensitivity are resolved within their declared implementation boundaries."
 scientific_boundary = "Canonical admission narrows the eight insight interpretations and preserves negative-result lessons. The Macquart mean-DM normalization passes independent numerical source oracles under constant diffuse fraction and declared ionization assumptions. Historical producer replay, new physical mechanisms and independently tested physical successors remain unexecuted."
 canonical_admission = "data/output/audit/insight-canonical-admission/admission-results.json"
 source_admission = "data/output/audit/insight-source-admission/README.toml"
@@ -184,3 +184,20 @@ result = "The missing electron fraction 0.875 explains the baseline 8/7 mean-DM 
 inventory_boundary = "The resumed canonical baseline contains 1570 claims, 183 insights, eight insight contracts and nine admissions. The I-001 revision appends admission 10 and changes the pilot predicate total from 31 to 32; all 45 reference roles remain. Full authority mapping remains pending; the candidate families retain their seed status."
 remaining = ["Inverse invalid-input and upper-bracket handling", "NE2001 catalog halo and physical host-frame provenance", "Ignored dm-ultrametric --dm-column selection", "Independent localized-FRB calibration and uncertainty", "Historical producer and result-body recovery", "Source and claim audit of the Macquart monograph interpretation", "Other pilot scientific residuals and broad authority mapping"]
 preservation = "Both historical evidence worktrees remain retained. The historical admission and review bundles remain the source of their original observations."
+
+[frb_inversion_null_sensitivity]
+status = "bounded_implementation_and_synthetic_sensitivity_verified"
+baseline_commit = "b5251a3fc03f2036a189faedbedb51e865b6ee6e"
+baseline_database_sha256 = "86ee9ab56b358e3aa8aad93fa717f7dc5a933e8c054e0db23e73bacd193cff16"
+insights = ["I-001", "I-002"]
+findings = "data/output/audit/frb-inversion-null-sensitivity/findings.json"
+validation = "data/output/audit/frb-inversion-null-sensitivity/validation.toml"
+protocol = "data/output/audit/frb-inversion-null-sensitivity/null-protocol.toml"
+confirmation_protocol = "data/output/audit/frb-inversion-null-sensitivity/confirmation-protocol.toml"
+historical_chain = "data/output/audit/frb-inversion-null-sensitivity/historical/chain.toml"
+historical_build_attempt = "data/output/audit/frb-inversion-null-sensitivity/historical/candidate-replay.toml"
+resolved = ["Typed invalid-input, bracket-exhaustion and underflow errors", "Independent mean-DM numerical checks through ceiling z=100", "Selected NE2001/YMW16 column and explicit exclusion denominator", "31 hash-verified historical bodies including five results and two exact CHIME inputs", "Frozen synthetic radial-angular dependence null and independent precision confirmation", "Explicit uncalibrated labels for geometry-preserving CLI relabeling diagnostics"]
+null_result = "Initial 100-replicate-per-family control precision acceptance fails at 6/100. The separately frozen 1000-replicate confirmation passes engineering thresholds with strong 1000/1000 and exchangeable 48/1000; flat and gradient alternatives also reject 1000/1000. The result measures dependence sensitivity and supplies neither hierarchy specificity nor physical FRB evidence. Both complete ensembles remain losslessly retained."
+historical_boundary = "The tracked scalar source snapshot omits its declared control_core workspace member. The locked build exits 101 before compilation. Tracked Git-tree recovery establishes artifact identity; build-source closure and the original invocation remain unresolved."
+canonical_boundary = "I-001 and I-002 retain partial status. C-071 retains Refuted. The macquart_source_conformance remaining list above records the earlier campaign frontier; resolved items are enumerated here."
+remaining = ["Recover historical control_core source and original invocation", "Admit halo and physical host-frame conventions", "Model repeat-source grouping and selection exchangeability strata", "Rebuild physical coordinate pipeline in each null draw", "Freeze catalog/column/representation choices and multiplicity", "Run a held-out localized-FRB calibration with uncertainties", "Audit monograph interpretation and broader family authority"]

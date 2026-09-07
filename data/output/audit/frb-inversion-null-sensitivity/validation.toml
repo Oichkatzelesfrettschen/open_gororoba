@@ -1,0 +1,181 @@
+schema_version = 1
+scope = "I-001/I-002 bounded implementation, historical association and synthetic conditional-dependence evidence"
+stage = "Evidence canonically admitted; canonical-validation.toml records mutation and preservation; publication checks remain separate"
+findings = "findings.json"
+canonical_binding_pointers = ["/normalization", "/inverse", "/catalog", "/historical", "/null_sensitivity", "/limitations"]
+result = "Implementation checks pass; historical replay is blocked; independent synthetic confirmation passes dependence-instrument engineering criteria"
+
+[numerical]
+evidence = "corrected-tests.log"
+evidence_sha256 = "0b6a1a03a78b124ae7548d6c10cb023f68c5fe3929e054f1c6b7ebf9a2894800"
+integration_test = "macquart_source_conformance"
+passed = 8
+failed = 0
+source_exit = 0
+independent_si_quadrature_cases = 18
+maximum_observed_relative_error = 2.253752739989e-14
+numerical_redshift_ceiling = 100.0
+analytic_inverse_redshift_minimum = 1e-14
+analytic_inverse_redshift_maximum = 99.999
+boundary = "Numerical correctness of the declared mean relation and conditional foreground convention; physical calibration remains unresolved"
+
+[underflow_falsifier]
+evidence = "pre-underflow-fix.log"
+evidence_sha256 = "2191293b9ec795c3fe9aca73cf15bcbc4027f3d4d6a9c585ada69fbccc3c8b6b"
+test = "positive_cosmic_dm_rejects_distance_underflow"
+before = "7 integration tests pass; the positive-DM underflow test fails on Ok(0.0) versus Err(NumericalFailure)"
+before_exit = 101
+after = "All eight integration tests pass with positive finite distance enforcement"
+
+[library_regression]
+evidence = "pre-underflow-fix.log"
+nextest_run_id = "38270a88-e605-442e-993f-06a3ceb9f088"
+binaries = 3
+passed = 999
+skipped = 0
+library_exit = 0
+elapsed_seconds = 0.590
+boundary = "The retained library regression precedes the final distance-underflow fix; the corrected eight source-conformance integration tests and final publication gate provide subsequent checks"
+
+[build]
+evidence = "corrected-tests.log"
+build_exit = 0
+elapsed_seconds = 122
+
+[clippy]
+packages = ["cosmology_core", "data_core", "gororoba_cli_physics", "stats_core"]
+scope = "all-targets"
+warnings_policy = "-D warnings"
+profile = "validation"
+exit = 0
+elapsed_seconds = 36.97
+evidence = "final-clippy.log"
+evidence_status = "Successful final all-targets run retained in the evidence bundle"
+example_check = "cargo clippy -p stats_core --example frb_null_sensitivity --profile validation -- -D warnings also exits 0"
+
+[catalog_smoke]
+fixture = "cli-fixture.csv"
+positive_bonsai_rows = 12
+ne2001_accepted = 12
+ymw16_accepted = 12
+ne2001_redshift_range = [0.5097, 0.6288]
+ymw16_redshift_range = [1.5091, 1.7043]
+cosmic_dendrogram_frb_rows = 12
+cosmic_dendrogram_gw_rows = 0
+cosmic_dendrogram_column = "dm_exc_ymw16"
+diagnostic_status = "UncalibratedGeometryRelabeling"
+local_testable_rows_at_100_mpc = 0
+undefined_local_statistics = "Retained NaN values denote empty-neighborhood diagnostics"
+invalid_column_evidence = "invalid-column.log"
+invalid_host_evidence = "invalid-host.log"
+output_evidence = ["cli-ne.csv", "cli-ymw.csv", "cli-cosmic.csv"]
+log_evidence = ["cli-ne.log", "cli-ymw.log", "cli-cosmic.log"]
+boundary = "The fixture establishes column-dependent conversion and diagnostic labeling, rather than physical inference"
+
+[historical_recovery]
+manifest = "historical/manifest.json"
+manifest_sha256 = "05967805be2237efdf4920432ecee4b4512b556907443dad6ac076e299db4f25"
+verification = "historical/verification.json"
+chain = "historical/chain.toml"
+chain_sha256 = "1a2362d796c6e25704214131852c10253c30cb05266259d0788eb3ee484db4f2"
+verified_artifacts = 31
+storage_hash_checks = 31
+decoded_hash_checks = 31
+decoded_size_checks = 31
+git_blob_comparisons = 29
+main_input_comparisons = 2
+historical_scalar_digest_comparisons = 3
+chime_lf_to_crlf_comparisons = 2
+gwtc_lf_to_crlf_comparisons = 1
+association_boundary = "Co-retained source and results establish source association; historical invocation and executable identity remain unresolved"
+source_closure_boundary = "Referenced Git trees identify tracked contents only. Build closure remains incomplete because the archived control_core member is absent."
+
+[historical_replay]
+receipt = "historical/candidate-replay.toml"
+receipt_sha256 = "c45fe5893089b2f487db20ef5474b2d67cabd846431b1f209bdfeccc04eda8d1"
+source_commit = "eab375e82ca82da9df8a9cb0ca0084801684e6eb"
+build_exit = 101
+outcome = "blocked_missing_historical_workspace_member"
+missing_path = "crates/control_core/Cargo.toml"
+failure_stage = "Workspace manifest loading, before dependency compilation"
+historical_producer_executions = 0
+candidate_result_comparison = "unavailable_candidate_producer_unexecuted"
+measured_preservation = "Cargo.lock and frb_ultrametric.rs hashes match their before-build values"
+boundary = "Repairing the archived workspace would create a separately declared reconstruction"
+
+[initial_null_study]
+protocol = "null-protocol.toml"
+protocol_sha256 = "d39ef2336d579b9384f81eb4b2bdecfa50cfe736d574e9b98e956f2b77612779"
+storage = "null-sensitivity-results.toml.gz"
+decoded_sha256 = "df0578a9bf9729e9078a5f638e6e9c5e0bb46e8265de66acdae15440c704d974"
+replicates_per_family = 100
+strong_rejections = 100
+weak_rejections = 22
+control_rejections = 6
+flat_rejections = 100
+gradient_rejections = 100
+strong_power_wilson_lower = 0.97365727921682566
+control_wilson_upper = 0.11184096522645968
+instrument_accepted = false
+interpretation = "The initial frozen precision gate fails; the result does not establish violation of nominal 0.05 size"
+exact_replay = "stdout SHA256 equals the retained decoded digest, including after addition of the confirmatory option"
+
+[confirmatory_null_study]
+protocol = "confirmation-protocol.toml"
+protocol_sha256 = "4a213725f3e58c1a259e74aaf7e41efcb6331e108b7028544c4551859b01bfd1"
+storage = "confirmation-results.toml.gz"
+decoded_sha256 = "529f36e7856624a89e04c3819d2b4d2f44617d3848c06cbcccf7daea9ab54e9d"
+replicates_per_family = 1000
+strong_rejections = 1000
+weak_rejections = 225
+control_rejections = 48
+flat_rejections = 1000
+gradient_rejections = 1000
+strong_power_wilson_lower = 0.99730175676023936
+control_wilson_upper = 0.06039038755281992
+instrument_accepted = true
+acceptance_population = "The 1000 fresh replicates per family only; the initial ensemble remains separate"
+stopping_rule = "Exactly one frozen confirmatory ensemble and its deterministic replay; further enlargement is prohibited by the protocol"
+exact_replay = "stdout SHA256 equals the retained decoded digest"
+interpretation = "The unchanged instrument passes engineering criteria for radial-angular dependence; flat and gradient rejection precludes unique-hierarchy interpretation"
+
+[null_method]
+points = 32
+permutations = 199
+alpha = 0.05
+score = "Biased squared distance correlation of radial absolute distances and angular unit-vector chord distances"
+null = "Uniform radial assignment permutation with fixed joint directions and fixed radial multiset"
+statistic_support = "All ordered pairs including diagonal, under canonical directional row ordering"
+strata = "One homogeneous synthetic exchangeability stratum"
+thresholds = "Wilson one-sided 95 percent control upper <= 0.10 and strong power lower >= 0.80"
+physical_evidence = false
+historical_claim_re_adjudication = false
+
+[null_self_checks]
+analytic_score_oracles = 3
+initial_row_identity_checks = 500
+confirmation_row_identity_checks = 5000
+initial_radial_multiset_checks = 99500
+confirmation_radial_multiset_checks = 995000
+initial_data_and_permutation_seed_replays_each = 500
+confirmation_data_and_permutation_seed_replays_each = 5000
+initial_finite_score_checks = 100500
+confirmation_finite_score_checks = 1005000
+all_passed = true
+
+[retention]
+manifest = "retention.toml"
+manifest_sha256 = "49cd0b7465999d1a104bee27fe6e7ba16904275ed297f1b42787d60860f37565"
+parent_filename_resolution = "confirmation-protocol.toml parent_results names the decoded null-sensitivity-results.toml; retention.toml maps that filename to its gzip body and decoded digest"
+encoding = "Deterministic gzip preserves both complete TOML ensembles byte for byte"
+baseline_source = "null-baseline-runner.rs.gz"
+baseline_source_decoded_sha256 = "072dc2487824a3526c75e92f45f7b71b032fdcb59d08755a34b7beb18df50ec1"
+
+[artifact_checks]
+rustfmt = "nightly rustfmt --edition 2024 --check on the sensitivity example exits 0"
+toml_syntax = "taplo check passes both frozen protocols and both decoded result bodies before compression"
+diff_whitespace = "git diff --check passes the sensitivity implementation"
+scope_boundary = "These focused checks do not substitute for the repository publication gate"
+
+[residuals]
+items = ["Independent localized-FRB calibration and uncertainty", "Galactic halo completeness and physical host provenance", "Source and selection exchangeability strata for physical deployment", "Historical missing workspace member and actual invocation/executable receipt", "Separate frozen physical comparison and multiplicity handling"]

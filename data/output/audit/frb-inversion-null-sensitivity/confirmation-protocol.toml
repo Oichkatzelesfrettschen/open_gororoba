@@ -1,0 +1,34 @@
+schema_version = 1
+protocol_id = "frb-conditional-radius-angle-confirmatory-precision"
+freeze_status = "declared_before_confirmatory_execution"
+parent_protocol = "null-protocol.toml"
+parent_protocol_sha256 = "d39ef2336d579b9384f81eb4b2bdecfa50cfe736d574e9b98e956f2b77612779"
+parent_results = "null-sensitivity-results.toml"
+parent_results_sha256 = "df0578a9bf9729e9078a5f638e6e9c5e0bb46e8265de66acdae15440c704d974"
+parent_source_archive = "null-baseline-runner.rs.gz"
+parent_source_archive_sha256 = "c7c4f134a586b7b115702d15afad2dc2090af108382a5713547f437e595df9f4"
+parent_source_uncompressed_sha256 = "072dc2487824a3526c75e92f45f7b71b032fdcb59d08755a34b7beb18df50ec1"
+rationale = "The first frozen control ensemble rejected 6 of 100 cases. Its Wilson upper bound 0.11184096522645968 failed the predeclared 0.10 precision gate. The observed 6 percent rate does not establish violation of nominal 0.05 size. A single independently frozen larger ensemble measures the unchanged instrument with greater precision."
+initial_outcome_policy = "Retain the original failed acceptance and all 500 original replicate outcomes verbatim."
+unchanged_method = "Inherit every generator, score, null, support, jitter bound, family order, p-value tie rule, alpha and engineering threshold from the hash-bound parent protocol."
+target = "Conditional radial-angular dependence; hierarchy specificity and physical evidence remain unclaimed."
+points = 32
+permutations = 199
+alpha = 0.05
+confirmation_replicates_per_family = 1000
+families = ["nested_strong", "nested_weak", "exchangeable_control", "flat_coupled_stress", "continuous_gradient_stress"]
+family_indices = [0, 1, 2, 3, 4]
+confirmation_data_seed = "1000000 + family_index*10000 + replicate_index; replicate_index=0..999"
+confirmation_permutation_seed = "2000000 + family_index*10000 + replicate_index; replicate_index=0..999"
+independence_policy = "All 10000 data/permutation seeds are pairwise distinct and disjoint from the original and reserved development seeds."
+stopping_rule = "Run exactly 1000 replicates per family once. An exact deterministic replay verifies artifact identity. No further enlargement follows the outcome."
+acceptance_population = "Use only the 1000 new replicates per family; do not pool the initial ensemble."
+false_positive_acceptance = "exchangeable_control rejection-rate Wilson one-sided 95 percent upper bound <= 0.10"
+strong_power_acceptance = "nested_strong rejection-rate Wilson one-sided 95 percent lower bound >= 0.80"
+interval = "Wilson one-sided 95 percent bounds, z=1.6448536269514722"
+failure_policy = "Retain a failed confirmatory outcome without tuning generators, statistic, thresholds, sample count or seeds."
+stress_rule = "Report weak, flat and gradient rates without changing acceptance; flat/gradient detection measures dependence rather than unique hierarchy."
+runner_option = "--confirmatory-precision"
+baseline_replay_requirement = "Running the example without arguments reproduces the parent result SHA256 exactly."
+physical_deployment_prerequisites = ["Admitted catalog hashes and actual producer chain", "Explicit Galactic halo and host-frame conventions", "Source-level dependence and repeat-burst grouping", "Justified source/selection exchangeability strata", "Rebuild coordinate pipeline inside each null draw", "Freeze catalog and representation selection before physical outcomes", "Separate held-out physical comparison and multiplicity policy"]
+historical_claim_policy = "Retain C-071 disposition; synthetic confirmation does not reproduce or re-adjudicate the historical raw-DM statistic."

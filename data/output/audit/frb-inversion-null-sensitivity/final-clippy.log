@@ -1,0 +1,9 @@
+    Checking cosmology_core v0.1.0 (/home/eirikr/worktrees/open_gororoba/frb-inversion-null-sensitivity/crates/cosmology_core)
+    Checking stats_core v0.1.0 (/home/eirikr/worktrees/open_gororoba/frb-inversion-null-sensitivity/crates/stats_core)
+    Checking sign_imbalance v0.1.0 (/home/eirikr/worktrees/open_gororoba/frb-inversion-null-sensitivity/crates/sign_imbalance)
+    Checking neural_homotopy v0.1.0 (/home/eirikr/worktrees/open_gororoba/frb-inversion-null-sensitivity/crates/neural_homotopy)
+    Checking lbm_3d v0.1.0 (/home/eirikr/worktrees/open_gororoba/frb-inversion-null-sensitivity/crates/lbm_3d)
+    Checking spectral_core v0.1.0 (/home/eirikr/worktrees/open_gororoba/frb-inversion-null-sensitivity/crates/spectral_core)
+    Checking cd_spin_bridge v0.1.0 (/home/eirikr/worktrees/open_gororoba/frb-inversion-null-sensitivity/crates/cd_spin_bridge)
+    Checking gororoba_cli_physics v0.1.0 (/home/eirikr/worktrees/open_gororoba/frb-inversion-null-sensitivity/crates/gororoba_cli_physics)
+    Finished `validation` profile [optimized + debuginfo] target(s) in 36.97s

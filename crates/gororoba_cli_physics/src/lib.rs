@@ -8,6 +8,7 @@ pub mod detection_utility;
 pub mod detection_utility_output;
 pub mod ephemeris_loader;
 pub mod flyby;
+pub mod frb_distances;
 pub mod heliosphere_boundary;
 pub mod heliosphere_eval;
 pub mod lbm_dispatch;

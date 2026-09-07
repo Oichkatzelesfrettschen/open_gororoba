@@ -1,0 +1,4 @@
+error: invalid value 'bonsai_dm' for '--dm-column <DM_COLUMN>'
+  [possible values: dm_exc_ne2001, dm_exc_ymw16]
+
+For more information, try '--help'.

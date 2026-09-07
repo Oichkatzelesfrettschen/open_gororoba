@@ -1,0 +1,40 @@
+schema_version = 1
+attempt = "Original scalar FRB producer, locked build on installed Rust"
+outcome = "blocked_missing_historical_workspace_member"
+source_commit = "eab375e82ca82da9df8a9cb0ca0084801684e6eb"
+source_root_tree = "24ca58d3df360a9cb01da432bd2004962a65e274"
+source_materialization = "git archive eab375e82ca82da9df8a9cb0ca0084801684e6eb | tar -x -C <replay-root>/source"
+replay_root = ".cache/frb-historical-replay"
+build_working_directory = "<replay-root>/source"
+build_command = "CARGO_HOME=<primary-checkout>/.cache/cargo-home CARGO_TARGET_DIR=<replay-root>/target CARGO_BUILD_BUILD_DIR=<replay-root>/build RUSTFLAGS=-Dwarnings timeout 150 cargo +1.97.0 build --locked --release -p gororoba_cli --bin frb-ultrametric"
+path_resolution = "Both checkout and replay-root placeholders resolve to absolute paths on the execution host. The private raw log and toolchain record remain in .cache/frb-historical-replay."
+build_exit = 101
+failure = "The archived root Cargo.toml lists crates/control_core as a workspace member, but that commit contains zero entries under crates/control_core. Cargo fails while loading crates/control_core/Cargo.toml, before dependency compilation or producer execution."
+source_repair_performed = false
+lockfile_update_performed = false
+historical_producer_executions = 0
+candidate_runtime_command = "<replay-root>/target/release/frb-ultrametric --input <primary-checkout>/data/external/chime_frb_cat1.csv --all-columns --seed 42 --n-triples 100000 --n-permutations 1000 --output <replay-root>/candidate-cat1.csv"
+candidate_runtime_status = "unexecuted_build_failed"
+cost_boundary = "Three columns and eight tests per column, each configured for 100000 triples and 1000 permutations, imply approximately 2.4 billion null triple evaluations plus bootstrap work. A runtime duration was not measured because manifest loading failed."
+binary_identity = "unavailable_build_failed_before_compilation"
+result_comparison = "unavailable_candidate_producer_unexecuted"
+historical_invocation_identity = "unresolved"
+intake_condition = "Recover the historical control_core workspace-member source and establish its association with the original run. Any amended workspace or substitute commit constitutes a separately declared reconstruction, not execution of the exact retained source snapshot."
+measured_preservation = "The archived Cargo.lock and frb_ultrametric.rs SHA256 values are identical before and after the build attempt."
+lockfile_sha256_before = "9db68f7d6f9bb35b35ba7d06eeed455e7617a458eb750d17a057f9162a9a9ab8"
+lockfile_sha256_after = "9db68f7d6f9bb35b35ba7d06eeed455e7617a458eb750d17a057f9162a9a9ab8"
+producer_sha256_before = "290ac891c2aec42a2f5dfce590a19f712e75a19506f686fa7fa86ca75faf1101"
+producer_sha256_after = "290ac891c2aec42a2f5dfce590a19f712e75a19506f686fa7fa86ca75faf1101"
+sanitization = "Public build log replaces the absolute private replay root with <replay-root>. The private build log retains original stderr."
+
+[[evidence]]
+path = "candidate-replay-build.log.gz"
+storage_sha256 = "7932891cb8e7be4220d4cccf62dee73a61b1439fc1a99e4ea8b796bc27c6067a"
+decoded_sha256 = "a65135d5697c22516e61c8c532f246421a5c094c5be00c388ddd1869cc3f6633"
+encoding = "gzip"
+
+[[evidence]]
+path = "candidate-replay-toolchain.txt.gz"
+storage_sha256 = "7c082dd1f765dc355ae7e2fbfe8404c0f3776b0ea3c36738337af7baa8dfd260"
+decoded_sha256 = "9e83d1e0583255884af658325a5e57ed7a4761c10ee67bf7c6497e9c211b3eda"
+encoding = "gzip"

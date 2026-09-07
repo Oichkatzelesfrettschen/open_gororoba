@@ -1,0 +1,6 @@
+metric,value,null_mean,null_std,p_value,verdict
+cophenetic_correlation,0.457953,0.457953,0.000000,1.000000,UncalibratedGeometryRelabeling
+ultrametric_fraction,0.000000,N/A,N/A,N/A,N/A
+n_frbs,12,N/A,N/A,N/A,N/A
+n_gw_events,0,N/A,N/A,N/A,N/A
+redshift_range,"[1.5091, 1.7043]",N/A,N/A,N/A,N/A

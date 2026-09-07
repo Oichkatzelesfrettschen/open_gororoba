@@ -23,10 +23,11 @@
 use clap::Parser;
 use std::path::PathBuf;
 
-use cosmology_core::distances::{
-    comoving_distance, dm_excess_to_redshift, planck2018, radec_to_cartesian,
+use cosmology_core::distances::{comoving_distance, planck2018, radec_to_cartesian};
+use data_core::catalogs::gwtc::parse_gwtc3_csv;
+use gororoba_cli_physics::frb_distances::{
+    DmExcessColumn, RELABELING_DIAGNOSTIC, load_frb_distances,
 };
-use data_core::catalogs::{chime::parse_chime_csv, gwtc::parse_gwtc3_csv};
 use stats_core::ultrametric::dendrogram::{
     euclidean_distance_matrix_3d, hierarchical_ultrametric_test,
 };
@@ -46,6 +47,10 @@ struct Cli {
     /// Fixed observer-frame host DM to subtract (pc/cm^3), already redshift-diluted.
     #[arg(long, default_value = "50.0")]
     dm_host: f64,
+
+    /// Galactic-model excess column used for the FRB distance conversion.
+    #[arg(long, value_enum, default_value = "dm_exc_ne2001")]
+    dm_column: DmExcessColumn,
 
     /// Maximum number of points for dendrogram (O(n^2) memory).
     #[arg(long, default_value = "300")]
@@ -70,49 +75,37 @@ struct CosmicObject {
     redshift: f64,
 }
 
-fn main() {
+fn main() -> anyhow::Result<()> {
     let cli = Cli::parse();
 
     eprintln!("=== Direction 5: Cross-Dataset Cosmic Dendrogram ===");
 
     let omega_m = planck2018::OMEGA_M;
-    let omega_b = planck2018::OMEGA_B;
     let h0 = planck2018::H0;
 
     let mut objects: Vec<CosmicObject> = Vec::new();
 
-    // 1. Load FRBs
     eprintln!("Loading FRBs...");
-    if let Ok(frb_events) = parse_chime_csv(&cli.frbs) {
-        for event in &frb_events {
-            let dm_exc = event.dm_exc_ne2001;
-            if dm_exc.is_nan() || dm_exc <= 0.0 {
-                continue;
-            }
-            if event.ra.is_nan() || event.dec.is_nan() {
-                continue;
-            }
-
-            let dm_cosmic = dm_exc - cli.dm_host;
-            if dm_cosmic <= 0.0 {
-                continue;
-            }
-
-            let z = dm_excess_to_redshift(dm_cosmic, omega_m, omega_b, h0);
-            let d_c = comoving_distance(z, omega_m, h0);
-            let (x, y, z_c) = radec_to_cartesian(event.ra, event.dec, d_c);
-
-            objects.push(CosmicObject {
-                x,
-                y,
-                z: z_c,
-                catalog: "FRB".into(),
-                _name: event.tns_name.clone(),
-                redshift: z,
-            });
-        }
-        eprintln!("  FRBs with comoving positions: {}", objects.len());
+    let sample = load_frb_distances(&cli.frbs, cli.dm_column, cli.dm_host)?;
+    eprintln!(
+        "DM column: {}; parsed positive-bonsai rows: {}; excluded excess: {}; excluded sky: {}; nonpositive cosmic DM: {}",
+        cli.dm_column.header(),
+        sample.parsed_rows,
+        sample.invalid_excess,
+        sample.invalid_sky_position,
+        sample.nonpositive_cosmic_dm
+    );
+    for point in sample.distances {
+        objects.push(CosmicObject {
+            x: point.cartesian_mpc.0,
+            y: point.cartesian_mpc.1,
+            z: point.cartesian_mpc.2,
+            catalog: "FRB".into(),
+            _name: point.name,
+            redshift: point.redshift,
+        });
     }
+    eprintln!("  FRBs with comoving positions: {}", objects.len());
 
     // 2. Load GW events
     // GWTC-3 does not include RA/Dec in the standard confident events release.
@@ -198,7 +191,7 @@ fn main() {
     );
     eprintln!("Ultrametric fraction: {:.4}", result.ultrametric_fraction);
     eprintln!("P-value: {:.4}", result.p_value);
-    eprintln!("Verdict: {:?}", result.verdict);
+    eprintln!("Diagnostic status: {RELABELING_DIAGNOSTIC}");
 
     // 5. Catalog breakdown
     let n_frb_final = objects.iter().filter(|o| o.catalog == "FRB").count();
@@ -233,7 +226,7 @@ fn main() {
         &format!("{:.6}", result.null_cophenetic_mean),
         &format!("{:.6}", result.null_cophenetic_std),
         &format!("{:.6}", result.p_value),
-        &format!("{:?}", result.verdict),
+        RELABELING_DIAGNOSTIC,
     ])
     .unwrap();
 
@@ -289,5 +282,6 @@ fn main() {
         "Cophenetic correlation: {:.4}",
         result.cophenetic_correlation
     );
-    eprintln!("Gate C-071f: {:?}", result.verdict);
+    eprintln!("Geometry-relabeling diagnostic: {RELABELING_DIAGNOSTIC}");
+    Ok(())
 }
