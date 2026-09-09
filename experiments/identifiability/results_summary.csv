@@ -1,0 +1,3 @@
+experiment,selected_measurements,principal_angle_deg,identifiable_fraction,unit_amplitude_snr,std_nuisance_condition,true_amp,fit_amp,fit_se,fit_z,null_abs_z_99pct,mc_false_positive,mc_power,expanded_nuisance_identifiable_fraction
+A_commutator,40,84.479035,0.995361,65.616139,107.248769,0.050,0.016486,0.01524,1.081744,2.586672,0.01,0.75975,5.368221e-16
+B_boundary_differential,72,13.218852,0.228671,136.052932,86429.099902,0.025,0.028936,0.00735,3.936855,2.572188,0.01,0.79500,1.992020e-03
