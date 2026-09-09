@@ -50,6 +50,14 @@ A future canonical experiment record can carry `target_signature_artifact`, `nui
 
 A claim becomes mechanically auditable when its forward-model commit, input-data hashes, target derivative, nuisance-family definition, covariance model, selected schedule, and verdict are all content-addressed. Re-running the experiment can then regenerate both the prediction and the evidential level. This turns provenance from documentation into part of the mathematical experiment.
 
+## Next implementation sequence
+
+1. Add a Rust inference kernel using SVD/QR with deterministic tests against analytic subspace cases.
+2. Add a Casimir adapter that calls existing `quantum_core`/`materials_core` functions and finite-differences or differentiates physical parameters.
+3. Add covariance-aware schedule optimization and adversarial nuisance expansion.
+4. Emit a machine-readable experiment artifact; only then propose canonical registry schema changes.
+5. Run native workspace tests/CI and compare Rust results against this NumPy oracle before considering merge.
+
 ## Required falsification gates
 
 A physical claim is not promoted from simulation unless its target component survives independently justified nuisance-family expansion, mesh/quadrature refinement, held-out control conditions, and uncertainty propagation. Exact target-shaped nuisance degeneracy must reduce identifiability to zero.
