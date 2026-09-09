@@ -72,6 +72,8 @@ The strongest negative control is a deliberately fabricated null pair whose elec
 
 Define an inference-refinement criterion in addition to ordinary observable convergence. For refinement levels `h`, require convergence of the whitened target/nuisance subspaces, principal angles, and Fisher spectrum. A discretization that converges in force but not in these sensitivity objects is not adequate for inverse inference. This is a candidate methodological contribution, not yet a proved theorem.
 
+A possible quantitative criterion is `||P_N(h)-P_N(h/2)||_2 -> 0`, `|sin(theta_h)-sin(theta_h/2)| -> 0`, and convergence of nonzero Fisher eigenvalues. Rank changes under refinement must be reported rather than silently regularized away.
+
 ## Required falsification gates
 
 A physical claim is not promoted from simulation unless its target component survives independently justified nuisance-family expansion, mesh/quadrature refinement, held-out control conditions, and uncertainty propagation. Exact target-shaped nuisance degeneracy must reduce identifiability to zero.
