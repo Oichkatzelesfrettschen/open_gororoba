@@ -40,6 +40,8 @@ The clean repository boundary is `forward physics -> sensitivity/Jacobian -> ide
 
 Do not form `P_N = N(N^T N)^-1 N^T` directly in production. Whiten first, use pivoted QR or SVD to obtain a rank-revealing nuisance basis, project the target with that orthonormal basis, and report singular values/effective rank. The very large nuisance condition number observed in the boundary prototype is itself a warning that normal-equation implementations would be numerically fragile.
 
+For nonlinear models, `N` is only the local nuisance tangent space. L3/L4 evaluation should therefore sample or optimize over the nuisance manifold, compare profile likelihood/Bayes evidence where appropriate, and detect curvature-driven mimicry that a single Jacobian cannot see.
+
 ## Required falsification gates
 
 A physical claim is not promoted from simulation unless its target component survives independently justified nuisance-family expansion, mesh/quadrature refinement, held-out control conditions, and uncertainty propagation. Exact target-shaped nuisance degeneracy must reduce identifiability to zero.
