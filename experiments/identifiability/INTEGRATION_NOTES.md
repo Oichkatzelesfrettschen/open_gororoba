@@ -32,6 +32,10 @@ The repository already contains mature Casimir-Lifshitz kernels, optical materia
 
 The level is metadata about evidential robustness, not a probability that the claim is true.
 
+## Architecture consequence
+
+The clean repository boundary is `forward physics -> sensitivity/Jacobian -> identifiability -> claim registry`. Physics crates remain responsible for equations and observables. A small inference crate should own whitening, rank-revealing factorization, principal angles, Schur complements, Fisher metrics, schedule optimization, and adversarial nuisance expansion. Registry/data crates should persist provenance and verdicts. This avoids contaminating domain physics with claim semantics while allowing every differentiable model to use the same falsification machinery.
+
 ## Required falsification gates
 
 A physical claim is not promoted from simulation unless its target component survives independently justified nuisance-family expansion, mesh/quadrature refinement, held-out control conditions, and uncertainty propagation. Exact target-shaped nuisance degeneracy must reduce identifiability to zero.
