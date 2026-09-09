@@ -1,9 +1,13 @@
+# Staging claims for this experiment only.
+# Canonical claim state belongs to registry/canonical/control_plane.sqlite3 and its generated mirrors.
+
 [[claim]]
 id = "IDENT-001"
 statement = "A symmetry-engineered commutator signature q*a*b is nearly orthogonal to the declared calibrated nuisance family in the synthetic design."
 status = "computational"
 metric = "identifiable_fraction"
 value = 0.995361
+scope = "Synthetic linear-Gaussian nuisance family only; not evidence of a physical anomaly."
 falsifier = "Expand the calibrated nuisance family with a physically justified signature that substantially reduces the nuisance-orthogonal target component."
 
 [[claim]]
@@ -12,4 +16,5 @@ statement = "The current synthetic boundary-differential signature is not robust
 status = "falsified_as_robust_design"
 metric = "expanded_nuisance_identifiable_fraction"
 value = 0.00199202
+scope = "Synthetic boundary response; physical Lifshitz forward model not yet substituted."
 falsifier = "A revised control/observable design retains substantial nuisance-orthogonal information after independently calibrated conventional cross-condition modes are admitted."
