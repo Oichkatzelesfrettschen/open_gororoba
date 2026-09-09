@@ -16,6 +16,8 @@ The repository already contains mature Casimir-Lifshitz kernels, optical materia
 - H2: H1 remains identifiable after patch, gap, roughness, thickness, and optical uncertainty are jointly fitted.
 - H3: Multi-observable closure (force plus an independently calibrated boundary-conditioned material observable) increases the minimum principal angle to the conventional nuisance manifold.
 - H4: Symmetry-projected control schedules can be optimized by efficient Fisher information rather than raw response amplitude.
+- H5: The existing claim/falsification registry can use nuisance-orthogonal information as a quantitative promotion gate, turning qualitative falsifiers into executable design criteria.
+- H6: The same inference kernel can score non-Casimir forward models (quantum recovery, temporal-order sensing, plasma/positron transport) without merging their physical mechanisms.
 
 ## Required falsification gates
 
