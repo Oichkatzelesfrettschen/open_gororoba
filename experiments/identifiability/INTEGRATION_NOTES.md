@@ -20,6 +20,18 @@ The repository already contains mature Casimir-Lifshitz kernels, optical materia
 - H6: The same inference kernel can score non-Casimir forward models (quantum recovery, temporal-order sensing, plasma/positron transport) without merging their physical mechanisms.
 - H7: Numerical convergence should include convergence of target/nuisance Jacobians and Fisher geometry, not only convergence of mean observables.
 
+## Proposed adversarial evidence ladder
+
+- L0: forward model executes and satisfies invariants.
+- L1: target is detectable against measurement noise.
+- L2: target is locally identifiable against the baseline nuisance family.
+- L3: target survives physically justified nuisance-family expansion.
+- L4: target survives held-out controls/specimens and covariance misspecification tests.
+- L5: one calibrated parameter set closes multiple independent observables.
+- L6: independent experimental replication.
+
+The level is metadata about evidential robustness, not a probability that the claim is true.
+
 ## Required falsification gates
 
 A physical claim is not promoted from simulation unless its target component survives independently justified nuisance-family expansion, mesh/quadrature refinement, held-out control conditions, and uncertainty propagation. Exact target-shaped nuisance degeneracy must reduce identifiability to zero.
