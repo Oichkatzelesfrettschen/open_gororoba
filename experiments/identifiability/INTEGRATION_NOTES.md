@@ -20,3 +20,7 @@ The repository already contains mature Casimir-Lifshitz kernels, optical materia
 ## Required falsification gates
 
 A physical claim is not promoted from simulation unless its target component survives independently justified nuisance-family expansion, mesh/quadrature refinement, held-out control conditions, and uncertainty propagation. Exact target-shaped nuisance degeneracy must reduce identifiability to zero.
+
+## Implementation note
+
+The compact prototype currently depends on NumPy and is intentionally isolated under `experiments/`. The repository is Rust-first; production integration should move the linear algebra and experiment-design kernel into an existing or dedicated Rust crate rather than adding NumPy as a project runtime dependency.
