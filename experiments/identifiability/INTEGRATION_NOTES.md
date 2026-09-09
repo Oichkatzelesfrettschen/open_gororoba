@@ -58,6 +58,10 @@ A claim becomes mechanically auditable when its forward-model commit, input-data
 4. Emit a machine-readable experiment artifact; only then propose canonical registry schema changes.
 5. Run native workspace tests/CI and compare Rust results against this NumPy oracle before considering merge.
 
+## Physical-data requirement
+
+Literature-calibrated optical models are sufficient for sensitivity studies, not for claiming a specimen-specific force residual. Physical L3 requires optical/thickness/roughness/electrostatic characterization of the actual specimens and a covariance model tied to the measurement apparatus.
+
 ## Required falsification gates
 
 A physical claim is not promoted from simulation unless its target component survives independently justified nuisance-family expansion, mesh/quadrature refinement, held-out control conditions, and uncertainty propagation. Exact target-shaped nuisance degeneracy must reduce identifiability to zero.
