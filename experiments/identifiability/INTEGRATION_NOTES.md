@@ -46,6 +46,10 @@ For nonlinear models, `N` is only the local nuisance tangent space. L3/L4 evalua
 
 A future canonical experiment record can carry `target_signature_artifact`, `nuisance_family_id`, `covariance_artifact`, `principal_angle_min`, `effective_fisher_information`, `effective_rank`, `adversarial_level`, and `held_out_verdict`. These are proposed fields, not current canonical schema.
 
+## Novel consequence: executable falsification closure
+
+A claim becomes mechanically auditable when its forward-model commit, input-data hashes, target derivative, nuisance-family definition, covariance model, selected schedule, and verdict are all content-addressed. Re-running the experiment can then regenerate both the prediction and the evidential level. This turns provenance from documentation into part of the mathematical experiment.
+
 ## Required falsification gates
 
 A physical claim is not promoted from simulation unless its target component survives independently justified nuisance-family expansion, mesh/quadrature refinement, held-out control conditions, and uncertainty propagation. Exact target-shaped nuisance degeneracy must reduce identifiability to zero.
