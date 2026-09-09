@@ -18,6 +18,7 @@ The repository already contains mature Casimir-Lifshitz kernels, optical materia
 - H4: Symmetry-projected control schedules can be optimized by efficient Fisher information rather than raw response amplitude.
 - H5: The existing claim/falsification registry can use nuisance-orthogonal information as a quantitative promotion gate, turning qualitative falsifiers into executable design criteria.
 - H6: The same inference kernel can score non-Casimir forward models (quantum recovery, temporal-order sensing, plasma/positron transport) without merging their physical mechanisms.
+- H7: Numerical convergence should include convergence of target/nuisance Jacobians and Fisher geometry, not only convergence of mean observables.
 
 ## Required falsification gates
 
