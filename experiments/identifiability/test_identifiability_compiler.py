@@ -1,5 +1,12 @@
+import importlib.util
+from pathlib import Path
 import numpy as np
-import identifiability_compiler as ic
+
+MODULE = Path(__file__).with_name("identifiability_compiler.py")
+SPEC = importlib.util.spec_from_file_location("identifiability_compiler", MODULE)
+ic = importlib.util.module_from_spec(SPEC)
+assert SPEC.loader is not None
+SPEC.loader.exec_module(ic)
 
 def test_exact_target_nuisance_collapses_identifiability():
     t,n=ic.commutator_problem()
