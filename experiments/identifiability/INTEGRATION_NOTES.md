@@ -74,6 +74,10 @@ Define an inference-refinement criterion in addition to ordinary observable conv
 
 A possible quantitative criterion is `||P_N(h)-P_N(h/2)||_2 -> 0`, `|sin(theta_h)-sin(theta_h/2)| -> 0`, and convergence of nonzero Fisher eigenvalues. Rank changes under refinement must be reported rather than silently regularized away.
 
+## Minimax design objective
+
+For an admitted family of conventional mechanisms `M`, choose schedule `u` to maximize the smallest target-vs-conventional separation, e.g. `u* = argmax_u min_{m in M} D(P_target(.|u), P_m(.|u))`, using a locally efficient-Fisher approximation or a global likelihood/Chernoff/Bayes criterion as appropriate. This is stronger than maximizing the nominal target amplitude.
+
 ## Required falsification gates
 
 A physical claim is not promoted from simulation unless its target component survives independently justified nuisance-family expansion, mesh/quadrature refinement, held-out control conditions, and uncertainty propagation. Exact target-shaped nuisance degeneracy must reduce identifiability to zero.
