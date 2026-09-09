@@ -66,6 +66,8 @@ Literature-calibrated optical models are sufficient for sensitivity studies, not
 
 The first physical Casimir adapter should deliberately search for nuisance models that reproduce the predicted reversed-stack signature: gap-dependent contact potential, patch spectra, Au-cap thickness variation, interdiffusion/roughness, dielectric-model extrapolation, and separation-calibration bias. Success means finding a schedule where the Lifshitz target remains separated after these are allowed, not merely finding a large force difference.
 
+The strongest negative control is a deliberately fabricated null pair whose electromagnetic model predicts negligible ordering contrast but whose fabrication/electrostatic systematics are otherwise similar. A nonzero differential signal in that null pair should veto promotion of the target claim until explained.
+
 ## Required falsification gates
 
 A physical claim is not promoted from simulation unless its target component survives independently justified nuisance-family expansion, mesh/quadrature refinement, held-out control conditions, and uncertainty propagation. Exact target-shaped nuisance degeneracy must reduce identifiability to zero.
