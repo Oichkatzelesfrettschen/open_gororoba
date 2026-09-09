@@ -3,18 +3,18 @@
 
 [[claim]]
 id = "IDENT-001"
-statement = "A symmetry-engineered commutator signature q*a*b is nearly orthogonal to the declared calibrated nuisance family in the synthetic design."
+statement = "A symmetry-engineered commutator signature q*a*b is nearly orthogonal to the declared calibrated nuisance family in the selected synthetic design."
 status = "computational"
 metric = "identifiable_fraction"
 value = 0.995361
-scope = "Synthetic linear-Gaussian nuisance family only; not evidence of a physical anomaly."
+scope = "Selected 40-point synthetic linear-Gaussian design recorded in results_summary.csv; not evidence of a physical anomaly."
 falsifier = "Expand the calibrated nuisance family with a physically justified signature that substantially reduces the nuisance-orthogonal target component."
 
 [[claim]]
 id = "IDENT-002"
-statement = "The current synthetic boundary-differential signature is not robustly identifiable under adversarial nuisance-family expansion."
+statement = "The current selected synthetic boundary-differential signature is not robustly identifiable under adversarial nuisance-family expansion."
 status = "falsified_as_robust_design"
 metric = "expanded_nuisance_identifiable_fraction"
 value = 0.00199202
-scope = "Synthetic boundary response; physical Lifshitz forward model not yet substituted."
+scope = "Selected 72-point synthetic boundary design recorded in results_summary.csv; physical Lifshitz forward model not yet substituted."
 falsifier = "A revised control/observable design retains substantial nuisance-orthogonal information after independently calibrated conventional cross-condition modes are admitted."
