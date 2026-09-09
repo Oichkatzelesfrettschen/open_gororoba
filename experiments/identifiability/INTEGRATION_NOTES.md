@@ -62,6 +62,10 @@ A claim becomes mechanically auditable when its forward-model commit, input-data
 
 Literature-calibrated optical models are sufficient for sensitivity studies, not for claiming a specimen-specific force residual. Physical L3 requires optical/thickness/roughness/electrostatic characterization of the actual specimens and a covariance model tied to the measurement apparatus.
 
+## Further falsification search
+
+The first physical Casimir adapter should deliberately search for nuisance models that reproduce the predicted reversed-stack signature: gap-dependent contact potential, patch spectra, Au-cap thickness variation, interdiffusion/roughness, dielectric-model extrapolation, and separation-calibration bias. Success means finding a schedule where the Lifshitz target remains separated after these are allowed, not merely finding a large force difference.
+
 ## Required falsification gates
 
 A physical claim is not promoted from simulation unless its target component survives independently justified nuisance-family expansion, mesh/quadrature refinement, held-out control conditions, and uncertainty propagation. Exact target-shaped nuisance degeneracy must reduce identifiability to zero.
