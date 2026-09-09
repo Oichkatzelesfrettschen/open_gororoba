@@ -1,11 +1,23 @@
 # Identifiability experiment compiler
 
-This branch integrates the 2026-09-09 identifiability analysis with open_gororoba.
+This experiment integrates the 2026-09-09 nuisance-orthogonal distinguishability analysis with open_gororoba.
 
-The core target is the nuisance-orthogonal component
+For target signature `t`, nuisance design matrix `N`, and whitening metric `W`, define the nuisance-orthogonal target component `r` and efficient information
 
 `r = (I - P_N) t`
 
-with efficient information `I_eff = r^T W r`.
+`I_eff = r^T W r`.
 
-Two synthetic experiments are included: a symmetry/commutator design and a boundary-conditioned differential design. They are falsification architecture, not evidence for a physical anomaly.
+The computational result is conditional on the declared nuisance family. No finite nuisance basis proves that every conventional mechanism has been excluded.
+
+## Executed synthetic results
+
+- Symmetry/commutator design: identifiable fraction 0.995361, principal angle 84.479 degrees. At a deliberately modest synthetic amplitude, Monte Carlo power was 0.75975 at an empirically calibrated two-sided 1% false-positive rate.
+- Boundary-differential design: initial identifiable fraction 0.228671, principal angle 13.219 degrees; after plausible cross-condition nuisance expansion, the surviving fraction collapsed to 0.00199202. This falsifies the present design as robustly identifiable.
+- Exact target-shaped nuisance injection in the commutator experiment collapses the surviving fraction to 5.37e-16, as required.
+
+## Repository integration
+
+Do not duplicate physics already present in `quantum_core` and `materials_core`. The next physical experiment must use the repository's Lifshitz and optical-material forward models, then build nuisance tangent vectors and experiment schedules around those predictions.
+
+Claims in this directory are staging artifacts. Canonical claim state remains in the repository control-plane/registry workflow.
