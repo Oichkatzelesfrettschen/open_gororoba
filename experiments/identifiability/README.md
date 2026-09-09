@@ -30,4 +30,4 @@ Claims in this directory are staging artifacts. Canonical claim state remains in
 
 ## Integration branch
 
-This experiment is prepared on branch `chat-2026-09-09-identifiability`. It is intentionally not merged into `main` without review and native-build integration.
+This experiment is prepared on branch `chat-2026-09-09-identifiability`. It is intentionally not merged into `main` without review and native-build integration. The branch is based on main commit `e036a72b87b9915847cde2ed1908f319cc67eeca`; later main changes must be reconciled before merge.
