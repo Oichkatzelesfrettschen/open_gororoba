@@ -27,3 +27,7 @@ The computational result is conditional on the declared nuisance family. No fini
 Do not duplicate physics already present in `quantum_core` and `materials_core`. The next physical experiment must use the repository's Lifshitz and optical-material forward models, then build nuisance tangent vectors and experiment schedules around those predictions.
 
 Claims in this directory are staging artifacts. Canonical claim state remains in the repository control-plane/registry workflow.
+
+## Integration branch
+
+This experiment is prepared on branch `chat-2026-09-09-identifiability`. It is intentionally not merged into `main` without review and native-build integration.
