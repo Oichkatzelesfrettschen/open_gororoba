@@ -14,6 +14,14 @@ The computational result is conditional on the declared nuisance family. No fini
 
 `results_summary.csv` records the selected-design run performed in the chat compute environment. The compact Python kernel in this directory reproduces the model families and falsification invariants, but does not reproduce the greedy schedule-selection/Monte-Carlo pipeline that generated every CSV field.
 
+## Run the compact prototype
+
+`python -m pip install -r experiments/identifiability/requirements.txt`
+
+`python experiments/identifiability/identifiability_compiler.py`
+
+`python -m pytest experiments/identifiability/test_identifiability_compiler.py`
+
 ## Repository integration
 
 Do not duplicate physics already present in `quantum_core` and `materials_core`. The next physical experiment must use the repository's Lifshitz and optical-material forward models, then build nuisance tangent vectors and experiment schedules around those predictions.
