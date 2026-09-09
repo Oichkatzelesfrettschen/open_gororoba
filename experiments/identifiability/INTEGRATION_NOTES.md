@@ -82,6 +82,10 @@ For an admitted family of conventional mechanisms `M`, choose schedule `u` to ma
 
 The inference kernel is domain-agnostic only at the level of probability/response geometry. Each adapter must define its own physically justified target, nuisance family, invariants, units, and admissible controls. Shared inference must never be used to imply shared microscopic physics.
 
+## Research-program consequence
+
+This layer supplies a principled pruning mechanism for speculative branches. A visually or mathematically interesting mechanism that cannot be mapped to an observable target signature, differentiated from conventional nuisance families, and assigned a falsifier remains exploratory rather than entering the physical-claim registry. Conversely, unconventional mathematics can be retained when it produces a distinct, testable signature. The criterion is operational distinguishability, not familiarity.
+
 ## Required falsification gates
 
 A physical claim is not promoted from simulation unless its target component survives independently justified nuisance-family expansion, mesh/quadrature refinement, held-out control conditions, and uncertainty propagation. Exact target-shaped nuisance degeneracy must reduce identifiability to zero.
