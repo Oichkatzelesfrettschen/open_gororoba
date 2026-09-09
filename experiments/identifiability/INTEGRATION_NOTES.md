@@ -42,6 +42,10 @@ Do not form `P_N = N(N^T N)^-1 N^T` directly in production. Whiten first, use pi
 
 For nonlinear models, `N` is only the local nuisance tangent space. L3/L4 evaluation should therefore sample or optimize over the nuisance manifold, compare profile likelihood/Bayes evidence where appropriate, and detect curvature-driven mimicry that a single Jacobian cannot see.
 
+## Derived claim schema extension
+
+A future canonical experiment record can carry `target_signature_artifact`, `nuisance_family_id`, `covariance_artifact`, `principal_angle_min`, `effective_fisher_information`, `effective_rank`, `adversarial_level`, and `held_out_verdict`. These are proposed fields, not current canonical schema.
+
 ## Required falsification gates
 
 A physical claim is not promoted from simulation unless its target component survives independently justified nuisance-family expansion, mesh/quadrature refinement, held-out control conditions, and uncertainty propagation. Exact target-shaped nuisance degeneracy must reduce identifiability to zero.
