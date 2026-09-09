@@ -26,3 +26,5 @@ A physical claim is not promoted from simulation unless its target component sur
 ## Implementation note
 
 The compact prototype currently depends on NumPy and is intentionally isolated under `experiments/`. The repository is Rust-first; production integration should move the linear algebra and experiment-design kernel into an existing or dedicated Rust crate rather than adding NumPy as a project runtime dependency.
+
+The remote workstation connector was unavailable during this integration, so repository-native Cargo/pytest/CI execution has not been claimed. The synthetic experiment itself was executed in the chat compute environment; repository code was inspected through the GitHub connection.
