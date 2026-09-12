@@ -399,10 +399,6 @@ name = "workspace-routing"
 path = "src/bin/workspace_routing.rs"
 
 [[bin]]
-name = "local-nextest-plan"
-path = "src/bin/local_nextest_plan.rs"
-
-[[bin]]
 name = "pantheon-physicsforge-verify"
 path = "src/bin/pantheon_physicsforge_verify.rs"
 

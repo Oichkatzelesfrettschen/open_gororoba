@@ -43,7 +43,7 @@ hardware-specific tables are replaced with the scientific stack.
 | ----------------------------------------------------- | ----------------------------------------------------------------------------------------------------------- |
 | `Cargo.toml` (root)                                   | Workspace members + `[workspace.lints]` (warnings-as-errors source of truth)                                |
 | `rust-toolchain.toml`                                 | Stable pin (`1.97.0`); do not bump without coordinating repository validation.                               |
-| `.github/workflows/ci.yml`                           | Automatic scoped CI; manual `make validate-local` remains available.                                     |
+| `.github/workflows/ci.yml`                           | Sole repository-validation authority: scoped PR/push CI plus scheduled full validation.                  |
 | `Makefile`                                            | Top-level lanes (`make rust-clippy`, `make integrity`, `make cpd-audit`).                                   |
 | `registry/canonical/control_plane.sqlite3`            | Canonical write target for the claim/insight/experiment registry.                                           |
 | `registry/*.toml`                                     | AUTO-GENERATED read-only compat exports. Do NOT hand-edit.                                                  |
@@ -93,14 +93,14 @@ hardware-specific tables are replaced with the scientific stack.
   Rust binary.
 - **No symlinks** as workarounds. Use a separate `CARGO_TARGET_DIR`
   per worktree.
-- **Cloud CI owns automatic and broad validation**. `.githooks/pre-push` exits
-  successfully without running checks. `make validate-local` is an explicit,
-  resource-bounded diagnostic. Ordinary agent work uses focused tests with at
-  most two workers. Broad local targets require the operator to set
-  `ALLOW_BROAD_LOCAL_VALIDATION=1`; otherwise push the branch and use CI.
-  GitHub Actions runs scoped lint, reverse dependency tests including binaries,
-  canonical governance and relevant dependency policy checks. Scheduled full
-  validation covers workspace drift.
+- **Cloud CI owns repository validation**. The repository installs no local
+  Git hooks. `make validate-local` and its legacy aliases fail before building
+  tools, and repository validation targets accept
+  only the GitHub Actions execution boundary. Push a branch to run scoped lint,
+  reverse dependency tests including binaries, canonical governance, and
+  relevant dependency policy checks. Scheduled full validation covers
+  workspace drift. A developer may run a named Cargo command for diagnosis;
+  that command is evidence for its named surface, not a repository gate.
 
 ## Build environment
 
@@ -122,12 +122,13 @@ hardware-specific tables are replaced with the scientific stack.
 - An isolated worktree on a capacity-constrained filesystem MUST set
   `REPO_CARGO_HOME`, `REPO_CARGO_TARGET_DIR`, and `REPO_CARGO_BUILD_DIR` to
   distinct paths on a filesystem that satisfies the cache budget.
-- A linked worktree on the same filesystem as the primary checkout
-  SHOULD run the gate with `REPO_SHARE_PRIMARY_CACHE=1`. The roots are
+- A linked worktree that explicitly builds a focused developer target on the
+  same filesystem as the primary checkout SHOULD set
+  `REPO_SHARE_PRIMARY_CACHE=1`. The roots are
   resolved in `mk/cache_roots.mk`: the cargo-home and the Cargo
   build-dir are shared with the primary checkout, while the target-dir,
-  the validation-tools copies, the cache-check sentinel and the
-  validate-local lock stay under the worktree's own `.cache/`. The
+  the validation-tools copies and cache-check sentinel stay under the
+  worktree's own `.cache/`. The
   build-dir carries the dependency artifacts and is the path the
   sccache hash covers, so sharing it alone turns a cold ~70 min chain
   into ~10 min; keeping the target-dir local means a worktree with
@@ -167,14 +168,12 @@ hardware-specific tables are replaced with the scientific stack.
   staged file and fails on an absolute path under `$(REPO_WORKTREES_ROOT)`
   (default `$(HOME)/worktrees`) that names neither the running checkout nor a
   directory any live entry accounts for.
-  `validate-local` runs it after the tools are staged and before a lane
-  executes one. `validate-repository` builds the tools through
-  `$(MAKE) validation-tools` and does not run the scan.
+  `make validation-tools-check-paths` performs this explicit maintenance
+  check. Repository validation itself runs from a fresh GitHub checkout.
 - `make validation-tools-rebuild` discards every staged binary, stamp and
   identity file through `guarded_rm`, rebuilds through the `validation-tools`
-  lane, and reruns the path scan. The validation lock and the cache-check
-  sentinel stay in place, so a rebuild beside an in-flight `validate-local`
-  leaves that run's lock intact. It also runs `cargo clean` over the tool
+  lane, and reruns the path scan. The cache-check sentinel stays in place.
+  The rebuild also runs `cargo clean` over the tool
   packages and `repo_root`, because discarding the copy alone leaves Cargo
   free to answer the next build from the shared build-dir with the artifact
   another worktree compiled. Use it when a staged tool fails on a path from a
@@ -206,20 +205,19 @@ CARGO_TARGET_DIR="$(pwd)/.cache/gate-target" cargo clippy -p <crate> --all-targe
 CARGO_TARGET_DIR="$(pwd)/.cache/gate-target" cargo nextest run -p <crate> --lib --cargo-profile validation
 ```
 
-### Manual local validation chain
+### Hosted validation chain
 
 | # | Check                    | Purpose                                                                          |
 | - | ------------------------ | -------------------------------------------------------------------------------- |
 | 1 | cache-check              | Soft cap (150G) + hard cap (200G) on `.cache/`                                   |
 | 2 | terminology-gate         | 8 banned legacy terms; prefer `sign_imbalance` for the renamed crate vocabulary. |
 | 3 | ansi-check               | Reject emojis and non-whitespace control characters; non-ASCII text passes       |
-| 4 | rust-regression-scoped   | Scoped clippy + nextest on changed-crate closure                                 |
+| 4 | validate-ci-scoped-rust  | Scoped clippy + nextest on changed-crate closure                                 |
 | 5 | validate-governance      | Verify registry policy, signatures, cross-references, and checked-in TOMLs      |
 
-`git config --get core.hooksPath` reports `/dev/null` when hooks are disabled
-locally, or `.githooks` for the repository's inactive pre-push hook. Both
-configurations leave automatic validation to CI. `make hooks-install` installs
-the inactive hook; manual `make validate-local` still runs the listed checks.
+The repository carries no hook installer and no tracked pre-push executable.
+Legacy local gate entry points refuse execution without building a validation
+tool.
 
 CI runs on pull requests and main pushes, with superseded runs canceled per
 event and ref. The router tests affected consumers and lints directly changed

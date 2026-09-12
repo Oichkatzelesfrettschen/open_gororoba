@@ -23,7 +23,7 @@ form active validation edges.
 | Historical name | Active name | Meaning |
 | --- | --- | --- |
 | `release-gate` Cargo profile | `validation` Cargo profile | Optimized diagnostic build profile. The physical target path remains compatible. |
-| `gate-local` | `validate-local` | Changed-file local validation before publication. |
+| `gate-local` | `validate-local` | Retired compatibility name; exits before building tools. |
 | `gate-ci-registry` | `validate-ci-registry` | CI registry policy and evidence validation. |
 | `gate-ci-rust` | `validate-ci-rust` | CI Rust, dependency, and schema validation. |
 | `gate-audit` | `validate-repository` | Structured repository validation report. |
@@ -148,20 +148,18 @@ those four units. Cflow parsed the two generated C translation units with
 when the units were combined. That result establishes lexical symbol overlap,
 not executable independence.
 
-The Rust map uses Universal Ctags plus source and Cargo metadata inspection.
-The tag inventory contains 1,296 tags over these load-bearing surfaces:
+The Rust map used Universal Ctags plus source and Cargo metadata inspection.
+The retained tag inventory contains 1,296 tags over the historical
+load-bearing surfaces. The active path is now:
 
 ```text
-Makefile
-  validate-local
-    validation-tools
-      core validation bundle (workspace-routing + xtask)
-      host-profile from cached xtask
-      registry validation tool bundle
-      provenance verify-control-plane + project-counter-sync --check
-    check, when non-Rust files changed
-    rust-regression-scoped, when Rust files changed
-    validate-governance, when registry or document policy files changed
+.github/workflows/ci.yml
+  validation job
+    workspace-routing with an immutable comparison base
+    check, when repository hygiene inputs changed
+    validate-ci-scoped-rust, when Rust owners changed
+    validate-ci-registry, when governance inputs changed
+    retained domain audits selected by changed paths
 
 Makefile
   validate-comprehensive
@@ -237,16 +235,15 @@ The optional composite vocabulary follows the same ownership rule. Static
 checks run under `validate-static`; registry-aware checks run under
 `validate-static-and-registry`; the comprehensive target calls
 `rust-regression` once instead of requesting its Clippy prerequisite twice.
-The old `gate-*` and `audit-deep*` names remain compatibility aliases only.
+Historical local names fail before building tools. CI-only compatibility names
+remain aliases for hosted workflows.
 
-GitHub Actions owns automatic and authoritative broad validation. The tracked
-pre-push hook exits successfully, and local `make validate-local` remains an
-explicit diagnostic. Local diagnostics cap Cargo, nextest, Rust test, and Rayon
-concurrency at two workers, reserve memory per worker, reject a routing failure
-or workspace-wide scope instead of expanding silently, lint and test library
-targets only, and defer governance unless `LOCAL_RUN_GOVERNANCE=1` is supplied.
-CI-named broad Make targets require `CI=true`; an intentional workstation replay
-must declare `ALLOW_BROAD_LOCAL_VALIDATION=1`.
+GitHub Actions owns repository validation. The repository installs no local
+hook, and `make validate-local` fails before building any tool.
+Validation Make targets require both `CI=true` and `GITHUB_ACTIONS=true`; the
+repository provides no workstation override. A developer may invoke one named
+Cargo command for diagnosis, but that command does not establish a repository
+validation verdict.
 
 The CI workflow calls Make directly, selects the CI worker-budget mode, routes
 lint to changed owners and tests to their reverse dependency closure, and
@@ -291,9 +288,9 @@ The redesign is accepted only when all of these statements remain true:
 
 | Statement | Falsifier |
 | --- | --- |
-| A local Rust-only change skips non-Rust checks while preserving bounded, scoped Rust validation. | `workspace-routing` reports the wrong scope, routing failure expands to `--workspace`, or a Rust-only change runs the non-Rust check. |
-| Broad authoritative validation runs on CI unless a workstation operator opts in explicitly. | A CI-named target starts locally without `ALLOW_BROAD_LOCAL_VALIDATION=1`, or CI fails to select `WORKER_BUDGET_MODE=ci`. |
-| Local diagnostics preserve workstation capacity. | The synthetic 128-CPU local probe exceeds two workers, or local validation invokes governance without `LOCAL_RUN_GOVERNANCE=1`. |
+| A Rust-only change receives a bounded, scoped CI closure. | `workspace-routing` reports the wrong scope, routing failure expands without an explicit full-CI decision, or a Rust-only change runs unrelated checks. |
+| Repository validation runs only in GitHub Actions. | A validation Make target starts with either `CI` or `GITHUB_ACTIONS` absent, or a workstation override exists. |
+| Retired local entry points preserve workstation capacity. | `make validate-local` builds a prerequisite, starts Cargo, or exits successfully. |
 | A registry-only change uses the cached validation tools without a Rust workspace regression. | `validate-repository-fast` invokes `rust-regression`, or a cached binary is older than its source dependency. |
 | CI registry and Rust lanes share one target root and do not duplicate either validation bundle. | Two Cargo builds occur for the 11-binary registry bundle in one `validate-ci` invocation, or CI cache paths differ from Make paths. |
 | `validate-registry` executes each registry invariant once. | The active recipe invokes `governance-verify validate-all` or `markdown-registry verify-all` more than once for the same run. |
@@ -322,12 +319,8 @@ evidence.
 Run these commands from an isolated worktree. They use the active vocabulary:
 
 ```bash
-make validate-local
-ALLOW_BROAD_LOCAL_VALIDATION=1 make validate-ci
-ALLOW_BROAD_LOCAL_VALIDATION=1 make validate-repository-fast
-make validation-tools-status
-cargo run -p xtask -- validation-timing-summary --since-days 30
-cargo run -p xtask -- validation-timing-regression-check --baseline-days 14
+git push origin <branch>
+gh run watch <run-id> --exit-status
 ```
 
 Registry mutation remains distinct from validation:
@@ -336,10 +329,10 @@ Registry mutation remains distinct from validation:
 cargo run --release -p gororoba_db --bin gororoba-db -- <subcommand>
 cargo run --release -p gororoba_cli_provenance --bin provenance -- export-control-plane
 make registry-integrity
-make validate-registry-integrity
 ```
 
-The first three commands change or regenerate artifacts.
-`make validate-registry-integrity` is read-only. Keeping mutation and
-validation separate prevents a verifier from silently repairing the bytes that
-it claims to inspect.
+The mutation commands change or regenerate artifacts. Push those artifacts and
+let the CI registry lane validate them.
+The CI-only `make validate-registry-integrity` target is read-only. Keeping
+mutation and validation separate prevents a verifier from silently repairing
+the bytes that it claims to inspect.

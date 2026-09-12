@@ -1109,11 +1109,6 @@ crate = "lit_search"
 description = "Workspace binary discovered from cargo metadata in crate lit_search; registry metadata pending."
 
 [[binary]]
-name = "local-nextest-plan"
-crate = "gororoba_cli_data"
-description = "Workspace binary discovered from crates/gororoba_cli_data/Cargo.toml; registry metadata pending."
-
-[[binary]]
 name = "lotss-analysis"
 crate = "gororoba_cli_data"
 description = "Rust-native LoTSS analysis suite replacing src/lotss_analysis Python utilities. Subcommands cover DR1/DR2/DR3 flux-distribution fits, MaNGA radio-loud versus radio-quiet kinematic bisection, and LoTSS DR1 ultrametric null testing."
@@ -1458,11 +1453,6 @@ description = "P3 hypothesis: power-stratified Rayleigh phase coherence test. Sp
 name = "ppn-bound-sweep"
 crate = "gororoba_cli_physics"
 description = "Sweep Brans-Dicke omega parameter space and report PPN constraint satisfaction (Rodal 2025). Outputs CSV with gamma, Nordtvedt eta, kappa_eff, and pass/fail for Cassini/LLR/Pulsar/GW bounds."
-
-[[binary]]
-name = "pre-push-hook"
-crate = "gororoba_cli"
-description = "Workspace binary discovered from cargo metadata in crate gororoba_cli; registry metadata pending."
 
 [[binary]]
 name = "prefix-chain-theorem"

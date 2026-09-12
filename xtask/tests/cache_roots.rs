@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: GPL-2.0-or-later
 //
 // Layout tests for mk/cache_roots.mk: the cache-owner resolution behind
-// REPO_SHARE_PRIMARY_CACHE=1, the worktree-local validation state, the
+// REPO_SHARE_PRIMARY_CACHE=1, the worktree-local validation-tool state, the
 // accounting set, and the guarded removal helper. Each test builds a real
 // git layout under a temporary directory and drives the fragment through
 // `make -f`, so the assertions hold for the shell that the gate runs.
@@ -199,10 +199,6 @@ fn linked_worktree_shares_build_dir_and_keeps_validation_state_local() {
     assert_eq!(
         r["CACHE_CHECK_SENTINEL"],
         format!("{w}/.cache/gate-target/validation-tools/cache-check.last")
-    );
-    assert_eq!(
-        r["VALIDATION_LOCK"],
-        format!("{w}/.cache/gate-target/validation-tools/validation.lock")
     );
 }
 

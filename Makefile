@@ -1,13 +1,14 @@
 # ---- Phony targets ----
+.DEFAULT_GOAL := help
 .PHONY: help bootstrap-dev bootstrap-user-local-xdg fmt fmt-check
-.PHONY: test lint check check-local smoke integrity integrity-rust math-verify governance-gate governance-gate-readonly wave6-gate pre-push-gate pre-push-gate-strict hooks-install hooks-install-strict hooks-status synthesis-execution-contract
+.PHONY: test lint check check-local smoke integrity integrity-rust math-verify governance-gate governance-gate-readonly wave6-gate pre-push-gate pre-push-gate-strict synthesis-execution-contract
 .PHONY: verify verify-grand verify-c010-c011-theses ansi-check ansi-check-strict terminology-gate doctor doctor-blas provenance cuda-source-ownership
 .PHONY: provenance-registry-index provenance-registry-export provenance-registry-verify provenance-registry-doctor provenance-registry-link-audit provenance-registry-recover
 .PHONY: rocq-proofs rocq-proofs-check rocq-project-check rocq-makefile-check lva-paper
 .PHONY: heavy test-inventory
 .PHONY: rust-test rust-clippy rust-semver-check rust-smoke rust-regression rust-regression-scoped miri-cd-kernel dep-audit cargo-deny-check mcp-smoke e027-validate studio-run studio-check profile-tensor-avt x87-strategy-bench x87-strategy-perf x87-strategy-hyperfine x87-strategy-flamegraph x87-givens-microbench x87-givens-microbench-perf jacobi-backend-sweep jacobi-backend-perf jacobi-backend-flamegraph jacobi-backend-samply jacobi-backend-samply-compare gpu-bench gpu-bench-ncu gpu-bench-nsys
 .PHONY: cpu-bench cpu-bench-perf cpu-bench-cachegrind cpu-bench-flamegraph parity-bench parity-report
-.PHONY: pre-push-gate-scoped submodule-sync validate-local validate-local-xtask validate-ci validate-ci-registry validate-ci-rust validate-repository validate-repository-fast validate-governance validation-tools registry-validation-tools validation-tools-clean validation-tools-rebuild validation-tools-check-paths validation-lock-status validation-resource-contract print-validation-resource-config require-broad-validation-authority casimir-optics-discrimination-audit-check data-core-pure-check
+.PHONY: pre-push-gate-scoped submodule-sync validate-local validate-local-xtask validate-ci validate-ci-registry validate-ci-rust validate-repository validate-repository-fast validate-governance validation-tools registry-validation-tools validation-tools-clean validation-tools-rebuild validation-tools-check-paths validation-resource-contract print-validation-resource-config require-ci-validation-authority casimir-optics-discrimination-audit-check data-core-pure-check
 .PHONY: gate-local gate-local-xtask gate-ci-registry gate-ci-rust gate-audit gate-audit-fast
 .PHONY: cache-status cache-sweep cache-sweep-soft cache-purge-exp cache-check cache-check-force
 .PHONY: v6-branch-transport-artifacts pathion-control-artifacts pathion-resonance-artifacts
@@ -67,9 +68,9 @@
 .NOTPARALLEL: bootstrap-dev check smoke integrity integrity-rust validate-rust-integrity rust-smoke rust-regression rust-regression-scoped heavy cargo-deny-check validate-local validate-ci validate-ci-registry validate-ci-rust validate-repository validate-repository-fast validate-supply-chain validate-dataset-experiments pre-push-gate pre-push-gate-scoped pre-push-gate-strict governance-gate governance-gate-readonly registry-control-plane-gate-readonly registry-acceptance-gate-readonly validate-registry validation-tools
 
 # Non-cargo make fanout: 75% of logical CPUs, minimum 1.
-# Local Cargo and test work uses at most two workers and reserves 2 GiB per
-# worker. GitHub Actions selects CI mode explicitly and may use half of the
-# runner CPUs subject to the same memory reserve.
+# GitHub Actions selects CI mode explicitly and reserves 2 GiB per worker.
+# Mutation generators use the workstation budget but do not issue validation
+# verdicts.
 NPROC := $(shell nproc 2>/dev/null || echo 4)
 NJOBS := $(shell expr $(NPROC) \* 3 / 4)
 TRUSTED_GITHUB_ACTIONS := $(if $(and $(filter true,$(CI)),$(filter true,$(GITHUB_ACTIONS))),1,0)
@@ -79,16 +80,56 @@ override CARGO_JOBS := $(WORKER_BUDGET)
 override NEXTEST_TEST_THREADS := $(WORKER_BUDGET)
 override RUST_TEST_THREADS := $(WORKER_BUDGET)
 override RAYON_THREADS := $(WORKER_BUDGET)
-# Local Clippy follows the local unit-test boundary. CI names --all-targets
-# directly in validate-ci-scoped-rust.
-#
-# Override per invocation: RUST_SCOPED_CLIPPY_TARGETS="--all-targets"
-RUST_SCOPED_CLIPPY_TARGETS ?= --lib
-LOCAL_ALLOW_WORKSPACE ?= 0
-LOCAL_RUN_GOVERNANCE ?= 0
-ALLOW_BROAD_LOCAL_VALIDATION ?= 0
-LOCAL_NEXTEST_TIMING_JSON ?=
-RUST_LOCAL_SKIP_FILTERSET ?= not ((package(stats_core) and test(/ultrametric::baire_codebook::tests::(test_euclidean_ultrametricity_across_filtration_levels|test_intermediate_filtration_gradient|test_random_removal_control|test_lambda512_to_256_intermediate_gradient|test_lambda512_to_256_random_removal_control|test_sbase_to_lambda2048_gradient|test_l0_subpopulation_ultrametricity|test_lambda2048_to_1024_intermediate_gradient|test_l1_filter_on_l0_neg1_subset|test_recursive_simpsons_paradox_l2|test_cross_stratum_triple_decomposition|test_l0_zero_simpsons_paradox|test_dimensional_universality_simpsons_paradox|test_lambda1024_stratum_paradox_and_summary)/)) or (package(algebra_experimental) and test(test_thesis_e_xor_involution_invariants_128d)) or (package(algebra_experimental) and test(/test_v6_(2d_constrained_scan|joint_4d_optimization)/)) or (package(algebra_experimental) and test(/test_(enumerate_tower|fast_enumerate|benchmark_fast_vs_scalar|compressed_memory|enumerate_8192d|fast_enumerate_16384d)/)) or (package(algebra_experimental) and test(test_pathion_vk_spectrum)) or (package(algebra_analysis) and test(/test_(d64_flat_band|d16_d32_d64_scaling)/)) or (package(materials_core) and test(test_separating_degree_formula_universality)) or (package(gororoba_algebra) and test(test_split_octonion_attractor_regression_dim_128_256_guarded)) or (package(gororoba_cli) and test(test_zero_divisor_scaling)) or (package(sign_imbalance) and test(test_kubo_j1j2_alpha_sweep)) or test(/gpu/))
+# Parse-time refusal prevents Make from constructing or updating a validation
+# prerequisite locally. Mutation generators such as registry-integrity remain
+# available because they produce reviewed source artifacts rather than a gate
+# verdict.
+RETIRED_LOCAL_VALIDATION_GOALS := check-local validate-local validate-local-xtask \
+                                  gate-local gate-local-xtask pre-push-gate \
+                                  pre-push-gate-scoped rust-regression-scoped
+REQUESTED_RETIRED_LOCAL_VALIDATION_GOALS := $(filter $(RETIRED_LOCAL_VALIDATION_GOALS),$(MAKECMDGOALS))
+ifneq ($(strip $(REQUESTED_RETIRED_LOCAL_VALIDATION_GOALS)),)
+$(error retired local validation target(s) $(REQUESTED_RETIRED_LOCAL_VALIDATION_GOALS); push the branch to trigger GitHub Actions)
+endif
+CI_ONLY_VALIDATION_GOALS := test lint check smoke integrity integrity-rust \
+                           math-verify fmt-check governance-gate governance-gate-readonly \
+                           wave6-gate ndlb-gate pre-push-gate-strict validate-ci \
+                           validate-ci-registry validate-ci-rust validate-ci-scoped-rust \
+                           validate-repository validate-repository-fast \
+                           validate-governance validate-rust-integrity validate-registry \
+                           validate-registry-integrity validation-tools \
+                           registry-validation-tools validation-tools-rebuild \
+                           validation-tools-check-paths validation-resource-contract \
+                           validate-static validate-static-and-registry \
+                           validate-comprehensive validate-supply-chain \
+                           validate-dataset-experiments rust-test rust-clippy \
+                           rust-smoke rust-regression ansi-check ansi-check-strict \
+                           terminology-gate casimir-optics-discrimination-audit-check \
+                           supply-chain-gate gate-fast gate-warm gate-deep \
+                           gate-ci-registry gate-ci-rust gate-audit gate-audit-fast \
+                           audit audit-comprehensive audit-comprehensive-structured \
+                           audit-deep audit-deep-structured dep-audit cargo-deny-check \
+                           cpd-audit cpd-audit-strict cpd-audit-tooling cpd-audit-generated \
+                           repo-audit repo-audit-strict repo-audit-strict-unjustified \
+                           ref-audit ref-audit-strict docs-gate docs-freshness \
+                           docs-redirect-check rocq-proofs-check rocq-project-check \
+                           rocq-makefile-check registry-control-plane-gate \
+                           registry-control-plane-gate-readonly registry-semantic-atoms-gate \
+                           registry-evidence-provenance-gate \
+                           registry-execution-planning-gate \
+                           registry-integrity-resolution-gate registry-acceptance-gate \
+                           registry-acceptance-gate-readonly registry-csv-pipeline-gate \
+                           provenance-audit provenance-registry-link-audit \
+                           external-redownload-audit semantic-data-validate \
+                           semantic-data-validate-strict data-core-pure-check \
+                           db-schema-drift-check test-inventory mcp-smoke e027-validate \
+                           studio-check cargo-cache-smoke
+REQUESTED_CI_ONLY_VALIDATION_GOALS := $(filter $(CI_ONLY_VALIDATION_GOALS),$(MAKECMDGOALS))
+ifneq ($(strip $(REQUESTED_CI_ONLY_VALIDATION_GOALS)),)
+ifneq ($(TRUSTED_GITHUB_ACTIONS),1)
+$(error repository validation target(s) $(REQUESTED_CI_ONLY_VALIDATION_GOALS) run only in GitHub Actions; push the branch to trigger CI)
+endif
+endif
 REPO_TMPDIR ?= $(or $(TMPDIR),/tmp)
 # Every tool resolves the repository through repo_root::resolve!(), which
 # reads this variable first; the compile-time manifest path inside a binary
@@ -114,7 +155,6 @@ CARGO_ENV = CARGO_HOME=$(REPO_CARGO_HOME) CARGO_TARGET_DIR=$(REPO_CARGO_TARGET_D
 # Kept here as belt-and-suspenders for CI environments where that config is absent.
 CARGO_ENV_CI = $(CARGO_ENV) CARGO_INCREMENTAL=0
 
-HOOKS_DIR ?= .githooks
 MARKDOWN_EXPORT ?= 0
 MARKDOWN_EXPORT_OUT_DIR ?= docs/generated
 MARKDOWN_EXPORT_EMIT_LEGACY ?= 0
@@ -202,13 +242,14 @@ fmt-check:
 	DPRINT_CACHE_DIR=$(DPRINT_CACHE_DIR) dprint check
 
 # ---- Validation and audit commands ----
-# Lightweight checks run without Rust compilation. Cargo-heavy checks remain
-# opt-in and serialize through the repository worker budget.
+# Repository validation runs only in GitHub Actions. Developers may invoke a
+# focused Cargo command directly, but no Make validation target starts a local
+# compiler or test closure.
 
-require-broad-validation-authority:
-	@if [ "$(TRUSTED_GITHUB_ACTIONS)" != "1" ] && [ "$(ALLOW_BROAD_LOCAL_VALIDATION)" != "1" ]; then \
-	    echo "ERROR: broad authoritative validation runs in CI." >&2; \
-	    echo "Push the branch to trigger CI, or set ALLOW_BROAD_LOCAL_VALIDATION=1 for an intentional workstation run." >&2; \
+require-ci-validation-authority:
+	@if [ "$(TRUSTED_GITHUB_ACTIONS)" != "1" ]; then \
+	    echo "ERROR: repository validation runs only in GitHub Actions." >&2; \
+	    echo "Push the branch to trigger CI. No local override is supported." >&2; \
 	    exit 2; \
 	fi
 
@@ -231,16 +272,31 @@ validation-resource-contract:
 	    $(MAKE) --no-print-directory -s print-validation-resource-config \
 	    CI=true GITHUB_ACTIONS=true WORKER_BUDGET_MODE=local WORKER_BUDGET=99 CARGO_JOBS=99)"; \
 	test "$$ci_config" = 'mode=ci workers=4 trusted_github_actions=1'; \
-	if $(MAKE) --no-print-directory -s require-broad-validation-authority \
-	    CI=true GITHUB_ACTIONS=false ALLOW_BROAD_LOCAL_VALIDATION=0 >/dev/null 2>&1; then \
+	if $(MAKE) --no-print-directory -s require-ci-validation-authority \
+	    CI=true GITHUB_ACTIONS=false >/dev/null 2>&1; then \
 	    echo "ERROR: generic CI variable bypassed broad-validation authority." >&2; exit 1; \
 	fi; \
-	$(MAKE) --no-print-directory -s require-broad-validation-authority \
-	    CI=false GITHUB_ACTIONS=false ALLOW_BROAD_LOCAL_VALIDATION=1; \
-	grep -Fq 'LOCAL_ALLOW_WORKSPACE ?= 0' Makefile; \
-	grep -Fq 'ALLOW_BROAD_LOCAL_VALIDATION ?= 0' Makefile; \
-	grep -Fq 'rust-clippy: require-broad-validation-authority' Makefile; \
-	grep -Fq 'rust-regression: require-broad-validation-authority rust-clippy' Makefile; \
+	if $(MAKE) --no-print-directory -s check \
+	    CI=false GITHUB_ACTIONS=true >/dev/null 2>&1; then \
+	    echo "ERROR: GitHub Actions marker bypassed CI-only validation authority." >&2; exit 1; \
+	fi; \
+	$(MAKE) --no-print-directory -s require-ci-validation-authority \
+	    CI=true GITHUB_ACTIONS=true; \
+	if $(MAKE) --no-print-directory -s validate-local >/dev/null 2>&1; then \
+	    echo "ERROR: retired validate-local target unexpectedly succeeded." >&2; exit 1; \
+	fi; \
+	grep -Fq 'rust-clippy: require-ci-validation-authority' Makefile; \
+	grep -Fq 'rust-regression: require-ci-validation-authority rust-clippy' Makefile; \
+	grep -Fq 'rust-regression-scoped' Makefile; \
+	if grep -Fq 'local-nextest-plan' xtask/src/main.rs crates/gororoba_cli_data/Cargo.toml; then \
+	    echo "ERROR: retired local nextest executor remains registered." >&2; exit 1; \
+	fi; \
+	test ! -e crates/gororoba_cli_data/src/bin/local_nextest_plan.rs; \
+	if grep -Fq 'pre-push-hook' crates/gororoba_cli/Cargo.toml; then \
+	    echo "ERROR: retired local pre-push executor remains registered." >&2; exit 1; \
+	fi; \
+	test ! -e crates/gororoba_cli/src/bin/pre_push_hook.rs; \
+	test ! -e .githooks/pre-push; \
 	grep -Fq '"--profile",' crates/gororoba_db/src/bin/gororoba_db.rs; \
 	grep -Fq '.env("CARGO_BUILD_JOBS", "2")' crates/gororoba_db/src/bin/gororoba_db.rs; \
 	grep -Fq 'registry-integrity: $$(REGISTRY_INTEGRITY_CACHE)' Makefile; \
@@ -251,12 +307,12 @@ validation-resource-contract:
 	fi; \
 	grep -Fq 'WORKER_BUDGET_MODE: ci' .github/workflows/ci.yml; \
 	grep -Fq 'detect_worker_budget.sh "$$WORKER_BUDGET_MODE"' .github/workflows/ci.yml; \
-	grep -Fq '$$(MAKE) check-local' Makefile; \
+	grep -Fq 'check-local validate-local validate-local-xtask' Makefile; \
 	grep -Fq 'make validation-resource-contract' .github/workflows/ci.yml; \
 	grep -Fq 'make casimir-optics-discrimination-audit-check' .github/workflows/ci.yml; \
-	echo "OK: local and CI validation resource boundaries are pinned."
+	echo "OK: CI-only validation authority and worker boundaries are pinned."
 
-casimir-optics-discrimination-audit-check:
+casimir-optics-discrimination-audit-check: require-ci-validation-authority
 	$(CARGO_ENV) cargo run --locked --profile validation -p gororoba_cli_physics \
 	    --bin casimir-optics-discrimination-audit -- \
 	    --output-directory data/output/audit/casimir-optics-discrimination --check
@@ -321,7 +377,7 @@ validate-static-and-registry: validate-static
 
 # validate-comprehensive: static, registry, Rust, and dependency checks.
 # WHY: Full CI-grade audit. Catches everything including API compat and advisories.
-validate-comprehensive: require-broad-validation-authority validate-static-and-registry
+validate-comprehensive: require-ci-validation-authority validate-static-and-registry
 	@echo "=== validate-comprehensive: Rust and dependency checks ==="
 	# rust-regression owns the clippy prerequisite and the two nextest profiles.
 	$(MAKE) rust-regression
@@ -345,7 +401,7 @@ gate-deep: validate-comprehensive
 #      docs-freshness) into a single reviewable target for pre-release or periodic runs.
 # HOW: make audit-comprehensive (standalone, no preconditions required)
 # NOTE: cpd-audit requires pmd; the target will self-report if pmd is absent.
-audit-comprehensive: require-broad-validation-authority
+audit-comprehensive: require-ci-validation-authority
 	@echo "=== audit-comprehensive: full opt-in audit suite ==="
 	$(MAKE) rust-clippy
 	@# rust-semver-check is intentionally skipped in audit-comprehensive.
@@ -382,13 +438,12 @@ check: $(REPO_UTILITIES_BIN)
 	$(MAKE) cuda-source-ownership
 	@echo "OK: fast shared check suite complete."
 
-# Local diagnostics avoid the xtask-owned CUDA inventory. CI runs `make check`
-# and retains that authoritative repository-wide invariant.
-check-local: $(REPO_UTILITIES_BIN)
-	@$(REPO_UTILITIES_BIN) ansi-check --check
-	@$(REPO_UTILITIES_BIN) terminology-gate
-	@git -c core.fsmonitor=false diff --check
-	@echo "OK: resource-bounded local hygiene checks passed."
+# Compatibility names refuse execution. Their recipes have no prerequisites,
+# so an invocation cannot build a validation tool before returning the error.
+check-local validate-local validate-local-xtask gate-local gate-local-xtask pre-push-gate pre-push-gate-scoped rust-regression-scoped:
+	@echo "ERROR: $@ is retired; repository validation runs only in GitHub Actions." >&2
+	@echo "Push the branch to trigger the scoped CI workflow." >&2
+	@exit 2
 
 # Governance verifier targets
 registry-verify-markdown-governance:
@@ -399,7 +454,7 @@ registry-verify-markdown-governance:
 # $(VALIDATION_TOOLS_DIR)/. Cache vars and rules live below where
 # VALIDATION_TOOLS_DIR is defined (search "MARKDOWN_REGISTRY_CACHE").
 # This target consumes those cache entries.
-validate-governance: registry-validation-tools
+validate-governance: require-ci-validation-authority registry-validation-tools
 	$(MARKDOWN_REGISTRY_CACHE) verify-all
 	$(GOVERNANCE_VERIFY_CACHE) validate-all
 # execution-planning cross-checks every experiment and lineage row against the
@@ -469,7 +524,7 @@ CORE_VALIDATION_SOURCE_DEPS := $(shell find crates xtask -type f \( -name '*.rs'
                                Cargo.toml Cargo.lock rust-toolchain.toml Makefile \
                                crates/lbm_3d_cuda/cuda_source_ownership.toml
 
-# The routing proxy has a dedicated stamp because local validation needs scope
+# The routing proxy has a dedicated stamp because CI validation needs scope
 # classification but does not need xtask. Broad and structured lanes build
 # xtask through the separate core stamp.
 XTASK_CACHE := $(VALIDATION_TOOLS_DIR)/xtask
@@ -568,19 +623,9 @@ registry-validation-tools: $(REGISTRY_VALIDATION_STAMP) $(REGISTRY_INTEGRITY_CAC
 validation-tools: $(WORKSPACE_ROUTING_CACHE) $(HOST_PROFILE_CACHE) $(XTASK_CACHE) registry-validation-tools
 	@echo "OK: validation-tools cached at $(VALIDATION_TOOLS_DIR)/."
 
-# validate-local-xtask retains the legacy Rust-driven replay and timing output.
-# Its driver predates the bounded Make path, so workstation execution requires
-# ALLOW_BROAD_LOCAL_VALIDATION=1. CI may invoke it with CI=true.
-.PHONY: validate-local-xtask
-validate-local-xtask: require-broad-validation-authority cache-check $(WORKSPACE_ROUTING_CACHE) $(HOST_PROFILE_CACHE) $(XTASK_CACHE)
-	@$(XTASK_CACHE) validate-local --routing-bin $(WORKSPACE_ROUTING_CACHE) $(if $(VALIDATION_TIMING_OUT),--timing-json $(VALIDATION_TIMING_OUT),)
-
-gate-local-xtask: validate-local-xtask
-	@echo "DEPRECATED: make gate-local-xtask is a compatibility alias for make validate-local-xtask."
-
 # Every file under $(VALIDATION_TOOLS_DIR) that a gate lane executes or
 # compares against. The lock and the cache-check sentinel stay out, so a
-# rebuild launched beside an in-flight validate-local leaves its lock intact.
+# rebuild operation excludes the cache-check sentinel.
 VALIDATION_TOOL_PACKAGES := repo_root repo_utilities gororoba_cli_governance xtask \
                             gororoba_cli_data gororoba_cli_provenance
 
@@ -625,106 +670,13 @@ validation-tools-clean:
 	rm -f $(WORKSPACE_ROUTING_CACHE) $(HOST_PROFILE_CACHE)
 	@echo "OK: validation-tools cache cleared."
 
-# validate-local writes $(VALIDATION_LOCK) with its PID and start time. A sibling
-# `make validation-lock-status` target lets editors check whether validation is in
-# flight. The lock is removed in a shell trap on EXIT so crashed gates
-# clean up. The lock surfaces edit-during-read hazards before a gate
-# consumes inconsistent source. The path is set in mk/cache_roots.mk.
-
-.PHONY: validation-lock-status
-validation-lock-status:
-	@if [ -f "$(VALIDATION_LOCK)" ]; then \
-	    pid=$$(awk '/^pid=/ {sub("pid=",""); print}' "$(VALIDATION_LOCK)" 2>/dev/null || echo ""); \
-	    started=$$(awk '/^started=/ {sub("started=",""); print}' "$(VALIDATION_LOCK)" 2>/dev/null || echo ""); \
-	    if [ -n "$$pid" ] && kill -0 "$$pid" 2>/dev/null; then \
-        printf 'validate-local IN FLIGHT: pid=%s started=%s\n' "$$pid" "$$started"; \
-	        exit 1; \
-	    else \
-        printf 'validation lock stale (pid %s not running); removing\n' "$$pid"; \
-	        rm -f "$(VALIDATION_LOCK)"; \
-	    fi; \
-	else \
-        echo 'no validate-local in flight'; \
-	fi
-
-validate-local: $(WORKSPACE_ROUTING_CACHE)
-	@mkdir -p $(dir $(VALIDATION_LOCK))
-	@if [ -f "$(VALIDATION_LOCK)" ]; then \
-	    prev_pid=$$(awk '/^pid=/ {sub("pid=",""); print}' "$(VALIDATION_LOCK)" 2>/dev/null || echo ""); \
-	    if [ -n "$$prev_pid" ] && kill -0 "$$prev_pid" 2>/dev/null; then \
-        echo "[validate-local] another validation run is in flight (pid=$$prev_pid). Wait or `make validation-lock-status`."; \
-	        exit 1; \
-	    fi; \
-	    rm -f "$(VALIDATION_LOCK)"; \
-	fi
-	@trap 'rm -f "$(VALIDATION_LOCK)"' EXIT INT TERM; \
-	printf 'pid=%s\nstarted=%s\n' "$$$$" "$$(date -Iseconds)" > "$(VALIDATION_LOCK)"; \
-	set -e; \
-	scope=""; \
-	run_rust="true"; \
-	run_governance="true"; \
-	run_check="true"; \
-	submake_env="WORKER_BUDGET=$(WORKER_BUDGET) CARGO_JOBS=$(CARGO_JOBS) NEXTEST_TEST_THREADS=$(NEXTEST_TEST_THREADS) RUST_TEST_THREADS=$(RUST_TEST_THREADS) RAYON_THREADS=$(RAYON_THREADS)"; \
-	    echo "[validate-local] bounded workers: cargo=$(CARGO_JOBS) nextest=$(NEXTEST_TEST_THREADS) rust-tests=$(RUST_TEST_THREADS) rayon=$(RAYON_THREADS)"; \
-	    echo "[validate-local] determining scope..."; \
-	if [ -x "$(WORKSPACE_ROUTING_CACHE)" ]; then \
-	    scope_file="$$(mktemp)"; \
-	    meta_file="$$(mktemp)"; \
-	    if ! $(WORKSPACE_ROUTING_CACHE) --local --verbose 1>"$$scope_file" 2>"$$meta_file"; then \
-	        cat "$$meta_file" >&2; rm -f "$$scope_file" "$$meta_file"; \
-	        echo "ERROR: local scope routing failed; broad fallback is reserved for CI." >&2; exit 2; \
-	    fi; \
-	    scope="$$(cat "$$scope_file" 2>/dev/null || true)"; \
-	    routing_meta="$$(cat "$$meta_file" 2>/dev/null || true)"; \
-	    rm -f "$$scope_file" "$$meta_file"; \
-	    if [ -n "$$routing_meta" ]; then printf '%s\n' "$$routing_meta"; fi; \
-	    printf '%s\n' "$$routing_meta" | grep -q 'run_rust=False' && run_rust="false" || true; \
-	    printf '%s\n' "$$routing_meta" | grep -q 'run_governance=False' && run_governance="false" || true; \
-	    printf '%s\n' "$$routing_meta" | grep -q 'run_check=False' && run_check="false" || true; \
-	else \
-	    echo "ERROR: workspace-routing is unavailable; broad fallback is reserved for CI." >&2; \
-	    exit 2; \
-	fi; \
-	if [ "$$scope" = "--workspace" ] && [ "$(LOCAL_ALLOW_WORKSPACE)" != "1" ]; then \
-	    echo "ERROR: the changed surface requires workspace-wide validation, which CI owns." >&2; \
-	    echo "Push the branch, or set LOCAL_ALLOW_WORKSPACE=1 for an intentional bounded local run." >&2; \
-	    exit 2; \
-	fi; \
-	if [ "$$run_check" = "true" ]; then \
-	    $(MAKE) check-local $$submake_env; \
-	else \
-        echo "[validate-local] SKIP: no check-relevant (non-Rust) file changes detected."; \
-	fi; \
-	if [ "$$run_rust" = "true" ]; then \
-	    if [ -z "$$scope" ]; then scope="--workspace"; fi; \
-        echo "[validate-local] rust scope: $$scope"; \
-        if [ -n "$(LOCAL_NEXTEST_TIMING_JSON)" ]; then echo "[validate-local] local nextest timing: $(LOCAL_NEXTEST_TIMING_JSON)"; fi; \
-	    $(MAKE) rust-regression-scoped RUST_SCOPE="$$scope" RUST_RUN_HEAVY=0 $$submake_env; \
-	else \
-        echo "[validate-local] SKIP: no Rust-relevant changes detected."; \
-	fi; \
-	if [ "$$run_governance" = "true" ] && [ "$(LOCAL_RUN_GOVERNANCE)" = "1" ]; then \
-	    $(MAKE) validate-governance $$submake_env; \
-	elif [ "$$run_governance" = "true" ]; then \
-	    echo "[validate-local] DEFER: authoritative governance validation runs in CI; set LOCAL_RUN_GOVERNANCE=1 to opt in."; \
-	else \
-        echo "[validate-local] SKIP: no registry-policy changes detected."; \
-	fi; \
-	    echo "[validate-local] OK: requested local diagnostics passed; CI remains authoritative."
-
-gate-local: validate-local
-	@echo "DEPRECATED: make gate-local is a compatibility alias for make validate-local."
-
-pre-push-gate: validate-local
-	@echo "DEPRECATED: make pre-push-gate is a compatibility alias for make validate-local."
-
-validate-ci-registry: require-broad-validation-authority validate-registry
+validate-ci-registry: require-ci-validation-authority validate-registry
 	@echo "OK: CI registry validation passed."
 
 gate-ci-registry: validate-ci-registry
 	@echo "DEPRECATED: make gate-ci-registry is a compatibility alias for make validate-ci-registry."
 
-validate-ci-rust: require-broad-validation-authority
+validate-ci-rust: require-ci-validation-authority
 	$(MAKE) validation-tools
 	$(MAKE) rust-regression CARGO_ENV="$(CARGO_ENV_CI)"
 	$(MAKE) validate-rust-integrity CARGO_ENV="$(CARGO_ENV_CI)"
@@ -739,7 +691,7 @@ gate-ci-rust: validate-ci-rust
 validate-ci-scoped-rust: SHELL := /bin/bash
 validate-ci-scoped-rust: export CI_RUST_SCOPE := $(CI_RUST_SCOPE)
 validate-ci-scoped-rust: export CI_CLIPPY_SCOPE := $(CI_CLIPPY_SCOPE)
-validate-ci-scoped-rust: require-broad-validation-authority
+validate-ci-scoped-rust: require-ci-validation-authority
 	@set -euo pipefail; \
 	validate_scope() { \
 	    local scope_name="$$1" scope_value="$$2"; \
@@ -795,12 +747,12 @@ db-schema-drift-check: $(XTASK_CACHE)
 host-profile: $(XTASK_CACHE)
 	$(XTASK_CACHE) host-profile --format json
 
-validate-ci: require-broad-validation-authority
+validate-ci: require-ci-validation-authority
 	$(MAKE) validation-tools
 	$(CARGO_ENV) $(XTASK_CACHE) validate-ci
 	@echo "OK: CI validation completed."
 
-validate-repository: require-broad-validation-authority
+validate-repository: require-ci-validation-authority
 	$(MAKE) validation-tools
 	$(CARGO_ENV) $(XTASK_CACHE) validate-repository
 	@echo "OK: repository validation completed."
@@ -826,7 +778,7 @@ audit-deep-structured: audit-comprehensive-structured
 # repository validation path skips Rust compilation entirely: only
 # validate-ci-registry (governance + schema
 # checks, ~2 min) runs, and it fails fast on the first error.
-validate-repository-fast: require-broad-validation-authority
+validate-repository-fast: require-ci-validation-authority
 	$(MAKE) validation-tools
 	$(CARGO_ENV) $(XTASK_CACHE) validate-repository --fast
 	@echo "OK: fast repository validation completed."
@@ -1016,25 +968,10 @@ cache-check-force:
 pre-push-gate-strict: validate-repository
 	@echo "DEPRECATED: make pre-push-gate-strict is a compatibility alias for make validate-repository."
 
-hooks-install:
-	@mkdir -p "$(HOOKS_DIR)"
-	@chmod +x "$(HOOKS_DIR)/pre-push"
-	@git config core.hooksPath "$(HOOKS_DIR)"
-	@echo "OK: git hooks installed. core.hooksPath=$$(git config --get core.hooksPath)"
-	@echo "CI owns automatic validation. Run make validate-local for manual validation."
-
-hooks-install-strict: hooks-install
-	@echo "hooks-install-strict installs the same inactive local validation hook."
-
-hooks-status:
-	@echo "core.hooksPath=$$(git config --get core.hooksPath || echo .git/hooks)"
-	@echo "pre-push hook exists? $$(test -f "$(HOOKS_DIR)/pre-push" && echo yes || echo no)"
-	@echo "CI owns automatic validation; make validate-local remains a manual command."
-
 smoke: check rust-smoke
 	@echo "OK: smoke lane passed."
 
-validate-rust-integrity: registry-validation-tools
+validate-rust-integrity: require-ci-validation-authority registry-validation-tools
 	$(VALIDATION_TOOLS_DIR)/claims-verify --check providers
 	$(VALIDATION_TOOLS_DIR)/test-inventory --check
 	$(VALIDATION_TOOLS_DIR)/registry-check --typed-policy error
@@ -1063,7 +1000,7 @@ math-verify: rust-regression
 rust-test: rust-regression
 	@echo "OK: rust-test is an alias for rust-regression."
 
-rust-clippy: require-broad-validation-authority
+rust-clippy: require-ci-validation-authority
 	$(CARGO_ENV) cargo clippy --workspace -- -D warnings
 
 rust-semver-check:
@@ -1116,118 +1053,10 @@ rust-smoke:
 	$(CARGO_ENV) cargo nextest run --build-jobs $(CARGO_JOBS) --test-threads $(NEXTEST_TEST_THREADS) --cargo-profile test-heavy -P smoke -p gr_core --test smoke_gr_core
 	@echo "OK: Rust smoke lane passed."
 
-rust-regression: require-broad-validation-authority rust-clippy
+rust-regression: require-ci-validation-authority rust-clippy
 	$(CARGO_ENV) cargo nextest run --build-jobs $(CARGO_JOBS) --test-threads $(NEXTEST_TEST_THREADS) --workspace --exclude algebra_analysis --exclude gr_core
 	$(CARGO_ENV) cargo nextest run --build-jobs $(CARGO_JOBS) --test-threads $(NEXTEST_TEST_THREADS) --cargo-profile test-heavy -P heavy -p algebra_analysis -p gr_core
 	@echo "OK: Rust regression lane passed."
-
-rust-regression-scoped:
-	# workspace-routing source lives beside the data CLI, but
-	# rust-regression-scoped builds it through the slim governance proxy binary.
-	# That keeps scope classification independent of the full data CLI
-	# dependency graph while preserving workspace-routing semantics.
-	#
-	# Prefer the cached binary at $(WORKSPACE_ROUTING_CACHE) to skip cargo's
-	# metadata walk. The validation-tools target dependencies rebuild the cached binary
-	# when workspace_routing.rs changes.
-	#
-	# Preserve routing CLI stderr so scope-selection failures reach the validation
-	# operator. The fallback remains "--workspace" after the diagnostic is
-	# emitted.
-	$(eval RUST_SCOPE ?= $(shell \
-	    if [ -x "$(WORKSPACE_ROUTING_CACHE)" ]; then \
-	        "$(WORKSPACE_ROUTING_CACHE)" --local 2> >(tee /dev/stderr); \
-	    else \
-	        $(CARGO_ENV) cargo run -q -p gororoba_cli_governance --bin workspace-routing-proxy -- --local; \
-	    fi || echo "--workspace"))
-	# Clippy runs only on DIRECTLY changed crates (no reverse-closure expansion).
-	# WHY: clippy lints fire on the package owning the source -- a change in a
-	# hub crate cannot induce a new lint on a downstream consumer whose source
-	# is unchanged. Skipping the closure for clippy saves the bulk of compile
-	# time (gororoba_cli_data with 100+ binaries is the worst offender).
-	$(eval RUST_CLIPPY_SCOPE ?= $(shell \
-	    if [ -x "$(WORKSPACE_ROUTING_CACHE)" ]; then \
-	        "$(WORKSPACE_ROUTING_CACHE)" --local --direct-only 2> >(tee /dev/stderr); \
-	    else \
-	        $(CARGO_ENV) cargo run -q -p gororoba_cli_governance --bin workspace-routing-proxy -- --local --direct-only; \
-	    fi || echo "$(RUST_SCOPE)"))
-	# Nextest in the LOCAL pre-push fast path also runs only on directly
-	# changed crates. Trust the layered model:
-	#   - Direct-changed crate tests + clippy = pre-push smoke gate (< 3 min).
-	#   - Full reverse-closure regression = CI on PR open (validate-ci-rust).
-	# Set RUST_NEXTEST_SCOPE_MODE=closure to opt back into the wide scope for
-	# a single invocation when needed (e.g. after toolchain bumps).
-	$(eval RUST_NEXTEST_SCOPE_MODE ?= direct)
-	$(eval RUST_NEXTEST_SCOPE ?= $(if $(filter direct,$(RUST_NEXTEST_SCOPE_MODE)),$(RUST_CLIPPY_SCOPE),$(RUST_SCOPE)))
-	# Pre-push test kind: `lib` runs only library unit tests; `all` runs
-	# lib + integration test binaries (--lib --tests). Integration test
-	# compile is the largest single contributor to gate wall-time (the
-	# 441-binary link phase, ~4m30s); restricting to --lib at pre-push
-	# makes the gate a true smoke gate. CI on PR open runs the full
-	# `all` suite. Override per invocation:
-	#   make validate-local RUST_NEXTEST_KIND_MODE=all
-	$(eval RUST_NEXTEST_KIND_MODE ?= lib)
-	$(eval RUST_NEXTEST_KINDS ?= $(if $(filter lib,$(RUST_NEXTEST_KIND_MODE)),--lib,--lib --tests))
-	$(eval RUST_RUN_HEAVY ?= 1)
-	@set -e; \
-	if [ -z "$(RUST_SCOPE)" ]; then \
-	    echo "SKIP: no Rust-relevant changes detected."; \
-	else \
-	    echo "[rust-regression-scoped] clippy scope: $(RUST_CLIPPY_SCOPE)"; \
-	    echo "[rust-regression-scoped] nextest scope: $(RUST_NEXTEST_SCOPE) (scope_mode=$(RUST_NEXTEST_SCOPE_MODE) kinds=$(RUST_NEXTEST_KINDS))"; \
-	    if [ -n "$(RUST_CLIPPY_SCOPE)" ]; then \
-	        $(CARGO_ENV) cargo clippy $(RUST_CLIPPY_SCOPE) $(RUST_SCOPED_CLIPPY_TARGETS) -- -D warnings; \
-	    fi; \
-	    local_light_scope=""; \
-	    local_light_packages=""; \
-	    if [ "$(RUST_NEXTEST_SCOPE)" = "--workspace" ]; then \
-	        light_scope="--workspace --exclude algebra_analysis --exclude gr_core"; \
-	        heavy_scope="-p algebra_analysis -p gr_core"; \
-	        local_light_scope="$$light_scope"; \
-	    else \
-	        light_scope=""; \
-	        heavy_scope=""; \
-	        prev=""; \
-	        for token in $(RUST_NEXTEST_SCOPE); do \
-	            if [ "$$prev" = "-p" ]; then \
-	                case "$$token" in \
-	                    algebra_analysis|gr_core) heavy_scope="$$heavy_scope -p $$token" ;; \
-	                    *) \
-	                        light_scope="$$light_scope -p $$token"; \
-	                        local_light_packages="$$local_light_packages $$token" ;; \
-	                esac; \
-	                prev=""; \
-	            elif [ "$$token" = "-p" ]; then \
-	                prev="-p"; \
-	            fi; \
-	        done; \
-	    fi; \
-	    filterset=""; \
-	    if [ "$(RUST_RUN_HEAVY)" != "1" ]; then \
-	        filterset='$(RUST_LOCAL_SKIP_FILTERSET)'; \
-	    fi; \
-	    if [ "$(RUST_NEXTEST_SCOPE)" = "--workspace" ]; then \
-	        if [ -n "$$filterset" ]; then \
-	            echo "[rust-regression-scoped] local skip filter enabled"; \
-	            $(CARGO_ENV) cargo nextest run --build-jobs $(CARGO_JOBS) --test-threads $(NEXTEST_TEST_THREADS) $(RUST_NEXTEST_KINDS) $$local_light_scope -E "$$filterset"; \
-	        else \
-	            $(CARGO_ENV) cargo nextest run --build-jobs $(CARGO_JOBS) --test-threads $(NEXTEST_TEST_THREADS) $(RUST_NEXTEST_KINDS) $$local_light_scope; \
-	        fi; \
-	    elif [ -n "$$local_light_packages" ]; then \
-	        if [ -n "$$filterset" ]; then \
-	            echo "[rust-regression-scoped] local skip filter enabled"; \
-	            $(CARGO_ENV) $(XTASK_CACHE) local-nextest-plan --build-jobs $(CARGO_JOBS) --test-threads $(NEXTEST_TEST_THREADS) --kinds $(RUST_NEXTEST_KIND_MODE) $(if $(LOCAL_NEXTEST_TIMING_JSON),--timing-json-out $(LOCAL_NEXTEST_TIMING_JSON),) --filterset "$$filterset" $$local_light_packages; \
-	        else \
-	            $(CARGO_ENV) $(XTASK_CACHE) local-nextest-plan --build-jobs $(CARGO_JOBS) --test-threads $(NEXTEST_TEST_THREADS) --kinds $(RUST_NEXTEST_KIND_MODE) $(if $(LOCAL_NEXTEST_TIMING_JSON),--timing-json-out $(LOCAL_NEXTEST_TIMING_JSON),) $$local_light_packages; \
-	        fi; \
-	    fi; \
-	    if [ -n "$$heavy_scope" ] && [ "$(RUST_RUN_HEAVY)" = "1" ]; then \
-	        $(CARGO_ENV) cargo nextest run --build-jobs $(CARGO_JOBS) --test-threads $(NEXTEST_TEST_THREADS) --cargo-profile test-heavy -P heavy $$heavy_scope; \
-	    elif [ -n "$$heavy_scope" ]; then \
-	        echo "[rust-regression-scoped] SKIP heavy nextest in local fast path: $$heavy_scope"; \
-	    fi; \
-	    echo "OK: scoped Rust validation passed (clippy + nextest)."; \
-	fi
 
 # WHY: Miri catches UB in unsafe Cayley-Dickson arithmetic (pointer provenance,
 # integer-to-pointer casts, uninit reads) that sanitizers miss at runtime.
@@ -1810,7 +1639,7 @@ registry-wave5-batch2: registry-strict-toml-batch2
 registry-integrity: $(REGISTRY_INTEGRITY_CACHE)
 	$(REGISTRY_INTEGRITY_CACHE) --repo-root .
 
-validate-registry-integrity: $(REGISTRY_INTEGRITY_CACHE)
+validate-registry-integrity: require-ci-validation-authority $(REGISTRY_INTEGRITY_CACHE)
 	$(REGISTRY_INTEGRITY_CACHE) --verify --repo-root .
 	@echo "OK: registry consistency records are current."
 
@@ -1940,7 +1769,7 @@ registry-verify-wave5-batch4: registry-verify-strict-toml-batch4
 registry-wave5-batch4: registry-strict-toml-batch4
 	@echo "DEPRECATED: make registry-wave5-batch4 is a legacy alias. Use make registry-execution-planning-gate."
 
-validate-registry: registry-validation-tools
+validate-registry: require-ci-validation-authority registry-validation-tools
 	$(PROVENANCE_CACHE) --repo-root . verify-control-plane --verify-compat-exports
 	$(PROJECT_COUNTER_CACHE) --check
 	$(MARKDOWN_REGISTRY_CACHE) verify-all
@@ -2747,17 +2576,17 @@ help:
 	@echo "    make test                 Run workspace-wide nextest"
 	@echo "    make smoke                Composite fast smoke lane (check + rust-smoke)"
 	@echo "    make integrity-rust       Cargo-backed integrity lane (claims + inventory + typed policy)"
-	@echo "    make check                Fast local check (ansi + terminology + no-reports)"
-	@echo "    make check-local          Resource-bounded local text and diff checks"
+	@echo "    make check                CI-only hygiene check"
+	@echo "    make check-local          Retired compatibility target; CI-only"
 	@echo "    make ansi-check           Verify emoji-blocking UTF-8 character policy"
 	@echo "    make ansi-check-strict    Verify UTF-8 policy + fail on <U+....>/<EMOJI+...> placeholders"
 	@echo "    make verify-pantheon-physicsforge-mapping Verify migration completeness"
 	@echo "    make verify-pantheon-physicsforge-license-headers Verify license headers"
 	@echo "    make rust-smoke           Dedicated Rust smoke suites via nextest"
 	@echo "    make rust-regression      Full Rust regression lane"
-	@echo "    make rust-regression-scoped Scoped Rust regression lane"
-	@echo "    make validate-local       Explicit, scoped, resource-bounded local diagnostics"
-	@echo "    make validation-resource-contract  Verify local-vs-CI resource boundaries"
+	@echo "    make rust-regression-scoped Retired local compatibility target"
+	@echo "    make validate-local       Retired; push a branch to trigger CI"
+	@echo "    make validation-resource-contract  Verify CI-only validation boundaries"
 	@echo "    make validate-static      Lightweight hygiene and dependency validation"
 	@echo "    make validate-static-and-registry  Hygiene plus registry validation"
 	@echo "    make validate-comprehensive  Full Rust and dependency validation"

@@ -8,8 +8,6 @@ use serde::{Deserialize, Serialize};
 use std::{
     collections::BTreeMap,
     env, fs,
-    fs::OpenOptions,
-    io::Write,
     path::{Path, PathBuf},
     process::Command,
     time::Instant,
@@ -108,7 +106,6 @@ struct HostProfile {
     pytest_workers: usize,
 }
 
-const INLINE_TEST_MARKERS: &[&str] = &["#[test]", "#[cfg(test)]", "mod tests"];
 const VALIDATION_TAIL_LINE_COUNT: usize = 20;
 const XTASK_COMMANDS: &[(&str, &str)] = &[
     (
@@ -117,14 +114,6 @@ const XTASK_COMMANDS: &[(&str, &str)] = &[
     ),
     ("db-docs", "Generate or check database documentation."),
     ("host-profile", "Print host worker-budget settings."),
-    (
-        "local-nextest-plan",
-        "Run a package-aware grouped local nextest plan.",
-    ),
-    (
-        "validate-local",
-        "Run scoped local validation with timing JSONL.",
-    ),
     (
         "validation-tools-status",
         "Inspect cached validation-tool freshness.",
@@ -176,73 +165,13 @@ struct ValidationStepRecord {
     log: String,
 }
 
-#[derive(Parser, Debug)]
-#[command(
-    name = "local-nextest-plan",
-    about = "Run a package-aware grouped local nextest plan"
-)]
-struct LocalNextestCli {
-    #[arg(long)]
-    build_jobs: String,
-    #[arg(long)]
-    test_threads: String,
-    #[arg(long, default_value = "")]
-    filterset: String,
-    #[arg(long)]
-    timing_json_out: Option<PathBuf>,
-    /// Which test kinds to run. `lib` (default) runs only library unit
-    /// tests; `all` runs lib + integration tests. Integration test
-    /// binaries are the dominant link-time cost in the local pre-push
-    /// gate (~4m30s for 441 binaries on this workspace), so the
-    /// default skips them. CI on PR open should use `all`.
-    #[arg(long, default_value = "lib")]
-    kinds: String,
-    packages: Vec<String>,
-}
-
-/// `cargo xtask validate-local` -- pre-push validation driver with structured
-/// timing output.
-///
-/// Wraps the three Make sub-targets (check, rust-regression-scoped,
-/// validate-governance) and records per-phase elapsed time +
-/// exit code to a JSONL timing log under
-/// `data/output/audit/<YYYY-MM-DD>/validation-timing-<unix-ts>.jsonl`.
-///
-/// This replaces the inline shell loop in `validate-local`. The Makefile
-/// target drives end-to-end orchestration, and the xtask version is
-/// available via `make validate-local-xtask`.
-#[derive(Parser, Debug)]
-#[command(
-    name = "validate-local",
-    about = "Run scoped local validation with structured timing JSONL output"
-)]
-struct ValidateLocalCli {
-    /// Path to the workspace-routing binary cache (default:
-    /// .cache/gate-target/validation-tools/workspace-routing).
-    #[arg(long)]
-    routing_bin: Option<PathBuf>,
-    /// Write timing JSONL to this path. Default:
-    /// `data/output/audit/<YYYY-MM-DD>/validation-timing-<unix-ts>.jsonl`
-    #[arg(long)]
-    timing_json: Option<PathBuf>,
-    /// Force run rust-regression-scoped regardless of routing.
-    #[arg(long)]
-    force_rust: bool,
-    /// Force run make check regardless of routing.
-    #[arg(long)]
-    force_check: bool,
-    /// Force run validate-governance regardless of routing.
-    #[arg(long)]
-    force_governance: bool,
-}
-
 /// `cargo xtask validation-tools-status` -- inspect cached validation-tool binary
 /// freshness.
 ///
 /// Prints, for each cached binary under
 /// `.cache/gate-target/validation-tools/`, its mtime, size, and whether its
-/// declared Makefile source dependencies are newer (would trigger
-/// rebuild on the next validate-local invocation).
+/// declared Makefile source dependencies are newer (would trigger a rebuild
+/// in the next CI validation-tool stage).
 #[derive(Parser, Debug)]
 #[command(
     name = "validation-tools-status",
@@ -274,8 +203,7 @@ struct ValidationTimingSummaryCli {
     /// Default: data/output/audit/
     #[arg(long)]
     audit_root: Option<PathBuf>,
-    /// Filter to a single phase name (cache-check, check,
-    /// rust-regression-scoped, validate-governance).
+    /// Filter to a single historical phase name.
     #[arg(long)]
     phase: Option<String>,
     /// Output format: `table` (default) or `json`.
@@ -393,87 +321,6 @@ struct GpuProfileSweepManifest {
     rows: Vec<GpuProfileSweepRow>,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq)]
-struct PackagePlan {
-    has_lib_tests: bool,
-    tests: Vec<String>,
-}
-
-#[derive(Debug)]
-struct TimingRecorder {
-    output_path: Option<PathBuf>,
-    total_start: Instant,
-    run_count: u64,
-    skip_count: u64,
-}
-
-impl TimingRecorder {
-    fn new(output_path: Option<PathBuf>) -> Self {
-        Self {
-            output_path,
-            total_start: Instant::now(),
-            run_count: 0,
-            skip_count: 0,
-        }
-    }
-
-    fn write(&self, value: serde_json::Value) -> Result<()> {
-        let Some(path) = &self.output_path else {
-            return Ok(());
-        };
-        if let Some(parent) = path.parent() {
-            fs::create_dir_all(parent)
-                .with_context(|| format!("create timing output directory {}", parent.display()))?;
-        }
-        let mut handle = OpenOptions::new()
-            .create(true)
-            .append(true)
-            .open(path)
-            .with_context(|| format!("open timing output {}", path.display()))?;
-        writeln!(handle, "{}", serde_json::to_string(&value)?)
-            .with_context(|| format!("write timing output {}", path.display()))?;
-        Ok(())
-    }
-
-    fn record_skip(&mut self, package: &str, reason: &str) -> Result<()> {
-        self.skip_count += 1;
-        self.write(serde_json::json!({
-            "kind": "skip",
-            "package": package,
-            "reason": reason,
-        }))
-    }
-
-    fn record_run(
-        &mut self,
-        packages: &[String],
-        targets: &serde_json::Value,
-        command: &[String],
-        returncode: i32,
-        elapsed_sec: f64,
-    ) -> Result<()> {
-        self.run_count += 1;
-        self.write(serde_json::json!({
-            "kind": "run",
-            "packages": packages,
-            "targets": targets,
-            "command": command,
-            "returncode": returncode,
-            "elapsed_sec": elapsed_sec,
-        }))
-    }
-
-    fn record_summary(&self, returncode: i32) -> Result<()> {
-        self.write(serde_json::json!({
-            "kind": "summary",
-            "run_count": self.run_count,
-            "skip_count": self.skip_count,
-            "returncode": returncode,
-            "total_elapsed_sec": self.total_start.elapsed().as_secs_f64(),
-        }))
-    }
-}
-
 fn main() -> Result<()> {
     let mut args = env::args().skip(1);
     let Some(command) = args.next() else {
@@ -501,19 +348,6 @@ fn main() -> Result<()> {
                 }
             }
             run_host_profile(&format)
-        }
-        "local-nextest-plan" => run_local_nextest_plan(LocalNextestCli::try_parse_from(
-            std::iter::once("local-nextest-plan".to_string()).chain(args),
-        )?),
-        "validate-local" | "gate-local" => {
-            let cli = ValidateLocalCli::try_parse_from(
-                std::iter::once("validate-local".to_string()).chain(args),
-            )?;
-            let exit_code = run_validate_local(cli)?;
-            if exit_code != 0 {
-                std::process::exit(exit_code);
-            }
-            Ok(())
         }
         "validation-timing-summary" | "gate-timing-summary" => {
             let cli = ValidationTimingSummaryCli::try_parse_from(
@@ -2031,282 +1865,6 @@ fn run_registry_emit_all_mirrors() -> Result<()> {
     Ok(())
 }
 
-fn run_local_nextest_plan(cli: LocalNextestCli) -> Result<()> {
-    let exit_code = local_nextest_plan(cli)?;
-    if exit_code != 0 {
-        bail!("local-nextest-plan failed with exit code {exit_code}");
-    }
-    Ok(())
-}
-
-fn local_nextest_plan(cli: LocalNextestCli) -> Result<i32> {
-    let root = repo_root()?;
-    let mut timing = TimingRecorder::new(cli.timing_json_out);
-    let mut package_plans = BTreeMap::<String, PackagePlan>::new();
-    let mut lib_packages = Vec::<String>::new();
-    let mut test_packages = Vec::<String>::new();
-
-    for package in &cli.packages {
-        let Some(plan) = package_plan(&root, package)? else {
-            let reason = "no inline lib tests and no integration tests";
-            println!("[local-nextest] skip {package}: {reason}");
-            timing.record_skip(package, reason)?;
-            continue;
-        };
-        if plan.has_lib_tests {
-            lib_packages.push(package.clone());
-        }
-        if !plan.tests.is_empty() {
-            test_packages.push(package.clone());
-        }
-        package_plans.insert(package.clone(), plan);
-    }
-
-    let mut exit_code = 0;
-    if !lib_packages.is_empty() {
-        let command = build_local_nextest_command(
-            &lib_packages,
-            true,
-            false,
-            &cli.build_jobs,
-            &cli.test_threads,
-            &cli.filterset,
-        );
-        let targets = lib_packages
-            .iter()
-            .map(|package| (package.clone(), serde_json::json!(["lib"])))
-            .collect::<serde_json::Map<String, serde_json::Value>>();
-        exit_code = run_local_nextest_command(
-            &root,
-            &lib_packages,
-            &command,
-            &serde_json::Value::Object(targets),
-            &mut timing,
-        )?;
-        if exit_code != 0 {
-            timing.record_summary(exit_code)?;
-            return Ok(exit_code);
-        }
-    }
-    let run_integration_tests = matches!(cli.kinds.as_str(), "all" | "tests");
-    if !run_integration_tests && !test_packages.is_empty() {
-        println!(
-            "[local-nextest] skip integration-test phase for {} packages (kinds={}). Run with --kinds all to include.",
-            test_packages.len(),
-            cli.kinds
-        );
-    }
-    if run_integration_tests && !test_packages.is_empty() {
-        let command = build_local_nextest_command(
-            &test_packages,
-            false,
-            true,
-            &cli.build_jobs,
-            &cli.test_threads,
-            &cli.filterset,
-        );
-        let targets = test_packages
-            .iter()
-            .map(|package| {
-                let selected = package_plans
-                    .get(package)
-                    .map(|plan| {
-                        if plan.tests.is_empty() {
-                            vec!["tests".to_string()]
-                        } else {
-                            plan.tests
-                                .iter()
-                                .map(|name| format!("test:{name}"))
-                                .collect::<Vec<_>>()
-                        }
-                    })
-                    .unwrap_or_else(|| vec!["tests".to_string()]);
-                (package.clone(), serde_json::json!(selected))
-            })
-            .collect::<serde_json::Map<String, serde_json::Value>>();
-        exit_code = run_local_nextest_command(
-            &root,
-            &test_packages,
-            &command,
-            &serde_json::Value::Object(targets),
-            &mut timing,
-        )?;
-        if exit_code != 0 {
-            timing.record_summary(exit_code)?;
-            return Ok(exit_code);
-        }
-    }
-
-    timing.record_summary(exit_code)?;
-    Ok(exit_code)
-}
-
-/// Workspace members live under `crates/<package>` except `xtask`, which
-/// sits at the repo root; a package with no `crates/` directory resolves
-/// to `<root>/<package>` so its integration tests enter the plan.
-fn package_root(root: &Path, package: &str) -> PathBuf {
-    let nested = root.join("crates").join(package);
-    if nested.is_dir() {
-        return nested;
-    }
-    root.join(package)
-}
-
-fn has_library(root: &Path, package: &str) -> bool {
-    package_root(root, package)
-        .join("src")
-        .join("lib.rs")
-        .is_file()
-}
-
-fn has_inline_tests(root: &Path, package: &str) -> Result<bool> {
-    let src_root = package_root(root, package).join("src");
-    if !src_root.is_dir() {
-        return Ok(false);
-    }
-    let bin_root = src_root.join("bin");
-    for entry in WalkDir::new(&src_root)
-        .into_iter()
-        .filter_map(std::result::Result::ok)
-    {
-        if !entry.file_type().is_file() {
-            continue;
-        }
-        let path = entry.path();
-        if path.extension().and_then(|ext| ext.to_str()) != Some("rs") {
-            continue;
-        }
-        if path.starts_with(&bin_root) {
-            continue;
-        }
-        let text = fs::read_to_string(path)
-            .with_context(|| format!("read Rust source {}", path.display()))?;
-        for raw_line in text.lines() {
-            let line = raw_line.trim();
-            if line.starts_with("//") || line.starts_with("/*") || line.starts_with('*') {
-                continue;
-            }
-            if INLINE_TEST_MARKERS
-                .iter()
-                .any(|marker| line.starts_with(marker))
-            {
-                return Ok(true);
-            }
-        }
-    }
-    Ok(false)
-}
-
-fn integration_tests(root: &Path, package: &str) -> Result<Vec<String>> {
-    let tests_dir = package_root(root, package).join("tests");
-    if !tests_dir.is_dir() {
-        return Ok(Vec::new());
-    }
-    let mut tests = Vec::new();
-    for entry in fs::read_dir(&tests_dir)
-        .with_context(|| format!("read tests directory {}", tests_dir.display()))?
-    {
-        let entry = entry?;
-        let path = entry.path();
-        if entry.file_type()?.is_file()
-            && path.extension().and_then(|ext| ext.to_str()) == Some("rs")
-            && let Some(stem) = path.file_stem().and_then(|stem| stem.to_str())
-        {
-            tests.push(stem.to_string());
-        }
-    }
-    tests.sort();
-    Ok(tests)
-}
-
-fn package_plan(root: &Path, package: &str) -> Result<Option<PackagePlan>> {
-    let has_lib = has_library(root, package);
-    let has_lib_tests = has_lib && has_inline_tests(root, package)?;
-    let tests = integration_tests(root, package)?;
-    if !has_lib_tests && tests.is_empty() {
-        return Ok(None);
-    }
-    Ok(Some(PackagePlan {
-        has_lib_tests,
-        tests,
-    }))
-}
-
-fn build_local_nextest_command(
-    packages: &[String],
-    run_lib: bool,
-    run_tests: bool,
-    build_jobs: &str,
-    test_threads: &str,
-    filterset: &str,
-) -> Vec<String> {
-    let mut command = vec![
-        "cargo".to_string(),
-        "nextest".to_string(),
-        "run".to_string(),
-        "--build-jobs".to_string(),
-        build_jobs.to_string(),
-        "--test-threads".to_string(),
-        test_threads.to_string(),
-    ];
-    if run_lib {
-        command.push("--lib".to_string());
-    }
-    if run_tests {
-        command.push("--tests".to_string());
-    }
-    for package in packages {
-        command.push("-p".to_string());
-        command.push(package.clone());
-    }
-    if !filterset.is_empty() {
-        command.push("-E".to_string());
-        command.push(filterset.to_string());
-    }
-    command
-}
-
-fn run_local_nextest_command(
-    root: &Path,
-    packages: &[String],
-    command: &[String],
-    targets: &serde_json::Value,
-    timing: &mut TimingRecorder,
-) -> Result<i32> {
-    let targets_object = targets
-        .as_object()
-        .expect("selected targets must be a JSON object");
-    for package in packages {
-        let joined = targets_object
-            .get(package)
-            .and_then(|value| value.as_array())
-            .map(|entries| {
-                entries
-                    .iter()
-                    .filter_map(|entry| entry.as_str())
-                    .collect::<Vec<_>>()
-                    .join(", ")
-            })
-            .unwrap_or_else(|| "(none)".to_string());
-        println!("[local-nextest] run {package}: {joined}");
-    }
-    let start = Instant::now();
-    let status = Command::new(&command[0])
-        .args(&command[1..])
-        .current_dir(root)
-        .status()
-        .with_context(|| format!("run {}", command.join(" ")))?;
-    let code = status.code().unwrap_or(1);
-    timing.record_run(
-        packages,
-        targets,
-        command,
-        code,
-        start.elapsed().as_secs_f64(),
-    )?;
-    Ok(code)
-}
-
 struct GeneratedSchemaOutputs {
     schema_sql: String,
     schema_json: String,
@@ -2945,206 +2503,6 @@ fn cargo_path_from_environment(variable: &str, fallback: &Path) -> PathBuf {
 }
 
 // ===========================================================================
-// validate-local xtask driver
-// ===========================================================================
-
-/// Routing flags emitted by workspace-routing CLI (parsed from stderr lines
-/// like `[ci-routing] run_rust=True`).
-#[derive(Debug, Default)]
-struct RoutingFlags {
-    run_rust: bool,
-    run_governance: bool,
-    run_check: bool,
-    scope: String,
-}
-
-fn parse_routing_flags(stderr: &str, stdout: &str) -> RoutingFlags {
-    let mut flags = RoutingFlags {
-        scope: stdout.trim().to_string(),
-        ..Default::default()
-    };
-    for line in stderr.lines() {
-        let Some(rest) = line.strip_prefix("[ci-routing] ") else {
-            continue;
-        };
-        let Some((key, val)) = rest.split_once('=') else {
-            continue;
-        };
-        match key {
-            "run_rust" => flags.run_rust = val == "True",
-            "run_governance" => flags.run_governance = val == "True",
-            "run_check" => flags.run_check = val == "True",
-            _ => {}
-        }
-    }
-    flags
-}
-
-/// Run a make sub-target, streaming stdout/stderr to the parent terminal,
-/// and return (exit_code, elapsed_seconds).
-fn run_make_target(root: &Path, target: &str, env: &[(&str, &str)]) -> Result<(i32, f64)> {
-    let start = Instant::now();
-    let mut command = std::process::Command::new("make");
-    command.current_dir(root);
-    command.arg(target);
-    for (key, value) in env {
-        command.env(key, value);
-    }
-    let status = command
-        .status()
-        .with_context(|| format!("spawn make {target}"))?;
-    let elapsed = start.elapsed().as_secs_f64();
-    Ok((status.code().unwrap_or(-1), elapsed))
-}
-
-fn run_validate_local(cli: ValidateLocalCli) -> Result<i32> {
-    let root = repo_root()?;
-    let routing_bin = cli
-        .routing_bin
-        .unwrap_or_else(|| root.join(".cache/gate-target/validation-tools/workspace-routing"));
-
-    // Default timing path: data/output/audit/<date>/validation-timing-<ts>.jsonl
-    let timing_path = cli.timing_json.unwrap_or_else(|| {
-        let now = std::time::SystemTime::now()
-            .duration_since(std::time::UNIX_EPOCH)
-            .map(|d| d.as_secs())
-            .unwrap_or(0);
-        let date = chrono::Local::now().format("%Y-%m-%d").to_string();
-        root.join("data/output/audit")
-            .join(date)
-            .join(format!("validation-timing-{now}.jsonl"))
-    });
-
-    let timing = TimingRecorder::new(Some(timing_path.clone()));
-
-    // Routing decision via cached workspace-routing binary.
-    let mut flags = RoutingFlags {
-        run_rust: true,
-        run_governance: true,
-        run_check: true,
-        scope: "--workspace".to_string(),
-    };
-    let routing_start = Instant::now();
-    if routing_bin.exists() {
-        let output = std::process::Command::new(&routing_bin)
-            .arg("--local")
-            .arg("--verbose")
-            .current_dir(&root)
-            .output()
-            .with_context(|| format!("run workspace-routing at {}", routing_bin.display()))?;
-        let stderr = String::from_utf8_lossy(&output.stderr);
-        let stdout = String::from_utf8_lossy(&output.stdout);
-        eprint!("{}", stderr);
-        flags = parse_routing_flags(&stderr, &stdout);
-    } else {
-        eprintln!(
-            "[validate-local] WARNING: workspace-routing cache not found at {}; running full workspace",
-            routing_bin.display()
-        );
-    }
-    timing.write(serde_json::json!({
-        "kind": "routing",
-        "elapsed_sec": routing_start.elapsed().as_secs_f64(),
-        "run_rust": flags.run_rust,
-        "run_governance": flags.run_governance,
-        "run_check": flags.run_check,
-        "scope": flags.scope,
-    }))?;
-
-    let mut total_exit = 0;
-
-    // Phase: cache-check (always, near-instant when memoized).
-    let (code, elapsed) = run_make_target(&root, "cache-check", &[])?;
-    timing.write(serde_json::json!({
-        "kind": "phase",
-        "phase": "cache-check",
-        "exit_code": code,
-        "elapsed_sec": elapsed,
-    }))?;
-    if code != 0 {
-        return Ok(code);
-    }
-
-    // Phase: make check.
-    if flags.run_check || cli.force_check {
-        let (code, elapsed) = run_make_target(&root, "check", &[])?;
-        timing.write(serde_json::json!({
-            "kind": "phase",
-            "phase": "check",
-            "exit_code": code,
-            "elapsed_sec": elapsed,
-        }))?;
-        if code != 0 {
-            return Ok(code);
-        }
-    } else {
-        eprintln!("[validate-local] SKIP: no check-relevant (non-Rust) file changes detected.");
-        timing.write(serde_json::json!({
-            "kind": "skip",
-            "phase": "check",
-            "reason": "run_check=False",
-        }))?;
-    }
-
-    // Phase: rust-regression-scoped.
-    if flags.run_rust || cli.force_rust {
-        let scope = if flags.scope.is_empty() {
-            "--workspace".to_string()
-        } else {
-            flags.scope.clone()
-        };
-        let env_pairs: Vec<(&str, &str)> =
-            vec![("RUST_SCOPE", scope.as_str()), ("RUST_RUN_HEAVY", "0")];
-        let (code, elapsed) = run_make_target(&root, "rust-regression-scoped", &env_pairs)?;
-        timing.write(serde_json::json!({
-            "kind": "phase",
-            "phase": "rust-regression-scoped",
-            "exit_code": code,
-            "elapsed_sec": elapsed,
-            "scope": scope,
-        }))?;
-        if code != 0 {
-            total_exit = code;
-        }
-    } else {
-        eprintln!("[validate-local] SKIP: no Rust-relevant changes detected.");
-        timing.write(serde_json::json!({
-            "kind": "skip",
-            "phase": "rust-regression-scoped",
-            "reason": "run_rust=False",
-        }))?;
-    }
-
-    // Phase: validate-governance.
-    if flags.run_governance || cli.force_governance {
-        let (code, elapsed) = run_make_target(&root, "validate-governance", &[])?;
-        timing.write(serde_json::json!({
-            "kind": "phase",
-            "phase": "validate-governance",
-            "exit_code": code,
-            "elapsed_sec": elapsed,
-        }))?;
-        if code != 0 && total_exit == 0 {
-            total_exit = code;
-        }
-    } else {
-        eprintln!("[validate-local] SKIP: no governance-relevant changes detected.");
-        timing.write(serde_json::json!({
-            "kind": "skip",
-            "phase": "validate-governance",
-            "reason": "run_governance=False",
-        }))?;
-    }
-
-    timing.record_summary(total_exit)?;
-    eprintln!(
-        "[validate-local] xtask driver complete. Timing JSONL at {}",
-        timing_path.display()
-    );
-    Ok(total_exit)
-}
-
-// ===========================================================================
 // validation-timing summary and regression checks
 // ===========================================================================
 
@@ -3395,10 +2753,8 @@ struct ToolStatusEntry {
     cached_path: PathBuf,
     /// Source files whose mtime would trigger rebuild.
     source_deps: Vec<PathBuf>,
-    /// True when the entry is a transient runtime artifact whose
-    /// missing/absent state is the EXPECTED steady-state (e.g.,
-    /// validation.lock is written at validation start and removed by trap
-    /// at validation end -- absence means no validation is running).
+    /// True when the entry is a transient runtime artifact whose absence is
+    /// the expected steady state.
     runtime_artifact: bool,
 }
 
@@ -3455,12 +2811,6 @@ fn run_validation_tools_status(cli: ValidationToolsStatusCli) -> Result<()> {
         ToolStatusEntry {
             name: "cache-check.last",
             cached_path: tools_dir.join("cache-check.last"),
-            source_deps: vec![],
-            runtime_artifact: true,
-        },
-        ToolStatusEntry {
-            name: "validation.lock",
-            cached_path: tools_dir.join("validation.lock"),
             source_deps: vec![],
             runtime_artifact: true,
         },

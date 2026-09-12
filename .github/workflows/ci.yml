@@ -36,7 +36,28 @@ env:
   WORKER_BUDGET_MODE: ci
 
 jobs:
+  validation-policy:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install pinned actionlint release
+        run: |
+          curl --fail --location --retry 3 --output "$RUNNER_TEMP/actionlint.tar.gz" https://github.com/rhysd/actionlint/releases/download/v1.7.12/actionlint_1.7.12_linux_amd64.tar.gz
+          printf '%s  %s\n' 8aca8db96f1b94770f1b0d72b6dddcb1ebb8123cb3712530b08cc387b349a3d8 "$RUNNER_TEMP/actionlint.tar.gz" | sha256sum --check --strict
+          mkdir -p "$RUNNER_TEMP/actionlint-bin"
+          tar -xzf "$RUNNER_TEMP/actionlint.tar.gz" -C "$RUNNER_TEMP/actionlint-bin" actionlint
+          echo "$RUNNER_TEMP/actionlint-bin" >> "$GITHUB_PATH"
+
+      - name: Validate workflow syntax and embedded shell
+        run: actionlint
+
+      - name: Validate CI-only execution and worker boundaries
+        run: make validation-resource-contract
+
   validation:
+    needs: validation-policy
     runs-on: ubuntu-24.04
     timeout-minutes: 90
     outputs:
@@ -53,24 +74,10 @@ jobs:
       - uses: taiki-e/install-action@v2
         with:
           tool: cargo-nextest@0.9.143,sccache@0.15.0
-      - name: Install pinned actionlint release
-        run: |
-          curl --fail --location --retry 3 --output "$RUNNER_TEMP/actionlint.tar.gz" https://github.com/rhysd/actionlint/releases/download/v1.7.12/actionlint_1.7.12_linux_amd64.tar.gz
-          printf '%s  %s\n' 8aca8db96f1b94770f1b0d72b6dddcb1ebb8123cb3712530b08cc387b349a3d8 "$RUNNER_TEMP/actionlint.tar.gz" | sha256sum --check --strict
-          mkdir -p "$RUNNER_TEMP/actionlint-bin"
-          tar -xzf "$RUNNER_TEMP/actionlint.tar.gz" -C "$RUNNER_TEMP/actionlint-bin" actionlint
-          echo "$RUNNER_TEMP/actionlint-bin" >> "$GITHUB_PATH"
-
       - name: Install compiler and data dependencies
         run: |
           sudo apt-get update
           sudo apt-get install -y clang mold glslc libcfitsio-dev libhdf5-dev libfontconfig1-dev libopenblas-dev libblas-dev liblapack-dev pkg-config shellcheck
-
-      - name: Validate workflow syntax and embedded shell
-        run: actionlint
-
-      - name: Validate local and CI resource boundaries
-        run: make validation-resource-contract
 
       - name: Cache Rust dependencies and validation artifacts
         id: rust-cache
