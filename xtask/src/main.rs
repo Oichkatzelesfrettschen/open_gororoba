@@ -10,7 +10,6 @@ use std::{
     env, fs,
     path::{Path, PathBuf},
     process::Command,
-    time::Instant,
 };
 use tempfile::tempdir;
 use verified_core::topology::HardwareTopology;
