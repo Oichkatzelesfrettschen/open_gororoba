@@ -12,7 +12,7 @@ updated = "2026-08-01"
 authoritative = true
 status = "active"
 status_token = "ACTIVE"
-document_count = 153
+document_count = 154
 [[owner]]
 path = "README_GPU_STEPS.md"
 owner_group = "project"
@@ -893,3 +893,8 @@ path = "tools/vendor/cargo-geiger/test_crates/test9_package_with_git_deps/README
 owner_group = "third_party"
 removal_status = "locked"
 removal_reason = "Retained cargo-geiger upstream documentation and required test fixtures; provenance and licenses are recorded in tools/vendor/cargo-geiger/UPSTREAM.toml."
+
+[[owner]]
+path = "docs/engineering/casimir_optics_discrimination_contract.md"
+owner_group = "project"
+removal_status = "active"
