@@ -41,7 +41,7 @@ fn environment_positive(name: &str, description: &str) -> Result<Option<usize>, 
 
 fn worker_budget(mode: BudgetMode, logical_cpus: usize) -> usize {
     match mode {
-        BudgetMode::Local => (logical_cpus / 2).max(1).min(2),
+        BudgetMode::Local => (logical_cpus / 2).clamp(1, 2),
         BudgetMode::Ci => logical_cpus.max(1),
     }
 }
