@@ -1,0 +1,72 @@
+schema_version = 1
+producer = "crates/gororoba_cli_physics/src/bin/casimir_optics_discrimination_audit.rs"
+producer_sha256 = "f8c28e73a60e39276150d8e4d04672c6e43d4f3e4e6461e2fdcf5f3e9c4a8661"
+source_model_commit = "e036a72b87b9915847cde2ed1908f319cc67eeca"
+command = "cargo run -p gororoba_cli_physics --bin casimir-optics-discrimination-audit --profile validation"
+scope = "native model outputs; no laboratory observations"
+
+[[output]]
+path = "bounded_mimic.tsv"
+sha256 = "8df4ac94b8288a403504b9afead5dc7eccb578652de13a1a71df48f4d15c2c09"
+bytes = 366
+
+[[output]]
+path = "bounded_mimic_coefficients.tsv"
+sha256 = "55599c7ced0d3eca87d0dfc285fcb7122f985c394210b1efc43763f538a2df59"
+bytes = 2571
+
+[[output]]
+path = "calibration_priority.tsv"
+sha256 = "e98a2306e1f6193d692faa2eb1131bac80e43b51867088fa4d486a8d927d25c8"
+bytes = 1673
+
+[[output]]
+path = "commutator_and_null_controls.tsv"
+sha256 = "932846a8e99d23b4f67c434635998b55fc4932e35e5ba28fe4cce9b650eac0b8"
+bytes = 976
+
+[[output]]
+path = "derivative_step_study.tsv"
+sha256 = "262b488d87949783290a21638a987de5c754a84e41cd9f91ee1dd112fc8f1ff3"
+bytes = 354
+
+[[output]]
+path = "finite_temperature.tsv"
+sha256 = "035aba3974fed6cf4b6235c0eaaa84e61ef5fc3c434a794f8e1bee97de9dcfba"
+bytes = 730
+
+[[output]]
+path = "local_tolerances.tsv"
+sha256 = "ff6b84d6b71f9cf5787bb62a102c4e8acd90b9c38f9f53a6140c73abddc980e3"
+bytes = 298
+
+[[output]]
+path = "model_outputs.tsv"
+sha256 = "27e5b4ce31893398074b4d1a5e9760f9d3acf59394daf23c032884134290f4b8"
+bytes = 866
+
+[[output]]
+path = "multilayer_pressure.tsv"
+sha256 = "b2503271d19f5270be8af0ff6656c543ca68121f1e08bc62179b50928c99613a"
+bytes = 217
+
+[[output]]
+path = "physical_jacobian.tsv"
+sha256 = "7db9a1a5379bc71d747e46d1067b968635ceb65bd38747affef6965bc93d4d02"
+bytes = 3237
+
+[[output]]
+path = "summary.toml"
+sha256 = "a9f69d31121b2f5ee32ece93aaa365a65737da5e164b5711037287811d8b0bff"
+bytes = 2651
+
+[[output]]
+path = "unbounded_mimic_coefficients.tsv"
+sha256 = "d8def4a3fdfd4884d22fa501d1578d876e5ae1ca85f2b7e1498173584dae77f9"
+bytes = 850
+
+[[output]]
+path = "uv_model_sensitivity.tsv"
+sha256 = "68beee5509606c782a74f4e1b80481872b5b19f025ee294c1bd050fb024bfa68"
+bytes = 1390
+

@@ -1,0 +1,69 @@
+schema_version = 1
+material_id = "material:au"
+formula = "Au"
+database_id = "refractiveindex-info"
+database_commit = "c5c2f188e848453def5970e347399d653df2ffc2"
+database_license = "CC0-1.0"
+canonical_owner = "crates/materials_data/data/materials/gold_optical_specimen_candidates.toml"
+admission_scope = "Source-verified candidate values only; canonical direct measurement admission remains unavailable."
+
+[[dataset]]
+dataset_id = "dataset:riinfo:au:johnson-1972"
+state_id = "state:au:johnson-1972:room-temperature"
+specimen_id = "specimen:au:johnson-1972:reported-sample"
+preferred_name = "Johnson-Christy room-temperature gold"
+phase = "solid gold; phase fraction and texture not reported in retained database record"
+temperature_label = "room temperature"
+underlying_doi = "10.1103/PhysRevB.6.4370"
+source_id = "RIINFO-AU-JOHNSON"
+source_path = "data/output/audit/casimir-optics-discrimination/sources/au-Johnson.yml"
+source_sha256 = "9f4bdab6bd49f7c6a1c48b5fb5482c7448caf4b6de39594a34ecd66dcf592774"
+source_locator = "line 47: 0.4959 1.04 1.833"
+wavelength_um = 0.4959
+n = 1.04
+k = 1.833
+direct_admission_ready = false
+admission_residual = "Underlying paper bytes and complete specimen, method, calibration, and uncertainty metadata remain required."
+missing_fields = ["temperature_k", "specimen_preparation", "geometry", "measurement_method", "calibration", "measurement_uncertainty", "raw_measurement_artifact"]
+
+[[dataset]]
+dataset_id = "dataset:riinfo:au:olmon-2012:evaporated"
+state_id = "state:au:olmon-2012:evaporated:reported-conditions"
+specimen_id = "specimen:au:olmon-2012:evaporated"
+preferred_name = "Olmon evaporated gold"
+phase = "solid evaporated gold; phase fraction and texture not reported in retained database record"
+specimen_preparation = "evaporated gold"
+underlying_doi = "10.1103/PhysRevB.86.235147"
+source_id = "RIINFO-AU-OLMON-EVAPORATED"
+source_path = "data/output/audit/casimir-optics-discrimination/sources/au-Olmon-ev.yml"
+source_sha256 = "be778621e6491fc4e2db6eee400fb329d44ada2b987f7bfd2e219c83fe32a338"
+source_locator = "line 35: 5.000E-01 8.197E-01 1.787E+00"
+wavelength_um = 0.500
+n = 0.8197
+k = 1.787
+direct_admission_ready = false
+admission_residual = "Underlying paper bytes and complete preparation, calibration, and uncertainty metadata remain required."
+missing_fields = ["temperature_k", "geometry", "measurement_method", "calibration", "measurement_uncertainty", "raw_measurement_artifact"]
+
+[[dataset]]
+dataset_id = "dataset:riinfo:au:mcpeak-2015:template-stripped"
+state_id = "state:au:mcpeak-2015:room-temperature:nitrogen-measurement"
+specimen_id = "specimen:au:mcpeak-2015:template-stripped"
+preferred_name = "McPeak template-stripped gold"
+phase = "polycrystalline solid gold"
+temperature_label = "room-temperature deposition and measurement context"
+specimen_preparation = "300 nm film thermally evaporated from 99.999% Au pellets at 10 angstrom/s and 3e-8 Torr, then template stripped from native-oxide-coated silicon immediately before measurement"
+geometry = "300 nm planar film; template-stripped interface; 0.3 nm RMS surface roughness"
+measurement_method = "variable-angle spectroscopic ellipsometry under flowing nitrogen using a two-layer vacuum-metal fit"
+measurement_uncertainty = "parameter uncertainty and covariance not reported in the retained manuscript and CC0 row"
+underlying_doi = "10.1021/ph5004237"
+source_id = "RIINFO-AU-MCPEAK"
+source_path = "data/output/audit/casimir-optics-discrimination/sources/au-McPeak.yml"
+source_sha256 = "d104232ae43a9b04f978552a7e3dbc448962163e48a023ecca38764eca55e82d"
+source_locator = "line 34: 0.5 0.848474841 1.828280492"
+wavelength_um = 0.500
+n = 0.848474841
+k = 1.828280492
+direct_admission_ready = false
+admission_residual = "Fit residuals and parameter covariance remain required for experimental_fitted admission."
+missing_fields = ["temperature_k", "calibration", "measurement_uncertainty", "fit_residual_artifact", "parameter_covariance"]

@@ -1,0 +1,28 @@
+schema_version = 1
+observation_key = "casimir-optics-discrimination-riinfo-au-klinavicius-11nm"
+source_key = "RIINFO-AU-KLINAVICIUS-11NM"
+actor = "codex"
+reason = "Admit retained source bytes through the typed first-observation contract without promoting scientific claims."
+requested_url = "https://raw.githubusercontent.com/polyanskiy/refractiveindex.info-database/c5c2f188e848453def5970e347399d653df2ffc2/database/data/main/Au/nk/Klinavicius-11.4nm.yml"
+outcome = "body_retained"
+observed_at = "2026-09-12"
+time_precision = "day"
+tool = "curl (audit-manifest attribution)"
+request_evidence_limit = "The retained manifest associates source key, requested URL, observation day, and body digest. Raw request logs, final redirect URLs, and HTTP status are absent."
+absent_prior_expectation_reason = "The audit records observed body identities after retrieval; a hash-bound prerequest body expectation is absent."
+document_identity_limit = "Retained CC0 nanoparticle table demonstrates a condition-specific gold dataset; it is not interchangeable with bulk or planar-film optical response."
+
+[request_evidence]
+path = "data/output/audit/casimir-optics-discrimination/source-retrieval-manifest.toml"
+storage_sha256 = "f12acc9372491e7c7408652ea9bc6766d3037a717bece9c26b32bccf4af2c21a"
+encoding = "identity"
+decoded_sha256 = "f12acc9372491e7c7408652ea9bc6766d3037a717bece9c26b32bccf4af2c21a"
+decoded_bytes = 5045
+
+[body]
+path = "data/output/audit/casimir-optics-discrimination/sources/au-Klinavicius-11.4nm.yml"
+storage_sha256 = "24043ed3549c2bfb50153efbbed625c399b5142b05f015307a0c9fc0151b0b43"
+encoding = "identity"
+decoded_sha256 = "24043ed3549c2bfb50153efbbed625c399b5142b05f015307a0c9fc0151b0b43"
+decoded_bytes = 17782
+

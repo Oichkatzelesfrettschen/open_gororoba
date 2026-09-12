@@ -21,6 +21,25 @@ pub struct PropertyStats {
     pub min: f64,
     pub max: f64,
     pub range: f64,
+    /// Composition weight with a recorded value for this property.
+    pub observed_weight: f64,
+}
+
+/// Fixed-length features paired with an explicit observation mask.
+#[derive(Debug, Clone, PartialEq)]
+pub struct MaskedFeatureVector {
+    pub values: Vec<f64>,
+    pub observed: Vec<bool>,
+}
+
+impl MaskedFeatureVector {
+    /// Return numerical features only when every value is observed.
+    pub fn into_complete_values(self) -> Option<Vec<f64>> {
+        self.observed
+            .iter()
+            .all(|observed| *observed)
+            .then_some(self.values)
+    }
 }
 
 /// Full composition feature set for one material.
@@ -90,51 +109,66 @@ pub fn composition_fractions(formula: &str) -> Result<Vec<(String, f64)>, String
     Ok(pairs.into_iter().map(|(el, c)| (el, c / total)).collect())
 }
 
-/// Extract a numeric property from an Element, returning a fallback if None.
-fn element_property(elem: &Element, index: usize) -> f64 {
+/// Extract a numeric property without converting absence to zero.
+fn element_property(elem: &Element, index: usize) -> Option<f64> {
     match index {
-        0 => elem.atomic_mass,
-        1 => elem.density.unwrap_or(0.0),
-        2 => elem.melting_point.unwrap_or(0.0),
-        3 => elem.boiling_point.unwrap_or(0.0),
-        4 => elem.valence_electrons as f64,
-        5 => elem.electronegativity.unwrap_or(0.0),
-        6 => elem.ionization_energy.unwrap_or(0.0),
-        7 => elem.electron_affinity.unwrap_or(0.0),
-        8 => elem.lattice_constant.unwrap_or(0.0),
-        9 => elem.atomic_number as f64,
-        _ => 0.0,
+        0 => Some(elem.atomic_mass),
+        1 => elem.density,
+        2 => elem.melting_point,
+        3 => elem.boiling_point,
+        4 => Some(elem.valence_electrons as f64),
+        5 => elem.electronegativity,
+        6 => elem.ionization_energy,
+        7 => elem.electron_affinity,
+        8 => elem.lattice_constant,
+        9 => Some(elem.atomic_number as f64),
+        _ => None,
     }
 }
 
 /// Compute composition-weighted property statistics.
 fn compute_property_stats(elements: &[(Element, f64)], prop_index: usize) -> PropertyStats {
-    let values: Vec<f64> = elements
+    let observed: Vec<(f64, f64)> = elements
         .iter()
-        .map(|(e, _)| element_property(e, prop_index))
+        .filter_map(|(element, weight)| {
+            element_property(element, prop_index).map(|value| (value, *weight))
+        })
         .collect();
-    let weights: Vec<f64> = elements.iter().map(|(_, w)| *w).collect();
-    let total_weight: f64 = weights.iter().sum();
+    let observed_weight: f64 = observed.iter().map(|(_, weight)| weight).sum();
+    if observed_weight == 0.0 {
+        return PropertyStats {
+            mean: 0.0,
+            std: 0.0,
+            min: 0.0,
+            max: 0.0,
+            range: 0.0,
+            observed_weight,
+        };
+    }
 
     // Weighted mean
-    let mean = values
+    let mean = observed
         .iter()
-        .zip(weights.iter())
-        .map(|(v, w)| v * w)
+        .map(|(value, weight)| value * weight)
         .sum::<f64>()
-        / total_weight;
+        / observed_weight;
 
     // Weighted standard deviation
-    let variance = values
+    let variance = observed
         .iter()
-        .zip(weights.iter())
-        .map(|(v, w)| w * (v - mean).powi(2))
+        .map(|(value, weight)| weight * (value - mean).powi(2))
         .sum::<f64>()
-        / total_weight;
+        / observed_weight;
     let std = variance.sqrt();
 
-    let min = values.iter().cloned().fold(f64::INFINITY, f64::min);
-    let max = values.iter().cloned().fold(f64::NEG_INFINITY, f64::max);
+    let min = observed
+        .iter()
+        .map(|(value, _)| *value)
+        .fold(f64::INFINITY, f64::min);
+    let max = observed
+        .iter()
+        .map(|(value, _)| *value)
+        .fold(f64::NEG_INFINITY, f64::max);
 
     PropertyStats {
         mean,
@@ -142,6 +176,7 @@ fn compute_property_stats(elements: &[(Element, f64)], prop_index: usize) -> Pro
         min,
         max,
         range: max - min,
+        observed_weight,
     }
 }
 
@@ -180,6 +215,7 @@ pub fn featurize(formula: &str) -> Result<CompositionFeatures, String> {
         min: 0.0,
         max: 0.0,
         range: 0.0,
+        observed_weight: 0.0,
     }; 10];
     for (i, slot) in property_stats.iter_mut().enumerate() {
         *slot = compute_property_stats(&elements, i);
@@ -200,20 +236,27 @@ pub fn featurize(formula: &str) -> Result<CompositionFeatures, String> {
 ///          mass_mean, mass_std, mass_min, mass_max, mass_range,
 ///          density_mean, ..., atomic_number_range]
 /// Total: 4 global + 10 props * 5 stats = 54 elements.
-pub fn feature_vector(feats: &CompositionFeatures) -> Vec<f64> {
+pub fn feature_vector(feats: &CompositionFeatures) -> MaskedFeatureVector {
     let mut v = Vec::with_capacity(54);
+    let mut observed = Vec::with_capacity(54);
     v.push(feats.n_elements);
     v.push(feats.total_atoms);
     v.push(feats.metal_fraction);
     v.push(feats.semiconductor_fraction);
+    observed.extend([true; 4]);
     for ps in &feats.property_stats {
         v.push(ps.mean);
         v.push(ps.std);
         v.push(ps.min);
         v.push(ps.max);
         v.push(ps.range);
+        let fully_observed = ps.observed_weight >= 1.0 - 1e-12;
+        observed.extend([fully_observed; 5]);
     }
-    v
+    MaskedFeatureVector {
+        values: v,
+        observed,
+    }
 }
 
 /// Compute a 118-dimensional elemental composition vector.
@@ -307,7 +350,19 @@ mod tests {
     fn test_feature_vector_length() {
         let feats = featurize("Fe2O3").unwrap();
         let v = feature_vector(&feats);
-        assert_eq!(v.len(), 54);
+        assert_eq!(v.values.len(), 54);
+        assert_eq!(v.observed.len(), 54);
+    }
+
+    #[test]
+    fn test_missing_elemental_property_retains_mask() {
+        let feats = featurize("He").unwrap();
+        let vector = feature_vector(&feats);
+        assert!(
+            vector.observed.iter().any(|observed| !observed),
+            "helium must retain absent elemental fields in the feature mask"
+        );
+        assert!(vector.into_complete_values().is_none());
     }
 
     #[test]

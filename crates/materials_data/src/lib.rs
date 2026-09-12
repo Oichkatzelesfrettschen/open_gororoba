@@ -22,6 +22,11 @@ include!(concat!(env!("OUT_DIR"), "/generated_nk_tables.rs"));
 include!(concat!(env!("OUT_DIR"), "/generated_optical_params.rs"));
 include!(concat!(env!("OUT_DIR"), "/generated_crystal_tables.rs"));
 
+/// Source-owned condition and provenance candidates for distinct gold optical
+/// datasets. `materials_core` validates and exposes the typed catalog.
+pub const GOLD_OPTICAL_SPECIMEN_CANDIDATES_TOML: &str =
+    include_str!("../data/materials/gold_optical_specimen_candidates.toml");
+
 #[cfg(test)]
 mod tests {
     use super::*;

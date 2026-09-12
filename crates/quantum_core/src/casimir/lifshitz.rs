@@ -14,9 +14,13 @@
 // - Dzyaloshinskii et al., Adv. Phys. 10, 165 (1961) - Extension to materials
 // - Klimchitskaya et al., RMP 81, 1827 (2009) - Comprehensive review
 
-use std::f64::consts::PI;
+use std::{f64::consts::PI, num::NonZeroUsize};
+
+use gauss_quad::GaussLegendre;
 
 use super::{C, HBAR, casimir_force_pfa};
+
+const DIMENSIONLESS_KAPPA_CUTOFF: f64 = 24.0;
 
 /// Dielectric model for computing optical response at imaginary frequency.
 ///
@@ -160,7 +164,7 @@ impl DielectricModel {
 
 /// Fresnel reflection coefficient at imaginary frequency (TM/p-polarization).
 ///
-/// r_TM = (eps1 kappa2 - eps2 kappa1) / (eps1 kappa2 + eps2 kappa1)
+/// r_TM = (eps2 kappa1 - eps1 kappa2) / (eps2 kappa1 + eps1 kappa2)
 ///
 /// where kappa_i = sqrt(eps_i xi^2/c^2 + k_perp^2)
 ///
@@ -174,11 +178,7 @@ pub fn fresnel_tm_imaginary(eps1: f64, eps2: f64, xi: f64, k_perp: f64) -> f64 {
     let kappa1 = (eps1 * xi_c * xi_c + k_perp * k_perp).sqrt();
     let kappa2 = (eps2 * xi_c * xi_c + k_perp * k_perp).sqrt();
 
-    // Handle very large or infinite dielectric (perfect conductor limit)
-    // In the limit \epsilon_2 -> infty: r_TM -> (\epsilon_1/\epsilon_2)(\kappa_2/\kappa_1) -> 0, but accounting
-    // for the fact that \kappa_2 ~ sqrt\epsilon_2, we get r_TM -> -1
-    // For numerical stability with large finite \epsilon, compute directly
-    let numer = eps1 * kappa2 - eps2 * kappa1;
+    let numer = eps2 * kappa1 - eps1 * kappa2;
     let denom = eps1 * kappa2 + eps2 * kappa1;
 
     if denom.abs() < 1e-30 {
@@ -190,7 +190,7 @@ pub fn fresnel_tm_imaginary(eps1: f64, eps2: f64, xi: f64, k_perp: f64) -> f64 {
 
 /// Fresnel reflection coefficient at imaginary frequency (TE/s-polarization).
 ///
-/// r_TE = (\kappa_2 - \kappa_1) / (\kappa_2 + \kappa_1)
+/// r_TE = (\kappa_1 - \kappa_2) / (\kappa_1 + \kappa_2)
 ///
 /// For non-magnetic materials (\mu = 1).
 ///
@@ -204,7 +204,69 @@ pub fn fresnel_te_imaginary(eps1: f64, eps2: f64, xi: f64, k_perp: f64) -> f64 {
     let kappa1 = (eps1 * xi_c * xi_c + k_perp * k_perp).sqrt();
     let kappa2 = (eps2 * xi_c * xi_c + k_perp * k_perp).sqrt();
 
-    (kappa2 - kappa1) / (kappa2 + kappa1)
+    (kappa1 - kappa2) / (kappa1 + kappa2)
+}
+
+fn vacuum_surface_reflections(model: &DielectricModel, xi: f64, k_parallel: f64) -> (f64, f64) {
+    if matches!(model, DielectricModel::PerfectConductor) {
+        (1.0, -1.0)
+    } else {
+        let permittivity = model.epsilon_at_imaginary(xi);
+        (
+            fresnel_tm_imaginary(1.0, permittivity, xi, k_parallel),
+            fresnel_te_imaginary(1.0, permittivity, xi, k_parallel),
+        )
+    }
+}
+
+fn lifshitz_dimensionless_integrals(
+    gap: f64,
+    eps1: &DielectricModel,
+    eps2: &DielectricModel,
+    kappa_order: usize,
+    angle_order: usize,
+) -> (f64, f64) {
+    assert!(
+        gap.is_finite() && gap > 0.0,
+        "gap must be finite and positive"
+    );
+    let kappa_quadrature = GaussLegendre::new(
+        NonZeroUsize::new(kappa_order).expect("kappa quadrature order must be non-zero"),
+    );
+    let angle_quadrature = GaussLegendre::new(
+        NonZeroUsize::new(angle_order).expect("angle quadrature order must be non-zero"),
+    );
+
+    let pressure_integral = kappa_quadrature.integrate(0.0, DIMENSIONLESS_KAPPA_CUTOFF, |q| {
+        angle_quadrature.integrate(0.0, 1.0, |mu| {
+            let xi = C * q * mu / gap;
+            let k_parallel = q * (1.0 - mu * mu).sqrt() / gap;
+            let (tm_1, te_1) = vacuum_surface_reflections(eps1, xi, k_parallel);
+            let (tm_2, te_2) = vacuum_surface_reflections(eps2, xi, k_parallel);
+            let tm_product = tm_1 * tm_2;
+            let te_product = te_1 * te_2;
+            let attenuation = (-2.0 * q).exp();
+            let tm_round_trip = tm_product * attenuation;
+            let te_round_trip = te_product * attenuation;
+            q.powi(3)
+                * (tm_round_trip / (1.0 - tm_round_trip) + te_round_trip / (1.0 - te_round_trip))
+        })
+    });
+
+    let energy_integral = kappa_quadrature.integrate(0.0, DIMENSIONLESS_KAPPA_CUTOFF, |q| {
+        angle_quadrature.integrate(0.0, 1.0, |mu| {
+            let xi = C * q * mu / gap;
+            let k_parallel = q * (1.0 - mu * mu).sqrt() / gap;
+            let (tm_1, te_1) = vacuum_surface_reflections(eps1, xi, k_parallel);
+            let (tm_2, te_2) = vacuum_surface_reflections(eps2, xi, k_parallel);
+            let tm_product = tm_1 * tm_2;
+            let te_product = te_1 * te_2;
+            let attenuation = (-2.0 * q).exp();
+            q * q * ((-tm_product * attenuation).ln_1p() + (-te_product * attenuation).ln_1p())
+        })
+    });
+
+    (pressure_integral, energy_integral)
 }
 
 /// Lifshitz pressure between two parallel plates at zero temperature.
@@ -230,55 +292,25 @@ pub fn lifshitz_pressure_plates(
     n_xi: usize,
     n_k: usize,
 ) -> f64 {
-    // Characteristic frequency scale: c/d
-    let xi_char = C / gap;
+    let (pressure_integral, _) = lifshitz_dimensionless_integrals(gap, eps1, eps2, n_xi, n_k);
+    -HBAR * C * pressure_integral / (2.0 * PI * PI * gap.powi(4))
+}
 
-    // Integration over \xi using Gauss-Laguerre-like quadrature
-    // We use a change of variables: \xi = xi_char * u, integrate u from 0 to ~10
-    let mut pressure = 0.0;
-
-    for i in 0..n_xi {
-        // Logarithmic spacing works well for the oscillatory integrand
-        let u = ((i as f64 + 0.5) / n_xi as f64) * 10.0;
-        let xi = xi_char * u;
-        let du = 10.0 / n_xi as f64;
-
-        // Dielectric values at this frequency
-        let e1 = eps1.epsilon_at_imaginary(xi);
-        let e2 = eps2.epsilon_at_imaginary(xi);
-
-        // Integration over k_perp: k_perp = (\xi/c) * v, v from 0 to ~10
-        for j in 0..n_k {
-            let v = ((j as f64 + 0.5) / n_k as f64) * 10.0;
-            let dv = 10.0 / n_k as f64;
-            let k_perp = (xi / C) * v;
-
-            // kappa = sqrt(eps*xi^2/c^2 + k_perp^2), for vacuum (eps=1):
-            let kappa = (xi * xi / (C * C) + k_perp * k_perp).sqrt();
-
-            // Reflection coefficients
-            let r_tm1 = fresnel_tm_imaginary(1.0, e1, xi, k_perp);
-            let r_tm2 = fresnel_tm_imaginary(1.0, e2, xi, k_perp);
-            let r_te1 = fresnel_te_imaginary(1.0, e1, xi, k_perp);
-            let r_te2 = fresnel_te_imaginary(1.0, e2, xi, k_perp);
-
-            // Round-trip factor
-            let exp_factor = (-2.0 * kappa * gap).exp();
-            let tm_factor = r_tm1 * r_tm2 * exp_factor / (1.0 - r_tm1 * r_tm2 * exp_factor);
-            let te_factor = r_te1 * r_te2 * exp_factor / (1.0 - r_te1 * r_te2 * exp_factor);
-
-            // Jacobian: d(xi) d(k_perp) = xi_char * du * (xi/c) * dv = (xi_char * xi/c) * du * dv
-            let jacobian = xi_char * (xi / C) * du * dv;
-
-            // Integrand: k_perp * \kappa * (TM + TE contributions)
-            pressure += k_perp * kappa * (tm_factor + te_factor) * jacobian;
-        }
-    }
-
-    // Prefactor: -hbar/(2*pi^2)
-    pressure *= -HBAR / (2.0 * PI * PI);
-
-    pressure
+/// Lifshitz energy per unit area between parallel plates at zero temperature.
+///
+/// The integration variables are q = kappa*d and
+/// mu = xi/(c*kappa). The polar domain covers every direction in the
+/// nonnegative (xi/c, k_parallel) quadrant.
+pub fn lifshitz_energy_plates(
+    gap: f64,
+    eps1: &DielectricModel,
+    eps2: &DielectricModel,
+    kappa_order: usize,
+    angle_order: usize,
+) -> f64 {
+    let (_, energy_integral) =
+        lifshitz_dimensionless_integrals(gap, eps1, eps2, kappa_order, angle_order);
+    HBAR * C * energy_integral / (4.0 * PI * PI * gap.powi(3))
 }
 
 /// Lifshitz force for sphere-plate geometry using PFA.
@@ -309,18 +341,8 @@ pub fn lifshitz_force_sphere_plate(
     n_xi: usize,
     n_k: usize,
 ) -> f64 {
-    // Compute plate-plate Lifshitz pressure at the gap
-    let pressure = lifshitz_pressure_plates(gap, eps_sphere, eps_plate, n_xi, n_k);
-
-    // PFA integration: F = 2\piR integral P(d') d(d') from gap to infty
-    // For P ~ 1/d^3 (perfect conductor), this gives F = \piR * P(gap) * gap
-    // More generally, we need the integrated pressure, which for P(d) ~ 1/d^n gives:
-    // F = 2\piR * gap * P(gap) / (n-1) where n ~ 3 for Casimir
-    // Using the standard result from PFA: F ~= 2\piR * integral_gap^infty P(d') dd'
-    //                                       ~= 2\piR * gap * P(gap) / 2  (for n=3)
-
-    // For consistency with casimir_force_pfa, use the PFA formula
-    2.0 * PI * radius * gap * pressure / 2.0
+    let energy = lifshitz_energy_plates(gap, eps_sphere, eps_plate, n_xi, n_k);
+    2.0 * PI * radius * energy
 }
 
 /// Lifshitz force ratio: compares material-dependent force to perfect conductor.
@@ -385,7 +407,8 @@ pub fn lifshitz_sphere_plate(
     eps_plate: &DielectricModel,
 ) -> LifshitzResult {
     let pressure = lifshitz_pressure_plates(gap, eps_sphere, eps_plate, 32, 32);
-    let force = 2.0 * PI * radius * gap * pressure / 2.0;
+    let energy = lifshitz_energy_plates(gap, eps_sphere, eps_plate, 32, 32);
+    let force = 2.0 * PI * radius * energy;
     let f_ideal = casimir_force_pfa(radius, gap);
     let eta = if f_ideal.abs() < 1e-30 {
         1.0

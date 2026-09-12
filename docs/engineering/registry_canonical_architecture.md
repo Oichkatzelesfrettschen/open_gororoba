@@ -365,11 +365,12 @@ legitimate Layer-2 change, run:
 make registry-integrity
 ```
 
-This invokes `gororoba_cli_data --bin registry-integrity` which
-recomputes both `content_sha256` (the file's literal SHA) and
-`schema_sha256` (the SHA of the normalized shape JSON including
-`row_count`). Validation rejects pushes where the file SHA on disk does
-not match the recorded SHA in `schema_signatures.toml`.
+This invokes the dedicated `gororoba_cli_governance --bin
+registry-integrity` owner through a staged validation-profile binary. The tool
+recomputes both `content_sha256` (the file's literal SHA) and `schema_sha256`
+(the SHA of the normalized shape JSON including `row_count`). Validation
+rejects pushes where the file SHA on disk does not match the recorded SHA in
+`schema_signatures.toml`.
 
 ## Audit trail: how to ask "what changed since last week"
 

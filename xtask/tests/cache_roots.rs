@@ -127,7 +127,10 @@ fn default_mode_keys_every_root_on_the_checkout() {
     assert_eq!(r["REPO_CACHE_MODE"], "local");
     assert_eq!(r["REPO_CACHE_OWNER"], p);
     assert_eq!(r["REPO_CARGO_HOME"], format!("{p}/.cache/cargo-home"));
-    assert_eq!(r["REPO_CARGO_TARGET_DIR"], format!("{p}/.cache/gate-target"));
+    assert_eq!(
+        r["REPO_CARGO_TARGET_DIR"],
+        format!("{p}/.cache/gate-target")
+    );
     assert!(r["REPO_CARGO_BUILD_DIR"].starts_with(&format!("{p}/.cache/gate-cbuild/")));
     assert_eq!(
         r["VALIDATION_TOOLS_DIR"],
@@ -156,7 +159,10 @@ fn standard_layout_shares_with_itself() {
         "VALIDATION_TOOLS_DIR",
         "CACHE_CHECK_SENTINEL",
     ] {
-        assert_eq!(shared[key], local[key], "{key} differs between modes on the primary");
+        assert_eq!(
+            shared[key], local[key],
+            "{key} differs between modes on the primary"
+        );
     }
 }
 
@@ -169,7 +175,10 @@ fn linked_worktree_shares_build_dir_and_keeps_validation_state_local() {
     let primary = tmp.path().join("primary");
     init_checkout(&primary);
     let wt = tmp.path().join("wt-a");
-    git(&primary, &["worktree", "add", "-q", wt.to_str().unwrap(), "-b", "wt-a"]);
+    git(
+        &primary,
+        &["worktree", "add", "-q", wt.to_str().unwrap(), "-b", "wt-a"],
+    );
     let p = canonical(&primary);
     let w = canonical(&wt);
     let owner = roots(&primary, &[]);
@@ -179,7 +188,10 @@ fn linked_worktree_shares_build_dir_and_keeps_validation_state_local() {
     assert_eq!(r["REPO_PATH_HASH"], owner["REPO_PATH_HASH"]);
     assert_eq!(r["REPO_CARGO_HOME"], owner["REPO_CARGO_HOME"]);
     assert_eq!(r["REPO_CARGO_BUILD_DIR"], owner["REPO_CARGO_BUILD_DIR"]);
-    assert_eq!(r["REPO_CARGO_TARGET_DIR"], format!("{w}/.cache/gate-target"));
+    assert_eq!(
+        r["REPO_CARGO_TARGET_DIR"],
+        format!("{w}/.cache/gate-target")
+    );
     assert_eq!(
         r["VALIDATION_TOOLS_DIR"],
         format!("{w}/.cache/gate-target/validation-tools")
@@ -204,16 +216,42 @@ fn two_worktrees_with_different_tool_sources_never_share_validation_state() {
     init_checkout(&primary);
     let wt_a = tmp.path().join("wt-a");
     let wt_b = tmp.path().join("wt-b");
-    git(&primary, &["worktree", "add", "-q", wt_a.to_str().unwrap(), "-b", "wt-a"]);
-    git(&primary, &["worktree", "add", "-q", wt_b.to_str().unwrap(), "-b", "wt-b"]);
+    git(
+        &primary,
+        &[
+            "worktree",
+            "add",
+            "-q",
+            wt_a.to_str().unwrap(),
+            "-b",
+            "wt-a",
+        ],
+    );
+    git(
+        &primary,
+        &[
+            "worktree",
+            "add",
+            "-q",
+            wt_b.to_str().unwrap(),
+            "-b",
+            "wt-b",
+        ],
+    );
     // Divergent validation-tool sources in each worktree.
-    for (wt, body) in [(&wt_a, "fn main() { println!(\"a\"); }"), (&wt_b, "fn main() { println!(\"b\"); }")] {
+    for (wt, body) in [
+        (&wt_a, "fn main() { println!(\"a\"); }"),
+        (&wt_b, "fn main() { println!(\"b\"); }"),
+    ] {
         std::fs::create_dir_all(wt.join("xtask/src")).unwrap();
         std::fs::write(wt.join("xtask/src/main.rs"), body).unwrap();
     }
     let a = roots(&wt_a, SHARED);
     let b = roots(&wt_b, SHARED);
-    assert_eq!(a["REPO_CARGO_BUILD_DIR"], b["REPO_CARGO_BUILD_DIR"], "the build-dir is the shared part");
+    assert_eq!(
+        a["REPO_CARGO_BUILD_DIR"], b["REPO_CARGO_BUILD_DIR"],
+        "the build-dir is the shared part"
+    );
     assert_ne!(a["VALIDATION_TOOLS_DIR"], b["VALIDATION_TOOLS_DIR"]);
     assert!(a["VALIDATION_TOOLS_DIR"].starts_with(&canonical(&wt_a)));
     assert!(b["VALIDATION_TOOLS_DIR"].starts_with(&canonical(&wt_b)));
@@ -223,9 +261,16 @@ fn two_worktrees_with_different_tool_sources_never_share_validation_state() {
         "different tool sources hash to different identities"
     );
     // Editing a source without advancing its mtime still changes the identity.
-    std::fs::write(wt_a.join("xtask/src/main.rs"), "fn main() { println!(\"a2\"); }").unwrap();
+    std::fs::write(
+        wt_a.join("xtask/src/main.rs"),
+        "fn main() { println!(\"a2\"); }",
+    )
+    .unwrap();
     let a2 = roots(&wt_a, SHARED);
-    assert_ne!(a["VALIDATION_SOURCE_IDENTITY"], a2["VALIDATION_SOURCE_IDENTITY"]);
+    assert_ne!(
+        a["VALIDATION_SOURCE_IDENTITY"],
+        a2["VALIDATION_SOURCE_IDENTITY"]
+    );
 }
 
 #[test]
@@ -237,7 +282,10 @@ fn accounting_from_a_linked_worktree_covers_the_shared_roots() {
     let primary = tmp.path().join("primary");
     init_checkout(&primary);
     let wt = tmp.path().join("wt-a");
-    git(&primary, &["worktree", "add", "-q", wt.to_str().unwrap(), "-b", "wt-a"]);
+    git(
+        &primary,
+        &["worktree", "add", "-q", wt.to_str().unwrap(), "-b", "wt-a"],
+    );
     let p = canonical(&primary);
     let w = canonical(&wt);
     let r = roots(&wt, SHARED);
@@ -248,7 +296,10 @@ fn accounting_from_a_linked_worktree_covers_the_shared_roots() {
         format!("{w}/.cache/gate-target"),
         format!("{w}/target"),
     ] {
-        assert!(dirs.contains(&expected.as_str()), "missing {expected} in {dirs:?}");
+        assert!(
+            dirs.contains(&expected.as_str()),
+            "missing {expected} in {dirs:?}"
+        );
     }
 }
 
@@ -264,18 +315,41 @@ fn bare_repository_worktree_is_rejected_without_an_explicit_owner() {
     std::fs::create_dir_all(bare.parent().unwrap()).unwrap();
     git(
         tmp.path(),
-        &["clone", "-q", "--bare", primary.to_str().unwrap(), bare.to_str().unwrap()],
+        &[
+            "clone",
+            "-q",
+            "--bare",
+            primary.to_str().unwrap(),
+            bare.to_str().unwrap(),
+        ],
     );
     let bwt = tmp.path().join("repos/bare-wt");
-    git(&bare, &["worktree", "add", "-q", bwt.to_str().unwrap(), "-b", "bare-wt"]);
+    git(
+        &bare,
+        &[
+            "worktree",
+            "add",
+            "-q",
+            bwt.to_str().unwrap(),
+            "-b",
+            "bare-wt",
+        ],
+    );
     let run = run_make(&bwt, "print-cache-roots", SHARED);
-    assert_ne!(run.status, 0, "bare layout must be rejected:\n{}", run.stdout);
+    assert_ne!(
+        run.status, 0,
+        "bare layout must be rejected:\n{}",
+        run.stdout
+    );
     assert!(run.stderr.contains("rejected"), "stderr: {}", run.stderr);
     // The metadata parent must never appear as an owner.
     assert!(!run.stdout.contains("REPO_CACHE_OWNER="));
     // An explicit absolute owner is accepted.
     let p = canonical(&primary);
-    let r = roots(&bwt, &[("REPO_SHARE_PRIMARY_CACHE", "1"), ("REPO_CACHE_OWNER", &p)]);
+    let r = roots(
+        &bwt,
+        &[("REPO_SHARE_PRIMARY_CACHE", "1"), ("REPO_CACHE_OWNER", &p)],
+    );
     assert_eq!(r["REPO_CACHE_OWNER"], p);
     assert!(r["REPO_CARGO_BUILD_DIR"].starts_with(&format!("{p}/.cache/gate-cbuild/")));
 }
@@ -290,11 +364,18 @@ fn separate_git_dir_layout_is_rejected() {
     let gitdir = tmp.path().join("gitdir");
     std::fs::create_dir_all(&sep).unwrap();
     std::fs::write(sep.join("Cargo.toml"), "[workspace]\nmembers = []\n").unwrap();
-    git(&sep, &["init", "-q", "--separate-git-dir", gitdir.to_str().unwrap()]);
+    git(
+        &sep,
+        &["init", "-q", "--separate-git-dir", gitdir.to_str().unwrap()],
+    );
     git(&sep, &["add", "Cargo.toml"]);
     git(&sep, &["commit", "-q", "-m", "seed"]);
     let run = run_make(&sep, "print-cache-roots", SHARED);
-    assert_ne!(run.status, 0, "separate-git-dir layout must be rejected:\n{}", run.stdout);
+    assert_ne!(
+        run.status, 0,
+        "separate-git-dir layout must be rejected:\n{}",
+        run.stdout
+    );
     assert!(run.stderr.contains("rejected"), "stderr: {}", run.stderr);
 }
 
@@ -308,10 +389,17 @@ fn submodule_checkout_is_rejected() {
     init_checkout(&inner);
     let outer = tmp.path().join("outer");
     init_checkout(&outer);
-    git(&outer, &["submodule", "add", "-q", inner.to_str().unwrap(), "sub"]);
+    git(
+        &outer,
+        &["submodule", "add", "-q", inner.to_str().unwrap(), "sub"],
+    );
     let sub = outer.join("sub");
     let run = run_make(&sub, "print-cache-roots", SHARED);
-    assert_ne!(run.status, 0, "submodule layout must be rejected:\n{}", run.stdout);
+    assert_ne!(
+        run.status, 0,
+        "submodule layout must be rejected:\n{}",
+        run.stdout
+    );
     assert!(run.stderr.contains("rejected"), "stderr: {}", run.stderr);
 }
 
@@ -326,19 +414,33 @@ fn explicit_owner_must_be_absolute_and_hold_a_manifest() {
     let relative = run_make(
         &primary,
         "print-cache-roots",
-        &[("REPO_SHARE_PRIMARY_CACHE", "1"), ("REPO_CACHE_OWNER", "relative/path")],
+        &[
+            ("REPO_SHARE_PRIMARY_CACHE", "1"),
+            ("REPO_CACHE_OWNER", "relative/path"),
+        ],
     );
     assert_ne!(relative.status, 0);
-    assert!(relative.stderr.contains("absolute"), "stderr: {}", relative.stderr);
+    assert!(
+        relative.stderr.contains("absolute"),
+        "stderr: {}",
+        relative.stderr
+    );
     let empty = tmp.path().join("empty");
     std::fs::create_dir_all(&empty).unwrap();
     let no_manifest = run_make(
         &primary,
         "print-cache-roots",
-        &[("REPO_SHARE_PRIMARY_CACHE", "1"), ("REPO_CACHE_OWNER", empty.to_str().unwrap())],
+        &[
+            ("REPO_SHARE_PRIMARY_CACHE", "1"),
+            ("REPO_CACHE_OWNER", empty.to_str().unwrap()),
+        ],
     );
     assert_ne!(no_manifest.status, 0);
-    assert!(no_manifest.stderr.contains("Cargo.toml"), "stderr: {}", no_manifest.stderr);
+    assert!(
+        no_manifest.stderr.contains("Cargo.toml"),
+        "stderr: {}",
+        no_manifest.stderr
+    );
 }
 
 #[test]
@@ -364,7 +466,11 @@ fn guard_rejects_unsafe_paths_and_accepts_local_cache_paths() {
     for path in &rejected {
         let run = run_make(&primary, "cache-guard-check", &[("GUARD_PATH", path)]);
         assert_ne!(run.status, 0, "guard accepted {path:?}:\n{}", run.stdout);
-        assert!(run.stdout.contains("REJECT"), "path {path:?} stdout: {}", run.stdout);
+        assert!(
+            run.stdout.contains("REJECT"),
+            "path {path:?} stdout: {}",
+            run.stdout
+        );
     }
     let accepted = run_make(
         &primary,
@@ -384,16 +490,26 @@ fn guard_refuses_the_shared_owner_tree_from_a_worktree_unless_allowed() {
     let primary = tmp.path().join("primary");
     init_checkout(&primary);
     let wt = tmp.path().join("wt-a");
-    git(&primary, &["worktree", "add", "-q", wt.to_str().unwrap(), "-b", "wt-a"]);
+    git(
+        &primary,
+        &["worktree", "add", "-q", wt.to_str().unwrap(), "-b", "wt-a"],
+    );
     let p = canonical(&primary);
     let owner_dir = format!("{p}/.cache/gate-cbuild/abc/debug");
     let refused = run_make(
         &wt,
         "cache-guard-check",
-        &[("REPO_SHARE_PRIMARY_CACHE", "1"), ("GUARD_PATH", &owner_dir)],
+        &[
+            ("REPO_SHARE_PRIMARY_CACHE", "1"),
+            ("GUARD_PATH", &owner_dir),
+        ],
     );
     assert_ne!(refused.status, 0);
-    assert!(refused.stdout.contains("shared owner"), "{}", refused.stdout);
+    assert!(
+        refused.stdout.contains("shared owner"),
+        "{}",
+        refused.stdout
+    );
     let allowed = run_make(
         &wt,
         "cache-guard-check",
@@ -415,7 +531,10 @@ fn sweep_plan_names_only_the_shared_cache_and_never_a_sibling() {
     let primary = tmp.path().join("primary");
     init_checkout(&primary);
     let wt = tmp.path().join("wt-a");
-    git(&primary, &["worktree", "add", "-q", wt.to_str().unwrap(), "-b", "wt-a"]);
+    git(
+        &primary,
+        &["worktree", "add", "-q", wt.to_str().unwrap(), "-b", "wt-a"],
+    );
     let p = canonical(&primary);
     let owner = roots(&primary, &[]);
     let hash = &owner["REPO_PATH_HASH"];
@@ -428,23 +547,48 @@ fn sweep_plan_names_only_the_shared_cache_and_never_a_sibling() {
 
     let from_owner = run_make(&primary, "cache-sweep-plan", &[]);
     assert_eq!(from_owner.status, 0, "{}", from_owner.stderr);
-    assert!(from_owner.stdout.contains(&format!("candidate {debug}")), "{}", from_owner.stdout);
     assert!(
-        from_owner.stdout.contains(&format!("cargo-sweep target {p}/.cache/gate-target")),
+        from_owner.stdout.contains(&format!("candidate {debug}")),
+        "{}",
+        from_owner.stdout
+    );
+    assert!(
+        from_owner
+            .stdout
+            .contains(&format!("cargo-sweep target {p}/.cache/gate-target")),
         "{}",
         from_owner.stdout
     );
 
     let from_wt = run_make(&wt, "cache-sweep-plan", SHARED);
     assert_eq!(from_wt.status, 0, "{}", from_wt.stderr);
-    assert!(from_wt.stdout.contains(&format!("skipped {debug}")), "{}", from_wt.stdout);
-    assert!(from_wt.stdout.contains("shared owner"), "{}", from_wt.stdout);
+    assert!(
+        from_wt.stdout.contains(&format!("skipped {debug}")),
+        "{}",
+        from_wt.stdout
+    );
+    assert!(
+        from_wt.stdout.contains("shared owner"),
+        "{}",
+        from_wt.stdout
+    );
 
     for run in [&from_owner, &from_wt] {
-        assert!(!run.stdout.contains("/.cache/other"), "decoy selected: {}", run.stdout);
-        assert!(!run.stdout.contains("/sibling"), "sibling selected: {}", run.stdout);
+        assert!(
+            !run.stdout.contains("/.cache/other"),
+            "decoy selected: {}",
+            run.stdout
+        );
+        assert!(
+            !run.stdout.contains("/sibling"),
+            "sibling selected: {}",
+            run.stdout
+        );
     }
-    assert!(Path::new(&debug).join("artifact.o").exists(), "the plan removed a file");
+    assert!(
+        Path::new(&debug).join("artifact.o").exists(),
+        "the plan removed a file"
+    );
 }
 
 /// Two worktrees of one owner hold identical tool sources, so the source hash
@@ -460,8 +604,28 @@ fn validation_identity_differs_across_worktrees_sharing_one_owner() {
     init_checkout(&primary);
     let wt_a = tmp.path().join("wt-a");
     let wt_b = tmp.path().join("wt-b");
-    git(&primary, &["worktree", "add", "-q", wt_a.to_str().unwrap(), "-b", "wt-a"]);
-    git(&primary, &["worktree", "add", "-q", wt_b.to_str().unwrap(), "-b", "wt-b"]);
+    git(
+        &primary,
+        &[
+            "worktree",
+            "add",
+            "-q",
+            wt_a.to_str().unwrap(),
+            "-b",
+            "wt-a",
+        ],
+    );
+    git(
+        &primary,
+        &[
+            "worktree",
+            "add",
+            "-q",
+            wt_b.to_str().unwrap(),
+            "-b",
+            "wt-b",
+        ],
+    );
     let a = roots(&wt_a, SHARED);
     let b = roots(&wt_b, SHARED);
     assert_eq!(
@@ -494,8 +658,28 @@ fn stale_worktree_tool_copy_is_rejected_and_rebuilt() {
     init_checkout(&primary);
     let wt_a = worktrees_root.join("gone");
     let wt_b = worktrees_root.join("live");
-    git(&primary, &["worktree", "add", "-q", wt_a.to_str().unwrap(), "-b", "gone"]);
-    git(&primary, &["worktree", "add", "-q", wt_b.to_str().unwrap(), "-b", "live"]);
+    git(
+        &primary,
+        &[
+            "worktree",
+            "add",
+            "-q",
+            wt_a.to_str().unwrap(),
+            "-b",
+            "gone",
+        ],
+    );
+    git(
+        &primary,
+        &[
+            "worktree",
+            "add",
+            "-q",
+            wt_b.to_str().unwrap(),
+            "-b",
+            "live",
+        ],
+    );
     let a = roots(&wt_a, SHARED);
     let b = roots(&wt_b, SHARED);
     let gone_path = canonical(&wt_a);
@@ -519,11 +703,18 @@ fn stale_worktree_tool_copy_is_rejected_and_rebuilt() {
     std::fs::copy(a_tools.join("provenance"), b_tools.join("provenance")).unwrap();
     std::fs::copy(
         &a["VALIDATION_TOOL_IDENTITY_FILE"],
-        b_tools.join(Path::new(&a["VALIDATION_TOOL_IDENTITY_FILE"]).file_name().unwrap()),
+        b_tools.join(
+            Path::new(&a["VALIDATION_TOOL_IDENTITY_FILE"])
+                .file_name()
+                .unwrap(),
+        ),
     )
     .unwrap();
 
-    git(&primary, &["worktree", "remove", "--force", wt_a.to_str().unwrap()]);
+    git(
+        &primary,
+        &["worktree", "remove", "--force", wt_a.to_str().unwrap()],
+    );
     assert!(!Path::new(&gone_path).exists());
 
     // Resolution from wt-b: the stamp written for wt-a does not satisfy it,
@@ -533,12 +724,21 @@ fn stale_worktree_tool_copy_is_rejected_and_rebuilt() {
     assert!(Path::new(&b["VALIDATION_TOOL_IDENTITY_FILE"]).exists());
     assert!(
         !b_tools
-            .join(Path::new(&a["VALIDATION_TOOL_IDENTITY_FILE"]).file_name().unwrap())
+            .join(
+                Path::new(&a["VALIDATION_TOOL_IDENTITY_FILE"])
+                    .file_name()
+                    .unwrap()
+            )
             .exists(),
         "the foreign identity file survived"
     );
     let stamp = std::fs::read_to_string(&b["VALIDATION_TOOL_IDENTITY_FILE"]).unwrap();
-    for key in ["tool_identity=", "source_identity=", "curdir_real=", "owner="] {
+    for key in [
+        "tool_identity=",
+        "source_identity=",
+        "curdir_real=",
+        "owner=",
+    ] {
         assert!(stamp.contains(key), "stamp missing {key}: {stamp}");
     }
     assert!(stamp.contains(&format!("curdir_real={}", canonical(&wt_b))));
@@ -551,8 +751,14 @@ fn stale_worktree_tool_copy_is_rejected_and_rebuilt() {
     )
     .unwrap();
     assert_eq!(hits.len(), 1, "{hits:?}");
-    assert_eq!(hits[0].embedded, format!("{gone_path}/registry/claims.toml"));
-    assert_eq!(hits[0].vanished_root, gone_path, "the removed checkout is named exactly");
+    assert_eq!(
+        hits[0].embedded,
+        format!("{gone_path}/registry/claims.toml")
+    );
+    assert_eq!(
+        hits[0].vanished_root, gone_path,
+        "the removed checkout is named exactly"
+    );
 }
 
 /// Negative control: a binary that embeds only the running checkout's own path
@@ -582,7 +788,9 @@ fn path_scan_keeps_a_tool_that_names_only_the_live_worktree() {
 #[test]
 fn a_compiled_binary_embeds_its_own_checkout_path() {
     let manifest = Path::new(env!("CARGO_MANIFEST_DIR"));
-    let checkout = manifest.parent().expect("xtask sits one level below the repo root");
+    let checkout = manifest
+        .parent()
+        .expect("xtask sits one level below the repo root");
     let root = format!("{}/", checkout.canonicalize().unwrap().display());
     let bytes = std::fs::read(env!("CARGO_BIN_EXE_xtask")).unwrap();
     let found = repo_utilities::validation_tool_paths::embedded_paths_under(&bytes, &root);

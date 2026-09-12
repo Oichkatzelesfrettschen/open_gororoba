@@ -1,0 +1,2 @@
+au_cap_nm	gap_nm	target_pressure_pa	full_gap_difference_nm_for_10pct	full_cap_difference_nm_for_10pct	full_gain_difference_for_10pct	roughness_variance_difference_nm2_for_10pct
+10	100	1.46395800707312063e-1	8.39985977263350836e-2	1.99417464708281006e-1	2.91827495548465906e-3	3.79216478750702679e0

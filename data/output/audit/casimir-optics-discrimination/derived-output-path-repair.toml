@@ -1,0 +1,88 @@
+schema_version = 1
+repair_key = "casimir-optics-derived-output-manifest-canonical-path"
+actor = "codex"
+reason = "Replace the superseded aggregate measurements path with the hash-bound native derived-output manifest while retaining every former downloaded path as historical provenance."
+
+[[repair]]
+id = "LOCAL-CASIMIR-OPTICS-DISCRIMINATION"
+expected_canonical_path = "data/output/audit/casimir-optics-discrimination/measurements.tsv"
+expected_downloaded_paths = [
+  "data/output/audit/casimir-optics-discrimination/measurements.tsv",
+  "data/output/audit/casimir-optics-discrimination/source-retrieval-manifest.toml",
+  "data/output/audit/casimir-optics-discrimination/sources/au-Johnson.yml",
+  "data/output/audit/casimir-optics-discrimination/sources/au-Klinavicius-11.4nm.yml",
+  "data/output/audit/casimir-optics-discrimination/sources/au-McPeak.yml",
+  "data/output/audit/casimir-optics-discrimination/sources/au-Olmon-ev.yml",
+  "data/output/audit/casimir-optics-discrimination/sources/autonomous-qec-metrology-2026.pdf",
+  "data/output/audit/casimir-optics-discrimination/sources/casimir-scattering-review-2009.pdf",
+  "data/output/audit/casimir-optics-discrimination/sources/hnls-quantum-metrology-2017.pdf",
+  "data/output/audit/casimir-optics-discrimination/sources/lifshitz-planar-media-1956.pdf",
+  "data/output/audit/casimir-optics-discrimination/sources/master-equation-tutorial-nonsupporting-2008.pdf",
+  "data/output/audit/casimir-optics-discrimination/sources/mcpeak-plasmonic-films-2015.pdf",
+  "data/output/audit/casimir-optics-discrimination/sources/quantum-memory-kernel-cp-2009.pdf",
+  "data/output/audit/casimir-optics-discrimination/sources/refractiveindex-info-database-license.txt",
+  "data/output/audit/casimir-optics-discrimination/summary.toml",
+]
+replacement_path = "data/output/audit/casimir-optics-discrimination/derived-output-manifest.toml"
+replacement_sha256 = "fb2252700c7dc72fd400f32c025051bad35bd295f907ed72a153b735452fbff5"
+old_path_relation = "historical_download"
+
+[[repair.related_path]]
+path = "data/output/audit/casimir-optics-discrimination/bounded_mimic.tsv"
+sha256 = "8df4ac94b8288a403504b9afead5dc7eccb578652de13a1a71df48f4d15c2c09"
+relation = "transformed_copy"
+
+[[repair.related_path]]
+path = "data/output/audit/casimir-optics-discrimination/bounded_mimic_coefficients.tsv"
+sha256 = "55599c7ced0d3eca87d0dfc285fcb7122f985c394210b1efc43763f538a2df59"
+relation = "transformed_copy"
+
+[[repair.related_path]]
+path = "data/output/audit/casimir-optics-discrimination/calibration_priority.tsv"
+sha256 = "e98a2306e1f6193d692faa2eb1131bac80e43b51867088fa4d486a8d927d25c8"
+relation = "transformed_copy"
+
+[[repair.related_path]]
+path = "data/output/audit/casimir-optics-discrimination/commutator_and_null_controls.tsv"
+sha256 = "932846a8e99d23b4f67c434635998b55fc4932e35e5ba28fe4cce9b650eac0b8"
+relation = "transformed_copy"
+
+[[repair.related_path]]
+path = "data/output/audit/casimir-optics-discrimination/derivative_step_study.tsv"
+sha256 = "262b488d87949783290a21638a987de5c754a84e41cd9f91ee1dd112fc8f1ff3"
+relation = "transformed_copy"
+
+[[repair.related_path]]
+path = "data/output/audit/casimir-optics-discrimination/finite_temperature.tsv"
+sha256 = "035aba3974fed6cf4b6235c0eaaa84e61ef5fc3c434a794f8e1bee97de9dcfba"
+relation = "transformed_copy"
+
+[[repair.related_path]]
+path = "data/output/audit/casimir-optics-discrimination/local_tolerances.tsv"
+sha256 = "ff6b84d6b71f9cf5787bb62a102c4e8acd90b9c38f9f53a6140c73abddc980e3"
+relation = "transformed_copy"
+
+[[repair.related_path]]
+path = "data/output/audit/casimir-optics-discrimination/model_outputs.tsv"
+sha256 = "27e5b4ce31893398074b4d1a5e9760f9d3acf59394daf23c032884134290f4b8"
+relation = "transformed_copy"
+
+[[repair.related_path]]
+path = "data/output/audit/casimir-optics-discrimination/multilayer_pressure.tsv"
+sha256 = "b2503271d19f5270be8af0ff6656c543ca68121f1e08bc62179b50928c99613a"
+relation = "transformed_copy"
+
+[[repair.related_path]]
+path = "data/output/audit/casimir-optics-discrimination/physical_jacobian.tsv"
+sha256 = "7db9a1a5379bc71d747e46d1067b968635ceb65bd38747affef6965bc93d4d02"
+relation = "transformed_copy"
+
+[[repair.related_path]]
+path = "data/output/audit/casimir-optics-discrimination/unbounded_mimic_coefficients.tsv"
+sha256 = "d8def4a3fdfd4884d22fa501d1578d876e5ae1ca85f2b7e1498173584dae77f9"
+relation = "transformed_copy"
+
+[[repair.related_path]]
+path = "data/output/audit/casimir-optics-discrimination/uv_model_sensitivity.tsv"
+sha256 = "68beee5509606c782a74f4e1b80481872b5b19f025ee294c1bd050fb024bfa68"
+relation = "transformed_copy"

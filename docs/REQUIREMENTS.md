@@ -85,7 +85,7 @@ TOMLs from canonical SQLite. Walk-through:
 | `gororoba-db` | `crates/gororoba_db` | `cargo run --release -p gororoba_db --bin gororoba-db -- <subcommand>` | Canonical mutator for claims/insights/experiments + planning/requirements |
 | `provenance` | `crates/gororoba_cli_provenance` | `cargo run --release -p gororoba_cli_provenance --bin provenance -- export-control-plane` | Re-emit `registry/*.toml` from canonical SQLite |
 | `repo-audit` | `crates/gororoba_cli_data` | `cargo run --release -p gororoba_cli_data --bin repo-audit` | Anchored debt counter; supports `--sqlite` for revisions audit |
-| `registry-integrity` | `crates/gororoba_cli_data` | `cargo run --release -p gororoba_cli_data --bin registry-integrity` | Recompute `registry/schema_signatures.toml` after legitimate Layer-2 changes |
+| `registry-integrity` | `crates/gororoba_cli_governance` | `make registry-integrity` | Recompute `registry/schema_signatures.toml` through the dedicated validation-profile cache after legitimate Layer-2 changes |
 
 ## ONNX runtime (turboquant onnx-eval)
 

@@ -192,6 +192,11 @@ description = "Casimir Drude vs plasma model discrepancy for Au/Ag/Cu metallic p
 experiment = "E-044"
 
 [[binary]]
+name = "casimir-optics-discrimination-audit"
+crate = "gororoba_cli_physics"
+description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_physics; registry metadata pending."
+
+[[binary]]
 name = "casimir-plate-compare"
 crate = "gororoba_cli_physics"
 description = "Casimir force comparison for Si/Ge/SiO2 symmetric plate pairs using correct Lifshitz formula with GL quadrature (Sprint 45)"
@@ -1558,7 +1563,7 @@ experiment = "E-024"
 
 [[binary]]
 name = "registry-integrity"
-crate = "gororoba_cli_data"
+crate = "gororoba_cli_governance"
 description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_data; consult crate source for authoritative behavior."
 
 [[binary]]

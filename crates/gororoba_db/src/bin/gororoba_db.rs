@@ -1305,24 +1305,32 @@ fn maybe_regen_toml(regen_toml: bool) -> Result<()> {
         return Ok(());
     }
     eprintln!("regenerating compatibility-export TOMLs ...");
-    let status = std::process::Command::new("cargo")
-        .args([
-            "run",
-            "--release",
-            "-p",
-            "gororoba_cli_provenance",
-            "--bin",
-            "provenance",
-            "--",
-            "export-control-plane",
-        ])
-        .status()
-        .map_err(|e| {
-            anyhow::anyhow!(
-                "failed to spawn `cargo run -p gororoba_cli_provenance --bin provenance`: {}",
-                e
-            )
-        })?;
+    let mut command = std::process::Command::new("cargo");
+    command.args([
+        "run",
+        "--profile",
+        "validation",
+        "-p",
+        "gororoba_cli_provenance",
+        "--bin",
+        "provenance",
+        "--",
+        "export-control-plane",
+    ]);
+    let trusted_github_actions = std::env::var("CI").as_deref() == Ok("true")
+        && std::env::var("GITHUB_ACTIONS").as_deref() == Ok("true");
+    if !trusted_github_actions {
+        command
+            .env("CARGO_BUILD_JOBS", "2")
+            .env("RAYON_NUM_THREADS", "2")
+            .env("RUST_TEST_THREADS", "2");
+    }
+    let status = command.status().map_err(|e| {
+        anyhow::anyhow!(
+            "failed to spawn `cargo run -p gororoba_cli_provenance --bin provenance`: {}",
+            e
+        )
+    })?;
     if !status.success() {
         return Err(anyhow::anyhow!(
             "TOML regen subprocess exited with {}; the SQLite mutation already \

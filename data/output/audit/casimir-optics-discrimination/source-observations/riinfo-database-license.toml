@@ -1,0 +1,28 @@
+schema_version = 1
+observation_key = "casimir-optics-discrimination-riinfo-database-license"
+source_key = "RIINFO-DATABASE-LICENSE"
+actor = "codex"
+reason = "Admit retained source bytes through the typed first-observation contract without promoting scientific claims."
+requested_url = "https://raw.githubusercontent.com/polyanskiy/refractiveindex.info-database/c5c2f188e848453def5970e347399d653df2ffc2/LICENSE"
+outcome = "body_retained"
+observed_at = "2026-09-12"
+time_precision = "day"
+tool = "curl (audit-manifest attribution)"
+request_evidence_limit = "The retained manifest associates source key, requested URL, observation day, and body digest. Raw request logs, final redirect URLs, and HTTP status are absent."
+absent_prior_expectation_reason = "The audit records observed body identities after retrieval; a hash-bound prerequest body expectation is absent."
+document_identity_limit = "Retained license text establishes the database-level CC0 statement only; underlying papers retain their own attribution and authority."
+
+[request_evidence]
+path = "data/output/audit/casimir-optics-discrimination/source-retrieval-manifest.toml"
+storage_sha256 = "f12acc9372491e7c7408652ea9bc6766d3037a717bece9c26b32bccf4af2c21a"
+encoding = "identity"
+decoded_sha256 = "f12acc9372491e7c7408652ea9bc6766d3037a717bece9c26b32bccf4af2c21a"
+decoded_bytes = 5045
+
+[body]
+path = "data/output/audit/casimir-optics-discrimination/sources/refractiveindex-info-database-license.txt"
+storage_sha256 = "36ffd9dc085d529a7e60e1276d73ae5a030b020313e6c5408593a6ae2af39673"
+encoding = "identity"
+decoded_sha256 = "36ffd9dc085d529a7e60e1276d73ae5a030b020313e6c5408593a6ae2af39673"
+decoded_bytes = 6555
+

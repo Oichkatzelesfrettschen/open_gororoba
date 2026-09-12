@@ -239,13 +239,21 @@ checks run under `validate-static`; registry-aware checks run under
 `rust-regression` once instead of requesting its Clippy prerequisite twice.
 The old `gate-*` and `audit-deep*` names remain compatibility aliases only.
 
-GitHub Actions owns automatic validation. The tracked pre-push hook exits
-successfully, and local `make validate-local` remains an explicit diagnostic.
-The CI workflow calls Make directly, routes lint to changed owners and tests
-to their reverse dependency closure, and includes binary test targets. Weekly
-full validation covers workspace drift. Documentation builds and freshness
-checks share a runner; default features avoid requiring GPU SDKs for hosted
-documentation. Reports under `reports/validation/**` retain each executed lane.
+GitHub Actions owns automatic and authoritative broad validation. The tracked
+pre-push hook exits successfully, and local `make validate-local` remains an
+explicit diagnostic. Local diagnostics cap Cargo, nextest, Rust test, and Rayon
+concurrency at two workers, reserve memory per worker, reject a routing failure
+or workspace-wide scope instead of expanding silently, lint and test library
+targets only, and defer governance unless `LOCAL_RUN_GOVERNANCE=1` is supplied.
+CI-named broad Make targets require `CI=true`; an intentional workstation replay
+must declare `ALLOW_BROAD_LOCAL_VALIDATION=1`.
+
+The CI workflow calls Make directly, selects the CI worker-budget mode, routes
+lint to changed owners and tests to their reverse dependency closure, and
+includes binary test targets. Weekly full validation covers workspace drift.
+Documentation builds and freshness checks share a runner; default features
+avoid requiring GPU SDKs for hosted documentation. Reports under
+`reports/validation/**` retain each executed lane.
 
 ## Post-refresh validation result
 
@@ -283,19 +291,31 @@ The redesign is accepted only when all of these statements remain true:
 
 | Statement | Falsifier |
 | --- | --- |
-| A local Rust-only change skips non-Rust checks while preserving scoped Rust validation. | `workspace-routing` reports the wrong scope or a Rust-only change runs the non-Rust check. |
+| A local Rust-only change skips non-Rust checks while preserving bounded, scoped Rust validation. | `workspace-routing` reports the wrong scope, routing failure expands to `--workspace`, or a Rust-only change runs the non-Rust check. |
+| Broad authoritative validation runs on CI unless a workstation operator opts in explicitly. | A CI-named target starts locally without `ALLOW_BROAD_LOCAL_VALIDATION=1`, or CI fails to select `WORKER_BUDGET_MODE=ci`. |
+| Local diagnostics preserve workstation capacity. | The synthetic 128-CPU local probe exceeds two workers, or local validation invokes governance without `LOCAL_RUN_GOVERNANCE=1`. |
 | A registry-only change uses the cached validation tools without a Rust workspace regression. | `validate-repository-fast` invokes `rust-regression`, or a cached binary is older than its source dependency. |
 | CI registry and Rust lanes share one target root and do not duplicate either validation bundle. | Two Cargo builds occur for the 11-binary registry bundle in one `validate-ci` invocation, or CI cache paths differ from Make paths. |
 | `validate-registry` executes each registry invariant once. | The active recipe invokes `governance-verify validate-all` or `markdown-registry verify-all` more than once for the same run. |
 | Old names remain usable but do not appear in active CI or pre-push edges. | An active workflow invokes a compatibility alias or a new source comment introduces a historical gate name. |
 | Timing artifacts describe validation, not an implicit gate. | A new run writes `gate-timing-*` instead of `validation-timing-*`, except for preserved historical inputs. |
 
-The remaining structural frontier is the broad `gororoba_cli_data` package.
-The cache stamp removes repeated process and link work, but it does not make a
-large dependency closure small. A future `gororoba_registry_validation` crate
-should own the 11 validation binaries or split them into policy and
-integrity packages. That work belongs in a measured P1 structural change,
-after the current single-session result is captured.
+The `registry-integrity` fast path no longer inherits the broad
+`gororoba_cli_data` package. A measured cold `make registry-integrity` run from
+that owner took 8 minutes 27 seconds and compiled unrelated algebra, GPU,
+materials, plotting, HDF5, and browser dependencies. The binary now belongs to
+the slim `gororoba_cli_governance` package and has its own cache stamp. The
+first cold run through that lane took 55.9 seconds; a cached generation and
+verification took 1.8 seconds. The tool also renders claims, insights, and
+experiments from the read-only canonical SQLite store instead of treating the
+compatibility TOMLs as source truth.
+
+The remaining structural frontier is the other broad validation binaries in
+`gororoba_cli_data`. Their aggregate cache removes repeated process and link
+work but does not make their dependency closure small. Split a binary only
+after a measured direct target demonstrates that package ownership dominates
+its cost; preserve the aggregate CI lane until each replacement has parity
+evidence.
 
 ## Reproduction
 
@@ -303,8 +323,8 @@ Run these commands from an isolated worktree. They use the active vocabulary:
 
 ```bash
 make validate-local
-make validate-ci
-make validate-repository-fast
+ALLOW_BROAD_LOCAL_VALIDATION=1 make validate-ci
+ALLOW_BROAD_LOCAL_VALIDATION=1 make validate-repository-fast
 make validation-tools-status
 cargo run -p xtask -- validation-timing-summary --since-days 30
 cargo run -p xtask -- validation-timing-regression-check --baseline-days 14
@@ -316,9 +336,10 @@ Registry mutation remains distinct from validation:
 cargo run --release -p gororoba_db --bin gororoba-db -- <subcommand>
 cargo run --release -p gororoba_cli_provenance --bin provenance -- export-control-plane
 make registry-integrity
-make validate-registry
+make validate-registry-integrity
 ```
 
-The first three commands change or regenerate artifacts. `make validate-registry`
-is read-only. Keeping mutation and validation separate prevents a verifier from
-silently repairing the bytes that it claims to inspect.
+The first three commands change or regenerate artifacts.
+`make validate-registry-integrity` is read-only. Keeping mutation and
+validation separate prevents a verifier from silently repairing the bytes that
+it claims to inspect.

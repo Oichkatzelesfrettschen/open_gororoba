@@ -431,10 +431,6 @@ name = "evidence-provenance"
 path = "src/bin/evidence_provenance.rs"
 
 [[bin]]
-name = "registry-integrity"
-path = "src/bin/registry_integrity.rs"
-
-[[bin]]
 name = "execution-planning"
 path = "src/bin/execution_planning.rs"
 

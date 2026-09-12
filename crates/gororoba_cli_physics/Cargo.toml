@@ -119,6 +119,10 @@ name = "fano-scattering"
 path = "src/bin/fano_scattering.rs"
 
 [[bin]]
+name = "casimir-optics-discrimination-audit"
+path = "src/bin/casimir_optics_discrimination_audit.rs"
+
+[[bin]]
 name = "entropy-trap"
 path = "src/bin/entropy_trap.rs"
 
@@ -731,6 +735,7 @@ materials_core = { path = "../materials_core" }
 memmap2 = "0.9.11"
 mimalloc = { workspace = true }
 minifb = { workspace = true }
+nalgebra = { workspace = true }
 netcdf3 = { workspace = true, optional = true }
 neural_homotopy = { path = "../neural_homotopy" }
 num-complex = { workspace = true }

@@ -1,0 +1,14 @@
+section	quantity	value	unit
+planar	pressure	-8.12578607779843809e-1	Pa
+planar	energy_per_area	-5.41719071821061846e-8	J/m^2
+planar	sphere_pfa_force	-3.40372131268505895e-11	N
+thermal	drude_tm_zero_mode_energy_per_area	-2.47627981488252811e-9	J/m^2
+optics	wo3_halfspace_delta_reflectance	4.66435395473531633e-1	1
+optics	wo3_100nm_film_delta_reflectance	1.07989874271285480e-1	1
+channel	depolarizing_eigenvalue	-8.54467893006756518e-1	1
+channel	minimum_normalized_choi_eigenvalue	-3.90850919755067361e-1	1
+inference	synthetic_uncalibrated_information	1.00000000000000000e0	1
+inference	synthetic_calibrated_information	1.50000000000000000e0	1
+inference	synthetic_unrestricted_profile_distance	0.00000000000000000e0	1
+inference	synthetic_bounded_profile_distance	1.00000000002122569e0	1
+inference	arithmetic_error_margin_lower_bound	5.00000000021225688e-1	whitened norm

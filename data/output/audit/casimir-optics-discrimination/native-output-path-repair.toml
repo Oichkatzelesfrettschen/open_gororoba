@@ -1,0 +1,14 @@
+schema_version = 1
+repair_key = "casimir-optics-clippy-clean-native-manifest"
+actor = "codex"
+reason = "Advance the canonical audit path to the lint-clean typed-parameter producer while retaining the preceding hash-bound manifest as historical provenance."
+
+[[repair]]
+id = "LOCAL-CASIMIR-OPTICS-DISCRIMINATION"
+expected_canonical_path = "data/output/audit/casimir-optics-discrimination/derived-output-manifest.toml"
+expected_downloaded_paths = [
+  "data/output/audit/casimir-optics-discrimination/derived-output-manifest.toml",
+]
+replacement_path = "data/output/audit/casimir-optics-discrimination/native-output-manifest.toml"
+replacement_sha256 = "5c7e620adf1f6461165e2da8a224b5c249a7fdc9731f0131288c3d27840ef51e"
+old_path_relation = "historical_download"

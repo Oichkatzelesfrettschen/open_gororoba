@@ -1,5 +1,6 @@
 use anyhow::{Context, Result, bail};
 use clap::{Parser, Subcommand, ValueEnum};
+use gororoba_cli_provenance::finite_frontier::verify_finite_frontier_path;
 use lit_search::{
     SearchEngine, VerificationReport, check_novelty, search::SourceTier, sources::ApiKeys,
     verify_citations,
@@ -81,6 +82,8 @@ enum Commands {
     ExportExternalSources(ExportExternalSourcesArgs),
     /// Verify external source SQLite invariants and generated compatibility exports.
     VerifyExternalSources(VerifyExternalSourcesArgs),
+    /// Verify the exact Casimir/optics discrimination frontier denominator.
+    VerifyFiniteFrontier(VerifyFiniteFrontierArgs),
     /// Update one SQLite-authored external source contract and optionally re-export compatibility views.
     UpdateExternalSource(Box<UpdateExternalSourceArgs>),
     /// Query one artifact or document from the SQLite index.
@@ -283,6 +286,15 @@ struct VerifyExternalSourcesArgs {
 
     #[arg(long, default_value = "registry/external_sources.toml")]
     dossiers_registry: PathBuf,
+}
+
+#[derive(Parser, Debug)]
+struct VerifyFiniteFrontierArgs {
+    #[arg(
+        long,
+        default_value = "plans/casimir_optics_discrimination_frontier.toml"
+    )]
+    frontier: PathBuf,
 }
 
 #[derive(Parser, Debug)]
@@ -535,6 +547,12 @@ fn main() -> Result<()> {
         }
         Commands::VerifyExternalSources(args) => {
             run_verify_external_sources(&repo_root, &db_path, args)
+        }
+        Commands::VerifyFiniteFrontier(args) => {
+            let frontier_path = repo_path(&repo_root, &args.frontier);
+            let report = verify_finite_frontier_path(&frontier_path)?;
+            print!("{}", report.render_text());
+            Ok(())
         }
         Commands::UpdateExternalSource(args) => {
             run_update_external_source(&repo_root, &db_path, *args)

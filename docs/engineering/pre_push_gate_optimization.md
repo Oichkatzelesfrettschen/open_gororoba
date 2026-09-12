@@ -94,10 +94,10 @@ defense-in-depth:
 - `sccache` re-enabled in `.cargo/config.toml`. Passes through for
   the local incremental build (~5ms/crate); caches across sessions
   when `CARGO_INCREMENTAL=0` (CI).
-- `cargo xtask validate-local` driver: replicates the Makefile validate-local
-  flow with structured JSONL timing output to
-  `data/output/audit/<date>/validation-timing-<unix-ts>.jsonl`. Opt-in via
-  `make validate-local-xtask`.
+- `cargo xtask validate-local` retains the historical structured replay and
+  timing implementation. `make validate-local-xtask` requires `CI=true` or
+  `ALLOW_BROAD_LOCAL_VALIDATION=1` because the Rust driver predates the bounded
+  Make path. Ordinary workstation diagnostics use `make validate-local`.
 - `cargo xtask validation-timing-summary`: aggregate the JSONL files into
   per-phase stats (count, mean, median, p95, min, max, last).
 - `cargo xtask validation-timing-regression-check`: per-phase comparison
@@ -118,9 +118,10 @@ defense-in-depth:
 
 ## Layered gate model
 
-- **Pre-push (local, `make validate-local` or `cargo xtask validate-local`)**:
-  smoke gate. Direct-changed crates only. `--lib` only. Skip make check
-  on Rust-only diffs. Target: under 2 minutes warm-cache.
+- **Explicit local diagnostic (`make validate-local`)**: direct-changed crates
+  only, `--lib` only, at most two Cargo/test workers, and governance deferred
+  unless requested. A routing failure or workspace-wide scope stops with an
+  instruction to use CI; neither condition expands local work silently.
 - **PR CI (`validate-ci-rust` in ci.yml)**: full workspace closure +
   `--lib --tests` + integrity gates + governance. Target: 10-15
   minutes.
@@ -134,9 +135,10 @@ it preemptively on every PR. Pre-push is intentionally a smoke gate.
 
 ## Architectural decisions worth preserving
 
-1. **`workspace-routing` lives in `gororoba_cli_data`.** It is one
-   `[[bin]]` of many. Always invoke with `-p gororoba_cli_data --bin
-   workspace-routing`, or via the cached binary at
+1. **Local routing uses the slim governance owner.** The
+   `workspace-routing-proxy` target belongs to `gororoba_cli_governance` and
+   reuses the routing source without inheriting the broad data CLI dependency
+   graph. Invoke the staged binary at
    `.cache/gate-target/validation-tools/workspace-routing`.
 
 2. **`repo_utilities` is its own crate.** Do not move it back into
@@ -162,9 +164,20 @@ it preemptively on every PR. Pre-push is intentionally a smoke gate.
    refactor validate-local to multiple shells, preserve the trap or move
    the lock management to the xtask driver.
 
-7. **`cargo sweep --time 7` preserves the working set.** The previous
+7. **Broad validation requires an execution-boundary declaration.** GitHub
+   Actions supplies `CI=true` and `WORKER_BUDGET_MODE=ci`. A workstation
+   operator must supply `ALLOW_BROAD_LOCAL_VALIDATION=1`; ordinary local
+   diagnostics never inherit that authority.
+
+8. **`cargo sweep --time 7` preserves the working set.** The previous
    `--maxsize 100GB` policy was destructive. Do not revert without
    adding `--dry-run` first to measure what would be lost.
+
+9. **Registry integrity has a dedicated slim cache.** The
+   `registry-integrity` binary belongs to `gororoba_cli_governance`, and
+   `make registry-integrity` depends only on its dedicated stamp. Do not attach
+   that target to `registry-validation-tools`; doing so restores the measured
+   8-minute broad compile path.
 
 ## File index
 

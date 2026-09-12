@@ -33,6 +33,7 @@ env:
   CARGO_PROFILE_TEST_DEBUG: '0'
   CARGO_PROFILE_RELEASE_DEBUG: '0'
   RUST_BACKTRACE: '1'
+  WORKER_BUDGET_MODE: ci
 
 jobs:
   validation:
@@ -68,6 +69,9 @@ jobs:
       - name: Validate workflow syntax and embedded shell
         run: actionlint
 
+      - name: Validate local and CI resource boundaries
+        run: make validation-resource-contract
+
       - name: Cache Rust dependencies and validation artifacts
         id: rust-cache
         uses: actions/cache/restore@v4
@@ -90,7 +94,7 @@ jobs:
           FULL: ${{ github.event_name == 'schedule' || inputs.full == true }}
         run: |
           set -euo pipefail
-          worker_budget="$(sh scripts/detect_worker_budget.sh)"
+          worker_budget="$(sh scripts/detect_worker_budget.sh "$WORKER_BUDGET_MODE")"
           for variable in WORKER_BUDGET CARGO_JOBS NEXTEST_TEST_THREADS RUST_TEST_THREADS RAYON_THREADS; do
             echo "$variable=$worker_budget" >> "$GITHUB_ENV"
           done
@@ -114,14 +118,15 @@ jobs:
         run: |
           set -euo pipefail
           if [ "$FULL" = true ]; then
-            printf 'docs=true\ndependencies=true\nwarp=true\n' >> "$GITHUB_OUTPUT"
+            printf 'docs=true\ndependencies=true\nwarp=true\ncasimir_audit=true\n' >> "$GITHUB_OUTPUT"
           else
             git diff --no-renames --name-only "$DIFF_BASE" HEAD > reports/validation/changed-paths.txt
-            for lane in docs dependencies warp; do
+            for lane in docs dependencies warp casimir_audit; do
               case "$lane" in
                 docs) pattern='^(docs/book/|crates/|xtask/|Cargo\.(toml|lock)$|rust-toolchain\.toml$|Makefile$|mk/|\.cargo/|\.github/workflows/ci\.yml$)' ;;
                 dependencies) pattern='(^|/)Cargo\.(toml|lock)$|(^|/)deny\.toml$|^rust-toolchain\.toml$|^\.github/workflows/ci\.yml$' ;;
                 warp) pattern='^data/h5/|^crates/gororoba_cli_warp/|^crates/data_artifacts_core/|^\.github/workflows/ci\.yml$' ;;
+                casimir_audit) pattern='^crates/(gororoba_cli_physics|materials_core|materials_data|quantum_core|stats_core)/|^data/output/audit/casimir-optics-discrimination/|^plans/casimir_optics_discrimination_frontier\.toml$|^Cargo\.(toml|lock)$|^\.github/workflows/ci\.yml$' ;;
               esac
               if grep -Eq "$pattern" reports/validation/changed-paths.txt; then
                 echo "$lane=true" >> "$GITHUB_OUTPUT"
@@ -175,6 +180,10 @@ jobs:
       - name: Verify provider inventory and database schema documentation
         if: steps.route.outputs.run_rust == 'true' || steps.route.outputs.run_governance == 'true'
         run: make validate-rust-integrity db-schema-drift-check 2>&1 | tee reports/validation/integrity.log
+
+      - name: Verify retained Casimir and optics audit freshness
+        if: steps.paths.outputs.casimir_audit == 'true'
+        run: make casimir-optics-discrimination-audit-check 2>&1 | tee reports/validation/casimir-optics-discrimination.log
 
       - name: Install dependency policy verifier
         if: steps.paths.outputs.dependencies == 'true'
