@@ -749,6 +749,7 @@ rand = { workspace = true }
 rand_chacha = { workspace = true }
 rand_distr = { workspace = true }
 rayon = { workspace = true }
+repo_root = { workspace = true }
 rusqlite = { workspace = true }
 rustfft = { workspace = true }
 serde = { workspace = true }
@@ -903,5 +904,4 @@ name = "voyager2-bartol-amda-crossval"
 path = "src/bin/voyager2_bartol_amda_crossval.rs"
 
 [dev-dependencies]
-repo_root = { workspace = true }
 tempfile = { workspace = true }
