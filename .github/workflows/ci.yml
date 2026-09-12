@@ -101,8 +101,10 @@ jobs:
           FULL: ${{ github.event_name == 'schedule' || inputs.full == true }}
         run: |
           set -euo pipefail
-          worker_budget="$(sh scripts/detect_worker_budget.sh "$WORKER_BUDGET_MODE")"
-          for variable in WORKER_BUDGET CARGO_JOBS NEXTEST_TEST_THREADS RUST_TEST_THREADS RAYON_THREADS; do
+          rustc --edition=2024 -D warnings crates/gororoba_cli/src/bin/detect_worker_budget.rs -o "$RUNNER_TEMP/detect-worker-budget"
+          "$RUNNER_TEMP/detect-worker-budget" --self-test
+          worker_budget="$("$RUNNER_TEMP/detect-worker-budget" "$WORKER_BUDGET_MODE")"
+          for variable in CI_WORKER_BUDGET WORKER_BUDGET CARGO_JOBS NEXTEST_TEST_THREADS RUST_TEST_THREADS RAYON_THREADS; do
             echo "$variable=$worker_budget" >> "$GITHUB_ENV"
           done
           if [ "$FULL" = true ]; then

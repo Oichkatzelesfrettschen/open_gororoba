@@ -307,12 +307,16 @@ The audit records those reported numbers as an unreplayed observation with
 `resource_scope=missing_design_commutator_csv`; it does not synthesize a
 schedule to reproduce them.
 
-The declared frontier therefore has 30 rows, 28 closed rows, and two open
-rows. `selected-schedule-independent-monte-carlo` remains open until the exact
-CSV is retained and hashed. `declared-frontier-denominator-proof` remains open
-because it depends on that row. The finite-frontier verifier proves this exact
-partition and rejects denominator, witness, dependency, and state mutations;
-it does not execute every row's scientific evidence.
+The declared frontier therefore has 30 rows, 27 closed rows, and three open
+rows. `lifshitz-planar-polar-normalization` remains open until retained cutoff
+and quadrature-order refinement establish convergence. The single-order ideal,
+energy-derivative, and sphere-force oracles remain valid implementation
+evidence but do not supply that missing observation.
+`selected-schedule-independent-monte-carlo` remains open until the exact CSV is
+retained and hashed. `declared-frontier-denominator-proof` remains open because
+it depends on both mechanism rows. The finite-frontier verifier proves this
+exact partition and rejects denominator, witness, dependency, and state
+mutations; it does not execute every row's scientific evidence.
 
 ## Retained sources
 

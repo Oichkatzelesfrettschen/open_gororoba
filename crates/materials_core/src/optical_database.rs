@@ -1604,7 +1604,14 @@ pub fn casimir_lifshitz_energy(
     // ------------------------------------------------------------------
     {
         let static_tm_reflection = |material: &DrudeLorentzParams| {
-            if material.drude.is_some() || material.extended_drude.is_some() {
+            let carrier_strength_ev = material
+                .extended_drude
+                .as_ref()
+                .map(|drude| drude.omega_p_ev)
+                .or_else(|| material.drude.as_ref().map(|drude| drude.omega_p_ev));
+            let has_conducting_carrier =
+                carrier_strength_ev.is_some_and(|omega_p_ev| omega_p_ev > 0.0);
+            if has_conducting_carrier {
                 // A local Drude conductor has an infinite static permittivity,
                 // so its electrostatic TM reflection amplitude is exactly one.
                 1.0
@@ -5206,6 +5213,50 @@ mod tests {
             relative_error < 2e-10,
             "Drude TM zero-mode prefactor mismatch: relative error {relative_error:e}"
         );
+    }
+
+    #[test]
+    fn test_lifshitz_zero_strength_carriers_preserve_dielectric_zero_mode() {
+        let dielectric = DrudeLorentzParams {
+            drude: None,
+            oscillators: vec![],
+            eps_inf: 4.0,
+            extended_drude: None,
+        };
+        let zero_strength_drude = DrudeLorentzParams {
+            drude: Some(DrudeParams {
+                omega_p_ev: 0.0,
+                gamma_ev: 0.035,
+                eps_inf: 4.0,
+            }),
+            oscillators: vec![],
+            eps_inf: 4.0,
+            extended_drude: None,
+        };
+        let zero_strength_extended_drude = DrudeLorentzParams {
+            drude: Some(DrudeParams {
+                omega_p_ev: 9.0,
+                gamma_ev: 0.035,
+                eps_inf: 4.0,
+            }),
+            oscillators: vec![],
+            eps_inf: 4.0,
+            extended_drude: Some(ExtendedDrudeParams {
+                omega_p_ev: 0.0,
+                scattering: ScatteringModel::Constant { gamma_ev: 0.035 },
+                eps_inf: 4.0,
+            }),
+        };
+        let separation = 200e-9;
+        let temperature = 300.0;
+        let dielectric_energy =
+            casimir_lifshitz_energy(&dielectric, &dielectric, separation, temperature, 0, 128);
+
+        for material in [&zero_strength_drude, &zero_strength_extended_drude] {
+            let carrier_energy =
+                casimir_lifshitz_energy(material, material, separation, temperature, 0, 128);
+            assert_eq!(carrier_energy, dielectric_energy);
+        }
     }
 
     #[test]

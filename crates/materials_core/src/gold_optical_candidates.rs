@@ -180,6 +180,32 @@ impl GoldOpticalCandidate {
                 self.dataset_id
             ));
         }
+        let missing_required_metadata: Vec<_> = [
+            ("temperature_label", self.temperature_label.as_deref()),
+            (
+                "specimen_preparation",
+                self.specimen_preparation.as_deref(),
+            ),
+            ("geometry", self.geometry.as_deref()),
+            ("measurement_method", self.measurement_method.as_deref()),
+            (
+                "measurement_uncertainty",
+                self.measurement_uncertainty.as_deref(),
+            ),
+        ]
+        .into_iter()
+        .filter_map(|(field, value)| match value {
+            Some(value) if !value.trim().is_empty() => None,
+            _ => Some(field),
+        })
+        .collect();
+        if self.direct_admission_ready && !missing_required_metadata.is_empty() {
+            return Err(format!(
+                "candidate {} claims direct admission while required metadata remains missing: {}",
+                self.dataset_id,
+                missing_required_metadata.join(", ")
+            ));
+        }
         if self.direct_admission_ready && !self.missing_fields.is_empty() {
             return Err(format!(
                 "candidate {} claims direct admission while required fields remain missing",
@@ -476,8 +502,9 @@ mod tests {
     }
 
     #[test]
-    fn admission_readiness_cannot_hide_missing_fields() {
+    fn admission_readiness_cannot_hide_absent_required_metadata() {
         let mut catalog = GoldOpticalCandidateCatalog::load().unwrap();
+        catalog.dataset[0].missing_fields.clear();
         catalog.dataset[0].direct_admission_ready = true;
         assert!(catalog.validate().is_err());
     }

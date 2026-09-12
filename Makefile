@@ -67,15 +67,14 @@
 
 .NOTPARALLEL: bootstrap-dev check smoke integrity integrity-rust validate-rust-integrity rust-smoke rust-regression rust-regression-scoped heavy cargo-deny-check validate-local validate-ci validate-ci-registry validate-ci-rust validate-repository validate-repository-fast validate-supply-chain validate-dataset-experiments pre-push-gate pre-push-gate-scoped pre-push-gate-strict governance-gate governance-gate-readonly registry-control-plane-gate-readonly registry-acceptance-gate-readonly validate-registry validation-tools
 
-# Non-cargo make fanout: 75% of logical CPUs, minimum 1.
-# GitHub Actions selects CI mode explicitly and reserves 2 GiB per worker.
-# Mutation generators use the workstation budget but do not issue validation
-# verdicts.
+# Non-Cargo mutation generators default to one worker. GitHub Actions exports
+# the typed Rust detector's bounded worker count before invoking validation.
 NPROC := $(shell nproc 2>/dev/null || echo 4)
 NJOBS := $(shell expr $(NPROC) \* 3 / 4)
 TRUSTED_GITHUB_ACTIONS := $(if $(and $(filter true,$(CI)),$(filter true,$(GITHUB_ACTIONS))),1,0)
 override WORKER_BUDGET_MODE := $(if $(filter 1,$(TRUSTED_GITHUB_ACTIONS)),ci,local)
-override WORKER_BUDGET := $(shell sh scripts/detect_worker_budget.sh $(WORKER_BUDGET_MODE))
+CI_WORKER_BUDGET ?= 1
+override WORKER_BUDGET := $(if $(filter 1,$(TRUSTED_GITHUB_ACTIONS)),$(CI_WORKER_BUDGET),1)
 override CARGO_JOBS := $(WORKER_BUDGET)
 override NEXTEST_TEST_THREADS := $(WORKER_BUDGET)
 override RUST_TEST_THREADS := $(WORKER_BUDGET)
@@ -258,19 +257,13 @@ print-validation-resource-config:
 
 validation-resource-contract:
 	@set -eu; \
-	test "$$(GOROROBA_WORKER_TEST_CPUS=1 GOROROBA_WORKER_TEST_MEMORY_MB=65536 sh scripts/detect_worker_budget.sh local)" = 1; \
-	test "$$(GOROROBA_WORKER_TEST_CPUS=128 GOROROBA_WORKER_TEST_MEMORY_MB=65536 sh scripts/detect_worker_budget.sh local)" = 2; \
-	test "$$(GOROROBA_WORKER_TEST_CPUS=128 GOROROBA_WORKER_TEST_MEMORY_MB=8192 sh scripts/detect_worker_budget.sh ci)" = 4; \
-	if sh scripts/detect_worker_budget.sh invalid >/dev/null 2>&1; then \
-	    echo "ERROR: worker-budget mode mutation was accepted." >&2; exit 1; \
-	fi; \
-	local_config="$$(GOROROBA_WORKER_TEST_CPUS=128 GOROROBA_WORKER_TEST_MEMORY_MB=65536 \
+	local_config="$$( \
 	    $(MAKE) --no-print-directory -s print-validation-resource-config \
-	    CI=false GITHUB_ACTIONS=false WORKER_BUDGET_MODE=ci WORKER_BUDGET=99 CARGO_JOBS=99)"; \
-	test "$$local_config" = 'mode=local workers=2 trusted_github_actions=0'; \
-	ci_config="$$(GOROROBA_WORKER_TEST_CPUS=128 GOROROBA_WORKER_TEST_MEMORY_MB=8192 \
+	    CI=false GITHUB_ACTIONS=false CI_WORKER_BUDGET=99 WORKER_BUDGET_MODE=ci WORKER_BUDGET=99 CARGO_JOBS=99)"; \
+	test "$$local_config" = 'mode=local workers=1 trusted_github_actions=0'; \
+	ci_config="$$( \
 	    $(MAKE) --no-print-directory -s print-validation-resource-config \
-	    CI=true GITHUB_ACTIONS=true WORKER_BUDGET_MODE=local WORKER_BUDGET=99 CARGO_JOBS=99)"; \
+	    CI=true GITHUB_ACTIONS=true CI_WORKER_BUDGET=4 WORKER_BUDGET_MODE=local WORKER_BUDGET=99 CARGO_JOBS=99)"; \
 	test "$$ci_config" = 'mode=ci workers=4 trusted_github_actions=1'; \
 	if $(MAKE) --no-print-directory -s require-ci-validation-authority \
 	    CI=true GITHUB_ACTIONS=false >/dev/null 2>&1; then \
@@ -306,7 +299,10 @@ validation-resource-contract:
 	    echo "ERROR: registry-integrity remains owned by the broad data CLI package." >&2; exit 1; \
 	fi; \
 	grep -Fq 'WORKER_BUDGET_MODE: ci' .github/workflows/ci.yml; \
-	grep -Fq 'detect_worker_budget.sh "$$WORKER_BUDGET_MODE"' .github/workflows/ci.yml; \
+	grep -Fq 'detect_worker_budget.rs' .github/workflows/ci.yml; \
+	grep -Fq 'CI_WORKER_BUDGET' .github/workflows/ci.yml; \
+	test ! -e scripts/detect_worker_budget.sh; \
+	test ! -e scripts/detect_physical_cores.sh; \
 	grep -Fq 'check-local validate-local validate-local-xtask' Makefile; \
 	grep -Fq 'make validation-resource-contract' .github/workflows/ci.yml; \
 	grep -Fq 'make casimir-optics-discrimination-audit-check' .github/workflows/ci.yml; \
@@ -315,7 +311,9 @@ validation-resource-contract:
 casimir-optics-discrimination-audit-check: require-ci-validation-authority
 	$(CARGO_ENV) cargo run --locked --profile validation -p gororoba_cli_physics \
 	    --bin casimir-optics-discrimination-audit -- \
-	    --output-directory data/output/audit/casimir-optics-discrimination --check
+	    --output-directory data/output/audit/casimir-optics-discrimination \
+	    --check \
+	    --expected-output-directory reports/validation/casimir-optics-discrimination-expected
 
 .PHONY: validate-static validate-static-and-registry validate-comprehensive
 .PHONY: audit-comprehensive audit-comprehensive-structured validate-supply-chain validate-dataset-experiments gate-fast gate-warm gate-deep audit-deep audit-deep-structured typos machete audit geiger supply-chain-gate ndlb-gate

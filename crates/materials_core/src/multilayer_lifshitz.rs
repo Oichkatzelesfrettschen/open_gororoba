@@ -367,11 +367,17 @@ fn validate_stack(
             validate_local_drude_model(layer.model)?;
         }
     }
-    if let HalfSpace::Material(model) = stack.substrate {
-        validate_model(model)?;
-        if local_drude_only {
-            validate_local_drude_model(model)?;
+    match stack.substrate {
+        HalfSpace::Material(model) => {
+            validate_model(model)?;
+            if local_drude_only {
+                validate_local_drude_model(model)?;
+            }
         }
+        HalfSpace::IdealConductor if local_drude_only => {
+            return Err(LifshitzError::UnsupportedThermalModel);
+        }
+        HalfSpace::IdealConductor => {}
     }
     Ok(())
 }
@@ -712,6 +718,8 @@ fn zero_mode_pressure_integral(
 ///
 /// A positive-thickness conducting outer layer receives the exact static
 /// response `r_TM = 1` and `r_TE = 0`, independent of buried layers.
+/// Ideal-conductor half-spaces are rejected because their nonzero TE zero mode
+/// lies outside the local-Drude prescription implemented by this function.
 pub fn local_drude_zero_mode_pressure(
     gap_m: f64,
     temperature_k: f64,
@@ -739,8 +747,8 @@ pub fn local_drude_zero_mode_pressure(
 ///
 /// The Matsubara sum includes the half-weight zero mode and
 /// `options.matsubara_terms` positive modes. Extended-Drude and zero-damping
-/// plasma responses are rejected because they do not satisfy this function's
-/// local-Drude zero-mode contract.
+/// plasma responses and ideal-conductor half-spaces are rejected because they
+/// do not satisfy this function's local-Drude zero-mode contract.
 pub fn local_drude_finite_temperature_pressure(
     gap_m: f64,
     temperature_k: f64,
@@ -950,6 +958,31 @@ mod tests {
             local_drude_zero_mode_pressure(200.0e-9, 300.0, &zero_coated, &opposing, 96).unwrap();
 
         assert_eq!(zero_coated_pressure, direct_pressure);
+    }
+
+    #[test]
+    fn local_drude_thermal_apis_reject_ideal_conductor_half_spaces() {
+        let conductor = local_conductor();
+        let material = Multilayer::half_space(&conductor);
+        let ideal = Multilayer::ideal_conductor();
+
+        assert_eq!(
+            local_drude_zero_mode_pressure(200.0e-9, 300.0, &material, &ideal, 16),
+            Err(LifshitzError::UnsupportedThermalModel)
+        );
+        assert_eq!(
+            local_drude_finite_temperature_pressure(
+                200.0e-9,
+                300.0,
+                &ideal,
+                &material,
+                FiniteTemperatureOptions {
+                    radial_order: 16,
+                    matsubara_terms: 1,
+                },
+            ),
+            Err(LifshitzError::UnsupportedThermalModel)
+        );
     }
 
     #[test]

@@ -293,6 +293,17 @@ fn require_nonempty(label: &str, value: &str) -> Result<(), String> {
 }
 
 impl QuantityPayload {
+    fn value_count(&self) -> usize {
+        match self {
+            Self::Scalar { .. } => 1,
+            Self::Vector { values, .. } => values.len(),
+            Self::Tensor {
+                values_row_major, ..
+            } => values_row_major.len(),
+            Self::Spectrum { ordinate, .. } => ordinate.len(),
+        }
+    }
+
     fn validate(&self) -> Result<(), String> {
         match self {
             Self::Scalar { value } => {
@@ -371,8 +382,7 @@ impl Uncertainty {
                 let scale = values_row_major
                     .iter()
                     .map(|value| value.abs())
-                    .fold(0.0_f64, f64::max)
-                    .max(1.0);
+                    .fold(0.0_f64, f64::max);
                 let tolerance = 64.0 * f64::EPSILON * scale * (*dimension as f64);
                 for row in 0..*dimension {
                     for column in (row + 1)..*dimension {
@@ -406,13 +416,36 @@ impl QuantityValue {
         require_nonempty("quantity unit", &self.unit)?;
         self.uncertainty.validate()?;
         match &self.observation {
-            QuantityObservation::Observed { payload } => payload.validate()?,
+            QuantityObservation::Observed { payload } => {
+                payload.validate()?;
+                if self.conditions.is_empty() {
+                    return Err("observed quantity requires conditions".to_owned());
+                }
+                for (condition, value) in &self.conditions {
+                    require_nonempty("condition name", condition)?;
+                    require_nonempty("condition value", value)?;
+                }
+                let applicability_range = self
+                    .applicability_range
+                    .as_deref()
+                    .ok_or_else(|| {
+                        "observed quantity requires an applicability range".to_owned()
+                    })?;
+                require_nonempty("applicability range", applicability_range)?;
+                if let Uncertainty::Covariance { dimension, .. } = &self.uncertainty
+                    && *dimension != payload.value_count()
+                {
+                    return Err(
+                        "covariance dimension must match the observed payload".to_owned(),
+                    );
+                }
+            }
             QuantityObservation::Missing {
                 reason: Missingness::BelowDetectionLimit { upper_bound, unit },
             } => {
                 require_nonempty("detection-limit unit", unit)?;
-                if !upper_bound.is_finite() {
-                    return Err("detection limit must be finite".to_owned());
+                if !upper_bound.is_finite() || *upper_bound < 0.0 {
+                    return Err("detection limit must be finite and nonnegative".to_owned());
                 }
             }
             QuantityObservation::Missing {
@@ -558,6 +591,14 @@ impl Measurement {
         if self.repeat_count == 0 {
             return Err("measurement repeat count must be positive".to_owned());
         }
+        if let Some((detection_limit, unit)) = &self.detection_limit {
+            require_nonempty("measurement detection-limit unit", unit)?;
+            if !detection_limit.is_finite() || *detection_limit < 0.0 {
+                return Err(
+                    "measurement detection limit must be finite and nonnegative".to_owned(),
+                );
+            }
+        }
         require_nonempty("source identifier", &self.provenance.source_id)?;
         require_nonempty(
             "source DOI or stable identifier",
@@ -690,9 +731,16 @@ impl MaterialEvidenceGraph {
                 .iter()
                 .map(|record| &record.measurement_id),
         )?;
-        let quantity_ids = unique_ids(
+        unique_ids(
             "quantity identifier",
-            self.quantities.iter().map(|record| &record.quantity_id),
+            self.quantities
+                .iter()
+                .map(|record| &record.quantity_id)
+                .chain(
+                    self.derived_values
+                        .iter()
+                        .map(|record| &record.output.quantity_id),
+                ),
         )?;
         let quantities_by_id: BTreeMap<_, _> = self
             .quantities
@@ -703,6 +751,11 @@ impl MaterialEvidenceGraph {
             "model-run identifier",
             self.model_runs.iter().map(|record| &record.model_run_id),
         )?;
+        let model_runs_by_id: BTreeMap<_, _> = self
+            .model_runs
+            .iter()
+            .map(|model_run| (&model_run.model_run_id, model_run))
+            .collect();
         unique_ids(
             "derived-value identifier",
             self.derived_values
@@ -784,33 +837,64 @@ impl MaterialEvidenceGraph {
             }
         }
         for model_run in &self.model_runs {
-            if let Some(missing) = model_run
-                .input_quantity_ids
-                .iter()
-                .find(|identifier| !quantity_ids.contains(identifier))
-            {
-                return Err(format!(
-                    "model run {} references unknown input quantity {}",
-                    model_run.model_run_id.0, missing.0
-                ));
+            for input_quantity_id in &model_run.input_quantity_ids {
+                let input_quantity = quantities_by_id.get(input_quantity_id).ok_or_else(|| {
+                    format!(
+                        "model run {} references unknown input quantity {}",
+                        model_run.model_run_id.0, input_quantity_id.0
+                    )
+                })?;
+                if !matches!(
+                    &input_quantity.observation,
+                    QuantityObservation::Observed { .. }
+                )
+                    || !matches!(
+                        input_quantity.evidence.class(),
+                        EvidenceClass::ExperimentalDirect | EvidenceClass::ExperimentalFitted
+                    )
+                {
+                    return Err(format!(
+                        "model run {} input {} is not observed experimental evidence",
+                        model_run.model_run_id.0, input_quantity_id.0
+                    ));
+                }
             }
         }
         for derived in &self.derived_values {
-            if !model_run_ids.contains(&derived.model_run_id) {
-                return Err(format!(
+            let model_run = model_runs_by_id.get(&derived.model_run_id).ok_or_else(|| {
+                format!(
                     "derived value {} references unknown model run {}",
                     derived.derived_value_id.0, derived.model_run_id.0
-                ));
-            }
-            if let Some(missing) = derived
-                .input_quantity_ids
-                .iter()
-                .find(|identifier| !quantity_ids.contains(identifier))
-            {
-                return Err(format!(
-                    "derived value {} references unknown input quantity {}",
-                    derived.derived_value_id.0, missing.0
-                ));
+                )
+            })?;
+            let declared_inputs: BTreeSet<_> = model_run.input_quantity_ids.iter().collect();
+            for input_quantity_id in &derived.input_quantity_ids {
+                let input_quantity = quantities_by_id.get(input_quantity_id).ok_or_else(|| {
+                    format!(
+                        "derived value {} references unknown input quantity {}",
+                        derived.derived_value_id.0, input_quantity_id.0
+                    )
+                })?;
+                if !matches!(
+                    &input_quantity.observation,
+                    QuantityObservation::Observed { .. }
+                )
+                    || !matches!(
+                        input_quantity.evidence.class(),
+                        EvidenceClass::ExperimentalDirect | EvidenceClass::ExperimentalFitted
+                    )
+                {
+                    return Err(format!(
+                        "derived value {} input {} is not observed experimental evidence",
+                        derived.derived_value_id.0, input_quantity_id.0
+                    ));
+                }
+                if !declared_inputs.contains(input_quantity_id) {
+                    return Err(format!(
+                        "derived value {} input {} is not declared by model run {}",
+                        derived.derived_value_id.0, input_quantity_id.0, model_run.model_run_id.0
+                    ));
+                }
             }
         }
         Ok(())
@@ -968,6 +1052,83 @@ mod tests {
             indefinite.validate().unwrap_err(),
             "covariance matrix must be positive semidefinite"
         );
+
+        let small_negative_variance = Uncertainty::Covariance {
+            dimension: 1,
+            values_row_major: vec![-1e-20],
+            unit_squared: "m^2".to_owned(),
+        };
+        assert_eq!(
+            small_negative_variance.validate().unwrap_err(),
+            "covariance matrix must be positive semidefinite"
+        );
+
+        let small_asymmetry = Uncertainty::Covariance {
+            dimension: 2,
+            values_row_major: vec![1e-20, 1e-20, 0.0, 1e-20],
+            unit_squared: "m^2".to_owned(),
+        };
+        assert_eq!(
+            small_asymmetry.validate().unwrap_err(),
+            "covariance matrix must be symmetric"
+        );
+    }
+
+    #[test]
+    fn observed_quantities_require_conditions_applicability_and_matching_covariance() {
+        let origin = QuantityOrigin::Measurement {
+            measurement_id: identifier("measurement:ellipsometry"),
+        };
+        let mut quantity = scalar_quantity(origin.clone(), EvidenceBasis::ExperimentalDirect);
+        quantity.conditions.clear();
+        assert_eq!(
+            quantity.validate().unwrap_err(),
+            "observed quantity requires conditions"
+        );
+
+        let mut quantity = scalar_quantity(origin.clone(), EvidenceBasis::ExperimentalDirect);
+        quantity.applicability_range = None;
+        assert_eq!(
+            quantity.validate().unwrap_err(),
+            "observed quantity requires an applicability range"
+        );
+
+        let mut quantity = scalar_quantity(origin, EvidenceBasis::ExperimentalDirect);
+        quantity.observation = QuantityObservation::Observed {
+            payload: QuantityPayload::Vector {
+                values: vec![0.1, 0.2, 0.3],
+                basis: "Cartesian".to_owned(),
+            },
+        };
+        quantity.uncertainty = Uncertainty::Covariance {
+            dimension: 2,
+            values_row_major: vec![1.0, 0.0, 0.0, 1.0],
+            unit_squared: "1".to_owned(),
+        };
+        assert_eq!(
+            quantity.validate().unwrap_err(),
+            "covariance dimension must match the observed payload"
+        );
+    }
+
+    #[test]
+    fn below_detection_limit_requires_a_nonnegative_bound() {
+        let mut quantity = scalar_quantity(
+            QuantityOrigin::Measurement {
+                measurement_id: identifier("measurement:ellipsometry"),
+            },
+            EvidenceBasis::ExperimentalDirect,
+        );
+        quantity.observation = QuantityObservation::Missing {
+            reason: Missingness::BelowDetectionLimit {
+                upper_bound: -1e-9,
+                unit: "m".to_owned(),
+            },
+        };
+        assert_eq!(
+            quantity.validate().unwrap_err(),
+            "detection limit must be finite and nonnegative"
+        );
     }
 
     #[test]
@@ -1057,6 +1218,161 @@ mod tests {
             model_runs: Vec::new(),
             derived_values: Vec::new(),
         }
+    }
+
+    fn model_run(model_run_id: &str, input_quantity_ids: Vec<RecordId>) -> ModelRun {
+        ModelRun {
+            model_run_id: identifier(model_run_id),
+            model_name: "Drude-Lorentz".to_owned(),
+            model_version: "1".to_owned(),
+            code_artifact_id: identifier("artifact:model-code"),
+            input_quantity_ids,
+            parameters: BTreeMap::from([("oscillators".to_owned(), "3".to_owned())]),
+            convergence_settings: BTreeMap::from([(
+                "relative_tolerance".to_owned(),
+                "1e-10".to_owned(),
+            )]),
+            validation_status: "fixture validated".to_owned(),
+        }
+    }
+
+    fn derived_value(
+        derived_value_id: &str,
+        model_run_id: &str,
+        input_quantity_ids: Vec<RecordId>,
+        output_quantity_id: &str,
+    ) -> DerivedValue {
+        let model_run_id = identifier(model_run_id);
+        let mut output = scalar_quantity(
+            QuantityOrigin::ModelRun {
+                model_run_id: model_run_id.clone(),
+            },
+            EvidenceBasis::Computed,
+        );
+        output.quantity_id = identifier(output_quantity_id);
+        DerivedValue {
+            derived_value_id: identifier(derived_value_id),
+            model_run_id,
+            input_quantity_ids,
+            output,
+            propagated_uncertainty: Uncertainty::Standard {
+                value: 0.01,
+                unit: "1".to_owned(),
+            },
+        }
+    }
+
+    #[test]
+    fn measurement_detection_limit_requires_finite_nonnegative_value_and_unit() {
+        let mut graph = graph_with_quantities(Vec::new());
+        let measurement = &mut graph.measurements[0];
+
+        measurement.detection_limit = Some((f64::NAN, "m".to_owned()));
+        assert_eq!(
+            measurement.validate().unwrap_err(),
+            "measurement detection limit must be finite and nonnegative"
+        );
+
+        measurement.detection_limit = Some((-1.0, "m".to_owned()));
+        assert_eq!(
+            measurement.validate().unwrap_err(),
+            "measurement detection limit must be finite and nonnegative"
+        );
+
+        measurement.detection_limit = Some((0.0, " ".to_owned()));
+        assert_eq!(
+            measurement.validate().unwrap_err(),
+            "measurement detection-limit unit must be nonempty"
+        );
+    }
+
+    #[test]
+    fn graph_requires_observed_experimental_model_inputs() {
+        let mut inferred = scalar_quantity(
+            QuantityOrigin::Measurement {
+                measurement_id: identifier("measurement:ellipsometry"),
+            },
+            EvidenceBasis::InferredProxy {
+                rationale: "proxy fixture".to_owned(),
+            },
+        );
+        inferred.quantity_id = identifier("quantity:proxy");
+        let mut graph = graph_with_quantities(vec![inferred.clone()]);
+        graph.model_runs.push(model_run(
+            "model:drude-lorentz:v1",
+            vec![inferred.quantity_id.clone()],
+        ));
+        assert_eq!(
+            graph.validate().unwrap_err(),
+            "model run model:drude-lorentz:v1 input quantity:proxy is not observed experimental evidence"
+        );
+
+        inferred.evidence = EvidenceBasis::ExperimentalDirect;
+        inferred.observation = QuantityObservation::Missing {
+            reason: Missingness::NotMeasured,
+        };
+        graph.quantities[0] = inferred;
+        assert_eq!(
+            graph.validate().unwrap_err(),
+            "model run model:drude-lorentz:v1 input quantity:proxy is not observed experimental evidence"
+        );
+    }
+
+    #[test]
+    fn derived_outputs_have_globally_unique_quantity_ids() {
+        let mut direct = scalar_quantity(
+            QuantityOrigin::Measurement {
+                measurement_id: identifier("measurement:ellipsometry"),
+            },
+            EvidenceBasis::ExperimentalDirect,
+        );
+        direct.quantity_id = identifier("quantity:input");
+        let mut graph = graph_with_quantities(vec![direct.clone()]);
+        graph.model_runs.push(model_run(
+            "model:drude-lorentz:v1",
+            vec![direct.quantity_id.clone()],
+        ));
+        graph.derived_values.push(derived_value(
+            "derived:reflectivity",
+            "model:drude-lorentz:v1",
+            vec![direct.quantity_id.clone()],
+            "quantity:input",
+        ));
+        assert_eq!(
+            graph.validate().unwrap_err(),
+            "duplicate quantity identifier: quantity:input"
+        );
+    }
+
+    #[test]
+    fn derived_inputs_must_be_declared_by_the_linked_model_run() {
+        let mut declared = scalar_quantity(
+            QuantityOrigin::Measurement {
+                measurement_id: identifier("measurement:ellipsometry"),
+            },
+            EvidenceBasis::ExperimentalDirect,
+        );
+        declared.quantity_id = identifier("quantity:declared");
+        let mut undeclared = declared.clone();
+        undeclared.quantity_id = identifier("quantity:undeclared");
+        let mut graph = graph_with_quantities(vec![declared.clone(), undeclared.clone()]);
+        graph.model_runs.push(model_run(
+            "model:drude-lorentz:v1",
+            vec![declared.quantity_id.clone()],
+        ));
+        graph.derived_values.push(derived_value(
+            "derived:reflectivity",
+            "model:drude-lorentz:v1",
+            vec![declared.quantity_id.clone()],
+            "quantity:reflectivity",
+        ));
+        assert!(graph.validate().is_ok());
+
+        graph.derived_values[0].input_quantity_ids[0] = undeclared.quantity_id.clone();
+        assert_eq!(
+            graph.validate().unwrap_err(),
+            "derived value derived:reflectivity input quantity:undeclared is not declared by model run model:drude-lorentz:v1"
+        );
     }
 
     #[test]

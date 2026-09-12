@@ -117,6 +117,29 @@ fn all_finite_vector(vector: &DVector<f64>) -> bool {
     vector.iter().all(|value| value.is_finite())
 }
 
+fn classify_active_bounds(
+    parameters: &DVector<f64>,
+    bounds: &[NuisanceBound],
+) -> (Vec<usize>, Vec<usize>) {
+    let mut active_lower_bounds = Vec::new();
+    let mut active_upper_bounds = Vec::new();
+    for (index, (parameter, bound)) in parameters.iter().zip(bounds).enumerate() {
+        let bound_scale = (bound.upper - bound.lower)
+            .abs()
+            .max(bound.lower.abs())
+            .max(bound.upper.abs())
+            .max(f64::MIN_POSITIVE);
+        let active_tolerance = SOLVER_CERTIFICATE_TOLERANCE * bound_scale;
+        if (*parameter - bound.lower).abs() <= active_tolerance {
+            active_lower_bounds.push(index);
+        }
+        if (*parameter - bound.upper).abs() <= active_tolerance {
+            active_upper_bounds.push(index);
+        }
+    }
+    (active_lower_bounds, active_upper_bounds)
+}
+
 fn validate_linear_model(
     target: &DVector<f64>,
     nuisance: &DMatrix<f64>,
@@ -356,18 +379,7 @@ pub fn bounded_profile_distance(
         &parameters,
     )?;
     let distance = (target - nuisance * &parameters).norm();
-    let active_tolerance = 1e-7;
-    let mut active_lower_bounds = Vec::new();
-    let mut active_upper_bounds = Vec::new();
-    for (index, (parameter, bound)) in parameters.iter().zip(bounds).enumerate() {
-        let scale = (bound.upper - bound.lower).abs().max(1.0);
-        if (*parameter - bound.lower).abs() <= active_tolerance * scale {
-            active_lower_bounds.push(index);
-        }
-        if (*parameter - bound.upper).abs() <= active_tolerance * scale {
-            active_upper_bounds.push(index);
-        }
-    }
+    let (active_lower_bounds, active_upper_bounds) = classify_active_bounds(&parameters, bounds);
     Ok(BoundedProfileResult {
         distance,
         nuisance_parameters: parameters,
@@ -424,11 +436,12 @@ pub fn fisher_information_with_pseudoinverse(
         .fold(0.0_f64, f64::max);
     let threshold = effective_relative_tolerance * maximum;
     let coordinates = decomposition.eigenvectors.transpose() * signal;
+    let null_coordinate_tolerance = effective_relative_tolerance.sqrt() * signal.norm();
     let mut information = 0.0;
     for (eigenvalue, coordinate) in decomposition.eigenvalues.iter().zip(coordinates.iter()) {
         if *eigenvalue > threshold {
             information += coordinate * coordinate / eigenvalue;
-        } else if coordinate.abs() > threshold.sqrt().max(1e-14) {
+        } else if coordinate.abs() > null_coordinate_tolerance {
             return Ok(f64::INFINITY);
         }
     }
@@ -535,6 +548,24 @@ mod tests {
     }
 
     #[test]
+    fn active_bound_classification_respects_small_parameter_units() {
+        let parameters = DVector::from_vec(vec![1e-10, 2e-10, 1.5e-10]);
+        let bounds = vec![
+            NuisanceBound {
+                lower: 1e-10,
+                upper: 2e-10,
+                unit: "m".to_owned(),
+            };
+            3
+        ];
+        let (active_lower_bounds, active_upper_bounds) =
+            classify_active_bounds(&parameters, &bounds);
+
+        assert_eq!(active_lower_bounds, vec![0]);
+        assert_eq!(active_upper_bounds, vec![1]);
+    }
+
+    #[test]
     fn bounded_solution_requires_termination_feasibility_and_optimality() {
         let target = DVector::from_vec(vec![2.0]);
         let nuisance = DMatrix::identity(1, 1);
@@ -627,6 +658,17 @@ mod tests {
             fisher_information_with_pseudoinverse(&augmented_signal, &augmented_covariance, 1e-12)
                 .unwrap();
         assert_relative_eq!(augmented, original, epsilon = 1e-10);
+    }
+
+    #[test]
+    fn deterministic_information_is_invariant_under_signal_rescaling() {
+        let covariance = DMatrix::from_diagonal(&DVector::from_vec(vec![1.0, 0.0]));
+        for signal_scale in [1e-12, 1e-7, 1.0, 1e7] {
+            let signal = DVector::from_vec(vec![0.0, signal_scale]);
+            let information =
+                fisher_information_with_pseudoinverse(&signal, &covariance, 1e-12).unwrap();
+            assert!(information.is_infinite());
+        }
     }
 
     #[test]

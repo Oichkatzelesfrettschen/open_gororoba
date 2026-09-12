@@ -154,7 +154,6 @@ const XTASK_COMMANDS: &[(&str, &str)] = &[
     ("convos-chunk", "Chunk a conversation transcript."),
     ("terminology-gate", "Run the terminology gate."),
     ("cpd-file-list", "Write the CPD source-file list."),
-    ("worker-budget", "Print worker-budget settings."),
 ];
 
 #[derive(Debug, Serialize)]
@@ -445,7 +444,6 @@ fn main() -> Result<()> {
             }
             run_cpd_file_list(&output)
         }
-        "worker-budget" => run_worker_budget(),
         other => bail!("unknown xtask command: {other}; run `cargo run -p xtask -- --help`"),
     }
 }
@@ -2338,31 +2336,6 @@ fn run_cpd_file_list(output: &Path) -> Result<()> {
         paths.len(),
         output.display()
     );
-    Ok(())
-}
-
-// ---- Worker budget ----
-//
-// WHY: scripts/detect_worker_budget.sh used a 60-line chain of nproc /
-//      getconf / sysctl / lscpu / /proc/cpuinfo fallbacks plus awk to compute
-//      nproc/2.  std::thread::available_parallelism() covers all platforms in
-//      one call.  This subcommand is the preferred non-Makefile consumer.
-//
-// NOTE: The Makefile still uses `$(shell sh scripts/detect_worker_budget.sh)`
-//       for the WORKER_BUDGET variable because that variable is evaluated at
-//       Make parse time, before any cargo compilation step runs.  The shell
-//       script is therefore retained as a zero-overhead fallback for that
-//       specific context.  All other callers should use this subcommand.
-//
-// HOW: `cargo run -p xtask -- worker-budget`
-//      Prints a single integer: available_parallelism / 2, minimum 1.
-
-fn run_worker_budget() -> Result<()> {
-    let threads = std::thread::available_parallelism()
-        .map(|n| n.get())
-        .unwrap_or(1);
-    let budget = (threads / 2).max(1);
-    println!("{budget}");
     Ok(())
 }
 
