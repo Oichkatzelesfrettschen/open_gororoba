@@ -621,12 +621,19 @@ fn transformed_q(unit_node: f64) -> (f64, f64) {
     (unit_node / complement, 1.0 / (complement * complement))
 }
 
-fn zero_temperature_integrals(
+#[derive(Clone, Copy)]
+enum ZeroTemperatureObservable {
+    Pressure,
+    Energy,
+}
+
+fn zero_temperature_integral(
     gap_m: f64,
     left: &Multilayer<'_>,
     right: &Multilayer<'_>,
     options: ZeroTemperatureOptions,
-) -> Result<(f64, f64), LifshitzError> {
+    observable: ZeroTemperatureObservable,
+) -> Result<f64, LifshitzError> {
     validate_geometry(gap_m, left, right, false)?;
     let radial_quadrature = quadrature(
         options.radial_order,
@@ -637,7 +644,7 @@ fn zero_temperature_integrals(
         "angular quadrature order must be non-zero",
     )?;
 
-    let pressure_integral = radial_quadrature.integrate(0.0, 1.0, |unit_node| {
+    let integral = radial_quadrature.integrate(0.0, 1.0, |unit_node| {
         let (q, jacobian) = transformed_q(unit_node);
         let attenuation = (-2.0 * q).exp();
         let angular_integral = angular_quadrature.integrate(0.0, 1.0, |angle_node| {
@@ -647,32 +654,27 @@ fn zero_temperature_integrals(
             let k_parallel = q * (1.0 - mu * mu).sqrt() / gap_m;
             let (left_tm, left_te) = surface_reflections(left, xi, k_parallel);
             let (right_tm, right_te) = surface_reflections(right, xi, k_parallel);
-            angular_jacobian
-                * (round_trip_fraction(left_tm * right_tm, attenuation)
-                    + round_trip_fraction(left_te * right_te, attenuation))
+            let polarization_integral = match observable {
+                ZeroTemperatureObservable::Pressure => {
+                    round_trip_fraction(left_tm * right_tm, attenuation)
+                        + round_trip_fraction(left_te * right_te, attenuation)
+                }
+                ZeroTemperatureObservable::Energy => {
+                    (-(left_tm * right_tm) * attenuation).ln_1p()
+                        + (-(left_te * right_te) * attenuation).ln_1p()
+                }
+            };
+            angular_jacobian * polarization_integral
         });
-        q.powi(3) * jacobian * angular_integral
+        let radial_weight = match observable {
+            ZeroTemperatureObservable::Pressure => q.powi(3),
+            ZeroTemperatureObservable::Energy => q * q,
+        };
+        radial_weight * jacobian * angular_integral
     });
 
-    let energy_integral = radial_quadrature.integrate(0.0, 1.0, |unit_node| {
-        let (q, jacobian) = transformed_q(unit_node);
-        let attenuation = (-2.0 * q).exp();
-        let angular_integral = angular_quadrature.integrate(0.0, 1.0, |angle_node| {
-            let mu = angle_node * angle_node;
-            let angular_jacobian = 2.0 * angle_node;
-            let xi = C * q * mu / gap_m;
-            let k_parallel = q * (1.0 - mu * mu).sqrt() / gap_m;
-            let (left_tm, left_te) = surface_reflections(left, xi, k_parallel);
-            let (right_tm, right_te) = surface_reflections(right, xi, k_parallel);
-            angular_jacobian
-                * ((-(left_tm * right_tm) * attenuation).ln_1p()
-                    + (-(left_te * right_te) * attenuation).ln_1p())
-        });
-        q * q * jacobian * angular_integral
-    });
-
-    if pressure_integral.is_finite() && energy_integral.is_finite() {
-        Ok((pressure_integral, energy_integral))
+    if integral.is_finite() {
+        Ok(integral)
     } else {
         Err(LifshitzError::NonFiniteResult)
     }
@@ -688,7 +690,13 @@ pub fn zero_temperature_pressure(
     right: &Multilayer<'_>,
     options: ZeroTemperatureOptions,
 ) -> Result<f64, LifshitzError> {
-    let (pressure_integral, _) = zero_temperature_integrals(gap_m, left, right, options)?;
+    let pressure_integral = zero_temperature_integral(
+        gap_m,
+        left,
+        right,
+        options,
+        ZeroTemperatureObservable::Pressure,
+    )?;
     let pressure = -HBAR_J_S * C * pressure_integral / (2.0 * PI * PI * gap_m.powi(4));
     if pressure.is_finite() {
         Ok(pressure)
@@ -704,7 +712,13 @@ pub fn zero_temperature_energy_per_area(
     right: &Multilayer<'_>,
     options: ZeroTemperatureOptions,
 ) -> Result<f64, LifshitzError> {
-    let (_, energy_integral) = zero_temperature_integrals(gap_m, left, right, options)?;
+    let energy_integral = zero_temperature_integral(
+        gap_m,
+        left,
+        right,
+        options,
+        ZeroTemperatureObservable::Energy,
+    )?;
     let energy = HBAR_J_S * C * energy_integral / (4.0 * PI * PI * gap_m.powi(3));
     if energy.is_finite() {
         Ok(energy)

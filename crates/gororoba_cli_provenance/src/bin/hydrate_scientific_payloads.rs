@@ -217,9 +217,10 @@ fn stage_objects(
             );
             output.sync_all()?;
         } else {
+            let mut discarded = io::sink();
             ensure!(
-                io::copy(&mut entry, &mut io::sink())? == object.byte_length,
-                "archive object byte length mismatch"
+                copy_hashed(&mut entry, &mut discarded, object.byte_length)? == object.sha256,
+                "archive object digest mismatch"
             );
         }
     }
@@ -685,6 +686,20 @@ mod tests {
             b"second"
         );
         Ok(())
+    }
+
+    #[test]
+    fn selected_paths_still_verify_unselected_object_digests() -> Result<()> {
+        let mut fixture = Fixture::new(
+            &[b"good", b"selected"],
+            &[
+                (member(b"good"), b"evil".to_vec(), b'0'),
+                regular(b"selected"),
+            ],
+        )?;
+        fixture.args.paths = vec!["payloads/1.dat".to_owned()];
+
+        fixture.assert_clean_failure()
     }
 
     #[test]

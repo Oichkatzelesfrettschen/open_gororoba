@@ -278,6 +278,23 @@ fn verify_document(document: &FrontierDocument) -> Result<FiniteFrontierReport> 
         }
     }
 
+    for row in &document.row {
+        if row.completion_state != "closed" {
+            continue;
+        }
+        for dependency in &row.ordering_dependencies {
+            if rows_by_id
+                .get(dependency.as_str())
+                .is_some_and(|dependency_row| dependency_row.completion_state == "open")
+            {
+                diagnostics.push(format!(
+                    "closed row {} depends on open row {}",
+                    row.frontier_id, dependency
+                ));
+            }
+        }
+    }
+
     if missing_ids.is_empty()
         && unexpected_ids.is_empty()
         && duplicate_ids.is_empty()
@@ -527,6 +544,30 @@ mod tests {
         assert!(error.contains("dependency cycle includes"));
         assert!(error.contains(&first));
         assert!(error.contains(&second));
+    }
+
+    #[test]
+    fn rejects_closed_row_with_open_dependency() {
+        let mut document = baseline_document();
+        let open_id = document
+            .row
+            .iter()
+            .find(|row| row.completion_state == "open")
+            .unwrap()
+            .frontier_id
+            .clone();
+        let closed_row = document
+            .row
+            .iter_mut()
+            .find(|row| row.completion_state == "closed")
+            .unwrap();
+        let closed_id = closed_row.frontier_id.clone();
+        closed_row.ordering_dependencies.push(open_id.clone());
+
+        let error = error_text(&document);
+        assert!(error.contains(&format!(
+            "closed row {closed_id} depends on open row {open_id}"
+        )));
     }
 
     #[test]

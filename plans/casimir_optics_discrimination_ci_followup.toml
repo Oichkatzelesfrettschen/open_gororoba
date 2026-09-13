@@ -222,3 +222,108 @@ status = "complete"
 finding = "The a0fcf3a0 generation cannot validate source because GitHub admitted zero jobs."
 required_change = "Publish one consolidated CI admission repair after static source review and do not supersede its generation."
 verification = "Run 34769957057 at exact head 67af5dfa completed 52 jobs without cancellation: 49 passed, one Rust leaf exposed the incorrect overflow fixture, the aggregate failed by construction, and one deployment job skipped by admission policy."
+
+[[task]]
+id = "hydrator-unselected-object-digest"
+status = "implemented_pending_ci"
+finding = "Bounded hydration checked an unselected archive member's byte length without checking its declared object digest."
+required_change = "Hash every archive member while staging only selected objects, and reject a corrupt unselected member before installation."
+verification = "Hosted hydrator tests corrupt an equal-length unselected member and require clean failure."
+
+[[task]]
+id = "finite-frontier-closed-open-dependency"
+status = "implemented_pending_ci"
+finding = "The finite-frontier verifier accepted a closed row whose ordering dependency remained open."
+required_change = "Reject each closed-to-open dependency edge after compiling the complete row map."
+verification = "Hosted finite-frontier tests mutate one closed row to depend on an expected-open row and require the exact diagnostic."
+
+[[task]]
+id = "zero-temperature-observable-selective-integration"
+status = "implemented_pending_ci"
+finding = "Each zero-temperature pressure or energy request evaluated both independent quadrature integrands and discarded one result."
+required_change = "Select the pressure or energy integrand before quadrature while retaining one shared transformed-domain implementation."
+verification = "Hosted materials_core tests preserve ideal normalization, multilayer order contrast, and the independent energy-derivative identity."
+
+[[task]]
+id = "casimir-toolchain-identity-route"
+status = "implemented_pending_ci"
+finding = "The retained Casimir source-model identity includes rust-toolchain.toml, but the path router omitted that file from the freshness lane."
+required_change = "Route a rust-toolchain.toml change through the Casimir audit freshness check."
+verification = "Hosted validation-policy accepts the route and path classification selects the audit for toolchain-only changes."
+
+[[task]]
+id = "bounded-profile-wide-interval-tolerance"
+status = "implemented_pending_ci"
+finding = "Subtracting opposite-sign finite nuisance bounds could overflow and make feasibility and active-bound tolerances infinite."
+required_change = "Scale tolerances from the maximum endpoint magnitude without forming the interval width."
+verification = "Hosted stats_core tests classify zero as inactive inside [-1e308, 1e308]."
+
+[[task]]
+id = "covariance-negative-diagonal-dynamic-range"
+status = "implemented_pending_ci"
+finding = "A global covariance-magnitude tolerance could hide a negative variance when an unrelated diagonal entry was much larger."
+required_change = "Reject every negative covariance diagonal entry before applying scale-aware symmetry and eigensystem tolerances."
+verification = "Hosted materials_core tests reject diag(1e200, -1) as non-positive-semidefinite."
+
+[[task]]
+id = "exact-head-4892d755-denominator"
+status = "complete"
+finding = "Run 34772236288 admitted 52 jobs and reached a complete denominator: 49 passed, validation-core failed on one stale native-output-manifest.toml source identity, aggregate validation failed by construction, and docs deployment skipped. Every Rust shard, all three scientific replays, documentation, benchmarks, proofs, paper, and unsafe survey passed."
+required_change = "Let every job reach a terminal state, classify every independent failure, and preserve the complete denominator before publication."
+verification = "Run 34772236288 completed at exact head 4892d755 with 49 success, two failure, one skipped, and zero canceled jobs."
+
+[[task]]
+id = "validation-routing-expensive-leaf-overlap"
+status = "implemented_pending_ci"
+finding = "The routing job serialized 11m48s of governance and 6m31s of Casimir audit work after routing, delaying Rust fan-out and hiding independent outcomes behind one 22-minute job."
+required_change = "Keep validation-core as the routing authority and run governance plus integrity and the Casimir audit as separately admitted jobs with exact per-runner worker detection."
+verification = "Hosted actionlint and resource contracts pass; Rust shards start after routing; selected governance and Casimir jobs overlap and remain explicit aggregate prerequisites."
+
+[[task]]
+id = "scientific-replay-hydration-fanout"
+status = "implemented_pending_ci"
+finding = "Hydration, lattice replay, NuFIT replay, and box-counting replay ran serially in one 39-minute job."
+required_change = "Materialize the bounded hash-verified payload once, upload the selected inputs, run selected replay leaves through a fail-slow matrix, and aggregate their terminal result."
+verification = "Hosted CI runs every selected leaf independently, retains one report per leaf, and distinguishes not_selected, blocked_input, executed_fail, and executed_pass."
+
+[[task]]
+id = "box-counting-replay-narrow-owner"
+status = "implemented_pending_ci"
+finding = "The retained 16-cubed, 24-step box-counting replay executed in 0.05 seconds, but its gororoba_cli_physics integration target compiled 383 crates for 29m31s."
+required_change = "Move the replay to lbm_3d while preserving the retained input hashes, CPU MRT path, population stability checks, adaptive geometry assertions, and optional evolved-field receipt."
+verification = "Hosted lbm_3d replay passes with the expected scalar and masks, and its build avoids the gororoba_cli_physics umbrella target."
+
+[[task]]
+id = "scientific-replay-lane-cache-retention"
+status = "implemented_pending_ci"
+finding = "The scientific replay restored exact-head and fallback caches but never saved a scientific replay cache, forcing repeated cold compilation."
+required_change = "Save distinct hydration and replay-lane caches with stable Cargo.lock and toolchain fallback prefixes plus run-unique exact-head primary keys."
+verification = "A subsequent hosted head reports cache restoration for each previously built selected lane without concurrent cache-key collisions."
+
+[[task]]
+id = "native-manifest-current-source-identity"
+status = "implemented_pending_ci"
+finding = "Run 34772236288 generated a new stats_core source identity, and the pending selective Lifshitz integration repair changes a second retained source byte identity."
+required_change = "Recompute the exact ordered path-NUL-bytes-NUL source identity and both changed source hashes without altering retained numerical output claims."
+verification = "Hosted Casimir audit freshness reproduces the source manifest and all retained numerical outputs byte-for-byte."
+
+[[task]]
+id = "scientific-replay-selected-input-boundary"
+status = "implemented_pending_ci"
+finding = "The first fan-out draft selected replay jobs independently but hydrated and uploaded all eight inputs, so an unrelated unavailable object could block a selected leaf."
+required_change = "Build hydration and staging path arrays from the selected replay matrix and upload only their path-preserving union."
+verification = "Hosted routing mutations select each replay alone and its hydration receipt contains only that replay's declared inputs."
+
+[[task]]
+id = "ci-run-unique-leaf-cache-keys"
+status = "implemented_pending_ci"
+finding = "A cache key ending at the commit SHA collides across pull-request, push, dispatch, and rerun executions of the same source."
+required_change = "Append run ID and run attempt to each new immutable primary key while retaining commit- and lock-scoped restore prefixes."
+verification = "Hosted policy rejects every new leaf key that omits the run-unique suffix."
+
+[[task]]
+id = "casimir-route-policy-literal"
+status = "implemented_pending_ci"
+finding = "The first route policy draft passed two literal backslashes to fixed-string grep while the workflow regex contains one."
+required_change = "Match the exact one-backslash rust-toolchain path expression in the workflow source."
+verification = "Hosted validation-resource-contract accepts the Casimir toolchain route literal."

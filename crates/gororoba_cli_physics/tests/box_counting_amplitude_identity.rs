@@ -1,10 +1,9 @@
 use cosmology_core::sersic::{
     box_counting_fractal_dim, box_counting_fractal_dim_threshold, otsu_threshold,
 };
-use gororoba_cli_physics::{lbm_dispatch::LbmBackend, lbm_population_diagnostics::inspect_fields};
 use provenance_store::retained_archive::RetainedArchive;
 use sha2::{Digest, Sha256};
-use std::{collections::BTreeSet, error::Error, io::Write};
+use std::{collections::BTreeSet, error::Error};
 
 const DENSITY_PATH: &str = "data/output/audit/claim-family-evidence-adjudication/null-pilot-cpu/C1-uniform-fzd-0/rho.f64le";
 const DENSITY_SHA256: &str = "9ad28ff0dbb91703f930756f2c9d0f2a9f7655d6e0efeb120b4c23f9321bdaa7";
@@ -110,83 +109,11 @@ fn exact_plane_affine_controls_preserve_geometry_at_tiny_contrast() {
     );
 }
 
-fn read_f64(path: &str, expected_hash: &str) -> Result<Vec<f64>, Box<dyn Error>> {
-    let bytes = std::fs::read(repo_root::path!(path))?;
-    assert_eq!(digest(&bytes), expected_hash);
-    assert_eq!(bytes.len() % 8, 0);
-    Ok(bytes
-        .chunks_exact(8)
-        .map(|chunk| f64::from_le_bytes(chunk.try_into().unwrap()))
-        .collect())
-}
-
 #[test]
 fn retained_uniform_force_inputs_have_archive_identities() -> Result<(), Box<dyn Error>> {
     let repository_root = repo_root::path!("");
     let archive = RetainedArchive::load(&repository_root)?;
     archive.materialization(DENSITY_PATH, DENSITY_SHA256)?;
     archive.materialization(FORCE_PATH, FORCE_SHA256)?;
-    Ok(())
-}
-
-#[test]
-#[ignore = "requires the hydrated scientific payload archive"]
-fn retained_uniform_force_replay_separates_amplitude_from_adaptive_geometry()
--> Result<(), Box<dyn Error>> {
-    let density = read_f64(DENSITY_PATH, DENSITY_SHA256)?;
-    let force = read_f64(FORCE_PATH, FORCE_SHA256)?;
-    let force: Vec<[f64; 3]> = force
-        .chunks_exact(3)
-        .map(|chunk| chunk.try_into().unwrap())
-        .collect();
-    let mut backend = LbmBackend::cpu(16, 16, 16, 0.8, lbm_3d::solver::CollisionMode::Mrt);
-    backend.initialize_custom(&density, &vec![[0.0; 3]; 4096])?;
-    backend.set_force_field(force)?;
-    let initial_mass = inspect_fields(&mut backend)?.mass;
-    for _ in 0..24 {
-        backend.step()?;
-        inspect_fields(&mut backend)?.require_stable(initial_mass, 1e-5, 0.3)?;
-    }
-    let final_density = inspect_fields(&mut backend)?.density;
-    if let Ok(path) = std::env::var("BOX_COUNTING_REPLAY_FIELD") {
-        let mut output = std::fs::File::create_new(path)?;
-        for value in &final_density {
-            output.write_all(&value.to_le_bytes())?;
-        }
-        output.sync_all()?;
-    }
-    let original = observe(&final_density, otsu_threshold(&final_density));
-    let scalar = box_counting_fractal_dim(&final_density, 16, 16, 16);
-    assert!(
-        (scalar - 2.207_681_559_705_082_7).abs() < 1e-10,
-        "retained scalar differs: {scalar}"
-    );
-    assert!((original.measured_slope.unwrap() - scalar).abs() < 1e-12);
-    for amplitude in [2.0_f64.powi(-8), 1.0, 2.0_f64.powi(8)] {
-        let transformed: Vec<_> = final_density
-            .iter()
-            .map(|value| 1.0 + amplitude * (value - 1.0))
-            .collect();
-        let adaptive = otsu_threshold(&transformed);
-        let adaptive_observation = observe(&transformed, adaptive);
-        record(
-            &format!("replay_amplitude{amplitude}_adaptive"),
-            &transformed,
-            adaptive,
-            &adaptive_observation,
-        );
-        assert_eq!(
-            adaptive_observation.mask, original.mask,
-            "adaptive superlevel mask changed at amplitude{amplitude}"
-        );
-        let fixed = 1.0 + 2.0_f64.powi(-20);
-        let fixed_observation = observe(&transformed, fixed);
-        record(
-            &format!("replay_amplitude{amplitude}_fixed"),
-            &transformed,
-            fixed,
-            &fixed_observation,
-        );
-    }
     Ok(())
 }

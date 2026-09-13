@@ -390,6 +390,9 @@ impl Uncertainty {
                     return Err("covariance dimensions must match finite values".to_owned());
                 }
                 let matrix = DMatrix::from_row_slice(*dimension, *dimension, values_row_major);
+                if (0..*dimension).any(|index| matrix[(index, index)] < 0.0) {
+                    return Err("covariance matrix must be positive semidefinite".to_owned());
+                }
                 let scale = values_row_major
                     .iter()
                     .map(|value| value.abs())
@@ -1460,6 +1463,16 @@ mod tests {
         };
         assert_eq!(
             small_negative_variance.validate().unwrap_err(),
+            "covariance matrix must be positive semidefinite"
+        );
+
+        let dynamic_range_negative_variance = Uncertainty::Covariance {
+            dimension: 2,
+            values_row_major: vec![1e200, 0.0, 0.0, -1.0],
+            unit_squared: "m^2".to_owned(),
+        };
+        assert_eq!(
+            dynamic_range_negative_variance.validate().unwrap_err(),
             "covariance matrix must be positive semidefinite"
         );
 
