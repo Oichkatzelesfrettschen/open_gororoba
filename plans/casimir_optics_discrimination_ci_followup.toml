@@ -242,7 +242,7 @@ id = "zero-temperature-observable-selective-integration"
 status = "implemented_pending_ci"
 finding = "Each zero-temperature pressure or energy request evaluated both independent quadrature integrands and discarded one result."
 required_change = "Select the pressure or energy integrand before quadrature while retaining one shared transformed-domain implementation."
-verification = "Hosted materials_core tests preserve ideal normalization, multilayer order contrast, and the independent energy-derivative identity."
+verification = "Hosted quantum_core and routed Casimir audit tests preserve ideal normalization, multilayer order contrast, and the independent energy-derivative identity."
 
 [[task]]
 id = "casimir-toolchain-identity-route"
@@ -257,6 +257,55 @@ status = "implemented_pending_ci"
 finding = "Subtracting opposite-sign finite nuisance bounds could overflow and make feasibility and active-bound tolerances infinite."
 required_change = "Scale tolerances from the maximum endpoint magnitude without forming the interval width."
 verification = "Hosted stats_core tests classify zero as inactive inside [-1e308, 1e308]."
+
+[[task]]
+id = "named-example-policy-dollar-depth"
+status = "implemented_pending_ci"
+finding = "Exact-head run 34781891339 proved the generated example parser correct but exposed a policy-checker mismatch: GNU Make reduced the checker literal to one dollar while sed retained the parser source's two-dollar spelling."
+required_change = "Use four dollars in the Make recipe's single-quoted expected string so the executing shell compares the literal two-dollar parser source."
+verification = "The next exact-head validation-policy job passes validation-resource-contract while the Rust matrix emits and executes the named example row."
+
+[[task]]
+id = "aggregate-docs-verdict"
+status = "implemented_pending_ci"
+finding = "The independent docs job could fail after the aggregate validation job had already reported success."
+required_change = "Make the aggregate verdict depend on docs-gate and require success when documentation routing selects the job or skipped when it does not."
+verification = "Hosted actionlint and validation-resource-contract pass, and the aggregate job reports RUN_DOCS and DOCS_RESULT."
+
+[[task]]
+id = "calibration-sensitivity-direct-augmented-solve"
+status = "implemented_pending_ci"
+finding = "Explicit normal equations underflow for proportionally tiny finite target and nuisance entries and erase a nonzero calibration sensitivity."
+required_change = "Solve the whitened augmented nuisance and calibration least-squares system directly before squaring the requested fitted coordinate."
+verification = "Hosted stats_core tests recover unit sensitivity from a target and nuisance column scaled by 1e-200."
+
+[[task]]
+id = "gold-candidate-symlink-boundary"
+status = "implemented_pending_ci"
+finding = "Canonicalization allowed a declared gold candidate source path or parent component to traverse an in-repository symbolic link."
+required_change = "Inspect every repository-relative path component with symlink_metadata before resolving and hashing the retained source."
+verification = "Hosted materials_core tests reject symbolic links at both an intermediate directory and the final source component."
+
+[[task]]
+id = "source-observation-receipt-reconciliation"
+status = "implemented_pending_ci"
+finding = "The routed Casimir audit verified the retrieval manifest and retained bodies but did not parse or reconcile the twelve first-observation receipts."
+required_change = "Require the exact receipt filename set and reconcile each typed receipt's source identity, URL, observation date, manifest digest and size, and body path, digest, and size."
+verification = "Hosted Casimir audit tests reject source-key, observation-date, request-digest, and body-digest mutations."
+
+[[task]]
+id = "target-inventory-slice-interface"
+status = "implemented_pending_ci"
+finding = "Exact-head run 34781891339 found that target normalization accepted a mutable Vec where the implementation needs only mutable slice operations."
+required_change = "Accept &mut [ShardTarget] so the inventory helper exposes the narrow collection contract required by Clippy."
+verification = "Hosted workspace Clippy passes with warnings denied."
+
+[[task]]
+id = "zero-test-library-shard-admission"
+status = "implemented_pending_ci"
+finding = "Exact-head run 34781891339 compiled the gororoba_cli_algebra library successfully but nextest rejected its intentionally empty library test harness."
+required_change = "Keep the explicit library compilation row and admit a zero-test result only for exact --lib shards."
+verification = "Hosted gororoba_cli_algebra-lib passes while package test, example, and binary harnesses remain separately selected."
 
 [[task]]
 id = "covariance-negative-diagonal-dynamic-range"
@@ -421,10 +470,10 @@ verification = "The run completed without cancellation; validation-casimir-audit
 
 [[task]]
 id = "large-cli-library-integration-target-isolation"
-status = "implemented_pending_ci"
+status = "complete"
 finding = "The gororoba_cli_data --lib --tests row compiled 122 binary test harnesses before executing 249 tests and completed in 13 minutes 39 seconds in run 34775591219 and 10 minutes in run 34777625713. Cargo target selection, rather than a processor cap, created the oversized compilation surface."
-required_change = "Emit one --lib row, one named integration-test row, and existing named --bin rows for each target-sharded CLI package; verify exact target and required-feature coverage against Cargo manifests and automatic tests. Keep each package's integration tests together because Cargo builds package binaries to provide CARGO_BIN_EXE_* whenever an integration test is selected."
-verification = "The replacement matrix contains separate gororoba_cli_data library and four named integration-test targets in one row plus separate gororoba_cli_physics library and six named integration-test targets in one row, with no --lib --tests row and no repeated integration-triggered binary build per package."
+required_change = "Measure separate library, integration-test, example, and binary rows once to distinguish target compilation from test execution and compare the resulting wall time and runner consumption with the combined package row."
+verification = "Run 34781891339 executed the exact split denominator. The split retained coverage but increased the data-package wall-clock tail to 14 minutes 36 seconds and consumed about one hundred runner-minutes, so hosted-target-shard-runner-amplification supersedes the proposed permanent split."
 
 [[task]]
 id = "cd-papers-rustdoc-reexport-inlining"
@@ -446,6 +495,55 @@ status = "implemented_pending_ci"
 finding = "cd_papers owns no implementation API: its public module contains only item and crate re-exports, while the owning crates already receive canonical rustdoc. Hosted runs spent 20 to 28 minutes documenting this facade before releasing the remaining rustdoc queue."
 required_change = "Exclude cd_papers from workspace rustdoc while retaining its source guidance, compile/test coverage, and canonical documentation for every owning crate."
 verification = "Hosted docs-gate reports four workers, omits Documenting cd_papers, completes the full owning-crate rustdoc and mdBook freshness surfaces, and materially reduces wall time."
+
+[[task]]
+id = "hosted-target-shard-runner-amplification"
+status = "implemented_pending_ci"
+finding = "Run 34781891339 used about one hundred runner-minutes for gororoba_cli_data target rows, exceeded the account's forty-job concurrency frontier, and completed its last data row after 14 minutes 36 seconds; the prior combined package row completed in 9 minutes 58 seconds. Each isolated runner rebuilt an overlapping dependency graph, and any same-package integration-test row built all declared binaries for CARGO_BIN_EXE availability."
+required_change = "Stop target-sharding gororoba_cli_data and gororoba_cli_algebra, whose default-feature targets fit one fail-slow shared build. Retain gororoba_cli_physics target routing because its declared GPU, HDF5, NetCDF, and Zarr feature targets require explicit feature rows."
+verification = "The next exact-head Rust matrix contains no data or algebra target-specific rows, retains every required-feature physics target, stays below the hosted concurrency ceiling, and executes the routed package denominator with --no-fail-fast."
+
+[[task]]
+id = "docs-producer-shared-build-tree"
+status = "implemented_pending_ci"
+finding = "Run 34781891339 completed workspace rustdoc in 10 minutes 29 seconds, then spent another 9 minutes 25 seconds compiling registry-emit under a separate validation target and build directory. The successful docs job took 21 minutes 42 seconds even after cd_papers was excluded."
+required_change = "Run registry-emit with the documentation Cargo environment and default development profile so rustdoc and book-source generation share one target, build directory, dependency cache, and unchanged process-visible worker count."
+verification = "The next exact-head docs-gate generates identical checked-in book sources, retains all owning-crate rustdoc, reports four workers, and eliminates the second cold dependency compilation."
+
+[[task]]
+id = "scientific-replay-routing-failure-fallback"
+status = "implemented_pending_ci"
+finding = "Scientific replay path selection exited before writing outputs when an event comparison commit was unavailable, which suppressed otherwise runnable hydrated replay leaves."
+required_change = "Treat comparison-base lookup or diff failure as conservative selection of all three scientific replay lanes and continue through the normal bounded hydration contract."
+verification = "Hosted policy pins the fallback diagnostic and routing failure still emits lattice, NuFIT, and box-counting rows."
+
+[[task]]
+id = "covariance-coordinate-scaled-psd"
+status = "implemented_pending_ci"
+finding = "A global covariance eigenvalue tolerance admitted nonzero covariance on a zero-variance coordinate when another diagonal entry dominated the matrix scale."
+required_change = "Reject nonzero covariance on zero-variance coordinates, normalize all remaining coordinates to a correlation matrix without multiplying variances, and apply symmetry, correlation-bound, and eigenvalue checks in that dimensionless basis."
+verification = "Hosted materials_core tests reject [[1e200,1e190],[1e190,0]] and retain valid singular, asymmetric, indefinite, and dynamic-range cases."
+
+[[task]]
+id = "registry-integrity-cache-owner-tracking"
+status = "implemented_pending_ci"
+finding = "validation-tools-status continued to associate registry-integrity with deleted gororoba_cli_data source paths after the binary moved to gororoba_cli_governance."
+required_change = "Bind each tracked validation binary to its actual package directory and bind registry-integrity to the governance source and manifest."
+verification = "Hosted policy and xtask validation confirm that a governance manifest or registry_integrity.rs change marks the staged tool stale."
+
+[[task]]
+id = "native-audit-obsolete-output-removal"
+status = "implemented_pending_ci"
+finding = "Native audit regeneration overwrote current outputs but retained files listed only by the prior manifest, allowing obsolete model artifacts to remain beside the current manifest."
+required_change = "Before writing, parse the prior native manifest and remove only safe single-component output paths absent from the newly rendered output set; preserve source, receipt, and other auxiliary files."
+verification = "Hosted audit tests remove a previously manifested obsolete table, preserve a current table and the source retrieval manifest, and reject a traversal path before removal."
+
+[[task]]
+id = "exact-head-7af13781-denominator"
+status = "complete"
+finding = "Run 34781891339 reached a terminal 61-job denominator without cancellation. Fifty-seven leaves passed; validation-policy, workspace Clippy, and the empty gororoba_cli_algebra library row were the three independent failures, and aggregate validation failed by construction. Documentation passed in 21 minutes 42 seconds."
+required_change = "Retain the complete denominator, repair all three independent failures, and use its target and documentation timings to remove redundant compilation before the replacement push."
+verification = "The run completed at exact head 7af137813f0d6103144671866d3ad5a7b6caae45; all data target rows, all scientific replay leaves, governance, Casimir audit, proofs, benchmarks, paper, unsafe survey, and docs-gate passed."
 
 [[task]]
 id = "target-sharded-example-test-coverage"

@@ -346,10 +346,11 @@ validation-resource-contract-collectors:
 	docs_cargo_env_line="$$(sed -n '/^DOCS_CARGO_ENV =/p' Makefile)"; \
 	validation_inputs_block="$$(sed -n '/name: Resolve immutable comparison base and worker budget/,/name: Prepare validation report directory/p' .github/workflows/ci.yml)"; \
 	lattice_replay_block="$$(sed -n '/^[[:space:]]*lattice)/,/^[[:space:]]*nufit)/p' .github/workflows/ci.yml)"; \
+	validation_tools_status_block="$$(sed -n '/fn run_validation_tools_status/,/let now =/p' xtask/src/main.rs)"; \
 	cargo_target_parser_block="$$(sed -n '/^[[:space:]]*case .*cargo_target_args.* in/,/^[[:space:]]*light_scope=()/p' Makefile)"; \
 	casimir_path_block="$$(sed -n '/casimir_audit) pattern=/p' .github/workflows/ci.yml)"; \
 	frontier_check_block="$$(sed -n '/^casimir-optics-discrimination-frontier-check:/,/^$$/p' Makefile)"; \
-	for contract in 'ci-rust-shard-matrix' 'target-shard-package=gororoba_cli_physics' 'target-shard-package=gororoba_cli_data' 'target-shard-package=gororoba_cli_algebra' 'fallback_matrix=' 'CI_CARGO_TARGET_ARGS: $${{ matrix.cargo_target_args }}' 'CI_CARGO_FEATURES: $${{ matrix.cargo_features }}' 'matrix: $${{ fromJSON(needs.validation-core.outputs.rust_matrix) }}' 'make --jobs="$$WORKER_BUDGET" --keep-going "validate-ci-scoped-$${{ matrix.target }}"' 'timeout-minutes: 80' 'fail-fast: false' 'Report collected validation failures' 'Report aggregate validation admission' 'needs: [validation-policy, validation-core, validation-governance, validation-casimir-audit, rust-validation, scientific-replay, benchmark, proofs, paper, unsafe-survey]' 'uses: ./.github/workflows/bench-cd-kernel.yml' 'uses: ./.github/workflows/proofs.yml' 'uses: ./.github/workflows/paper.yml' 'uses: ./.github/workflows/unsafe-survey.yml' 'run_workspace_survey:' 'BENCHMARK_SELECTED:' 'PROOFS_SELECTED:' 'PAPER_SELECTED:' 'UNSAFE_SURVEY_SELECTED:' 'scientific-replay-inputs:' 'scientific-replay-leaf:' 'scientific-replay:' 'matrix: $${{ fromJSON(needs.scientific-replay-inputs.outputs.matrix) }}' '--bin hydrate-scientific-payloads' '--no-fail-fast -p algebra_experimental --test nufit_reference_identity' '--no-fail-fast -p lbm_3d --test box_counting_amplitude_identity' 'state=blocked_input' 'state=not_selected' 'state=executed_pass' 'state=executed_fail' "needs.validation-policy.result == 'success'" "needs.validation.result == 'success'" 'make --keep-going validation-resource-contract' 'make --jobs="$$WORKER_BUDGET" --keep-going casimir-optics-discrimination-audit-check' 'make --jobs="$$WORKER_BUDGET" --keep-going docs-freshness'; do \
+	for contract in 'ci-rust-shard-matrix' 'fallback_matrix=' 'CI_CARGO_TARGET_ARGS: $${{ matrix.cargo_target_args }}' 'CI_CARGO_FEATURES: $${{ matrix.cargo_features }}' 'matrix: $${{ fromJSON(needs.validation-core.outputs.rust_matrix) }}' 'make --jobs="$$WORKER_BUDGET" --keep-going "validate-ci-scoped-$${{ matrix.target }}"' 'timeout-minutes: 80' 'fail-fast: false' 'Report collected validation failures' 'Report aggregate validation admission' 'needs: [validation-policy, validation-core, validation-governance, validation-casimir-audit, rust-validation, scientific-replay, benchmark, proofs, paper, unsafe-survey, docs-gate]' 'DOCS_RESULT:' 'RUN_DOCS:' 'for lane in GOVERNANCE CASIMIR_AUDIT DOCS' 'uses: ./.github/workflows/bench-cd-kernel.yml' 'uses: ./.github/workflows/proofs.yml' 'uses: ./.github/workflows/paper.yml' 'uses: ./.github/workflows/unsafe-survey.yml' 'run_workspace_survey:' 'BENCHMARK_SELECTED:' 'PROOFS_SELECTED:' 'PAPER_SELECTED:' 'UNSAFE_SURVEY_SELECTED:' 'scientific-replay-inputs:' 'scientific-replay-leaf:' 'scientific-replay:' 'matrix: $${{ fromJSON(needs.scientific-replay-inputs.outputs.matrix) }}' '--bin hydrate-scientific-payloads' '--no-fail-fast -p algebra_experimental --test nufit_reference_identity' '--no-fail-fast -p lbm_3d --test box_counting_amplitude_identity' 'state=blocked_input' 'state=not_selected' 'state=executed_pass' 'state=executed_fail' "needs.validation-policy.result == 'success'" "needs.validation.result == 'success'" 'make --keep-going validation-resource-contract' 'make --jobs="$$WORKER_BUDGET" --keep-going casimir-optics-discrimination-audit-check' 'make --jobs="$$WORKER_BUDGET" --keep-going docs-freshness'; do \
 	    if ! grep -Fq -- "$$contract" .github/workflows/ci.yml; then echo "ERROR: main CI collector contract is missing: $$contract" >&2; status=1; fi; \
 	done; \
 	for hydration_backed_test in \
@@ -385,23 +386,26 @@ validation-resource-contract-collectors:
 	done; \
 	if printf '%s\n' "$$lattice_replay_block" | grep -Fq "'cd_external::tests::'"; then echo "ERROR: lattice replay uses a broad test-module selector." >&2; status=1; fi; \
 	if printf '%s\n' "$$lattice_replay_block" | grep -Fq 'test_thesis_e_xor_involution_invariants_128d'; then echo "ERROR: lattice replay selects the heavy non-hydration invariant test." >&2; status=1; fi; \
-	for package in gororoba_cli_physics gororoba_cli_data gororoba_cli_algebra; do \
-	    occurrences="$$(printf '%s\n' "$$rust_shard_block" | grep -Fc -- "--target-shard-package=$$package")"; \
-	    if [ "$$occurrences" -ne 1 ]; then echo "ERROR: Rust shard block must select $$package exactly once." >&2; status=1; fi; \
+	physics_target_shards="$$(printf '%s\n' "$$rust_shard_block" | grep -Fc -- '--target-shard-package=gororoba_cli_physics')"; \
+	if [ "$$physics_target_shards" -ne 1 ]; then echo "ERROR: Rust shard block must retain required-feature coverage for gororoba_cli_physics exactly once." >&2; status=1; fi; \
+	for shared_build_package in gororoba_cli_data gororoba_cli_algebra; do \
+	    if printf '%s\n' "$$rust_shard_block" | grep -Fq -- "--target-shard-package=$$shared_build_package"; then echo "ERROR: Rust shard block duplicates $$shared_build_package compilation across target-specific hosted runners." >&2; status=1; fi; \
 	done; \
 	for contract in 'cargo_target_args: "--lib".to_string()' '"--test"' 'emitted_tests != expected_tests' 'INTEGRATION_TEST_SHARD_COUNT: usize = 1' '#[serde(default, rename = "example")]' 'member_manifest.package.autoexamples' 'append_example_target_shard(' 'emitted_examples != expected_examples' 'example_shard_count != expected_example_shard_count'; do \
 	    if ! grep -Fq -- "$$contract" xtask/src/main.rs; then echo "ERROR: target-sharded inventory or emission contract is missing: $$contract" >&2; status=1; fi; \
 	done; \
-	for contract in '--bin|--test|--example)' '[ "$$target_option" = --bin ] || [ "$$target_option" = --example ]'; do \
+	for contract in '--bin|--test|--example)' '[ "$$$$target_option" = --bin ] || [ "$$$$target_option" = --example ]' 'if [ "$$$${#cargo_target_args[@]}" -eq 1 ]; then no_tests_args=(--no-tests=pass); fi'; do \
 	    if ! printf '%s\n' "$$cargo_target_parser_block" | grep -Fq -- "$$contract"; then echo "ERROR: named target parser does not safely admit generated example rows: $$contract" >&2; status=1; fi; \
 	done; \
 	if grep -Fq 'cargo_target_args: "--lib --tests".to_string()' xtask/src/main.rs; then echo "ERROR: target-sharded library row still selects every binary test target." >&2; status=1; fi; \
-	target_package_count="$$(printf '%s\n' "$$rust_shard_block" | grep -Fc -- '--target-shard-package=')"; \
-	if [ "$$target_package_count" -ne 3 ]; then echo "ERROR: Rust shard block must select exactly three large binary packages." >&2; status=1; fi; \
 	if ! printf '%s\n' "$$docs_gate_block" | grep -Fq 'needs: [validation-core]'; then echo "ERROR: docs-gate must depend only on its routing authority." >&2; status=1; fi; \
 	if printf '%s\n' "$$docs_gate_block" | grep -Fq 'needs.validation.result'; then echo "ERROR: docs-gate hides documentation failures behind aggregate validation." >&2; status=1; fi; \
 	if ! grep -Fq 'cargo doc --locked --keep-going --workspace --exclude cd_papers' Makefile; then echo "ERROR: rustdoc includes the re-export-only cd_papers facade instead of its owning crates." >&2; status=1; fi; \
 	if ! printf '%s\n' "$$docs_cargo_env_line" | grep -Fq 'MAKEFLAGS= MFLAGS= CARGO_MAKEFLAGS='; then echo "ERROR: docs Cargo inherits stale GNU make jobserver descriptors." >&2; status=1; fi; \
+	if ! grep -Fq '$$(DOCS_CARGO_ENV) cargo run --locked -p gororoba_cli_data --bin registry-emit -- book-docs-legacy' Makefile; then echo "ERROR: docs book generation does not reuse the rustdoc Cargo build tree." >&2; status=1; fi; \
+	for contract in '"registry-integrity"' '"gororoba_cli_governance"' '"registry_integrity.rs"'; do \
+	    if ! printf '%s\n' "$$validation_tools_status_block" | grep -Fq "$$contract"; then echo "ERROR: validation-tools-status does not track registry-integrity through its governance owner: $$contract" >&2; status=1; fi; \
+	done; \
 	if ! printf '%s\n' "$$casimir_path_block" | grep -Fq 'rust-toolchain\.toml$$'; then echo "ERROR: Casimir audit routing omits the hashed Rust toolchain identity." >&2; status=1; fi; \
 	if ! printf '%s\n' "$$frontier_check_block" | grep -Fq -- 'verify-finite-frontier'; then echo "ERROR: routed Casimir audit omits finite-frontier verification." >&2; status=1; fi; \
 	if ! printf '%s\n' "$$frontier_check_block" | grep -Fq 'plans/casimir_optics_discrimination_frontier.toml'; then echo "ERROR: finite-frontier verification omits the canonical plan." >&2; status=1; fi; \
@@ -414,7 +418,7 @@ validation-resource-contract-collectors:
 	for contract in 'selected_paths=(' 'selected_files=(' 'cp --parents' 'path: $${{ runner.temp }}/scientific-replay-inputs'; do \
 	    if ! grep -Fq -- "$$contract" .github/workflows/ci.yml; then echo "ERROR: selected scientific replay staging contract is missing: $$contract" >&2; status=1; fi; \
 	done; \
-	for contract in "printf 'benchmark=true\\nproofs=true\\npaper=true\\nunsafe_survey=true\\n'" "crates/(algebra_analysis|algebra_experimental)/" "crates/(provenance_store|gororoba_cli_provenance|repo_root)/"; do \
+	for contract in "printf 'benchmark=true\\nproofs=true\\npaper=true\\nunsafe_survey=true\\n'" "crates/(algebra_analysis|algebra_experimental)/" "crates/(provenance_store|gororoba_cli_provenance|repo_root)/" 'Scientific replay routing could not resolve the comparison base; selecting every replay lane.'; do \
 	    if ! grep -Fq -- "$$contract" .github/workflows/ci.yml; then echo "ERROR: scheduled or fail-slow CI routing contract is missing: $$contract" >&2; status=1; fi; \
 	done; \
 	conservative_full_line="$$(printf '%s\n' "$$validation_inputs_block" | grep -nF "echo 'full=true' >> \"\$$GITHUB_OUTPUT\"" | head -n 1 | cut -d: -f1)"; \
@@ -899,6 +903,7 @@ validate-ci-scoped-rust-lane: require-ci-validation-authority
 	           ! { [ "$${#cargo_target_args[@]}" -eq 4 ] && [ "$${cargo_target_args[1]}" = --bins ] && [ "$${cargo_target_args[2]}" = --tests ] && [ "$${cargo_target_args[3]}" = --examples ]; }; then \
 	            echo "ERROR: library target shard requires --lib or --lib --bins --tests --examples." >&2; exit 1; \
 	        fi \
+	        if [ "$${#cargo_target_args[@]}" -eq 1 ]; then no_tests_args=(--no-tests=pass); fi; \
 	        ;; \
 	    --bin|--test|--example) \
 	        target_option="$${cargo_target_args[0]}"; \
@@ -2240,7 +2245,7 @@ cd-row-upgrade-freudenthal:
 
 .PHONY: docs-book-source
 docs-book-source:
-	$(CARGO_ENV) cargo run --locked --profile validation -p gororoba_cli_data --bin registry-emit -- book-docs-legacy
+	$(DOCS_CARGO_ENV) cargo run --locked -p gororoba_cli_data --bin registry-emit -- book-docs-legacy
 
 docs-book: docs-book-source
 	@command -v $(MD_BOOK) >/dev/null 2>&1 || { echo "ERROR: mdbook not found. Run: cargo install --locked --force mdbook"; exit 1; }

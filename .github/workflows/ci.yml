@@ -310,8 +310,6 @@ jobs:
               --heavy-package=algebra_analysis \
               --heavy-package=gr_core \
               --target-shard-package=gororoba_cli_physics \
-              --target-shard-package=gororoba_cli_data \
-              --target-shard-package=gororoba_cli_algebra \
               --target-shard-count=8)"; then
             printf 'matrix=%s\n' "$fallback_matrix" >> "$GITHUB_OUTPUT"
             exit 1
@@ -641,17 +639,23 @@ jobs:
             if [ -z "$comparison_base" ] || [ "$comparison_base" = 0000000000000000000000000000000000000000 ]; then
               comparison_base="$(git rev-parse HEAD^)"
             fi
-            git cat-file -e "$comparison_base^{commit}"
-            git diff --no-renames --name-only "$comparison_base" HEAD > "$RUNNER_TEMP/scientific-replay-changed-paths.txt"
-            common_pattern='^(Cargo\.(toml|lock)|rust-toolchain\.toml|Makefile|\.github/workflows/ci\.yml|data/retention/scientific-payloads\.json|crates/(provenance_store|gororoba_cli_provenance|repo_root)/)'
-            if grep -Eq "$common_pattern" "$RUNNER_TEMP/scientific-replay-changed-paths.txt"; then
+            if ! git cat-file -e "$comparison_base^{commit}" || \
+               ! git diff --no-renames --name-only "$comparison_base" HEAD > "$RUNNER_TEMP/scientific-replay-changed-paths.txt"; then
+              echo "Scientific replay routing could not resolve the comparison base; selecting every replay lane." >&2
               run_lattice=true
               run_nufit=true
               run_box_counting=true
             else
-              if grep -Eq '^(crates/(algebra_analysis|algebra_experimental)/|data/csv/cayley_dickson/)' "$RUNNER_TEMP/scientific-replay-changed-paths.txt"; then run_lattice=true; fi
-              if grep -Eq '^(crates/algebra_experimental/|data/output/audit/claim-family-evidence-adjudication/nufit-v6[01]-parameters\.pdf$)' "$RUNNER_TEMP/scientific-replay-changed-paths.txt"; then run_nufit=true; fi
-              if grep -Eq '^(crates/(gororoba_cli_physics|lbm_3d|cosmology_core)/|data/output/audit/claim-family-evidence-adjudication/null-pilot-cpu/C1-uniform-fzd-0/(rho|force\.xyz)\.f64le$)' "$RUNNER_TEMP/scientific-replay-changed-paths.txt"; then run_box_counting=true; fi
+              common_pattern='^(Cargo\.(toml|lock)|rust-toolchain\.toml|Makefile|\.github/workflows/ci\.yml|data/retention/scientific-payloads\.json|crates/(provenance_store|gororoba_cli_provenance|repo_root)/)'
+              if grep -Eq "$common_pattern" "$RUNNER_TEMP/scientific-replay-changed-paths.txt"; then
+                run_lattice=true
+                run_nufit=true
+                run_box_counting=true
+              else
+                if grep -Eq '^(crates/(algebra_analysis|algebra_experimental)/|data/csv/cayley_dickson/)' "$RUNNER_TEMP/scientific-replay-changed-paths.txt"; then run_lattice=true; fi
+                if grep -Eq '^(crates/algebra_experimental/|data/output/audit/claim-family-evidence-adjudication/nufit-v6[01]-parameters\.pdf$)' "$RUNNER_TEMP/scientific-replay-changed-paths.txt"; then run_nufit=true; fi
+                if grep -Eq '^(crates/(gororoba_cli_physics|lbm_3d|cosmology_core)/|data/output/audit/claim-family-evidence-adjudication/null-pilot-cpu/C1-uniform-fzd-0/(rho|force\.xyz)\.f64le$)' "$RUNNER_TEMP/scientific-replay-changed-paths.txt"; then run_box_counting=true; fi
+              fi
             fi
           fi
           replay_matrix='[]'
@@ -974,7 +978,7 @@ jobs:
       run_workspace_survey: ${{ github.event_name == 'push' }}
 
   validation:
-    needs: [validation-policy, validation-core, validation-governance, validation-casimir-audit, rust-validation, scientific-replay, benchmark, proofs, paper, unsafe-survey]
+    needs: [validation-policy, validation-core, validation-governance, validation-casimir-audit, rust-validation, scientific-replay, benchmark, proofs, paper, unsafe-survey, docs-gate]
     if: always()
     runs-on: ubuntu-24.04
     timeout-minutes: 5
@@ -985,6 +989,7 @@ jobs:
           CORE_RESULT: ${{ needs.validation-core.result }}
           GOVERNANCE_RESULT: ${{ needs.validation-governance.result }}
           CASIMIR_AUDIT_RESULT: ${{ needs.validation-casimir-audit.result }}
+          DOCS_RESULT: ${{ needs.docs-gate.result }}
           RUST_RESULT: ${{ needs.rust-validation.result }}
           SCIENTIFIC_REPLAY_RESULT: ${{ needs.scientific-replay.result }}
           BENCHMARK_SELECTED: ${{ needs.validation-policy.outputs.benchmark }}
@@ -998,6 +1003,7 @@ jobs:
           RUN_RUST: ${{ needs.validation-core.outputs.run_rust }}
           RUN_GOVERNANCE: ${{ needs.validation-core.outputs.run_rust == 'true' || needs.validation-core.outputs.run_governance == 'true' }}
           RUN_CASIMIR_AUDIT: ${{ needs.validation-core.outputs.casimir_audit }}
+          RUN_DOCS: ${{ needs.validation-core.outputs.docs }}
         run: |
           set -euo pipefail
           failure_count=0
@@ -1008,7 +1014,7 @@ jobs:
               failure_count=$((failure_count + 1))
             fi
           done
-          for lane in GOVERNANCE CASIMIR_AUDIT; do
+          for lane in GOVERNANCE CASIMIR_AUDIT DOCS; do
             selected_variable="RUN_${lane}"
             result_variable="${lane}_RESULT"
             selected="${!selected_variable}"

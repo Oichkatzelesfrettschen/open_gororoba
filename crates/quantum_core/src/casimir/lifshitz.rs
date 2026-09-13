@@ -248,12 +248,19 @@ fn vacuum_surface_reflections(model: &DielectricModel, xi: f64, k_parallel: f64)
     }
 }
 
-fn lifshitz_dimensionless_integrals(
+#[derive(Clone, Copy)]
+enum LifshitzIntegral {
+    Pressure,
+    Energy,
+}
+
+fn lifshitz_dimensionless_integral(
     gap: f64,
     eps1: &DielectricModel,
     eps2: &DielectricModel,
     options: LifshitzQuadratureOptions,
-) -> (f64, f64) {
+    integral: LifshitzIntegral,
+) -> f64 {
     assert!(
         gap.is_finite() && gap > 0.0,
         "gap must be finite and positive"
@@ -269,7 +276,7 @@ fn lifshitz_dimensionless_integrals(
         NonZeroUsize::new(options.angle_order).expect("angle quadrature order must be non-zero"),
     );
 
-    let pressure_integral = kappa_quadrature.integrate(0.0, options.kappa_cutoff, |q| {
+    kappa_quadrature.integrate(0.0, options.kappa_cutoff, |q| {
         angle_quadrature.integrate(0.0, 1.0, |mu| {
             let xi = C * q * mu / gap;
             let k_parallel = q * (1.0 - mu * mu).sqrt() / gap;
@@ -280,25 +287,18 @@ fn lifshitz_dimensionless_integrals(
             let attenuation = (-2.0 * q).exp();
             let tm_round_trip = tm_product * attenuation;
             let te_round_trip = te_product * attenuation;
-            q.powi(3)
-                * (tm_round_trip / (1.0 - tm_round_trip) + te_round_trip / (1.0 - te_round_trip))
+            match integral {
+                LifshitzIntegral::Pressure => {
+                    q.powi(3)
+                        * (tm_round_trip / (1.0 - tm_round_trip)
+                            + te_round_trip / (1.0 - te_round_trip))
+                }
+                LifshitzIntegral::Energy => {
+                    q * q * ((-tm_round_trip).ln_1p() + (-te_round_trip).ln_1p())
+                }
+            }
         })
-    });
-
-    let energy_integral = kappa_quadrature.integrate(0.0, options.kappa_cutoff, |q| {
-        angle_quadrature.integrate(0.0, 1.0, |mu| {
-            let xi = C * q * mu / gap;
-            let k_parallel = q * (1.0 - mu * mu).sqrt() / gap;
-            let (tm_1, te_1) = vacuum_surface_reflections(eps1, xi, k_parallel);
-            let (tm_2, te_2) = vacuum_surface_reflections(eps2, xi, k_parallel);
-            let tm_product = tm_1 * tm_2;
-            let te_product = te_1 * te_2;
-            let attenuation = (-2.0 * q).exp();
-            q * q * ((-tm_product * attenuation).ln_1p() + (-te_product * attenuation).ln_1p())
-        })
-    });
-
-    (pressure_integral, energy_integral)
+    })
 }
 
 /// Lifshitz pressure between two parallel plates at zero temperature.
@@ -339,7 +339,13 @@ pub fn lifshitz_pressure_plates_with_options(
     eps2: &DielectricModel,
     options: LifshitzQuadratureOptions,
 ) -> f64 {
-    let (pressure_integral, _) = lifshitz_dimensionless_integrals(gap, eps1, eps2, options);
+    let pressure_integral = lifshitz_dimensionless_integral(
+        gap,
+        eps1,
+        eps2,
+        options,
+        LifshitzIntegral::Pressure,
+    );
     -HBAR * C * pressure_integral / (2.0 * PI * PI * gap.powi(4))
 }
 
@@ -370,7 +376,13 @@ pub fn lifshitz_energy_plates_with_options(
     eps2: &DielectricModel,
     options: LifshitzQuadratureOptions,
 ) -> f64 {
-    let (_, energy_integral) = lifshitz_dimensionless_integrals(gap, eps1, eps2, options);
+    let energy_integral = lifshitz_dimensionless_integral(
+        gap,
+        eps1,
+        eps2,
+        options,
+        LifshitzIntegral::Energy,
+    );
     HBAR * C * energy_integral / (4.0 * PI * PI * gap.powi(3))
 }
 

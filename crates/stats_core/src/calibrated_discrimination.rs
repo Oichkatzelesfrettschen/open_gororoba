@@ -283,9 +283,20 @@ pub fn calibration_precision_sensitivity(
     if !all_finite_matrix(calibration) {
         return Err(DiscriminationError::NonFiniteInput);
     }
-    let normal = nuisance.transpose() * nuisance + calibration.transpose() * calibration;
-    let cross = nuisance.transpose() * target;
-    let solution = least_squares(&normal, &cross)?;
+    let mut augmented_design =
+        DMatrix::zeros(nuisance.nrows() + calibration.nrows(), nuisance.ncols());
+    augmented_design
+        .view_mut((0, 0), nuisance.shape())
+        .copy_from(nuisance);
+    augmented_design
+        .view_mut(
+            (nuisance.nrows(), 0),
+            (calibration.nrows(), calibration.ncols()),
+        )
+        .copy_from(calibration);
+    let mut augmented_target = DVector::zeros(target.len() + calibration.nrows());
+    augmented_target.rows_mut(0, target.len()).copy_from(target);
+    let solution = least_squares(&augmented_design, &augmented_target)?;
     let sensitivity = solution[coordinate].powi(2);
     if !sensitivity.is_finite() {
         return Err(DiscriminationError::NumericalFailure);
@@ -667,6 +678,17 @@ mod tests {
             calibration_precision_sensitivity(&target, &nuisance, &calibration, 0),
             Err(DiscriminationError::NumericalFailure)
         );
+    }
+
+    #[test]
+    fn calibration_sensitivity_preserves_underflow_scale_information() {
+        let target = DVector::from_element(1, 1e-200);
+        let nuisance = DMatrix::from_element(1, 1, 1e-200);
+        let calibration = DMatrix::zeros(0, 1);
+
+        let sensitivity =
+            calibration_precision_sensitivity(&target, &nuisance, &calibration, 0).unwrap();
+        assert_relative_eq!(sensitivity, 1.0, epsilon = 1e-12);
     }
 
     #[test]

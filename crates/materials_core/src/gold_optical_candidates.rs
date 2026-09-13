@@ -207,7 +207,27 @@ impl GoldOpticalCandidate {
                 repository_root.display()
             )
         })?;
-        let source_path = repository_root.join(relative_path);
+        let mut source_path = canonical_repository_root.clone();
+        for component in relative_path.components() {
+            let Component::Normal(component) = component else {
+                unreachable!("source path components were validated above")
+            };
+            source_path.push(component);
+            let metadata = fs::symlink_metadata(&source_path).map_err(|error| {
+                format!(
+                    "inspect candidate {} source path component {}: {error}",
+                    self.dataset_id,
+                    source_path.display()
+                )
+            })?;
+            if metadata.file_type().is_symlink() {
+                return Err(format!(
+                    "candidate {} source path contains a symbolic link at {}",
+                    self.dataset_id,
+                    source_path.display()
+                ));
+            }
+        }
         let canonical_source_path = source_path.canonicalize().map_err(|error| {
             format!("resolve retained source {}: {error}", source_path.display())
         })?;
@@ -537,6 +557,40 @@ mod tests {
                 .validate_retained_sources(&repo_root::resolve!())
                 .is_err()
         );
+    }
+
+    #[cfg(unix)]
+    #[test]
+    fn retained_source_paths_reject_symbolic_link_components() {
+        use std::os::unix::fs::symlink;
+
+        let repository_root = repo_root::resolve!();
+        let catalog = GoldOpticalCandidateCatalog::load().unwrap();
+        let original_candidate = &catalog.dataset[0];
+        let original_source = repository_root.join(&original_candidate.source_path);
+        let temporary_repository = tempfile::tempdir().unwrap();
+        let actual_directory = temporary_repository.path().join("actual");
+        fs::create_dir(&actual_directory).unwrap();
+        let actual_source = actual_directory.join("source.yml");
+        fs::copy(&original_source, &actual_source).unwrap();
+
+        let linked_directory = temporary_repository.path().join("linked-directory");
+        symlink(&actual_directory, &linked_directory).unwrap();
+        let mut parent_link_candidate = original_candidate.clone();
+        parent_link_candidate.source_path = "linked-directory/source.yml".to_owned();
+        let parent_error = parent_link_candidate
+            .validate_retained_source(temporary_repository.path())
+            .unwrap_err();
+        assert!(parent_error.contains("symbolic link"));
+
+        let linked_source = temporary_repository.path().join("linked-source.yml");
+        symlink(&actual_source, &linked_source).unwrap();
+        let mut final_link_candidate = original_candidate.clone();
+        final_link_candidate.source_path = "linked-source.yml".to_owned();
+        let final_error = final_link_candidate
+            .validate_retained_source(temporary_repository.path())
+            .unwrap_err();
+        assert!(final_error.contains("symbolic link"));
     }
 
     #[test]

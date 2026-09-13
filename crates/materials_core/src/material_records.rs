@@ -405,20 +405,51 @@ impl Uncertainty {
                 if (0..*dimension).any(|index| matrix[(index, index)] < 0.0) {
                     return Err("covariance matrix must be positive semidefinite".to_owned());
                 }
-                let scale = values_row_major
-                    .iter()
-                    .map(|value| value.abs())
-                    .fold(0.0_f64, f64::max);
-                let tolerance = 64.0 * f64::EPSILON * scale * (*dimension as f64);
+                let tolerance = 64.0 * f64::EPSILON * (*dimension as f64);
+                let mut correlation = DMatrix::identity(*dimension, *dimension);
                 for row in 0..*dimension {
                     for column in (row + 1)..*dimension {
-                        if (matrix[(row, column)] - matrix[(column, row)]).abs() > tolerance {
+                        let row_variance = matrix[(row, row)];
+                        let column_variance = matrix[(column, column)];
+                        let upper = matrix[(row, column)];
+                        let lower = matrix[(column, row)];
+                        if row_variance == 0.0 || column_variance == 0.0 {
+                            if upper != 0.0 || lower != 0.0 {
+                                return Err(
+                                    "covariance matrix must be positive semidefinite".to_owned()
+                                );
+                            }
+                            correlation[(row, column)] = 0.0;
+                            correlation[(column, row)] = 0.0;
+                            continue;
+                        }
+                        let larger_deviation = row_variance
+                            .sqrt()
+                            .max(column_variance.sqrt());
+                        let smaller_deviation = row_variance
+                            .sqrt()
+                            .min(column_variance.sqrt());
+                        let upper_correlation = upper / larger_deviation / smaller_deviation;
+                        let lower_correlation = lower / larger_deviation / smaller_deviation;
+                        if !upper_correlation.is_finite() || !lower_correlation.is_finite() {
+                            return Err(
+                                "covariance matrix must be positive semidefinite".to_owned()
+                            );
+                        }
+                        if (upper_correlation - lower_correlation).abs() > tolerance {
                             return Err("covariance matrix must be symmetric".to_owned());
                         }
+                        let symmetric_correlation = (upper_correlation + lower_correlation) * 0.5;
+                        if symmetric_correlation.abs() > 1.0 + tolerance {
+                            return Err(
+                                "covariance matrix must be positive semidefinite".to_owned()
+                            );
+                        }
+                        correlation[(row, column)] = symmetric_correlation;
+                        correlation[(column, row)] = symmetric_correlation;
                     }
                 }
-                let symmetric = (&matrix + matrix.transpose()) * 0.5;
-                if symmetric
+                if correlation
                     .symmetric_eigen()
                     .eigenvalues
                     .iter()
@@ -1507,6 +1538,16 @@ mod tests {
         };
         assert_eq!(
             dynamic_range_negative_variance.validate().unwrap_err(),
+            "covariance matrix must be positive semidefinite"
+        );
+
+        let zero_variance_with_covariance = Uncertainty::Covariance {
+            dimension: 2,
+            values_row_major: vec![1e200, 1e190, 1e190, 0.0],
+            unit_squared: "m^2".to_owned(),
+        };
+        assert_eq!(
+            zero_variance_with_covariance.validate().unwrap_err(),
             "covariance matrix must be positive semidefinite"
         );
 

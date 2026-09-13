@@ -855,7 +855,7 @@ struct RustShard {
 fn normalize_shard_targets(
     package_name: &str,
     target_kind: &str,
-    targets: &mut Vec<ShardTarget>,
+    targets: &mut [ShardTarget],
 ) -> Result<()> {
     for target in targets.iter_mut() {
         target.required_features.sort();
@@ -3412,24 +3412,44 @@ fn run_validation_tools_status(cli: ValidationToolsStatusCli) -> Result<()> {
         },
     ];
 
-    for (name, source_file) in [
-        ("claims-verify", "claims_verify.rs"),
-        ("registry-check", "registry_check.rs"),
-        ("test-inventory", "test_inventory.rs"),
-        ("semantic-atoms", "semantic_atoms.rs"),
-        ("evidence-provenance", "evidence_provenance.rs"),
-        ("registry-integrity", "registry_integrity.rs"),
-        ("execution-planning", "execution_planning.rs"),
-        ("governance-verify", "governance_verify.rs"),
-        ("markdown-registry", "markdown_registry.rs"),
+    for (name, package_name, source_file) in [
+        ("claims-verify", "gororoba_cli_data", "claims_verify.rs"),
+        ("registry-check", "gororoba_cli_data", "registry_check.rs"),
+        ("test-inventory", "gororoba_cli_data", "test_inventory.rs"),
+        ("semantic-atoms", "gororoba_cli_data", "semantic_atoms.rs"),
+        (
+            "evidence-provenance",
+            "gororoba_cli_data",
+            "evidence_provenance.rs",
+        ),
+        (
+            "registry-integrity",
+            "gororoba_cli_governance",
+            "registry_integrity.rs",
+        ),
+        (
+            "execution-planning",
+            "gororoba_cli_data",
+            "execution_planning.rs",
+        ),
+        (
+            "governance-verify",
+            "gororoba_cli_data",
+            "governance_verify.rs",
+        ),
+        (
+            "markdown-registry",
+            "gororoba_cli_data",
+            "markdown_registry.rs",
+        ),
     ] {
+        let package_root = root.join("crates").join(package_name);
         entries.push(ToolStatusEntry {
             name,
             cached_path: tools_dir.join(name),
             source_deps: vec![
-                root.join("crates/gororoba_cli_data/src/bin")
-                    .join(source_file),
-                root.join("crates/gororoba_cli_data/Cargo.toml"),
+                package_root.join("src/bin").join(source_file),
+                package_root.join("Cargo.toml"),
             ],
             runtime_artifact: false,
         });

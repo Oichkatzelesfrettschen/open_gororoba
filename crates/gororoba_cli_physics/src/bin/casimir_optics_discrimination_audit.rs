@@ -28,6 +28,9 @@ use quantum_core::{
 use rand::{RngExt, SeedableRng};
 use rand_chacha::ChaCha8Rng;
 use rand_distr::StandardNormal;
+use provenance_store::{
+    SourceObservationSpec, SourceStorageEncoding, SourceTimePrecision, SourceTransportOutcome,
+};
 use serde::{Deserialize, Serialize};
 use sha2::{Digest, Sha256};
 use statrs::distribution::{ContinuousCDF, Normal};
@@ -45,6 +48,7 @@ const MULTILAYER_ANGULAR_CONVERGENCE_RELATIVE_TOLERANCE: f64 = 1.0e-8;
 const ANGULAR_CONVERGENCE_TARGET: &str = "Au20/SiO2-50/Al2O3-50/Si_vs_Au";
 const PRODUCER_SOURCE: &str = include_str!("casimir_optics_discrimination_audit.rs");
 const SOURCE_RETRIEVAL_MANIFEST: &str = "source-retrieval-manifest.toml";
+const SOURCE_OBSERVATION_DIRECTORY: &str = "source-observations";
 const EXPECTED_RETAINED_SOURCES: [(&str, &str); 12] = [
     (
         "LIFSHITZ-1956",
@@ -93,6 +97,32 @@ const EXPECTED_RETAINED_SOURCES: [(&str, &str); 12] = [
     (
         "REJECTED-ARXIV-0801.1757",
         "data/output/audit/casimir-optics-discrimination/sources/master-equation-tutorial-nonsupporting-2008.pdf",
+    ),
+];
+const EXPECTED_SOURCE_OBSERVATIONS: [(&str, &str); 12] = [
+    ("LIFSHITZ-1956", "lifshitz-1956.toml"),
+    ("CASIMIR-REVIEW-2009", "casimir-review-2009.toml"),
+    ("HNLS-2017", "hnls-2017.toml"),
+    ("MEMORY-KERNEL-CP-2009", "memory-kernel-cp-2009.toml"),
+    ("AUTOQEC-METROLOGY-2026", "autoqec-metrology-2026.toml"),
+    ("MCPEAK-2015-MANUSCRIPT", "mcpeak-2015-manuscript.toml"),
+    ("RIINFO-AU-JOHNSON", "riinfo-au-johnson.toml"),
+    (
+        "RIINFO-AU-OLMON-EVAPORATED",
+        "riinfo-au-olmon-evaporated.toml",
+    ),
+    ("RIINFO-AU-MCPEAK", "riinfo-au-mcpeak.toml"),
+    (
+        "RIINFO-AU-KLINAVICIUS-11NM",
+        "riinfo-au-klinavicius-11nm.toml",
+    ),
+    (
+        "RIINFO-DATABASE-LICENSE",
+        "riinfo-database-license.toml",
+    ),
+    (
+        "REJECTED-ARXIV-0801.1757",
+        "rejected-arxiv-0801-1757.toml",
     ),
 ];
 
@@ -212,8 +242,19 @@ struct SourceRetrievalManifest {
 #[derive(Debug, Deserialize)]
 struct RetainedSource {
     id: String,
+    url: String,
     path: PathBuf,
     sha256: String,
+}
+
+#[derive(Debug, Deserialize)]
+struct NativeOutputManifest {
+    output: Vec<NativeOutputEntry>,
+}
+
+#[derive(Debug, Deserialize)]
+struct NativeOutputEntry {
+    path: PathBuf,
 }
 
 #[derive(Debug, Parser)]
@@ -532,6 +573,174 @@ fn verify_source_retrieval_manifest(manifest_path: &Path, repository_root: &Path
         )
     })?;
     verify_source_retrieval_manifest_source(&source, repository_root)
+}
+
+fn verify_source_observation_source(
+    receipt_source: &str,
+    receipt_filename: &str,
+    manifest: &SourceRetrievalManifest,
+    manifest_bytes: &[u8],
+    retained_source: &RetainedSource,
+    repository_root: &Path,
+) -> Result<()> {
+    let receipt: SourceObservationSpec = toml::from_str(receipt_source)
+        .with_context(|| format!("parsing source-observation receipt {receipt_filename}"))?;
+    let expected_observation_key = format!(
+        "casimir-optics-discrimination-{}",
+        receipt_filename
+            .strip_suffix(".toml")
+            .context("source-observation receipt filename must end in .toml")?
+    );
+    ensure!(
+        receipt.schema_version == 1
+            && receipt.observation_key == expected_observation_key
+            && receipt.source_key == retained_source.id
+            && receipt.requested_url == retained_source.url
+            && receipt.observed_at == manifest.retrieval_date
+            && matches!(receipt.outcome, SourceTransportOutcome::BodyRetained)
+            && matches!(receipt.time_precision, SourceTimePrecision::Day)
+            && receipt.final_url.is_none()
+            && receipt.http_status.is_none()
+            && receipt.artifact_prestate.is_none()
+            && receipt.corrects_observation_key.is_none(),
+        "source-observation receipt {receipt_filename} identity or observation fields disagree with the retrieval manifest"
+    );
+    for (label, value) in [
+        ("actor", receipt.actor.as_str()),
+        ("reason", receipt.reason.as_str()),
+        ("tool", receipt.tool.as_str()),
+        (
+            "request_evidence_limit",
+            receipt.request_evidence_limit.as_str(),
+        ),
+        (
+            "absent_prior_expectation_reason",
+            receipt.absent_prior_expectation_reason.as_str(),
+        ),
+        (
+            "document_identity_limit",
+            receipt.document_identity_limit.as_str(),
+        ),
+    ] {
+        ensure!(
+            !value.trim().is_empty(),
+            "source-observation receipt {receipt_filename} has empty {label}"
+        );
+    }
+
+    let manifest_digest = sha256_hex(manifest_bytes);
+    let expected_manifest_path = format!("{DEFAULT_OUTPUT_DIRECTORY}/{SOURCE_RETRIEVAL_MANIFEST}");
+    ensure!(
+        receipt.request_evidence.path == expected_manifest_path
+            && receipt.request_evidence.storage_sha256 == manifest_digest
+            && receipt.request_evidence.decoded_sha256 == manifest_digest
+            && receipt.request_evidence.decoded_bytes == manifest_bytes.len() as u64
+            && matches!(
+                receipt.request_evidence.encoding,
+                SourceStorageEncoding::Identity
+            ),
+        "source-observation receipt {receipt_filename} request evidence disagrees with the retained manifest bytes"
+    );
+
+    let body = receipt
+        .body
+        .as_ref()
+        .context("body-retained source-observation receipt omits body metadata")?;
+    let expected_body_path = retained_source.path.to_string_lossy();
+    let body_bytes = fs::read(repository_root.join(&retained_source.path)).with_context(|| {
+        format!(
+            "reading source-observation body {}",
+            retained_source.path.display()
+        )
+    })?;
+    let body_digest = sha256_hex(&body_bytes);
+    ensure!(
+        body.path == expected_body_path.as_ref()
+            && body.storage_sha256 == retained_source.sha256
+            && body.decoded_sha256 == retained_source.sha256
+            && body.storage_sha256 == body_digest
+            && body.decoded_bytes == body_bytes.len() as u64
+            && matches!(body.encoding, SourceStorageEncoding::Identity),
+        "source-observation receipt {receipt_filename} body evidence disagrees with the retained source bytes"
+    );
+    Ok(())
+}
+
+fn verify_source_observations(manifest_path: &Path, repository_root: &Path) -> Result<()> {
+    let manifest_bytes = fs::read(manifest_path).with_context(|| {
+        format!(
+            "reading source-retrieval manifest bytes {}",
+            manifest_path.display()
+        )
+    })?;
+    let manifest_source = std::str::from_utf8(&manifest_bytes)
+        .context("source-retrieval manifest is not UTF-8")?;
+    verify_source_retrieval_manifest_source(manifest_source, repository_root)?;
+    let manifest: SourceRetrievalManifest = toml::from_str(manifest_source)
+        .context("parsing source-retrieval manifest for source observations")?;
+    let observation_directory = manifest_path
+        .parent()
+        .context("source-retrieval manifest has no parent directory")?
+        .join(SOURCE_OBSERVATION_DIRECTORY);
+    let mut observed_filenames = BTreeSet::new();
+    for entry in fs::read_dir(&observation_directory).with_context(|| {
+        format!(
+            "reading source-observation directory {}",
+            observation_directory.display()
+        )
+    })? {
+        let entry = entry.context("reading source-observation directory entry")?;
+        let file_type = entry
+            .file_type()
+            .context("reading source-observation entry type")?;
+        ensure!(
+            file_type.is_file() && !file_type.is_symlink(),
+            "source-observation directory contains a non-regular entry at {}",
+            entry.path().display()
+        );
+        let filename = entry
+            .file_name()
+            .into_string()
+            .map_err(|_| anyhow!("source-observation filename is not UTF-8"))?;
+        ensure!(
+            observed_filenames.insert(filename),
+            "source-observation directory repeats a filename"
+        );
+    }
+    let expected_filenames = EXPECTED_SOURCE_OBSERVATIONS
+        .iter()
+        .map(|(_, filename)| (*filename).to_owned())
+        .collect::<BTreeSet<_>>();
+    ensure!(
+        observed_filenames == expected_filenames,
+        "source-observation directory does not contain the exact receipt set"
+    );
+
+    let manifest_sources = manifest
+        .source
+        .iter()
+        .map(|source| (source.id.as_str(), source))
+        .collect::<BTreeMap<_, _>>();
+    for (source_id, receipt_filename) in EXPECTED_SOURCE_OBSERVATIONS {
+        let retained_source = manifest_sources
+            .get(&source_id)
+            .with_context(|| {
+                format!("source-observation receipt has no manifest source {source_id}")
+            })?;
+        let receipt_path = observation_directory.join(receipt_filename);
+        let receipt_source = fs::read_to_string(&receipt_path).with_context(|| {
+            format!("reading source-observation receipt {}", receipt_path.display())
+        })?;
+        verify_source_observation_source(
+            &receipt_source,
+            receipt_filename,
+            &manifest,
+            &manifest_bytes,
+            retained_source,
+            repository_root,
+        )?;
+    }
+    Ok(())
 }
 
 fn scaled_columns(matrix: &DMatrix<f64>, scales: &[f64]) -> DMatrix<f64> {
@@ -1717,10 +1926,54 @@ fn render_outputs(generated: &GeneratedAudit) -> Result<BTreeMap<String, String>
     Ok(outputs)
 }
 
+fn remove_obsolete_manifest_outputs(
+    output_directory: &Path,
+    current_outputs: &BTreeMap<String, String>,
+) -> Result<()> {
+    let manifest_path = output_directory.join("native-output-manifest.toml");
+    if !manifest_path.exists() {
+        return Ok(());
+    }
+    let prior_manifest_source = fs::read_to_string(&manifest_path)
+        .with_context(|| format!("reading prior native manifest {}", manifest_path.display()))?;
+    let prior_manifest: NativeOutputManifest = toml::from_str(&prior_manifest_source)
+        .context("parsing prior native output manifest")?;
+    for prior_output in prior_manifest.output {
+        let mut components = prior_output.path.components();
+        let safe_filename = matches!(components.next(), Some(Component::Normal(_)))
+            && components.next().is_none();
+        ensure!(
+            safe_filename,
+            "prior native output manifest declares unsafe output path {}",
+            prior_output.path.display()
+        );
+        let prior_name = prior_output
+            .path
+            .to_str()
+            .context("prior native output path is not UTF-8")?;
+        if current_outputs.contains_key(prior_name) {
+            continue;
+        }
+        let obsolete_path = output_directory.join(&prior_output.path);
+        match fs::remove_file(&obsolete_path) {
+            Ok(()) => {}
+            Err(error) if error.kind() == std::io::ErrorKind::NotFound => {}
+            Err(error) => {
+                return Err(error).with_context(|| {
+                    format!("removing obsolete native output {}", obsolete_path.display())
+                });
+            }
+        }
+    }
+    Ok(())
+}
+
 fn write_report(output_directory: &Path, generated: &GeneratedAudit) -> Result<()> {
     fs::create_dir_all(output_directory)
         .with_context(|| format!("creating {}", output_directory.display()))?;
-    for (name, contents) in render_outputs(generated)? {
+    let outputs = render_outputs(generated)?;
+    remove_obsolete_manifest_outputs(output_directory, &outputs)?;
+    for (name, contents) in outputs {
         fs::write(output_directory.join(&name), contents)
             .with_context(|| format!("writing audit output {name}"))?;
     }
@@ -1729,11 +1982,13 @@ fn write_report(output_directory: &Path, generated: &GeneratedAudit) -> Result<(
 
 fn check_report(output_directory: &Path, generated: &GeneratedAudit) -> Result<()> {
     let mut failures = Vec::new();
-    if let Err(error) = verify_source_retrieval_manifest(
-        &output_directory.join(SOURCE_RETRIEVAL_MANIFEST),
-        &repo_root::resolve!(),
-    ) {
+    let repository_root = repo_root::resolve!();
+    let manifest_path = output_directory.join(SOURCE_RETRIEVAL_MANIFEST);
+    if let Err(error) = verify_source_retrieval_manifest(&manifest_path, &repository_root) {
         failures.push(format!("source retrieval manifest: {error:#}"));
+    }
+    if let Err(error) = verify_source_observations(&manifest_path, &repository_root) {
+        failures.push(format!("source observation receipts: {error:#}"));
     }
     for (name, expected) in render_outputs(generated)? {
         let path = output_directory.join(&name);
@@ -1822,6 +2077,51 @@ mod tests {
         let report = generate_report().unwrap();
         validate_report(&report.report).unwrap();
         assert_eq!(summary_rows(&report.report).len(), 13);
+    }
+
+    #[test]
+    fn regeneration_removes_only_obsolete_manifested_outputs() {
+        let temporary_output = tempfile::tempdir().unwrap();
+        let manifest = "[[output]]\npath = \"retained.tsv\"\n\n[[output]]\npath = \"obsolete.tsv\"\n";
+        fs::write(
+            temporary_output.path().join("native-output-manifest.toml"),
+            manifest,
+        )
+        .unwrap();
+        fs::write(temporary_output.path().join("retained.tsv"), "retained").unwrap();
+        fs::write(temporary_output.path().join("obsolete.tsv"), "obsolete").unwrap();
+        fs::write(temporary_output.path().join("source-retrieval-manifest.toml"), "auxiliary")
+            .unwrap();
+        let current_outputs = BTreeMap::from([("retained.tsv".to_owned(), String::new())]);
+
+        remove_obsolete_manifest_outputs(temporary_output.path(), &current_outputs).unwrap();
+
+        assert!(temporary_output.path().join("retained.tsv").is_file());
+        assert!(!temporary_output.path().join("obsolete.tsv").exists());
+        assert!(
+            temporary_output
+                .path()
+                .join("source-retrieval-manifest.toml")
+                .is_file()
+        );
+    }
+
+    #[test]
+    fn regeneration_rejects_unsafe_prior_output_paths() {
+        let temporary_output = tempfile::tempdir().unwrap();
+        fs::write(
+            temporary_output.path().join("native-output-manifest.toml"),
+            "[[output]]\npath = \"../outside.tsv\"\n",
+        )
+        .unwrap();
+
+        let error = remove_obsolete_manifest_outputs(
+            temporary_output.path(),
+            &BTreeMap::<String, String>::new(),
+        )
+        .unwrap_err();
+
+        assert!(error.to_string().contains("unsafe output path"));
     }
 
     #[test]
@@ -2027,6 +2327,73 @@ mod tests {
         let error = verify_source_retrieval_manifest_source(&incomplete_manifest, &repository_root)
             .unwrap_err();
         assert!(error.to_string().contains("exact retained source set"));
+    }
+
+    #[test]
+    fn retained_source_observations_reconcile_the_exact_receipt_set() {
+        let repository_root = repo_root::resolve!();
+        let manifest_path = repository_root
+            .join(DEFAULT_OUTPUT_DIRECTORY)
+            .join(SOURCE_RETRIEVAL_MANIFEST);
+        verify_source_observations(&manifest_path, &repository_root).unwrap();
+    }
+
+    #[test]
+    fn retained_source_observations_reject_manifest_and_body_drift() {
+        let repository_root = repo_root::resolve!();
+        let manifest_path = repository_root
+            .join(DEFAULT_OUTPUT_DIRECTORY)
+            .join(SOURCE_RETRIEVAL_MANIFEST);
+        let manifest_bytes = fs::read(&manifest_path).unwrap();
+        let manifest_source = std::str::from_utf8(&manifest_bytes).unwrap();
+        let manifest: SourceRetrievalManifest = toml::from_str(manifest_source).unwrap();
+        let (source_id, receipt_filename) = EXPECTED_SOURCE_OBSERVATIONS[0];
+        let retained_source = manifest
+            .source
+            .iter()
+            .find(|source| source.id == source_id)
+            .unwrap();
+        let receipt_path = repository_root
+            .join(DEFAULT_OUTPUT_DIRECTORY)
+            .join(SOURCE_OBSERVATION_DIRECTORY)
+            .join(receipt_filename);
+        let receipt_source = fs::read_to_string(receipt_path).unwrap();
+        let mutations = [
+            (
+                format!("source_key = \"{}\"", retained_source.id),
+                "source_key = \"OTHER-SOURCE\"".to_owned(),
+                "identity or observation fields",
+            ),
+            (
+                format!("observed_at = \"{}\"", manifest.retrieval_date),
+                "observed_at = \"2026-09-11\"".to_owned(),
+                "identity or observation fields",
+            ),
+            (
+                format!("storage_sha256 = \"{}\"", sha256_hex(&manifest_bytes)),
+                format!("storage_sha256 = \"{}\"", "0".repeat(64)),
+                "request evidence",
+            ),
+            (
+                format!("storage_sha256 = \"{}\"", retained_source.sha256),
+                format!("storage_sha256 = \"{}\"", "0".repeat(64)),
+                "body evidence",
+            ),
+        ];
+        for (declaration, replacement, expected_error) in mutations {
+            let mutated = receipt_source.replacen(&declaration, &replacement, 1);
+            assert_ne!(mutated, receipt_source);
+            let error = verify_source_observation_source(
+                &mutated,
+                receipt_filename,
+                &manifest,
+                &manifest_bytes,
+                retained_source,
+                &repository_root,
+            )
+            .unwrap_err();
+            assert!(format!("{error:#}").contains(expected_error));
+        }
     }
 
     #[cfg(unix)]
