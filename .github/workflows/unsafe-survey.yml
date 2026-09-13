@@ -42,9 +42,11 @@ jobs:
           set -euo pipefail
           rustc --edition=2024 -D warnings crates/gororoba_cli/src/bin/detect_worker_budget.rs -o "$RUNNER_TEMP/detect-worker-budget"
           worker_budget="$("$RUNNER_TEMP/detect-worker-budget")"
-          echo "CARGO_BUILD_JOBS=$worker_budget" >> "$GITHUB_ENV"
-          echo "RAYON_NUM_THREADS=$worker_budget" >> "$GITHUB_ENV"
-          echo "RUST_TEST_THREADS=$worker_budget" >> "$GITHUB_ENV"
+          {
+            echo "CARGO_BUILD_JOBS=$worker_budget"
+            echo "RAYON_NUM_THREADS=$worker_budget"
+            echo "RUST_TEST_THREADS=$worker_budget"
+          } >> "$GITHUB_ENV"
           echo "Hosted unsafe survey uses $worker_budget process-visible CPUs."
       - name: Install linker dependencies
         run: |
