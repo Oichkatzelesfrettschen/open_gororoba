@@ -767,7 +767,7 @@ mod tests {
         let exact_energy = -PI * PI * HBAR * C / (720.0 * gap.powi(3));
         let configurations = [
             LifshitzQuadratureOptions::new(16.0, 96, 32),
-            LifshitzQuadratureOptions::new(20.0, 128, 48),
+            LifshitzQuadratureOptions::new(20.0, 256, 48),
             LifshitzQuadratureOptions::new(24.0, 256, 64),
         ];
         let mut pressures = Vec::new();
@@ -782,6 +782,14 @@ mod tests {
         }
         assert!((pressures[2] / exact_pressure - 1.0).abs() < 2e-9);
         assert!((energies[2] / exact_energy - 1.0).abs() < 5e-10);
+        assert!(
+            (pressures[1] / exact_pressure - 1.0).abs()
+                < (pressures[0] / exact_pressure - 1.0).abs()
+        );
+        assert!(
+            (energies[1] / exact_energy - 1.0).abs()
+                < (energies[0] / exact_energy - 1.0).abs()
+        );
         assert!((pressures[1] / pressures[2] - 1.0).abs() < 2e-9);
         assert!((energies[1] / energies[2] - 1.0).abs() < 2e-9);
     }

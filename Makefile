@@ -337,7 +337,7 @@ validation-resource-contract-workers:
 
 validation-resource-contract-collectors:
 	@status=0; \
-	for contract in 'ci-rust-shard-matrix' 'target-shard-package=gororoba_cli_physics' 'CI_CARGO_TARGET_ARGS: $${{ matrix.cargo_target_args }}' 'matrix: $${{ fromJSON(needs.validation-core.outputs.rust_matrix) }}' 'make --jobs="$$WORKER_BUDGET" --keep-going "validate-ci-scoped-$${{ matrix.target }}"' 'timeout-minutes: 80' 'fail-fast: false' 'Report collected validation failures' 'Report aggregate validation admission' 'needs: [validation-policy, validation-core, rust-validation]' "needs.validation-policy.result == 'success'" "needs.validation.result == 'success'" 'make --keep-going validation-resource-contract' 'make --jobs="$$WORKER_BUDGET" --keep-going casimir-optics-discrimination-audit-check' 'make --jobs="$$WORKER_BUDGET" --keep-going docs-freshness'; do \
+	for contract in 'ci-rust-shard-matrix' 'target-shard-package=gororoba_cli_physics' 'CI_CARGO_TARGET_ARGS: $${{ matrix.cargo_target_args }}' 'CI_CARGO_FEATURES: $${{ matrix.cargo_features }}' 'matrix: $${{ fromJSON(needs.validation-core.outputs.rust_matrix) }}' 'make --jobs="$$WORKER_BUDGET" --keep-going "validate-ci-scoped-$${{ matrix.target }}"' 'timeout-minutes: 80' 'fail-fast: false' 'Report collected validation failures' 'Report aggregate validation admission' 'needs: [validation-policy, validation-core, rust-validation]' "needs.validation-policy.result == 'success'" "needs.validation.result == 'success'" 'make --keep-going validation-resource-contract' 'make --jobs="$$WORKER_BUDGET" --keep-going casimir-optics-discrimination-audit-check' 'make --jobs="$$WORKER_BUDGET" --keep-going docs-freshness'; do \
 	    if ! grep -Fq "$$contract" .github/workflows/ci.yml; then echo "ERROR: main CI collector contract is missing: $$contract" >&2; status=1; fi; \
 	done; \
 	for lane in clippy light heavy; do \
@@ -769,6 +769,7 @@ validate-ci-scoped-rust-lane: SHELL := /bin/bash
 validate-ci-scoped-rust-lane: export CI_RUST_SCOPE := $(CI_RUST_SCOPE)
 validate-ci-scoped-rust-lane: export CI_CLIPPY_SCOPE := $(CI_CLIPPY_SCOPE)
 validate-ci-scoped-rust-lane: export CI_CARGO_TARGET_ARGS := $(CI_CARGO_TARGET_ARGS)
+validate-ci-scoped-rust-lane: export CI_CARGO_FEATURES := $(CI_CARGO_FEATURES)
 validate-ci-scoped-rust-lane: require-ci-validation-authority
 	@set -euo pipefail; \
 	validate_scope() { \
@@ -805,12 +806,17 @@ validate-ci-scoped-rust-lane: require-ci-validation-authority
 	if [ "$$CI_RUST_LANE" = clippy ]; then exit 0; fi; \
 	cargo_target_scope="$${CI_CARGO_TARGET_ARGS:---all-targets}"; \
 	read -r -a cargo_target_args <<< "$$cargo_target_scope"; \
+	cargo_feature_args=(); \
+	if [ -n "$$CI_CARGO_FEATURES" ]; then \
+	    if [[ ! "$$CI_CARGO_FEATURES" =~ ^[A-Za-z0-9_-]+(,[A-Za-z0-9_-]+)*$$ ]]; then echo "ERROR: CI_CARGO_FEATURES requires a comma-separated feature list." >&2; exit 1; fi; \
+	    cargo_feature_args=(--features "$$CI_CARGO_FEATURES"); \
+	fi; \
 	case "$${cargo_target_args[0]}" in \
-	    --all-targets) \
-	        if [ "$${#cargo_target_args[@]}" -ne 1 ]; then echo "ERROR: --all-targets cannot be combined with target shards." >&2; exit 1; fi \
-	        ;; \
 	    --lib) \
-	        if [ "$${#cargo_target_args[@]}" -ne 2 ] || [ "$${cargo_target_args[1]}" != --tests ]; then echo "ERROR: non-binary target shard requires --lib --tests." >&2; exit 1; fi \
+	        if ! { [ "$${#cargo_target_args[@]}" -eq 2 ] && [ "$${cargo_target_args[1]}" = --tests ]; } && \
+	           ! { [ "$${#cargo_target_args[@]}" -eq 4 ] && [ "$${cargo_target_args[1]}" = --bins ] && [ "$${cargo_target_args[2]}" = --tests ] && [ "$${cargo_target_args[3]}" = --examples ]; }; then \
+	            echo "ERROR: non-binary target shard requires --lib --tests or --lib --bins --tests --examples." >&2; exit 1; \
+	        fi \
 	        ;; \
 	    --bin) \
 	        if (( $${#cargo_target_args[@]} % 2 != 0 )); then echo "ERROR: binary target shard requires --bin name pairs." >&2; exit 1; fi; \
@@ -837,12 +843,12 @@ validate-ci-scoped-rust-lane: require-ci-validation-authority
 	    light) \
 	        if [ "$${#light_scope[@]}" -eq 0 ]; then echo "[ci-rust-light] no applicable packages"; exit 0; fi; \
 	        echo "[ci-rust-light] scope: $${light_scope[*]}"; \
-	        $(CARGO_ENV_CI) cargo nextest run --no-fail-fast --locked --cargo-profile test -P ci "$${cargo_target_args[@]}" --build-jobs $(CARGO_JOBS) --test-threads $(NEXTEST_TEST_THREADS) "$${light_scope[@]}"; \
+	        $(CARGO_ENV_CI) cargo nextest run --no-fail-fast --locked --cargo-profile test -P ci "$${cargo_target_args[@]}" "$${cargo_feature_args[@]}" --build-jobs $(CARGO_JOBS) --test-threads $(NEXTEST_TEST_THREADS) "$${light_scope[@]}"; \
 	        ;; \
 	    heavy) \
 	        if [ "$${#heavy_scope[@]}" -eq 0 ]; then echo "[ci-rust-heavy] no applicable packages"; exit 0; fi; \
 	        echo "[ci-rust-heavy] scope: $${heavy_scope[*]}"; \
-	        $(CARGO_ENV_CI) cargo nextest run --no-fail-fast --locked --cargo-profile test-heavy -P heavy "$${cargo_target_args[@]}" --build-jobs $(CARGO_JOBS) --test-threads $(NEXTEST_TEST_THREADS) "$${heavy_scope[@]}"; \
+	        $(CARGO_ENV_CI) cargo nextest run --no-fail-fast --locked --cargo-profile test-heavy -P heavy "$${cargo_target_args[@]}" "$${cargo_feature_args[@]}" --build-jobs $(CARGO_JOBS) --test-threads $(NEXTEST_TEST_THREADS) "$${heavy_scope[@]}"; \
 	        ;; \
 	esac
 

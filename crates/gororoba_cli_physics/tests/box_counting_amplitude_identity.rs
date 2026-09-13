@@ -2,8 +2,14 @@ use cosmology_core::sersic::{
     box_counting_fractal_dim, box_counting_fractal_dim_threshold, otsu_threshold,
 };
 use gororoba_cli_physics::{lbm_dispatch::LbmBackend, lbm_population_diagnostics::inspect_fields};
+use provenance_store::retained_archive::RetainedArchive;
 use sha2::{Digest, Sha256};
 use std::{collections::BTreeSet, error::Error, io::Write};
+
+const DENSITY_PATH: &str = "data/output/audit/claim-family-evidence-adjudication/null-pilot-cpu/C1-uniform-fzd-0/rho.f64le";
+const DENSITY_SHA256: &str = "9ad28ff0dbb91703f930756f2c9d0f2a9f7655d6e0efeb120b4c23f9321bdaa7";
+const FORCE_PATH: &str = "data/output/audit/claim-family-evidence-adjudication/null-pilot-cpu/C1-uniform-fzd-0/force.xyz.f64le";
+const FORCE_SHA256: &str = "2050ed246e70e02a6aadafedc5f70147ba7ee980d937435c9dc16931f6557166";
 
 fn digest(bytes: &[u8]) -> String {
     Sha256::digest(bytes)
@@ -115,16 +121,20 @@ fn read_f64(path: &str, expected_hash: &str) -> Result<Vec<f64>, Box<dyn Error>>
 }
 
 #[test]
+fn retained_uniform_force_inputs_have_archive_identities() -> Result<(), Box<dyn Error>> {
+    let repository_root = repo_root::path!("");
+    let archive = RetainedArchive::load(&repository_root)?;
+    archive.materialization(DENSITY_PATH, DENSITY_SHA256)?;
+    archive.materialization(FORCE_PATH, FORCE_SHA256)?;
+    Ok(())
+}
+
+#[test]
+#[ignore = "requires the hydrated scientific payload archive"]
 fn retained_uniform_force_replay_separates_amplitude_from_adaptive_geometry()
 -> Result<(), Box<dyn Error>> {
-    let density = read_f64(
-        "data/output/audit/claim-family-evidence-adjudication/null-pilot-cpu/C1-uniform-fzd-0/rho.f64le",
-        "9ad28ff0dbb91703f930756f2c9d0f2a9f7655d6e0efeb120b4c23f9321bdaa7",
-    )?;
-    let force = read_f64(
-        "data/output/audit/claim-family-evidence-adjudication/null-pilot-cpu/C1-uniform-fzd-0/force.xyz.f64le",
-        "2050ed246e70e02a6aadafedc5f70147ba7ee980d937435c9dc16931f6557166",
-    )?;
+    let density = read_f64(DENSITY_PATH, DENSITY_SHA256)?;
+    let force = read_f64(FORCE_PATH, FORCE_SHA256)?;
     let force: Vec<[f64; 3]> = force
         .chunks_exact(3)
         .map(|chunk| chunk.try_into().unwrap())

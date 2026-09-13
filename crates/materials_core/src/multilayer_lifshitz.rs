@@ -161,7 +161,8 @@ impl<'a> Multilayer<'a> {
 pub struct ZeroTemperatureOptions {
     /// Order for the transformed `q in [0, infinity)` integral.
     pub radial_order: usize,
-    /// Order for the complete `mu in [0, 1]` angular integral.
+    /// Order for the complete `mu in [0, 1]` angular integral after the
+    /// endpoint-resolving substitution `mu = s^2`.
     pub angular_order: usize,
 }
 
@@ -639,13 +640,16 @@ fn zero_temperature_integrals(
     let pressure_integral = radial_quadrature.integrate(0.0, 1.0, |unit_node| {
         let (q, jacobian) = transformed_q(unit_node);
         let attenuation = (-2.0 * q).exp();
-        let angular_integral = angular_quadrature.integrate(0.0, 1.0, |mu| {
+        let angular_integral = angular_quadrature.integrate(0.0, 1.0, |angle_node| {
+            let mu = angle_node * angle_node;
+            let angular_jacobian = 2.0 * angle_node;
             let xi = C * q * mu / gap_m;
             let k_parallel = q * (1.0 - mu * mu).sqrt() / gap_m;
             let (left_tm, left_te) = surface_reflections(left, xi, k_parallel);
             let (right_tm, right_te) = surface_reflections(right, xi, k_parallel);
-            round_trip_fraction(left_tm * right_tm, attenuation)
-                + round_trip_fraction(left_te * right_te, attenuation)
+            angular_jacobian
+                * (round_trip_fraction(left_tm * right_tm, attenuation)
+                    + round_trip_fraction(left_te * right_te, attenuation))
         });
         q.powi(3) * jacobian * angular_integral
     });
@@ -653,13 +657,16 @@ fn zero_temperature_integrals(
     let energy_integral = radial_quadrature.integrate(0.0, 1.0, |unit_node| {
         let (q, jacobian) = transformed_q(unit_node);
         let attenuation = (-2.0 * q).exp();
-        let angular_integral = angular_quadrature.integrate(0.0, 1.0, |mu| {
+        let angular_integral = angular_quadrature.integrate(0.0, 1.0, |angle_node| {
+            let mu = angle_node * angle_node;
+            let angular_jacobian = 2.0 * angle_node;
             let xi = C * q * mu / gap_m;
             let k_parallel = q * (1.0 - mu * mu).sqrt() / gap_m;
             let (left_tm, left_te) = surface_reflections(left, xi, k_parallel);
             let (right_tm, right_te) = surface_reflections(right, xi, k_parallel);
-            (-(left_tm * right_tm) * attenuation).ln_1p()
-                + (-(left_te * right_te) * attenuation).ln_1p()
+            angular_jacobian
+                * ((-(left_tm * right_tm) * attenuation).ln_1p()
+                    + (-(left_te * right_te) * attenuation).ln_1p())
         });
         q * q * jacobian * angular_integral
     });

@@ -113,7 +113,7 @@ fn target_shards_cover_every_declared_binary_exactly_once() {
     write_workspace(temp.path(), &[("crates/physics", "physics")]);
     std::fs::write(
         temp.path().join("crates/physics/Cargo.toml"),
-        "[package]\nname = \"physics\"\nversion = \"0.1.0\"\n\n[[bin]]\nname = \"alpha-bin\"\npath = \"src/bin/alpha.rs\"\n\n[[bin]]\nname = \"beta-bin\"\npath = \"src/bin/beta.rs\"\n\n[[bin]]\nname = \"gamma-bin\"\npath = \"src/bin/gamma.rs\"\n",
+        "[package]\nname = \"physics\"\nversion = \"0.1.0\"\n\n[[bin]]\nname = \"alpha-bin\"\npath = \"src/bin/alpha.rs\"\n\n[[bin]]\nname = \"beta-bin\"\npath = \"src/bin/beta.rs\"\nrequired-features = [\"gpu\"]\n\n[[bin]]\nname = \"gamma-bin\"\npath = \"src/bin/gamma.rs\"\n",
     )
     .unwrap();
     let output = run_target_sharder(temp.path(), "physics");
@@ -126,19 +126,28 @@ fn target_shards_cover_every_declared_binary_exactly_once() {
     let entries = matrix["include"].as_array().unwrap();
     let mut observed = BTreeSet::new();
     let mut non_binary_shards = 0;
+    let mut gpu_shards = 0;
     for entry in entries {
         let target_args = entry["cargo_target_args"].as_str().unwrap();
         if target_args == "--lib --tests" {
             non_binary_shards += 1;
         } else if target_args.starts_with("--bin ") {
+            let features = entry["cargo_features"].as_str().unwrap();
             let tokens: Vec<&str> = target_args.split_whitespace().collect();
             for pair in tokens.chunks_exact(2) {
                 assert_eq!(pair[0], "--bin");
+                if pair[1] == "beta-bin" {
+                    assert_eq!(features, "gpu");
+                    gpu_shards += 1;
+                } else {
+                    assert_eq!(features, "");
+                }
                 assert!(observed.insert(pair[1].to_string()));
             }
         }
     }
     assert_eq!(non_binary_shards, 1);
+    assert_eq!(gpu_shards, 1);
     assert_eq!(
         observed,
         ["alpha-bin", "beta-bin", "gamma-bin"]

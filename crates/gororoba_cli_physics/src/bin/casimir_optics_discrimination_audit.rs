@@ -506,7 +506,7 @@ fn radial_convergence_options() -> [LifshitzQuadratureOptions; 3] {
 }
 
 fn angular_convergence_options() -> [ZeroTemperatureOptions; 3] {
-    [16, 32, 64].map(|angular_order| ZeroTemperatureOptions {
+    [32, 64, 128].map(|angular_order| ZeroTemperatureOptions {
         radial_order: 128,
         angular_order,
     })
@@ -1737,7 +1737,7 @@ mod tests {
         let angular_options = angular_convergence_options();
         assert_eq!(
             angular_options.map(|options| options.angular_order),
-            [16, 32, 64]
+            [32, 64, 128]
         );
         assert!(
             angular_options

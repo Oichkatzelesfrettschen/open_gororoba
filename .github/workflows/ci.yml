@@ -394,6 +394,7 @@ jobs:
           CI_RUST_SCOPE: ${{ matrix.rust_scope }}
           CI_CLIPPY_SCOPE: ${{ matrix.clippy_scope }}
           CI_CARGO_TARGET_ARGS: ${{ matrix.cargo_target_args }}
+          CI_CARGO_FEATURES: ${{ matrix.cargo_features }}
         run: |
           set -o pipefail
           mkdir -p reports/validation

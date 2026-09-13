@@ -770,6 +770,9 @@ zarrs = { workspace = true, optional = true }
 zarrs_filesystem = { workspace = true, optional = true }
 zip = { workspace = true }
 
+[dev-dependencies]
+provenance_store = { workspace = true }
+
 [features]
 default = []
 gpu = ["lbm_3d_cuda", "sign_imbalance/gpu", "gororoba_algebra/gpu"]
