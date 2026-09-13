@@ -92,8 +92,10 @@ $(error retired local validation target(s) $(REQUESTED_RETIRED_LOCAL_VALIDATION_
 endif
 CI_ONLY_VALIDATION_GOALS := test lint check smoke integrity integrity-rust \
                            math-verify fmt-check governance-gate governance-gate-readonly \
-                           wave6-gate ndlb-gate pre-push-gate-strict validate-ci \
-                           validate-ci-registry validate-ci-rust validate-ci-scoped-rust \
+	                           wave6-gate ndlb-gate pre-push-gate-strict validate-ci \
+	                           validate-ci-registry validate-ci-rust validate-ci-scoped-rust \
+	                           validate-ci-scoped-clippy validate-ci-scoped-light \
+	                           validate-ci-scoped-heavy validate-ci-scoped-rust-lane \
                            validate-repository validate-repository-fast \
                            validate-governance validate-rust-integrity validate-registry \
                            validate-registry-integrity validation-tools \
@@ -287,6 +289,10 @@ validation-resource-contract-retired-local:
 	if grep -Fq 'pre-push-hook' crates/gororoba_cli/Cargo.toml; then echo "ERROR: retired local pre-push executor remains registered." >&2; status=1; fi; \
 	if grep -Fq 'scripts/detect_worker_budget.sh' agents.toml; then echo "ERROR: agents.toml advertises the retired shell worker detector." >&2; status=1; fi; \
 	if grep -Eq 'cmd = "make (rust-smoke|rust-regression|heavy|python-smoke|python-regression)' agents.toml; then echo "ERROR: agents.toml advertises a local repository-validation command." >&2; status=1; fi; \
+	for residual in 'path = "registry/engineering_standards.toml"' 'path = "registry/agents_contract.toml"' 'This TOML remains the canonical' 'mutation surface until SQLite migration'; do \
+	    if ! grep -Fq "$$residual" registry/source_manifest.toml; then echo "ERROR: unmigrated generated-policy residual is not tracked: $$residual" >&2; status=1; fi; \
+	done; \
+	if grep -Eq 'scripts/detect_worker_budget[.]sh|make validate-local|make hooks-install|[.]githooks/pre-push|divide by two|logical threads / 2' registry/engineering_standards.toml registry/agents_contract.toml; then echo "ERROR: canonical policy records advertise retired local validation or divided workers." >&2; status=1; fi; \
 	if ! grep -Fq 'check-local validate-local validate-local-xtask' Makefile; then echo "ERROR: retired local validation targets are not explicit refusal targets." >&2; status=1; fi; \
 	exit "$$status"
 
@@ -311,6 +317,7 @@ validation-resource-contract-workers:
 	done; \
 	if ! grep -Fq 'std::thread::available_parallelism()' crates/gororoba_cli/src/bin/detect_worker_budget.rs; then echo "ERROR: Rust worker detector does not use process-visible parallelism." >&2; status=1; fi; \
 	if grep -Eq 'GOROROBA_WORKER_TEST_CPUS|max[(]|min[(]|clamp|/ *2|checked_div|unwrap_or' crates/gororoba_cli/src/bin/detect_worker_budget.rs; then echo "ERROR: worker detection contains an override, divisor, clamp, or fallback." >&2; status=1; fi; \
+	if grep -Eq 'divide by two|logical threads / 2' agents.toml; then echo "ERROR: active agent policy retains a divided-worker rule." >&2; status=1; fi; \
 	if ! grep -Fq 'std::thread::available_parallelism()' xtask/src/main.rs; then echo "ERROR: xtask host profile does not use process-visible parallelism." >&2; status=1; fi; \
 	if grep -Eq '(worker_budget|cargo_jobs|rayon_threads|rust_test_threads|nextest_test_threads|pytest_workers): physical_core_count' xtask/src/main.rs; then echo "ERROR: xtask host profile substitutes physical cores for process-visible workers." >&2; status=1; fi; \
 	if grep -Eq '^(NPROC|NJOBS)[[:space:]]*:=' Makefile; then echo "ERROR: Makefile retains a second CPU-count heuristic." >&2; status=1; fi; \
@@ -330,9 +337,29 @@ validation-resource-contract-workers:
 
 validation-resource-contract-collectors:
 	@status=0; \
-	for contract in 'make --jobs="$$WORKER_BUDGET" --keep-going validate-ci-scoped-rust' 'Report collected validation failures' "needs.validation.result == 'success'" 'make --keep-going validation-resource-contract' 'make --jobs="$$WORKER_BUDGET" --keep-going casimir-optics-discrimination-audit-check' 'make --jobs="$$WORKER_BUDGET" --keep-going docs-freshness'; do \
+	for contract in 'ci-rust-shard-matrix' 'target-shard-package=gororoba_cli_physics' 'CI_CARGO_TARGET_ARGS: $${{ matrix.cargo_target_args }}' 'matrix: $${{ fromJSON(needs.validation-core.outputs.rust_matrix) }}' 'make --jobs="$$WORKER_BUDGET" --keep-going "validate-ci-scoped-$${{ matrix.target }}"' 'timeout-minutes: 80' 'fail-fast: false' 'Report collected validation failures' 'Report aggregate validation admission' 'needs: [validation-policy, validation-core, rust-validation]' "needs.validation-policy.result == 'success'" "needs.validation.result == 'success'" 'make --keep-going validation-resource-contract' 'make --jobs="$$WORKER_BUDGET" --keep-going casimir-optics-discrimination-audit-check' 'make --jobs="$$WORKER_BUDGET" --keep-going docs-freshness'; do \
 	    if ! grep -Fq "$$contract" .github/workflows/ci.yml; then echo "ERROR: main CI collector contract is missing: $$contract" >&2; status=1; fi; \
 	done; \
+	for lane in clippy light heavy; do \
+	    if ! grep -Fq "validate-ci-scoped-$$lane" Makefile; then echo "ERROR: missing independently runnable Rust CI shard: $$lane" >&2; status=1; fi; \
+	done; \
+	if ! sed -n '/id: lint/,/name: Check repository hygiene/p' .github/workflows/ci.yml | grep -Fq 'continue-on-error: true'; then echo "ERROR: lint routing failure is not collectable." >&2; status=1; fi; \
+	for condition in \
+	    "if: always() && steps.route.outputs.run_rust == 'true'" \
+	    "if: always() && steps.route.outputs.run_check == 'true'" \
+	    "if: always() && steps.route.outputs.run_governance == 'true'" \
+	    "if: always() && (steps.route.outputs.run_rust == 'true' || steps.route.outputs.run_governance == 'true')" \
+	    "if: always() && steps.paths.outputs.casimir_audit == 'true'" \
+	    "if: always() && steps.paths.outputs.dependencies == 'true'" \
+	    "if: always() && steps.paths.outputs.warp == 'true'"; do \
+	    if ! grep -Fq "$$condition" .github/workflows/ci.yml; then echo "ERROR: independent CI leaf lacks an always-based condition: $$condition" >&2; status=1; fi; \
+	done; \
+	if ! grep -Fq 'LINT_OUTCOME: $${{ steps.lint.outcome }}' .github/workflows/ci.yml; then echo "ERROR: final validation collector omits lint routing." >&2; status=1; fi; \
+	if ! grep -Fq 'ROUTE_OUTCOME: $${{ steps.route.outcome }}' .github/workflows/ci.yml; then echo "ERROR: final validation collector omits reverse dependency routing." >&2; status=1; fi; \
+	if ! grep -Fq 'PATHS_OUTCOME: $${{ steps.paths.outcome }}' .github/workflows/ci.yml; then echo "ERROR: final validation collector omits path routing." >&2; status=1; fi; \
+	if ! grep -Fq 'RUST_SHARDS_OUTCOME: $${{ steps.rust-shards.outcome }}' .github/workflows/ci.yml; then echo "ERROR: final validation collector omits Rust shard routing." >&2; status=1; fi; \
+	if ! sed -n '/name: Retain successful core validation artifacts/,/key: $${{ steps.rust-cache.outputs.cache-primary-key }}/p' .github/workflows/ci.yml | grep -Fq 'if: success()'; then echo "ERROR: core cache retention is not success-only." >&2; status=1; fi; \
+	if ! sed -n '/name: Retain successful Rust validation artifacts/,/key: $${{ steps.rust-cache.outputs.cache-primary-key }}/p' .github/workflows/ci.yml | grep -Fq 'if: success()'; then echo "ERROR: Rust shard cache save can run while Cargo artifacts are unstable." >&2; status=1; fi; \
 	if ! grep -Fq 'Report collected proof failures' .github/workflows/proofs.yml; then echo "ERROR: proof collector contract is missing." >&2; status=1; fi; \
 	if ! grep -Fq 'data/output/audit/casimir-optics-discrimination/sources/** -text' .gitattributes; then echo "ERROR: hash-bound source-byte contract is missing." >&2; status=1; fi; \
 	for contract in 'id = "ci.validation.scoped"' 'id = "ci.validation.full"'; do \
@@ -725,13 +752,25 @@ validate-ci-rust: require-ci-validation-authority
 gate-ci-rust: validate-ci-rust
 	@echo "DEPRECATED: make gate-ci-rust is a compatibility alias for make validate-ci-rust."
 
-.PHONY: validate-ci-scoped-rust
-validate-ci-scoped-rust: SHELL := /bin/bash
-validate-ci-scoped-rust: export CI_RUST_SCOPE := $(CI_RUST_SCOPE)
-validate-ci-scoped-rust: export CI_CLIPPY_SCOPE := $(CI_CLIPPY_SCOPE)
-validate-ci-scoped-rust: require-ci-validation-authority
+.PHONY: validate-ci-scoped-rust validate-ci-scoped-clippy validate-ci-scoped-light validate-ci-scoped-heavy validate-ci-scoped-rust-lane
+validate-ci-scoped-rust: validate-ci-scoped-clippy validate-ci-scoped-light validate-ci-scoped-heavy
+	@echo "OK: scoped CI Rust validation passed."
+
+validate-ci-scoped-clippy:
+	@$(MAKE) --no-print-directory CI_RUST_LANE=clippy validate-ci-scoped-rust-lane
+
+validate-ci-scoped-light:
+	@$(MAKE) --no-print-directory CI_RUST_LANE=light validate-ci-scoped-rust-lane
+
+validate-ci-scoped-heavy:
+	@$(MAKE) --no-print-directory CI_RUST_LANE=heavy validate-ci-scoped-rust-lane
+
+validate-ci-scoped-rust-lane: SHELL := /bin/bash
+validate-ci-scoped-rust-lane: export CI_RUST_SCOPE := $(CI_RUST_SCOPE)
+validate-ci-scoped-rust-lane: export CI_CLIPPY_SCOPE := $(CI_CLIPPY_SCOPE)
+validate-ci-scoped-rust-lane: export CI_CARGO_TARGET_ARGS := $(CI_CARGO_TARGET_ARGS)
+validate-ci-scoped-rust-lane: require-ci-validation-authority
 	@set -euo pipefail; \
-	failure_count=0; \
 	validate_scope() { \
 	    local scope_name="$$1" scope_value="$$2"; \
 	    local -a scope_tokens=(); \
@@ -750,12 +789,37 @@ validate-ci-scoped-rust: require-ci-validation-authority
 	        fi; \
 	    done; \
 	}; \
-	scope_failure_count=0; \
-	validate_scope CI_RUST_SCOPE "$$CI_RUST_SCOPE" || scope_failure_count=$$((scope_failure_count + 1)); \
-	validate_scope CI_CLIPPY_SCOPE "$$CI_CLIPPY_SCOPE" || scope_failure_count=$$((scope_failure_count + 1)); \
-	if [ "$$scope_failure_count" -ne 0 ]; then echo "ERROR: $$scope_failure_count scoped Rust input(s) are invalid." >&2; exit 1; fi; \
-	read -r -a rust_scope <<< "$$CI_RUST_SCOPE"; \
-	read -r -a clippy_scope <<< "$$CI_CLIPPY_SCOPE"; \
+	case "$$CI_RUST_LANE" in \
+	    clippy) \
+	        validate_scope CI_CLIPPY_SCOPE "$$CI_CLIPPY_SCOPE"; \
+	        read -r -a clippy_scope <<< "$$CI_CLIPPY_SCOPE"; \
+	        echo "[ci-rust-clippy] scope: $$CI_CLIPPY_SCOPE"; \
+	        $(CARGO_ENV_CI) cargo clippy --keep-going --locked --profile validation --all-targets "$${clippy_scope[@]}" -- -D warnings; \
+	        ;; \
+	    light|heavy) \
+	        validate_scope CI_RUST_SCOPE "$$CI_RUST_SCOPE"; \
+	        read -r -a rust_scope <<< "$$CI_RUST_SCOPE"; \
+	        ;; \
+	    *) echo "ERROR: CI_RUST_LANE must be clippy, light, or heavy." >&2; exit 1 ;; \
+	esac; \
+	if [ "$$CI_RUST_LANE" = clippy ]; then exit 0; fi; \
+	cargo_target_scope="$${CI_CARGO_TARGET_ARGS:---all-targets}"; \
+	read -r -a cargo_target_args <<< "$$cargo_target_scope"; \
+	case "$${cargo_target_args[0]}" in \
+	    --all-targets) \
+	        if [ "$${#cargo_target_args[@]}" -ne 1 ]; then echo "ERROR: --all-targets cannot be combined with target shards." >&2; exit 1; fi \
+	        ;; \
+	    --lib) \
+	        if [ "$${#cargo_target_args[@]}" -ne 2 ] || [ "$${cargo_target_args[1]}" != --tests ]; then echo "ERROR: non-binary target shard requires --lib --tests." >&2; exit 1; fi \
+	        ;; \
+	    --bin) \
+	        if (( $${#cargo_target_args[@]} % 2 != 0 )); then echo "ERROR: binary target shard requires --bin name pairs." >&2; exit 1; fi; \
+	        for ((target_index=0; target_index<$${#cargo_target_args[@]}; target_index+=2)); do \
+	            if [ "$${cargo_target_args[target_index]}" != --bin ] || [[ ! "$${cargo_target_args[target_index+1]}" =~ ^[A-Za-z0-9_][A-Za-z0-9_-]*$$ ]]; then echo "ERROR: invalid binary target shard." >&2; exit 1; fi; \
+	        done \
+	        ;; \
+	    *) echo "ERROR: CI_CARGO_TARGET_ARGS must select all targets, library and tests, or named binaries." >&2; exit 1 ;; \
+	esac; \
 	light_scope=(); heavy_scope=(); \
 	if [ "$${rust_scope[0]}" = --workspace ]; then \
 	    light_scope=(--workspace --exclude algebra_analysis --exclude gr_core); \
@@ -769,18 +833,18 @@ validate-ci-scoped-rust: require-ci-validation-authority
 	        esac; \
 	    done; \
 	fi; \
-	echo "[ci-rust] clippy: $$CI_CLIPPY_SCOPE"; \
-	if ! $(CARGO_ENV_CI) cargo clippy --keep-going --locked --profile validation --all-targets "$${clippy_scope[@]}" -- -D warnings; then failure_count=$$((failure_count + 1)); fi; \
-	if [ "$${#light_scope[@]}" -gt 0 ]; then \
-	    echo "[ci-rust] tests (validation): $${light_scope[*]}"; \
-	    if ! $(CARGO_ENV_CI) cargo nextest run --no-fail-fast --locked --cargo-profile validation -P ci --build-jobs $(CARGO_JOBS) --test-threads $(NEXTEST_TEST_THREADS) "$${light_scope[@]}"; then failure_count=$$((failure_count + 1)); fi; \
-	fi; \
-	if [ "$${#heavy_scope[@]}" -gt 0 ]; then \
-	    echo "[ci-rust] tests (test-heavy): $${heavy_scope[*]}"; \
-	    if ! $(CARGO_ENV_CI) cargo nextest run --no-fail-fast --locked --cargo-profile test-heavy -P heavy --build-jobs $(CARGO_JOBS) --test-threads $(NEXTEST_TEST_THREADS) "$${heavy_scope[@]}"; then failure_count=$$((failure_count + 1)); fi; \
-	fi; \
-	if [ "$$failure_count" -ne 0 ]; then echo "ERROR: $$failure_count scoped Rust validation command(s) failed." >&2; exit 1; fi; \
-	echo "OK: scoped CI Rust validation passed."
+	case "$$CI_RUST_LANE" in \
+	    light) \
+	        if [ "$${#light_scope[@]}" -eq 0 ]; then echo "[ci-rust-light] no applicable packages"; exit 0; fi; \
+	        echo "[ci-rust-light] scope: $${light_scope[*]}"; \
+	        $(CARGO_ENV_CI) cargo nextest run --no-fail-fast --locked --cargo-profile test -P ci "$${cargo_target_args[@]}" --build-jobs $(CARGO_JOBS) --test-threads $(NEXTEST_TEST_THREADS) "$${light_scope[@]}"; \
+	        ;; \
+	    heavy) \
+	        if [ "$${#heavy_scope[@]}" -eq 0 ]; then echo "[ci-rust-heavy] no applicable packages"; exit 0; fi; \
+	        echo "[ci-rust-heavy] scope: $${heavy_scope[*]}"; \
+	        $(CARGO_ENV_CI) cargo nextest run --no-fail-fast --locked --cargo-profile test-heavy -P heavy "$${cargo_target_args[@]}" --build-jobs $(CARGO_JOBS) --test-threads $(NEXTEST_TEST_THREADS) "$${heavy_scope[@]}"; \
+	        ;; \
+	esac
 
 db-schema-drift-check: $(XTASK_CACHE)
 	$(CARGO_ENV) $(XTASK_CACHE) db-docs --check

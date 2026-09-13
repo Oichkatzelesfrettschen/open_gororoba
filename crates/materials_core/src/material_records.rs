@@ -483,6 +483,9 @@ impl QuantityValue {
                 if !upper_bound.is_finite() || *upper_bound < 0.0 {
                     return Err("detection limit must be finite and nonnegative".to_owned());
                 }
+                if unit != &self.unit {
+                    return Err("detection-limit unit must match quantity unit".to_owned());
+                }
             }
             QuantityObservation::Missing {
                 reason: Missingness::Withheld { reason },
@@ -555,6 +558,21 @@ impl MaterialState {
         self.state_id.validate("state identifier")?;
         self.material_id.validate("material identifier")?;
         require_nonempty("phase identifier", &self.phase_id)?;
+        for (label, value) in [
+            ("state atmosphere", self.atmosphere.as_deref()),
+            ("state orientation", self.orientation.as_deref()),
+        ] {
+            if let Some(value) = value {
+                require_nonempty(label, value)?;
+            }
+        }
+        for (name, value) in &self.applied_fields {
+            require_nonempty("applied-field name", name)?;
+            require_nonempty("applied-field value", value)?;
+        }
+        for history_entry in &self.history {
+            require_nonempty("state-history entry", history_entry)?;
+        }
         if self
             .temperature_k
             .is_some_and(|value| !value.is_finite() || value < 0.0)
@@ -594,6 +612,22 @@ impl Specimen {
         self.state_id.validate("state identifier")?;
         require_nonempty("synthesis or deposition", &self.synthesis_or_deposition)?;
         require_nonempty("specimen geometry", &self.geometry)?;
+        for (label, value) in [
+            ("purity assay", self.purity_assay.as_deref()),
+            ("composition assay", self.composition_assay.as_deref()),
+            ("anneal history", self.anneal_history.as_deref()),
+            ("specimen texture", self.texture.as_deref()),
+        ] {
+            if let Some(value) = value {
+                require_nonempty(label, value)?;
+            }
+        }
+        if let Some(substrate_specimen_id) = &self.substrate_specimen_id {
+            substrate_specimen_id.validate("substrate specimen identifier")?;
+        }
+        for adhesion_layer in &self.adhesion_layers {
+            require_nonempty("adhesion-layer entry", adhesion_layer)?;
+        }
         for (label, value) in [
             ("thickness", self.thickness_m),
             ("grain size", self.grain_size_m),
@@ -798,7 +832,7 @@ impl MaterialEvidenceGraph {
             .iter()
             .map(|specimen| (&specimen.specimen_id, specimen))
             .collect();
-        let measurement_ids = unique_ids(
+        unique_ids(
             "measurement identifier",
             self.measurements
                 .iter()
@@ -825,7 +859,7 @@ impl MaterialEvidenceGraph {
             .iter()
             .map(|quantity| (&quantity.quantity_id, quantity))
             .collect();
-        let model_run_ids = unique_ids(
+        unique_ids(
             "model-run identifier",
             self.model_runs.iter().map(|record| &record.model_run_id),
         )?;
@@ -875,23 +909,42 @@ impl MaterialEvidenceGraph {
         }
         for quantity in &self.quantities {
             match &quantity.origin {
-                QuantityOrigin::Measurement { measurement_id }
-                    if !measurement_ids.contains(measurement_id) =>
-                {
-                    return Err(format!(
-                        "quantity {} references unknown measurement {}",
-                        quantity.quantity_id.0, measurement_id.0
-                    ));
+                QuantityOrigin::Measurement { measurement_id } => {
+                    let measurement = measurements_by_id.get(measurement_id).ok_or_else(|| {
+                        format!(
+                            "quantity {} references unknown measurement {}",
+                            quantity.quantity_id.0, measurement_id.0
+                        )
+                    })?;
+                    if let QuantityObservation::Missing {
+                        reason: Missingness::BelowDetectionLimit { upper_bound, unit },
+                    } = &quantity.observation
+                    {
+                        let (measurement_limit, measurement_unit) = measurement
+                            .detection_limit
+                            .as_ref()
+                            .ok_or_else(|| {
+                                format!(
+                                    "quantity {} claims a below-detection limit but measurement {} has no detection limit",
+                                    quantity.quantity_id.0, measurement_id.0
+                                )
+                            })?;
+                        if upper_bound.to_bits() != measurement_limit.to_bits()
+                            || unit != measurement_unit
+                        {
+                            return Err(format!(
+                                "quantity {} below-detection limit does not match measurement {}",
+                                quantity.quantity_id.0, measurement_id.0
+                            ));
+                        }
+                    }
                 }
-                QuantityOrigin::ModelRun { model_run_id }
-                    if !model_run_ids.contains(model_run_id) =>
-                {
+                QuantityOrigin::ModelRun { model_run_id } => {
                     return Err(format!(
-                        "quantity {} references unknown model run {}",
+                        "quantity {} from model run {} must be wrapped in a derived value",
                         quantity.quantity_id.0, model_run_id.0
                     ));
                 }
-                _ => {}
             }
             if let EvidenceBasis::ExperimentalFitted {
                 input_quantity_ids, ..
@@ -1560,6 +1613,158 @@ mod tests {
     }
 
     #[test]
+    fn material_state_rejects_blank_optional_and_collection_metadata() {
+        let state = graph_with_quantities(Vec::new())
+            .states
+            .into_iter()
+            .next()
+            .unwrap();
+
+        let mut blank_atmosphere = state.clone();
+        blank_atmosphere.atmosphere = Some(" ".to_owned());
+        assert_eq!(
+            blank_atmosphere.validate().unwrap_err(),
+            "state atmosphere must be nonempty"
+        );
+
+        let mut blank_orientation = state.clone();
+        blank_orientation.orientation = Some(String::new());
+        assert_eq!(
+            blank_orientation.validate().unwrap_err(),
+            "state orientation must be nonempty"
+        );
+
+        let mut blank_field_name = state.clone();
+        blank_field_name
+            .applied_fields
+            .insert(" ".to_owned(), "1 T".to_owned());
+        assert_eq!(
+            blank_field_name.validate().unwrap_err(),
+            "applied-field name must be nonempty"
+        );
+
+        let mut blank_field_value = state.clone();
+        blank_field_value
+            .applied_fields
+            .insert("magnetic_flux_density".to_owned(), String::new());
+        assert_eq!(
+            blank_field_value.validate().unwrap_err(),
+            "applied-field value must be nonempty"
+        );
+
+        let mut blank_history = state;
+        blank_history.history.push(" ".to_owned());
+        assert_eq!(
+            blank_history.validate().unwrap_err(),
+            "state-history entry must be nonempty"
+        );
+    }
+
+    #[test]
+    fn specimen_rejects_blank_optional_and_collection_metadata() {
+        let specimen = graph_with_quantities(Vec::new())
+            .specimens
+            .into_iter()
+            .next()
+            .unwrap();
+
+        for (label, error) in [
+            ("purity", "purity assay must be nonempty"),
+            ("composition", "composition assay must be nonempty"),
+            ("anneal", "anneal history must be nonempty"),
+            ("texture", "specimen texture must be nonempty"),
+        ] {
+            let mut blank = specimen.clone();
+            match label {
+                "purity" => blank.purity_assay = Some(" ".to_owned()),
+                "composition" => blank.composition_assay = Some(" ".to_owned()),
+                "anneal" => blank.anneal_history = Some(" ".to_owned()),
+                "texture" => blank.texture = Some(" ".to_owned()),
+                _ => unreachable!(),
+            }
+            assert_eq!(blank.validate().unwrap_err(), error);
+        }
+
+        let mut blank_substrate = specimen.clone();
+        blank_substrate.substrate_specimen_id = Some(RecordId(" ".to_owned()));
+        assert_eq!(
+            blank_substrate.validate().unwrap_err(),
+            "substrate specimen identifier must be nonempty"
+        );
+
+        let mut blank_adhesion_layer = specimen;
+        blank_adhesion_layer.adhesion_layers.push(String::new());
+        assert_eq!(
+            blank_adhesion_layer.validate().unwrap_err(),
+            "adhesion-layer entry must be nonempty"
+        );
+    }
+
+    #[test]
+    fn below_detection_limit_matches_the_originating_measurement() {
+        let mut quantity = scalar_quantity(
+            QuantityOrigin::Measurement {
+                measurement_id: identifier("measurement:ellipsometry"),
+            },
+            EvidenceBasis::ExperimentalDirect,
+        );
+        quantity.quantity_id = identifier("quantity:below-detection");
+        quantity.unit = "m".to_owned();
+        quantity.uncertainty = Uncertainty::Standard {
+            value: 0.0,
+            unit: "m".to_owned(),
+        };
+        quantity.observation = QuantityObservation::Missing {
+            reason: Missingness::BelowDetectionLimit {
+                upper_bound: 1e-9,
+                unit: "m".to_owned(),
+            },
+        };
+        let mut graph = graph_with_quantities(vec![quantity]);
+
+        assert_eq!(
+            graph.validate().unwrap_err(),
+            "quantity quantity:below-detection claims a below-detection limit but measurement measurement:ellipsometry has no detection limit"
+        );
+
+        graph.measurements[0].detection_limit = Some((2e-9, "m".to_owned()));
+        assert_eq!(
+            graph.validate().unwrap_err(),
+            "quantity quantity:below-detection below-detection limit does not match measurement measurement:ellipsometry"
+        );
+
+        graph.measurements[0].detection_limit = Some((1e-9, "Pa".to_owned()));
+        assert_eq!(
+            graph.validate().unwrap_err(),
+            "quantity quantity:below-detection below-detection limit does not match measurement measurement:ellipsometry"
+        );
+
+        graph.measurements[0].detection_limit = Some((1e-9, "m".to_owned()));
+        assert!(graph.validate().is_ok());
+    }
+
+    #[test]
+    fn below_detection_limit_unit_matches_the_quantity_unit() {
+        let mut quantity = scalar_quantity(
+            QuantityOrigin::Measurement {
+                measurement_id: identifier("measurement:ellipsometry"),
+            },
+            EvidenceBasis::ExperimentalDirect,
+        );
+        quantity.observation = QuantityObservation::Missing {
+            reason: Missingness::BelowDetectionLimit {
+                upper_bound: 1.0,
+                unit: "Pa".to_owned(),
+            },
+        };
+
+        assert_eq!(
+            quantity.validate().unwrap_err(),
+            "detection-limit unit must match quantity unit"
+        );
+    }
+
+    #[test]
     fn graph_requires_observed_experimental_model_inputs() {
         let mut inferred = scalar_quantity(
             QuantityOrigin::Measurement {
@@ -1593,6 +1798,18 @@ mod tests {
 
     #[test]
     fn derived_outputs_have_globally_unique_quantity_ids() {
+        let mut duplicate_derived = graph_with_model_and_derived();
+        duplicate_derived.derived_values.push(derived_value(
+            "derived:reflectivity:alternate",
+            "model:drude-lorentz:v1",
+            vec![identifier("quantity:epsilon")],
+            "quantity:reflectivity",
+        ));
+        assert_eq!(
+            duplicate_derived.validate().unwrap_err(),
+            "duplicate quantity identifier: quantity:reflectivity"
+        );
+
         let mut direct = scalar_quantity(
             QuantityOrigin::Measurement {
                 measurement_id: identifier("measurement:ellipsometry"),
@@ -1614,6 +1831,18 @@ mod tests {
         assert_eq!(
             graph.validate().unwrap_err(),
             "duplicate quantity identifier: quantity:input"
+        );
+    }
+
+    #[test]
+    fn top_level_model_outputs_must_be_derived_values() {
+        let mut graph = graph_with_model_and_derived();
+        let model_output = graph.derived_values.remove(0).output;
+        graph.quantities.push(model_output);
+
+        assert_eq!(
+            graph.validate().unwrap_err(),
+            "quantity quantity:reflectivity from model run model:drude-lorentz:v1 must be wrapped in a derived value"
         );
     }
 

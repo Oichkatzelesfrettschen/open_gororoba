@@ -103,8 +103,8 @@ rules = [
 ]
 audit_commands = [
     "cargo tree -d",
-    "cargo clippy --workspace -j$(nproc) -- -D warnings",
-    "cargo test --workspace -j$(nproc)",
+    "cargo clippy -p <crate> --all-targets -- -D warnings",
+    "cargo nextest run -p <crate> <filter-or-test>",
 ]
 
 [iteration_loop]
@@ -113,9 +113,9 @@ steps = [
     "2_search: shortlist crates via cargo search/info and existing workspace scan",
     "3_spike: integrate minimally behind feature or narrow module",
     "4_align: move accepted deps to [workspace.dependencies] and workspace=true references",
-    "5_validate_local: run crate-focused tests/checks",
-    "6_validate_workspace: run rust-smoke and required gates",
-    "7_pre_push: run make pre-push-gate; use make pre-push-gate-strict for dependency-sensitive pushes",
+    "5_diagnose_focused: run named crate-focused Cargo diagnostics when useful",
+    "6_validate_scoped: push the branch for changed-owner lint and affected-consumer tests",
+    "7_validate_full: dispatch ci.yml with full=true for complete workspace and dependency validation",
     "8_prune: remove dead/duplicate deps and rerun checks",
 ]
 artifacts_to_update = [
@@ -240,30 +240,22 @@ last_checked_utc = "2026-02-16T01:56:18Z"
 
 [command_matrix]
 required = [
-    "cargo clippy --workspace -j$(nproc) -- -D warnings",
-    "cargo test --workspace -j$(nproc)",
-    "make ansi-check",
+    "git push origin HEAD",
+    "gh workflow run ci.yml --ref <branch> -f full=true",
 ]
 recommended = [
-    "make rust-smoke",
-    "make mcp-smoke",
-    "make cargo-deny-check",
-    "make registry",
-    "make check",
+    "cargo check -p <crate> --all-targets",
+    "cargo nextest run -p <crate> <filter-or-test>",
+    "cargo clippy -p <crate> --all-targets -- -D warnings",
 ]
-dependency_change = ["make dep-audit", "make cargo-deny-check"]
-pre_push = ["make pre-push-gate"]
-pre_push_strict = ["make pre-push-gate-strict"]
-core = ["check", "smoke", "ansi-check", "registry", "docs-publish", "governance-gate"]
+dependency_change = ["gh workflow run ci.yml --ref <branch> -f full=true"]
+pre_push = ["git push origin HEAD"]
+pre_push_strict = ["gh workflow run ci.yml --ref <branch> -f full=true"]
+core = ["ci.validation.scoped", "ci.validation.full"]
 rust = [
-    "rust-test",
-    "rust-clippy",
-    "rust-smoke",
-    "dep-audit",
-    "cargo-deny-check",
-    "mcp-smoke",
-    "rust-parity",
-    "rust-release-fat-lto",
+    "rust.check.focused",
+    "rust.test.focused",
+    "rust.clippy.focused",
 ]
 registry = [
     "registry-verify-markdown-inventory",
@@ -284,11 +276,11 @@ artifacts = [
 ]
 
 [hooks]
-install = "make hooks-install"
-install_strict = "make hooks-install-strict"
-status = "make hooks-status"
-pre_push = ".githooks/pre-push -> make pre-push-gate"
-pre_push_strict = ".githooks/pre-push -> make pre-push-gate-strict"
+install = "unsupported: repository installs no local hooks"
+install_strict = "unsupported: repository installs no local hooks"
+status = "git config --get core.hooksPath"
+pre_push = "git push origin HEAD -> GitHub Actions scoped validation"
+pre_push_strict = "gh workflow run ci.yml --ref <branch> -f full=true"
 
 [claims_and_provenance]
 rules = [

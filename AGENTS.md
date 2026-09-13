@@ -46,7 +46,7 @@ hardware-specific tables are replaced with the scientific stack.
 | `.github/workflows/ci.yml`                           | Sole repository-validation authority: scoped PR/push CI plus scheduled full validation.                  |
 | `Makefile`                                            | Top-level lanes (`make rust-clippy`, `make integrity`, `make cpd-audit`).                                   |
 | `registry/canonical/control_plane.sqlite3`            | Canonical write target for the claim/insight/experiment registry.                                           |
-| `registry/*.toml`                                     | AUTO-GENERATED read-only compat exports. Do NOT hand-edit.                                                  |
+| `registry/*.toml`                                     | Mixed migration surface; generated headers forbid edits, while manifest-declared unmigrated lanes remain TOML-canonical. |
 | `crates/gororoba_gpu_bridge/`                         | Canonical type vocabulary (`ComputeBackend`, `HardwareCaps`, `StoragePrecision`).                           |
 | `crates/gororoba_gpu_vulkan/`                         | Shared Vulkan helpers (Instance, Adapter, Device, ShaderModule, DispatchScope).                             |
 | `crates/gororoba_gpu_cubecl/`                         | Shared cubecl-wgpu probe + test-support macros.                                                             |
@@ -83,11 +83,15 @@ hardware-specific tables are replaced with the scientific stack.
 - **Warnings-as-errors** via `[workspace.lints]` in root `Cargo.toml`.
   Do NOT bypass with crate-local `#![allow(warnings)]`. Narrow-scope
   `#[allow(clippy::<lint>)]` with a documented rationale is permitted.
-- **SQLite-canonical registry**. The 36 TOML files under `registry/`
-  are AUTO-GENERATED. The canonical write path is
-  `registry/canonical/control_plane.sqlite3`. See the
-  "Registry: SQLite-canonical" section below for the exact mutation
-  workflow.
+- **SQLite-canonical registry**. Migrated registry lanes use
+  `registry/canonical/control_plane.sqlite3` as the canonical write path and
+  expose generated compatibility TOMLs. See the "Registry: SQLite-canonical"
+  section below for the exact mutation workflow.
+  `registry/engineering_standards.toml` and `registry/agents_contract.toml`
+  remain declared but unmigrated manifest lanes: SQLite has no corresponding
+  tables or typed exporter, so their TOMLs remain the canonical mutation
+  surface until that migration lands. Their policy must stay aligned with
+  `AGENTS.md`, `agents.toml`, `Makefile`, and hosted workflows.
 - **Pure Rust**. No `.sh` scripts. No `.py` analysis scripts. Use
   PyO3 if a Python library must be wrapped; call it from a typed
   Rust binary.
@@ -109,7 +113,12 @@ hardware-specific tables are replaced with the scientific stack.
 - **Hosted validation collects independent failures**. Use Cargo and Make
   keep-going modes, nextest no-fail-fast mode, independent workflow leaves, and
   one final aggregate verdict. A failed check must not suppress another check
-  whose inputs and tools remain available.
+  whose inputs and tools remain available. The Rust matrix separates Clippy,
+  deterministic light-package shards, and heavy-profile tests at job level.
+  Packages with very large explicit binary inventories use deterministic target
+  shards plus one library/integration-test shard.
+  General correctness shards use Cargo's `test` profile; optimized scientific
+  audits retain their validation or parity profiles.
 
 ## Build environment
 
@@ -237,9 +246,10 @@ Default-feature documentation builds share freshness checks in one job. Set
 ## Registry: SQLite-canonical (since 2026-03-23)
 
 - Canonical write target: `registry/canonical/control_plane.sqlite3`.
-- `registry/*.toml` are AUTO-GENERATED read-only compat exports.
-  Every TOML file in `registry/` starts with the header
-  `# AUTO-GENERATED: READ-ONLY COMPATIBILITY EXPORT.`
+- Migrated `registry/*.toml` lanes are AUTO-GENERATED read-only compat
+  exports. Those TOMLs start with the header
+  `# AUTO-GENERATED: READ-ONLY COMPATIBILITY EXPORT.` Unmigrated lanes named
+  in `registry/source_manifest.toml` remain hand-authored canonical inputs.
 - Source manifest: `registry/source_manifest.toml` declares the 36
   TOMLs that participate in compatibility round-trip verification.
 - Architecture walkthrough:

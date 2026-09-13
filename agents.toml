@@ -47,22 +47,16 @@ step_3 = "Reuse one built binary set for follow-on runs."
 [shared.testing_protocol]
 mandatory = true
 note = """
-Test execution is split into explicit `smoke`, `regression`, and `heavy` lanes. \
-`smoke` runs only the dedicated fast suites, `regression` runs the required \
-default non-ignored coverage, and `heavy` owns ignored/GPU/research lanes. \
-Never use standard `cargo test` for algebra_analysis or gr_core. These crates \
-contain O(dim^3+) mathematical tests that take 29+ minutes under Cranelift. \
-Always use the LLVM test-heavy profile via nextest."""
+Focused Cargo commands provide developer diagnostics. GitHub Actions owns \
+required `smoke`, `regression`, and `heavy` validation lanes, runs changed-owner \
+lint and deterministically sharded affected-consumer tests as independent jobs, \
+and schedules complete workspace validation. \
+Never use standard `cargo test` for algebra_analysis or gr_core; their hosted \
+coverage uses the LLVM test-heavy profile through nextest."""
 
 [shared.testing_protocol.heavy_crates]
 algebra_analysis = "cargo nextest run --cargo-profile test-heavy --profile heavy -p algebra_analysis"
 gr_core = "cargo nextest run --cargo-profile test-heavy --profile heavy -p gr_core"
-
-[shared.testing_protocol.core_pinning]
-required_for = "Any new heavy O(dim^3+) mathematical test"
-call = "crate::test_support::init_physical_rayon_pool();"
-placement = "First line of test function body"
-reason = "Prevents SMT V-Cache thrashing on AMD Zen 3D and similar architectures"
 
 [shared.project]
 name = "open_gororoba"
@@ -212,7 +206,7 @@ purpose = "fast interface-only build: skips proof bodies, checks definitions and
 [[shared.command]]
 id = "rocq.vok"
 cmd = "eval \"$(opam env --switch rocq-9.1.1)\" && make -C proofs vok"
-purpose = "full parallel proof verification: checks every proof body independently across all physical cores"
+purpose = "full parallel proof verification across every process-visible worker"
 
 [[shared.command]]
 id = "rocq.all"
@@ -231,8 +225,8 @@ purpose = "remove all compiled artifacts (.vo, .vos, .vok, .glob, Makefile.rocq)
 
 [[shared.command]]
 id = "git.push.checkpoint"
-cmd = "git push --no-verify origin <branch>"
-purpose = "checkpoint push for high-frequency iteration after focused crate gates pass"
+cmd = "git push origin <branch>"
+purpose = "push a checkpoint and trigger hosted scoped validation"
 
 [[shared.architecture_tier]]
 order = 1
@@ -463,8 +457,8 @@ remain anchored to real evidence."""
 mode = "two_speed"
 fast_iteration_scope = "crate_local"
 fast_iteration_policy = "Prefer rust.check.focused + rust.test.focused + rust.clippy.focused during active implementation loops."
-checkpoint_push_policy = "Checkpoint pushes may use git.push.checkpoint after focused crate gates pass and when no production claim is being published."
-milestone_policy = "Before production claims, artifact publication, or major merges, run rust.smoke (workspace clippy/tests with warnings-as-errors)."
+checkpoint_push_policy = "Push branch checkpoints normally; the repository installs no local hooks, and hosted CI owns validation verdicts."
+milestone_policy = "Production claims, artifact publication, and major merges require successful hosted validation; dispatch ci.yml with full=true for complete workspace and dependency coverage."
 rationale = "Reduces iteration latency while preserving strict full-workspace quality at milestone boundaries."
 
 [shared.gpu_run_cadence]

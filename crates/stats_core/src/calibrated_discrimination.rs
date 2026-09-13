@@ -70,12 +70,7 @@ fn validate_bounded_solution(
     }
 
     for (parameter, bound) in parameters.iter().zip(bounds) {
-        let parameter_scale = parameter
-            .abs()
-            .max(bound.lower.abs())
-            .max(bound.upper.abs())
-            .max(1.0);
-        let feasibility_tolerance = SOLVER_CERTIFICATE_TOLERANCE * parameter_scale;
+        let feasibility_tolerance = SOLVER_CERTIFICATE_TOLERANCE * nuisance_bound_scale(bound);
         if *parameter < bound.lower - feasibility_tolerance
             || *parameter > bound.upper + feasibility_tolerance
         {
@@ -117,6 +112,14 @@ fn all_finite_vector(vector: &DVector<f64>) -> bool {
     vector.iter().all(|value| value.is_finite())
 }
 
+fn nuisance_bound_scale(bound: &NuisanceBound) -> f64 {
+    (bound.upper - bound.lower)
+        .abs()
+        .max(bound.lower.abs())
+        .max(bound.upper.abs())
+        .max(f64::MIN_POSITIVE)
+}
+
 fn classify_active_bounds(
     parameters: &DVector<f64>,
     bounds: &[NuisanceBound],
@@ -124,12 +127,7 @@ fn classify_active_bounds(
     let mut active_lower_bounds = Vec::new();
     let mut active_upper_bounds = Vec::new();
     for (index, (parameter, bound)) in parameters.iter().zip(bounds).enumerate() {
-        let bound_scale = (bound.upper - bound.lower)
-            .abs()
-            .max(bound.lower.abs())
-            .max(bound.upper.abs())
-            .max(f64::MIN_POSITIVE);
-        let active_tolerance = SOLVER_CERTIFICATE_TOLERANCE * bound_scale;
+        let active_tolerance = SOLVER_CERTIFICATE_TOLERANCE * nuisance_bound_scale(bound);
         if (*parameter - bound.lower).abs() <= active_tolerance {
             active_lower_bounds.push(index);
         }
@@ -436,13 +434,29 @@ pub fn fisher_information_with_pseudoinverse(
         .fold(0.0_f64, f64::max);
     let threshold = effective_relative_tolerance * maximum;
     let coordinates = decomposition.eigenvectors.transpose() * signal;
-    let null_coordinate_tolerance = effective_relative_tolerance.sqrt() * signal.norm();
     let mut information = 0.0;
-    for (eigenvalue, coordinate) in decomposition.eigenvalues.iter().zip(coordinates.iter()) {
+    for (coordinate_index, (eigenvalue, coordinate)) in decomposition
+        .eigenvalues
+        .iter()
+        .zip(coordinates.iter())
+        .enumerate()
+    {
         if *eigenvalue > threshold {
             information += coordinate * coordinate / eigenvalue;
-        } else if coordinate.abs() > null_coordinate_tolerance {
-            return Ok(f64::INFINITY);
+        } else {
+            let projection_scale: f64 = decomposition
+                .eigenvectors
+                .column(coordinate_index)
+                .iter()
+                .zip(signal.iter())
+                .map(|(basis_component, signal_component)| {
+                    (basis_component * signal_component).abs()
+                })
+                .sum();
+            let roundoff_tolerance = signal.len() as f64 * f64::EPSILON * projection_scale;
+            if coordinate.abs() > roundoff_tolerance {
+                return Ok(f64::INFINITY);
+            }
         }
     }
     Ok(information)
@@ -669,6 +683,45 @@ mod tests {
                 fisher_information_with_pseudoinverse(&signal, &covariance, 1e-12).unwrap();
             assert!(information.is_infinite());
         }
+    }
+
+    #[test]
+    fn noisy_signal_component_does_not_hide_deterministic_information() {
+        let covariance = DMatrix::from_diagonal(&DVector::from_vec(vec![1.0, 0.0]));
+        for signal_scale in [1e-12, 1.0, 1e12] {
+            let signal = DVector::from_vec(vec![signal_scale, 1e-7 * signal_scale]);
+            let information =
+                fisher_information_with_pseudoinverse(&signal, &covariance, 1e-12).unwrap();
+            assert!(information.is_infinite());
+        }
+    }
+
+    #[test]
+    fn bounded_solution_feasibility_tracks_small_parameter_units() {
+        let target = DVector::from_vec(vec![0.0]);
+        let nuisance = DMatrix::identity(1, 1);
+        let bounds = vec![NuisanceBound {
+            lower: 1e-10,
+            upper: 2e-10,
+            unit: "m".to_owned(),
+        }];
+        let outside = DVector::from_vec(vec![0.0]);
+        assert_eq!(
+            validate_bounded_solution(
+                SolverCertificate {
+                    status: SolverStatus::Solved,
+                    primal_residual: 0.0,
+                    dual_residual: 0.0,
+                    absolute_gap: 0.0,
+                    relative_gap: 0.0,
+                },
+                &target,
+                &nuisance,
+                &bounds,
+                &outside,
+            ),
+            Err(DiscriminationError::NumericalFailure)
+        );
     }
 
     #[test]

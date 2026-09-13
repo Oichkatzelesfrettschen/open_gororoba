@@ -241,7 +241,9 @@ description = "Banned terms, canonical names"
 [[source]]
 path = "registry/engineering_standards.toml"
 role = "config"
-# TODO: registry/canonical/control_plane.sqlite3 holds no table of this name; the lane is unmigrated.
+# UNMIGRATED: registry/canonical/control_plane.sqlite3 holds no table of this
+# name and no typed mutation/export path exists. This TOML remains the canonical
+# mutation surface until SQLite migration and deterministic export are complete.
 table = "engineering_standards"
 description = "Engineering standards"
 
@@ -257,7 +259,9 @@ description = "Test taxonomy"
 [[source]]
 path = "registry/agents_contract.toml"
 role = "config"
-# TODO: registry/canonical/control_plane.sqlite3 holds no table of this name; the lane is unmigrated.
+# UNMIGRATED: registry/canonical/control_plane.sqlite3 holds no table of this
+# name and no typed mutation/export path exists. This TOML remains the canonical
+# mutation surface until SQLite migration and deterministic export are complete.
 table = "agents_contract"
 description = "Agent role definitions"
 

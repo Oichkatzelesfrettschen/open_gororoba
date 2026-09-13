@@ -1619,16 +1619,45 @@ fn check_report(output_directory: &Path, generated: &GeneratedAudit) -> Result<(
     Ok(())
 }
 
+fn prepare_distinct_expected_output_directory(
+    retained_output_directory: &Path,
+    expected_output_directory: &Path,
+) -> Result<()> {
+    let retained_identity = fs::canonicalize(retained_output_directory).with_context(|| {
+        format!(
+            "resolving retained output directory {}",
+            retained_output_directory.display()
+        )
+    })?;
+    fs::create_dir_all(expected_output_directory).with_context(|| {
+        format!(
+            "creating expected output directory {}",
+            expected_output_directory.display()
+        )
+    })?;
+    let expected_identity = fs::canonicalize(expected_output_directory).with_context(|| {
+        format!(
+            "resolving expected output directory {}",
+            expected_output_directory.display()
+        )
+    })?;
+    ensure!(
+        expected_identity != retained_identity,
+        "expected output directory must differ from the retained output directory"
+    );
+    Ok(())
+}
+
 fn main() -> Result<()> {
     let arguments = Arguments::parse();
     let generated = generate_report()?;
     validate_report(&generated.report)?;
     if arguments.check {
         if let Some(expected_output_directory) = &arguments.expected_output_directory {
-            ensure!(
-                expected_output_directory != &arguments.output_directory,
-                "expected output directory must differ from the retained output directory"
-            );
+            prepare_distinct_expected_output_directory(
+                &arguments.output_directory,
+                expected_output_directory,
+            )?;
             write_report(expected_output_directory, &generated)?;
         }
         check_report(&arguments.output_directory, &generated)
@@ -1781,5 +1810,20 @@ mod tests {
         let error = verify_source_retrieval_manifest_source(&unsafe_manifest, &repository_root)
             .unwrap_err();
         assert!(error.to_string().contains("unsafe repository-relative path"));
+    }
+
+    #[test]
+    fn expected_output_directory_rejects_resolved_aliases() {
+        let temporary_directory = tempfile::tempdir().unwrap();
+        let retained_directory = temporary_directory.path().join("retained");
+        fs::create_dir(&retained_directory).unwrap();
+        let relative_alias = retained_directory.join("..").join("retained");
+
+        let error = prepare_distinct_expected_output_directory(
+            &retained_directory,
+            &relative_alias,
+        )
+        .unwrap_err();
+        assert!(error.to_string().contains("must differ"));
     }
 }

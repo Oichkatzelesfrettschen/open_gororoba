@@ -249,19 +249,51 @@ Each Rust-bearing CI job compiles the typed Rust worker-budget utility before
 its workload, uses every CPU exposed to that job without a divisor, clamp,
 physical-core substitution, fallback, or per-worker memory limit, and reports
 that count in the job log. The main workflow routes lint to changed owners and
-tests to their reverse dependency closure, and includes binary test targets.
+tests to their reverse dependency closure, including binary test targets. A
+typed xtask command reads every workspace member manifest and partitions the
+light package set into deterministic job-level shards; it rejects duplicate
+package names, missing member manifests, and routed packages outside the exact
+workspace set. Clippy and heavy-profile tests remain separate matrix jobs.
+`gororoba_cli_physics` receives a second deterministic partition: eight shards
+cover its exact declared `[[bin]]` set, while one shard covers its library and
+integration tests. This prevents one package's binary-link tail from recreating
+the monolithic light-lane timeout.
+Either router records its own failure and emits an explicit workspace scope, so
+route failure preserves the downstream leaf schedule while the final collector
+still rejects the run.
 Make uses one worker outside GitHub Actions and executes no local resource
 detector. Weekly full validation covers workspace drift.
 Clippy uses Cargo's keep-going mode, nextest disables fail-fast, and GNU Make
 uses keep-going mode for composite validation targets. The hosted workflow
-records every applicable lane outcome before returning a combined failure
-verdict. One CI run therefore reports the complete reachable failure surface
-instead of stopping at the first independent validation error. The Rocq
+records every applicable lane and job-group outcome before returning a combined
+failure verdict. Matrix fail-fast is disabled, and an 80-minute command
+deadline reserves ten minutes inside each 90-minute job for report upload.
+Core and Rust caches are saved only after their corresponding verdict succeeds,
+so a timeout does not start a tar operation while compiler artifacts are
+changing. One CI run
+therefore reports the complete reachable failure surface instead of stopping
+at the first independent validation error. The Rocq
 workflow applies the same collector pattern and passes every process-visible
 CPU to Make.
 Documentation builds and freshness checks share a runner; default features
 avoid requiring GPU SDKs for hosted documentation. Reports under
 `reports/validation/**` retain each executed lane.
+
+General light correctness tests use the workspace `test` profile, whose LTO is
+disabled while overflow checks remain enabled. The profile prevents hundreds
+of CLI binary test harnesses from paying validation-profile thin-LTO link cost.
+The route and nextest invocation still cover every selected package and binary,
+and `--no-fail-fast` remains active. Optimized scientific audit, parity, and
+heavy-test lanes keep their separately declared profiles.
+
+Two policy records remain outside the SQLite write plane:
+`registry/engineering_standards.toml` and `registry/agents_contract.toml` have
+no canonical tables or typed exporter. Their TOMLs remain the canonical
+mutation surfaces and now agree with `AGENTS.md`, `agents.toml`, `Makefile`, and
+the workflows about hosted validation and exact process-visible parallelism.
+The source manifest records the migration boundary. A future repair must add
+typed SQLite storage, mutation, revisions, and deterministic export before
+converting either policy record into a generated compatibility view.
 
 ## Post-refresh validation result
 

@@ -148,6 +148,10 @@ const XTASK_COMMANDS: &[(&str, &str)] = &[
     ("sparse-profile", "Profile sparse-runner scenarios."),
     ("gpu-profile", "Profile GPU-runner scenarios."),
     ("ci-route", "Print CI routing decisions."),
+    (
+        "ci-rust-shard-matrix",
+        "Partition a routed Rust scope into complete CI job shards.",
+    ),
     ("ascii-check", "Check ASCII policy, optionally with --fix."),
     ("ascii-cleanup", "Normalize ASCII-policy text with --fix."),
     ("coq-stub", "Generate a Rocq stub from a source path."),
@@ -414,6 +418,11 @@ fn main() -> Result<()> {
         "ci-route" => run_ci_route(CiRouteCli::try_parse_from(
             std::iter::once("ci-route".to_string()).chain(args),
         )?),
+        "ci-rust-shard-matrix" => run_ci_rust_shard_matrix(
+            CiRustShardMatrixCli::try_parse_from(
+                std::iter::once("ci-rust-shard-matrix".to_string()).chain(args),
+            )?,
+        ),
         "ascii-check" => run_ascii_check(args.any(|arg| arg == "--fix")),
         "ascii-cleanup" => run_ascii_cleanup(args.any(|arg| arg == "--fix")),
         "coq-stub" => {
@@ -751,6 +760,319 @@ struct CiRouteCli {
     base: Option<String>,
     #[arg(long)]
     verbose: bool,
+}
+
+#[derive(Parser, Debug)]
+#[command(
+    name = "ci-rust-shard-matrix",
+    about = "Partition routed Rust packages into deterministic GitHub job shards"
+)]
+struct CiRustShardMatrixCli {
+    #[arg(long, default_value = "Cargo.toml")]
+    workspace_manifest: PathBuf,
+    #[arg(long, allow_hyphen_values = true)]
+    rust_scope: String,
+    #[arg(long, allow_hyphen_values = true)]
+    clippy_scope: String,
+    #[arg(long, default_value_t = 8)]
+    light_shard_count: usize,
+    #[arg(long = "heavy-package")]
+    heavy_packages: Vec<String>,
+    #[arg(long)]
+    target_shard_package: Option<String>,
+    #[arg(long, default_value_t = 8)]
+    target_shard_count: usize,
+}
+
+#[derive(Debug, Deserialize)]
+struct ShardWorkspaceManifest {
+    workspace: ShardWorkspace,
+}
+
+#[derive(Debug, Deserialize)]
+struct ShardWorkspace {
+    members: Vec<String>,
+}
+
+#[derive(Debug, Deserialize)]
+struct ShardPackageManifest {
+    package: ShardPackage,
+    #[serde(default, rename = "bin")]
+    binaries: Vec<ShardBinary>,
+}
+
+#[derive(Debug, Deserialize)]
+struct ShardPackage {
+    name: String,
+}
+
+#[derive(Debug, Deserialize)]
+struct ShardBinary {
+    name: String,
+}
+
+#[derive(Debug, Serialize)]
+struct RustShardMatrix {
+    include: Vec<RustShard>,
+}
+
+#[derive(Debug, Serialize)]
+struct RustShard {
+    lane: String,
+    target: &'static str,
+    rust_scope: String,
+    clippy_scope: String,
+    cargo_target_args: String,
+}
+
+fn workspace_package_inventory(manifest_path: &Path) -> Result<BTreeMap<String, Vec<String>>> {
+    let manifest_text = fs::read_to_string(manifest_path)
+        .with_context(|| format!("read workspace manifest {}", manifest_path.display()))?;
+    let manifest: ShardWorkspaceManifest = toml::from_str(&manifest_text)
+        .with_context(|| format!("parse workspace manifest {}", manifest_path.display()))?;
+    let workspace_root = manifest_path
+        .parent()
+        .context("workspace manifest has no parent directory")?;
+    let mut packages = BTreeMap::new();
+    for member in manifest.workspace.members {
+        if member
+            .chars()
+            .any(|character| matches!(character, '*' | '?' | '[' | ']'))
+        {
+            bail!("workspace member glob is unsupported for CI sharding: {member}");
+        }
+        let member_manifest_path = workspace_root.join(&member).join("Cargo.toml");
+        let member_manifest_text = fs::read_to_string(&member_manifest_path).with_context(|| {
+            format!(
+                "workspace member {member} has no readable manifest at {}",
+                member_manifest_path.display()
+            )
+        })?;
+        let member_manifest: ShardPackageManifest = toml::from_str(&member_manifest_text)
+            .with_context(|| format!("parse member manifest {}", member_manifest_path.display()))?;
+        let package_name = member_manifest.package.name;
+        let mut binary_names = member_manifest
+            .binaries
+            .into_iter()
+            .map(|binary| binary.name)
+            .collect::<Vec<_>>();
+        binary_names.sort();
+        if binary_names.windows(2).any(|pair| pair[0] == pair[1]) {
+            bail!("duplicate binary target name in CI shard inventory: {package_name}");
+        }
+        if packages.insert(package_name.clone(), binary_names).is_some() {
+            bail!(
+                "duplicate workspace package name in CI shard inventory: {}",
+                package_name
+            );
+        }
+    }
+    Ok(packages)
+}
+
+fn parse_routed_package_scope(scope: &str, workspace_packages: &[String]) -> Result<Vec<String>> {
+    if scope.trim() == "--workspace" {
+        return Ok(workspace_packages.to_vec());
+    }
+    let tokens: Vec<&str> = scope.split_whitespace().collect();
+    if tokens.is_empty() || tokens.len() % 2 != 0 {
+        bail!("Rust scope requires --workspace or explicit -p package pairs");
+    }
+    let workspace_set: std::collections::BTreeSet<&str> =
+        workspace_packages.iter().map(String::as_str).collect();
+    let mut selected = std::collections::BTreeSet::new();
+    for pair in tokens.chunks_exact(2) {
+        if pair[0] != "-p" {
+            bail!("Rust scope requires --workspace or explicit -p package pairs");
+        }
+        if !workspace_set.contains(pair[1]) {
+            bail!("Rust scope names package absent from the workspace: {}", pair[1]);
+        }
+        if !selected.insert(pair[1].to_string()) {
+            bail!("Rust scope names package more than once: {}", pair[1]);
+        }
+    }
+    Ok(selected.into_iter().collect())
+}
+
+fn stable_shard_index(package_name: &str, shard_count: usize) -> usize {
+    let hash = package_name.bytes().fold(0xcbf29ce484222325_u64, |hash, byte| {
+        (hash ^ u64::from(byte)).wrapping_mul(0x100000001b3)
+    });
+    (hash % shard_count as u64) as usize
+}
+
+fn cargo_package_scope(package_names: &[String]) -> String {
+    package_names
+        .iter()
+        .map(|package_name| format!("-p {package_name}"))
+        .collect::<Vec<_>>()
+        .join(" ")
+}
+
+fn build_rust_shard_matrix(cli: &CiRustShardMatrixCli) -> Result<RustShardMatrix> {
+    if cli.light_shard_count == 0 || cli.target_shard_count == 0 {
+        bail!("light and target shard counts must be greater than zero");
+    }
+    let workspace_inventory = workspace_package_inventory(&cli.workspace_manifest)?;
+    let workspace_packages = workspace_inventory.keys().cloned().collect::<Vec<_>>();
+    let selected_packages = parse_routed_package_scope(&cli.rust_scope, &workspace_packages)?;
+    let selected_set: std::collections::BTreeSet<String> =
+        selected_packages.iter().cloned().collect();
+    let workspace_set: std::collections::BTreeSet<&str> =
+        workspace_packages.iter().map(String::as_str).collect();
+    let heavy_set: std::collections::BTreeSet<&str> =
+        cli.heavy_packages.iter().map(String::as_str).collect();
+    for heavy_package in &heavy_set {
+        if !workspace_set.contains(heavy_package) {
+            bail!("heavy package is absent from the workspace: {heavy_package}");
+        }
+    }
+    if let Some(target_shard_package) = cli.target_shard_package.as_deref()
+        && !workspace_set.contains(target_shard_package)
+    {
+        bail!("target-shard package is absent from the workspace: {target_shard_package}");
+    }
+
+    let mut include = vec![RustShard {
+        lane: "clippy".to_string(),
+        target: "clippy",
+        rust_scope: String::new(),
+        clippy_scope: cli.clippy_scope.clone(),
+        cargo_target_args: String::new(),
+    }];
+    let mut light_shards = vec![Vec::new(); cli.light_shard_count];
+    let mut heavy_packages = Vec::new();
+    let mut target_shard_package_selected = false;
+    for package_name in selected_packages {
+        if heavy_set.contains(package_name.as_str()) {
+            heavy_packages.push(package_name);
+        } else if cli.target_shard_package.as_deref() == Some(package_name.as_str()) {
+            target_shard_package_selected = true;
+        } else {
+            let shard_index = stable_shard_index(&package_name, cli.light_shard_count);
+            light_shards[shard_index].push(package_name);
+        }
+    }
+    for (shard_index, package_names) in light_shards.into_iter().enumerate() {
+        if package_names.is_empty() {
+            continue;
+        }
+        include.push(RustShard {
+            lane: format!("light-{shard_index}"),
+            target: "light",
+            rust_scope: cargo_package_scope(&package_names),
+            clippy_scope: String::new(),
+            cargo_target_args: "--all-targets".to_string(),
+        });
+    }
+    if !heavy_packages.is_empty() {
+        include.push(RustShard {
+            lane: "heavy".to_string(),
+            target: "heavy",
+            rust_scope: cargo_package_scope(&heavy_packages),
+            clippy_scope: String::new(),
+            cargo_target_args: "--all-targets".to_string(),
+        });
+    }
+    if target_shard_package_selected {
+        let target_shard_package = cli
+            .target_shard_package
+            .as_deref()
+            .context("selected target-shard package is absent")?;
+        let binary_names = workspace_inventory
+            .get(target_shard_package)
+            .context("target-shard package is absent from the workspace inventory")?;
+        if binary_names.is_empty() {
+            bail!("target-shard package declares no explicit binary targets");
+        }
+        include.push(RustShard {
+            lane: format!("{target_shard_package}-lib-tests"),
+            target: "light",
+            rust_scope: format!("-p {target_shard_package}"),
+            clippy_scope: String::new(),
+            cargo_target_args: "--lib --tests".to_string(),
+        });
+        let mut binary_shards = vec![Vec::new(); cli.target_shard_count];
+        for binary_name in binary_names {
+            let shard_index = stable_shard_index(binary_name, cli.target_shard_count);
+            binary_shards[shard_index].push(binary_name.as_str());
+        }
+        for (shard_index, shard_binary_names) in binary_shards.into_iter().enumerate() {
+            if shard_binary_names.is_empty() {
+                continue;
+            }
+            let cargo_target_args = shard_binary_names
+                .iter()
+                .map(|binary_name| format!("--bin {binary_name}"))
+                .collect::<Vec<_>>()
+                .join(" ");
+            include.push(RustShard {
+                lane: format!("{target_shard_package}-bins-{shard_index}"),
+                target: "light",
+                rust_scope: format!("-p {target_shard_package}"),
+                clippy_scope: String::new(),
+                cargo_target_args,
+            });
+        }
+    }
+    let mut emitted_packages = std::collections::BTreeSet::new();
+    for shard in include
+        .iter()
+        .filter(|shard| shard.target != "clippy" && shard.cargo_target_args == "--all-targets")
+    {
+        for package_name in parse_routed_package_scope(&shard.rust_scope, &workspace_packages)? {
+            if !emitted_packages.insert(package_name) {
+                bail!("CI shard matrix emits one package more than once");
+            }
+        }
+    }
+    if target_shard_package_selected {
+        emitted_packages.insert(
+            cli.target_shard_package
+                .clone()
+                .context("selected target-shard package is absent")?,
+        );
+        let target_shard_package = cli
+            .target_shard_package
+            .as_deref()
+            .context("selected target-shard package is absent")?;
+        let expected_binary_names: std::collections::BTreeSet<&str> = workspace_inventory
+            .get(target_shard_package)
+            .context("target-shard package is absent from the workspace inventory")?
+            .iter()
+            .map(String::as_str)
+            .collect();
+        let mut emitted_binary_names = std::collections::BTreeSet::new();
+        let mut non_binary_shard_count = 0;
+        for shard in include
+            .iter()
+            .filter(|shard| shard.rust_scope == format!("-p {target_shard_package}"))
+        {
+            if shard.cargo_target_args == "--lib --tests" {
+                non_binary_shard_count += 1;
+                continue;
+            }
+            let target_tokens: Vec<&str> = shard.cargo_target_args.split_whitespace().collect();
+            for pair in target_tokens.chunks_exact(2) {
+                if pair[0] != "--bin" || !emitted_binary_names.insert(pair[1]) {
+                    bail!("target shard matrix emits an invalid or duplicate binary target");
+                }
+            }
+        }
+        if non_binary_shard_count != 1 || emitted_binary_names != expected_binary_names {
+            bail!("target shard matrix differs from the package's exact target set");
+        }
+    }
+    if emitted_packages != selected_set {
+        bail!("CI shard matrix package set differs from the routed package set");
+    }
+    Ok(RustShardMatrix { include })
+}
+
+fn run_ci_rust_shard_matrix(cli: CiRustShardMatrixCli) -> Result<()> {
+    println!("{}", serde_json::to_string(&build_rust_shard_matrix(&cli)?)?);
+    Ok(())
 }
 
 fn run_ci_route(cli: CiRouteCli) -> Result<()> {

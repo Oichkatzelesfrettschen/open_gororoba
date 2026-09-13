@@ -84,13 +84,17 @@ jobs:
             exit 1
           fi
 
-  validation:
+  validation-core:
     needs: validation-policy
     if: always()
     runs-on: ubuntu-24.04
     timeout-minutes: 90
     outputs:
       docs: ${{ steps.paths.outputs.docs }}
+      run_rust: ${{ steps.route.outputs.run_rust }}
+      rust_scope: ${{ steps.route.outputs.rust_scope }}
+      clippy_scope: ${{ steps.lint.outputs.rust_scope }}
+      rust_matrix: ${{ steps.rust-shards.outputs.matrix }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -147,17 +151,24 @@ jobs:
             echo "DIFF_BASE=$comparison_base" >> "$GITHUB_ENV"
             echo 'full=false' >> "$GITHUB_OUTPUT"
           fi
-          mkdir -p reports/validation
+
+      - name: Prepare validation report directory
+        if: always()
+        run: mkdir -p reports/validation
 
       - name: Classify documentation, dependency and artifact changes
         id: paths
+        if: always()
+        continue-on-error: true
         env:
           FULL: ${{ steps.inputs.outputs.full }}
         run: |
           set -euo pipefail
-          if [ "$FULL" = true ]; then
-            printf 'docs=true\ndependencies=true\nwarp=true\ncasimir_audit=true\n' >> "$GITHUB_OUTPUT"
-          else
+          classify_paths() {
+            if [ "$FULL" = true ]; then
+              printf 'docs=true\ndependencies=true\nwarp=true\ncasimir_audit=true\n' >> "$GITHUB_OUTPUT"
+              return
+            fi
             git diff --no-renames --name-only "$DIFF_BASE" HEAD > reports/validation/changed-paths.txt
             for lane in docs dependencies warp casimir_audit; do
               case "$lane" in
@@ -172,6 +183,11 @@ jobs:
                 echo "$lane=false" >> "$GITHUB_OUTPUT"
               fi
             done
+          }
+          if ! classify_paths; then
+            printf 'docs=true\ndependencies=true\nwarp=true\ncasimir_audit=true\n' >> "$GITHUB_OUTPUT"
+            echo "Path classification failed; all independent path-routed leaves remain scheduled." >&2
+            exit 1
           fi
 
       - name: Build the repository scope router
@@ -179,63 +195,83 @@ jobs:
 
       - name: Route reverse dependency test closure
         id: route
+        if: always()
+        continue-on-error: true
         env:
           FULL: ${{ steps.inputs.outputs.full }}
         run: |
+          set -euo pipefail
           if [ "$FULL" = true ]; then
             printf 'rust_scope=--workspace\nrun_rust=true\nrun_check=true\nrun_governance=true\n' >> "$GITHUB_OUTPUT"
-          else
-            "$CARGO_TARGET_DIR/validation-tools/workspace-routing" --base "$DIFF_BASE" --verbose
+          elif ! "$CARGO_TARGET_DIR/validation-tools/workspace-routing" --base "$DIFF_BASE" --verbose; then
+            printf 'rust_scope=--workspace\nrun_rust=true\nrun_check=true\nrun_governance=true\n' >> "$GITHUB_OUTPUT"
+            echo "Reverse dependency routing failed; all CI validation surfaces remain scheduled." >&2
+            exit 1
           fi
 
       - name: Route directly changed lint owners
         id: lint
-        if: steps.route.outputs.run_rust == 'true'
+        if: always() && steps.route.outputs.run_rust == 'true'
+        continue-on-error: true
         env:
           FULL: ${{ steps.inputs.outputs.full }}
         run: |
+          set -euo pipefail
           if [ "$FULL" = true ]; then
             echo 'rust_scope=--workspace' >> "$GITHUB_OUTPUT"
-          else
-            "$CARGO_TARGET_DIR/validation-tools/workspace-routing" --base "$DIFF_BASE" --direct-only
+          elif ! "$CARGO_TARGET_DIR/validation-tools/workspace-routing" --base "$DIFF_BASE" --direct-only; then
+            echo 'rust_scope=--workspace' >> "$GITHUB_OUTPUT"
+            echo "Direct-owner lint routing failed; workspace Clippy remains scheduled." >&2
+            exit 1
           fi
+
+      - name: Partition routed Rust tests into job shards
+        id: rust-shards
+        if: always() && steps.route.outputs.run_rust == 'true'
+        continue-on-error: true
+        env:
+          CI_RUST_SCOPE: ${{ steps.route.outputs.rust_scope }}
+          CI_CLIPPY_SCOPE: ${{ steps.lint.outputs.rust_scope }}
+        run: |
+          set -euo pipefail
+          make --jobs="$WORKER_BUDGET" "$CARGO_TARGET_DIR/validation-tools/xtask"
+          rust_matrix="$("$CARGO_TARGET_DIR/validation-tools/xtask" ci-rust-shard-matrix \
+            --rust-scope="$CI_RUST_SCOPE" \
+            --clippy-scope="$CI_CLIPPY_SCOPE" \
+            --light-shard-count=8 \
+            --heavy-package=algebra_analysis \
+            --heavy-package=gr_core \
+            --target-shard-package=gororoba_cli_physics \
+            --target-shard-count=8)"
+          printf 'matrix=%s\n' "$rust_matrix" >> "$GITHUB_OUTPUT"
 
       - name: Check repository hygiene
         id: hygiene
-        if: steps.route.outputs.run_check == 'true'
+        if: always() && steps.route.outputs.run_check == 'true'
         continue-on-error: true
         run: make --jobs="$WORKER_BUDGET" --keep-going check 2>&1 | tee reports/validation/hygiene.log
 
       - name: Validate canonical evidence and governance
         id: governance
-        if: steps.route.outputs.run_governance == 'true'
+        if: always() && steps.route.outputs.run_governance == 'true'
         continue-on-error: true
         run: make --jobs="$WORKER_BUDGET" --keep-going validate-ci-registry 2>&1 | tee reports/validation/governance.log
 
-      - name: Lint owners and test affected consumers including binaries
-        id: rust
-        if: steps.route.outputs.run_rust == 'true'
-        continue-on-error: true
-        env:
-          CI_RUST_SCOPE: ${{ steps.route.outputs.rust_scope }}
-          CI_CLIPPY_SCOPE: ${{ steps.lint.outputs.rust_scope }}
-        run: make --jobs="$WORKER_BUDGET" --keep-going validate-ci-scoped-rust 2>&1 | tee reports/validation/rust.log
-
       - name: Verify provider inventory and database schema documentation
         id: integrity
-        if: steps.route.outputs.run_rust == 'true' || steps.route.outputs.run_governance == 'true'
+        if: always() && (steps.route.outputs.run_rust == 'true' || steps.route.outputs.run_governance == 'true')
         continue-on-error: true
         run: make --jobs="$WORKER_BUDGET" --keep-going validate-rust-integrity db-schema-drift-check 2>&1 | tee reports/validation/integrity.log
 
       - name: Verify retained Casimir and optics audit freshness
         id: casimir-audit
-        if: steps.paths.outputs.casimir_audit == 'true'
+        if: always() && steps.paths.outputs.casimir_audit == 'true'
         continue-on-error: true
         run: make --jobs="$WORKER_BUDGET" --keep-going casimir-optics-discrimination-audit-check 2>&1 | tee reports/validation/casimir-optics-discrimination.log
 
       - name: Install dependency policy verifier
         id: dependency-tool
-        if: steps.paths.outputs.dependencies == 'true'
+        if: always() && steps.paths.outputs.dependencies == 'true'
         continue-on-error: true
         uses: taiki-e/install-action@v2
         with:
@@ -243,26 +279,15 @@ jobs:
 
       - name: Verify dependency policy
         id: dependencies
-        if: steps.paths.outputs.dependencies == 'true'
+        if: always() && steps.paths.outputs.dependencies == 'true'
         continue-on-error: true
         run: make --jobs="$WORKER_BUDGET" --keep-going cargo-deny-check 2>&1 | tee reports/validation/dependencies.log
 
       - name: Validate retained Warp HDF5 artifacts
         id: warp
-        if: steps.paths.outputs.warp == 'true' && hashFiles('data/h5/**/*.h5') != ''
+        if: always() && steps.paths.outputs.warp == 'true' && hashFiles('data/h5/**/*.h5') != ''
         continue-on-error: true
         run: cargo run --locked --profile validation -p gororoba_cli_warp --features gpu,hdf5-export --bin warp -- acceptance-gate "data/h5/**/*.h5"
-
-      - name: Retain compiled dependencies after validation failures
-        if: always() && steps.rust-cache.outputs.cache-primary-key != '' && steps.rust-cache.outputs.cache-hit != 'true'
-        uses: actions/cache/save@v4
-        with:
-          path: |
-            ${{ env.CARGO_HOME }}/registry
-            ${{ env.CARGO_HOME }}/git
-            ${{ env.CARGO_TARGET_DIR }}
-            ${{ github.workspace }}/.cache/gate-cbuild
-          key: ${{ steps.rust-cache.outputs.cache-primary-key }}
 
       - name: Upload validation reports
         if: always()
@@ -276,9 +301,12 @@ jobs:
       - name: Report collected validation failures
         if: always()
         env:
+          PATHS_OUTCOME: ${{ steps.paths.outcome }}
+          ROUTE_OUTCOME: ${{ steps.route.outcome }}
+          LINT_OUTCOME: ${{ steps.lint.outcome }}
+          RUST_SHARDS_OUTCOME: ${{ steps.rust-shards.outcome }}
           HYGIENE_OUTCOME: ${{ steps.hygiene.outcome }}
           GOVERNANCE_OUTCOME: ${{ steps.governance.outcome }}
-          RUST_OUTCOME: ${{ steps.rust.outcome }}
           INTEGRITY_OUTCOME: ${{ steps.integrity.outcome }}
           CASIMIR_AUDIT_OUTCOME: ${{ steps.casimir-audit.outcome }}
           DEPENDENCY_TOOL_OUTCOME: ${{ steps.dependency-tool.outcome }}
@@ -287,7 +315,7 @@ jobs:
         run: |
           set -euo pipefail
           failure_count=0
-          for outcome_variable in HYGIENE_OUTCOME GOVERNANCE_OUTCOME RUST_OUTCOME INTEGRITY_OUTCOME CASIMIR_AUDIT_OUTCOME DEPENDENCY_TOOL_OUTCOME DEPENDENCIES_OUTCOME WARP_OUTCOME; do
+          for outcome_variable in PATHS_OUTCOME ROUTE_OUTCOME LINT_OUTCOME RUST_SHARDS_OUTCOME HYGIENE_OUTCOME GOVERNANCE_OUTCOME INTEGRITY_OUTCOME CASIMIR_AUDIT_OUTCOME DEPENDENCY_TOOL_OUTCOME DEPENDENCIES_OUTCOME WARP_OUTCOME; do
             outcome="${!outcome_variable}"
             printf '%s=%s\n' "$outcome_variable" "$outcome"
             if [ "$outcome" = failure ]; then
@@ -299,9 +327,137 @@ jobs:
             exit 1
           fi
 
+      - name: Retain successful core validation artifacts
+        if: success() && steps.rust-cache.outputs.cache-primary-key != '' && steps.rust-cache.outputs.cache-hit != 'true'
+        timeout-minutes: 5
+        uses: actions/cache/save@v4
+        with:
+          path: |
+            ${{ env.CARGO_HOME }}/registry
+            ${{ env.CARGO_HOME }}/git
+            ${{ env.CARGO_TARGET_DIR }}
+            ${{ github.workspace }}/.cache/gate-cbuild
+          key: ${{ steps.rust-cache.outputs.cache-primary-key }}
+
+  rust-validation:
+    needs: validation-core
+    if: always() && needs.validation-core.outputs.run_rust == 'true' && needs.validation-core.outputs.rust_matrix != ''
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    strategy:
+      fail-fast: false
+      matrix: ${{ fromJSON(needs.validation-core.outputs.rust_matrix) }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: dtolnay/rust-toolchain@1.97.0
+        with:
+          components: clippy, rustfmt
+
+      - uses: taiki-e/install-action@v2
+        with:
+          tool: cargo-nextest@0.9.143,sccache@0.15.0
+
+      - name: Install compiler and data dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y clang mold glslc libcfitsio-dev libhdf5-dev libfontconfig1-dev libopenblas-dev libblas-dev liblapack-dev pkg-config shellcheck
+
+      - name: Resolve process-visible worker count
+        run: |
+          set -euo pipefail
+          rustc --edition=2024 -D warnings crates/gororoba_cli/src/bin/detect_worker_budget.rs -o "$RUNNER_TEMP/detect-worker-budget"
+          worker_budget="$("$RUNNER_TEMP/detect-worker-budget")"
+          echo "Hosted Rust ${{ matrix.lane }} validation uses $worker_budget workers from std::thread::available_parallelism().get()."
+          for variable in CI_WORKER_BUDGET WORKER_BUDGET CARGO_JOBS NEXTEST_TEST_THREADS RUST_TEST_THREADS RAYON_THREADS; do
+            echo "$variable=$worker_budget" >> "$GITHUB_ENV"
+          done
+
+      - name: Restore Rust validation artifacts
+        id: rust-cache
+        uses: actions/cache/restore@v4
+        with:
+          path: |
+            ${{ env.CARGO_HOME }}/registry
+            ${{ env.CARGO_HOME }}/git
+            ${{ env.CARGO_TARGET_DIR }}
+            ${{ github.workspace }}/.cache/gate-cbuild
+          key: ci-rust-${{ matrix.lane }}-v2-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('rust-toolchain.toml', '.cargo/config.toml') }}-${{ hashFiles('Cargo.lock') }}-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
+          restore-keys: |
+            ci-v2-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('rust-toolchain.toml', '.cargo/config.toml') }}-${{ hashFiles('Cargo.lock') }}-${{ github.sha }}-
+            ci-rust-${{ matrix.lane }}-v2-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('rust-toolchain.toml', '.cargo/config.toml') }}-${{ hashFiles('Cargo.lock') }}-${{ github.sha }}-
+            ci-rust-${{ matrix.lane }}-v2-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('rust-toolchain.toml', '.cargo/config.toml') }}-${{ hashFiles('Cargo.lock') }}-
+
+      - name: Run scoped Rust ${{ matrix.lane }} shard
+        timeout-minutes: 80
+        env:
+          CI_RUST_SCOPE: ${{ matrix.rust_scope }}
+          CI_CLIPPY_SCOPE: ${{ matrix.clippy_scope }}
+          CI_CARGO_TARGET_ARGS: ${{ matrix.cargo_target_args }}
+        run: |
+          set -o pipefail
+          mkdir -p reports/validation
+          make --jobs="$WORKER_BUDGET" --keep-going "validate-ci-scoped-${{ matrix.target }}" 2>&1 | tee "reports/validation/rust-${{ matrix.lane }}.log"
+
+      - name: Upload Rust validation report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: repository-validation-rust-${{ matrix.lane }}
+          path: reports/validation/**
+          if-no-files-found: warn
+          retention-days: 14
+
+      - name: Retain successful Rust validation artifacts
+        if: success() && steps.rust-cache.outputs.cache-primary-key != '' && steps.rust-cache.outputs.cache-hit != 'true'
+        timeout-minutes: 5
+        uses: actions/cache/save@v4
+        with:
+          path: |
+            ${{ env.CARGO_HOME }}/registry
+            ${{ env.CARGO_HOME }}/git
+            ${{ env.CARGO_TARGET_DIR }}
+            ${{ github.workspace }}/.cache/gate-cbuild
+          key: ${{ steps.rust-cache.outputs.cache-primary-key }}
+
+  validation:
+    needs: [validation-policy, validation-core, rust-validation]
+    if: always()
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - name: Report aggregate validation admission
+        env:
+          POLICY_RESULT: ${{ needs.validation-policy.result }}
+          CORE_RESULT: ${{ needs.validation-core.result }}
+          RUST_RESULT: ${{ needs.rust-validation.result }}
+          RUN_RUST: ${{ needs.validation-core.outputs.run_rust }}
+        run: |
+          set -euo pipefail
+          failure_count=0
+          for result_variable in POLICY_RESULT CORE_RESULT; do
+            result="${!result_variable}"
+            printf '%s=%s\n' "$result_variable" "$result"
+            if [ "$result" != success ]; then
+              failure_count=$((failure_count + 1))
+            fi
+          done
+          printf 'RUST_RESULT=%s\n' "$RUST_RESULT"
+          if [ "$RUN_RUST" = true ]; then
+            if [ "$RUST_RESULT" != success ]; then
+              failure_count=$((failure_count + 1))
+            fi
+          elif [ "$RUST_RESULT" != skipped ]; then
+            failure_count=$((failure_count + 1))
+          fi
+          if [ "$failure_count" -ne 0 ]; then
+            echo "Collected $failure_count failing validation job group(s)." >&2
+            exit 1
+          fi
+
   docs-gate:
-    needs: validation
-    if: always() && needs.validation.outputs.docs == 'true'
+    needs: [validation-core, validation]
+    if: always() && needs.validation.result == 'success' && needs.validation-core.outputs.docs == 'true'
     runs-on: ubuntu-24.04
     timeout-minutes: 60
     steps:
@@ -363,8 +519,8 @@ jobs:
           retention-days: 7
 
   docs-deploy:
-    needs: [validation, docs-gate]
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main' && needs.validation.result == 'success' && needs.docs-gate.result == 'success'
+    needs: [validation-policy, validation, docs-gate]
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main' && needs.validation-policy.result == 'success' && needs.validation.result == 'success' && needs.docs-gate.result == 'success'
     permissions:
       pages: write
       id-token: write
