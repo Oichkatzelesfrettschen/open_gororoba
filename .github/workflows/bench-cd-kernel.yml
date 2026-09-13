@@ -1,37 +1,11 @@
 name: CD Kernel Multi-Platform Benchmark
 
 on:
+  workflow_call:
   workflow_dispatch:
-  pull_request:
-    paths:
-      - 'crates/cd_kernel/**'
-      - 'crates/fwht/**'
-      - 'crates/verified_core/**'
-      - 'crates/gororoba_gpu_bridge/**'
-      - 'Cargo.lock'
-      - 'Cargo.toml'
-      - 'rust-toolchain.toml'
-      - '.cargo/config.toml'
-      - '.github/workflows/bench-cd-kernel.yml'
-  push:
-    branches: [main]
-    paths:
-      - 'crates/cd_kernel/**'
-      - 'crates/fwht/**'
-      - 'crates/verified_core/**'
-      - 'crates/gororoba_gpu_bridge/**'
-      - 'Cargo.lock'
-      - 'Cargo.toml'
-      - 'rust-toolchain.toml'
-      - '.cargo/config.toml'
-      - '.github/workflows/bench-cd-kernel.yml'
 
 permissions:
   contents: read
-
-concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: true
 
 jobs:
   benchmark:

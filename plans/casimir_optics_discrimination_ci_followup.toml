@@ -180,3 +180,45 @@ status = "implemented_pending_ci"
 finding = "A broad replacement accidentally changed the established independent-calibration fixture from a unit nuisance column to a 1e308 column."
 required_change = "Restore the original unit nuisance fixture while retaining dedicated extreme-scale tests in their own cases."
 verification = "Hosted stats_core independent_calibration_increases_information passes unchanged semantics."
+
+[[task]]
+id = "account-hosted-runner-admission-rca"
+status = "diagnosed_external_pending_replay"
+finding = "At exact head a0fcf3a0, four workflows remained queued with zero jobs and the byte-identical proofs workflow ended startup_failure with zero jobs. An exhaustive scan of 548 active owned repositories found zero live hosted jobs outside these records. The public repository uses free standard runners, the Pro account permits 40 concurrent standard jobs, repository Actions are enabled, and September billing reports zero net Actions charges."
+required_change = "Treat the five-run split as pre-job scheduler admission failure rather than source validation, and replay through one repository-controlled event root."
+verification = "The next exact-head ci run creates jobs and reaches a terminal denominator; any repeated zero-job startup failure is escalated with run, check-suite, account-scan, and billing evidence."
+
+[[task]]
+id = "single-ci-event-admission-root"
+status = "implemented_pending_ci"
+finding = "One broad pull request independently created benchmark, ci, paper, proofs, and unsafe-survey workflow runs. The reachable job frontier can exceed the account's 40-job concurrency even though each runner correctly uses all process-visible CPUs."
+required_change = "Make ci.yml the sole pull-request and main-push event root, route component paths once, and invoke benchmark, proof, paper, and unsafe-survey evidence through reusable workflows. Preserve manual component dispatch and the monthly unsafe schedule."
+verification = "Hosted actionlint and validation-resource-contract pass; one exact-head pull-request workflow contains each selected component job and the aggregate verdict accounts for selected and skipped components."
+
+[[task]]
+id = "retired-local-validation-target-removal"
+status = "implemented_pending_ci"
+finding = "Retired local Make targets remained callable refusal stubs and preserved obsolete orchestration names in the active Make graph."
+required_change = "Remove every local, pre-push, and local-scoped compatibility target and retain a CI policy check that rejects their reintroduction."
+verification = "Hosted validation-resource-contract proves every retired name is unresolved, hook executors remain absent, and CI-only targets reject a non-GitHub execution boundary."
+
+[[task]]
+id = "local-command-worker-limit-removal"
+status = "implemented_pending_ci"
+finding = "The shared Cargo environment injected one worker into local mutation and generator commands even though repository validation was closed locally."
+required_change = "Leave Cargo, Rayon, and Rust test worker variables unset outside an admitted GitHub job; preserve exact process-visible CPU propagation inside hosted jobs."
+verification = "Hosted validation-resource-contract observes workers=automatic outside GitHub Actions and the exact supplied worker count inside the trusted boundary."
+
+[[task]]
+id = "scheduler-index-residue"
+status = "complete"
+finding = "Three zero-job runs from May and one August self-hosted run with a completed skipped job remain listed as queued or in_progress. GitHub's cancel endpoint reports each run as already completed."
+required_change = "Exclude the internally terminal records from concurrency accounting and delete their empty or skipped workflow-run records through the explicit run-deletion endpoint."
+verification = "DELETE accepted runs 25907145181, 25907085641, 26596485186, and 31339431698; subsequent GET requests returned HTTP 404 for all four IDs."
+
+[[task]]
+id = "single-root-replacement-generation"
+status = "pending_publication"
+finding = "The a0fcf3a0 generation cannot validate source because GitHub admitted zero jobs."
+required_change = "Publish one consolidated CI admission repair after static source review and do not supersede its generation."
+verification = "The exact replacement head completes one fail-slow CI denominator with hosted source, workflow, Rust, proof, paper, benchmark, unsafe-survey, documentation, and scientific-replay outcomes."

@@ -1,15 +1,15 @@
 # ---- Phony targets ----
 .DEFAULT_GOAL := help
 .PHONY: help bootstrap-dev bootstrap-user-local-xdg fmt fmt-check
-.PHONY: test lint check check-local smoke integrity integrity-rust math-verify governance-gate governance-gate-readonly wave6-gate pre-push-gate pre-push-gate-strict synthesis-execution-contract
+.PHONY: test lint check smoke integrity integrity-rust math-verify governance-gate governance-gate-readonly wave6-gate synthesis-execution-contract
 .PHONY: verify verify-grand verify-c010-c011-theses ansi-check ansi-check-strict terminology-gate doctor doctor-blas provenance cuda-source-ownership
 .PHONY: provenance-registry-index provenance-registry-export provenance-registry-verify provenance-registry-doctor provenance-registry-link-audit provenance-registry-recover
 .PHONY: rocq-proofs rocq-proofs-check rocq-project-check rocq-makefile-check lva-paper
 .PHONY: heavy test-inventory
-.PHONY: rust-test rust-clippy rust-semver-check rust-smoke rust-regression rust-regression-scoped miri-cd-kernel dep-audit cargo-deny-check mcp-smoke e027-validate studio-run studio-check profile-tensor-avt x87-strategy-bench x87-strategy-perf x87-strategy-hyperfine x87-strategy-flamegraph x87-givens-microbench x87-givens-microbench-perf jacobi-backend-sweep jacobi-backend-perf jacobi-backend-flamegraph jacobi-backend-samply jacobi-backend-samply-compare gpu-bench gpu-bench-ncu gpu-bench-nsys
+.PHONY: rust-test rust-clippy rust-semver-check rust-smoke rust-regression miri-cd-kernel dep-audit cargo-deny-check mcp-smoke e027-validate studio-run studio-check profile-tensor-avt x87-strategy-bench x87-strategy-perf x87-strategy-hyperfine x87-strategy-flamegraph x87-givens-microbench x87-givens-microbench-perf jacobi-backend-sweep jacobi-backend-perf jacobi-backend-flamegraph jacobi-backend-samply jacobi-backend-samply-compare gpu-bench gpu-bench-ncu gpu-bench-nsys
 .PHONY: cpu-bench cpu-bench-perf cpu-bench-cachegrind cpu-bench-flamegraph parity-bench parity-report
-.PHONY: pre-push-gate-scoped submodule-sync validate-local validate-local-xtask validate-ci validate-ci-registry validate-ci-rust validate-repository validate-repository-fast validate-governance validation-tools registry-validation-tools validation-tools-clean validation-tools-rebuild validation-tools-check-paths validation-resource-contract validation-resource-contract-authority validation-resource-contract-retired-local validation-resource-contract-registry validation-resource-contract-workers validation-resource-contract-collectors print-validation-resource-config require-ci-validation-authority casimir-optics-discrimination-audit-check casimir-optics-discrimination-output-check casimir-optics-discrimination-frontier-check data-core-pure-check
-.PHONY: gate-local gate-local-xtask gate-ci-registry gate-ci-rust gate-audit gate-audit-fast
+.PHONY: submodule-sync validate-ci validate-ci-registry validate-ci-rust validate-repository validate-repository-fast validate-governance validation-tools registry-validation-tools validation-tools-clean validation-tools-rebuild validation-tools-check-paths validation-resource-contract validation-resource-contract-authority validation-resource-contract-local-absence validation-resource-contract-registry validation-resource-contract-workers validation-resource-contract-collectors print-validation-resource-config require-ci-validation-authority casimir-optics-discrimination-audit-check casimir-optics-discrimination-output-check casimir-optics-discrimination-frontier-check data-core-pure-check
+.PHONY: gate-ci-registry gate-ci-rust gate-audit gate-audit-fast
 .PHONY: cache-status cache-sweep cache-sweep-soft cache-purge-exp cache-check cache-check-force
 .PHONY: v6-branch-transport-artifacts pathion-control-artifacts pathion-resonance-artifacts
 .PHONY: registry-control-plane-gate-readonly registry-acceptance-gate-readonly validate-registry validate-registry-integrity validate-rust-integrity
@@ -68,31 +68,27 @@
 .PHONY: cpd-audit cpd-audit-strict cpd-audit-tooling cpd-audit-generated patch-static-mirror-headers cargo-cache-status cargo-cache-prune cargo-cache-smoke
 .PHONY: cd-row-upgrade-batch cd-row-upgrade-jacobson cd-row-upgrade-freudenthal
 
-.NOTPARALLEL: bootstrap-dev check smoke integrity integrity-rust validate-rust-integrity rust-smoke rust-regression rust-regression-scoped heavy cargo-deny-check validate-local validate-ci validate-ci-registry validate-ci-rust validate-repository validate-repository-fast validate-supply-chain validate-dataset-experiments pre-push-gate pre-push-gate-scoped pre-push-gate-strict governance-gate governance-gate-readonly registry-control-plane-gate-readonly registry-acceptance-gate-readonly validate-registry validation-tools
+.NOTPARALLEL: bootstrap-dev check smoke integrity integrity-rust validate-rust-integrity rust-smoke rust-regression heavy cargo-deny-check validate-ci validate-ci-registry validate-ci-rust validate-repository validate-repository-fast validate-supply-chain validate-dataset-experiments governance-gate governance-gate-readonly registry-control-plane-gate-readonly registry-acceptance-gate-readonly validate-registry validation-tools
 
 # GitHub Actions exports every CPU visible to the validation process before
-# invoking Cargo workloads. Local repository-validation targets remain closed.
+# invoking Cargo workloads. Local commands retain each tool's automatic worker
+# detection instead of receiving a repository-defined limit.
 TRUSTED_GITHUB_ACTIONS := $(if $(and $(filter true,$(CI)),$(filter true,$(GITHUB_ACTIONS))),1,0)
-CI_WORKER_BUDGET ?= 1
-override WORKER_BUDGET := $(if $(filter 1,$(TRUSTED_GITHUB_ACTIONS)),$(CI_WORKER_BUDGET),1)
+CI_WORKER_BUDGET ?=
+ifeq ($(and $(filter 1,$(TRUSTED_GITHUB_ACTIONS)),$(strip $(CI_WORKER_BUDGET))),)
+override WORKER_BUDGET := automatic
+VALIDATION_PARALLEL_ENV :=
+else
+override WORKER_BUDGET := $(CI_WORKER_BUDGET)
 override CARGO_JOBS := $(WORKER_BUDGET)
 override NEXTEST_TEST_THREADS := $(WORKER_BUDGET)
 override RUST_TEST_THREADS := $(WORKER_BUDGET)
 override RAYON_THREADS := $(WORKER_BUDGET)
-# Parse-time refusal prevents Make from constructing or updating a validation
-# prerequisite locally. Mutation generators such as registry-integrity remain
-# available because they produce reviewed source artifacts rather than a gate
-# verdict.
-RETIRED_LOCAL_VALIDATION_GOALS := check-local validate-local validate-local-xtask \
-                                  gate-local gate-local-xtask pre-push-gate \
-                                  pre-push-gate-scoped rust-regression-scoped
-REQUESTED_RETIRED_LOCAL_VALIDATION_GOALS := $(filter $(RETIRED_LOCAL_VALIDATION_GOALS),$(MAKECMDGOALS))
-ifneq ($(strip $(REQUESTED_RETIRED_LOCAL_VALIDATION_GOALS)),)
-$(error retired local validation target(s) $(REQUESTED_RETIRED_LOCAL_VALIDATION_GOALS); push the branch to trigger GitHub Actions)
+VALIDATION_PARALLEL_ENV := CARGO_BUILD_JOBS=$(CARGO_JOBS) RAYON_NUM_THREADS=$(RAYON_THREADS) RUST_TEST_THREADS=$(RUST_TEST_THREADS)
 endif
 CI_ONLY_VALIDATION_GOALS := test lint check smoke integrity integrity-rust \
                            math-verify fmt-check governance-gate governance-gate-readonly \
-	                           wave6-gate ndlb-gate pre-push-gate-strict validate-ci \
+	                           wave6-gate ndlb-gate validate-ci \
 	                           validate-ci-registry validate-ci-rust validate-ci-scoped-rust \
 	                           validate-ci-scoped-clippy validate-ci-scoped-light \
 	                           validate-ci-scoped-heavy validate-ci-scoped-rust-lane \
@@ -151,7 +147,7 @@ export GOROROBA_REPO_ROOT := $(CURDIR)
 include mk/cache_roots.mk
 CARGO_CACHE_REPO_BUDGET_GIB ?= 150
 CARGO_CACHE_TMP_BUDGET_GIB ?= 16
-CARGO_ENV = CARGO_HOME=$(REPO_CARGO_HOME) CARGO_TARGET_DIR=$(REPO_CARGO_TARGET_DIR) CARGO_BUILD_BUILD_DIR=$(REPO_CARGO_BUILD_DIR) MAKEFLAGS= MFLAGS= CARGO_MAKEFLAGS= CARGO_BUILD_JOBS=$(CARGO_JOBS) RAYON_NUM_THREADS=$(RAYON_THREADS) RUST_TEST_THREADS=$(RUST_TEST_THREADS)
+CARGO_ENV = CARGO_HOME=$(REPO_CARGO_HOME) CARGO_TARGET_DIR=$(REPO_CARGO_TARGET_DIR) CARGO_BUILD_BUILD_DIR=$(REPO_CARGO_BUILD_DIR) MAKEFLAGS= MFLAGS= CARGO_MAKEFLAGS= $(VALIDATION_PARALLEL_ENV)
 # A user-local Cargo config may enforce CARGO_INCREMENTAL=0 globally.
 # Kept here as belt-and-suspenders for CI environments where that config is absent.
 CARGO_ENV_CI = $(CARGO_ENV) CARGO_INCREMENTAL=0
@@ -165,7 +161,7 @@ DOCS_BOOK_DIR ?= $(DOCS_SITE_DIR)/book
 DOCS_RUSTDOC_DIR ?= $(DOCS_SITE_DIR)/rustdoc
 DOCS_CARGO_TARGET_DIR ?= $(CURDIR)/target/docs-target
 DOCS_CARGO_BUILD_DIR ?= $(REPO_TMP_CARGO_ROOT)/docs
-DOCS_CARGO_ENV = CARGO_HOME=$(REPO_CARGO_HOME) CARGO_TARGET_DIR=$(DOCS_CARGO_TARGET_DIR) CARGO_BUILD_BUILD_DIR=$(DOCS_CARGO_BUILD_DIR) CARGO_BUILD_JOBS=$(CARGO_JOBS) RAYON_NUM_THREADS=$(RAYON_THREADS) RUST_TEST_THREADS=$(RUST_TEST_THREADS)
+DOCS_CARGO_ENV = CARGO_HOME=$(REPO_CARGO_HOME) CARGO_TARGET_DIR=$(DOCS_CARGO_TARGET_DIR) CARGO_BUILD_BUILD_DIR=$(DOCS_CARGO_BUILD_DIR) $(VALIDATION_PARALLEL_ENV)
 # Hosted documentation uses default features; SDK-equipped hosts can opt in.
 DOCS_FEATURE_FLAGS ?=
 SEMVER_BASELINE_REV ?= v1.0-methods
@@ -255,10 +251,10 @@ require-ci-validation-authority:
 	fi
 
 print-validation-resource-config:
-	@printf 'workers=%s trusted_github_actions=%s\n' "$(WORKER_BUDGET)" "$(TRUSTED_GITHUB_ACTIONS)"
+	@printf 'workers=%s parallel_env=%s trusted_github_actions=%s\n' "$(WORKER_BUDGET)" "$(if $(VALIDATION_PARALLEL_ENV),set,unset)" "$(TRUSTED_GITHUB_ACTIONS)"
 
 validation-resource-contract: validation-resource-contract-authority \
-                              validation-resource-contract-retired-local \
+                              validation-resource-contract-local-absence \
                               validation-resource-contract-registry \
                               validation-resource-contract-workers \
                               validation-resource-contract-collectors
@@ -267,9 +263,9 @@ validation-resource-contract: validation-resource-contract-authority \
 validation-resource-contract-authority:
 	@status=0; \
 	local_config="$$( $(MAKE) --no-print-directory -s print-validation-resource-config CI=false GITHUB_ACTIONS=false CI_WORKER_BUDGET=99 WORKER_BUDGET=99 CARGO_JOBS=99)" || status=1; \
-	if [ "$$local_config" != 'workers=1 trusted_github_actions=0' ]; then echo "ERROR: local worker configuration is not closed." >&2; status=1; fi; \
+	if [ "$$local_config" != 'workers=automatic parallel_env=unset trusted_github_actions=0' ]; then echo "ERROR: local commands do not retain automatic worker selection." >&2; status=1; fi; \
 	ci_config="$$( $(MAKE) --no-print-directory -s print-validation-resource-config CI=true GITHUB_ACTIONS=true CI_WORKER_BUDGET=4 WORKER_BUDGET=99 CARGO_JOBS=99)" || status=1; \
-	if [ "$$ci_config" != 'workers=4 trusted_github_actions=1' ]; then echo "ERROR: hosted worker configuration does not preserve the supplied count." >&2; status=1; fi; \
+	if [ "$$ci_config" != 'workers=4 parallel_env=set trusted_github_actions=1' ]; then echo "ERROR: hosted worker configuration does not preserve the supplied count." >&2; status=1; fi; \
 	if $(MAKE) --no-print-directory -s require-ci-validation-authority CI=true GITHUB_ACTIONS=false >/dev/null 2>&1; then echo "ERROR: generic CI variable bypassed broad-validation authority." >&2; status=1; fi; \
 	if $(MAKE) --no-print-directory -s check CI=false GITHUB_ACTIONS=true >/dev/null 2>&1; then echo "ERROR: GitHub Actions marker bypassed CI-only validation authority." >&2; status=1; fi; \
 	$(MAKE) --no-print-directory -s require-ci-validation-authority CI=true GITHUB_ACTIONS=true || status=1; \
@@ -278,10 +274,11 @@ validation-resource-contract-authority:
 	done; \
 	exit "$$status"
 
-validation-resource-contract-retired-local:
+validation-resource-contract-local-absence:
 	@status=0; \
-	if $(MAKE) --no-print-directory -s validate-local >/dev/null 2>&1; then echo "ERROR: retired validate-local target unexpectedly succeeded." >&2; status=1; fi; \
-	if ! grep -Fq 'rust-regression-scoped' Makefile; then echo "ERROR: scoped Rust CI entrypoint is missing." >&2; status=1; fi; \
+	for retired_goal in check-local validate-local validate-local-xtask gate-local gate-local-xtask pre-push-gate pre-push-gate-scoped pre-push-gate-strict rust-regression-scoped; do \
+	    if $(MAKE) --no-print-directory -sn "$$retired_goal" >/dev/null 2>&1; then echo "ERROR: retired local validation target remains callable: $$retired_goal" >&2; status=1; fi; \
+	done; \
 	if grep -Fq 'local-nextest-plan' xtask/src/main.rs crates/gororoba_cli_data/Cargo.toml; then echo "ERROR: retired local nextest executor remains registered." >&2; status=1; fi; \
 	for retired_path in crates/gororoba_cli_data/src/bin/local_nextest_plan.rs crates/gororoba_cli/src/bin/pre_push_hook.rs .githooks/pre-push scripts/detect_worker_budget.sh scripts/detect_physical_cores.sh; do \
 	    if [ -e "$$retired_path" ]; then echo "ERROR: retired local validation path remains: $$retired_path" >&2; status=1; fi; \
@@ -293,7 +290,7 @@ validation-resource-contract-retired-local:
 	    if ! grep -Fq "$$residual" registry/source_manifest.toml; then echo "ERROR: unmigrated generated-policy residual is not tracked: $$residual" >&2; status=1; fi; \
 	done; \
 	if grep -Eq 'scripts/detect_worker_budget[.]sh|make validate-local|make hooks-install|[.]githooks/pre-push|divide by two|logical threads / 2' registry/engineering_standards.toml registry/agents_contract.toml; then echo "ERROR: canonical policy records advertise retired local validation or divided workers." >&2; status=1; fi; \
-	if ! grep -Fq 'check-local validate-local validate-local-xtask' Makefile; then echo "ERROR: retired local validation targets are not explicit refusal targets." >&2; status=1; fi; \
+	if grep -Eq '^(check-local|validate-local|validate-local-xtask|gate-local|gate-local-xtask|pre-push-gate|pre-push-gate-scoped|pre-push-gate-strict|rust-regression-scoped)[[:space:]]*:' Makefile; then echo "ERROR: retired local validation target declaration remains." >&2; status=1; fi; \
 	exit "$$status"
 
 validation-resource-contract-registry:
@@ -334,6 +331,10 @@ validation-resource-contract-workers:
 	for workflow in .github/workflows/ci.yml .github/workflows/proofs.yml .github/workflows/bench-cd-kernel.yml .github/workflows/unsafe-survey.yml; do \
 	    if ! grep -Fq 'detect_worker_budget.rs' "$$workflow"; then echo "ERROR: hosted Rust workflow lacks process-visible worker detection: $$workflow" >&2; status=1; fi; \
 	done; \
+	for workflow in .github/workflows/proofs.yml .github/workflows/bench-cd-kernel.yml .github/workflows/paper.yml .github/workflows/unsafe-survey.yml; do \
+	    if ! grep -Fq 'workflow_call:' "$$workflow"; then echo "ERROR: component evidence workflow is not reusable: $$workflow" >&2; status=1; fi; \
+	    if grep -Eq '^  (push|pull_request):' "$$workflow"; then echo "ERROR: component workflow retains an independent push or pull-request admission root: $$workflow" >&2; status=1; fi; \
+	done; \
 	exit "$$status"
 
 validation-resource-contract-collectors:
@@ -341,7 +342,7 @@ validation-resource-contract-collectors:
 	rust_shard_block="$$(sed -n '/id: rust-shards/,/name: Check repository hygiene/p' .github/workflows/ci.yml)"; \
 	docs_gate_block="$$(sed -n '/^  docs-gate:/,/^  docs-deploy:/p' .github/workflows/ci.yml)"; \
 	frontier_check_block="$$(sed -n '/^casimir-optics-discrimination-frontier-check:/,/^$$/p' Makefile)"; \
-	for contract in 'ci-rust-shard-matrix' 'target-shard-package=gororoba_cli_physics' 'target-shard-package=gororoba_cli_data' 'target-shard-package=gororoba_cli_algebra' 'fallback_matrix=' 'CI_CARGO_TARGET_ARGS: $${{ matrix.cargo_target_args }}' 'CI_CARGO_FEATURES: $${{ matrix.cargo_features }}' 'matrix: $${{ fromJSON(needs.validation-core.outputs.rust_matrix) }}' 'make --jobs="$$WORKER_BUDGET" --keep-going "validate-ci-scoped-$${{ matrix.target }}"' 'timeout-minutes: 80' 'fail-fast: false' 'Report collected validation failures' 'Report aggregate validation admission' 'needs: [validation-policy, validation-core, rust-validation, scientific-replay]' 'scientific-replay:' '--bin hydrate-scientific-payloads' '--no-fail-fast -p algebra_experimental --lib' '--no-fail-fast -p algebra_experimental --test nufit_reference_identity' '--no-fail-fast -p gororoba_cli_physics --test box_counting_amplitude_identity' 'state=blocked_input' 'state=not_selected' 'executed_pass' 'executed_fail' "needs.validation-policy.result == 'success'" "needs.validation.result == 'success'" 'make --keep-going validation-resource-contract' 'make --jobs="$$WORKER_BUDGET" --keep-going casimir-optics-discrimination-audit-check' 'make --jobs="$$WORKER_BUDGET" --keep-going docs-freshness'; do \
+	for contract in 'ci-rust-shard-matrix' 'target-shard-package=gororoba_cli_physics' 'target-shard-package=gororoba_cli_data' 'target-shard-package=gororoba_cli_algebra' 'fallback_matrix=' 'CI_CARGO_TARGET_ARGS: $${{ matrix.cargo_target_args }}' 'CI_CARGO_FEATURES: $${{ matrix.cargo_features }}' 'matrix: $${{ fromJSON(needs.validation-core.outputs.rust_matrix) }}' 'make --jobs="$$WORKER_BUDGET" --keep-going "validate-ci-scoped-$${{ matrix.target }}"' 'timeout-minutes: 80' 'fail-fast: false' 'Report collected validation failures' 'Report aggregate validation admission' 'needs: [validation-policy, validation-core, rust-validation, scientific-replay, benchmark, proofs, paper, unsafe-survey]' 'uses: ./.github/workflows/bench-cd-kernel.yml' 'uses: ./.github/workflows/proofs.yml' 'uses: ./.github/workflows/paper.yml' 'uses: ./.github/workflows/unsafe-survey.yml' 'run_workspace_survey:' 'BENCHMARK_SELECTED:' 'PROOFS_SELECTED:' 'PAPER_SELECTED:' 'UNSAFE_SURVEY_SELECTED:' 'scientific-replay:' '--bin hydrate-scientific-payloads' '--no-fail-fast -p algebra_experimental --lib' '--no-fail-fast -p algebra_experimental --test nufit_reference_identity' '--no-fail-fast -p gororoba_cli_physics --test box_counting_amplitude_identity' 'state=blocked_input' 'state=not_selected' 'executed_pass' 'executed_fail' "needs.validation-policy.result == 'success'" "needs.validation.result == 'success'" 'make --keep-going validation-resource-contract' 'make --jobs="$$WORKER_BUDGET" --keep-going casimir-optics-discrimination-audit-check' 'make --jobs="$$WORKER_BUDGET" --keep-going docs-freshness'; do \
 	    if ! grep -Fq -- "$$contract" .github/workflows/ci.yml; then echo "ERROR: main CI collector contract is missing: $$contract" >&2; status=1; fi; \
 	done; \
 	for package in gororoba_cli_physics gororoba_cli_data gororoba_cli_algebra; do \
@@ -521,13 +522,6 @@ check-ansi: $(REPO_UTILITIES_BIN)
 
 check-terminology: $(REPO_UTILITIES_BIN)
 	@$(REPO_UTILITIES_BIN) terminology-gate
-
-# Compatibility names refuse execution. Their recipes have no prerequisites,
-# so an invocation cannot build a validation tool before returning the error.
-check-local validate-local validate-local-xtask gate-local gate-local-xtask pre-push-gate pre-push-gate-scoped rust-regression-scoped:
-	@echo "ERROR: $@ is retired; repository validation runs only in GitHub Actions." >&2
-	@echo "Push the branch to trigger the scoped CI workflow." >&2
-	@exit 2
 
 # Governance verifier targets
 registry-verify-markdown-governance:
@@ -1102,9 +1096,6 @@ cache-check-force:
 	else \
 		printf '[cache-check] OK: cargo dirs at %dMB (soft=%dGB hard=%dGB)\n' "$$TOTAL" "$$((SOFT / 1024))" "$$((HARD / 1024))"; \
 	fi
-
-pre-push-gate-strict: validate-repository
-	@echo "DEPRECATED: make pre-push-gate-strict is a compatibility alias for make validate-repository."
 
 smoke: check rust-smoke
 	@echo "OK: smoke lane passed."
@@ -2745,15 +2736,12 @@ help:
 	@echo "    make smoke                Composite fast smoke lane (check + rust-smoke)"
 	@echo "    make integrity-rust       Cargo-backed integrity lane (claims + inventory + typed policy)"
 	@echo "    make check                CI-only hygiene check"
-	@echo "    make check-local          Retired compatibility target; CI-only"
 	@echo "    make ansi-check           Verify emoji-blocking UTF-8 character policy"
 	@echo "    make ansi-check-strict    Verify UTF-8 policy + fail on <U+....>/<EMOJI+...> placeholders"
 	@echo "    make verify-pantheon-physicsforge-mapping Verify migration completeness"
 	@echo "    make verify-pantheon-physicsforge-license-headers Verify license headers"
 	@echo "    make rust-smoke           Dedicated Rust smoke suites via nextest"
 	@echo "    make rust-regression      Full Rust regression lane"
-	@echo "    make rust-regression-scoped Retired local compatibility target"
-	@echo "    make validate-local       Retired; push a branch to trigger CI"
 	@echo "    make validation-resource-contract  Verify CI-only validation boundaries"
 	@echo "    make validate-static      Lightweight hygiene and dependency validation"
 	@echo "    make validate-static-and-registry  Hygiene plus registry validation"

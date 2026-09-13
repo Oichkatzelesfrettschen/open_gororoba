@@ -1,23 +1,11 @@
 name: proofs
 
 on:
+  workflow_call:
   workflow_dispatch:
-  push:
-    branches: [main]
-    paths:
-      - 'proofs/**'
-      - '.github/workflows/proofs.yml'
-  pull_request:
-    paths:
-      - 'proofs/**'
-      - '.github/workflows/proofs.yml'
 
 permissions:
   contents: read
-
-concurrency:
-  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
-  cancel-in-progress: true
 
 jobs:
   verify:

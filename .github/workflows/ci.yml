@@ -38,8 +38,61 @@ jobs:
   validation-policy:
     runs-on: ubuntu-24.04
     timeout-minutes: 10
+    outputs:
+      benchmark: ${{ steps.components.outputs.benchmark }}
+      proofs: ${{ steps.components.outputs.proofs }}
+      paper: ${{ steps.components.outputs.paper }}
+      unsafe_survey: ${{ steps.components.outputs.unsafe_survey }}
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Route independently executable component evidence
+        id: components
+        continue-on-error: true
+        env:
+          EVENT_BASE: ${{ github.event.pull_request.base.sha || github.event.before }}
+          FULL_COMPONENTS: ${{ github.event_name == 'workflow_dispatch' && inputs.full == true }}
+        run: |
+          set -euo pipefail
+          component_outputs="$RUNNER_TEMP/component-outputs"
+          route_components() {
+            if [ "${{ github.event_name }}" = schedule ]; then
+              printf 'benchmark=false\nproofs=false\npaper=false\nunsafe_survey=false\n' > "$component_outputs"
+              return
+            fi
+            if [ "$FULL_COMPONENTS" = true ]; then
+              printf 'benchmark=true\nproofs=true\npaper=true\nunsafe_survey=true\n' > "$component_outputs"
+              return
+            fi
+            comparison_base="$EVENT_BASE"
+            if [ -z "$comparison_base" ] || [ "$comparison_base" = 0000000000000000000000000000000000000000 ]; then
+              comparison_base="$(git rev-parse HEAD^)"
+            fi
+            git cat-file -e "$comparison_base^{commit}"
+            git diff --no-renames --name-only "$comparison_base" HEAD > "$RUNNER_TEMP/component-changed-paths"
+            for component in benchmark proofs paper unsafe_survey; do
+              case "$component" in
+                benchmark) pattern='^crates/(cd_kernel|fwht|verified_core|gororoba_gpu_bridge)/|^Cargo\.(toml|lock)$|^rust-toolchain\.toml$|^\.cargo/config\.toml$|^\.github/workflows/(bench-cd-kernel|ci)\.yml$' ;;
+                proofs) pattern='^proofs/|^\.github/workflows/(proofs|ci)\.yml$' ;;
+                paper) pattern='^docs/latex/|^papers/bib/|^\.github/workflows/(paper|ci)\.yml$' ;;
+                unsafe_survey) pattern='^tools/vendor/cargo-geiger/|(^|/)Cargo\.(toml|lock)$|^rust-toolchain\.toml$|^\.cargo/config\.toml$|^\.github/workflows/(unsafe-survey|ci)\.yml$' ;;
+              esac
+              if grep -Eq "$pattern" "$RUNNER_TEMP/component-changed-paths"; then
+                echo "$component=true" >> "$component_outputs"
+              else
+                echo "$component=false" >> "$component_outputs"
+              fi
+            done
+          }
+          if route_components; then
+            cat "$component_outputs" >> "$GITHUB_OUTPUT"
+          else
+            printf 'benchmark=true\nproofs=true\npaper=true\nunsafe_survey=true\n' >> "$GITHUB_OUTPUT"
+            echo "Component routing failed; every independent evidence lane remains selected." >&2
+            exit 1
+          fi
 
       - name: Install pinned actionlint release
         id: actionlint-install
@@ -68,11 +121,12 @@ jobs:
         env:
           ACTIONLINT_INSTALL_OUTCOME: ${{ steps.actionlint-install.outcome }}
           ACTIONLINT_OUTCOME: ${{ steps.actionlint.outcome }}
+          COMPONENTS_OUTCOME: ${{ steps.components.outcome }}
           RESOURCE_CONTRACT_OUTCOME: ${{ steps.resource-contract.outcome }}
         run: |
           set -euo pipefail
           failure_count=0
-          for outcome_variable in ACTIONLINT_INSTALL_OUTCOME ACTIONLINT_OUTCOME RESOURCE_CONTRACT_OUTCOME; do
+          for outcome_variable in ACTIONLINT_INSTALL_OUTCOME ACTIONLINT_OUTCOME COMPONENTS_OUTCOME RESOURCE_CONTRACT_OUTCOME; do
             outcome="${!outcome_variable}"
             printf '%s=%s\n' "$outcome_variable" "$outcome"
             if [ "$outcome" = failure ]; then
@@ -598,8 +652,30 @@ jobs:
           if-no-files-found: warn
           retention-days: 14
 
+  benchmark:
+    needs: validation-policy
+    if: always() && needs.validation-policy.outputs.benchmark == 'true'
+    uses: ./.github/workflows/bench-cd-kernel.yml
+
+  proofs:
+    needs: validation-policy
+    if: always() && needs.validation-policy.outputs.proofs == 'true'
+    uses: ./.github/workflows/proofs.yml
+
+  paper:
+    needs: validation-policy
+    if: always() && needs.validation-policy.outputs.paper == 'true'
+    uses: ./.github/workflows/paper.yml
+
+  unsafe-survey:
+    needs: validation-policy
+    if: always() && needs.validation-policy.outputs.unsafe_survey == 'true'
+    uses: ./.github/workflows/unsafe-survey.yml
+    with:
+      run_workspace_survey: ${{ github.event_name == 'push' }}
+
   validation:
-    needs: [validation-policy, validation-core, rust-validation, scientific-replay]
+    needs: [validation-policy, validation-core, rust-validation, scientific-replay, benchmark, proofs, paper, unsafe-survey]
     if: always()
     runs-on: ubuntu-24.04
     timeout-minutes: 5
@@ -610,6 +686,14 @@ jobs:
           CORE_RESULT: ${{ needs.validation-core.result }}
           RUST_RESULT: ${{ needs.rust-validation.result }}
           SCIENTIFIC_REPLAY_RESULT: ${{ needs.scientific-replay.result }}
+          BENCHMARK_SELECTED: ${{ needs.validation-policy.outputs.benchmark }}
+          BENCHMARK_RESULT: ${{ needs.benchmark.result }}
+          PROOFS_SELECTED: ${{ needs.validation-policy.outputs.proofs }}
+          PROOFS_RESULT: ${{ needs.proofs.result }}
+          PAPER_SELECTED: ${{ needs.validation-policy.outputs.paper }}
+          PAPER_RESULT: ${{ needs.paper.result }}
+          UNSAFE_SURVEY_SELECTED: ${{ needs.validation-policy.outputs.unsafe_survey }}
+          UNSAFE_SURVEY_RESULT: ${{ needs.unsafe-survey.result }}
           RUN_RUST: ${{ needs.validation-core.outputs.run_rust }}
         run: |
           set -euo pipefail
@@ -629,6 +713,20 @@ jobs:
           elif [ "$RUST_RESULT" != skipped ]; then
             failure_count=$((failure_count + 1))
           fi
+          for component in BENCHMARK PROOFS PAPER UNSAFE_SURVEY; do
+            selected_variable="${component}_SELECTED"
+            result_variable="${component}_RESULT"
+            selected="${!selected_variable}"
+            result="${!result_variable}"
+            printf '%s_SELECTED=%s\n%s_RESULT=%s\n' "$component" "$selected" "$component" "$result"
+            if [ "$selected" = true ]; then
+              if [ "$result" != success ]; then
+                failure_count=$((failure_count + 1))
+              fi
+            elif [ "$result" != skipped ]; then
+              failure_count=$((failure_count + 1))
+            fi
+          done
           if [ "$failure_count" -ne 0 ]; then
             echo "Collected $failure_count failing validation job group(s)." >&2
             exit 1

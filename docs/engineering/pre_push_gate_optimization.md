@@ -115,8 +115,8 @@ defense-in-depth:
 
 ## Layered gate model
 
-- **Retired local gate (`make validate-local`)**: fails before building tools
-  and directs the operator to push the branch for scoped GitHub Actions.
+- **Removed local gate**: repository validation has no local Make entry point;
+  push the branch for scoped GitHub Actions.
 - **PR CI (`validate-ci-rust` in ci.yml)**: full workspace closure +
   `--lib --tests` + integrity gates + governance. Target: 10-15
   minutes.
@@ -153,8 +153,8 @@ it preemptively on every PR. Pre-push is intentionally a smoke gate.
 5. **PR CI includes integration targets.** Integration-test compilation is a
    major contributor to wall time, so the scope router must remain precise.
 
-6. **validate-local must remain compilation-free.** The compatibility target
-   prints the CI route and exits nonzero without Make prerequisites.
+6. **Local validation entry points stay absent.** The Make graph must not
+   resolve a retired local validation name to any recipe or prerequisite.
 
 7. **Repository validation requires the GitHub Actions boundary.** GitHub
    Actions supplies `CI=true` and `GITHUB_ACTIONS=true`. Validation Make

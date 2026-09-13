@@ -1,28 +1,20 @@
 name: unsafe-survey
 
-# Dependency changes trigger the survey; the monthly run also detects tool drift.
+# Main CI routes dependency changes here; the monthly run also detects tool drift.
 on:
+  workflow_call:
+    inputs:
+      run_workspace_survey:
+        description: Execute the full workspace unsafe inventory
+        required: false
+        type: boolean
+        default: false
   schedule:
     - cron: '0 8 1 * *'
   workflow_dispatch:
-  push:
-    branches: [main]
-    paths:
-      - 'Cargo.lock'
-      - '**/Cargo.toml'
-      - 'tools/vendor/cargo-geiger/**'
-      - '.github/workflows/unsafe-survey.yml'
-  pull_request:
-    paths:
-      - 'tools/vendor/cargo-geiger/**'
-      - '.github/workflows/unsafe-survey.yml'
 
 permissions:
   contents: read
-
-concurrency:
-  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
-  cancel-in-progress: true
 
 jobs:
   geiger:
@@ -93,7 +85,7 @@ jobs:
           cargo clippy --locked --manifest-path tools/vendor/cargo-geiger/Cargo.toml -p cargo-geiger --lib --bin cargo-geiger -- -D warnings 2>&1 | tee survey/clippy.log
       - name: Survey workspace once and record its outcome
         id: survey
-        if: always() && github.event_name != 'pull_request'
+        if: always() && (github.event_name == 'schedule' || github.event_name == 'workflow_dispatch' || inputs.run_workspace_survey)
         continue-on-error: true
         shell: bash
         run: |
@@ -175,7 +167,7 @@ jobs:
           CLIPPY_OUTCOME: ${{ steps.clippy.outcome }}
           SURVEY_OUTCOME: ${{ steps.survey.outcome }}
           EVIDENCE_OUTCOME: ${{ steps.evidence.outcome }}
-          EVENT_NAME: ${{ github.event_name }}
+          RUN_WORKSPACE_SURVEY: ${{ github.event_name == 'schedule' || github.event_name == 'workflow_dispatch' || inputs.run_workspace_survey }}
         run: |
           set -euo pipefail
           failure_count=0
@@ -187,11 +179,11 @@ jobs:
             fi
           done
           printf 'SURVEY_OUTCOME=%s\n' "$SURVEY_OUTCOME"
-          if [ "$EVENT_NAME" = pull_request ]; then
-            if [ "$SURVEY_OUTCOME" != skipped ]; then
+          if [ "$RUN_WORKSPACE_SURVEY" = true ]; then
+            if [ "$SURVEY_OUTCOME" != success ]; then
               failure_count=$((failure_count + 1))
             fi
-          elif [ "$SURVEY_OUTCOME" != success ]; then
+          elif [ "$SURVEY_OUTCOME" != skipped ]; then
             failure_count=$((failure_count + 1))
           fi
           if [ "$failure_count" -ne 0 ]; then

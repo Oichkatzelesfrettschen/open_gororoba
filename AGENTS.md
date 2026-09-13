@@ -98,9 +98,9 @@ hardware-specific tables are replaced with the scientific stack.
 - **No symlinks** as workarounds. Use a separate `CARGO_TARGET_DIR`
   per worktree.
 - **Cloud CI owns repository validation**. The repository installs no local
-  Git hooks. `make validate-local` and its legacy aliases fail before building
-  tools, and repository validation targets accept
-  only the GitHub Actions execution boundary. Push a branch to run scoped lint,
+  Git hooks and exposes no local compatibility gate targets. Repository
+  validation targets accept only the GitHub Actions execution boundary. Push a
+  branch to run scoped lint,
   reverse dependency tests including binaries, canonical governance, and
   relevant dependency policy checks. Scheduled full validation covers
   workspace drift. A developer may run a named Cargo command for diagnosis;
@@ -109,7 +109,9 @@ hardware-specific tables are replaced with the scientific stack.
   its own count and passes that exact value to Cargo, nextest, Rayon, Rust test
   harnesses, and Make. Do not divide, clamp, substitute physical cores, infer a
   RAM budget, provide a fallback count, or add CPU-safety serialization groups.
-  A one-device GPU exclusion may serialize access to that declared device.
+  Local non-validation commands leave worker variables unset so each tool uses
+  its native automatic detection. A one-device GPU exclusion may serialize
+  access to that declared device.
 - **Hosted validation collects independent failures**. Use Cargo and Make
   keep-going modes, nextest no-fail-fast mode, independent workflow leaves, and
   one final aggregate verdict. A failed check must not suppress another check
@@ -238,13 +240,13 @@ CARGO_TARGET_DIR="$(pwd)/.cache/gate-target" cargo nextest run -p <crate> --lib 
 | 4 | validate-ci-scoped-rust  | Scoped clippy + nextest on changed-crate closure                                 |
 | 5 | validate-governance      | Verify registry policy, signatures, cross-references, and checked-in TOMLs      |
 
-The repository carries no hook installer and no tracked pre-push executable.
-Legacy local gate entry points refuse execution without building a validation
-tool.
+The repository carries no hook installer, tracked pre-push executable, or
+local compatibility gate target.
 
-CI runs on pull requests and main pushes, with superseded runs canceled per
-event and ref. The router tests affected consumers and lints directly changed
-owners; weekly full runs and explicit full dispatch cover the whole workspace.
+One CI workflow admits pull requests and main pushes, with superseded runs
+canceled per event and ref. It routes benchmark, proof, paper, and unsafe-survey
+jobs through reusable workflows, tests affected consumers, and lints directly
+changed owners. Weekly full runs and explicit full dispatch cover the whole workspace.
 Default-feature documentation builds share freshness checks in one job. Set
 `DOCS_FEATURE_FLAGS=--all-features` only on a host with the required SDKs.
 

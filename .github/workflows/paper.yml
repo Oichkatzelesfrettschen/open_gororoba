@@ -1,25 +1,11 @@
 name: paper
 
 on:
+  workflow_call:
   workflow_dispatch:
-  push:
-    branches: [main]
-    paths:
-      - 'docs/latex/**'
-      - 'papers/bib/**'
-      - '.github/workflows/paper.yml'
-  pull_request:
-    paths:
-      - 'docs/latex/**'
-      - 'papers/bib/**'
-      - '.github/workflows/paper.yml'
 
 permissions:
   contents: read
-
-concurrency:
-  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
-  cancel-in-progress: true
 
 jobs:
   build:
