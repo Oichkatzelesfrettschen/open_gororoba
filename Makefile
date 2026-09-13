@@ -327,6 +327,8 @@ validation-resource-contract-workers:
 	    if ! grep -Fq "$$contract" Makefile; then echo "ERROR: Rust collector contract is missing: $$contract" >&2; status=1; fi; \
 	done; \
 	if ! grep -Fq 'make --jobs="$$MAKE_JOBS" --keep-going all' .github/workflows/proofs.yml; then echo "ERROR: proof workflow does not pass every detected worker to Make." >&2; status=1; fi; \
+	if ! grep -Fq 'opam install rocq-core.9.1.1 rocq-stdlib.9.1.0 coq-flocq.4.2.2 --jobs="$$OPAMJOBS" --yes' .github/workflows/proofs.yml; then echo "ERROR: proof workflow does not pass every detected worker to opam." >&2; status=1; fi; \
+	if grep -Fq 'ci-rust-$${{ matrix.lane }}' .github/workflows/ci.yml; then echo "ERROR: Rust matrix jobs retain quota-consuming duplicate target caches." >&2; status=1; fi; \
 	if ! grep -Fq 'components: clippy, rustfmt' .github/workflows/proofs.yml; then echo "ERROR: proof workflow does not provision pinned Rust components before parallel rustc calls." >&2; status=1; fi; \
 	for workflow in .github/workflows/ci.yml .github/workflows/proofs.yml .github/workflows/bench-cd-kernel.yml .github/workflows/unsafe-survey.yml; do \
 	    if ! grep -Fq 'detect_worker_budget.rs' "$$workflow"; then echo "ERROR: hosted Rust workflow lacks process-visible worker detection: $$workflow" >&2; status=1; fi; \
@@ -385,7 +387,6 @@ validation-resource-contract-collectors:
 	if [ "$$(sed -n '/id: rust-shards/,/name: Check repository hygiene/p' .github/workflows/ci.yml | grep -Fc "printf 'matrix=%s\\n' \"\$$rust_matrix\" >> \"\$$GITHUB_OUTPUT\"")" -ne 1 ]; then echo "ERROR: dynamic Rust shard matrix must be emitted exactly once." >&2; status=1; fi; \
 	if [ "$$(sed -n '/id: rust-shards/,/name: Check repository hygiene/p' .github/workflows/ci.yml | grep -Fc "printf 'matrix=%s\\n' \"\$$fallback_matrix\" >> \"\$$GITHUB_OUTPUT\"")" -ne 2 ]; then echo "ERROR: fallback Rust shard matrix must be emitted only by the two failure branches." >&2; status=1; fi; \
 	if ! sed -n '/name: Retain successful core validation artifacts/,/key: $${{ steps.rust-cache.outputs.cache-primary-key }}/p' .github/workflows/ci.yml | grep -Fq 'if: success()'; then echo "ERROR: core cache retention is not success-only." >&2; status=1; fi; \
-	if ! sed -n '/name: Retain successful Rust validation artifacts/,/key: $${{ steps.rust-cache.outputs.cache-primary-key }}/p' .github/workflows/ci.yml | grep -Fq 'if: success()'; then echo "ERROR: Rust shard cache save can run while Cargo artifacts are unstable." >&2; status=1; fi; \
 	if ! grep -Fq 'Report collected proof failures' .github/workflows/proofs.yml; then echo "ERROR: proof collector contract is missing." >&2; status=1; fi; \
 	if ! grep -Fq 'data/output/audit/casimir-optics-discrimination/sources/** -text' .gitattributes; then echo "ERROR: hash-bound source-byte contract is missing." >&2; status=1; fi; \
 	for contract in 'id = "ci.validation.scoped"' 'id = "ci.validation.full"'; do \

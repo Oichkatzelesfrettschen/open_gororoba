@@ -327,3 +327,38 @@ status = "implemented_pending_ci"
 finding = "The first route policy draft passed two literal backslashes to fixed-string grep while the workflow regex contains one."
 required_change = "Match the exact one-backslash rust-toolchain path expression in the workflow source."
 verification = "Hosted validation-resource-contract accepts the Casimir toolchain route literal."
+
+[[task]]
+id = "exact-head-41325237-lockfile-precondition"
+status = "implemented_pending_ci"
+finding = "Run 34774800856 admitted 40 concurrent hosted jobs, but the lbm_3d replay relocation added repo_root and sha2 dev-dependencies without adding them to the lbm_3d Cargo.lock package dependency list. Scientific hydration and both benchmark architectures independently stopped at Cargo's --locked precondition before source validation."
+required_change = "Add the two existing workspace packages to the lbm_3d lockfile dependency list, then publish one replacement generation after the canceled run reaches terminal state."
+verification = "The replacement generation passes Cargo's locked dependency-graph check in scientific hydration, both benchmark architectures, and every selected Rust validation leaf."
+
+[[task]]
+id = "long-job-scientific-replay-compile-surface"
+status = "implemented_pending_ci"
+finding = "Run 34772236288 spent 29 minutes 33 seconds compiling 383 crates for the gororoba_cli_physics box-counting integration target and 0.05 seconds executing the retained replay. The runner exposed four CPUs and Cargo received all four."
+required_change = "Keep retained input and dynamics assertions in the narrow lbm_3d integration target, fan out the three replay leaves, and save one cache per replay lane."
+verification = "The replacement box-counting leaf compiles lbm_3d rather than gororoba_cli_physics and reports its setup, build, and test durations independently."
+
+[[task]]
+id = "long-job-documentation-critical-path"
+status = "implemented_pending_ci"
+finding = "Run 34772236288 spent 20 minutes 15 seconds in full-workspace rustdoc and 2 minutes 25 seconds building registry-emit in a second target/profile. The runner exposed four CPUs and CARGO_BUILD_JOBS remained four despite Cargo rejecting a stale inherited GNU make jobserver file descriptor."
+required_change = "Start docs-gate immediately after the four-minute routing authority instead of after governance and Casimir validation; preserve the full-workspace documentation and generated-book evidence as one independently visible leaf."
+verification = "The replacement docs-gate starts after validation-core routing, overlaps governance, Casimir, and Rust leaves, and reports the unchanged process-visible four-worker budget."
+
+[[task]]
+id = "rust-shard-cache-quota-thrash"
+status = "implemented_pending_ci"
+finding = "The repository cache API exposed 13 caches totaling 13.81 GB after one generation. Seven remaining ci-rust shard caches occupied 8.44 GB with duplicate target graphs, while the successfully saved Rocq cache had already been evicted and the next proof job rebuilt the complete toolchain."
+required_change = "Restore every Rust matrix leaf from the one routing cache for the run and stop writing one immutable target cache per shard. Retain caches only for independent owners whose build products have cross-run value."
+verification = "Hosted policy rejects ci-rust matrix cache keys, all Rust leaves restore the exact-run routing key, and the post-run cache inventory contains no new per-shard target caches."
+
+[[task]]
+id = "proof-opam-worker-propagation"
+status = "implemented_pending_ci"
+finding = "The proof workflow passed all four detected CPUs to Make but left opam's switch and package builds to an implicit default."
+required_change = "Export OPAMJOBS from the unchanged std::thread::available_parallelism result and pass it explicitly to both opam build commands."
+verification = "Hosted proof logs report the process-visible worker count and both cold opam commands receive exactly that count."

@@ -6352,6 +6352,8 @@ dependencies = [
  "cosmology_core",
  "criterion",
  "rayon",
+ "repo_root",
+ "sha2",
  "thiserror 2.0.18",
  "verified_core",
  "wide 1.2.0",

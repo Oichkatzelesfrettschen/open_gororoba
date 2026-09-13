@@ -25,6 +25,7 @@ jobs:
           worker_budget="$("$RUNNER_TEMP/detect-worker-budget")"
           {
             echo "MAKE_JOBS=$worker_budget"
+            echo "OPAMJOBS=$worker_budget"
             echo "CARGO_BUILD_JOBS=$worker_budget"
             echo "RAYON_NUM_THREADS=$worker_budget"
             echo "RUST_TEST_THREADS=$worker_budget"
@@ -47,10 +48,10 @@ jobs:
         if: steps.opam-cache.outputs.cache-hit != 'true'
         run: |
           opam init --bare --disable-sandboxing --yes
-          opam switch create rocq-9.1.1 ocaml-base-compiler.5.4.0 --yes
+          opam switch create rocq-9.1.1 ocaml-base-compiler.5.4.0 --jobs="$OPAMJOBS" --yes
           opam repository add rocq-released https://rocq-prover.org/opam/released --switch=rocq-9.1.1 --yes
           eval "$(opam env --switch=rocq-9.1.1)"
-          opam install rocq-core.9.1.1 rocq-stdlib.9.1.0 coq-flocq.4.2.2 --yes
+          opam install rocq-core.9.1.1 rocq-stdlib.9.1.0 coq-flocq.4.2.2 --jobs="$OPAMJOBS" --yes
 
       - name: Save installed proof toolchain
         id: opam-cache-save

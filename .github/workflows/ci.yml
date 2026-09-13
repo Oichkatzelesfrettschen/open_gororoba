@@ -569,8 +569,7 @@ jobs:
             echo "$variable=$worker_budget" >> "$GITHUB_ENV"
           done
 
-      - name: Restore Rust validation artifacts
-        id: rust-cache
+      - name: Restore shared routing build artifacts
         uses: actions/cache/restore@v4
         with:
           path: |
@@ -578,11 +577,11 @@ jobs:
             ${{ env.CARGO_HOME }}/git
             ${{ env.CARGO_TARGET_DIR }}
             ${{ github.workspace }}/.cache/gate-cbuild
-          key: ci-rust-${{ matrix.lane }}-v2-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('rust-toolchain.toml', '.cargo/config.toml') }}-${{ hashFiles('Cargo.lock') }}-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
+          key: ci-v2-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('rust-toolchain.toml', '.cargo/config.toml') }}-${{ hashFiles('Cargo.lock') }}-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
           restore-keys: |
             ci-v2-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('rust-toolchain.toml', '.cargo/config.toml') }}-${{ hashFiles('Cargo.lock') }}-${{ github.sha }}-
-            ci-rust-${{ matrix.lane }}-v2-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('rust-toolchain.toml', '.cargo/config.toml') }}-${{ hashFiles('Cargo.lock') }}-${{ github.sha }}-
-            ci-rust-${{ matrix.lane }}-v2-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('rust-toolchain.toml', '.cargo/config.toml') }}-${{ hashFiles('Cargo.lock') }}-
+            ci-v2-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('rust-toolchain.toml', '.cargo/config.toml') }}-${{ hashFiles('Cargo.lock') }}-
+            ci-v2-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('rust-toolchain.toml', '.cargo/config.toml') }}-
 
       - name: Run scoped Rust ${{ matrix.lane }} shard
         timeout-minutes: 80
@@ -604,18 +603,6 @@ jobs:
           path: reports/validation/**
           if-no-files-found: warn
           retention-days: 14
-
-      - name: Retain successful Rust validation artifacts
-        if: success() && steps.rust-cache.outputs.cache-primary-key != '' && steps.rust-cache.outputs.cache-hit != 'true'
-        timeout-minutes: 5
-        uses: actions/cache/save@v4
-        with:
-          path: |
-            ${{ env.CARGO_HOME }}/registry
-            ${{ env.CARGO_HOME }}/git
-            ${{ env.CARGO_TARGET_DIR }}
-            ${{ github.workspace }}/.cache/gate-cbuild
-          key: ${{ steps.rust-cache.outputs.cache-primary-key }}
 
   scientific-replay-inputs:
     needs: validation-policy
