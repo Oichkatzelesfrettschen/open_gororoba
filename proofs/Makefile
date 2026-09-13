@@ -128,12 +128,15 @@ $(ADMISSION_CHECK_TEST): admission_check.rs
 	@mkdir -p "$(ADMISSION_CHECK_DIR)"
 	$(RUSTC) --edition=2024 -D warnings --test $< -o "$@"
 
-.PHONY: check-admissions test-admission-check
+.PHONY: check-admissions scan-admissions test-admission-check
 test-admission-check: $(ADMISSION_CHECK_TEST)
 	"$(ADMISSION_CHECK_TEST)"
 
-check-admissions: test-admission-check $(ADMISSION_CHECK)
+scan-admissions: $(ADMISSION_CHECK)
 	"$(ADMISSION_CHECK)" theories/ verified/
+
+check-admissions: test-admission-check scan-admissions
+	@echo "OK: admission unit tests and repository scan passed."
 
 check: all check-admissions
 

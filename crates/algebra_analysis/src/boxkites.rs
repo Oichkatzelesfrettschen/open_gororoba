@@ -138,7 +138,7 @@ pub fn cached_sedenion_boxkites() -> &'static Vec<BoxKite> {
     static SEDENION_BOXKITES: OnceLock<Vec<BoxKite>> = OnceLock::new();
     SEDENION_BOXKITES.get_or_init(|| {
         #[cfg(test)]
-        crate::test_support::init_physical_rayon_pool();
+        crate::test_support::init_process_visible_rayon_pool();
         find_box_kites(16, 1e-10)
     })
 }

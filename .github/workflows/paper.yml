@@ -27,17 +27,37 @@ jobs:
     timeout-minutes: 20
     container:
       image: texlive/texlive@sha256:66446fb092ef02d6dc31bba079d9bdc83e8a6af00562c6062bb97ae8e91814ea
+    env:
+      AA_ROOT: ${{ github.workspace }}/.cache/paper-aa
+      AA_SOURCE_ROOT: https://raw.githubusercontent.com/scottkosty/install-tl-ubuntu/d645e1ea3e730f65b0fc006dced43dc5558510a3/archive/aa-package
     steps:
       - uses: actions/checkout@v4
 
-      - name: Fetch pinned Astronomy and Astrophysics styles
+      - name: Fetch pinned Astronomy and Astrophysics class
+        id: fetch-aa-class
+        continue-on-error: true
         run: |
-          AA_ROOT="$GITHUB_WORKSPACE/.cache/paper-aa"
           mkdir -p "$AA_ROOT"
-          source_root=https://raw.githubusercontent.com/scottkosty/install-tl-ubuntu/d645e1ea3e730f65b0fc006dced43dc5558510a3/archive/aa-package
-          curl --fail --silent --show-error --location --retry 3 "$source_root/aa.cls" -o "$AA_ROOT/aa.cls"
-          curl --fail --silent --show-error --location --retry 3 "$source_root/bibtex/aa.bst" -o "$AA_ROOT/aa.bst"
-          curl --fail --silent --show-error --location --retry 3 "$source_root/linenoaa.sty" -o "$AA_ROOT/linenoaa.sty"
+          curl --fail --silent --show-error --location --retry 3 "$AA_SOURCE_ROOT/aa.cls" -o "$AA_ROOT/aa.cls"
+
+      - name: Fetch pinned Astronomy and Astrophysics bibliography style
+        id: fetch-aa-bibliography
+        continue-on-error: true
+        run: |
+          mkdir -p "$AA_ROOT"
+          curl --fail --silent --show-error --location --retry 3 "$AA_SOURCE_ROOT/bibtex/aa.bst" -o "$AA_ROOT/aa.bst"
+
+      - name: Fetch pinned Astronomy and Astrophysics line-number style
+        id: fetch-aa-lineno
+        continue-on-error: true
+        run: |
+          mkdir -p "$AA_ROOT"
+          curl --fail --silent --show-error --location --retry 3 "$AA_SOURCE_ROOT/linenoaa.sty" -o "$AA_ROOT/linenoaa.sty"
+
+      - name: Verify pinned Astronomy and Astrophysics styles
+        id: verify-aa-styles
+        continue-on-error: true
+        run: |
           cd "$AA_ROOT"
           sha256sum --check <<'HASHES'
           e65a0f1f3b620fdd794d4fe7ea89fb094f4c87bc2959ec703a897864158147fd  aa.cls
@@ -46,6 +66,8 @@ jobs:
           HASHES
 
       - name: Build main paper
+        id: build-main
+        continue-on-error: true
         working-directory: docs/latex
         run: |
           mkdir -p out
@@ -53,31 +75,80 @@ jobs:
             -shell-escape -output-directory=out llm_scaffold_paper.tex
 
       - name: Build synthesis document
+        id: build-synthesis
+        continue-on-error: true
         working-directory: docs/latex
         run: |
+          mkdir -p out
           latexmk -pdf -Werror -interaction=nonstopmode -halt-on-error \
             -output-directory=out MASTER_SYNTHESIS.tex
 
       - name: Build mathematical formalism
+        id: build-formalism
+        continue-on-error: true
         working-directory: docs/latex
         run: |
+          mkdir -p out
           latexmk -pdf -Werror -interaction=nonstopmode -halt-on-error \
             -output-directory=out MATHEMATICAL_FORMALISM.tex
 
       - name: Build MaNGA null result paper
+        id: build-manga
+        continue-on-error: true
         working-directory: docs/latex
         run: |
+          failure_count=0
+          mkdir -p out
           export TEXINPUTS=".:$GITHUB_WORKSPACE/.cache/paper-aa:"
           export BSTINPUTS=".:$GITHUB_WORKSPACE/.cache/paper-aa:"
-          kpsewhich aa.cls
-          kpsewhich aa.bst
+          kpsewhich aa.cls || failure_count=$((failure_count + 1))
+          kpsewhich aa.bst || failure_count=$((failure_count + 1))
           latexmk -pdf -Werror -interaction=nonstopmode -halt-on-error \
-            -output-directory=out manga_zd_null_result.tex
+            -output-directory=out manga_zd_null_result.tex || failure_count=$((failure_count + 1))
+          if [ "$failure_count" -ne 0 ]; then
+            echo "MaNGA paper validation recorded $failure_count failure(s)." >&2
+            exit 1
+          fi
 
       - name: Upload PDF artifacts
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: paper-pdfs
           path: docs/latex/out/*.pdf
           if-no-files-found: error
           retention-days: 14
+
+      - name: Report collected paper failures
+        if: always()
+        env:
+          FETCH_AA_CLASS_OUTCOME: ${{ steps.fetch-aa-class.outcome }}
+          FETCH_AA_BIBLIOGRAPHY_OUTCOME: ${{ steps.fetch-aa-bibliography.outcome }}
+          FETCH_AA_LINENO_OUTCOME: ${{ steps.fetch-aa-lineno.outcome }}
+          VERIFY_AA_STYLES_OUTCOME: ${{ steps.verify-aa-styles.outcome }}
+          BUILD_MAIN_OUTCOME: ${{ steps.build-main.outcome }}
+          BUILD_SYNTHESIS_OUTCOME: ${{ steps.build-synthesis.outcome }}
+          BUILD_FORMALISM_OUTCOME: ${{ steps.build-formalism.outcome }}
+          BUILD_MANGA_OUTCOME: ${{ steps.build-manga.outcome }}
+        run: |
+          set -euo pipefail
+          failure_count=0
+          for outcome_variable in \
+            FETCH_AA_CLASS_OUTCOME \
+            FETCH_AA_BIBLIOGRAPHY_OUTCOME \
+            FETCH_AA_LINENO_OUTCOME \
+            VERIFY_AA_STYLES_OUTCOME \
+            BUILD_MAIN_OUTCOME \
+            BUILD_SYNTHESIS_OUTCOME \
+            BUILD_FORMALISM_OUTCOME \
+            BUILD_MANGA_OUTCOME; do
+            outcome="${!outcome_variable}"
+            printf '%s=%s\n' "$outcome_variable" "$outcome"
+            if [ "$outcome" != success ]; then
+              failure_count=$((failure_count + 1))
+            fi
+          done
+          if [ "$failure_count" -ne 0 ]; then
+            echo "Collected $failure_count failing or incomplete paper lane(s)." >&2
+            exit 1
+          fi

@@ -8,7 +8,7 @@
 .PHONY: heavy test-inventory
 .PHONY: rust-test rust-clippy rust-semver-check rust-smoke rust-regression rust-regression-scoped miri-cd-kernel dep-audit cargo-deny-check mcp-smoke e027-validate studio-run studio-check profile-tensor-avt x87-strategy-bench x87-strategy-perf x87-strategy-hyperfine x87-strategy-flamegraph x87-givens-microbench x87-givens-microbench-perf jacobi-backend-sweep jacobi-backend-perf jacobi-backend-flamegraph jacobi-backend-samply jacobi-backend-samply-compare gpu-bench gpu-bench-ncu gpu-bench-nsys
 .PHONY: cpu-bench cpu-bench-perf cpu-bench-cachegrind cpu-bench-flamegraph parity-bench parity-report
-.PHONY: pre-push-gate-scoped submodule-sync validate-local validate-local-xtask validate-ci validate-ci-registry validate-ci-rust validate-repository validate-repository-fast validate-governance validation-tools registry-validation-tools validation-tools-clean validation-tools-rebuild validation-tools-check-paths validation-resource-contract print-validation-resource-config require-ci-validation-authority casimir-optics-discrimination-audit-check data-core-pure-check
+.PHONY: pre-push-gate-scoped submodule-sync validate-local validate-local-xtask validate-ci validate-ci-registry validate-ci-rust validate-repository validate-repository-fast validate-governance validation-tools registry-validation-tools validation-tools-clean validation-tools-rebuild validation-tools-check-paths validation-resource-contract validation-resource-contract-authority validation-resource-contract-retired-local validation-resource-contract-registry validation-resource-contract-workers validation-resource-contract-collectors print-validation-resource-config require-ci-validation-authority casimir-optics-discrimination-audit-check data-core-pure-check
 .PHONY: gate-local gate-local-xtask gate-ci-registry gate-ci-rust gate-audit gate-audit-fast
 .PHONY: cache-status cache-sweep cache-sweep-soft cache-purge-exp cache-check cache-check-force
 .PHONY: v6-branch-transport-artifacts pathion-control-artifacts pathion-resonance-artifacts
@@ -70,10 +70,8 @@
 
 .NOTPARALLEL: bootstrap-dev check smoke integrity integrity-rust validate-rust-integrity rust-smoke rust-regression rust-regression-scoped heavy cargo-deny-check validate-local validate-ci validate-ci-registry validate-ci-rust validate-repository validate-repository-fast validate-supply-chain validate-dataset-experiments pre-push-gate pre-push-gate-scoped pre-push-gate-strict governance-gate governance-gate-readonly registry-control-plane-gate-readonly registry-acceptance-gate-readonly validate-registry validation-tools
 
-# Non-Cargo mutation generators default to one worker. GitHub Actions exports
-# every CPU visible to the validation process before invoking Cargo workloads.
-NPROC := $(shell nproc 2>/dev/null || echo 4)
-NJOBS := $(shell expr $(NPROC) \* 3 / 4)
+# GitHub Actions exports every CPU visible to the validation process before
+# invoking Cargo workloads. Local repository-validation targets remain closed.
 TRUSTED_GITHUB_ACTIONS := $(if $(and $(filter true,$(CI)),$(filter true,$(GITHUB_ACTIONS))),1,0)
 CI_WORKER_BUDGET ?= 1
 override WORKER_BUDGET := $(if $(filter 1,$(TRUSTED_GITHUB_ACTIONS)),$(CI_WORKER_BUDGET),1)
@@ -257,83 +255,88 @@ require-ci-validation-authority:
 print-validation-resource-config:
 	@printf 'workers=%s trusted_github_actions=%s\n' "$(WORKER_BUDGET)" "$(TRUSTED_GITHUB_ACTIONS)"
 
-validation-resource-contract:
-	@set -eu; \
-	local_config="$$( \
-	    $(MAKE) --no-print-directory -s print-validation-resource-config \
-	    CI=false GITHUB_ACTIONS=false CI_WORKER_BUDGET=99 WORKER_BUDGET=99 CARGO_JOBS=99)"; \
-	test "$$local_config" = 'workers=1 trusted_github_actions=0'; \
-	ci_config="$$( \
-	    $(MAKE) --no-print-directory -s print-validation-resource-config \
-	    CI=true GITHUB_ACTIONS=true CI_WORKER_BUDGET=4 WORKER_BUDGET=99 CARGO_JOBS=99)"; \
-	test "$$ci_config" = 'workers=4 trusted_github_actions=1'; \
-	if $(MAKE) --no-print-directory -s require-ci-validation-authority \
-	    CI=true GITHUB_ACTIONS=false >/dev/null 2>&1; then \
-	    echo "ERROR: generic CI variable bypassed broad-validation authority." >&2; exit 1; \
-	fi; \
-	if $(MAKE) --no-print-directory -s check \
-	    CI=false GITHUB_ACTIONS=true >/dev/null 2>&1; then \
-	    echo "ERROR: GitHub Actions marker bypassed CI-only validation authority." >&2; exit 1; \
-	fi; \
-	$(MAKE) --no-print-directory -s require-ci-validation-authority \
-	    CI=true GITHUB_ACTIONS=true; \
-	if $(MAKE) --no-print-directory -s validate-local >/dev/null 2>&1; then \
-	    echo "ERROR: retired validate-local target unexpectedly succeeded." >&2; exit 1; \
-	fi; \
-	grep -Fq 'rust-clippy: require-ci-validation-authority' Makefile; \
-	grep -Fq 'rust-regression: require-ci-validation-authority rust-clippy' Makefile; \
-	grep -Fq 'check: require-ci-validation-authority' Makefile; \
-	grep -Fq 'rust-regression-scoped' Makefile; \
-	if grep -Fq 'local-nextest-plan' xtask/src/main.rs crates/gororoba_cli_data/Cargo.toml; then \
-	    echo "ERROR: retired local nextest executor remains registered." >&2; exit 1; \
-	fi; \
-	test ! -e crates/gororoba_cli_data/src/bin/local_nextest_plan.rs; \
-	if grep -Fq 'pre-push-hook' crates/gororoba_cli/Cargo.toml; then \
-	    echo "ERROR: retired local pre-push executor remains registered." >&2; exit 1; \
-	fi; \
-	test ! -e crates/gororoba_cli/src/bin/pre_push_hook.rs; \
-	test ! -e .githooks/pre-push; \
-	grep -Fq '"--profile",' crates/gororoba_db/src/bin/gororoba_db.rs; \
-	if grep -Eq '\.env\("(CARGO_BUILD_JOBS|RAYON_NUM_THREADS|RUST_TEST_THREADS)", "[0-9]+"\)' crates/gororoba_db/src/bin/gororoba_db.rs; then \
-	    echo "ERROR: registry regeneration hard-codes a worker limit." >&2; exit 1; \
-	fi; \
-	grep -Fq 'registry-integrity: $$(REGISTRY_INTEGRITY_CACHE)' Makefile; \
-	grep -Fq 'cargo build --profile validation -p gororoba_cli_governance --bin registry-integrity' Makefile; \
-	grep -Fq 'name = "registry-integrity"' crates/gororoba_cli_governance/Cargo.toml; \
-	if grep -Fq 'name = "registry-integrity"' crates/gororoba_cli_data/Cargo.toml; then \
-	    echo "ERROR: registry-integrity remains owned by the broad data CLI package." >&2; exit 1; \
-	fi; \
-	grep -Fq 'detect_worker_budget.rs' .github/workflows/ci.yml; \
-	grep -Fq 'std::thread::available_parallelism()' crates/gororoba_cli/src/bin/detect_worker_budget.rs; \
-	if grep -Eq 'GOROROBA_WORKER_TEST_CPUS|max[(]|min[(]|clamp|/ *2|checked_div' crates/gororoba_cli/src/bin/detect_worker_budget.rs; then \
-	    echo "ERROR: worker detection contains an override, divisor, or clamp." >&2; exit 1; \
-	fi; \
-	grep -Fq 'cargo clippy --keep-going' Makefile; \
-	grep -Fq 'cargo nextest run --no-fail-fast' Makefile; \
-	grep -Fq 'make --keep-going validate-ci-scoped-rust' .github/workflows/ci.yml; \
-	grep -Fq 'make --jobs="$$MAKE_JOBS" --keep-going all' .github/workflows/proofs.yml; \
-	grep -Fq 'Report collected proof failures' .github/workflows/proofs.yml; \
-	if grep -Eq 'PHYS_CORES|PHYS_CPUS|taskset' proofs/Makefile || grep -Fq -- '-j$$(JOBS)' proofs/Makefile; then \
-	    echo "ERROR: proof validation replaces or constrains the inherited Make jobserver." >&2; exit 1; \
-	fi; \
-	grep -Fq 'Report collected validation failures' .github/workflows/ci.yml; \
-	grep -Fq "needs.validation.result == 'success'" .github/workflows/ci.yml; \
-	grep -Fq 'data/output/audit/casimir-optics-discrimination/sources/** -text' .gitattributes; \
-	grep -Fq 'CI_WORKER_BUDGET' .github/workflows/ci.yml; \
-	test ! -e scripts/detect_worker_budget.sh; \
-	if grep -Fq 'scripts/detect_worker_budget.sh' agents.toml; then \
-	    echo "ERROR: agents.toml advertises the retired shell worker detector." >&2; exit 1; \
-	fi; \
-	if grep -Eq 'cmd = "make (rust-smoke|rust-regression|heavy|python-smoke|python-regression)' agents.toml; then \
-	    echo "ERROR: agents.toml advertises a local repository-validation command." >&2; exit 1; \
-	fi; \
-	grep -Fq 'id = "ci.validation.scoped"' agents.toml; \
-	grep -Fq 'id = "ci.validation.full"' agents.toml; \
-	test ! -e scripts/detect_physical_cores.sh; \
-	grep -Fq 'check-local validate-local validate-local-xtask' Makefile; \
-	grep -Fq 'make validation-resource-contract' .github/workflows/ci.yml; \
-	grep -Fq 'make --keep-going casimir-optics-discrimination-audit-check' .github/workflows/ci.yml; \
-	echo "OK: CI-only validation authority and worker boundaries are pinned."
+validation-resource-contract: validation-resource-contract-authority \
+                              validation-resource-contract-retired-local \
+                              validation-resource-contract-registry \
+                              validation-resource-contract-workers \
+                              validation-resource-contract-collectors
+	@echo "OK: CI-only validation authority and worker boundaries are pinned."
+
+validation-resource-contract-authority:
+	@status=0; \
+	local_config="$$( $(MAKE) --no-print-directory -s print-validation-resource-config CI=false GITHUB_ACTIONS=false CI_WORKER_BUDGET=99 WORKER_BUDGET=99 CARGO_JOBS=99)" || status=1; \
+	if [ "$$local_config" != 'workers=1 trusted_github_actions=0' ]; then echo "ERROR: local worker configuration is not closed." >&2; status=1; fi; \
+	ci_config="$$( $(MAKE) --no-print-directory -s print-validation-resource-config CI=true GITHUB_ACTIONS=true CI_WORKER_BUDGET=4 WORKER_BUDGET=99 CARGO_JOBS=99)" || status=1; \
+	if [ "$$ci_config" != 'workers=4 trusted_github_actions=1' ]; then echo "ERROR: hosted worker configuration does not preserve the supplied count." >&2; status=1; fi; \
+	if $(MAKE) --no-print-directory -s require-ci-validation-authority CI=true GITHUB_ACTIONS=false >/dev/null 2>&1; then echo "ERROR: generic CI variable bypassed broad-validation authority." >&2; status=1; fi; \
+	if $(MAKE) --no-print-directory -s check CI=false GITHUB_ACTIONS=true >/dev/null 2>&1; then echo "ERROR: GitHub Actions marker bypassed CI-only validation authority." >&2; status=1; fi; \
+	$(MAKE) --no-print-directory -s require-ci-validation-authority CI=true GITHUB_ACTIONS=true || status=1; \
+	for contract in 'rust-clippy: require-ci-validation-authority' 'rust-regression: require-ci-validation-authority rust-clippy' 'check: require-ci-validation-authority'; do \
+	    if ! grep -Fq "$$contract" Makefile; then echo "ERROR: missing validation authority contract: $$contract" >&2; status=1; fi; \
+	done; \
+	exit "$$status"
+
+validation-resource-contract-retired-local:
+	@status=0; \
+	if $(MAKE) --no-print-directory -s validate-local >/dev/null 2>&1; then echo "ERROR: retired validate-local target unexpectedly succeeded." >&2; status=1; fi; \
+	if ! grep -Fq 'rust-regression-scoped' Makefile; then echo "ERROR: scoped Rust CI entrypoint is missing." >&2; status=1; fi; \
+	if grep -Fq 'local-nextest-plan' xtask/src/main.rs crates/gororoba_cli_data/Cargo.toml; then echo "ERROR: retired local nextest executor remains registered." >&2; status=1; fi; \
+	for retired_path in crates/gororoba_cli_data/src/bin/local_nextest_plan.rs crates/gororoba_cli/src/bin/pre_push_hook.rs .githooks/pre-push scripts/detect_worker_budget.sh scripts/detect_physical_cores.sh; do \
+	    if [ -e "$$retired_path" ]; then echo "ERROR: retired local validation path remains: $$retired_path" >&2; status=1; fi; \
+	done; \
+	if grep -Fq 'pre-push-hook' crates/gororoba_cli/Cargo.toml; then echo "ERROR: retired local pre-push executor remains registered." >&2; status=1; fi; \
+	if grep -Fq 'scripts/detect_worker_budget.sh' agents.toml; then echo "ERROR: agents.toml advertises the retired shell worker detector." >&2; status=1; fi; \
+	if grep -Eq 'cmd = "make (rust-smoke|rust-regression|heavy|python-smoke|python-regression)' agents.toml; then echo "ERROR: agents.toml advertises a local repository-validation command." >&2; status=1; fi; \
+	if ! grep -Fq 'check-local validate-local validate-local-xtask' Makefile; then echo "ERROR: retired local validation targets are not explicit refusal targets." >&2; status=1; fi; \
+	exit "$$status"
+
+validation-resource-contract-registry:
+	@status=0; \
+	for contract in '"--profile",' 'registry-integrity: $$(REGISTRY_INTEGRITY_CACHE)' 'cargo build --keep-going --profile validation -p gororoba_cli_governance --bin registry-integrity'; do \
+	    case "$$contract" in \
+	        '"--profile",') contract_file=crates/gororoba_db/src/bin/gororoba_db.rs ;; \
+	        *) contract_file=Makefile ;; \
+	    esac; \
+	    if ! grep -Fq "$$contract" "$$contract_file"; then echo "ERROR: missing registry ownership contract: $$contract" >&2; status=1; fi; \
+	done; \
+	if ! grep -Fq 'name = "registry-integrity"' crates/gororoba_cli_governance/Cargo.toml; then echo "ERROR: governance package does not own registry-integrity." >&2; status=1; fi; \
+	if grep -Fq 'name = "registry-integrity"' crates/gororoba_cli_data/Cargo.toml; then echo "ERROR: registry-integrity remains owned by the broad data CLI package." >&2; status=1; fi; \
+	if grep -Eq '\.env\("(CARGO_BUILD_JOBS|RAYON_NUM_THREADS|RUST_TEST_THREADS)", "[0-9]+"\)' crates/gororoba_db/src/bin/gororoba_db.rs; then echo "ERROR: registry regeneration hard-codes a worker limit." >&2; status=1; fi; \
+	exit "$$status"
+
+validation-resource-contract-workers:
+	@status=0; \
+	for contract in 'detect_worker_budget.rs' 'CI_WORKER_BUDGET'; do \
+	    if ! grep -Fq "$$contract" .github/workflows/ci.yml; then echo "ERROR: main CI worker contract is missing: $$contract" >&2; status=1; fi; \
+	done; \
+	if ! grep -Fq 'std::thread::available_parallelism()' crates/gororoba_cli/src/bin/detect_worker_budget.rs; then echo "ERROR: Rust worker detector does not use process-visible parallelism." >&2; status=1; fi; \
+	if grep -Eq 'GOROROBA_WORKER_TEST_CPUS|max[(]|min[(]|clamp|/ *2|checked_div|unwrap_or' crates/gororoba_cli/src/bin/detect_worker_budget.rs; then echo "ERROR: worker detection contains an override, divisor, clamp, or fallback." >&2; status=1; fi; \
+	if grep -Eq '^(NPROC|NJOBS)[[:space:]]*:=' Makefile; then echo "ERROR: Makefile retains a second CPU-count heuristic." >&2; status=1; fi; \
+	if grep -Eq 'heavy-(math|research)[[:space:]]*=[[:space:]]*\{[[:space:]]*max-threads[[:space:]]*=[[:space:]]*1' .config/nextest.toml; then echo "ERROR: nextest retains a CPU or memory safety serialization group." >&2; status=1; fi; \
+	if grep -Fq -- '--test-threads=1' .github/workflows/bench-cd-kernel.yml; then echo "ERROR: benchmark CI fixes the Rust test harness to one worker." >&2; status=1; fi; \
+	if grep -Eq 'physical_core_ids|init_physical_rayon_pool' crates/algebra_analysis/src/test_support.rs; then echo "ERROR: algebra tests substitute or pin physical cores." >&2; status=1; fi; \
+	if grep -Eq 'PHYS_CORES|PHYS_CPUS|taskset' proofs/Makefile || grep -Fq -- '-j$$(JOBS)' proofs/Makefile; then echo "ERROR: proof validation replaces or constrains the inherited Make jobserver." >&2; status=1; fi; \
+	for contract in 'cargo clippy --keep-going' 'cargo nextest run --no-fail-fast'; do \
+	    if ! grep -Fq "$$contract" Makefile; then echo "ERROR: Rust collector contract is missing: $$contract" >&2; status=1; fi; \
+	done; \
+	if ! grep -Fq 'make --jobs="$$MAKE_JOBS" --keep-going all' .github/workflows/proofs.yml; then echo "ERROR: proof workflow does not pass every detected worker to Make." >&2; status=1; fi; \
+	if ! grep -Fq 'components: clippy, rustfmt' .github/workflows/proofs.yml; then echo "ERROR: proof workflow does not provision pinned Rust components before parallel rustc calls." >&2; status=1; fi; \
+	for workflow in .github/workflows/ci.yml .github/workflows/proofs.yml .github/workflows/bench-cd-kernel.yml .github/workflows/unsafe-survey.yml; do \
+	    if ! grep -Fq 'detect_worker_budget.rs' "$$workflow"; then echo "ERROR: hosted Rust workflow lacks process-visible worker detection: $$workflow" >&2; status=1; fi; \
+	done; \
+	exit "$$status"
+
+validation-resource-contract-collectors:
+	@status=0; \
+	for contract in 'make --keep-going validate-ci-scoped-rust' 'Report collected validation failures' "needs.validation.result == 'success'" 'make --keep-going validation-resource-contract' 'make --keep-going casimir-optics-discrimination-audit-check'; do \
+	    if ! grep -Fq "$$contract" .github/workflows/ci.yml; then echo "ERROR: main CI collector contract is missing: $$contract" >&2; status=1; fi; \
+	done; \
+	if ! grep -Fq 'Report collected proof failures' .github/workflows/proofs.yml; then echo "ERROR: proof collector contract is missing." >&2; status=1; fi; \
+	if ! grep -Fq 'data/output/audit/casimir-optics-discrimination/sources/** -text' .gitattributes; then echo "ERROR: hash-bound source-byte contract is missing." >&2; status=1; fi; \
+	for contract in 'id = "ci.validation.scoped"' 'id = "ci.validation.full"'; do \
+	    if ! grep -Fq "$$contract" agents.toml; then echo "ERROR: agents.toml CI entrypoint is missing: $$contract" >&2; status=1; fi; \
+	done; \
+	exit "$$status"
 
 casimir-optics-discrimination-audit-check: require-ci-validation-authority
 	$(CARGO_ENV) cargo run --locked --profile validation -p gororoba_cli_physics \
@@ -628,18 +631,23 @@ endef
 $(REGISTRY_VALIDATION_STAMP): $(REGISTRY_VALIDATION_SOURCE_DEPS) $(VALIDATION_SOURCE_IDENTITY_FILE)
 	@mkdir -p $(VALIDATION_TOOLS_DIR)
 	@echo "[validation-tools] building registry validation tools in one Cargo session"
-	@$(CARGO_ENV) cargo build --profile validation \
+	@$(CARGO_ENV) cargo build --keep-going --profile validation \
 		-p gororoba_cli_data $(foreach binary,$(filter-out provenance,$(REGISTRY_BUNDLED_VALIDATION_BINS)),--bin $(binary)) \
 		-p gororoba_cli_provenance --bin provenance
-	@for binary in $(REGISTRY_BUNDLED_VALIDATION_BINS); do \
-		$(call stage_tool,"$(REPO_CARGO_TARGET_DIR)/validation/$$binary","$(VALIDATION_TOOLS_DIR)/$$binary"); \
-	done
+	@status=0; \
+	for binary in $(REGISTRY_BUNDLED_VALIDATION_BINS); do \
+		if ! ( $(call stage_tool,"$(REPO_CARGO_TARGET_DIR)/validation/$$binary","$(VALIDATION_TOOLS_DIR)/$$binary") ); then \
+		    echo "ERROR: failed to stage registry validation tool: $$binary" >&2; \
+		    status=1; \
+		fi; \
+	done; \
+	exit "$$status"
 	@touch $(REGISTRY_VALIDATION_STAMP) $(REGISTRY_BUNDLED_VALIDATION_CACHE_FILES)
 
 $(REGISTRY_INTEGRITY_STAMP): $(REGISTRY_VALIDATION_SOURCE_DEPS) $(VALIDATION_SOURCE_IDENTITY_FILE)
 	@mkdir -p $(VALIDATION_TOOLS_DIR)
 	@echo "[validation-tools] building the registry-integrity tool from its slim governance owner"
-	@$(CARGO_ENV) cargo build --profile validation -p gororoba_cli_governance --bin registry-integrity
+	@$(CARGO_ENV) cargo build --keep-going --profile validation -p gororoba_cli_governance --bin registry-integrity
 	@$(call stage_tool,$(REPO_CARGO_TARGET_DIR)/validation/registry-integrity,$(REGISTRY_INTEGRITY_CACHE))
 	@touch $(REGISTRY_INTEGRITY_STAMP) $(REGISTRY_INTEGRITY_CACHE)
 
@@ -740,8 +748,10 @@ validate-ci-scoped-rust: require-ci-validation-authority
 	        fi; \
 	    done; \
 	}; \
-	validate_scope CI_RUST_SCOPE "$$CI_RUST_SCOPE"; \
-	validate_scope CI_CLIPPY_SCOPE "$$CI_CLIPPY_SCOPE"; \
+	scope_failure_count=0; \
+	validate_scope CI_RUST_SCOPE "$$CI_RUST_SCOPE" || scope_failure_count=$$((scope_failure_count + 1)); \
+	validate_scope CI_CLIPPY_SCOPE "$$CI_CLIPPY_SCOPE" || scope_failure_count=$$((scope_failure_count + 1)); \
+	if [ "$$scope_failure_count" -ne 0 ]; then echo "ERROR: $$scope_failure_count scoped Rust input(s) are invalid." >&2; exit 1; fi; \
 	read -r -a rust_scope <<< "$$CI_RUST_SCOPE"; \
 	read -r -a clippy_scope <<< "$$CI_CLIPPY_SCOPE"; \
 	light_scope=(); heavy_scope=(); \

@@ -1520,19 +1520,30 @@ fn write_report(output_directory: &Path, generated: &GeneratedAudit) -> Result<(
 }
 
 fn check_report(output_directory: &Path, generated: &GeneratedAudit) -> Result<()> {
-    verify_source_retrieval_manifest(
+    let mut failures = Vec::new();
+    if let Err(error) = verify_source_retrieval_manifest(
         &output_directory.join(SOURCE_RETRIEVAL_MANIFEST),
         &repo_root::resolve!(),
-    )?;
+    ) {
+        failures.push(format!("source retrieval manifest: {error:#}"));
+    }
     for (name, expected) in render_outputs(generated)? {
         let path = output_directory.join(&name);
-        let retained = fs::read_to_string(&path)
-            .with_context(|| format!("reading retained audit output {}", path.display()))?;
-        ensure!(
-            retained == expected,
-            "retained audit output is stale: {name}"
-        );
+        match fs::read_to_string(&path) {
+            Ok(retained) if retained == expected => {}
+            Ok(_) => failures.push(format!("retained audit output is stale: {name}")),
+            Err(error) => failures.push(format!(
+                "reading retained audit output {}: {error}",
+                path.display()
+            )),
+        }
     }
+    ensure!(
+        failures.is_empty(),
+        "retained audit verification found {} failure(s):\n{}",
+        failures.len(),
+        failures.join("\n")
+    );
     Ok(())
 }
 

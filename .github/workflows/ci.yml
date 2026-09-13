@@ -42,6 +42,8 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Install pinned actionlint release
+        id: actionlint-install
+        continue-on-error: true
         run: |
           curl --fail --location --retry 3 --output "$RUNNER_TEMP/actionlint.tar.gz" https://github.com/rhysd/actionlint/releases/download/v1.7.12/actionlint_1.7.12_linux_amd64.tar.gz
           printf '%s  %s\n' 8aca8db96f1b94770f1b0d72b6dddcb1ebb8123cb3712530b08cc387b349a3d8 "$RUNNER_TEMP/actionlint.tar.gz" | sha256sum --check --strict
@@ -51,23 +53,26 @@ jobs:
 
       - name: Validate workflow syntax and embedded shell
         id: actionlint
+        if: always()
         continue-on-error: true
         run: actionlint
 
       - name: Validate CI-only execution and worker boundaries
         id: resource-contract
+        if: always()
         continue-on-error: true
         run: make --keep-going validation-resource-contract
 
       - name: Report collected validation-policy failures
         if: always()
         env:
+          ACTIONLINT_INSTALL_OUTCOME: ${{ steps.actionlint-install.outcome }}
           ACTIONLINT_OUTCOME: ${{ steps.actionlint.outcome }}
           RESOURCE_CONTRACT_OUTCOME: ${{ steps.resource-contract.outcome }}
         run: |
           set -euo pipefail
           failure_count=0
-          for outcome_variable in ACTIONLINT_OUTCOME RESOURCE_CONTRACT_OUTCOME; do
+          for outcome_variable in ACTIONLINT_INSTALL_OUTCOME ACTIONLINT_OUTCOME RESOURCE_CONTRACT_OUTCOME; do
             outcome="${!outcome_variable}"
             printf '%s=%s\n' "$outcome_variable" "$outcome"
             if [ "$outcome" = failure ]; then
@@ -302,9 +307,20 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: dtolnay/rust-toolchain@1.97.0
+        with:
+          components: clippy, rustfmt
       - uses: taiki-e/install-action@v2
         with:
           tool: mdbook@0.4.40,sccache@0.15.0
+      - name: Resolve process-visible worker count
+        run: |
+          set -euo pipefail
+          rustc --edition=2024 -D warnings crates/gororoba_cli/src/bin/detect_worker_budget.rs -o "$RUNNER_TEMP/detect-worker-budget"
+          worker_budget="$("$RUNNER_TEMP/detect-worker-budget")"
+          echo "Hosted documentation validation uses $worker_budget workers from std::thread::available_parallelism()."
+          for variable in CI_WORKER_BUDGET WORKER_BUDGET CARGO_JOBS NEXTEST_TEST_THREADS RUST_TEST_THREADS RAYON_THREADS; do
+            echo "$variable=$worker_budget" >> "$GITHUB_ENV"
+          done
       - name: Install compiler and data dependencies
         run: |
           sudo apt-get update

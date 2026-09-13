@@ -171,12 +171,33 @@ fn main() -> Result<()> {
         Command::VerifyInventoryTomlFirst => verify_inventory_toml_first(&repo_root),
         Command::VerifyOwnerMap => verify_owner_map(&repo_root),
         Command::VerifyAll => {
-            verify_inventory_toml_first(&repo_root)?;
-            eprintln!("[done] verify-inventory-toml-first");
-            verify_owner_map(&repo_root)?;
-            eprintln!("[done] verify-owner-map");
-            verify_research_narrative_root_docs(&repo_root)?;
-            eprintln!("[done] verify-research-narrative-root-docs");
+            let mut failures = Vec::new();
+            for (label, result) in [
+                (
+                    "verify-inventory-toml-first",
+                    verify_inventory_toml_first(&repo_root),
+                ),
+                ("verify-owner-map", verify_owner_map(&repo_root)),
+                (
+                    "verify-research-narrative-root-docs",
+                    verify_research_narrative_root_docs(&repo_root),
+                ),
+            ] {
+                match result {
+                    Ok(()) => eprintln!("[done] {label}"),
+                    Err(error) => {
+                        eprintln!("[failed] {label}: {error:#}");
+                        failures.push(label);
+                    }
+                }
+            }
+            if !failures.is_empty() {
+                bail!(
+                    "markdown registry verification found {} failing check(s): {}",
+                    failures.len(),
+                    failures.join(", ")
+                );
+            }
             Ok(())
         }
         // Non-validation subcommands: print a clear message rather than silently succeeding.

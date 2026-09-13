@@ -40,6 +40,8 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: dtolnay/rust-toolchain@1.97.0
+        with:
+          components: clippy, rustfmt
       - name: Install linker dependencies
         run: |
           sudo apt-get update -qq
@@ -47,17 +49,36 @@ jobs:
       - uses: Swatinem/rust-cache@v2
         with:
           key: benchmark-${{ matrix.architecture }}
-      - name: Record execution host
+      - name: Resolve process-visible worker count
         run: |
-          lscpu
-          free -h
-          uname -a
-          rustc --version --verbose
+          set -euo pipefail
+          rustc --edition=2024 -D warnings crates/gororoba_cli/src/bin/detect_worker_budget.rs -o "$RUNNER_TEMP/detect-worker-budget"
+          worker_budget="$("$RUNNER_TEMP/detect-worker-budget")"
+          echo "CARGO_BUILD_JOBS=$worker_budget" >> "$GITHUB_ENV"
+          echo "RAYON_NUM_THREADS=$worker_budget" >> "$GITHUB_ENV"
+          echo "RUST_TEST_THREADS=$worker_budget" >> "$GITHUB_ENV"
+          echo "Hosted benchmark validation uses $worker_budget process-visible CPUs."
+      - name: Record processor topology
+        id: host-cpu
+        continue-on-error: true
+        run: lscpu
+      - name: Record host memory
+        id: host-memory
+        continue-on-error: true
+        run: free -h
+      - name: Record kernel and architecture
+        id: host-kernel
+        continue-on-error: true
+        run: uname -a
+      - name: Record Rust compiler
+        id: host-rustc
+        continue-on-error: true
+        run: rustc --version --verbose
       - name: Build and run the benchmark target
         shell: bash
         run: |
           set -o pipefail
-          cargo test --locked --release -p cd_kernel --test bench_multiplatform -- --nocapture --test-threads=1 2>&1 | tee bench.txt
+          cargo test --locked --release -p cd_kernel --test bench_multiplatform -- --nocapture --test-threads="$RUST_TEST_THREADS" 2>&1 | tee bench.txt
       - uses: actions/upload-artifact@v4
         if: always()
         with:
@@ -65,3 +86,24 @@ jobs:
           path: bench.txt
           if-no-files-found: warn
           retention-days: 14
+      - name: Report collected host-probe failures
+        if: always()
+        env:
+          HOST_CPU_OUTCOME: ${{ steps.host-cpu.outcome }}
+          HOST_MEMORY_OUTCOME: ${{ steps.host-memory.outcome }}
+          HOST_KERNEL_OUTCOME: ${{ steps.host-kernel.outcome }}
+          HOST_RUSTC_OUTCOME: ${{ steps.host-rustc.outcome }}
+        run: |
+          set -euo pipefail
+          failure_count=0
+          for outcome_variable in HOST_CPU_OUTCOME HOST_MEMORY_OUTCOME HOST_KERNEL_OUTCOME HOST_RUSTC_OUTCOME; do
+            outcome="${!outcome_variable}"
+            printf '%s=%s\n' "$outcome_variable" "$outcome"
+            if [ "$outcome" = failure ]; then
+              failure_count=$((failure_count + 1))
+            fi
+          done
+          if [ "$failure_count" -ne 0 ]; then
+            echo "Collected $failure_count failing host probe(s)." >&2
+            exit 1
+          fi

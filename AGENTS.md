@@ -101,6 +101,15 @@ hardware-specific tables are replaced with the scientific stack.
   relevant dependency policy checks. Scheduled full validation covers
   workspace drift. A developer may run a named Cargo command for diagnosis;
   that command is evidence for its named surface, not a repository gate.
+- **Hosted jobs use every process-visible CPU**. Each Rust-bearing job detects
+  its own count and passes that exact value to Cargo, nextest, Rayon, Rust test
+  harnesses, and Make. Do not divide, clamp, substitute physical cores, infer a
+  RAM budget, provide a fallback count, or add CPU-safety serialization groups.
+  A one-device GPU exclusion may serialize access to that declared device.
+- **Hosted validation collects independent failures**. Use Cargo and Make
+  keep-going modes, nextest no-fail-fast mode, independent workflow leaves, and
+  one final aggregate verdict. A failed check must not suppress another check
+  whose inputs and tools remain available.
 
 ## Build environment
 

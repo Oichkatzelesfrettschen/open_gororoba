@@ -245,9 +245,10 @@ repository provides no workstation override. A developer may invoke one named
 Cargo command for diagnosis, but that command does not establish a repository
 validation verdict.
 
-The CI workflow compiles the typed Rust worker-budget utility before Make,
-uses every CPU exposed to the runner without an artificial per-worker memory
-limit, reports that count in the job log, routes lint to changed owners and
+Each Rust-bearing CI job compiles the typed Rust worker-budget utility before
+its workload, uses every CPU exposed to that job without a divisor, clamp,
+physical-core substitution, fallback, or per-worker memory limit, and reports
+that count in the job log. The main workflow routes lint to changed owners and
 tests to their reverse dependency closure, and includes binary test targets.
 Make uses one worker outside GitHub Actions and executes no local resource
 detector. Weekly full validation covers workspace drift.
