@@ -679,7 +679,13 @@ impl DerivedValue {
             return Err("derived output requires computed or inferred_proxy evidence".to_owned());
         }
         self.output.validate()?;
-        self.propagated_uncertainty.validate()
+        self.propagated_uncertainty.validate()?;
+        if self.output.uncertainty != self.propagated_uncertainty {
+            return Err(
+                "derived output uncertainty must equal propagated uncertainty".to_owned(),
+            );
+        }
+        Ok(())
     }
 }
 
@@ -1277,6 +1283,37 @@ mod tests {
                 unit: "1".to_owned(),
             },
         }
+    }
+
+    #[test]
+    fn derived_output_accepts_matching_propagated_uncertainty() {
+        let derived = derived_value(
+            "derived:reflectivity",
+            "model:drude-lorentz:v1",
+            vec![identifier("quantity:epsilon")],
+            "quantity:reflectivity",
+        );
+
+        assert!(derived.validate().is_ok());
+    }
+
+    #[test]
+    fn derived_output_rejects_mismatched_propagated_uncertainty() {
+        let mut derived = derived_value(
+            "derived:reflectivity",
+            "model:drude-lorentz:v1",
+            vec![identifier("quantity:epsilon")],
+            "quantity:reflectivity",
+        );
+        derived.propagated_uncertainty = Uncertainty::Standard {
+            value: 0.02,
+            unit: "1".to_owned(),
+        };
+
+        assert_eq!(
+            derived.validate().unwrap_err(),
+            "derived output uncertainty must equal propagated uncertainty"
+        );
     }
 
     #[test]

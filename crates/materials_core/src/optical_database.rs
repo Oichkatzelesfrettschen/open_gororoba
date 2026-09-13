@@ -864,10 +864,15 @@ impl DrudeLorentzParams {
     ///
     /// For dielectrics: eps_static = eps_inf + sum_j S_j (Lorentz oscillator
     /// static contribution). For metals: diverges (Drude -> -infinity at omega=0).
-    /// Returns None for metals.
+    /// Returns None when the active Drude term has positive plasma strength.
     pub fn static_dielectric(&self) -> Option<f64> {
-        if self.drude.is_some() || self.extended_drude.is_some() {
-            return None; // Drude diverges at omega=0
+        let carrier_strength_ev = self
+            .extended_drude
+            .as_ref()
+            .map(|drude| drude.omega_p_ev)
+            .or_else(|| self.drude.as_ref().map(|drude| drude.omega_p_ev));
+        if carrier_strength_ev.is_some_and(|omega_p_ev| omega_p_ev > 0.0) {
+            return None;
         }
         let mut eps_0_val = self.eps_inf;
         for osc in &self.oscillators {
@@ -4245,6 +4250,45 @@ mod tests {
         assert!(
             gold.static_dielectric().is_none(),
             "Metals diverge at omega=0"
+        );
+    }
+
+    #[test]
+    fn test_static_dielectric_uses_background_for_zero_strength_carriers() {
+        let oscillator = LorentzOscillator {
+            strength: 1.5,
+            omega_0_ev: 5.0,
+            gamma_ev: 0.1,
+        };
+        let zero_strength_drude = DrudeLorentzParams {
+            drude: Some(DrudeParams {
+                omega_p_ev: 0.0,
+                gamma_ev: 0.035,
+                eps_inf: 2.5,
+            }),
+            oscillators: vec![oscillator.clone()],
+            eps_inf: 2.5,
+            extended_drude: None,
+        };
+        let zero_strength_extended_drude = DrudeLorentzParams {
+            drude: Some(DrudeParams {
+                omega_p_ev: 9.0,
+                gamma_ev: 0.035,
+                eps_inf: 2.5,
+            }),
+            oscillators: vec![oscillator],
+            eps_inf: 2.5,
+            extended_drude: Some(ExtendedDrudeParams {
+                omega_p_ev: 0.0,
+                scattering: ScatteringModel::Constant { gamma_ev: 0.035 },
+                eps_inf: 2.5,
+            }),
+        };
+
+        assert_eq!(zero_strength_drude.static_dielectric(), Some(4.0));
+        assert_eq!(
+            zero_strength_extended_drude.static_dielectric(),
+            Some(4.0)
         );
     }
 

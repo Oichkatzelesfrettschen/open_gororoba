@@ -282,6 +282,7 @@ validation-resource-contract:
 	fi; \
 	grep -Fq 'rust-clippy: require-ci-validation-authority' Makefile; \
 	grep -Fq 'rust-regression: require-ci-validation-authority rust-clippy' Makefile; \
+	grep -Fq 'check: require-ci-validation-authority' Makefile; \
 	grep -Fq 'rust-regression-scoped' Makefile; \
 	if grep -Fq 'local-nextest-plan' xtask/src/main.rs crates/gororoba_cli_data/Cargo.toml; then \
 	    echo "ERROR: retired local nextest executor remains registered." >&2; exit 1; \
@@ -316,6 +317,8 @@ validation-resource-contract:
 	    echo "ERROR: proof validation replaces or constrains the inherited Make jobserver." >&2; exit 1; \
 	fi; \
 	grep -Fq 'Report collected validation failures' .github/workflows/ci.yml; \
+	grep -Fq "needs.validation.result == 'success'" .github/workflows/ci.yml; \
+	grep -Fq 'data/output/audit/casimir-optics-discrimination/sources/** -text' .gitattributes; \
 	grep -Fq 'CI_WORKER_BUDGET' .github/workflows/ci.yml; \
 	test ! -e scripts/detect_worker_budget.sh; \
 	if grep -Fq 'scripts/detect_worker_budget.sh' agents.toml; then \
@@ -454,7 +457,7 @@ test: rust-regression
 # without improving the ASCII or terminology checks.
 REPO_UTILITIES_BIN := $(REPO_CARGO_TARGET_DIR)/validation-tools/repo-utilities
 
-check: check-ansi check-terminology cuda-source-ownership
+check: require-ci-validation-authority check-ansi check-terminology cuda-source-ownership
 	@echo "OK: fast shared check suite complete."
 
 check-ansi: $(REPO_UTILITIES_BIN)

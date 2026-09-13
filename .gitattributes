@@ -78,7 +78,8 @@ data/output/audit/qgp-pp-spectrum-calibration/*.log -text whitespace=-blank-at-e
 data/output/audit/qgp-pp-spectrum-calibration/pp-table4.yaml -text whitespace=-blank-at-eof,-blank-at-eol
 
 # Hash-bound Casimir/optics source and report bytes retain provider or producer endings.
-data/output/audit/casimir-optics-discrimination/sources/*.pdf -text -diff
+data/output/audit/casimir-optics-discrimination/sources/** -text
+data/output/audit/casimir-optics-discrimination/sources/*.pdf -diff
 data/output/audit/casimir-optics-discrimination/source-observations/*.toml -text whitespace=-blank-at-eof
 data/output/audit/casimir-optics-discrimination/derived-output-manifest.toml -text whitespace=-blank-at-eof
 data/output/audit/casimir-optics-discrimination/native-output-manifest.toml -text whitespace=-blank-at-eof
