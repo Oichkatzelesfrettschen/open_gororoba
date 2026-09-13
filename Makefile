@@ -358,6 +358,7 @@ validation-resource-contract-collectors:
 	if ! grep -Fq 'ROUTE_OUTCOME: $${{ steps.route.outcome }}' .github/workflows/ci.yml; then echo "ERROR: final validation collector omits reverse dependency routing." >&2; status=1; fi; \
 	if ! grep -Fq 'PATHS_OUTCOME: $${{ steps.paths.outcome }}' .github/workflows/ci.yml; then echo "ERROR: final validation collector omits path routing." >&2; status=1; fi; \
 	if ! grep -Fq 'RUST_SHARDS_OUTCOME: $${{ steps.rust-shards.outcome }}' .github/workflows/ci.yml; then echo "ERROR: final validation collector omits Rust shard routing." >&2; status=1; fi; \
+	if ! grep -Fq 'no_tests_args=(--no-tests=pass)' Makefile; then echo "ERROR: binary-only CI shards reject successful zero-test compilation." >&2; status=1; fi; \
 	if [ "$$(sed -n '/id: rust-shards/,/name: Check repository hygiene/p' .github/workflows/ci.yml | grep -Fc "printf 'matrix=%s\\n' \"\$$rust_matrix\" >> \"\$$GITHUB_OUTPUT\"")" -ne 1 ]; then echo "ERROR: dynamic Rust shard matrix must be emitted exactly once." >&2; status=1; fi; \
 	if [ "$$(sed -n '/id: rust-shards/,/name: Check repository hygiene/p' .github/workflows/ci.yml | grep -Fc "printf 'matrix=%s\\n' \"\$$fallback_matrix\" >> \"\$$GITHUB_OUTPUT\"")" -ne 2 ]; then echo "ERROR: fallback Rust shard matrix must be emitted only by the two failure branches." >&2; status=1; fi; \
 	if ! sed -n '/name: Retain successful core validation artifacts/,/key: $${{ steps.rust-cache.outputs.cache-primary-key }}/p' .github/workflows/ci.yml | grep -Fq 'if: success()'; then echo "ERROR: core cache retention is not success-only." >&2; status=1; fi; \
@@ -809,6 +810,7 @@ validate-ci-scoped-rust-lane: require-ci-validation-authority
 	cargo_target_scope="$${CI_CARGO_TARGET_ARGS:---all-targets}"; \
 	read -r -a cargo_target_args <<< "$$cargo_target_scope"; \
 	cargo_feature_args=(); \
+	no_tests_args=(); \
 	if [ -n "$$CI_CARGO_FEATURES" ]; then \
 	    if [[ ! "$$CI_CARGO_FEATURES" =~ ^[A-Za-z0-9_-]+(,[A-Za-z0-9_-]+)*$$ ]]; then echo "ERROR: CI_CARGO_FEATURES requires a comma-separated feature list." >&2; exit 1; fi; \
 	    cargo_feature_args=(--features "$$CI_CARGO_FEATURES"); \
@@ -821,6 +823,7 @@ validate-ci-scoped-rust-lane: require-ci-validation-authority
 	        fi \
 	        ;; \
 	    --bin) \
+	        no_tests_args=(--no-tests=pass); \
 	        if (( $${#cargo_target_args[@]} % 2 != 0 )); then echo "ERROR: binary target shard requires --bin name pairs." >&2; exit 1; fi; \
 	        for ((target_index=0; target_index<$${#cargo_target_args[@]}; target_index+=2)); do \
 	            if [ "$${cargo_target_args[target_index]}" != --bin ] || [[ ! "$${cargo_target_args[target_index+1]}" =~ ^[A-Za-z0-9_][A-Za-z0-9_-]*$$ ]]; then echo "ERROR: invalid binary target shard." >&2; exit 1; fi; \
@@ -845,7 +848,7 @@ validate-ci-scoped-rust-lane: require-ci-validation-authority
 	    light) \
 	        if [ "$${#light_scope[@]}" -eq 0 ]; then echo "[ci-rust-light] no applicable packages"; exit 0; fi; \
 	        echo "[ci-rust-light] scope: $${light_scope[*]}"; \
-	        $(CARGO_ENV_CI) cargo nextest run --no-fail-fast --locked --cargo-profile test -P ci "$${cargo_target_args[@]}" "$${cargo_feature_args[@]}" --build-jobs $(CARGO_JOBS) --test-threads $(NEXTEST_TEST_THREADS) "$${light_scope[@]}"; \
+	        $(CARGO_ENV_CI) cargo nextest run --no-fail-fast "$${no_tests_args[@]}" --locked --cargo-profile test -P ci "$${cargo_target_args[@]}" "$${cargo_feature_args[@]}" --build-jobs $(CARGO_JOBS) --test-threads $(NEXTEST_TEST_THREADS) "$${light_scope[@]}"; \
 	        ;; \
 	    heavy) \
 	        if [ "$${#heavy_scope[@]}" -eq 0 ]; then echo "[ci-rust-heavy] no applicable packages"; exit 0; fi; \

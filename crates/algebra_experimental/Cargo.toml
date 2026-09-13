@@ -59,6 +59,7 @@ vulkan = [
 approx = { workspace = true }
 criterion = { workspace = true }
 plotters = "0.3"
+provenance_store = { workspace = true }
 
 [lints]
 workspace = true

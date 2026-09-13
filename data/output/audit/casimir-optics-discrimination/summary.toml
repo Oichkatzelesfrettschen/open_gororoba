@@ -48,19 +48,19 @@ original_derived_feature_information = 5.25
 augmented_derived_feature_information = 5.249999999999998
 
 [multilayer]
-au20_stack_pressure_200nm_pa = -0.47093816702610103
-au20_stack_energy_200nm_j_m2 = -0.00000003517732453814548
-pressure_energy_derivative_relative_error = 0.000000027243213084671583
+au20_stack_pressure_200nm_pa = -0.4709381888912518
+au20_stack_energy_200nm_j_m2 = -0.00000003517732696843673
+pressure_energy_derivative_relative_error = 0.000000027242956623585554
 maximum_common_cap_zero_mode_difference_pa = 0.0
-maximum_uv_completion_relative_change = 0.006524644855607997
+maximum_uv_completion_relative_change = 0.006524644855622985
 
 [physical_inference]
 gap_count = 13
-unrestricted_residual_fraction = 0.00000005004671056498861
-one_width_bounded_residual_fraction = 0.670184537997313
-baseline_effective_information = 51.485443006805525
+unrestricted_residual_fraction = 0.00000005004907411968903
+one_width_bounded_residual_fraction = 0.6701836916848736
+baseline_effective_information = 51.485234044207786
 strongest_calibration_coordinate = "full_differential_gap"
-strongest_calibration_relative_information_gain = 1.1659142754355658
+strongest_calibration_relative_information_gain = 1.1659118882804016
 
 [controls]
 classical_forward_loop = 0.06

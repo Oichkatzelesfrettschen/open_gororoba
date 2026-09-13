@@ -905,11 +905,11 @@ mod tests {
         };
 
         assert_eq!(
-            zero_temperature_pressure(1.0e-100, &ideal, &ideal, options),
+            zero_temperature_pressure(1.0e-120, &ideal, &ideal, options),
             Err(LifshitzError::NonFiniteResult)
         );
         assert_eq!(
-            zero_temperature_energy_per_area(1.0e-100, &ideal, &ideal, options),
+            zero_temperature_energy_per_area(1.0e-120, &ideal, &ideal, options),
             Err(LifshitzError::NonFiniteResult)
         );
     }
