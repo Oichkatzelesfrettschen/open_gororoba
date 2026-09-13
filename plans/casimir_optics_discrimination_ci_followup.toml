@@ -572,3 +572,24 @@ status = "implemented_pending_ci"
 finding = "The retained source manifest declared retrieval_date, but deserialization ignored that field and accepted deletion, blank values, malformed forms, and impossible calendar dates."
 required_change = "Require a strict nonzero-year YYYY-MM-DD calendar date and add mutation tests for missing, blank, malformed, and impossible values."
 verification = "Hosted Casimir audit tests accept the retained date and reject every date mutation; refreshed source hashes and path-repair evidence bind the changed producer."
+
+[[task]]
+id = "exact-head-67a9c7b0-materials-lockfile-precondition"
+status = "implemented_pending_ci"
+finding = "Run 34783811255 admitted 37 jobs, but the materials_core tempfile dev-dependency was absent from that package's Cargo.lock dependency list. Scientific hydration, documentation, both benchmark architectures, the routed Casimir audit, and every Rust Cargo leaf stopped at Cargo's --locked precondition before source validation."
+required_change = "Add the existing tempfile package to the materials_core lockfile dependency list and refresh the lock-bound native source identity and path-repair digest."
+verification = "The replacement exact-head generation passes Cargo's locked dependency-graph precondition in every Cargo leaf and reaches a complete uncanceled denominator."
+
+[[task]]
+id = "hosted-active-tail-decomposition"
+status = "complete"
+finding = "The final two active jobs in run 34783811255 were the Rocq proof compiler and canonical governance. Both received the runner's unchanged four process-visible CPUs. The proof compile is independent of Cargo.lock and retained useful exact-head proof evidence; governance remained fail-slow but could not establish source validity after the stale lockfile precondition. In the preceding complete run, proof compilation took 4 minutes 57 seconds and governance validation took 3 minutes 58 seconds."
+required_change = "Retain full CPU propagation and fail-slow collection. Treat a tail as a processor-cap defect only when runner telemetry or command wiring shows fewer workers; distinguish that condition from a large dependency closure or one critical-path compilation unit."
+verification = "Workflow source passes four detected workers to Make, Cargo, nextest, libtest, Rayon, and opam without division or clamp; hosted logs report four workers in proof and governance jobs."
+
+[[task]]
+id = "staged-validation-tools-locked-graph"
+status = "implemented_pending_ci"
+finding = "Governance succeeded in run 34783811255 despite the stale committed lockfile because staged validation-tool Cargo builds omitted --locked and could update the runner checkout before executing registry checks."
+required_change = "Run every staged validation-tool Cargo build with --locked and pin those command forms in the hosted resource contract."
+verification = "Hosted validation-policy passes the locked-tool contract, and governance builds and executes its staged tools without changing or bypassing the committed dependency graph."

@@ -326,6 +326,14 @@ validation-resource-contract-workers:
 	for contract in 'cargo clippy --keep-going' 'cargo nextest run --no-fail-fast'; do \
 	    if ! grep -Fq "$$contract" Makefile; then echo "ERROR: Rust collector contract is missing: $$contract" >&2; status=1; fi; \
 	done; \
+	for contract in \
+	    'cargo build --locked --profile validation -p repo_utilities --bin repo-utilities' \
+	    'cargo build --locked --profile validation -p gororoba_cli_governance --bin workspace-routing-proxy' \
+	    'cargo build --locked --profile validation -p xtask --bin xtask' \
+	    'cargo build --locked --keep-going --profile validation' \
+	    'cargo build --locked --keep-going --profile validation -p gororoba_cli_governance --bin registry-integrity'; do \
+	    if ! grep -Fq "$$contract" Makefile; then echo "ERROR: staged validation-tool build can mutate Cargo.lock: $$contract" >&2; status=1; fi; \
+	done; \
 	if ! grep -Fq 'make --jobs="$$MAKE_JOBS" --keep-going all' .github/workflows/proofs.yml; then echo "ERROR: proof workflow does not pass every detected worker to Make." >&2; status=1; fi; \
 	if ! grep -Fq 'opam install rocq-core.9.1.1 rocq-stdlib.9.1.0 coq-flocq.4.2.2 --jobs="$$OPAMJOBS" --yes' .github/workflows/proofs.yml; then echo "ERROR: proof workflow does not pass every detected worker to opam." >&2; status=1; fi; \
 	if grep -Fq 'ci-rust-$${{ matrix.lane }}' .github/workflows/ci.yml; then echo "ERROR: Rust matrix jobs retain quota-consuming duplicate target caches." >&2; status=1; fi; \
@@ -657,7 +665,7 @@ REPO_UTILITIES_SOURCE_DEPS := $(shell find crates/repo_utilities -type f \( -nam
 $(REPO_UTILITIES_BIN): $(REPO_UTILITIES_SOURCE_DEPS) $(VALIDATION_SOURCE_IDENTITY_FILE)
 	@mkdir -p $(VALIDATION_TOOLS_DIR)
 	@echo "[validation-tools] building repo-utilities in the validation profile"
-	@$(CARGO_ENV) cargo build --profile validation -p repo_utilities --bin repo-utilities
+	@$(CARGO_ENV) cargo build --locked --profile validation -p repo_utilities --bin repo-utilities
 	@$(call stage_tool,$(REPO_CARGO_TARGET_DIR)/validation/repo-utilities,$@)
 	@touch $@
 
@@ -678,7 +686,7 @@ ROUTING_VALIDATION_STAMP := $(VALIDATION_TOOLS_DIR)/routing-validation.stamp
 $(ROUTING_VALIDATION_STAMP): $(CORE_VALIDATION_SOURCE_DEPS) $(VALIDATION_SOURCE_IDENTITY_FILE)
 	@mkdir -p $(VALIDATION_TOOLS_DIR)
 	@echo "[validation-tools] building the local scope router"
-	@$(CARGO_ENV) cargo build --profile validation -p gororoba_cli_governance --bin workspace-routing-proxy
+	@$(CARGO_ENV) cargo build --locked --profile validation -p gororoba_cli_governance --bin workspace-routing-proxy
 	@$(call stage_tool,$(REPO_CARGO_TARGET_DIR)/validation/workspace-routing-proxy,$(WORKSPACE_ROUTING_CACHE))
 	@touch $(ROUTING_VALIDATION_STAMP) $(WORKSPACE_ROUTING_CACHE)
 
@@ -689,7 +697,7 @@ CORE_VALIDATION_STAMP := $(VALIDATION_TOOLS_DIR)/core-validation.stamp
 $(CORE_VALIDATION_STAMP): $(CORE_VALIDATION_SOURCE_DEPS) $(VALIDATION_SOURCE_IDENTITY_FILE)
 	@mkdir -p $(VALIDATION_TOOLS_DIR)
 	@echo "[validation-tools] building xtask for broad or structured validation"
-	@$(CARGO_ENV) cargo build --profile validation -p xtask --bin xtask
+	@$(CARGO_ENV) cargo build --locked --profile validation -p xtask --bin xtask
 	@$(call stage_tool,$(REPO_CARGO_TARGET_DIR)/validation/xtask,$(XTASK_CACHE))
 	@touch $(CORE_VALIDATION_STAMP) $(XTASK_CACHE)
 
@@ -745,7 +753,7 @@ endef
 $(REGISTRY_VALIDATION_STAMP): $(REGISTRY_VALIDATION_SOURCE_DEPS) $(VALIDATION_SOURCE_IDENTITY_FILE)
 	@mkdir -p $(VALIDATION_TOOLS_DIR)
 	@echo "[validation-tools] building registry validation tools in one Cargo session"
-	@$(CARGO_ENV) cargo build --keep-going --profile validation \
+	@$(CARGO_ENV) cargo build --locked --keep-going --profile validation \
 		-p gororoba_cli_data $(foreach binary,$(filter-out provenance,$(REGISTRY_BUNDLED_VALIDATION_BINS)),--bin $(binary)) \
 		-p gororoba_cli_provenance --bin provenance
 	@status=0; \
@@ -761,7 +769,7 @@ $(REGISTRY_VALIDATION_STAMP): $(REGISTRY_VALIDATION_SOURCE_DEPS) $(VALIDATION_SO
 $(REGISTRY_INTEGRITY_STAMP): $(REGISTRY_VALIDATION_SOURCE_DEPS) $(VALIDATION_SOURCE_IDENTITY_FILE)
 	@mkdir -p $(VALIDATION_TOOLS_DIR)
 	@echo "[validation-tools] building the registry-integrity tool from its slim governance owner"
-	@$(CARGO_ENV) cargo build --keep-going --profile validation -p gororoba_cli_governance --bin registry-integrity
+	@$(CARGO_ENV) cargo build --locked --keep-going --profile validation -p gororoba_cli_governance --bin registry-integrity
 	@$(call stage_tool,$(REPO_CARGO_TARGET_DIR)/validation/registry-integrity,$(REGISTRY_INTEGRITY_CACHE))
 	@touch $(REGISTRY_INTEGRITY_STAMP) $(REGISTRY_INTEGRITY_CACHE)
 
