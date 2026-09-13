@@ -493,6 +493,13 @@ declared paths. Existing matching files are reused; conflicting bytes fail
 preflight. Destination installation is atomic per file, not across the entire
 collection. Run the command again after an interrupted installation.
 
+Repeat `--path <repository-relative-path>` to install a bounded subset. The
+hydrator still verifies the complete compressed archive identity and archive
+inventory, hashes every selected object, installs only selected current paths,
+and confirms that each selected path is materialized after installation. An
+unknown or duplicate selected path fails before extraction. Omitting `--path`
+preserves complete current-path hydration.
+
 ```bash
 mkdir -p .cache/retention
 wget --user-agent='Mozilla/5.0' --timeout=30 --tries=3 --continue \

@@ -119,6 +119,11 @@ hardware-specific tables are replaced with the scientific stack.
   shards plus one library/integration-test shard.
   General correctness shards use Cargo's `test` profile; optimized scientific
   audits retain their validation or parity profiles.
+- **Hydration-dependent tests require execution evidence**. A retained archive
+  identity with `Materialization::Missing` proves provenance metadata, not a
+  scientific computation. Hosted replay verifies the complete archive
+  identity, materializes the declared bounded paths, and records
+  `blocked_input`, `executed_fail`, or `executed_pass`.
 
 ## Build environment
 

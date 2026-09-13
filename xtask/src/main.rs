@@ -778,8 +778,8 @@ struct CiRustShardMatrixCli {
     light_shard_count: usize,
     #[arg(long = "heavy-package")]
     heavy_packages: Vec<String>,
-    #[arg(long)]
-    target_shard_package: Option<String>,
+    #[arg(long = "target-shard-package")]
+    target_shard_packages: Vec<String>,
     #[arg(long, default_value_t = 8)]
     target_shard_count: usize,
 }
@@ -945,10 +945,23 @@ fn build_rust_shard_matrix(cli: &CiRustShardMatrixCli) -> Result<RustShardMatrix
             bail!("heavy package is absent from the workspace: {heavy_package}");
         }
     }
-    if let Some(target_shard_package) = cli.target_shard_package.as_deref()
-        && !workspace_set.contains(target_shard_package)
-    {
-        bail!("target-shard package is absent from the workspace: {target_shard_package}");
+    let target_shard_set: std::collections::BTreeSet<&str> = cli
+        .target_shard_packages
+        .iter()
+        .map(String::as_str)
+        .collect();
+    if target_shard_set.len() != cli.target_shard_packages.len() {
+        bail!("target-shard package is named more than once");
+    }
+    for target_shard_package in &target_shard_set {
+        if !workspace_set.contains(target_shard_package) {
+            bail!("target-shard package is absent from the workspace: {target_shard_package}");
+        }
+        if heavy_set.contains(target_shard_package) {
+            bail!(
+                "package cannot be both heavy and target-sharded: {target_shard_package}"
+            );
+        }
     }
 
     let mut include = vec![RustShard {
@@ -961,12 +974,12 @@ fn build_rust_shard_matrix(cli: &CiRustShardMatrixCli) -> Result<RustShardMatrix
     }];
     let mut light_shards = vec![Vec::new(); cli.light_shard_count];
     let mut heavy_packages = Vec::new();
-    let mut target_shard_package_selected = false;
+    let mut selected_target_shard_packages = Vec::new();
     for package_name in selected_packages {
-        if heavy_set.contains(package_name.as_str()) {
+        if target_shard_set.contains(package_name.as_str()) {
+            selected_target_shard_packages.push(package_name);
+        } else if heavy_set.contains(package_name.as_str()) {
             heavy_packages.push(package_name);
-        } else if cli.target_shard_package.as_deref() == Some(package_name.as_str()) {
-            target_shard_package_selected = true;
         } else {
             let shard_index = stable_shard_index(&package_name, cli.light_shard_count);
             light_shards[shard_index].push(package_name);
@@ -995,11 +1008,7 @@ fn build_rust_shard_matrix(cli: &CiRustShardMatrixCli) -> Result<RustShardMatrix
             cargo_features: String::new(),
         });
     }
-    if target_shard_package_selected {
-        let target_shard_package = cli
-            .target_shard_package
-            .as_deref()
-            .context("selected target-shard package is absent")?;
+    for target_shard_package in &selected_target_shard_packages {
         let binary_names = workspace_inventory
             .get(target_shard_package)
             .context("target-shard package is absent from the workspace inventory")?;
@@ -1071,16 +1080,8 @@ fn build_rust_shard_matrix(cli: &CiRustShardMatrixCli) -> Result<RustShardMatrix
             }
         }
     }
-    if target_shard_package_selected {
-        emitted_packages.insert(
-            cli.target_shard_package
-                .clone()
-                .context("selected target-shard package is absent")?,
-        );
-        let target_shard_package = cli
-            .target_shard_package
-            .as_deref()
-            .context("selected target-shard package is absent")?;
+    for target_shard_package in &selected_target_shard_packages {
+        emitted_packages.insert(target_shard_package.clone());
         let expected_binaries: BTreeMap<&str, Vec<String>> = workspace_inventory
             .get(target_shard_package)
             .context("target-shard package is absent from the workspace inventory")?
@@ -1098,6 +1099,9 @@ fn build_rust_shard_matrix(cli: &CiRustShardMatrixCli) -> Result<RustShardMatrix
                 continue;
             }
             let target_tokens: Vec<&str> = shard.cargo_target_args.split_whitespace().collect();
+            if target_tokens.is_empty() || !target_tokens.len().is_multiple_of(2) {
+                bail!("target shard matrix emits malformed binary target arguments");
+            }
             for pair in target_tokens.chunks_exact(2) {
                 let required_features = if shard.cargo_features.is_empty() {
                     Vec::new()

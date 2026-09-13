@@ -317,6 +317,7 @@ validation-resource-contract-workers:
 	done; \
 	if ! grep -Fq 'std::thread::available_parallelism()' crates/gororoba_cli/src/bin/detect_worker_budget.rs; then echo "ERROR: Rust worker detector does not use process-visible parallelism." >&2; status=1; fi; \
 	if grep -Eq 'GOROROBA_WORKER_TEST_CPUS|max[(]|min[(]|clamp|/ *2|checked_div|unwrap_or' crates/gororoba_cli/src/bin/detect_worker_budget.rs; then echo "ERROR: worker detection contains an override, divisor, clamp, or fallback." >&2; status=1; fi; \
+	if ! awk 'index($$0, "detect_worker_budget.rs") { pending++; setups++ } index($$0, "for variable in CI_WORKER_BUDGET WORKER_BUDGET CARGO_JOBS CARGO_BUILD_JOBS NEXTEST_TEST_THREADS RUST_TEST_THREADS RAYON_THREADS RAYON_NUM_THREADS") { if (pending != 1) bad=1; covered++; pending=0 } END { exit !(setups > 0 && pending == 0 && covered == setups && !bad) }' .github/workflows/ci.yml; then echo "ERROR: main CI does not export every canonical worker variable after each detector invocation." >&2; status=1; fi; \
 	if grep -Eq 'divide by two|logical threads / 2' agents.toml; then echo "ERROR: active agent policy retains a divided-worker rule." >&2; status=1; fi; \
 	if ! grep -Fq 'std::thread::available_parallelism()' xtask/src/main.rs; then echo "ERROR: xtask host profile does not use process-visible parallelism." >&2; status=1; fi; \
 	if grep -Eq '(worker_budget|cargo_jobs|rayon_threads|rust_test_threads|nextest_test_threads|pytest_workers): physical_core_count' xtask/src/main.rs; then echo "ERROR: xtask host profile substitutes physical cores for process-visible workers." >&2; status=1; fi; \
@@ -337,9 +338,16 @@ validation-resource-contract-workers:
 
 validation-resource-contract-collectors:
 	@status=0; \
-	for contract in 'ci-rust-shard-matrix' 'target-shard-package=gororoba_cli_physics' 'fallback_matrix=' 'CI_CARGO_TARGET_ARGS: $${{ matrix.cargo_target_args }}' 'CI_CARGO_FEATURES: $${{ matrix.cargo_features }}' 'matrix: $${{ fromJSON(needs.validation-core.outputs.rust_matrix) }}' 'make --jobs="$$WORKER_BUDGET" --keep-going "validate-ci-scoped-$${{ matrix.target }}"' 'timeout-minutes: 80' 'fail-fast: false' 'Report collected validation failures' 'Report aggregate validation admission' 'needs: [validation-policy, validation-core, rust-validation]' "needs.validation-policy.result == 'success'" "needs.validation.result == 'success'" 'make --keep-going validation-resource-contract' 'make --jobs="$$WORKER_BUDGET" --keep-going casimir-optics-discrimination-audit-check' 'make --jobs="$$WORKER_BUDGET" --keep-going docs-freshness'; do \
+	rust_shard_block="$$(sed -n '/id: rust-shards/,/name: Check repository hygiene/p' .github/workflows/ci.yml)"; \
+	for contract in 'ci-rust-shard-matrix' 'target-shard-package=gororoba_cli_physics' 'target-shard-package=gororoba_cli_data' 'target-shard-package=gororoba_cli_algebra' 'fallback_matrix=' 'CI_CARGO_TARGET_ARGS: $${{ matrix.cargo_target_args }}' 'CI_CARGO_FEATURES: $${{ matrix.cargo_features }}' 'matrix: $${{ fromJSON(needs.validation-core.outputs.rust_matrix) }}' 'make --jobs="$$WORKER_BUDGET" --keep-going "validate-ci-scoped-$${{ matrix.target }}"' 'timeout-minutes: 80' 'fail-fast: false' 'Report collected validation failures' 'Report aggregate validation admission' 'needs: [validation-policy, validation-core, rust-validation, scientific-replay]' 'scientific-replay:' '--bin hydrate-scientific-payloads' '--no-fail-fast -p algebra_experimental --lib' '--no-fail-fast -p algebra_experimental --test nufit_reference_identity' '--no-fail-fast -p gororoba_cli_physics --test box_counting_amplitude_identity' 'state=blocked_input' 'state=not_selected' 'executed_pass' 'executed_fail' "needs.validation-policy.result == 'success'" "needs.validation.result == 'success'" 'make --keep-going validation-resource-contract' 'make --jobs="$$WORKER_BUDGET" --keep-going casimir-optics-discrimination-audit-check' 'make --jobs="$$WORKER_BUDGET" --keep-going docs-freshness'; do \
 	    if ! grep -Fq "$$contract" .github/workflows/ci.yml; then echo "ERROR: main CI collector contract is missing: $$contract" >&2; status=1; fi; \
 	done; \
+	for package in gororoba_cli_physics gororoba_cli_data gororoba_cli_algebra; do \
+	    occurrences="$$(printf '%s\n' "$$rust_shard_block" | grep -Fc -- "--target-shard-package=$$package")"; \
+	    if [ "$$occurrences" -ne 1 ]; then echo "ERROR: Rust shard block must select $$package exactly once." >&2; status=1; fi; \
+	done; \
+	target_package_count="$$(printf '%s\n' "$$rust_shard_block" | grep -Fc -- '--target-shard-package=')"; \
+	if [ "$$target_package_count" -ne 3 ]; then echo "ERROR: Rust shard block must select exactly three large binary packages." >&2; status=1; fi; \
 	for lane in clippy light heavy; do \
 	    if ! grep -Fq "validate-ci-scoped-$$lane" Makefile; then echo "ERROR: missing independently runnable Rust CI shard: $$lane" >&2; status=1; fi; \
 	done; \

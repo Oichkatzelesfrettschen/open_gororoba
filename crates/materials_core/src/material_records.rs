@@ -2277,7 +2277,7 @@ mod tests {
             "quantity quantity:test condition temperature_k contradicts state state:au:test"
         );
 
-        let mut ambiguous_temperature = graph;
+        let mut ambiguous_temperature = graph.clone();
         ambiguous_temperature.quantities[0]
             .conditions
             .insert("temperature".to_owned(), "100 K".to_owned());

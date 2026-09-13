@@ -137,7 +137,7 @@ jobs:
           rustc --edition=2024 -D warnings crates/gororoba_cli/src/bin/detect_worker_budget.rs -o "$RUNNER_TEMP/detect-worker-budget"
           worker_budget="$("$RUNNER_TEMP/detect-worker-budget")"
           echo "Hosted validation uses $worker_budget workers from std::thread::available_parallelism()."
-          for variable in CI_WORKER_BUDGET WORKER_BUDGET CARGO_JOBS NEXTEST_TEST_THREADS RUST_TEST_THREADS RAYON_THREADS; do
+          for variable in CI_WORKER_BUDGET WORKER_BUDGET CARGO_JOBS CARGO_BUILD_JOBS NEXTEST_TEST_THREADS RUST_TEST_THREADS RAYON_THREADS RAYON_NUM_THREADS; do
             echo "$variable=$worker_budget" >> "$GITHUB_ENV"
           done
           if [ "$FULL" = true ]; then
@@ -249,6 +249,8 @@ jobs:
               --heavy-package=algebra_analysis \
               --heavy-package=gr_core \
               --target-shard-package=gororoba_cli_physics \
+              --target-shard-package=gororoba_cli_data \
+              --target-shard-package=gororoba_cli_algebra \
               --target-shard-count=8)"; then
             printf 'matrix=%s\n' "$fallback_matrix" >> "$GITHUB_OUTPUT"
             exit 1
@@ -380,7 +382,7 @@ jobs:
           rustc --edition=2024 -D warnings crates/gororoba_cli/src/bin/detect_worker_budget.rs -o "$RUNNER_TEMP/detect-worker-budget"
           worker_budget="$("$RUNNER_TEMP/detect-worker-budget")"
           echo "Hosted Rust ${{ matrix.lane }} validation uses $worker_budget workers from std::thread::available_parallelism().get()."
-          for variable in CI_WORKER_BUDGET WORKER_BUDGET CARGO_JOBS NEXTEST_TEST_THREADS RUST_TEST_THREADS RAYON_THREADS; do
+          for variable in CI_WORKER_BUDGET WORKER_BUDGET CARGO_JOBS CARGO_BUILD_JOBS NEXTEST_TEST_THREADS RUST_TEST_THREADS RAYON_THREADS RAYON_NUM_THREADS; do
             echo "$variable=$worker_budget" >> "$GITHUB_ENV"
           done
 
@@ -432,8 +434,172 @@ jobs:
             ${{ github.workspace }}/.cache/gate-cbuild
           key: ${{ steps.rust-cache.outputs.cache-primary-key }}
 
+  scientific-replay:
+    needs: validation-policy
+    if: always()
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: dtolnay/rust-toolchain@1.97.0
+
+      - uses: taiki-e/install-action@v2
+        with:
+          tool: sccache@0.15.0
+
+      - name: Install scientific replay build dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y clang mold glslc libcfitsio-dev libhdf5-dev libfontconfig1-dev libopenblas-dev libblas-dev liblapack-dev pkg-config
+
+      - name: Resolve process-visible worker count
+        run: |
+          set -euo pipefail
+          rustc --edition=2024 -D warnings crates/gororoba_cli/src/bin/detect_worker_budget.rs -o "$RUNNER_TEMP/detect-worker-budget"
+          worker_budget="$("$RUNNER_TEMP/detect-worker-budget")"
+          echo "Hosted scientific replay uses $worker_budget workers from std::thread::available_parallelism()."
+          for variable in CI_WORKER_BUDGET WORKER_BUDGET CARGO_JOBS CARGO_BUILD_JOBS NEXTEST_TEST_THREADS RUST_TEST_THREADS RAYON_THREADS RAYON_NUM_THREADS; do
+            echo "$variable=$worker_budget" >> "$GITHUB_ENV"
+          done
+
+      - name: Select hydration-dependent scientific replays
+        id: select
+        env:
+          EVENT_BASE: ${{ github.event.pull_request.base.sha || github.event.before }}
+          FULL: ${{ github.event_name == 'schedule' || inputs.full == true }}
+        run: |
+          set -euo pipefail
+          if [ "$FULL" = true ]; then
+            echo 'run=true' >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          comparison_base="$EVENT_BASE"
+          if [ -z "$comparison_base" ] || [ "$comparison_base" = 0000000000000000000000000000000000000000 ]; then
+            comparison_base="$(git rev-parse HEAD^)"
+          fi
+          git cat-file -e "$comparison_base^{commit}"
+          git diff --no-renames --name-only "$comparison_base" HEAD > "$RUNNER_TEMP/scientific-replay-changed-paths.txt"
+          if grep -Eq '^(Cargo\.(toml|lock)|rust-toolchain\.toml|Makefile|\.github/workflows/ci\.yml|data/retention/scientific-payloads\.json|crates/(provenance_store|gororoba_cli_provenance|algebra_experimental|gororoba_cli_physics)/)' "$RUNNER_TEMP/scientific-replay-changed-paths.txt"; then
+            echo 'run=true' >> "$GITHUB_OUTPUT"
+          else
+            echo 'run=false' >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Restore scientific replay build artifacts
+        if: steps.select.outputs.run == 'true'
+        uses: actions/cache/restore@v4
+        with:
+          path: |
+            ${{ env.CARGO_HOME }}/registry
+            ${{ env.CARGO_HOME }}/git
+            ${{ env.CARGO_TARGET_DIR }}
+            ${{ github.workspace }}/.cache/gate-cbuild
+          key: scientific-replay-v1-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('rust-toolchain.toml', '.cargo/config.toml') }}-${{ hashFiles('Cargo.lock') }}-${{ github.sha }}
+          restore-keys: |
+            ci-v2-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('rust-toolchain.toml', '.cargo/config.toml') }}-${{ hashFiles('Cargo.lock') }}-${{ github.sha }}-
+            ci-v2-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('rust-toolchain.toml', '.cargo/config.toml') }}-${{ hashFiles('Cargo.lock') }}-
+
+      - name: Download the hash-bound scientific payload archive
+        id: archive
+        if: steps.select.outputs.run == 'true'
+        continue-on-error: true
+        run: |
+          set -euo pipefail
+          archive_url="$(jq -er '.archive.url' data/retention/scientific-payloads.json)"
+          wget --user-agent='Mozilla/5.0' --timeout=30 --tries=3 --continue \
+            --output-document="$RUNNER_TEMP/scientific-payloads.tar.zst" \
+            "$archive_url"
+
+      - name: Materialize the bounded scientific replay inputs
+        id: hydrate
+        if: steps.archive.outcome == 'success'
+        continue-on-error: true
+        run: |
+          set -euo pipefail
+          cargo run --locked --profile validation -p gororoba_cli_provenance \
+            --bin hydrate-scientific-payloads -- \
+            --repo-root "$GITHUB_WORKSPACE" \
+            --manifest "$GITHUB_WORKSPACE/data/retention/scientific-payloads.json" \
+            --archive "$RUNNER_TEMP/scientific-payloads.tar.zst" \
+            --path data/csv/cayley_dickson/256d_lattice_mapping.csv \
+            --path data/csv/cayley_dickson/512d_lattice_mapping.csv \
+            --path data/csv/cayley_dickson/1024d_lattice_mapping.csv \
+            --path data/csv/cayley_dickson/2048d_lattice_mapping.csv \
+            --path data/output/audit/claim-family-evidence-adjudication/nufit-v60-parameters.pdf \
+            --path data/output/audit/claim-family-evidence-adjudication/nufit-v61-parameters.pdf \
+            --path data/output/audit/claim-family-evidence-adjudication/null-pilot-cpu/C1-uniform-fzd-0/rho.f64le \
+            --path data/output/audit/claim-family-evidence-adjudication/null-pilot-cpu/C1-uniform-fzd-0/force.xyz.f64le \
+            | tee scientific-replay-hydration.json
+
+      - name: Execute hydrated lattice replays
+        id: lattice
+        if: steps.hydrate.outcome == 'success'
+        continue-on-error: true
+        run: |
+          set -o pipefail
+          cargo test --locked --profile validation --no-fail-fast -p algebra_experimental --lib 'cd_external::tests::' -- --ignored --nocapture 2>&1 | tee scientific-replay-lattice.txt
+
+      - name: Execute hydrated NuFIT source replay
+        id: nufit
+        if: steps.hydrate.outcome == 'success'
+        continue-on-error: true
+        run: |
+          set -o pipefail
+          cargo test --locked --profile validation --no-fail-fast -p algebra_experimental --test nufit_reference_identity fixed_angle_reference_membership_and_pdf_receipts_agree -- --ignored --exact --nocapture 2>&1 | tee scientific-replay-nufit.txt
+
+      - name: Execute hydrated box-counting replay
+        id: box-counting
+        if: steps.hydrate.outcome == 'success'
+        continue-on-error: true
+        run: |
+          set -o pipefail
+          cargo test --locked --profile validation --no-fail-fast -p gororoba_cli_physics --test box_counting_amplitude_identity retained_uniform_force_replay_separates_amplitude_from_adaptive_geometry -- --ignored --exact --nocapture 2>&1 | tee scientific-replay-box-counting.txt
+
+      - name: Report hydrated scientific replay outcomes
+        id: verdict
+        if: always()
+        env:
+          RUN_REPLAY: ${{ steps.select.outputs.run }}
+          ARCHIVE_OUTCOME: ${{ steps.archive.outcome }}
+          HYDRATE_OUTCOME: ${{ steps.hydrate.outcome }}
+          LATTICE_OUTCOME: ${{ steps.lattice.outcome }}
+          NUFIT_OUTCOME: ${{ steps.nufit.outcome }}
+          BOX_COUNTING_OUTCOME: ${{ steps.box-counting.outcome }}
+        run: |
+          set -euo pipefail
+          if [ "$RUN_REPLAY" != true ]; then
+            printf 'state=not_selected\n' > scientific-replay-verdict.txt
+            exit 0
+          fi
+          if [ "$ARCHIVE_OUTCOME" != success ] || [ "$HYDRATE_OUTCOME" != success ]; then
+            printf 'state=blocked_input\narchive=%s\nhydration=%s\n' "$ARCHIVE_OUTCOME" "$HYDRATE_OUTCOME" > scientific-replay-verdict.txt
+            exit 1
+          fi
+          failure_count=0
+          for outcome in "$LATTICE_OUTCOME" "$NUFIT_OUTCOME" "$BOX_COUNTING_OUTCOME"; do
+            if [ "$outcome" != success ]; then
+              failure_count=$((failure_count + 1))
+            fi
+          done
+          printf 'state=%s\nlattice=%s\nnufit=%s\nbox_counting=%s\n' "$([ "$failure_count" -eq 0 ] && echo executed_pass || echo executed_fail)" "$LATTICE_OUTCOME" "$NUFIT_OUTCOME" "$BOX_COUNTING_OUTCOME" > scientific-replay-verdict.txt
+          [ "$failure_count" -eq 0 ]
+
+      - name: Retain hydrated scientific replay reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: scientific-replay-reports
+          path: |
+            scientific-replay-*.json
+            scientific-replay-*.txt
+          if-no-files-found: warn
+          retention-days: 14
+
   validation:
-    needs: [validation-policy, validation-core, rust-validation]
+    needs: [validation-policy, validation-core, rust-validation, scientific-replay]
     if: always()
     runs-on: ubuntu-24.04
     timeout-minutes: 5
@@ -443,11 +609,12 @@ jobs:
           POLICY_RESULT: ${{ needs.validation-policy.result }}
           CORE_RESULT: ${{ needs.validation-core.result }}
           RUST_RESULT: ${{ needs.rust-validation.result }}
+          SCIENTIFIC_REPLAY_RESULT: ${{ needs.scientific-replay.result }}
           RUN_RUST: ${{ needs.validation-core.outputs.run_rust }}
         run: |
           set -euo pipefail
           failure_count=0
-          for result_variable in POLICY_RESULT CORE_RESULT; do
+          for result_variable in POLICY_RESULT CORE_RESULT SCIENTIFIC_REPLAY_RESULT; do
             result="${!result_variable}"
             printf '%s=%s\n' "$result_variable" "$result"
             if [ "$result" != success ]; then
@@ -486,7 +653,7 @@ jobs:
           rustc --edition=2024 -D warnings crates/gororoba_cli/src/bin/detect_worker_budget.rs -o "$RUNNER_TEMP/detect-worker-budget"
           worker_budget="$("$RUNNER_TEMP/detect-worker-budget")"
           echo "Hosted documentation validation uses $worker_budget workers from std::thread::available_parallelism()."
-          for variable in CI_WORKER_BUDGET WORKER_BUDGET CARGO_JOBS NEXTEST_TEST_THREADS RUST_TEST_THREADS RAYON_THREADS; do
+          for variable in CI_WORKER_BUDGET WORKER_BUDGET CARGO_JOBS CARGO_BUILD_JOBS NEXTEST_TEST_THREADS RUST_TEST_THREADS RAYON_THREADS RAYON_NUM_THREADS; do
             echo "$variable=$worker_budget" >> "$GITHUB_ENV"
           done
       - name: Install compiler and data dependencies

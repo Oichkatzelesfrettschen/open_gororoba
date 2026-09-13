@@ -213,7 +213,11 @@ pub fn efficient_information(
     augmented_target.rows_mut(0, target.len()).copy_from(target);
     let fitted = least_squares(&augmented_design, &augmented_target)?;
     let residual = augmented_target - augmented_design * fitted;
-    Ok(residual.norm_squared())
+    let information = residual.norm_squared();
+    if !information.is_finite() {
+        return Err(DiscriminationError::NumericalFailure);
+    }
+    Ok(information)
 }
 
 /// Local derivative of efficient information with respect to added diagonal
@@ -234,7 +238,11 @@ pub fn calibration_precision_sensitivity(
     let normal = nuisance.transpose() * nuisance + calibration.transpose() * calibration;
     let cross = nuisance.transpose() * target;
     let solution = least_squares(&normal, &cross)?;
-    Ok(solution[coordinate].powi(2))
+    let sensitivity = solution[coordinate].powi(2);
+    if !sensitivity.is_finite() {
+        return Err(DiscriminationError::NumericalFailure);
+    }
+    Ok(sensitivity)
 }
 
 /// Unrestricted nuisance projection residual using an SVD pseudoinverse.
@@ -536,6 +544,30 @@ mod tests {
         let derivative =
             calibration_precision_sensitivity(&target, &nuisance, &calibrated, 0).unwrap();
         assert!(derivative >= 0.0);
+    }
+
+    #[test]
+    fn efficient_information_rejects_finite_inputs_with_overflowing_result() {
+        let target = DVector::from_element(1, 1e200);
+        let nuisance = DMatrix::zeros(1, 1);
+        let calibration = DMatrix::zeros(0, 1);
+
+        assert_eq!(
+            efficient_information(&target, &nuisance, &calibration),
+            Err(DiscriminationError::NumericalFailure)
+        );
+    }
+
+    #[test]
+    fn calibration_sensitivity_rejects_finite_inputs_with_overflowing_result() {
+        let target = DVector::from_element(1, 1e200);
+        let nuisance = DMatrix::identity(1, 1);
+        let calibration = DMatrix::zeros(0, 1);
+
+        assert_eq!(
+            calibration_precision_sensitivity(&target, &nuisance, &calibration, 0),
+            Err(DiscriminationError::NumericalFailure)
+        );
     }
 
     #[test]

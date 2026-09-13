@@ -40,18 +40,27 @@ fn run_sharder(root: &Path, rust_scope: &str) -> Output {
         .unwrap()
 }
 
-fn run_target_sharder(root: &Path, package_name: &str) -> Output {
-    Command::new(env!("CARGO_BIN_EXE_xtask"))
+fn run_target_sharder(root: &Path, package_names: &[&str]) -> Output {
+    let mut sorted_package_names = package_names.to_vec();
+    sorted_package_names.sort_unstable();
+    let package_scope = sorted_package_names
+        .iter()
+        .map(|package_name| format!("-p {package_name}"))
+        .collect::<Vec<_>>()
+        .join(" ");
+    let mut command = Command::new(env!("CARGO_BIN_EXE_xtask"));
+    command
         .arg("ci-rust-shard-matrix")
         .arg("--workspace-manifest")
         .arg(root.join("Cargo.toml"))
-        .arg(format!("--rust-scope=-p {package_name}"))
-        .arg(format!("--clippy-scope=-p {package_name}"))
+        .arg(format!("--rust-scope={package_scope}"))
+        .arg(format!("--clippy-scope={package_scope}"))
         .arg("--light-shard-count=3")
-        .arg(format!("--target-shard-package={package_name}"))
-        .arg("--target-shard-count=3")
-        .output()
-        .unwrap()
+        .arg("--target-shard-count=3");
+    for package_name in package_names {
+        command.arg(format!("--target-shard-package={package_name}"));
+    }
+    command.output().unwrap()
 }
 
 fn packages_from_scope(scope: &str) -> Vec<&str> {
@@ -116,7 +125,7 @@ fn target_shards_cover_every_declared_binary_exactly_once() {
         "[package]\nname = \"physics\"\nversion = \"0.1.0\"\n\n[[bin]]\nname = \"alpha-bin\"\npath = \"src/bin/alpha.rs\"\n\n[[bin]]\nname = \"beta-bin\"\npath = \"src/bin/beta.rs\"\nrequired-features = [\"gpu\"]\n\n[[bin]]\nname = \"gamma-bin\"\npath = \"src/bin/gamma.rs\"\n",
     )
     .unwrap();
-    let output = run_target_sharder(temp.path(), "physics");
+    let output = run_target_sharder(temp.path(), &["physics"]);
     assert!(
         output.status.success(),
         "{}",
@@ -154,6 +163,117 @@ fn target_shards_cover_every_declared_binary_exactly_once() {
             .into_iter()
             .map(str::to_string)
             .collect()
+    );
+}
+
+#[test]
+fn multiple_target_shard_packages_cover_each_package_and_binary_once() {
+    let temp = tempfile::tempdir().unwrap();
+    write_workspace(
+        temp.path(),
+        &[("crates/physics", "physics"), ("crates/data", "data")],
+    );
+    for (member, package_name) in [("physics", "physics"), ("data", "data")] {
+        std::fs::write(
+            temp.path().join(format!("crates/{member}/Cargo.toml")),
+            format!(
+                "[package]\nname = \"{package_name}\"\nversion = \"0.1.0\"\n\n[[bin]]\nname = \"{package_name}-alpha\"\npath = \"src/bin/alpha.rs\"\n\n[[bin]]\nname = \"{package_name}-beta\"\npath = \"src/bin/beta.rs\"\n"
+            ),
+        )
+        .unwrap();
+    }
+
+    let output = run_target_sharder(temp.path(), &["physics", "data"]);
+    let reversed_output = run_target_sharder(temp.path(), &["data", "physics"]);
+    assert!(
+        output.status.success(),
+        "{}",
+        String::from_utf8_lossy(&output.stderr)
+    );
+    assert_eq!(
+        output.stdout, reversed_output.stdout,
+        "target package option order must not affect the matrix"
+    );
+    let matrix: Value = serde_json::from_slice(&output.stdout).unwrap();
+    let entries = matrix["include"].as_array().unwrap();
+    let mut observed_non_binary = BTreeSet::new();
+    let mut observed_binaries = BTreeSet::new();
+    for entry in entries {
+        let package_name = packages_from_scope(entry["rust_scope"].as_str().unwrap());
+        if entry["target"] == "clippy" {
+            continue;
+        }
+        assert_eq!(package_name.len(), 1);
+        let package_name = package_name[0];
+        let target_args = entry["cargo_target_args"].as_str().unwrap();
+        if target_args == "--lib --tests" {
+            assert!(observed_non_binary.insert(package_name.to_string()));
+            continue;
+        }
+        let target_tokens: Vec<&str> = target_args.split_whitespace().collect();
+        for pair in target_tokens.chunks_exact(2) {
+            assert_eq!(pair[0], "--bin");
+            assert!(observed_binaries.insert((package_name.to_string(), pair[1].to_string())));
+        }
+    }
+    assert_eq!(
+        observed_non_binary,
+        ["data", "physics"].into_iter().map(str::to_string).collect()
+    );
+    assert_eq!(
+        observed_binaries,
+        [
+            ("data", "data-alpha"),
+            ("data", "data-beta"),
+            ("physics", "physics-alpha"),
+            ("physics", "physics-beta"),
+        ]
+        .into_iter()
+        .map(|(package, binary)| (package.to_string(), binary.to_string()))
+        .collect()
+    );
+}
+
+#[test]
+fn duplicate_target_shard_package_mutation_is_rejected() {
+    let temp = tempfile::tempdir().unwrap();
+    write_workspace(temp.path(), &[("crates/physics", "physics")]);
+    std::fs::write(
+        temp.path().join("crates/physics/Cargo.toml"),
+        "[package]\nname = \"physics\"\nversion = \"0.1.0\"\n\n[[bin]]\nname = \"physics-bin\"\npath = \"src/bin/physics.rs\"\n",
+    )
+    .unwrap();
+
+    let output = run_target_sharder(temp.path(), &["physics", "physics"]);
+    assert!(!output.status.success());
+    assert!(
+        String::from_utf8_lossy(&output.stderr)
+            .contains("target-shard package is named more than once"),
+        "{}",
+        String::from_utf8_lossy(&output.stderr)
+    );
+}
+
+#[test]
+fn heavy_target_shard_overlap_mutation_is_rejected() {
+    let temp = tempfile::tempdir().unwrap();
+    write_workspace(temp.path(), &[("crates/physics", "physics")]);
+    let output = Command::new(env!("CARGO_BIN_EXE_xtask"))
+        .arg("ci-rust-shard-matrix")
+        .arg("--workspace-manifest")
+        .arg(temp.path().join("Cargo.toml"))
+        .arg("--rust-scope=-p physics")
+        .arg("--clippy-scope=-p physics")
+        .arg("--heavy-package=physics")
+        .arg("--target-shard-package=physics")
+        .output()
+        .unwrap();
+    assert!(!output.status.success());
+    assert!(
+        String::from_utf8_lossy(&output.stderr)
+            .contains("package cannot be both heavy and target-sharded"),
+        "{}",
+        String::from_utf8_lossy(&output.stderr)
     );
 }
 
