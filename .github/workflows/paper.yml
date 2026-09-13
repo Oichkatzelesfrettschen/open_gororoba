@@ -121,6 +121,7 @@ jobs:
 
       - name: Report collected paper failures
         if: always()
+        shell: bash
         env:
           FETCH_AA_CLASS_OUTCOME: ${{ steps.fetch-aa-class.outcome }}
           FETCH_AA_BIBLIOGRAPHY_OUTCOME: ${{ steps.fetch-aa-bibliography.outcome }}

@@ -39,6 +39,9 @@ const DEFAULT_OUTPUT_DIRECTORY: &str = "data/output/audit/casimir-optics-discrim
 const GAP_METERS: f64 = 200.0e-9;
 const SPHERE_RADIUS_METERS: f64 = 100.0e-6;
 const APERY_CONSTANT: f64 = 1.202_056_903_159_594;
+const PLANAR_CONVERGENCE_RELATIVE_TOLERANCE: f64 = 2.0e-9;
+const MULTILAYER_ANGULAR_CONVERGENCE_RELATIVE_TOLERANCE: f64 = 1.0e-8;
+const ANGULAR_CONVERGENCE_TARGET: &str = "Au20/SiO2-50/Al2O3-50/Si_vs_Au";
 const PRODUCER_SOURCE: &str = include_str!("casimir_optics_discrimination_audit.rs");
 const SOURCE_RETRIEVAL_MANIFEST: &str = "source-retrieval-manifest.toml";
 
@@ -488,6 +491,117 @@ fn relative_error(actual: f64, expected: f64) -> f64 {
     ((actual - expected) / expected).abs()
 }
 
+fn cutoff_convergence_options() -> [LifshitzQuadratureOptions; 3] {
+    [16.0, 20.0, 24.0]
+        .map(|kappa_cutoff| LifshitzQuadratureOptions::new(kappa_cutoff, 256, 64))
+}
+
+fn radial_convergence_options() -> [LifshitzQuadratureOptions; 3] {
+    [96, 128, 256]
+        .map(|kappa_order| LifshitzQuadratureOptions::new(24.0, kappa_order, 64))
+}
+
+fn angular_convergence_options() -> [ZeroTemperatureOptions; 3] {
+    [16, 32, 64].map(|angular_order| ZeroTemperatureOptions {
+        radial_order: 128,
+        angular_order,
+    })
+}
+
+fn generate_convergence_table(materials: LifshitzMaterials<'_>) -> Result<String> {
+    let perfect_conductor = DielectricModel::PerfectConductor;
+    let mut rows = Vec::new();
+
+    for (factor, configurations) in [
+        ("cutoff", cutoff_convergence_options()),
+        ("radial_order", radial_convergence_options()),
+    ] {
+        let observations = configurations.map(|options| {
+            (
+                options,
+                lifshitz_pressure_plates_with_options(
+                    GAP_METERS,
+                    &perfect_conductor,
+                    &perfect_conductor,
+                    options,
+                ),
+                lifshitz_energy_plates_with_options(
+                    GAP_METERS,
+                    &perfect_conductor,
+                    &perfect_conductor,
+                    options,
+                ),
+            )
+        });
+        let reference_pressure = observations[2].1;
+        let reference_energy = observations[2].2;
+        let pressure_change = relative_error(observations[1].1, reference_pressure);
+        let energy_change = relative_error(observations[1].2, reference_energy);
+        ensure!(
+            pressure_change < PLANAR_CONVERGENCE_RELATIVE_TOLERANCE
+                && energy_change < PLANAR_CONVERGENCE_RELATIVE_TOLERANCE,
+            "planar {factor} refinement exceeded relative tolerance {:.1e}: pressure={pressure_change:.17e}, energy={energy_change:.17e}",
+            PLANAR_CONVERGENCE_RELATIVE_TOLERANCE,
+        );
+
+        for (options, observed_pressure, observed_energy) in observations {
+            for (observable, value, reference) in [
+                ("pressure_pa", observed_pressure, reference_pressure),
+                ("energy_j_m2", observed_energy, reference_energy),
+            ] {
+                let relative_change = relative_error(value, reference);
+                rows.push(format!(
+                    "{factor}\tperfect_conductor_half_spaces\t{:.17e}\t{}\t{}\t{observable}\t{value:.17e}\t{reference:.17e}\t{relative_change:.17e}\t{:.17e}\t{}",
+                    options.kappa_cutoff,
+                    options.kappa_order,
+                    options.angle_order,
+                    PLANAR_CONVERGENCE_RELATIVE_TOLERANCE,
+                    relative_change < PLANAR_CONVERGENCE_RELATIVE_TOLERANCE,
+                ));
+            }
+        }
+    }
+
+    let opposing = Multilayer::half_space(materials.gold);
+    let (dispersive_stack, _) = stack_pair(
+        materials,
+        StackThicknesses {
+            cap_nm: 20.0,
+            silica_nm: 50.0,
+            alumina_nm: 50.0,
+        },
+        None,
+    );
+    let mut angular_observations = Vec::new();
+    for options in angular_convergence_options() {
+        let pressure =
+            zero_temperature_pressure(GAP_METERS, &opposing, &dispersive_stack, options)?;
+        angular_observations.push((options, pressure));
+    }
+    let angular_reference = angular_observations[2].1;
+    let angular_change = relative_error(angular_observations[1].1, angular_reference);
+    ensure!(
+        angular_change < MULTILAYER_ANGULAR_CONVERGENCE_RELATIVE_TOLERANCE,
+        "dispersive multilayer angular refinement exceeded relative tolerance {:.1e}: pressure={angular_change:.17e}",
+        MULTILAYER_ANGULAR_CONVERGENCE_RELATIVE_TOLERANCE,
+    );
+    for (options, pressure) in angular_observations {
+        let relative_change = relative_error(pressure, angular_reference);
+        rows.push(format!(
+            "angular_order\t{ANGULAR_CONVERGENCE_TARGET}\tna\t{}\t{}\tpressure_pa\t{pressure:.17e}\t{angular_reference:.17e}\t{relative_change:.17e}\t{:.17e}\t{}",
+            options.radial_order,
+            options.angular_order,
+            MULTILAYER_ANGULAR_CONVERGENCE_RELATIVE_TOLERANCE,
+            relative_change < MULTILAYER_ANGULAR_CONVERGENCE_RELATIVE_TOLERANCE,
+        ));
+    }
+
+    Ok(tsv(
+        "factor\ttarget\tkappa_cutoff\tradial_order\tangular_order\tobservable\tvalue\treference_value\trelative_change_from_reference\trelative_tolerance\twithin_tolerance",
+        rows,
+    ))
+}
+
 fn inference_error(
     operation: &str,
     error: stats_core::calibrated_discrimination::DiscriminationError,
@@ -645,6 +759,7 @@ fn generate_extended_reports(materials: LifshitzMaterials<'_>) -> Result<Extende
     )?;
     let derivative_pressure = -(energy_above - energy_below) / (2.0 * derivative_step_m);
     let derivative_error = relative_error(derivative_pressure, stack_pressure);
+    let convergence_table = generate_convergence_table(materials)?;
     let multilayer_table = tsv(
         "gap_nm\tstack\tpressure_pa\tenergy_j_m2\tnegative_energy_derivative_pa\tderivative_relative_error",
         [format!(
@@ -1005,6 +1120,7 @@ fn generate_extended_reports(materials: LifshitzMaterials<'_>) -> Result<Extende
     tables.insert("derivative_step_study.tsv", derivative_step_table);
     tables.insert("local_tolerances.tsv", local_tolerance_table);
     tables.insert("commutator_and_null_controls.tsv", controls_table);
+    tables.insert("planar_convergence.tsv", convergence_table);
 
     Ok((
         MultilayerReport {
@@ -1055,53 +1171,6 @@ fn generate_report() -> Result<GeneratedAudit> {
     let exact_pressure = -PI.powi(2) * HBAR * C / (240.0 * GAP_METERS.powi(4));
     let exact_energy = -PI.powi(2) * HBAR * C / (720.0 * GAP_METERS.powi(3));
     let exact_sphere_force = 2.0 * PI * SPHERE_RADIUS_METERS * exact_energy;
-    let convergence_configurations = [
-        LifshitzQuadratureOptions::new(16.0, 96, 32),
-        LifshitzQuadratureOptions::new(20.0, 128, 48),
-        LifshitzQuadratureOptions::new(24.0, 256, 64),
-    ];
-    let convergence_observations = convergence_configurations.map(|options| {
-        (
-            options,
-            lifshitz_pressure_plates_with_options(
-                GAP_METERS,
-                &perfect_conductor,
-                &perfect_conductor,
-                options,
-            ),
-            lifshitz_energy_plates_with_options(
-                GAP_METERS,
-                &perfect_conductor,
-                &perfect_conductor,
-                options,
-            ),
-        )
-    });
-    let finest_pressure = convergence_observations[2].1;
-    let finest_energy = convergence_observations[2].2;
-    ensure!(
-        relative_error(finest_pressure, exact_pressure) < 2.0e-9
-            && relative_error(finest_energy, exact_energy) < 5.0e-10
-            && relative_error(convergence_observations[1].1, finest_pressure) < 2.0e-9
-            && relative_error(convergence_observations[1].2, finest_energy) < 2.0e-9,
-        "planar cutoff or order refinement exceeded its declared tolerance"
-    );
-    let planar_convergence_table = tsv(
-        "kappa_cutoff\tkappa_order\tangle_order\tpressure_pa\texact_pressure_pa\tpressure_relative_error\tpressure_relative_change_from_finest\tenergy_j_m2\texact_energy_j_m2\tenergy_relative_error\tenergy_relative_change_from_finest",
-        convergence_observations.map(|(options, observed_pressure, observed_energy)| {
-            format!(
-                "{:.17e}\t{}\t{}\t{observed_pressure:.17e}\t{exact_pressure:.17e}\t{:.17e}\t{:.17e}\t{observed_energy:.17e}\t{exact_energy:.17e}\t{:.17e}\t{:.17e}",
-                options.kappa_cutoff,
-                options.kappa_order,
-                options.angle_order,
-                relative_error(observed_pressure, exact_pressure),
-                relative_error(observed_pressure, finest_pressure),
-                relative_error(observed_energy, exact_energy),
-                relative_error(observed_energy, finest_energy),
-            )
-        }),
-    );
-
     let gold = get_material("gold").context("gold optical model is unavailable")?;
     let temperature = 300.0;
     let zero_mode = materials_core::casimir_lifshitz_energy(
@@ -1193,14 +1262,13 @@ fn generate_report() -> Result<GeneratedAudit> {
         extended_drude: None,
     };
     let casimir_silica = silica_casimir_optical();
-    let (multilayer, physical_inference, controls, mut tables) =
+    let (multilayer, physical_inference, controls, tables) =
         generate_extended_reports(LifshitzMaterials {
             gold: &casimir_gold,
             silica: &casimir_silica,
             alumina: &alumina.optical,
             silicon: &silicon.optical,
         })?;
-    tables.insert("planar_convergence.tsv", planar_convergence_table);
 
     Ok(GeneratedAudit {
         report: AuditReport {
@@ -1607,6 +1675,76 @@ mod tests {
         let first = render_outputs(&generate_report().unwrap()).unwrap();
         let second = render_outputs(&generate_report().unwrap()).unwrap();
         assert_eq!(first, second);
+    }
+
+    #[test]
+    fn convergence_sweeps_vary_exactly_one_quadrature_control() {
+        let cutoff_options = cutoff_convergence_options();
+        assert_eq!(
+            cutoff_options.map(|options| options.kappa_cutoff),
+            [16.0, 20.0, 24.0]
+        );
+        assert!(
+            cutoff_options
+                .iter()
+                .all(|options| options.kappa_order == 256 && options.angle_order == 64)
+        );
+
+        let radial_options = radial_convergence_options();
+        assert_eq!(
+            radial_options.map(|options| options.kappa_order),
+            [96, 128, 256]
+        );
+        assert!(
+            radial_options
+                .iter()
+                .all(|options| options.kappa_cutoff == 24.0 && options.angle_order == 64)
+        );
+
+        let angular_options = angular_convergence_options();
+        assert_eq!(
+            angular_options.map(|options| options.angular_order),
+            [16, 32, 64]
+        );
+        assert!(
+            angular_options
+                .iter()
+                .all(|options| options.radial_order == 128)
+        );
+    }
+
+    #[test]
+    fn convergence_table_declares_targets_and_tolerances() {
+        let generated = generate_report().unwrap();
+        let table = generated.tables.get("planar_convergence.tsv").unwrap();
+        let rows = table.lines().skip(1).collect::<Vec<_>>();
+        assert_eq!(rows.len(), 15);
+
+        let mut factor_counts = BTreeMap::new();
+        for row in rows {
+            let columns = row.split('\t').collect::<Vec<_>>();
+            assert_eq!(columns.len(), 11);
+            *factor_counts.entry(columns[0]).or_insert(0) += 1;
+            let tolerance: f64 = columns[9].parse().unwrap();
+            match columns[0] {
+                "cutoff" | "radial_order" => {
+                    assert_eq!(columns[1], "perfect_conductor_half_spaces");
+                    assert_eq!(tolerance, PLANAR_CONVERGENCE_RELATIVE_TOLERANCE);
+                }
+                "angular_order" => {
+                    assert_eq!(columns[1], ANGULAR_CONVERGENCE_TARGET);
+                    assert_eq!(columns[2], "na");
+                    assert_eq!(
+                        tolerance,
+                        MULTILAYER_ANGULAR_CONVERGENCE_RELATIVE_TOLERANCE
+                    );
+                }
+                factor => panic!("unexpected convergence factor {factor}"),
+            }
+        }
+        assert_eq!(factor_counts.get("cutoff"), Some(&6));
+        assert_eq!(factor_counts.get("radial_order"), Some(&6));
+        assert_eq!(factor_counts.get("angular_order"), Some(&3));
     }
 
     #[test]

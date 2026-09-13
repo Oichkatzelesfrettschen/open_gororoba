@@ -311,6 +311,8 @@ validation-resource-contract-workers:
 	done; \
 	if ! grep -Fq 'std::thread::available_parallelism()' crates/gororoba_cli/src/bin/detect_worker_budget.rs; then echo "ERROR: Rust worker detector does not use process-visible parallelism." >&2; status=1; fi; \
 	if grep -Eq 'GOROROBA_WORKER_TEST_CPUS|max[(]|min[(]|clamp|/ *2|checked_div|unwrap_or' crates/gororoba_cli/src/bin/detect_worker_budget.rs; then echo "ERROR: worker detection contains an override, divisor, clamp, or fallback." >&2; status=1; fi; \
+	if ! grep -Fq 'std::thread::available_parallelism()' xtask/src/main.rs; then echo "ERROR: xtask host profile does not use process-visible parallelism." >&2; status=1; fi; \
+	if grep -Eq '(worker_budget|cargo_jobs|rayon_threads|rust_test_threads|nextest_test_threads|pytest_workers): physical_core_count' xtask/src/main.rs; then echo "ERROR: xtask host profile substitutes physical cores for process-visible workers." >&2; status=1; fi; \
 	if grep -Eq '^(NPROC|NJOBS)[[:space:]]*:=' Makefile; then echo "ERROR: Makefile retains a second CPU-count heuristic." >&2; status=1; fi; \
 	if grep -Eq 'heavy-(math|research)[[:space:]]*=[[:space:]]*\{[[:space:]]*max-threads[[:space:]]*=[[:space:]]*1' .config/nextest.toml; then echo "ERROR: nextest retains a CPU or memory safety serialization group." >&2; status=1; fi; \
 	if grep -Fq -- '--test-threads=1' .github/workflows/bench-cd-kernel.yml; then echo "ERROR: benchmark CI fixes the Rust test harness to one worker." >&2; status=1; fi; \

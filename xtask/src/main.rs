@@ -1273,7 +1273,7 @@ fn parse_validation_report_args(
 }
 
 fn run_host_profile(format: &str) -> Result<()> {
-    let profile = detect_host_profile();
+    let profile = detect_host_profile()?;
     match format {
         "shell" => {
             println!("HOST_PHYSICAL_CORES={}", profile.physical_core_count);
@@ -2174,21 +2174,24 @@ fn render_catalog_markdown_raw(snapshot: &SchemaSnapshot) -> String {
     out
 }
 
-fn detect_host_profile() -> HostProfile {
+fn detect_host_profile() -> Result<HostProfile> {
     let topo = HardwareTopology::current();
-    let physical_core_count = topo.physical_core_ids.len().max(1);
-    HostProfile {
+    let physical_core_count = topo.physical_core_ids.len();
+    let worker_budget = std::thread::available_parallelism()
+        .context("failed to detect process-visible CPUs")?
+        .get();
+    Ok(HostProfile {
         physical_core_ids: topo.physical_core_ids.clone(),
         physical_core_count,
         l3_cache_bytes: topo.l3_cache_bytes,
         l3_safe_working_set_bytes: topo.l3_safe_working_set_bytes,
-        worker_budget: physical_core_count,
-        cargo_jobs: physical_core_count,
-        rayon_threads: physical_core_count,
-        rust_test_threads: physical_core_count,
-        nextest_test_threads: physical_core_count,
-        pytest_workers: physical_core_count,
-    }
+        worker_budget,
+        cargo_jobs: worker_budget,
+        rayon_threads: worker_budget,
+        rust_test_threads: worker_budget,
+        nextest_test_threads: worker_budget,
+        pytest_workers: worker_budget,
+    })
 }
 
 fn join_usize(items: &[usize]) -> String {

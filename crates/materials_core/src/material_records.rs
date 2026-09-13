@@ -257,6 +257,11 @@ pub struct ModelRun {
     pub model_version: String,
     pub code_artifact_id: RecordId,
     pub input_quantity_ids: Vec<RecordId>,
+    pub specimen_id: RecordId,
+    pub geometry: String,
+    pub constitutive_model: String,
+    pub conditions: BTreeMap<String, String>,
+    pub state_history: Vec<String>,
     pub parameters: BTreeMap<String, String>,
     pub convergence_settings: BTreeMap<String, String>,
     pub validation_status: String,
@@ -324,9 +329,12 @@ impl QuantityPayload {
                 basis,
             } => {
                 require_nonempty("tensor basis", basis)?;
+                let Some(element_count) = rows.checked_mul(*columns) else {
+                    return Err("tensor dimensions must match finite values".to_owned());
+                };
                 if *rows == 0
                     || *columns == 0
-                    || values_row_major.len() != rows * columns
+                    || values_row_major.len() != element_count
                     || values_row_major.iter().any(|value| !value.is_finite())
                 {
                     return Err("tensor dimensions must match finite values".to_owned());
@@ -372,8 +380,11 @@ impl Uncertainty {
                 unit_squared,
             } => {
                 require_nonempty("covariance unit", unit_squared)?;
+                let Some(element_count) = dimension.checked_mul(*dimension) else {
+                    return Err("covariance dimensions must match finite values".to_owned());
+                };
                 if *dimension == 0
-                    || values_row_major.len() != dimension * dimension
+                    || values_row_major.len() != element_count
                     || values_row_major.iter().any(|value| !value.is_finite())
                 {
                     return Err("covariance dimensions must match finite values".to_owned());
@@ -407,6 +418,30 @@ impl Uncertainty {
         }
         Ok(())
     }
+
+    fn validate_quantity_unit(&self, quantity_unit: &str) -> Result<(), String> {
+        match self {
+            Self::Standard { unit, .. } | Self::Interval { unit, .. } => {
+                if unit != quantity_unit {
+                    return Err("uncertainty unit must match quantity unit".to_owned());
+                }
+            }
+            Self::Covariance { unit_squared, .. } => {
+                let expected_unit_squared = if quantity_unit == "1" {
+                    "1".to_owned()
+                } else {
+                    format!("{quantity_unit}^2")
+                };
+                if unit_squared != &expected_unit_squared {
+                    return Err(
+                        "covariance unit must match the squared quantity unit".to_owned(),
+                    );
+                }
+            }
+            Self::NotReported { .. } => {}
+        }
+        Ok(())
+    }
 }
 
 impl QuantityValue {
@@ -415,6 +450,7 @@ impl QuantityValue {
         require_nonempty("quantity kind", &self.quantity_kind)?;
         require_nonempty("quantity unit", &self.unit)?;
         self.uncertainty.validate()?;
+        self.uncertainty.validate_quantity_unit(&self.unit)?;
         match &self.observation {
             QuantityObservation::Observed { payload } => {
                 payload.validate()?;
@@ -635,11 +671,24 @@ impl ModelRun {
     pub fn validate(&self) -> Result<(), String> {
         self.model_run_id.validate("model-run identifier")?;
         self.code_artifact_id.validate("code artifact identifier")?;
+        self.specimen_id.validate("model-run specimen identifier")?;
         require_nonempty("model name", &self.model_name)?;
         require_nonempty("model version", &self.model_version)?;
+        require_nonempty("model-run geometry", &self.geometry)?;
+        require_nonempty("constitutive model", &self.constitutive_model)?;
         require_nonempty("validation status", &self.validation_status)?;
         if self.input_quantity_ids.is_empty() {
             return Err("model run requires at least one input quantity".to_owned());
+        }
+        if self.conditions.is_empty() {
+            return Err("model run requires bound conditions".to_owned());
+        }
+        for (name, value) in &self.conditions {
+            require_nonempty("model-run condition name", name)?;
+            require_nonempty("model-run condition value", value)?;
+        }
+        for history_entry in &self.state_history {
+            require_nonempty("model-run state-history entry", history_entry)?;
         }
         if self.parameters.is_empty() {
             return Err("model run requires declared parameters".to_owned());
@@ -735,16 +784,31 @@ impl MaterialEvidenceGraph {
             "state identifier",
             self.states.iter().map(|record| &record.state_id),
         )?;
+        let states_by_id: BTreeMap<_, _> = self
+            .states
+            .iter()
+            .map(|state| (&state.state_id, state))
+            .collect();
         let specimen_ids = unique_ids(
             "specimen identifier",
             self.specimens.iter().map(|record| &record.specimen_id),
         )?;
+        let specimens_by_id: BTreeMap<_, _> = self
+            .specimens
+            .iter()
+            .map(|specimen| (&specimen.specimen_id, specimen))
+            .collect();
         let measurement_ids = unique_ids(
             "measurement identifier",
             self.measurements
                 .iter()
                 .map(|record| &record.measurement_id),
         )?;
+        let measurements_by_id: BTreeMap<_, _> = self
+            .measurements
+            .iter()
+            .map(|measurement| (&measurement.measurement_id, measurement))
+            .collect();
         unique_ids(
             "quantity identifier",
             self.quantities
@@ -860,6 +924,30 @@ impl MaterialEvidenceGraph {
             }
         }
         for model_run in &self.model_runs {
+            let specimen = specimens_by_id.get(&model_run.specimen_id).ok_or_else(|| {
+                format!(
+                    "model run {} references unknown specimen {}",
+                    model_run.model_run_id.0, model_run.specimen_id.0
+                )
+            })?;
+            if model_run.geometry != specimen.geometry {
+                return Err(format!(
+                    "model run {} geometry does not match specimen {}",
+                    model_run.model_run_id.0, specimen.specimen_id.0
+                ));
+            }
+            let state = states_by_id.get(&specimen.state_id).ok_or_else(|| {
+                format!(
+                    "model run {} specimen {} references unknown state {}",
+                    model_run.model_run_id.0, specimen.specimen_id.0, specimen.state_id.0
+                )
+            })?;
+            if model_run.state_history != state.history {
+                return Err(format!(
+                    "model run {} state history does not match state {}",
+                    model_run.model_run_id.0, state.state_id.0
+                ));
+            }
             for input_quantity_id in &model_run.input_quantity_ids {
                 let input_quantity = quantities_by_id.get(input_quantity_id).ok_or_else(|| {
                     format!(
@@ -881,6 +969,30 @@ impl MaterialEvidenceGraph {
                         model_run.model_run_id.0, input_quantity_id.0
                     ));
                 }
+                let QuantityOrigin::Measurement { measurement_id } = &input_quantity.origin else {
+                    return Err(format!(
+                        "model run {} input {} does not originate from a measurement",
+                        model_run.model_run_id.0, input_quantity_id.0
+                    ));
+                };
+                let measurement = measurements_by_id.get(measurement_id).ok_or_else(|| {
+                    format!(
+                        "model run {} input {} references unknown measurement {}",
+                        model_run.model_run_id.0, input_quantity_id.0, measurement_id.0
+                    )
+                })?;
+                if measurement.specimen_id != model_run.specimen_id {
+                    return Err(format!(
+                        "model run {} specimen does not match input {} specimen",
+                        model_run.model_run_id.0, input_quantity_id.0
+                    ));
+                }
+                if input_quantity.conditions != model_run.conditions {
+                    return Err(format!(
+                        "model run {} conditions do not match input {} conditions",
+                        model_run.model_run_id.0, input_quantity_id.0
+                    ));
+                }
             }
         }
         for derived in &self.derived_values {
@@ -890,6 +1002,12 @@ impl MaterialEvidenceGraph {
                     derived.derived_value_id.0, derived.model_run_id.0
                 )
             })?;
+            if derived.output.conditions != model_run.conditions {
+                return Err(format!(
+                    "derived value {} output conditions do not match model run {} conditions",
+                    derived.derived_value_id.0, model_run.model_run_id.0
+                ));
+            }
             let declared_inputs: BTreeSet<_> = model_run.input_quantity_ids.iter().collect();
             for input_quantity_id in &derived.input_quantity_ids {
                 let input_quantity = quantities_by_id.get(input_quantity_id).ok_or_else(|| {
@@ -1098,6 +1216,77 @@ mod tests {
     }
 
     #[test]
+    fn uncertainty_units_match_quantity_units() {
+        let origin = QuantityOrigin::Measurement {
+            measurement_id: identifier("measurement:ellipsometry"),
+        };
+        let mut quantity = scalar_quantity(origin.clone(), EvidenceBasis::ExperimentalDirect);
+        quantity.unit = "Pa".to_owned();
+        quantity.uncertainty = Uncertainty::Standard {
+            value: 0.01,
+            unit: "K".to_owned(),
+        };
+        assert_eq!(
+            quantity.validate().unwrap_err(),
+            "uncertainty unit must match quantity unit"
+        );
+
+        let mut quantity = scalar_quantity(origin.clone(), EvidenceBasis::ExperimentalDirect);
+        quantity.unit = "Pa".to_owned();
+        quantity.uncertainty = Uncertainty::Interval {
+            lower: 0.0,
+            upper: 0.02,
+            unit: "K".to_owned(),
+        };
+        assert_eq!(
+            quantity.validate().unwrap_err(),
+            "uncertainty unit must match quantity unit"
+        );
+
+        let mut quantity = scalar_quantity(origin, EvidenceBasis::ExperimentalDirect);
+        quantity.unit = "Pa".to_owned();
+        quantity.uncertainty = Uncertainty::Covariance {
+            dimension: 1,
+            values_row_major: vec![0.01],
+            unit_squared: "Pa^2".to_owned(),
+        };
+        assert!(quantity.validate().is_ok());
+
+        let Uncertainty::Covariance { unit_squared, .. } = &mut quantity.uncertainty else {
+            unreachable!()
+        };
+        *unit_squared = "K^2".to_owned();
+        assert_eq!(
+            quantity.validate().unwrap_err(),
+            "covariance unit must match the squared quantity unit"
+        );
+    }
+
+    #[test]
+    fn tensor_and_covariance_dimension_products_reject_overflow() {
+        let tensor = QuantityPayload::Tensor {
+            values_row_major: Vec::new(),
+            rows: usize::MAX,
+            columns: 2,
+            basis: "Cartesian".to_owned(),
+        };
+        assert_eq!(
+            tensor.validate().unwrap_err(),
+            "tensor dimensions must match finite values"
+        );
+
+        let covariance = Uncertainty::Covariance {
+            dimension: usize::MAX,
+            values_row_major: Vec::new(),
+            unit_squared: "Pa^2".to_owned(),
+        };
+        assert_eq!(
+            covariance.validate().unwrap_err(),
+            "covariance dimensions must match finite values"
+        );
+    }
+
+    #[test]
     fn observed_quantities_require_conditions_applicability_and_matching_covariance() {
         let origin = QuantityOrigin::Measurement {
             measurement_id: identifier("measurement:ellipsometry"),
@@ -1250,6 +1439,14 @@ mod tests {
             model_version: "1".to_owned(),
             code_artifact_id: identifier("artifact:model-code"),
             input_quantity_ids,
+            specimen_id: identifier("specimen:au:test"),
+            geometry: "reported geometry".to_owned(),
+            constitutive_model: "Drude-Lorentz permittivity".to_owned(),
+            conditions: BTreeMap::from([(
+                "wavelength".to_owned(),
+                "0.500 um".to_owned(),
+            )]),
+            state_history: Vec::new(),
             parameters: BTreeMap::from([("oscillators".to_owned(), "3".to_owned())]),
             convergence_settings: BTreeMap::from([(
                 "relative_tolerance".to_owned(),
@@ -1257,6 +1454,28 @@ mod tests {
             )]),
             validation_status: "fixture validated".to_owned(),
         }
+    }
+
+    fn graph_with_model_and_derived() -> MaterialEvidenceGraph {
+        let mut input = scalar_quantity(
+            QuantityOrigin::Measurement {
+                measurement_id: identifier("measurement:ellipsometry"),
+            },
+            EvidenceBasis::ExperimentalDirect,
+        );
+        input.quantity_id = identifier("quantity:epsilon");
+        let mut graph = graph_with_quantities(vec![input.clone()]);
+        graph.model_runs.push(model_run(
+            "model:drude-lorentz:v1",
+            vec![input.quantity_id.clone()],
+        ));
+        graph.derived_values.push(derived_value(
+            "derived:reflectivity",
+            "model:drude-lorentz:v1",
+            vec![input.quantity_id],
+            "quantity:reflectivity",
+        ));
+        graph
     }
 
     fn derived_value(
@@ -1500,6 +1719,90 @@ mod tests {
         assert_eq!(
             run.validate().unwrap_err(),
             "convergence setting value must be nonempty"
+        );
+    }
+
+    #[test]
+    fn model_run_requires_explicit_physical_bindings() {
+        let mut run = model_run("model:missing-binding", vec![identifier("quantity:input")]);
+        run.specimen_id = RecordId(" ".to_owned());
+        assert_eq!(
+            run.validate().unwrap_err(),
+            "model-run specimen identifier must be nonempty"
+        );
+
+        let mut run = model_run("model:missing-binding", vec![identifier("quantity:input")]);
+        run.geometry.clear();
+        assert_eq!(
+            run.validate().unwrap_err(),
+            "model-run geometry must be nonempty"
+        );
+
+        let mut run = model_run("model:missing-binding", vec![identifier("quantity:input")]);
+        run.constitutive_model.clear();
+        assert_eq!(
+            run.validate().unwrap_err(),
+            "constitutive model must be nonempty"
+        );
+
+        let mut run = model_run("model:missing-binding", vec![identifier("quantity:input")]);
+        run.conditions.clear();
+        assert_eq!(
+            run.validate().unwrap_err(),
+            "model run requires bound conditions"
+        );
+
+        let mut run = model_run("model:missing-binding", vec![identifier("quantity:input")]);
+        run.state_history = vec![" ".to_owned()];
+        assert_eq!(
+            run.validate().unwrap_err(),
+            "model-run state-history entry must be nonempty"
+        );
+    }
+
+    #[test]
+    fn model_run_bindings_match_inputs_and_derived_outputs() {
+        let graph = graph_with_model_and_derived();
+        assert!(graph.validate().is_ok());
+
+        let mut specimen_mismatch = graph.clone();
+        let mut alternate_specimen = specimen_mismatch.specimens[0].clone();
+        alternate_specimen.specimen_id = identifier("specimen:au:alternate");
+        specimen_mismatch.specimens.push(alternate_specimen);
+        specimen_mismatch.model_runs[0].specimen_id = identifier("specimen:au:alternate");
+        assert_eq!(
+            specimen_mismatch.validate().unwrap_err(),
+            "model run model:drude-lorentz:v1 specimen does not match input quantity:epsilon specimen"
+        );
+
+        let mut geometry_mismatch = graph.clone();
+        geometry_mismatch.model_runs[0].geometry = "spherical".to_owned();
+        assert_eq!(
+            geometry_mismatch.validate().unwrap_err(),
+            "model run model:drude-lorentz:v1 geometry does not match specimen specimen:au:test"
+        );
+
+        let mut condition_mismatch = graph.clone();
+        condition_mismatch.model_runs[0].conditions =
+            BTreeMap::from([("wavelength".to_owned(), "0.600 um".to_owned())]);
+        assert_eq!(
+            condition_mismatch.validate().unwrap_err(),
+            "model run model:drude-lorentz:v1 conditions do not match input quantity:epsilon conditions"
+        );
+
+        let mut history_mismatch = graph.clone();
+        history_mismatch.model_runs[0].state_history = vec!["annealed".to_owned()];
+        assert_eq!(
+            history_mismatch.validate().unwrap_err(),
+            "model run model:drude-lorentz:v1 state history does not match state state:au:test"
+        );
+
+        let mut output_mismatch = graph;
+        output_mismatch.derived_values[0].output.conditions =
+            BTreeMap::from([("wavelength".to_owned(), "0.600 um".to_owned())]);
+        assert_eq!(
+            output_mismatch.validate().unwrap_err(),
+            "derived value derived:reflectivity output conditions do not match model run model:drude-lorentz:v1 conditions"
         );
     }
 
