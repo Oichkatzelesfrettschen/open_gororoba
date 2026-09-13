@@ -291,11 +291,8 @@ fn validate_scattering(scattering: &ScatteringModel) -> Result<(), LifshitzError
             }
             if omega_ev
                 .iter()
-                .zip(omega_ev.iter().skip(1))
-                .any(|(lower, upper)| {
-                    !lower.is_finite() || !upper.is_finite() || lower < &0.0 || upper <= lower
-                })
-                || !omega_ev.last().is_some_and(|value| value.is_finite())
+                .any(|value| !value.is_finite() || *value < 0.0)
+                || omega_ev.windows(2).any(|pair| pair[1] <= pair[0])
                 || gamma_ev
                     .iter()
                     .any(|value| !value.is_finite() || *value < 0.0)
@@ -310,7 +307,7 @@ fn validate_scattering(scattering: &ScatteringModel) -> Result<(), LifshitzError
 }
 
 fn validate_model(model: LifshitzModel<'_>) -> Result<(), LifshitzError> {
-    if !model.params.eps_inf.is_finite() || model.params.eps_inf <= 0.0 {
+    if !model.params.eps_inf.is_finite() || model.params.eps_inf < 1.0 {
         return Err(LifshitzError::InvalidMaterial(
             "high-frequency permittivity",
         ));
@@ -318,7 +315,7 @@ fn validate_model(model: LifshitzModel<'_>) -> Result<(), LifshitzError> {
     if let Some(drude) = model.params.drude {
         validate_finite_nonnegative(drude.omega_p_ev, "Drude plasma energy")?;
         validate_finite_nonnegative(drude.gamma_ev, "Drude damping energy")?;
-        if !drude.eps_inf.is_finite() || drude.eps_inf <= 0.0 {
+        if !drude.eps_inf.is_finite() || drude.eps_inf < 1.0 {
             return Err(LifshitzError::InvalidMaterial(
                 "standalone Drude high-frequency permittivity",
             ));
@@ -326,7 +323,7 @@ fn validate_model(model: LifshitzModel<'_>) -> Result<(), LifshitzError> {
     }
     if let Some(extended) = &model.params.extended_drude {
         validate_finite_nonnegative(extended.omega_p_ev, "extended-Drude plasma energy")?;
-        if !extended.eps_inf.is_finite() || extended.eps_inf <= 0.0 {
+        if !extended.eps_inf.is_finite() || extended.eps_inf < 1.0 {
             return Err(LifshitzError::InvalidMaterial(
                 "extended-Drude high-frequency permittivity",
             ));
@@ -799,7 +796,7 @@ pub fn local_drude_finite_temperature_pressure(
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::{DrudeParams, OpticalLorentzOscillator};
+    use crate::{DrudeParams, ExtendedDrudeParams, OpticalLorentzOscillator};
 
     fn dielectric(eps_inf: f64, strength: f64) -> DrudeLorentzParams {
         DrudeLorentzParams {
@@ -825,6 +822,40 @@ mod tests {
             eps_inf: 1.0,
             extended_drude: None,
         }
+    }
+
+    #[test]
+    fn validation_rejects_sub_vacuum_asymptotic_permittivity() {
+        let material = dielectric(0.9, 1.0);
+        assert_eq!(
+            validate_model(LifshitzModel::new(&material)),
+            Err(LifshitzError::InvalidMaterial(
+                "high-frequency permittivity"
+            ))
+        );
+    }
+
+    #[test]
+    fn validation_rejects_negative_singleton_scattering_frequency() {
+        let material = DrudeLorentzParams {
+            drude: None,
+            oscillators: Vec::new(),
+            eps_inf: 1.0,
+            extended_drude: Some(ExtendedDrudeParams {
+                omega_p_ev: 1.0,
+                scattering: ScatteringModel::Tabulated {
+                    omega_ev: vec![-1.0],
+                    gamma_ev: vec![0.1],
+                },
+                eps_inf: 1.0,
+            }),
+        };
+        assert_eq!(
+            validate_model(LifshitzModel::new(&material)),
+            Err(LifshitzError::InvalidMaterial(
+                "tabulated scattering values"
+            ))
+        );
     }
 
     fn relative_error(actual: f64, expected: f64) -> f64 {

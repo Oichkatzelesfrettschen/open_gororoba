@@ -44,7 +44,7 @@ struct SourceModelInput {
     bytes: &'static [u8],
 }
 
-const SOURCE_MODEL_INPUTS: [SourceModelInput; 8] = [
+const SOURCE_MODEL_INPUTS: [SourceModelInput; 15] = [
     SourceModelInput {
         path: "crates/gororoba_cli_physics/src/bin/casimir_optics_discrimination_audit.rs",
         bytes: include_bytes!("casimir_optics_discrimination_audit.rs"),
@@ -58,10 +58,38 @@ const SOURCE_MODEL_INPUTS: [SourceModelInput; 8] = [
         bytes: include_bytes!("../../../materials_core/src/optical_database.rs"),
     },
     SourceModelInput {
+        path: "crates/materials_core/src/optical_database/metals_dl.rs",
+        bytes: include_bytes!("../../../materials_core/src/optical_database/metals_dl.rs"),
+    },
+    SourceModelInput {
+        path: "crates/materials_core/src/optical_database/oxides_tcos.rs",
+        bytes: include_bytes!("../../../materials_core/src/optical_database/oxides_tcos.rs"),
+    },
+    SourceModelInput {
+        path: "crates/materials_core/src/optical_database/semiconductors.rs",
+        bytes: include_bytes!("../../../materials_core/src/optical_database/semiconductors.rs"),
+    },
+    SourceModelInput {
         path: "crates/materials_core/src/optical_database/thin_film_coating.rs",
         bytes: include_bytes!(
             "../../../materials_core/src/optical_database/thin_film_coating.rs"
         ),
+    },
+    SourceModelInput {
+        path: "crates/materials_core/src/optical_database/tungstates.rs",
+        bytes: include_bytes!("../../../materials_core/src/optical_database/tungstates.rs"),
+    },
+    SourceModelInput {
+        path: "crates/materials_data/build.rs",
+        bytes: include_bytes!("../../../materials_data/build.rs"),
+    },
+    SourceModelInput {
+        path: "crates/materials_data/data/optical/lorentz_models.toml",
+        bytes: include_bytes!("../../../materials_data/data/optical/lorentz_models.toml"),
+    },
+    SourceModelInput {
+        path: "crates/materials_data/src/lib.rs",
+        bytes: include_bytes!("../../../materials_data/src/lib.rs"),
     },
     SourceModelInput {
         path: "crates/quantum_core/src/casimir.rs",
@@ -256,7 +284,11 @@ fn tsv(header: &str, rows: impl IntoIterator<Item = String>) -> String {
 }
 
 fn sha256_hex(bytes: &[u8]) -> String {
-    Sha256::digest(bytes)
+    hex_encode(&Sha256::digest(bytes))
+}
+
+fn hex_encode(bytes: &[u8]) -> String {
+    bytes
         .iter()
         .map(|byte| format!("{byte:02x}"))
         .collect()
@@ -270,7 +302,7 @@ fn source_model_identity() -> String {
         digest.update(input.bytes);
         digest.update([0]);
     }
-    format!("sha256:{}", sha256_hex(&digest.finalize()))
+    format!("sha256:{}", hex_encode(&digest.finalize()))
 }
 
 fn verify_source_retrieval_manifest_source(source: &str, repository_root: &Path) -> Result<()> {

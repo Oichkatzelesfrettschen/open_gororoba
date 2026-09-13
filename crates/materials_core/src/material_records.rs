@@ -644,8 +644,16 @@ impl ModelRun {
         if self.parameters.is_empty() {
             return Err("model run requires declared parameters".to_owned());
         }
+        for (name, value) in &self.parameters {
+            require_nonempty("model parameter name", name)?;
+            require_nonempty("model parameter value", value)?;
+        }
         if self.convergence_settings.is_empty() {
             return Err("model run requires convergence settings".to_owned());
+        }
+        for (name, value) in &self.convergence_settings {
+            require_nonempty("convergence setting name", name)?;
+            require_nonempty("convergence setting value", value)?;
         }
         Ok(())
     }
@@ -830,6 +838,15 @@ impl MaterialEvidenceGraph {
                     if input_quantity.evidence.class() != EvidenceClass::ExperimentalDirect {
                         return Err(format!(
                             "fitted quantity {} input {} is not experimental_direct",
+                            quantity.quantity_id.0, input_quantity_id.0
+                        ));
+                    }
+                    if !matches!(
+                        &input_quantity.observation,
+                        QuantityObservation::Observed { .. }
+                    ) {
+                        return Err(format!(
+                            "fitted quantity {} input {} is not an observed quantity",
                             quantity.quantity_id.0, input_quantity_id.0
                         ));
                     }
@@ -1407,6 +1424,17 @@ mod tests {
                 .is_ok()
         );
 
+        let mut missing_direct = direct.clone();
+        missing_direct.observation = QuantityObservation::Missing {
+            reason: Missingness::NotMeasured,
+        };
+        assert_eq!(
+            graph_with_quantities(vec![missing_direct, fitted.clone()])
+                .validate()
+                .unwrap_err(),
+            "fitted quantity quantity:fitted-n input quantity:psi-delta is not an observed quantity"
+        );
+
         let EvidenceBasis::ExperimentalFitted {
             input_quantity_ids, ..
         } = &mut fitted.evidence
@@ -1418,6 +1446,23 @@ mod tests {
             graph_with_quantities(vec![direct, fitted])
                 .validate()
                 .is_err()
+        );
+    }
+
+    #[test]
+    fn model_run_rejects_empty_parameter_and_convergence_entries() {
+        let mut run = model_run("model:empty-map-entry", vec![identifier("quantity:input")]);
+        run.parameters = BTreeMap::from([("".to_owned(), "".to_owned())]);
+        assert_eq!(
+            run.validate().unwrap_err(),
+            "model parameter name must be nonempty"
+        );
+
+        let mut run = model_run("model:empty-map-entry", vec![identifier("quantity:input")]);
+        run.convergence_settings = BTreeMap::from([("tolerance".to_owned(), " ".to_owned())]);
+        assert_eq!(
+            run.validate().unwrap_err(),
+            "convergence setting value must be nonempty"
         );
     }
 

@@ -97,11 +97,6 @@ fn smoke_project_counter_sync_help() {
 // =============================================================================
 
 #[test]
-fn smoke_registry_integrity_help() {
-    assert_help_succeeds("CARGO_BIN_EXE_registry-integrity");
-}
-
-#[test]
 fn smoke_governance_verify_help() {
     assert_help_succeeds("CARGO_BIN_EXE_governance-verify");
 }

@@ -409,7 +409,7 @@ pub fn fisher_information_with_pseudoinverse(
         return Err(DiscriminationError::NonFiniteInput);
     }
     let symmetry_error = covariance - covariance.transpose();
-    if symmetry_error.norm() > 1e-10 * covariance.norm().max(1.0) {
+    if symmetry_error.norm() > 1e-10 * covariance.norm() {
         return Err(DiscriminationError::NumericalFailure);
     }
     let symmetric_covariance = (covariance + covariance.transpose()) * 0.5;
@@ -682,6 +682,16 @@ mod tests {
             fisher_information_with_pseudoinverse(&signal, &roundoff, 1e-12).unwrap(),
             1.0,
             epsilon = 1e-12
+        );
+    }
+
+    #[test]
+    fn covariance_symmetry_tolerance_tracks_covariance_scale() {
+        let signal = DVector::from_vec(vec![1.0, 0.0]);
+        let asymmetric = DMatrix::from_row_slice(2, 2, &[1e-20, 1e-20, 0.0, 1e-20]);
+        assert_eq!(
+            fisher_information_with_pseudoinverse(&signal, &asymmetric, 1e-12),
+            Err(DiscriminationError::NumericalFailure)
         );
     }
 

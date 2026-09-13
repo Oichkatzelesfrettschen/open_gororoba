@@ -245,7 +245,10 @@ impl MineralMetadata {
             }
         }
 
-        let birefringence = if self.birefringence.is_finite() && self.birefringence >= 0.0 {
+        let birefringence = if self.birefringence.is_finite()
+            && (self.birefringence > 0.0
+                || (self.birefringence == 0.0 && self.optic_sign == OpticSign::Isotropic))
+        {
             QuarantinedCatalogValue::Reported(self.birefringence)
         } else {
             QuarantinedCatalogValue::Missing(Missingness::Unknown)
@@ -5137,6 +5140,13 @@ mod tests {
             diamond.birefringence,
             QuarantinedCatalogValue::Reported(0.0),
             "isotropic zero birefringence is a reported physical zero"
+        );
+
+        let tungsten_oxide = tungstates::wo3_metadata().quarantine_legacy_sentinels();
+        assert_eq!(
+            tungsten_oxide.birefringence,
+            QuarantinedCatalogValue::Missing(Missingness::Unknown),
+            "biaxial zero sentinel is typed absence"
         );
     }
 

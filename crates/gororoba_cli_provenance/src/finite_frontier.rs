@@ -44,6 +44,12 @@ pub const EXPECTED_FRONTIER_IDS: [&str; 30] = [
     "uv-background-model-sensitivity",
 ];
 
+pub const EXPECTED_OPEN_FRONTIER_IDS: [&str; 3] = [
+    "declared-frontier-denominator-proof",
+    "lifshitz-planar-polar-normalization",
+    "selected-schedule-independent-monte-carlo",
+];
+
 #[derive(Clone, Debug, Deserialize)]
 struct FrontierDocument {
     frontier: FrontierHeader,
@@ -155,6 +161,7 @@ pub fn verify_finite_frontier_source(source: &str) -> Result<FiniteFrontierRepor
 
 fn verify_document(document: &FrontierDocument) -> Result<FiniteFrontierReport> {
     let expected_ids: BTreeSet<&str> = EXPECTED_FRONTIER_IDS.into_iter().collect();
+    let expected_open_ids: BTreeSet<&str> = EXPECTED_OPEN_FRONTIER_IDS.into_iter().collect();
     let mut diagnostics = Vec::new();
 
     if document.frontier.id != EXPECTED_FRONTIER_ID {
@@ -213,6 +220,19 @@ fn verify_document(document: &FrontierDocument) -> Result<FiniteFrontierReport> 
     let mut rows_by_id = BTreeMap::new();
     for row in &document.row {
         rows_by_id.entry(row.frontier_id.as_str()).or_insert(row);
+        let expected_state = if expected_open_ids.contains(row.frontier_id.as_str()) {
+            "open"
+        } else {
+            "closed"
+        };
+        if expected_ids.contains(row.frontier_id.as_str())
+            && row.completion_state != expected_state
+        {
+            diagnostics.push(format!(
+                "row {} has state {:?}, expected {:?}",
+                row.frontier_id, row.completion_state, expected_state
+            ));
+        }
         match row.completion_state.as_str() {
             "closed" => {
                 if !row.has_completion_witness() {
@@ -374,14 +394,17 @@ mod tests {
             },
             row: EXPECTED_FRONTIER_IDS
                 .iter()
-                .map(|frontier_id| FrontierRow {
-                    frontier_id: (*frontier_id).to_owned(),
-                    completion_state: "open".to_owned(),
-                    ordering_dependencies: Vec::new(),
-                    required_generator: format!("verify {frontier_id}"),
-                    next_action: None,
-                    completion_witness: None,
-                    completion_verifier: None,
+                .map(|frontier_id| {
+                    let is_open = EXPECTED_OPEN_FRONTIER_IDS.contains(frontier_id);
+                    FrontierRow {
+                        frontier_id: (*frontier_id).to_owned(),
+                        completion_state: if is_open { "open" } else { "closed" }.to_owned(),
+                        ordering_dependencies: Vec::new(),
+                        required_generator: format!("verify {frontier_id}"),
+                        next_action: None,
+                        completion_witness: (!is_open).then(|| format!("witness/{frontier_id}")),
+                        completion_verifier: (!is_open).then(|| format!("verify {frontier_id}")),
+                    }
                 })
                 .collect(),
         }
@@ -395,10 +418,10 @@ mod tests {
     fn accepts_exact_denominator_and_reports_bounded_partitions() {
         let report = verify_document(&baseline_document()).unwrap();
         assert_eq!(report.declared_count, EXPECTED_FRONTIER_IDS.len());
-        assert_eq!(report.closed_count, 0);
-        assert_eq!(report.open_count, EXPECTED_FRONTIER_IDS.len());
+        assert_eq!(report.closed_count, 27);
+        assert_eq!(report.open_count, EXPECTED_OPEN_FRONTIER_IDS.len());
         assert_eq!(report.declared_keys.len(), EXPECTED_FRONTIER_IDS.len());
-        assert_eq!(report.residual_actions.len(), EXPECTED_FRONTIER_IDS.len());
+        assert_eq!(report.residual_actions.len(), EXPECTED_OPEN_FRONTIER_IDS.len());
     }
 
     #[test]
@@ -453,7 +476,8 @@ mod tests {
     #[test]
     fn rejects_witnessless_closed_row_mutation() {
         let mut document = baseline_document();
-        document.row[0].completion_state = "closed".to_owned();
+        document.row[0].completion_witness = None;
+        document.row[0].completion_verifier = None;
         let error = error_text(&document);
         assert!(error.contains("lacks completion_witness"));
         assert!(error.contains("lacks completion_verifier"));
@@ -462,7 +486,12 @@ mod tests {
     #[test]
     fn rejects_actionless_open_row_mutation() {
         let mut document = baseline_document();
-        document.row[0].required_generator.clear();
+        let open_row = document
+            .row
+            .iter_mut()
+            .find(|row| EXPECTED_OPEN_FRONTIER_IDS.contains(&row.frontier_id.as_str()))
+            .unwrap();
+        open_row.required_generator.clear();
         let error = error_text(&document);
         assert!(error.contains("lacks a next action or required generator"));
     }
@@ -499,13 +528,22 @@ mod tests {
     }
 
     #[test]
-    fn accepts_closed_row_with_concrete_witness_and_verifier() {
+    fn rejects_expected_state_partition_mutations() {
         let mut document = baseline_document();
-        document.row[0].completion_state = "closed".to_owned();
-        document.row[0].completion_witness = Some("data/output/audit/result.toml".to_owned());
-        document.row[0].completion_verifier = Some("cargo test -p owner verifier".to_owned());
-        let report = verify_document(&document).unwrap();
-        assert_eq!(report.closed_count, 1);
-        assert_eq!(report.open_count, EXPECTED_FRONTIER_IDS.len() - 1);
+        document.row[0].completion_state = "open".to_owned();
+        let error = error_text(&document);
+        assert!(error.contains("expected \"closed\""));
+
+        let mut document = baseline_document();
+        let open_row = document
+            .row
+            .iter_mut()
+            .find(|row| EXPECTED_OPEN_FRONTIER_IDS.contains(&row.frontier_id.as_str()))
+            .unwrap();
+        open_row.completion_state = "closed".to_owned();
+        open_row.completion_witness = Some("witness/invalid-state".to_owned());
+        open_row.completion_verifier = Some("verify invalid-state".to_owned());
+        let error = error_text(&document);
+        assert!(error.contains("expected \"open\""));
     }
 }
