@@ -1317,14 +1317,6 @@ fn maybe_regen_toml(regen_toml: bool) -> Result<()> {
         "--",
         "export-control-plane",
     ]);
-    let trusted_github_actions = std::env::var("CI").as_deref() == Ok("true")
-        && std::env::var("GITHUB_ACTIONS").as_deref() == Ok("true");
-    if !trusted_github_actions {
-        command
-            .env("CARGO_BUILD_JOBS", "2")
-            .env("RAYON_NUM_THREADS", "2")
-            .env("RUST_TEST_THREADS", "2");
-    }
     let status = command.status().map_err(|e| {
         anyhow::anyhow!(
             "failed to spawn `cargo run -p gororoba_cli_provenance --bin provenance`: {}",

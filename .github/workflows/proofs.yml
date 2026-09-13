@@ -94,9 +94,9 @@ jobs:
         run: |
           set -euo pipefail
           failure_count=0
-          for lane in COMPILE ADMITTED EXTRACTION; do
-            outcome="${!lane}"
-            printf '%s=%s\n' "$lane" "$outcome"
+          for outcome_variable in COMPILE_OUTCOME ADMITTED_OUTCOME EXTRACTION_OUTCOME; do
+            outcome="${!outcome_variable}"
+            printf '%s=%s\n' "$outcome_variable" "$outcome"
             if [ "$outcome" = failure ]; then
               failure_count=$((failure_count + 1))
             fi

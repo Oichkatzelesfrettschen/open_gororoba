@@ -61,6 +61,9 @@
 .PHONY: fetch-data fetch-data-redownload provenance-audit external-redownload-audit semantic-data-validate semantic-data-validate-strict run rocq latex latex-heliosphere latex-heliosphere-figs latex-heliosphere-clean latex-heliosphere-review
 .PHONY: docker-quantum-build docker-quantum-run docker-quantum-shell
 .PHONY: clean clean-builds clean-artifacts clean-all host-profile
+.PHONY: check-ansi check-terminology
+.PHONY: validate-rust-integrity-claims validate-rust-integrity-test-inventory validate-rust-integrity-typed-policy
+.PHONY: validate-registry-control-plane validate-registry-project-counter validate-registry-markdown validate-registry-governance validate-registry-semantic-atoms validate-registry-evidence-provenance validate-registry-integrity validate-registry-execution-planning
 .PHONY: run-e183
 .PHONY: cpd-audit cpd-audit-strict cpd-audit-tooling cpd-audit-generated patch-static-mirror-headers cargo-cache-status cargo-cache-prune cargo-cache-smoke
 .PHONY: cd-row-upgrade-batch cd-row-upgrade-jacobson cd-row-upgrade-freudenthal
@@ -290,7 +293,9 @@ validation-resource-contract:
 	test ! -e crates/gororoba_cli/src/bin/pre_push_hook.rs; \
 	test ! -e .githooks/pre-push; \
 	grep -Fq '"--profile",' crates/gororoba_db/src/bin/gororoba_db.rs; \
-	grep -Fq '.env("CARGO_BUILD_JOBS", "2")' crates/gororoba_db/src/bin/gororoba_db.rs; \
+	if grep -Eq '\.env\("(CARGO_BUILD_JOBS|RAYON_NUM_THREADS|RUST_TEST_THREADS)", "[0-9]+"\)' crates/gororoba_db/src/bin/gororoba_db.rs; then \
+	    echo "ERROR: registry regeneration hard-codes a worker limit." >&2; exit 1; \
+	fi; \
 	grep -Fq 'registry-integrity: $$(REGISTRY_INTEGRITY_CACHE)' Makefile; \
 	grep -Fq 'cargo build --profile validation -p gororoba_cli_governance --bin registry-integrity' Makefile; \
 	grep -Fq 'name = "registry-integrity"' crates/gororoba_cli_governance/Cargo.toml; \
@@ -307,6 +312,9 @@ validation-resource-contract:
 	grep -Fq 'make --keep-going validate-ci-scoped-rust' .github/workflows/ci.yml; \
 	grep -Fq 'make --jobs="$$MAKE_JOBS" --keep-going all' .github/workflows/proofs.yml; \
 	grep -Fq 'Report collected proof failures' .github/workflows/proofs.yml; \
+	if grep -Eq 'PHYS_CORES|PHYS_CPUS|taskset|-j\$\(JOBS\)' proofs/Makefile; then \
+	    echo "ERROR: proof validation replaces or constrains the inherited Make jobserver." >&2; exit 1; \
+	fi; \
 	grep -Fq 'Report collected validation failures' .github/workflows/ci.yml; \
 	grep -Fq 'CI_WORKER_BUDGET' .github/workflows/ci.yml; \
 	test ! -e scripts/detect_worker_budget.sh; \
@@ -446,11 +454,14 @@ test: rust-regression
 # without improving the ASCII or terminology checks.
 REPO_UTILITIES_BIN := $(REPO_CARGO_TARGET_DIR)/validation-tools/repo-utilities
 
-check: $(REPO_UTILITIES_BIN)
-	@$(REPO_UTILITIES_BIN) ansi-check --check
-	@$(REPO_UTILITIES_BIN) terminology-gate
-	$(MAKE) cuda-source-ownership
+check: check-ansi check-terminology cuda-source-ownership
 	@echo "OK: fast shared check suite complete."
+
+check-ansi: $(REPO_UTILITIES_BIN)
+	@$(REPO_UTILITIES_BIN) ansi-check --check
+
+check-terminology: $(REPO_UTILITIES_BIN)
+	@$(REPO_UTILITIES_BIN) terminology-gate
 
 # Compatibility names refuse execution. Their recipes have no prerequisites,
 # so an invocation cannot build a validation tool before returning the error.
@@ -987,11 +998,20 @@ pre-push-gate-strict: validate-repository
 smoke: check rust-smoke
 	@echo "OK: smoke lane passed."
 
-validate-rust-integrity: require-ci-validation-authority registry-validation-tools
-	$(VALIDATION_TOOLS_DIR)/claims-verify --check providers
-	$(VALIDATION_TOOLS_DIR)/test-inventory --check
-	$(VALIDATION_TOOLS_DIR)/registry-check --typed-policy error
+validate-rust-integrity: require-ci-validation-authority registry-validation-tools \
+                         validate-rust-integrity-claims \
+                         validate-rust-integrity-test-inventory \
+                         validate-rust-integrity-typed-policy
 	@echo "OK: Rust integrity validation passed."
+
+validate-rust-integrity-claims: registry-validation-tools
+	$(VALIDATION_TOOLS_DIR)/claims-verify --check providers
+
+validate-rust-integrity-test-inventory: registry-validation-tools
+	$(VALIDATION_TOOLS_DIR)/test-inventory --check
+
+validate-rust-integrity-typed-policy: registry-validation-tools
+	$(VALIDATION_TOOLS_DIR)/registry-check --typed-policy error
 
 registry-control-plane-gate-readonly: validate-governance
 	@echo "DEPRECATED: make registry-control-plane-gate-readonly is a compatibility alias for make validate-governance."
@@ -1785,16 +1805,40 @@ registry-verify-wave5-batch4: registry-verify-strict-toml-batch4
 registry-wave5-batch4: registry-strict-toml-batch4
 	@echo "DEPRECATED: make registry-wave5-batch4 is a legacy alias. Use make registry-execution-planning-gate."
 
-validate-registry: require-ci-validation-authority registry-validation-tools
-	$(PROVENANCE_CACHE) --repo-root . verify-control-plane --verify-compat-exports
-	$(PROJECT_COUNTER_CACHE) --check
-	$(MARKDOWN_REGISTRY_CACHE) verify-all
-	$(GOVERNANCE_VERIFY_CACHE) validate-all
-	$(VALIDATION_TOOLS_DIR)/semantic-atoms --verify --repo-root .
-	$(VALIDATION_TOOLS_DIR)/evidence-provenance --verify --repo-root .
-	$(REGISTRY_INTEGRITY_CACHE) --verify --repo-root .
-	$(VALIDATION_TOOLS_DIR)/execution-planning --verify --repo-root .
+validate-registry: require-ci-validation-authority registry-validation-tools \
+                   validate-registry-control-plane \
+                   validate-registry-project-counter \
+                   validate-registry-markdown \
+                   validate-registry-governance \
+                   validate-registry-semantic-atoms \
+                   validate-registry-evidence-provenance \
+                   validate-registry-integrity \
+                   validate-registry-execution-planning
 	@echo "OK: registry validation completed in one tool session."
+
+validate-registry-control-plane: registry-validation-tools
+	$(PROVENANCE_CACHE) --repo-root . verify-control-plane --verify-compat-exports
+
+validate-registry-project-counter: registry-validation-tools
+	$(PROJECT_COUNTER_CACHE) --check
+
+validate-registry-markdown: registry-validation-tools
+	$(MARKDOWN_REGISTRY_CACHE) verify-all
+
+validate-registry-governance: registry-validation-tools
+	$(GOVERNANCE_VERIFY_CACHE) validate-all
+
+validate-registry-semantic-atoms: registry-validation-tools
+	$(VALIDATION_TOOLS_DIR)/semantic-atoms --verify --repo-root .
+
+validate-registry-evidence-provenance: registry-validation-tools
+	$(VALIDATION_TOOLS_DIR)/evidence-provenance --verify --repo-root .
+
+validate-registry-integrity: registry-validation-tools
+	$(REGISTRY_INTEGRITY_CACHE) --verify --repo-root .
+
+validate-registry-execution-planning: registry-validation-tools
+	$(VALIDATION_TOOLS_DIR)/execution-planning --verify --repo-root .
 
 registry-acceptance-gate-readonly: validate-registry
 	@echo "DEPRECATED: make registry-acceptance-gate-readonly is a compatibility alias for make validate-registry."

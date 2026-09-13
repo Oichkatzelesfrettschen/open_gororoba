@@ -50,13 +50,38 @@ jobs:
           echo "$RUNNER_TEMP/actionlint-bin" >> "$GITHUB_PATH"
 
       - name: Validate workflow syntax and embedded shell
+        id: actionlint
+        continue-on-error: true
         run: actionlint
 
       - name: Validate CI-only execution and worker boundaries
-        run: make validation-resource-contract
+        id: resource-contract
+        continue-on-error: true
+        run: make --keep-going validation-resource-contract
+
+      - name: Report collected validation-policy failures
+        if: always()
+        env:
+          ACTIONLINT_OUTCOME: ${{ steps.actionlint.outcome }}
+          RESOURCE_CONTRACT_OUTCOME: ${{ steps.resource-contract.outcome }}
+        run: |
+          set -euo pipefail
+          failure_count=0
+          for outcome_variable in ACTIONLINT_OUTCOME RESOURCE_CONTRACT_OUTCOME; do
+            outcome="${!outcome_variable}"
+            printf '%s=%s\n' "$outcome_variable" "$outcome"
+            if [ "$outcome" = failure ]; then
+              failure_count=$((failure_count + 1))
+            fi
+          done
+          if [ "$failure_count" -ne 0 ]; then
+            echo "Collected $failure_count failing validation-policy lane(s)." >&2
+            exit 1
+          fi
 
   validation:
     needs: validation-policy
+    if: always()
     runs-on: ubuntu-24.04
     timeout-minutes: 90
     outputs:
@@ -257,9 +282,9 @@ jobs:
         run: |
           set -euo pipefail
           failure_count=0
-          for lane in HYGIENE GOVERNANCE RUST INTEGRITY CASIMIR_AUDIT DEPENDENCY_TOOL DEPENDENCIES WARP; do
-            outcome="${!lane}"
-            printf '%s=%s\n' "$lane" "$outcome"
+          for outcome_variable in HYGIENE_OUTCOME GOVERNANCE_OUTCOME RUST_OUTCOME INTEGRITY_OUTCOME CASIMIR_AUDIT_OUTCOME DEPENDENCY_TOOL_OUTCOME DEPENDENCIES_OUTCOME WARP_OUTCOME; do
+            outcome="${!outcome_variable}"
+            printf '%s=%s\n' "$outcome_variable" "$outcome"
             if [ "$outcome" = failure ]; then
               failure_count=$((failure_count + 1))
             fi

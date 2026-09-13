@@ -32,27 +32,6 @@ ROCQ_PROJECT_FLAGS := -f _RocqProject
 ROCQMAKEFILE := rocq makefile
 ROCQMAKEFILE_WARN_RE := [Ww]arning
 
-# Detect PHYSICAL core count (not logical/SMT threads).
-# WHY: Rocq proofs peak at ~500MB per file. Running on all SMT threads
-#      causes L3 cache thrashing on chips like the 5600X3D (96MB 3D V-Cache
-#      shared across SMT siblings). One process per physical core keeps each
-#      rocqc in its own cache slice.
-PHYS_CORES := $(shell lscpu --all --parse=CORE 2>/dev/null \
-                | grep -v '^[[:punct:]]' | sort -u | wc -l)
-# Build the CPU affinity list: first logical CPU of each physical core.
-PHYS_CPUS := $(shell lscpu --all --parse=CPU,CORE 2>/dev/null \
-               | grep -v '^[[:punct:]]' | sort -t, -k2 -n -u | cut -d, -f1 \
-               | paste -sd, -)
-JOBS ?= $(or $(PHYS_CORES),$(shell nproc 2>/dev/null),1)
-
-# Pin to physical cores when taskset is available; fall back to unpinned.
-TASKSET := $(shell command -v taskset 2>/dev/null)
-ifdef TASKSET
-  PINNED = $(TASKSET) -c $(PHYS_CPUS)
-else
-  PINNED =
-endif
-
 # OCaml 5.4.0 GC tuning: only `o=` (space_overhead) is effective.
 # WHY: OCaml 5 ignores s= (initial heap), i= (minor heap size), O= (compaction).
 #      o=200 lets major GC tolerate 200% overhead before collecting, reducing
@@ -104,7 +83,7 @@ rocq-makefile-check:
 	echo "OK: rocq makefile completed without warnings."
 
 all: Makefile.rocq
-	$(PINNED) $(MAKE) -j$(JOBS) -f Makefile.rocq all \
+	$(MAKE) --keep-going -f Makefile.rocq all \
 		COQEXTRAFLAGS="$(ROCQ_EXTERNAL_ARGS)" VDFILE_FLAGS="$(ROCQ_PROJECT_FLAGS)"
 
 # --- Fast two-phase build pipeline ---
@@ -115,18 +94,18 @@ all: Makefile.rocq
 #
 # Phase 2: vok (proof checking) -- checks every proof body in parallel.
 #   Each file is independent once .vos interfaces exist.
-#   Saturates all physical cores.
+#   Uses every process-visible CPU supplied by the invoking Make jobserver.
 #
 # Workflow:
 #   make vos   # instant interface check (iterative dev)
 #   make vok   # full proof verification (CI / pre-commit)
 
 vos: Makefile.rocq
-	$(PINNED) $(MAKE) -j$(JOBS) -f Makefile.rocq vos \
+	$(MAKE) --keep-going -f Makefile.rocq vos \
 		COQEXTRAFLAGS="$(ROCQ_EXTERNAL_ARGS)" VDFILE_FLAGS="$(ROCQ_PROJECT_FLAGS)"
 
 vok: Makefile.rocq
-	$(PINNED) $(MAKE) -j$(JOBS) -f Makefile.rocq vok \
+	$(MAKE) --keep-going -f Makefile.rocq vok \
 		COQEXTRAFLAGS="$(ROCQ_EXTERNAL_ARGS)" VDFILE_FLAGS="$(ROCQ_PROJECT_FLAGS)"
 
 # --- Standard targets ---
