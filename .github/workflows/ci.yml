@@ -238,16 +238,21 @@ jobs:
         run: |
           set -euo pipefail
           fallback_matrix='{"include":[{"lane":"clippy-fallback","target":"clippy","rust_scope":"","clippy_scope":"--workspace","cargo_target_args":"","cargo_features":""},{"lane":"workspace-fallback","target":"light","rust_scope":"--workspace","clippy_scope":"","cargo_target_args":"--lib --bins --tests --examples","cargo_features":""}]}'
-          printf 'matrix=%s\n' "$fallback_matrix" >> "$GITHUB_OUTPUT"
-          make --jobs="$WORKER_BUDGET" "$CARGO_TARGET_DIR/validation-tools/xtask"
-          rust_matrix="$("$CARGO_TARGET_DIR/validation-tools/xtask" ci-rust-shard-matrix \
-            --rust-scope="$CI_RUST_SCOPE" \
-            --clippy-scope="$CI_CLIPPY_SCOPE" \
-            --light-shard-count=8 \
-            --heavy-package=algebra_analysis \
-            --heavy-package=gr_core \
-            --target-shard-package=gororoba_cli_physics \
-            --target-shard-count=8)"
+          if ! make --jobs="$WORKER_BUDGET" "$CARGO_TARGET_DIR/validation-tools/xtask"; then
+            printf 'matrix=%s\n' "$fallback_matrix" >> "$GITHUB_OUTPUT"
+            exit 1
+          fi
+          if ! rust_matrix="$("$CARGO_TARGET_DIR/validation-tools/xtask" ci-rust-shard-matrix \
+              --rust-scope="$CI_RUST_SCOPE" \
+              --clippy-scope="$CI_CLIPPY_SCOPE" \
+              --light-shard-count=8 \
+              --heavy-package=algebra_analysis \
+              --heavy-package=gr_core \
+              --target-shard-package=gororoba_cli_physics \
+              --target-shard-count=8)"; then
+            printf 'matrix=%s\n' "$fallback_matrix" >> "$GITHUB_OUTPUT"
+            exit 1
+          fi
           printf 'matrix=%s\n' "$rust_matrix" >> "$GITHUB_OUTPUT"
 
       - name: Check repository hygiene
