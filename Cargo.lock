@@ -129,6 +129,7 @@ dependencies = [
  "num-complex",
  "petgraph 0.8.3",
  "plotters",
+ "provenance_store",
  "rand 0.10.1",
  "rand_chacha 0.10.0",
  "rand_distr 0.6.0",

@@ -604,6 +604,142 @@ impl MaterialState {
         }
         Ok(())
     }
+
+    fn validate_quantity_conditions(
+        &self,
+        quantity_id: &RecordId,
+        conditions: &BTreeMap<String, String>,
+    ) -> Result<(), String> {
+        fn numeric_condition(
+            state: &MaterialState,
+            quantity_id: &RecordId,
+            conditions: &BTreeMap<String, String>,
+            key: &str,
+            expected: Option<f64>,
+        ) -> Result<(), String> {
+            let Some(encoded) = conditions.get(key) else {
+                return Ok(());
+            };
+            let observed = encoded.parse::<f64>().map_err(|_| {
+                format!(
+                    "quantity {} condition {key} must be a finite SI scalar",
+                    quantity_id.0
+                )
+            })?;
+            if !observed.is_finite() {
+                return Err(format!(
+                    "quantity {} condition {key} must be a finite SI scalar",
+                    quantity_id.0
+                ));
+            }
+            let expected = expected.ok_or_else(|| {
+                format!(
+                    "quantity {} condition {key} is absent from state {}",
+                    quantity_id.0, state.state_id.0
+                )
+            })?;
+            if observed != expected {
+                return Err(format!(
+                    "quantity {} condition {key} contradicts state {}",
+                    quantity_id.0, state.state_id.0
+                ));
+            }
+            Ok(())
+        }
+
+        for ambiguous in ["temperature", "pressure", "strain"] {
+            if conditions.contains_key(ambiguous) {
+                return Err(format!(
+                    "quantity {} condition {ambiguous} must use an explicit SI key",
+                    quantity_id.0
+                ));
+            }
+        }
+        numeric_condition(
+            self,
+            quantity_id,
+            conditions,
+            "temperature_k",
+            self.temperature_k,
+        )?;
+        numeric_condition(
+            self,
+            quantity_id,
+            conditions,
+            "pressure_pa",
+            self.pressure_pa,
+        )?;
+        numeric_condition(
+            self,
+            quantity_id,
+            conditions,
+            "phase_fraction",
+            self.phase_fraction,
+        )?;
+        numeric_condition(
+            self,
+            quantity_id,
+            conditions,
+            "time_since_processing_s",
+            self.time_since_processing_s,
+        )?;
+        for (key, expected) in [
+            ("phase_id", Some(self.phase_id.as_str())),
+            ("atmosphere", self.atmosphere.as_deref()),
+            ("orientation", self.orientation.as_deref()),
+        ] {
+            if let Some(observed) = conditions.get(key)
+                && Some(observed.as_str()) != expected
+            {
+                return Err(format!(
+                    "quantity {} condition {key} contradicts state {}",
+                    quantity_id.0, self.state_id.0
+                ));
+            }
+        }
+        for key in conditions.keys() {
+            let Some(component) = key.strip_prefix("strain_component:") else {
+                continue;
+            };
+            let index = component.parse::<usize>().map_err(|_| {
+                format!(
+                    "quantity {} condition {key} must use a zero-based integer component",
+                    quantity_id.0
+                )
+            })?;
+            let canonical_component = index.to_string();
+            if component != canonical_component.as_str() {
+                return Err(format!(
+                    "quantity {} condition {key} must use a canonical zero-based integer component",
+                    quantity_id.0
+                ));
+            }
+            numeric_condition(
+                self,
+                quantity_id,
+                conditions,
+                key,
+                self.strain
+                    .as_ref()
+                    .and_then(|components| components.get(index))
+                    .copied(),
+            )?;
+        }
+        for (key, observed) in conditions {
+            let Some(field_name) = key.strip_prefix("applied_field:") else {
+                continue;
+            };
+            if field_name.is_empty()
+                || self.applied_fields.get(field_name) != Some(observed)
+            {
+                return Err(format!(
+                    "quantity {} condition {key} contradicts state {}",
+                    quantity_id.0, self.state_id.0
+                ));
+            }
+        }
+        Ok(())
+    }
 }
 
 impl Specimen {
@@ -924,6 +1060,24 @@ impl MaterialEvidenceGraph {
                             quantity.quantity_id.0, measurement_id.0
                         )
                     })?;
+                    let specimen = specimens_by_id
+                        .get(&measurement.specimen_id)
+                        .ok_or_else(|| {
+                            format!(
+                                "measurement {} references unknown specimen {}",
+                                measurement.measurement_id.0, measurement.specimen_id.0
+                            )
+                        })?;
+                    let state = states_by_id.get(&specimen.state_id).ok_or_else(|| {
+                        format!(
+                            "specimen {} references unknown state {}",
+                            specimen.specimen_id.0, specimen.state_id.0
+                        )
+                    })?;
+                    state.validate_quantity_conditions(
+                        &quantity.quantity_id,
+                        &quantity.conditions,
+                    )?;
                     if let QuantityObservation::Missing {
                         reason: Missingness::BelowDetectionLimit { upper_bound, unit },
                     } = &quantity.observation
@@ -2082,6 +2236,63 @@ mod tests {
         assert_eq!(
             output_mismatch.validate().unwrap_err(),
             "derived value derived:reflectivity output conditions do not match model run model:drude-lorentz:v1 conditions"
+        );
+    }
+
+    #[test]
+    fn measurement_quantity_conditions_match_material_state() {
+        let mut quantity = scalar_quantity(
+            QuantityOrigin::Measurement {
+                measurement_id: identifier("measurement:ellipsometry"),
+            },
+            EvidenceBasis::ExperimentalDirect,
+        );
+        quantity
+            .conditions
+            .insert("temperature_k".to_owned(), "300".to_owned());
+        let graph = graph_with_quantities(vec![quantity]);
+        assert!(graph.validate().is_ok());
+
+        let mut strain_match = graph.clone();
+        strain_match.states[0].strain = Some(vec![0.001, -0.002]);
+        strain_match.quantities[0]
+            .conditions
+            .insert("strain_component:1".to_owned(), "-0.002".to_owned());
+        assert!(strain_match.validate().is_ok());
+
+        strain_match.quantities[0]
+            .conditions
+            .insert("strain_component:1".to_owned(), "0.002".to_owned());
+        assert_eq!(
+            strain_match.validate().unwrap_err(),
+            "quantity quantity:test condition strain_component:1 contradicts state state:au:test"
+        );
+
+        let mut temperature_mismatch = graph.clone();
+        temperature_mismatch.quantities[0]
+            .conditions
+            .insert("temperature_k".to_owned(), "100".to_owned());
+        assert_eq!(
+            temperature_mismatch.validate().unwrap_err(),
+            "quantity quantity:test condition temperature_k contradicts state state:au:test"
+        );
+
+        let mut ambiguous_temperature = graph;
+        ambiguous_temperature.quantities[0]
+            .conditions
+            .insert("temperature".to_owned(), "100 K".to_owned());
+        assert_eq!(
+            ambiguous_temperature.validate().unwrap_err(),
+            "quantity quantity:test condition temperature must use an explicit SI key"
+        );
+
+        let mut ambiguous_strain = graph;
+        ambiguous_strain.quantities[0]
+            .conditions
+            .insert("strain".to_owned(), "0.001".to_owned());
+        assert_eq!(
+            ambiguous_strain.validate().unwrap_err(),
+            "quantity quantity:test condition strain must use an explicit SI key"
         );
     }
 

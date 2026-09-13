@@ -23,6 +23,8 @@ pub struct PropertyStats {
     pub range: f64,
     /// Composition weight with a recorded value for this property.
     pub observed_weight: f64,
+    /// Every constituent has a recorded value for this property.
+    pub fully_observed: bool,
 }
 
 /// Fixed-length features paired with an explicit observation mask.
@@ -135,6 +137,7 @@ fn compute_property_stats(elements: &[(Element, f64)], prop_index: usize) -> Pro
         })
         .collect();
     let observed_weight: f64 = observed.iter().map(|(_, weight)| weight).sum();
+    let fully_observed = observed.len() == elements.len();
     if observed_weight == 0.0 {
         return PropertyStats {
             mean: 0.0,
@@ -143,6 +146,7 @@ fn compute_property_stats(elements: &[(Element, f64)], prop_index: usize) -> Pro
             max: 0.0,
             range: 0.0,
             observed_weight,
+            fully_observed,
         };
     }
 
@@ -177,6 +181,7 @@ fn compute_property_stats(elements: &[(Element, f64)], prop_index: usize) -> Pro
         max,
         range: max - min,
         observed_weight,
+        fully_observed,
     }
 }
 
@@ -216,6 +221,7 @@ pub fn featurize(formula: &str) -> Result<CompositionFeatures, String> {
         max: 0.0,
         range: 0.0,
         observed_weight: 0.0,
+        fully_observed: false,
     }; 10];
     for (i, slot) in property_stats.iter_mut().enumerate() {
         *slot = compute_property_stats(&elements, i);
@@ -250,8 +256,7 @@ pub fn feature_vector(feats: &CompositionFeatures) -> MaskedFeatureVector {
         v.push(ps.min);
         v.push(ps.max);
         v.push(ps.range);
-        let fully_observed = ps.observed_weight >= 1.0 - 1e-12;
-        observed.extend([fully_observed; 5]);
+        observed.extend([ps.fully_observed; 5]);
     }
     MaskedFeatureVector {
         values: v,
@@ -362,6 +367,17 @@ mod tests {
             vector.observed.iter().any(|observed| !observed),
             "helium must retain absent elemental fields in the feature mask"
         );
+        assert!(vector.into_complete_values().is_none());
+    }
+
+    #[test]
+    fn test_trace_missing_elemental_property_retains_mask() {
+        let feats = featurize("Fe10000000000000He").unwrap();
+        let density = feats.property_stats[1];
+        assert!(density.observed_weight >= 1.0 - 1e-12);
+        assert!(!density.fully_observed);
+        let vector = feature_vector(&feats);
+        assert!(!vector.observed[9..14].iter().any(|observed| *observed));
         assert!(vector.into_complete_values().is_none());
     }
 

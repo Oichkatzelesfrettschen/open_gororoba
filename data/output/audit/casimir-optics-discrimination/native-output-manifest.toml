@@ -1,14 +1,34 @@
 schema_version = 1
 producer = "crates/gororoba_cli_physics/src/bin/casimir_optics_discrimination_audit.rs"
-producer_sha256 = "38b660eb7fe204b52f1e08ca7531e5699c1ffe88d3c596c06caecfb6d3253918"
-source_model_identity = "sha256:6546915bedc36831ff0ed4ff3f54fadd24b7baffd892f9ddb2afee6f8a70cbae"
+producer_sha256 = "6df91944b88da67878681ceb7f44501ebd1dd12360577c413ffd630ca56beaa2"
+source_model_identity = "sha256:18a63bc14315593e42a5b5f8c617d713e9e4616274960ea416f103091919b3cb"
 source_model_identity_algorithm = "SHA-256 over path UTF-8, NUL, file bytes, NUL for source_model_input entries in manifest order"
 command = "cargo run -p gororoba_cli_physics --bin casimir-optics-discrimination-audit --profile validation"
 scope = "native model outputs; no laboratory observations"
 
 [[source_model_input]]
+path = "Cargo.toml"
+sha256 = "d5d26b8628149218190267809b27431c4e405c70f35e68d138ae79c0d98b9299"
+
+[[source_model_input]]
+path = "Cargo.lock"
+sha256 = "74d356b0467cb4def5afb4e8dc39b30cd66fcd6c5bd8048f09c5971027ed8369"
+
+[[source_model_input]]
+path = "rust-toolchain.toml"
+sha256 = "c0864e4045ce7847ebe68e13423671c7007fbbe77d8b10ad5f5bacb8a1601ab3"
+
+[[source_model_input]]
+path = "crates/gororoba_cli_physics/Cargo.toml"
+sha256 = "7e32b8472965f6bcfbc99592cdf81fd2ce1639486900f0d511e3768de4225773"
+
+[[source_model_input]]
 path = "crates/gororoba_cli_physics/src/bin/casimir_optics_discrimination_audit.rs"
-sha256 = "38b660eb7fe204b52f1e08ca7531e5699c1ffe88d3c596c06caecfb6d3253918"
+sha256 = "6df91944b88da67878681ceb7f44501ebd1dd12360577c413ffd630ca56beaa2"
+
+[[source_model_input]]
+path = "crates/materials_core/Cargo.toml"
+sha256 = "67798a91caabcf5a782a1f1ac4e43d8b68114c6e789cce188eda5e66a385cadf"
 
 [[source_model_input]]
 path = "crates/materials_core/src/multilayer_lifshitz.rs"
@@ -43,6 +63,10 @@ path = "crates/materials_data/build.rs"
 sha256 = "157da3fc995262ecb9b751e6acabfd252048ef626f5fc4e701d7e94a86e1dd9e"
 
 [[source_model_input]]
+path = "crates/materials_data/Cargo.toml"
+sha256 = "3ba6da3cf94e232bb6b41ff7e2035b2f9c88f26487bac8d4b7937f6be64165ce"
+
+[[source_model_input]]
 path = "crates/materials_data/data/optical/drude_metals.toml"
 sha256 = "fbe72bf7d90476647b96d3901f0956a67097c89592dc3002a5f25c00f42ccb16"
 
@@ -59,16 +83,24 @@ path = "crates/quantum_core/src/casimir.rs"
 sha256 = "d732b84d91e1eff1187a085c34588978a7beee1797740fab9f83299e9decead4"
 
 [[source_model_input]]
+path = "crates/quantum_core/Cargo.toml"
+sha256 = "e3f0c7a3afba91049bbdf15c2b1e0650346e341fd9187fb45534f504477e01c0"
+
+[[source_model_input]]
 path = "crates/quantum_core/src/casimir/lifshitz.rs"
 sha256 = "089be4ffe0006786b87f6290c217eed5dd1d482ccf2adcb8584802f69f413ea6"
 
 [[source_model_input]]
 path = "crates/quantum_core/src/channel_admissibility.rs"
-sha256 = "1578713397d16eaeb1585904129e6cf96a1197fada5b7c4035405ce543bf7089"
+sha256 = "47844290c6208f0587a4a4779b12e0133e3d781afd13f84074ff871504d17c2f"
 
 [[source_model_input]]
 path = "crates/stats_core/src/calibrated_discrimination.rs"
 sha256 = "b8452eb8ccaf3e963352b473af721ef0b0c722dee056f59dcc4fe55b0217ea6a"
+
+[[source_model_input]]
+path = "crates/stats_core/Cargo.toml"
+sha256 = "a2a7349de351863a55003cf4bcb088189c5ae2dd56a34ecf2e25233502577075"
 
 [[output]]
 path = "bounded_mimic.tsv"

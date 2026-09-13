@@ -232,6 +232,11 @@ applicability range, uncertainty or covariance, evidence basis, method, raw
 artifact identity, source locator, source-byte hash, parser version, and
 transformation lineage. Direct experiments, fitted experimental parameters,
 computed outputs, and inferred proxies remain distinct admission classes.
+State-overlapping quantity conditions use explicit keys such as
+`temperature_k`, `pressure_pa`, and zero-based `strain_component:<index>`;
+graph validation resolves the measurement through its specimen and rejects
+values that contradict the typed `MaterialState`. Ambiguous aliases such as
+`temperature`, `pressure`, and `strain` are not state bindings.
 
 Missing values use `not_measured`, `below_detection_limit`, `not_applicable`,
 `withheld`, or `unknown`. Numeric zero and empty text never encode missingness
@@ -269,19 +274,21 @@ under hypothetical widths is not measured apparatus performance.
 The deterministic native producer writes `summary.toml`,
 `native-output-manifest.toml`, and the typed TSVs in
 `data/output/audit/casimir-optics-discrimination/`. The manifest binds every
-derived output to the producer source hash. The retained values include:
+derived output to the producer, model sources, workspace and crate manifests,
+resolved dependency lockfile, and pinned Rust toolchain. The retained values
+include:
 
-- `-0.47093816702610103 Pa` for the 20 nm Au capped
+- `-0.4709381888912518 Pa` for the 20 nm Au capped
   `SiO2(50 nm)/Al2O3(50 nm)/Si` stack at a 200 nm gap;
-- `2.7243213e-8` relative pressure-energy derivative disagreement for that
+- `2.7242957e-8` relative pressure-energy derivative disagreement for that
   stack;
 - exactly zero differential zero-mode pressure for the common-cap pair at the
   tested gaps under the local Drude prescription;
 - `0.0065246449` maximum relative contrast change across the declared
   hypothetical UV completions;
-- `5.0046711e-8` unrestricted and `0.67018454` one-width bounded nuisance
+- `5.0049074e-8` unrestricted and `0.67018369` one-width bounded nuisance
   residual fractions for the 13-gap, 10 nm cap scenario; and
-- `51.485443` baseline effective information, with halving the full
+- `51.485234` baseline effective information, with halving the full
   differential-gap width producing the largest tested information gain at
   `116.5914 percent`.
 
@@ -307,14 +314,13 @@ The audit records those reported numbers as an unreplayed observation with
 `resource_scope=missing_design_commutator_csv`; it does not synthesize a
 schedule to reproduce them.
 
-The declared frontier therefore has 30 rows, 27 closed rows, and three open
-rows. `lifshitz-planar-polar-normalization` remains open until retained cutoff
-and quadrature-order refinement establish convergence. The single-order ideal,
-energy-derivative, and sphere-force oracles remain valid implementation
-evidence but do not supply that missing observation.
+The declared frontier therefore has 30 rows, 28 closed rows, and two open
+rows. Hosted cutoff and quadrature-order refinement closes
+`lifshitz-planar-polar-normalization`; `planar_convergence.tsv` retains the
+independent cutoff, radial-order, and angular-order observations.
 `selected-schedule-independent-monte-carlo` remains open until the exact CSV is
 retained and hashed. `declared-frontier-denominator-proof` remains open because
-it depends on both mechanism rows. The finite-frontier verifier proves this
+it depends on that mechanism row. The finite-frontier verifier proves this
 exact partition and rejects denominator, witness, dependency, and state
 mutations; it does not execute every row's scientific evidence.
 

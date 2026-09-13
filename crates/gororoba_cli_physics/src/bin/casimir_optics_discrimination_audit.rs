@@ -50,10 +50,30 @@ struct SourceModelInput {
     bytes: &'static [u8],
 }
 
-const SOURCE_MODEL_INPUTS: [SourceModelInput; 16] = [
+const SOURCE_MODEL_INPUTS: [SourceModelInput; 24] = [
+    SourceModelInput {
+        path: "Cargo.toml",
+        bytes: include_bytes!("../../../../Cargo.toml"),
+    },
+    SourceModelInput {
+        path: "Cargo.lock",
+        bytes: include_bytes!("../../../../Cargo.lock"),
+    },
+    SourceModelInput {
+        path: "rust-toolchain.toml",
+        bytes: include_bytes!("../../../../rust-toolchain.toml"),
+    },
+    SourceModelInput {
+        path: "crates/gororoba_cli_physics/Cargo.toml",
+        bytes: include_bytes!("../../Cargo.toml"),
+    },
     SourceModelInput {
         path: "crates/gororoba_cli_physics/src/bin/casimir_optics_discrimination_audit.rs",
         bytes: include_bytes!("casimir_optics_discrimination_audit.rs"),
+    },
+    SourceModelInput {
+        path: "crates/materials_core/Cargo.toml",
+        bytes: include_bytes!("../../../materials_core/Cargo.toml"),
     },
     SourceModelInput {
         path: "crates/materials_core/src/multilayer_lifshitz.rs",
@@ -90,6 +110,10 @@ const SOURCE_MODEL_INPUTS: [SourceModelInput; 16] = [
         bytes: include_bytes!("../../../materials_data/build.rs"),
     },
     SourceModelInput {
+        path: "crates/materials_data/Cargo.toml",
+        bytes: include_bytes!("../../../materials_data/Cargo.toml"),
+    },
+    SourceModelInput {
         path: "crates/materials_data/data/optical/drude_metals.toml",
         bytes: include_bytes!("../../../materials_data/data/optical/drude_metals.toml"),
     },
@@ -106,6 +130,10 @@ const SOURCE_MODEL_INPUTS: [SourceModelInput; 16] = [
         bytes: include_bytes!("../../../quantum_core/src/casimir.rs"),
     },
     SourceModelInput {
+        path: "crates/quantum_core/Cargo.toml",
+        bytes: include_bytes!("../../../quantum_core/Cargo.toml"),
+    },
+    SourceModelInput {
         path: "crates/quantum_core/src/casimir/lifshitz.rs",
         bytes: include_bytes!("../../../quantum_core/src/casimir/lifshitz.rs"),
     },
@@ -116,6 +144,10 @@ const SOURCE_MODEL_INPUTS: [SourceModelInput; 16] = [
     SourceModelInput {
         path: "crates/stats_core/src/calibrated_discrimination.rs",
         bytes: include_bytes!("../../../stats_core/src/calibrated_discrimination.rs"),
+    },
+    SourceModelInput {
+        path: "crates/stats_core/Cargo.toml",
+        bytes: include_bytes!("../../../stats_core/Cargo.toml"),
     },
 ];
 

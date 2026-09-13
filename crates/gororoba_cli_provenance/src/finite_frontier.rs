@@ -44,9 +44,8 @@ pub const EXPECTED_FRONTIER_IDS: [&str; 30] = [
     "uv-background-model-sensitivity",
 ];
 
-pub const EXPECTED_OPEN_FRONTIER_IDS: [&str; 3] = [
+pub const EXPECTED_OPEN_FRONTIER_IDS: [&str; 2] = [
     "declared-frontier-denominator-proof",
-    "lifshitz-planar-polar-normalization",
     "selected-schedule-independent-monte-carlo",
 ];
 
@@ -418,7 +417,10 @@ mod tests {
     fn accepts_exact_denominator_and_reports_bounded_partitions() {
         let report = verify_document(&baseline_document()).unwrap();
         assert_eq!(report.declared_count, EXPECTED_FRONTIER_IDS.len());
-        assert_eq!(report.closed_count, 27);
+        assert_eq!(
+            report.closed_count,
+            EXPECTED_FRONTIER_IDS.len() - EXPECTED_OPEN_FRONTIER_IDS.len()
+        );
         assert_eq!(report.open_count, EXPECTED_OPEN_FRONTIER_IDS.len());
         assert_eq!(report.declared_keys.len(), EXPECTED_FRONTIER_IDS.len());
         assert_eq!(report.residual_actions.len(), EXPECTED_OPEN_FRONTIER_IDS.len());
