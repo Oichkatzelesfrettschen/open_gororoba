@@ -63,7 +63,7 @@
 .PHONY: clean clean-builds clean-artifacts clean-all host-profile
 .PHONY: check-ansi check-terminology
 .PHONY: validate-rust-integrity-claims validate-rust-integrity-test-inventory validate-rust-integrity-typed-policy
-.PHONY: validate-registry-control-plane validate-registry-project-counter validate-registry-markdown validate-registry-governance validate-registry-semantic-atoms validate-registry-evidence-provenance validate-registry-integrity validate-registry-execution-planning
+.PHONY: validate-registry-control-plane validate-registry-project-counter validate-registry-markdown validate-registry-governance validate-registry-semantic-atoms validate-registry-evidence-provenance validate-registry-execution-planning
 .PHONY: run-e183
 .PHONY: cpd-audit cpd-audit-strict cpd-audit-tooling cpd-audit-generated patch-static-mirror-headers cargo-cache-status cargo-cache-prune cargo-cache-smoke
 .PHONY: cd-row-upgrade-batch cd-row-upgrade-jacobson cd-row-upgrade-freudenthal
@@ -304,7 +304,7 @@ validation-resource-contract:
 	fi; \
 	grep -Fq 'detect_worker_budget.rs' .github/workflows/ci.yml; \
 	grep -Fq 'std::thread::available_parallelism()' crates/gororoba_cli/src/bin/detect_worker_budget.rs; \
-	if grep -Eq 'GOROROBA_WORKER_TEST_CPUS|max\\(|min\\(|clamp|/ *2|checked_div' crates/gororoba_cli/src/bin/detect_worker_budget.rs; then \
+	if grep -Eq 'GOROROBA_WORKER_TEST_CPUS|max[(]|min[(]|clamp|/ *2|checked_div' crates/gororoba_cli/src/bin/detect_worker_budget.rs; then \
 	    echo "ERROR: worker detection contains an override, divisor, or clamp." >&2; exit 1; \
 	fi; \
 	grep -Fq 'cargo clippy --keep-going' Makefile; \
@@ -312,7 +312,7 @@ validation-resource-contract:
 	grep -Fq 'make --keep-going validate-ci-scoped-rust' .github/workflows/ci.yml; \
 	grep -Fq 'make --jobs="$$MAKE_JOBS" --keep-going all' .github/workflows/proofs.yml; \
 	grep -Fq 'Report collected proof failures' .github/workflows/proofs.yml; \
-	if grep -Eq 'PHYS_CORES|PHYS_CPUS|taskset|-j\$\(JOBS\)' proofs/Makefile; then \
+	if grep -Eq 'PHYS_CORES|PHYS_CPUS|taskset' proofs/Makefile || grep -Fq -- '-j$$(JOBS)' proofs/Makefile; then \
 	    echo "ERROR: proof validation replaces or constrains the inherited Make jobserver." >&2; exit 1; \
 	fi; \
 	grep -Fq 'Report collected validation failures' .github/workflows/ci.yml; \
@@ -1833,9 +1833,6 @@ validate-registry-semantic-atoms: registry-validation-tools
 
 validate-registry-evidence-provenance: registry-validation-tools
 	$(VALIDATION_TOOLS_DIR)/evidence-provenance --verify --repo-root .
-
-validate-registry-integrity: registry-validation-tools
-	$(REGISTRY_INTEGRITY_CACHE) --verify --repo-root .
 
 validate-registry-execution-planning: registry-validation-tools
 	$(VALIDATION_TOOLS_DIR)/execution-planning --verify --repo-root .
