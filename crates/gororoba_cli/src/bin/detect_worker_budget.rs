@@ -3,22 +3,6 @@
 use std::env;
 use std::process::ExitCode;
 
-#[derive(Clone, Copy, Debug, Eq, PartialEq)]
-enum BudgetMode {
-    Local,
-    Ci,
-}
-
-impl BudgetMode {
-    fn parse(value: &str) -> Result<Self, String> {
-        match value {
-            "local" => Ok(Self::Local),
-            "ci" => Ok(Self::Ci),
-            _ => Err(format!("unknown worker-budget mode {value:?}")),
-        }
-    }
-}
-
 fn parse_positive(value: &str, description: &str) -> Result<usize, String> {
     let parsed = value
         .parse::<usize>()
@@ -39,61 +23,48 @@ fn environment_positive(name: &str, description: &str) -> Result<Option<usize>, 
     }
 }
 
-fn worker_budget(mode: BudgetMode, logical_cpus: usize) -> usize {
-    match mode {
-        BudgetMode::Local => (logical_cpus / 2).clamp(1, 2),
-        BudgetMode::Ci => logical_cpus.max(1),
-    }
+fn worker_budget(logical_cpus: usize) -> usize {
+    logical_cpus.max(1)
 }
 
-fn detected_worker_budget(mode: BudgetMode) -> Result<usize, String> {
-    let logical_cpus = environment_positive(
+fn detected_worker_budget() -> Result<usize, String> {
+    let logical_cpus = match environment_positive(
         "GOROROBA_WORKER_TEST_CPUS",
         "worker CPU count override",
-    )?
-    .unwrap_or_else(|| {
-        std::thread::available_parallelism()
+    )? {
+        Some(logical_cpus) => logical_cpus,
+        None => std::thread::available_parallelism()
             .map(std::num::NonZeroUsize::get)
-            .unwrap_or(2)
-    });
+            .map_err(|error| format!("failed to detect available CPUs: {error}"))?,
+    };
 
-    Ok(worker_budget(mode, logical_cpus))
+    Ok(worker_budget(logical_cpus))
 }
 
 fn self_test() -> Result<(), String> {
-    let cases = [
-        (BudgetMode::Local, 1, 1),
-        (BudgetMode::Local, 128, 2),
-        (BudgetMode::Ci, 4, 4),
-        (BudgetMode::Ci, 128, 128),
-    ];
-    for (mode, logical_cpus, expected) in cases {
-        let observed = worker_budget(mode, logical_cpus);
+    let cases = [(1, 1), (4, 4), (128, 128)];
+    for (logical_cpus, expected) in cases {
+        let observed = worker_budget(logical_cpus);
         if observed != expected {
             return Err(format!(
-                "worker-budget self-test failed: mode={mode:?} cpus={logical_cpus} expected={expected} observed={observed}"
+                "worker-budget self-test failed: cpus={logical_cpus} expected={expected} observed={observed}"
             ));
         }
-    }
-    if BudgetMode::parse("invalid").is_ok() {
-        return Err("worker-budget self-test accepted an invalid mode".to_owned());
     }
     Ok(())
 }
 
 fn run() -> Result<(), String> {
     let mut arguments = env::args().skip(1);
-    let operation = arguments.next().ok_or_else(|| {
-        "usage: detect-worker-budget <local|ci|--self-test>".to_owned()
-    })?;
+    let operation = arguments.next();
     if arguments.next().is_some() {
-        return Err("detect-worker-budget accepts exactly one argument".to_owned());
+        return Err("usage: detect-worker-budget [--self-test]".to_owned());
     }
-    if operation == "--self-test" {
-        self_test()?;
-        return Ok(());
+    match operation.as_deref() {
+        None => println!("{}", detected_worker_budget()?),
+        Some("--self-test") => self_test()?,
+        Some(_) => return Err("usage: detect-worker-budget [--self-test]".to_owned()),
     }
-    println!("{}", detected_worker_budget(BudgetMode::parse(&operation)?)?);
     Ok(())
 }
 
@@ -109,15 +80,10 @@ fn main() -> ExitCode {
 
 #[cfg(test)]
 mod tests {
-    use super::{BudgetMode, worker_budget};
+    use super::worker_budget;
 
     #[test]
-    fn local_budget_reserves_capacity() {
-        assert_eq!(worker_budget(BudgetMode::Local, 128), 2);
-    }
-
-    #[test]
-    fn ci_budget_uses_all_available_cpus() {
-        assert_eq!(worker_budget(BudgetMode::Ci, 128), 128);
+    fn budget_uses_all_available_cpus() {
+        assert_eq!(worker_budget(128), 128);
     }
 }

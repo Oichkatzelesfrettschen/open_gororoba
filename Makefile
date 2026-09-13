@@ -72,7 +72,6 @@
 NPROC := $(shell nproc 2>/dev/null || echo 4)
 NJOBS := $(shell expr $(NPROC) \* 3 / 4)
 TRUSTED_GITHUB_ACTIONS := $(if $(and $(filter true,$(CI)),$(filter true,$(GITHUB_ACTIONS))),1,0)
-override WORKER_BUDGET_MODE := $(if $(filter 1,$(TRUSTED_GITHUB_ACTIONS)),ci,local)
 CI_WORKER_BUDGET ?= 1
 override WORKER_BUDGET := $(if $(filter 1,$(TRUSTED_GITHUB_ACTIONS)),$(CI_WORKER_BUDGET),1)
 override CARGO_JOBS := $(WORKER_BUDGET)
@@ -253,18 +252,18 @@ require-ci-validation-authority:
 	fi
 
 print-validation-resource-config:
-	@printf 'mode=%s workers=%s trusted_github_actions=%s\n' "$(WORKER_BUDGET_MODE)" "$(WORKER_BUDGET)" "$(TRUSTED_GITHUB_ACTIONS)"
+	@printf 'workers=%s trusted_github_actions=%s\n' "$(WORKER_BUDGET)" "$(TRUSTED_GITHUB_ACTIONS)"
 
 validation-resource-contract:
 	@set -eu; \
 	local_config="$$( \
 	    $(MAKE) --no-print-directory -s print-validation-resource-config \
-	    CI=false GITHUB_ACTIONS=false CI_WORKER_BUDGET=99 WORKER_BUDGET_MODE=ci WORKER_BUDGET=99 CARGO_JOBS=99)"; \
-	test "$$local_config" = 'mode=local workers=1 trusted_github_actions=0'; \
+	    CI=false GITHUB_ACTIONS=false CI_WORKER_BUDGET=99 WORKER_BUDGET=99 CARGO_JOBS=99)"; \
+	test "$$local_config" = 'workers=1 trusted_github_actions=0'; \
 	ci_config="$$( \
 	    $(MAKE) --no-print-directory -s print-validation-resource-config \
-	    CI=true GITHUB_ACTIONS=true CI_WORKER_BUDGET=4 WORKER_BUDGET_MODE=local WORKER_BUDGET=99 CARGO_JOBS=99)"; \
-	test "$$ci_config" = 'mode=ci workers=4 trusted_github_actions=1'; \
+	    CI=true GITHUB_ACTIONS=true CI_WORKER_BUDGET=4 WORKER_BUDGET=99 CARGO_JOBS=99)"; \
+	test "$$ci_config" = 'workers=4 trusted_github_actions=1'; \
 	if $(MAKE) --no-print-directory -s require-ci-validation-authority \
 	    CI=true GITHUB_ACTIONS=false >/dev/null 2>&1; then \
 	    echo "ERROR: generic CI variable bypassed broad-validation authority." >&2; exit 1; \
@@ -298,8 +297,10 @@ validation-resource-contract:
 	if grep -Fq 'name = "registry-integrity"' crates/gororoba_cli_data/Cargo.toml; then \
 	    echo "ERROR: registry-integrity remains owned by the broad data CLI package." >&2; exit 1; \
 	fi; \
-	grep -Fq 'WORKER_BUDGET_MODE: ci' .github/workflows/ci.yml; \
 	grep -Fq 'detect_worker_budget.rs' .github/workflows/ci.yml; \
+	grep -Fq 'cargo clippy --keep-going' Makefile; \
+	grep -Fq 'cargo nextest run --no-fail-fast' Makefile; \
+	grep -Fq 'Report collected validation failures' .github/workflows/ci.yml; \
 	grep -Fq 'CI_WORKER_BUDGET' .github/workflows/ci.yml; \
 	test ! -e scripts/detect_worker_budget.sh; \
 	test ! -e scripts/detect_physical_cores.sh; \
@@ -691,6 +692,7 @@ validate-ci-scoped-rust: export CI_RUST_SCOPE := $(CI_RUST_SCOPE)
 validate-ci-scoped-rust: export CI_CLIPPY_SCOPE := $(CI_CLIPPY_SCOPE)
 validate-ci-scoped-rust: require-ci-validation-authority
 	@set -euo pipefail; \
+	failure_count=0; \
 	validate_scope() { \
 	    local scope_name="$$1" scope_value="$$2"; \
 	    local -a scope_tokens=(); \
@@ -727,15 +729,16 @@ validate-ci-scoped-rust: require-ci-validation-authority
 	    done; \
 	fi; \
 	echo "[ci-rust] clippy: $$CI_CLIPPY_SCOPE"; \
-	$(CARGO_ENV_CI) cargo clippy --locked --profile validation --all-targets "$${clippy_scope[@]}" -- -D warnings; \
+	if ! $(CARGO_ENV_CI) cargo clippy --keep-going --locked --profile validation --all-targets "$${clippy_scope[@]}" -- -D warnings; then failure_count=$$((failure_count + 1)); fi; \
 	if [ "$${#light_scope[@]}" -gt 0 ]; then \
 	    echo "[ci-rust] tests (validation): $${light_scope[*]}"; \
-	    $(CARGO_ENV_CI) cargo nextest run --locked --cargo-profile validation -P ci --build-jobs $(CARGO_JOBS) --test-threads $(NEXTEST_TEST_THREADS) "$${light_scope[@]}"; \
+	    if ! $(CARGO_ENV_CI) cargo nextest run --no-fail-fast --locked --cargo-profile validation -P ci --build-jobs $(CARGO_JOBS) --test-threads $(NEXTEST_TEST_THREADS) "$${light_scope[@]}"; then failure_count=$$((failure_count + 1)); fi; \
 	fi; \
 	if [ "$${#heavy_scope[@]}" -gt 0 ]; then \
 	    echo "[ci-rust] tests (test-heavy): $${heavy_scope[*]}"; \
-	    $(CARGO_ENV_CI) cargo nextest run --locked --cargo-profile test-heavy -P heavy --build-jobs $(CARGO_JOBS) --test-threads $(NEXTEST_TEST_THREADS) "$${heavy_scope[@]}"; \
+	    if ! $(CARGO_ENV_CI) cargo nextest run --no-fail-fast --locked --cargo-profile test-heavy -P heavy --build-jobs $(CARGO_JOBS) --test-threads $(NEXTEST_TEST_THREADS) "$${heavy_scope[@]}"; then failure_count=$$((failure_count + 1)); fi; \
 	fi; \
+	if [ "$$failure_count" -ne 0 ]; then echo "ERROR: $$failure_count scoped Rust validation command(s) failed." >&2; exit 1; fi; \
 	echo "OK: scoped CI Rust validation passed."
 
 db-schema-drift-check: $(XTASK_CACHE)

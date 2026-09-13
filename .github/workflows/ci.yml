@@ -33,7 +33,6 @@ env:
   CARGO_PROFILE_TEST_DEBUG: '0'
   CARGO_PROFILE_RELEASE_DEBUG: '0'
   RUST_BACKTRACE: '1'
-  WORKER_BUDGET_MODE: ci
 
 jobs:
   validation-policy:
@@ -103,7 +102,7 @@ jobs:
           set -euo pipefail
           rustc --edition=2024 -D warnings crates/gororoba_cli/src/bin/detect_worker_budget.rs -o "$RUNNER_TEMP/detect-worker-budget"
           "$RUNNER_TEMP/detect-worker-budget" --self-test
-          worker_budget="$("$RUNNER_TEMP/detect-worker-budget" "$WORKER_BUDGET_MODE")"
+          worker_budget="$("$RUNNER_TEMP/detect-worker-budget")"
           echo "Hosted validation uses $worker_budget workers from std::thread::available_parallelism()."
           for variable in CI_WORKER_BUDGET WORKER_BUDGET CARGO_JOBS NEXTEST_TEST_THREADS RUST_TEST_THREADS RAYON_THREADS; do
             echo "$variable=$worker_budget" >> "$GITHUB_ENV"
@@ -173,40 +172,56 @@ jobs:
           fi
 
       - name: Check repository hygiene
+        id: hygiene
         if: steps.route.outputs.run_check == 'true'
+        continue-on-error: true
         run: make check 2>&1 | tee reports/validation/hygiene.log
 
       - name: Validate canonical evidence and governance
+        id: governance
         if: steps.route.outputs.run_governance == 'true'
+        continue-on-error: true
         run: make validate-ci-registry 2>&1 | tee reports/validation/governance.log
 
       - name: Lint owners and test affected consumers including binaries
+        id: rust
         if: steps.route.outputs.run_rust == 'true'
+        continue-on-error: true
         env:
           CI_RUST_SCOPE: ${{ steps.route.outputs.rust_scope }}
           CI_CLIPPY_SCOPE: ${{ steps.lint.outputs.rust_scope }}
         run: make validate-ci-scoped-rust 2>&1 | tee reports/validation/rust.log
 
       - name: Verify provider inventory and database schema documentation
+        id: integrity
         if: steps.route.outputs.run_rust == 'true' || steps.route.outputs.run_governance == 'true'
+        continue-on-error: true
         run: make validate-rust-integrity db-schema-drift-check 2>&1 | tee reports/validation/integrity.log
 
       - name: Verify retained Casimir and optics audit freshness
+        id: casimir-audit
         if: steps.paths.outputs.casimir_audit == 'true'
+        continue-on-error: true
         run: make casimir-optics-discrimination-audit-check 2>&1 | tee reports/validation/casimir-optics-discrimination.log
 
       - name: Install dependency policy verifier
+        id: dependency-tool
         if: steps.paths.outputs.dependencies == 'true'
+        continue-on-error: true
         uses: taiki-e/install-action@v2
         with:
           tool: cargo-deny@0.20.2
 
       - name: Verify dependency policy
+        id: dependencies
         if: steps.paths.outputs.dependencies == 'true'
+        continue-on-error: true
         run: make cargo-deny-check 2>&1 | tee reports/validation/dependencies.log
 
       - name: Validate retained Warp HDF5 artifacts
+        id: warp
         if: steps.paths.outputs.warp == 'true' && hashFiles('data/h5/**/*.h5') != ''
+        continue-on-error: true
         run: cargo run --locked --profile validation -p gororoba_cli_warp --features gpu,hdf5-export --bin warp -- acceptance-gate "data/h5/**/*.h5"
 
       - name: Retain compiled dependencies after validation failures
@@ -229,9 +244,35 @@ jobs:
           if-no-files-found: warn
           retention-days: 14
 
+      - name: Report collected validation failures
+        if: always()
+        env:
+          HYGIENE_OUTCOME: ${{ steps.hygiene.outcome }}
+          GOVERNANCE_OUTCOME: ${{ steps.governance.outcome }}
+          RUST_OUTCOME: ${{ steps.rust.outcome }}
+          INTEGRITY_OUTCOME: ${{ steps.integrity.outcome }}
+          CASIMIR_AUDIT_OUTCOME: ${{ steps.casimir-audit.outcome }}
+          DEPENDENCY_TOOL_OUTCOME: ${{ steps.dependency-tool.outcome }}
+          DEPENDENCIES_OUTCOME: ${{ steps.dependencies.outcome }}
+          WARP_OUTCOME: ${{ steps.warp.outcome }}
+        run: |
+          set -euo pipefail
+          failure_count=0
+          for lane in HYGIENE GOVERNANCE RUST INTEGRITY CASIMIR_AUDIT DEPENDENCY_TOOL DEPENDENCIES WARP; do
+            outcome="${!lane}"
+            printf '%s=%s\n' "$lane" "$outcome"
+            if [ "$outcome" = failure ]; then
+              failure_count=$((failure_count + 1))
+            fi
+          done
+          if [ "$failure_count" -ne 0 ]; then
+            echo "Collected $failure_count failing validation lane(s)." >&2
+            exit 1
+          fi
+
   docs-gate:
     needs: validation
-    if: needs.validation.outputs.docs == 'true'
+    if: always() && needs.validation.outputs.docs == 'true'
     runs-on: ubuntu-24.04
     timeout-minutes: 60
     steps:
@@ -274,7 +315,8 @@ jobs:
             ${{ github.workspace }}/.cache/docs-cbuild
             ${{ github.workspace }}/target/docs-target
           key: ${{ steps.docs-cache.outputs.cache-primary-key }}
-      - uses: actions/upload-artifact@v4
+      - if: always()
+        uses: actions/upload-artifact@v4
         with:
           name: docs-site
           path: target/site-docs
