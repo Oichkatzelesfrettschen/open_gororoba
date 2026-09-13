@@ -362,7 +362,9 @@ validation-resource-contract-collectors:
 	for cache_job in validation-governance validation-casimir-audit scientific-replay-inputs scientific-replay-leaf; do \
 	    cache_block="$$(sed -n "/^  $$cache_job:/,/^  [a-z].*:/p" .github/workflows/ci.yml)"; \
 	    if ! printf '%s\n' "$$cache_block" | grep -Fq '$${{ github.sha }}-$${{ github.run_id }}-$${{ github.run_attempt }}'; then echo "ERROR: $$cache_job cache key is not run-unique." >&2; status=1; fi; \
+	    if ! printf '%s\n' "$$cache_block" | grep -Fq 'if: success() && steps.'; then echo "ERROR: $$cache_job can retain an incomplete or failed build cache." >&2; status=1; fi; \
 	done; \
+	if ! printf '%s\n' "$$docs_gate_block" | grep -Fq 'if: success() && steps.docs-cache.outputs.cache-primary-key'; then echo "ERROR: docs-gate can retain an incomplete or failed build cache." >&2; status=1; fi; \
 	for contract in 'selected_paths=(' 'selected_files=(' 'cp --parents' 'path: $${{ runner.temp }}/scientific-replay-inputs'; do \
 	    if ! grep -Fq -- "$$contract" .github/workflows/ci.yml; then echo "ERROR: selected scientific replay staging contract is missing: $$contract" >&2; status=1; fi; \
 	done; \

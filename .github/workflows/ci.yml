@@ -464,7 +464,7 @@ jobs:
           if-no-files-found: warn
           retention-days: 14
       - name: Retain governance build artifacts
-        if: always() && steps.governance-cache.outputs.cache-primary-key != '' && steps.governance-cache.outputs.cache-hit != 'true'
+        if: success() && steps.governance-cache.outputs.cache-primary-key != '' && steps.governance-cache.outputs.cache-hit != 'true'
         uses: actions/cache/save@v4
         with:
           path: |
@@ -525,7 +525,7 @@ jobs:
           if-no-files-found: warn
           retention-days: 14
       - name: Retain Casimir audit build artifacts
-        if: always() && steps.casimir-cache.outputs.cache-primary-key != '' && steps.casimir-cache.outputs.cache-hit != 'true'
+        if: success() && steps.casimir-cache.outputs.cache-primary-key != '' && steps.casimir-cache.outputs.cache-hit != 'true'
         uses: actions/cache/save@v4
         with:
           path: |
@@ -789,7 +789,7 @@ jobs:
           if-no-files-found: error
           retention-days: 1
       - name: Retain scientific hydration build artifacts
-        if: always() && steps.hydration-cache.outputs.cache-primary-key != '' && steps.hydration-cache.outputs.cache-hit != 'true'
+        if: success() && steps.hydration-cache.outputs.cache-primary-key != '' && steps.hydration-cache.outputs.cache-hit != 'true'
         uses: actions/cache/save@v4
         with:
           path: |
@@ -872,7 +872,7 @@ jobs:
           if-no-files-found: warn
           retention-days: 14
       - name: Retain scientific replay build artifacts
-        if: always() && steps.replay-cache.outputs.cache-primary-key != '' && steps.replay-cache.outputs.cache-hit != 'true'
+        if: success() && steps.replay-cache.outputs.cache-primary-key != '' && steps.replay-cache.outputs.cache-hit != 'true'
         uses: actions/cache/save@v4
         with:
           path: |
@@ -1061,7 +1061,7 @@ jobs:
       - name: Build default-feature docs and check freshness together
         run: make --jobs="$WORKER_BUDGET" --keep-going docs-freshness DOCS_CARGO_BUILD_DIR="$GITHUB_WORKSPACE/.cache/docs-cbuild"
       - name: Retain documentation dependencies after validation failures
-        if: always() && steps.docs-cache.outputs.cache-primary-key != '' && steps.docs-cache.outputs.cache-hit != 'true'
+        if: success() && steps.docs-cache.outputs.cache-primary-key != '' && steps.docs-cache.outputs.cache-hit != 'true'
         uses: actions/cache/save@v4
         with:
           path: |

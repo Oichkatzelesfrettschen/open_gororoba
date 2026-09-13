@@ -362,3 +362,31 @@ status = "implemented_pending_ci"
 finding = "The proof workflow passed all four detected CPUs to Make but left opam's switch and package builds to an implicit default."
 required_change = "Export OPAMJOBS from the unchanged std::thread::available_parallelism result and pass it explicitly to both opam build commands."
 verification = "Hosted proof logs report the process-visible worker count and both cold opam commands receive exactly that count."
+
+[[task]]
+id = "exact-head-8c79abde-denominator"
+status = "complete"
+finding = "Run 34775591219 completed all 58 jobs: 54 passed, validation-casimir-audit and Rust light-2 failed independently, aggregate validation failed by construction, and docs deployment skipped. Every other Rust shard, all three scientific replay leaves, docs, proofs, paper, benchmarks, governance, and unsafe survey passed."
+required_change = "Repair the bounded-profile test's precision contract and refresh the four stale retained Casimir outputs in one final generation."
+verification = "The exact-head run reached terminal state with zero canceled jobs and a two-leaf independent failure denominator."
+
+[[task]]
+id = "bounded-profile-test-certificate-tolerance"
+status = "implemented_pending_ci"
+finding = "The tiny-column bounded-profile test required a residual below 1e-12 even though the API accepts a global solver certificate tolerance of 1e-7 and configures Clarabel's internal feasibility tolerance at 1e-10. The solve remained feasible and finite but the test asserted unsupported precision."
+required_change = "Require the tiny-column residual to remain within the public solver-certificate tolerance while preserving the recovered 1e200 physical coefficient check."
+verification = "Hosted stats_core tests pass the tiny-column case and retain the extreme-column, overflow, feasibility, and exact-fixed-box regressions."
+
+[[task]]
+id = "failed-cache-retention-boundary"
+status = "implemented_pending_ci"
+finding = "Run 34775591219 restored the 1.72 GB documentation cache saved by canceled run 34774800856, and full rustdoc took 24 minutes 43 seconds instead of the prior complete-cache 20 minutes 15 seconds. Cache retention used always(), so canceled or failed jobs could publish partial build trees and displace complete caches."
+required_change = "Save governance, Casimir, hydration, replay, and documentation caches only after their job remains successful; continue uploading diagnostic reports on failure."
+verification = "Hosted policy pins success-only cache writes and the final cache inventory contains only successful owner caches."
+
+[[task]]
+id = "native-audit-output-refresh-after-robust-scaling"
+status = "implemented_pending_ci"
+finding = "Hosted Casimir regeneration in run 34775591219 produced three deterministic solver-output changes after robust nuisance-column scaling. Cargo.lock and the bounded-profile certificate test also changed the native source-model identity."
+required_change = "Retain the three hosted output files byte-for-byte, refresh all 24 ordered source-input hashes and the source-model identity, preserve the generated manifest's two-newline ending, and bind the path-repair receipt to the refreshed manifest hash."
+verification = "Hosted Casimir freshness, source identity, output hashes, byte counts, and path-repair verification all pass on one exact commit."

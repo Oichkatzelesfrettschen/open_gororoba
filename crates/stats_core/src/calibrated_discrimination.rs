@@ -779,7 +779,7 @@ mod tests {
         }];
 
         let result = bounded_profile_distance(&target, &nuisance, &bounds).unwrap();
-        assert!(result.distance < 1e-12);
+        assert!(result.distance <= SOLVER_CERTIFICATE_TOLERANCE);
         assert_relative_eq!(result.nuisance_parameters[0] / 1e200, 1.0, epsilon = 1e-12);
     }
 

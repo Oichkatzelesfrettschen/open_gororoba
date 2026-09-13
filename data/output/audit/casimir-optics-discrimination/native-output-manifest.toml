@@ -1,7 +1,7 @@
 schema_version = 1
 producer = "crates/gororoba_cli_physics/src/bin/casimir_optics_discrimination_audit.rs"
 producer_sha256 = "e35bb34fc48d499e6d13e4089f905929419a0edde477a2ffd26fda6f34c3ab88"
-source_model_identity = "sha256:5c3e7d31183801b09155fdcb69b4203efe9088a92e9ba428ddb7a60b3f46b5c6"
+source_model_identity = "sha256:8c1bc9f80a06a44dd30bd8a80192d6792fa30a28714a40cc3db4501af70c4b93"
 source_model_identity_algorithm = "SHA-256 over path UTF-8, NUL, file bytes, NUL for source_model_input entries in manifest order"
 command = "cargo run -p gororoba_cli_physics --bin casimir-optics-discrimination-audit --profile validation"
 scope = "native model outputs; no laboratory observations"
@@ -12,7 +12,7 @@ sha256 = "d5d26b8628149218190267809b27431c4e405c70f35e68d138ae79c0d98b9299"
 
 [[source_model_input]]
 path = "Cargo.lock"
-sha256 = "74d356b0467cb4def5afb4e8dc39b30cd66fcd6c5bd8048f09c5971027ed8369"
+sha256 = "79dda41a1d1379c3b5808eb614d90d0b9d489ff6ef58765b5c9abb50ef069d44"
 
 [[source_model_input]]
 path = "rust-toolchain.toml"
@@ -96,7 +96,7 @@ sha256 = "47844290c6208f0587a4a4779b12e0133e3d781afd13f84074ff871504d17c2f"
 
 [[source_model_input]]
 path = "crates/stats_core/src/calibrated_discrimination.rs"
-sha256 = "7807ee0b542a5e249a4f1e2f2e6bad878903ed4a5e7a3de55876728f5c5fd006"
+sha256 = "1fdca884c31fc7a1e7bc4771a06f1fa10241a3655ed33a8cd85c2e651031efe6"
 
 [[source_model_input]]
 path = "crates/stats_core/Cargo.toml"
@@ -104,12 +104,12 @@ sha256 = "a2a7349de351863a55003cf4bcb088189c5ae2dd56a34ecf2e25233502577075"
 
 [[output]]
 path = "bounded_mimic.tsv"
-sha256 = "2015aa18d39b6c5616eb196eafb11b9bd1b1e6c441fd8191c89839982191c793"
+sha256 = "3b7194b6e1b0344c1ed54e523c252b3f4080014d390e85b43b0dc096a6bbf69a"
 bytes = 366
 
 [[output]]
 path = "bounded_mimic_coefficients.tsv"
-sha256 = "5291b8b4faead511bb069dedbfa54ed8b378fde358bc817cf6b1c9502806ddce"
+sha256 = "a27ddd79d4b65fea8e7a1f1549b81348a1be5c0bde4e5c2f86adcf4df7d5e736"
 bytes = 2571
 
 [[output]]
@@ -124,7 +124,7 @@ bytes = 976
 
 [[output]]
 path = "derivative_step_study.tsv"
-sha256 = "30120cc99eb925326931774f8d09e5c5a83803e06e53647d6219705b6126cbe3"
+sha256 = "d54fcb9139a6740b9247b84567edab8e03adb7aba244c76cd832252428f276b0"
 bytes = 354
 
 [[output]]
@@ -171,3 +171,4 @@ bytes = 850
 path = "uv_model_sensitivity.tsv"
 sha256 = "cd17ea2831159644046498bedc09e4112ca2ede80a698594f8c07f3e60922292"
 bytes = 1390
+
