@@ -714,6 +714,10 @@ impl ModelRun {
         if self.input_quantity_ids.is_empty() {
             return Err("model run requires at least one input quantity".to_owned());
         }
+        let unique_input_ids: BTreeSet<_> = self.input_quantity_ids.iter().collect();
+        if unique_input_ids.len() != self.input_quantity_ids.len() {
+            return Err("model run repeats an input quantity".to_owned());
+        }
         if self.conditions.is_empty() {
             return Err("model run requires bound conditions".to_owned());
         }
@@ -748,6 +752,10 @@ impl DerivedValue {
         self.model_run_id.validate("model-run identifier")?;
         if self.input_quantity_ids.is_empty() {
             return Err("derived value requires measured or admitted inputs".to_owned());
+        }
+        let unique_input_ids: BTreeSet<_> = self.input_quantity_ids.iter().collect();
+        if unique_input_ids.len() != self.input_quantity_ids.len() {
+            return Err("derived value repeats an input quantity".to_owned());
         }
         let QuantityOrigin::ModelRun { model_run_id } = &self.output.origin else {
             return Err("derived output must originate from a model run".to_owned());
@@ -1062,6 +1070,13 @@ impl MaterialEvidenceGraph {
                 ));
             }
             let declared_inputs: BTreeSet<_> = model_run.input_quantity_ids.iter().collect();
+            let derived_inputs: BTreeSet<_> = derived.input_quantity_ids.iter().collect();
+            if derived_inputs != declared_inputs {
+                return Err(format!(
+                    "derived value {} inputs do not equal model run {} inputs",
+                    derived.derived_value_id.0, model_run.model_run_id.0
+                ));
+            }
             for input_quantity_id in &derived.input_quantity_ids {
                 let input_quantity = quantities_by_id.get(input_quantity_id).ok_or_else(|| {
                     format!(
@@ -1873,7 +1888,42 @@ mod tests {
         graph.derived_values[0].input_quantity_ids[0] = undeclared.quantity_id.clone();
         assert_eq!(
             graph.validate().unwrap_err(),
-            "derived value derived:reflectivity input quantity:undeclared is not declared by model run model:drude-lorentz:v1"
+            "derived value derived:reflectivity inputs do not equal model run model:drude-lorentz:v1 inputs"
+        );
+    }
+
+    #[test]
+    fn derived_inputs_equal_the_complete_model_input_set() {
+        let mut graph = graph_with_model_and_derived();
+        let mut second_input = graph.quantities[0].clone();
+        second_input.quantity_id = identifier("quantity:temperature");
+        graph.quantities.push(second_input.clone());
+        graph.model_runs[0]
+            .input_quantity_ids
+            .push(second_input.quantity_id);
+
+        assert_eq!(
+            graph.validate().unwrap_err(),
+            "derived value derived:reflectivity inputs do not equal model run model:drude-lorentz:v1 inputs"
+        );
+    }
+
+    #[test]
+    fn model_and_derived_inputs_reject_duplicates() {
+        let mut graph = graph_with_model_and_derived();
+        let input_id = graph.model_runs[0].input_quantity_ids[0].clone();
+        graph.model_runs[0].input_quantity_ids.push(input_id);
+        assert_eq!(
+            graph.validate().unwrap_err(),
+            "model run repeats an input quantity"
+        );
+
+        let mut graph = graph_with_model_and_derived();
+        let input_id = graph.derived_values[0].input_quantity_ids[0].clone();
+        graph.derived_values[0].input_quantity_ids.push(input_id);
+        assert_eq!(
+            graph.validate().unwrap_err(),
+            "derived value repeats an input quantity"
         );
     }
 

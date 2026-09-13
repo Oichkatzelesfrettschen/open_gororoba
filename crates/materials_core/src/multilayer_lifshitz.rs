@@ -689,7 +689,12 @@ pub fn zero_temperature_pressure(
     options: ZeroTemperatureOptions,
 ) -> Result<f64, LifshitzError> {
     let (pressure_integral, _) = zero_temperature_integrals(gap_m, left, right, options)?;
-    Ok(-HBAR_J_S * C * pressure_integral / (2.0 * PI * PI * gap_m.powi(4)))
+    let pressure = -HBAR_J_S * C * pressure_integral / (2.0 * PI * PI * gap_m.powi(4));
+    if pressure.is_finite() {
+        Ok(pressure)
+    } else {
+        Err(LifshitzError::NonFiniteResult)
+    }
 }
 
 /// Compute zero-temperature planar energy per unit area in J/m^2.
@@ -700,7 +705,12 @@ pub fn zero_temperature_energy_per_area(
     options: ZeroTemperatureOptions,
 ) -> Result<f64, LifshitzError> {
     let (_, energy_integral) = zero_temperature_integrals(gap_m, left, right, options)?;
-    Ok(HBAR_J_S * C * energy_integral / (4.0 * PI * PI * gap_m.powi(3)))
+    let energy = HBAR_J_S * C * energy_integral / (4.0 * PI * PI * gap_m.powi(3));
+    if energy.is_finite() {
+        Ok(energy)
+    } else {
+        Err(LifshitzError::NonFiniteResult)
+    }
 }
 
 fn zero_mode_pressure_integral(
@@ -884,6 +894,24 @@ mod tests {
 
         assert!(relative_error(pressure, expected_pressure) < 2.0e-9);
         assert!(relative_error(energy, expected_energy) < 2.0e-9);
+    }
+
+    #[test]
+    fn zero_temperature_scaling_rejects_nonfinite_outputs() {
+        let ideal = Multilayer::ideal_conductor();
+        let options = ZeroTemperatureOptions {
+            radial_order: 16,
+            angular_order: 8,
+        };
+
+        assert_eq!(
+            zero_temperature_pressure(1.0e-100, &ideal, &ideal, options),
+            Err(LifshitzError::NonFiniteResult)
+        );
+        assert_eq!(
+            zero_temperature_energy_per_area(1.0e-100, &ideal, &ideal, options),
+            Err(LifshitzError::NonFiniteResult)
+        );
     }
 
     #[test]

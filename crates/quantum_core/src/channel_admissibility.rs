@@ -42,11 +42,11 @@ pub fn exponential_memory_depolarizing_eigenvalue(
         return None;
     }
     let half_decay = decay / 2.0;
-    let discriminant = weight - half_decay * half_decay;
+    let root_weight = weight.sqrt();
     let decay_time = half_decay * time;
-    let value = if discriminant > 0.0 {
-        let frequency = discriminant.sqrt();
-        let phase = frequency * time;
+    let value = if root_weight > half_decay {
+        let damping_ratio = half_decay / root_weight;
+        let phase = root_weight * time * (1.0 - damping_ratio * damping_ratio).sqrt();
         let sinc = if phase.abs() < 1e-4 {
             let phase_squared = phase * phase;
             1.0 - phase_squared / 6.0 + phase_squared * phase_squared / 120.0
@@ -54,11 +54,16 @@ pub fn exponential_memory_depolarizing_eigenvalue(
             phase.sin() / phase
         };
         (-decay_time).exp() * (phase.cos() + decay_time * sinc)
-    } else if discriminant == 0.0 {
+    } else if root_weight == half_decay {
         (-decay_time).exp() * (1.0 + decay_time)
     } else {
-        let rate = (-discriminant).sqrt();
-        let scaled_rate = rate * time;
+        let frequency_ratio = if half_decay == 0.0 {
+            0.0
+        } else {
+            root_weight / half_decay
+        };
+        let rate_ratio = (1.0 - frequency_ratio * frequency_ratio).sqrt();
+        let scaled_rate = decay_time * rate_ratio;
         if scaled_rate < 0.5 {
             let sinhc = if scaled_rate.abs() < 1e-4 {
                 let rate_squared = scaled_rate * scaled_rate;
@@ -68,11 +73,12 @@ pub fn exponential_memory_depolarizing_eigenvalue(
             };
             (-decay_time).exp() * (scaled_rate.cosh() + decay_time * sinhc)
         } else {
-            let slow_exponent = -(weight / (half_decay + rate)) * time;
+            let slow_exponent =
+                -decay_time * frequency_ratio * frequency_ratio / (1.0 + rate_ratio);
             let slow_exponential = slow_exponent.exp();
             let fast_exponential = (-scaled_rate - decay_time).exp();
-            0.5 * (1.0 + half_decay / rate) * slow_exponential
-                + 0.5 * (1.0 - half_decay / rate) * fast_exponential
+            0.5 * (1.0 + 1.0 / rate_ratio) * slow_exponential
+                + 0.5 * (1.0 - 1.0 / rate_ratio) * fast_exponential
         }
     };
     value.is_finite().then_some(value)
@@ -158,5 +164,16 @@ mod tests {
         )
         .unwrap();
         assert_relative_eq!(rescaled, baseline, epsilon = 1e-14);
+    }
+
+    #[test]
+    fn overdamped_unit_rescaling_does_not_overflow_the_discriminant() {
+        let baseline =
+            exponential_memory_depolarizing_eigenvalue(1.0e-300, 1.0, 1.0).unwrap();
+        let rescaled =
+            exponential_memory_depolarizing_eigenvalue(1.0e10, 1.0e155, 1.0e-155).unwrap();
+
+        assert_relative_eq!(rescaled, baseline, epsilon = 1e-15);
+        assert_relative_eq!(rescaled, 1.0, epsilon = 1e-15);
     }
 }

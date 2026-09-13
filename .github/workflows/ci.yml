@@ -191,6 +191,9 @@ jobs:
           fi
 
       - name: Build the repository scope router
+        id: router-build
+        if: always()
+        continue-on-error: true
         run: make --jobs="$WORKER_BUDGET" "$CARGO_TARGET_DIR/validation-tools/workspace-routing"
 
       - name: Route reverse dependency test closure
@@ -234,6 +237,8 @@ jobs:
           CI_CLIPPY_SCOPE: ${{ steps.lint.outputs.rust_scope }}
         run: |
           set -euo pipefail
+          fallback_matrix='{"include":[{"lane":"clippy-fallback","target":"clippy","rust_scope":"","clippy_scope":"--workspace","cargo_target_args":"","cargo_features":""},{"lane":"workspace-fallback","target":"light","rust_scope":"--workspace","clippy_scope":"","cargo_target_args":"--lib --bins --tests --examples","cargo_features":""}]}'
+          printf 'matrix=%s\n' "$fallback_matrix" >> "$GITHUB_OUTPUT"
           make --jobs="$WORKER_BUDGET" "$CARGO_TARGET_DIR/validation-tools/xtask"
           rust_matrix="$("$CARGO_TARGET_DIR/validation-tools/xtask" ci-rust-shard-matrix \
             --rust-scope="$CI_RUST_SCOPE" \
@@ -302,6 +307,7 @@ jobs:
         if: always()
         env:
           PATHS_OUTCOME: ${{ steps.paths.outcome }}
+          ROUTER_BUILD_OUTCOME: ${{ steps.router-build.outcome }}
           ROUTE_OUTCOME: ${{ steps.route.outcome }}
           LINT_OUTCOME: ${{ steps.lint.outcome }}
           RUST_SHARDS_OUTCOME: ${{ steps.rust-shards.outcome }}
@@ -315,7 +321,7 @@ jobs:
         run: |
           set -euo pipefail
           failure_count=0
-          for outcome_variable in PATHS_OUTCOME ROUTE_OUTCOME LINT_OUTCOME RUST_SHARDS_OUTCOME HYGIENE_OUTCOME GOVERNANCE_OUTCOME INTEGRITY_OUTCOME CASIMIR_AUDIT_OUTCOME DEPENDENCY_TOOL_OUTCOME DEPENDENCIES_OUTCOME WARP_OUTCOME; do
+          for outcome_variable in PATHS_OUTCOME ROUTER_BUILD_OUTCOME ROUTE_OUTCOME LINT_OUTCOME RUST_SHARDS_OUTCOME HYGIENE_OUTCOME GOVERNANCE_OUTCOME INTEGRITY_OUTCOME CASIMIR_AUDIT_OUTCOME DEPENDENCY_TOOL_OUTCOME DEPENDENCIES_OUTCOME WARP_OUTCOME; do
             outcome="${!outcome_variable}"
             printf '%s=%s\n' "$outcome_variable" "$outcome"
             if [ "$outcome" = failure ]; then
