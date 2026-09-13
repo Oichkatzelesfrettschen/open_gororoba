@@ -1,3 +1,0 @@
-#!/bin/sh
-# GitHub Actions owns automatic validation; local checks are explicit commands.
-exit 0

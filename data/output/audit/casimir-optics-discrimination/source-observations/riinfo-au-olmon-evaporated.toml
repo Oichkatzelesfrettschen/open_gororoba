@@ -1,0 +1,28 @@
+schema_version = 1
+observation_key = "casimir-optics-discrimination-riinfo-au-olmon-evaporated"
+source_key = "RIINFO-AU-OLMON-EVAPORATED"
+actor = "codex"
+reason = "Admit retained source bytes through the typed first-observation contract without promoting scientific claims."
+requested_url = "https://raw.githubusercontent.com/polyanskiy/refractiveindex.info-database/c5c2f188e848453def5970e347399d653df2ffc2/database/data/main/Au/nk/Olmon-ev.yml"
+outcome = "body_retained"
+observed_at = "2026-09-12"
+time_precision = "day"
+tool = "curl (audit-manifest attribution)"
+request_evidence_limit = "The retained manifest associates source key, requested URL, observation day, and body digest. Raw request logs, final redirect URLs, and HTTP status are absent."
+absent_prior_expectation_reason = "The audit records observed body identities after retrieval; a hash-bound prerequest body expectation is absent."
+document_identity_limit = "Retained CC0 table bytes preserve digitized evaporated-film values; blocked primary-paper retrieval and missing calibration metadata prevent direct admission."
+
+[request_evidence]
+path = "data/output/audit/casimir-optics-discrimination/source-retrieval-manifest.toml"
+storage_sha256 = "f12acc9372491e7c7408652ea9bc6766d3037a717bece9c26b32bccf4af2c21a"
+encoding = "identity"
+decoded_sha256 = "f12acc9372491e7c7408652ea9bc6766d3037a717bece9c26b32bccf4af2c21a"
+decoded_bytes = 5045
+
+[body]
+path = "data/output/audit/casimir-optics-discrimination/sources/au-Olmon-ev.yml"
+storage_sha256 = "be778621e6491fc4e2db6eee400fb329d44ada2b987f7bfd2e219c83fe32a338"
+encoding = "identity"
+decoded_sha256 = "be778621e6491fc4e2db6eee400fb329d44ada2b987f7bfd2e219c83fe32a338"
+decoded_bytes = 17546
+

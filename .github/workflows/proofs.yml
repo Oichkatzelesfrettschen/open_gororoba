@@ -27,6 +27,21 @@ jobs:
       - uses: actions/checkout@v4
 
       - uses: dtolnay/rust-toolchain@1.97.0
+        with:
+          components: clippy, rustfmt
+
+      - name: Resolve process-visible worker count
+        run: |
+          set -euo pipefail
+          rustc --edition=2024 -D warnings crates/gororoba_cli/src/bin/detect_worker_budget.rs -o "$RUNNER_TEMP/detect-worker-budget"
+          worker_budget="$("$RUNNER_TEMP/detect-worker-budget")"
+          {
+            echo "MAKE_JOBS=$worker_budget"
+            echo "CARGO_BUILD_JOBS=$worker_budget"
+            echo "RAYON_NUM_THREADS=$worker_budget"
+            echo "RUST_TEST_THREADS=$worker_budget"
+          } >> "$GITHUB_ENV"
+          echo "Hosted proof validation uses $worker_budget workers from std::thread::available_parallelism()."
 
       - name: Install opam
         run: |
@@ -50,26 +65,56 @@ jobs:
           opam install rocq-core.9.1.1 rocq-stdlib.9.1.0 coq-flocq.4.2.2 --yes
 
       - name: Save installed proof toolchain
+        id: opam-cache-save
         if: steps.opam-cache.outputs.cache-hit != 'true'
+        continue-on-error: true
         uses: actions/cache/save@v4
         with:
           path: ~/.opam
           key: ${{ steps.opam-cache.outputs.cache-primary-key }}
 
       - name: Compile all proofs
+        id: compile
+        continue-on-error: true
         working-directory: proofs
         run: |
           eval "$(opam env --switch=rocq-9.1.1)"
-          make all
+          make --jobs="$MAKE_JOBS" --keep-going all
 
       - name: Zero-Admitted check
+        id: admitted
+        continue-on-error: true
         working-directory: proofs
         run: |
           eval "$(opam env --switch=rocq-9.1.1)"
-          make check
+          make --jobs="$MAKE_JOBS" --keep-going check-admissions
 
       - name: Extraction golden-file diff
+        id: extraction
+        continue-on-error: true
         working-directory: proofs
         run: |
           eval "$(opam env --switch=rocq-9.1.1)"
-          make extract-check
+          make --jobs="$MAKE_JOBS" --keep-going extract-check
+
+      - name: Report collected proof failures
+        if: always()
+        env:
+          CACHE_SAVE_OUTCOME: ${{ steps.opam-cache-save.outcome }}
+          COMPILE_OUTCOME: ${{ steps.compile.outcome }}
+          ADMITTED_OUTCOME: ${{ steps.admitted.outcome }}
+          EXTRACTION_OUTCOME: ${{ steps.extraction.outcome }}
+        run: |
+          set -euo pipefail
+          failure_count=0
+          for outcome_variable in CACHE_SAVE_OUTCOME COMPILE_OUTCOME ADMITTED_OUTCOME EXTRACTION_OUTCOME; do
+            outcome="${!outcome_variable}"
+            printf '%s=%s\n' "$outcome_variable" "$outcome"
+            if [ "$outcome" = failure ]; then
+              failure_count=$((failure_count + 1))
+            fi
+          done
+          if [ "$failure_count" -ne 0 ]; then
+            echo "Collected $failure_count failing proof lane(s)." >&2
+            exit 1
+          fi

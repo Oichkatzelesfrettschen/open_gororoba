@@ -15,6 +15,8 @@
 # The staples-orbit reconciliation retained the branch-local C-1737 gap and
 # allocated its successor as C-1742 through the canonical allocator; the receipt
 # is data/output/audit/staples-orbit-worktree-reconciliation/findings.toml.
+# C-1757 has no claim record in the canonical database or reachable Git history;
+# C-1758 and C-1759 are retained stable identities for the next admitted batch.
 governed_gap_ids = [
     "C-0933..C-0935",
     "C-0940",
@@ -35,6 +37,7 @@ governed_gap_ids = [
     "C-1293..C-1294",
     "C-1551..C-1596",
     "C-1737",
+    "C-1757",
 ]
 
 [insights]

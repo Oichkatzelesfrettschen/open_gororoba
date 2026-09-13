@@ -10,9 +10,8 @@ This record is a historical 2026-08-01 capture. The active workflow and the
 current synchronized counts live in
 `docs/engineering/validation-workflow-rca-2026_08_02.md` and
 `docs/engineering/evidence_ledger_operating_contract_2026_08_01.md`. The old
-commands below remain compatibility aliases; use `validate-local`,
-`validate-governance`, `validate-registry`, and `validate-repository` for new
-replays.
+commands below are historical evidence only. Push a branch and use the hosted
+workflow for a new repository-validation run.
 
 The isolated evidence-ledger worktree passes the registry, governance, full
 nextest, and workspace-check lanes. The keep-going audit remains nonzero only
@@ -74,21 +73,17 @@ classes:
 | `workspace-check` | pass | `cargo check --workspace --tests` exits zero |
 | `make gate-audit` | partial | `gate-ci-registry` and `workspace-check` exit zero; `gate-ci-rust` exits 2 in `integrity-rust` on the bounded drift classes above |
 
-## Replay commands
+## Current replay route
 
-Run from the repository root with the pinned toolchain and a worktree-local
-target directory:
+Push the candidate branch and watch the GitHub Actions run:
 
 ```bash
-make validate-local
-make validate-governance
-make validate-registry
-make validate-repository
+git push origin <branch>
+gh run watch <run-id> --exit-status
 ```
 
-The scoped Rust lane uses library tests by default. The CI lane must run the
-full integration-test kind before treating this local result as a complete
-workspace regression result.
+The historical local commands and observations above remain evidence of the
+2026-08-01 run; they are not active instructions.
 
 ## Closure boundary
 

@@ -36,7 +36,18 @@ jobs:
       - uses: actions/checkout@v4
       - uses: dtolnay/rust-toolchain@1.97.0
         with:
-          components: clippy
+          components: clippy, rustfmt
+      - name: Resolve process-visible worker count
+        run: |
+          set -euo pipefail
+          rustc --edition=2024 -D warnings crates/gororoba_cli/src/bin/detect_worker_budget.rs -o "$RUNNER_TEMP/detect-worker-budget"
+          worker_budget="$("$RUNNER_TEMP/detect-worker-budget")"
+          {
+            echo "CARGO_BUILD_JOBS=$worker_budget"
+            echo "RAYON_NUM_THREADS=$worker_budget"
+            echo "RUST_TEST_THREADS=$worker_budget"
+          } >> "$GITHUB_ENV"
+          echo "Hosted unsafe survey uses $worker_budget process-visible CPUs."
       - name: Install linker dependencies
         run: |
           sudo apt-get update -qq
@@ -47,13 +58,43 @@ jobs:
           key: unsafe-survey-${{ hashFiles('tools/vendor/cargo-geiger/Cargo.lock') }}
           cache-on-failure: true
       - name: Test the vendored survey package
+        id: tests
+        if: always()
+        continue-on-error: true
+        shell: bash
         run: |
-          cargo test --locked --release --manifest-path tools/vendor/cargo-geiger/Cargo.toml -p cargo-geiger --lib --test workspace_report
-          test -x "$CARGO_TARGET_DIR/release/cargo-geiger"
+          set -o pipefail
+          mkdir -p survey
+          cargo test --locked --release --manifest-path tools/vendor/cargo-geiger/Cargo.toml -p cargo-geiger --lib --test workspace_report 2>&1 | tee survey/tests.log
+      - name: Verify the survey executable
+        id: executable
+        if: always()
+        continue-on-error: true
+        shell: bash
+        run: |
+          set -o pipefail
+          mkdir -p survey
+          {
+            if test -x "$CARGO_TARGET_DIR/release/cargo-geiger"; then
+              printf 'survey_executable=%s\n' "$CARGO_TARGET_DIR/release/cargo-geiger"
+            else
+              printf 'missing survey executable: %s\n' "$CARGO_TARGET_DIR/release/cargo-geiger" >&2
+              exit 1
+            fi
+          } 2>&1 | tee survey/executable-check.log
       - name: Lint the vendored survey package
-        run: cargo clippy --locked --manifest-path tools/vendor/cargo-geiger/Cargo.toml -p cargo-geiger --lib --bin cargo-geiger -- -D warnings
+        id: clippy
+        if: always()
+        continue-on-error: true
+        shell: bash
+        run: |
+          set -o pipefail
+          mkdir -p survey
+          cargo clippy --locked --manifest-path tools/vendor/cargo-geiger/Cargo.toml -p cargo-geiger --lib --bin cargo-geiger -- -D warnings 2>&1 | tee survey/clippy.log
       - name: Survey workspace once and record its outcome
-        if: github.event_name != 'pull_request'
+        id: survey
+        if: always() && github.event_name != 'pull_request'
+        continue-on-error: true
         shell: bash
         run: |
           set -euo pipefail
@@ -116,10 +157,44 @@ jobs:
           fi
           exit "$status"
       - name: Upload survey report and execution receipt
-        if: always() && github.event_name != 'pull_request'
+        id: evidence
+        if: always()
+        continue-on-error: true
         uses: actions/upload-artifact@v4
         with:
           name: geiger-${{ github.run_id }}
           path: survey/
-          if-no-files-found: warn
+          if-no-files-found: error
           retention-days: 30
+      - name: Report collected unsafe-survey failures
+        if: always()
+        shell: bash
+        env:
+          TESTS_OUTCOME: ${{ steps.tests.outcome }}
+          EXECUTABLE_OUTCOME: ${{ steps.executable.outcome }}
+          CLIPPY_OUTCOME: ${{ steps.clippy.outcome }}
+          SURVEY_OUTCOME: ${{ steps.survey.outcome }}
+          EVIDENCE_OUTCOME: ${{ steps.evidence.outcome }}
+          EVENT_NAME: ${{ github.event_name }}
+        run: |
+          set -euo pipefail
+          failure_count=0
+          for outcome_variable in TESTS_OUTCOME EXECUTABLE_OUTCOME CLIPPY_OUTCOME EVIDENCE_OUTCOME; do
+            outcome="${!outcome_variable}"
+            printf '%s=%s\n' "$outcome_variable" "$outcome"
+            if [ "$outcome" != success ]; then
+              failure_count=$((failure_count + 1))
+            fi
+          done
+          printf 'SURVEY_OUTCOME=%s\n' "$SURVEY_OUTCOME"
+          if [ "$EVENT_NAME" = pull_request ]; then
+            if [ "$SURVEY_OUTCOME" != skipped ]; then
+              failure_count=$((failure_count + 1))
+            fi
+          elif [ "$SURVEY_OUTCOME" != success ]; then
+            failure_count=$((failure_count + 1))
+          fi
+          if [ "$failure_count" -ne 0 ]; then
+            echo "Collected $failure_count failing unsafe-survey lane(s)." >&2
+            exit 1
+          fi

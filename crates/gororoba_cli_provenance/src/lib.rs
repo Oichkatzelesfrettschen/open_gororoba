@@ -1,7 +1,9 @@
 //! gororoba_cli_provenance -- slim provenance and download recovery operator binaries.
 //!
-//! This crate hosts no library code; its binaries are path-aliased to
-//! gororoba_cli_data sources. The lib target exists solely as a test anchor.
+//! The library owns bounded repository-verification mechanisms shared by the
+//! provenance operator binaries.
+
+pub mod finite_frontier;
 
 #[cfg(test)]
 mod tests {

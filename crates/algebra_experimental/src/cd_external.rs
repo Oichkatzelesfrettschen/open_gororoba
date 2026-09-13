@@ -739,7 +739,36 @@ fn parse_csv_line_internal(line: &str) -> Vec<String> {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use provenance_store::retained_archive::RetainedArchive;
     use std::collections::BTreeSet;
+
+    const LATTICE_PAYLOADS: [(&str, &str); 4] = [
+        (
+            "data/csv/cayley_dickson/256d_lattice_mapping.csv",
+            "80adc13d38f78ff6e95434a351ec8c41944bbd399f86b56125d0a238e1dd4530",
+        ),
+        (
+            "data/csv/cayley_dickson/512d_lattice_mapping.csv",
+            "f40a9f688839ed07b621495bc910ddfe06d8280b6a73d25f376acd6652574f94",
+        ),
+        (
+            "data/csv/cayley_dickson/1024d_lattice_mapping.csv",
+            "b90971a600b5febb5571800ffa96fb8ec865c9c13ef4064cdabedce98b732e30",
+        ),
+        (
+            "data/csv/cayley_dickson/2048d_lattice_mapping.csv",
+            "2665af21788ae81e134ade860d906be30cbe42210d57d9fbb2f752b0564db61b",
+        ),
+    ];
+
+    #[test]
+    fn lattice_inputs_have_retained_archive_identities() {
+        let repository_root = repo_root::path!("");
+        let archive = RetainedArchive::load(&repository_root).unwrap();
+        for (path, sha256) in LATTICE_PAYLOADS {
+            archive.materialization(path, sha256).unwrap();
+        }
+    }
 
     /// All 7 NATO triplets of the octonions (associative triples).
     /// Each triple [a,b,c] satisfies e_a * e_b = e_c (up to sign).
@@ -1604,6 +1633,7 @@ mod tests {
     // === Thesis A: Codebook Parity Verification ===
 
     #[test]
+    #[ignore = "requires the hydrated scientific payload archive"]
     fn test_thesis_a_codebook_parity_256d() {
         let result = verify_codebook_parity(256);
         assert_eq!(result.n_points, 256);
@@ -1615,6 +1645,7 @@ mod tests {
     }
 
     #[test]
+    #[ignore = "requires the hydrated scientific payload archive"]
     fn test_thesis_a_codebook_parity_512d() {
         let result = verify_codebook_parity(512);
         assert_eq!(result.n_points, 512);
@@ -1626,6 +1657,7 @@ mod tests {
     }
 
     #[test]
+    #[ignore = "requires the hydrated scientific payload archive"]
     fn test_thesis_a_codebook_parity_1024d() {
         let result = verify_codebook_parity(1024);
         assert_eq!(result.n_points, 1024);
@@ -1637,6 +1669,7 @@ mod tests {
     }
 
     #[test]
+    #[ignore = "requires the hydrated scientific payload archive"]
     fn test_thesis_a_codebook_parity_2048d() {
         let result = verify_codebook_parity(2048);
         assert_eq!(result.n_points, 2048);
@@ -1650,6 +1683,7 @@ mod tests {
     // === Thesis B: Filtration Nesting Verification ===
 
     #[test]
+    #[ignore = "requires the hydrated scientific payload archive"]
     fn test_thesis_b_filtration_nesting() {
         let result = verify_lattice_filtration();
         assert!(
@@ -1667,6 +1701,7 @@ mod tests {
     // === Thesis C: Prefix-Cut Characterization ===
 
     #[test]
+    #[ignore = "requires the hydrated scientific payload archive"]
     fn test_thesis_c_2048_to_1024_prefix_cut() {
         let p2048: BTreeSet<Vec<i32>> = load_lattice_points(2048).into_iter().collect();
         let p1024: BTreeSet<Vec<i32>> = load_lattice_points(1024).into_iter().collect();
@@ -1682,6 +1717,7 @@ mod tests {
     }
 
     #[test]
+    #[ignore = "requires the hydrated scientific payload archive"]
     fn test_thesis_c_1024_to_512_prefix_cut() {
         let p1024: BTreeSet<Vec<i32>> = load_lattice_points(1024).into_iter().collect();
         let p512: BTreeSet<Vec<i32>> = load_lattice_points(512).into_iter().collect();
@@ -1694,6 +1730,7 @@ mod tests {
     }
 
     #[test]
+    #[ignore = "requires the hydrated scientific payload archive"]
     fn test_thesis_c_512_to_256_prefix_cut() {
         let p512: BTreeSet<Vec<i32>> = load_lattice_points(512).into_iter().collect();
         let p256: BTreeSet<Vec<i32>> = load_lattice_points(256).into_iter().collect();
@@ -1706,6 +1743,7 @@ mod tests {
     }
 
     #[test]
+    #[ignore = "requires the hydrated scientific payload archive"]
     fn test_thesis_c_full_filtration_cuts() {
         let cuts = learn_full_filtration_cuts();
         assert_eq!(cuts.len(), 3, "Expected 3 filtration transitions");
@@ -1720,6 +1758,7 @@ mod tests {
     // === Phase 1.4: Base Universe and Exclusion Count ===
 
     #[test]
+    #[ignore = "requires the hydrated scientific payload archive"]
     fn test_base_universe_size_and_exclusion_count() {
         let s_base = enumerate_base_universe();
         // S_base = 2 * 3^7 / 2 (parity filter halves it) = 2187
@@ -1748,6 +1787,7 @@ mod tests {
     // === Phase 1.5: 32-Point 421E Slice ===
 
     #[test]
+    #[ignore = "requires the hydrated scientific payload archive"]
     fn test_lambda_32_as_predicate_cut_of_256() {
         let p256: Vec<Vec<i32>> = load_lattice_points(256);
         let p256_sorted: BTreeSet<Vec<i32>> = p256.into_iter().collect();
@@ -1811,6 +1851,7 @@ mod tests {
     }
 
     #[test]
+    #[ignore = "requires the hydrated scientific payload archive"]
     fn test_lambda_256_csv_vs_predicates() {
         // Cross-validate CSV-loaded Lambda_256 against predicate-based enumeration.
         // The predicate chain gives exactly 256 points (verified in codebook tests).
@@ -2487,6 +2528,7 @@ mod tests {
     // === Thesis D: Scalar Shadow ===
 
     #[test]
+    #[ignore = "requires the hydrated scientific payload archive"]
     fn test_thesis_d_scalar_shadow_basic() {
         let lattice_map = load_lattice_map(256);
         assert_eq!(lattice_map.len(), 256);
@@ -2499,6 +2541,7 @@ mod tests {
     }
 
     #[test]
+    #[ignore = "requires the hydrated scientific payload archive"]
     fn test_thesis_d_scalar_shadow_addition_mode() {
         let result = verify_scalar_shadow_addition(256);
         eprintln!("Scalar shadow 256D: {:?}", result);
@@ -2510,6 +2553,7 @@ mod tests {
     }
 
     #[test]
+    #[ignore = "requires the hydrated scientific payload archive"]
     fn test_dictionary_coupling_sample_256d() {
         let lattice_map = load_lattice_map(256);
 
@@ -2522,6 +2566,7 @@ mod tests {
     }
 
     #[test]
+    #[ignore = "requires the hydrated scientific payload archive"]
     fn test_c452_c453_lattice_header_schema_stability() {
         let dims = [256usize, 512, 1024, 2048];
         let mut headers = Vec::new();
@@ -2570,6 +2615,7 @@ mod tests {
     }
 
     #[test]
+    #[ignore = "requires the hydrated scientific payload archive"]
     fn test_c452_c453_embedding_is_injective_and_roundtrip() {
         let dims = [256usize, 512, 1024, 2048];
 
@@ -2629,6 +2675,7 @@ mod tests {
     }
 
     #[test]
+    #[ignore = "requires the hydrated scientific payload archive"]
     fn test_c452_c453_codomain_and_index_coverage_all_dims() {
         let dims = [256usize, 512, 1024, 2048];
 
@@ -2657,6 +2704,7 @@ mod tests {
     }
 
     #[test]
+    #[ignore = "requires the hydrated scientific payload archive"]
     fn test_c453_filtration_growth_has_expected_new_points() {
         let p256: std::collections::BTreeSet<Vec<i32>> =
             load_lattice_points(256).into_iter().collect();
@@ -2677,6 +2725,7 @@ mod tests {
     }
 
     #[test]
+    #[ignore = "requires the hydrated scientific payload archive"]
     fn test_c453_filtration_layers_are_disjoint_and_partition_2048() {
         let p256: std::collections::BTreeSet<Vec<i32>> =
             load_lattice_points(256).into_iter().collect();
@@ -2722,6 +2771,7 @@ mod tests {
     }
 
     #[test]
+    #[ignore = "requires the hydrated scientific payload archive"]
     fn test_c453_filtration_intersection_cardinalities_are_exact() {
         let p256: std::collections::BTreeSet<Vec<i32>> =
             load_lattice_points(256).into_iter().collect();
@@ -2741,6 +2791,7 @@ mod tests {
     }
 
     #[test]
+    #[ignore = "requires the hydrated scientific payload archive"]
     fn test_c453_filtration_is_lexicographic_prefix_chain() {
         let dims = [256usize, 512, 1024, 2048];
         let sets: Vec<std::collections::BTreeSet<Vec<i32>>> = dims

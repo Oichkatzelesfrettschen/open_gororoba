@@ -305,9 +305,11 @@ pub use de_expansion::{
 // (`quantum_core::casimir::DielectricModel`, `lifshitz_pressure_plates`, ...).
 pub mod lifshitz;
 pub use lifshitz::{
-    DielectricModel, LifshitzResult, fresnel_te_imaginary, fresnel_tm_imaginary,
+    DielectricModel, LifshitzQuadratureOptions, LifshitzResult, fresnel_te_imaginary,
+    fresnel_tm_imaginary, lifshitz_energy_plates, lifshitz_energy_plates_with_options,
     lifshitz_force_ratio, lifshitz_force_sphere_plate, lifshitz_pressure_plates,
-    lifshitz_sphere_plate, matsubara_frequency, thermal_wavelength,
+    lifshitz_pressure_plates_with_options, lifshitz_sphere_plate, matsubara_frequency,
+    thermal_wavelength,
 };
 
 // PFA validity guards, structured CasimirError, spring-constant accuracy
@@ -324,6 +326,7 @@ pub use validity::{
 #[cfg(test)]
 mod tests {
     use super::*;
+    use approx::assert_relative_eq;
 
     const TOLERANCE: f64 = 1e-12;
 
@@ -697,8 +700,8 @@ mod tests {
         let eps2 = 1e20; // Large but finite (perfect conductor approx)
         let r = fresnel_tm_imaginary(eps1, eps2, 1e15, 1e6);
 
-        // r should be close to -1 for high contrast
-        assert!(r < 0.0, "TM reflection should be negative for vacuum/metal");
+        // r should be close to +1 for high contrast
+        assert!(r > 0.0, "TM reflection should be positive for vacuum/metal");
         assert!(r.abs() > 0.99, "TM reflection magnitude should be ~1");
     }
 
@@ -710,8 +713,8 @@ mod tests {
         let xi = 1e15;
         let r = fresnel_te_imaginary(eps1, eps2, xi, 0.0);
 
-        // r_TE = (\kappa2 - \kappa1)/(\kappa2 + \kappa1) = (sqrt\epsilon2 - sqrt\epsilon1)/(sqrt\epsilon2 + sqrt\epsilon1)
-        let expected = (eps2.sqrt() - eps1.sqrt()) / (eps2.sqrt() + eps1.sqrt());
+        // r_TE = (\kappa1 - \kappa2)/(\kappa1 + \kappa2)
+        let expected = (eps1.sqrt() - eps2.sqrt()) / (eps1.sqrt() + eps2.sqrt());
         assert!((r - expected).abs() < 1e-10);
     }
 
@@ -732,6 +735,93 @@ mod tests {
         // Allow factor of 10 tolerance due to integration approximation
         assert!(pressure.abs() > 1.0, "Pressure too small: {}", pressure);
         assert!(pressure.abs() < 200.0, "Pressure too large: {}", pressure);
+    }
+
+    #[test]
+    fn test_lifshitz_ideal_pressure_normalization() {
+        let gap: f64 = 200e-9;
+        let ideal = DielectricModel::PerfectConductor;
+        let numerical = lifshitz_pressure_plates(gap, &ideal, &ideal, 96, 48);
+        let exact = -PI * PI * HBAR * C / (240.0 * gap.powi(4));
+        assert_relative_eq!(numerical, exact, max_relative = 2e-9);
+    }
+
+    #[test]
+    fn test_lifshitz_ideal_energy_normalization() {
+        let gap: f64 = 200e-9;
+        let ideal = DielectricModel::PerfectConductor;
+        let numerical = lifshitz_energy_plates(gap, &ideal, &ideal, 256, 48);
+        let exact = -PI * PI * HBAR * C / (720.0 * gap.powi(3));
+        let relative_error = (numerical / exact - 1.0).abs();
+        assert!(
+            relative_error < 5e-10,
+            "ideal energy relative error {relative_error:e}"
+        );
+    }
+
+    #[test]
+    fn test_lifshitz_ideal_cutoff_and_order_convergence() {
+        let gap: f64 = 200e-9;
+        let ideal = DielectricModel::PerfectConductor;
+        let exact_pressure = -PI * PI * HBAR * C / (240.0 * gap.powi(4));
+        let exact_energy = -PI * PI * HBAR * C / (720.0 * gap.powi(3));
+        let configurations = [
+            LifshitzQuadratureOptions::new(16.0, 96, 32),
+            LifshitzQuadratureOptions::new(20.0, 256, 48),
+            LifshitzQuadratureOptions::new(24.0, 256, 64),
+        ];
+        let mut pressures = Vec::new();
+        let mut energies = Vec::new();
+        for options in configurations {
+            pressures.push(lifshitz_pressure_plates_with_options(
+                gap, &ideal, &ideal, options,
+            ));
+            energies.push(lifshitz_energy_plates_with_options(
+                gap, &ideal, &ideal, options,
+            ));
+        }
+        assert!((pressures[2] / exact_pressure - 1.0).abs() < 2e-9);
+        assert!((energies[2] / exact_energy - 1.0).abs() < 5e-10);
+        assert!(
+            (pressures[1] / exact_pressure - 1.0).abs()
+                < (pressures[0] / exact_pressure - 1.0).abs()
+        );
+        assert!(
+            (energies[1] / exact_energy - 1.0).abs()
+                < (energies[0] / exact_energy - 1.0).abs()
+        );
+        assert!((pressures[1] / pressures[2] - 1.0).abs() < 2e-9);
+        assert!((energies[1] / energies[2] - 1.0).abs() < 2e-9);
+    }
+
+    #[test]
+    fn test_lifshitz_pressure_is_negative_energy_derivative() {
+        let gap = 200e-9;
+        let step = gap * 1e-4;
+        let gold = DielectricModel::gold();
+        let energy_plus = lifshitz_energy_plates(gap + step, &gold, &gold, 128, 80);
+        let energy_minus = lifshitz_energy_plates(gap - step, &gold, &gold, 128, 80);
+        let differentiated = -(energy_plus - energy_minus) / (2.0 * step);
+        let pressure = lifshitz_pressure_plates(gap, &gold, &gold, 128, 80);
+        let relative_error = (differentiated / pressure - 1.0).abs();
+        assert!(
+            relative_error < 5e-8,
+            "pressure-energy derivative relative error {relative_error:e}"
+        );
+    }
+
+    #[test]
+    fn test_lifshitz_ideal_sphere_pfa_normalization() {
+        let gap = 200e-9;
+        let radius = 5e-6;
+        let ideal = DielectricModel::PerfectConductor;
+        let numerical = lifshitz_force_sphere_plate(radius, gap, &ideal, &ideal, 256, 48);
+        let exact = casimir_force_pfa(radius, gap);
+        let relative_error = (numerical / exact - 1.0).abs();
+        assert!(
+            relative_error < 5e-10,
+            "ideal sphere-plane PFA relative error {relative_error:e}"
+        );
     }
 
     #[test]

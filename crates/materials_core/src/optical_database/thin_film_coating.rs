@@ -16,21 +16,57 @@ use num_complex::Complex64;
 use super::{C, DrudeLorentzParams, ev_to_omega, omega_to_ev};
 
 impl DrudeLorentzParams {
+    fn thin_film_reflectance_with_substrate_index(
+        &self,
+        omega: f64,
+        thickness_m: f64,
+        substrate_index: Complex64,
+    ) -> f64 {
+        assert!(
+            omega.is_finite() && omega > 0.0,
+            "angular frequency must be finite and positive"
+        );
+        assert!(
+            thickness_m.is_finite() && thickness_m >= 0.0,
+            "film thickness must be finite and nonnegative"
+        );
+        let film_index = self.refractive_index(omega);
+        let incident_index = Complex64::new(1.0, 0.0);
+        let incident_film = (incident_index - film_index) / (incident_index + film_index);
+        let film_substrate = (film_index - substrate_index) / (film_index + substrate_index);
+        let phase = Complex64::new(0.0, 2.0) * film_index * omega * thickness_m / C;
+        let round_trip = phase.exp();
+        let amplitude = (incident_film + film_substrate * round_trip)
+            / (1.0 + incident_film * film_substrate * round_trip);
+        amplitude.norm_sqr()
+    }
+
     /// Single-layer thin-film reflectance on a substrate via the coherent
     /// Airy formula. Normal incidence from air; film of thickness `d` and
     /// refractive index `n_film(omega)` on a substrate with index `n_sub`.
     pub fn thin_film_reflectance(&self, omega: f64, thickness_m: f64, n_substrate: f64) -> f64 {
-        let n_film = self.refractive_index(omega);
-        let n_i = Complex64::new(1.0, 0.0);
-        let n_s = Complex64::new(n_substrate, 0.0);
-        let r12 = (n_i - n_film) / (n_i + n_film);
-        let r23 = (n_film - n_s) / (n_film + n_s);
-        let delta = 2.0 * PI * n_film * thickness_m * omega / (2.0 * PI * C);
-        let phase = Complex64::new(0.0, 2.0 * delta.re) * Complex64::new(1.0, 0.0)
-            + Complex64::new(-2.0 * delta.im, 0.0);
-        let exp_phase = Complex64::new(phase.re.cos(), phase.re.sin()) * (-phase.im).exp();
-        let r_total = (r12 + r23 * exp_phase) / (1.0 + r12 * r23 * exp_phase);
-        r_total.norm_sqr()
+        self.thin_film_reflectance_with_substrate_index(
+            omega,
+            thickness_m,
+            Complex64::new(n_substrate, 0.0),
+        )
+    }
+
+    /// Single-layer reflectance on a dispersive, absorbing substrate.
+    ///
+    /// The film and substrate responses are evaluated at the same angular
+    /// frequency and use the same passive Fourier convention.
+    pub fn thin_film_reflectance_on_material(
+        &self,
+        omega: f64,
+        thickness_m: f64,
+        substrate: &Self,
+    ) -> f64 {
+        self.thin_film_reflectance_with_substrate_index(
+            omega,
+            thickness_m,
+            substrate.refractive_index(omega),
+        )
     }
 
     /// Single-layer thin-film transmittance on a substrate via the Airy

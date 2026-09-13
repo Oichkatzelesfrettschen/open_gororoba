@@ -8,11 +8,8 @@ use serde::{Deserialize, Serialize};
 use std::{
     collections::BTreeMap,
     env, fs,
-    fs::OpenOptions,
-    io::Write,
     path::{Path, PathBuf},
     process::Command,
-    time::Instant,
 };
 use tempfile::tempdir;
 use verified_core::topology::HardwareTopology;
@@ -108,7 +105,6 @@ struct HostProfile {
     pytest_workers: usize,
 }
 
-const INLINE_TEST_MARKERS: &[&str] = &["#[test]", "#[cfg(test)]", "mod tests"];
 const VALIDATION_TAIL_LINE_COUNT: usize = 20;
 const XTASK_COMMANDS: &[(&str, &str)] = &[
     (
@@ -117,14 +113,6 @@ const XTASK_COMMANDS: &[(&str, &str)] = &[
     ),
     ("db-docs", "Generate or check database documentation."),
     ("host-profile", "Print host worker-budget settings."),
-    (
-        "local-nextest-plan",
-        "Run a package-aware grouped local nextest plan.",
-    ),
-    (
-        "validate-local",
-        "Run scoped local validation with timing JSONL.",
-    ),
     (
         "validation-tools-status",
         "Inspect cached validation-tool freshness.",
@@ -160,13 +148,16 @@ const XTASK_COMMANDS: &[(&str, &str)] = &[
     ("sparse-profile", "Profile sparse-runner scenarios."),
     ("gpu-profile", "Profile GPU-runner scenarios."),
     ("ci-route", "Print CI routing decisions."),
+    (
+        "ci-rust-shard-matrix",
+        "Partition a routed Rust scope into complete CI job shards.",
+    ),
     ("ascii-check", "Check ASCII policy, optionally with --fix."),
     ("ascii-cleanup", "Normalize ASCII-policy text with --fix."),
     ("coq-stub", "Generate a Rocq stub from a source path."),
     ("convos-chunk", "Chunk a conversation transcript."),
     ("terminology-gate", "Run the terminology gate."),
     ("cpd-file-list", "Write the CPD source-file list."),
-    ("worker-budget", "Print worker-budget settings."),
 ];
 
 #[derive(Debug, Serialize)]
@@ -176,73 +167,13 @@ struct ValidationStepRecord {
     log: String,
 }
 
-#[derive(Parser, Debug)]
-#[command(
-    name = "local-nextest-plan",
-    about = "Run a package-aware grouped local nextest plan"
-)]
-struct LocalNextestCli {
-    #[arg(long)]
-    build_jobs: String,
-    #[arg(long)]
-    test_threads: String,
-    #[arg(long, default_value = "")]
-    filterset: String,
-    #[arg(long)]
-    timing_json_out: Option<PathBuf>,
-    /// Which test kinds to run. `lib` (default) runs only library unit
-    /// tests; `all` runs lib + integration tests. Integration test
-    /// binaries are the dominant link-time cost in the local pre-push
-    /// gate (~4m30s for 441 binaries on this workspace), so the
-    /// default skips them. CI on PR open should use `all`.
-    #[arg(long, default_value = "lib")]
-    kinds: String,
-    packages: Vec<String>,
-}
-
-/// `cargo xtask validate-local` -- pre-push validation driver with structured
-/// timing output.
-///
-/// Wraps the three Make sub-targets (check, rust-regression-scoped,
-/// validate-governance) and records per-phase elapsed time +
-/// exit code to a JSONL timing log under
-/// `data/output/audit/<YYYY-MM-DD>/validation-timing-<unix-ts>.jsonl`.
-///
-/// This replaces the inline shell loop in `validate-local`. The Makefile
-/// target drives end-to-end orchestration, and the xtask version is
-/// available via `make validate-local-xtask`.
-#[derive(Parser, Debug)]
-#[command(
-    name = "validate-local",
-    about = "Run scoped local validation with structured timing JSONL output"
-)]
-struct ValidateLocalCli {
-    /// Path to the workspace-routing binary cache (default:
-    /// .cache/gate-target/validation-tools/workspace-routing).
-    #[arg(long)]
-    routing_bin: Option<PathBuf>,
-    /// Write timing JSONL to this path. Default:
-    /// `data/output/audit/<YYYY-MM-DD>/validation-timing-<unix-ts>.jsonl`
-    #[arg(long)]
-    timing_json: Option<PathBuf>,
-    /// Force run rust-regression-scoped regardless of routing.
-    #[arg(long)]
-    force_rust: bool,
-    /// Force run make check regardless of routing.
-    #[arg(long)]
-    force_check: bool,
-    /// Force run validate-governance regardless of routing.
-    #[arg(long)]
-    force_governance: bool,
-}
-
 /// `cargo xtask validation-tools-status` -- inspect cached validation-tool binary
 /// freshness.
 ///
 /// Prints, for each cached binary under
 /// `.cache/gate-target/validation-tools/`, its mtime, size, and whether its
-/// declared Makefile source dependencies are newer (would trigger
-/// rebuild on the next validate-local invocation).
+/// declared Makefile source dependencies are newer (would trigger a rebuild
+/// in the next CI validation-tool stage).
 #[derive(Parser, Debug)]
 #[command(
     name = "validation-tools-status",
@@ -274,8 +205,7 @@ struct ValidationTimingSummaryCli {
     /// Default: data/output/audit/
     #[arg(long)]
     audit_root: Option<PathBuf>,
-    /// Filter to a single phase name (cache-check, check,
-    /// rust-regression-scoped, validate-governance).
+    /// Filter to a single historical phase name.
     #[arg(long)]
     phase: Option<String>,
     /// Output format: `table` (default) or `json`.
@@ -393,87 +323,6 @@ struct GpuProfileSweepManifest {
     rows: Vec<GpuProfileSweepRow>,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq)]
-struct PackagePlan {
-    has_lib_tests: bool,
-    tests: Vec<String>,
-}
-
-#[derive(Debug)]
-struct TimingRecorder {
-    output_path: Option<PathBuf>,
-    total_start: Instant,
-    run_count: u64,
-    skip_count: u64,
-}
-
-impl TimingRecorder {
-    fn new(output_path: Option<PathBuf>) -> Self {
-        Self {
-            output_path,
-            total_start: Instant::now(),
-            run_count: 0,
-            skip_count: 0,
-        }
-    }
-
-    fn write(&self, value: serde_json::Value) -> Result<()> {
-        let Some(path) = &self.output_path else {
-            return Ok(());
-        };
-        if let Some(parent) = path.parent() {
-            fs::create_dir_all(parent)
-                .with_context(|| format!("create timing output directory {}", parent.display()))?;
-        }
-        let mut handle = OpenOptions::new()
-            .create(true)
-            .append(true)
-            .open(path)
-            .with_context(|| format!("open timing output {}", path.display()))?;
-        writeln!(handle, "{}", serde_json::to_string(&value)?)
-            .with_context(|| format!("write timing output {}", path.display()))?;
-        Ok(())
-    }
-
-    fn record_skip(&mut self, package: &str, reason: &str) -> Result<()> {
-        self.skip_count += 1;
-        self.write(serde_json::json!({
-            "kind": "skip",
-            "package": package,
-            "reason": reason,
-        }))
-    }
-
-    fn record_run(
-        &mut self,
-        packages: &[String],
-        targets: &serde_json::Value,
-        command: &[String],
-        returncode: i32,
-        elapsed_sec: f64,
-    ) -> Result<()> {
-        self.run_count += 1;
-        self.write(serde_json::json!({
-            "kind": "run",
-            "packages": packages,
-            "targets": targets,
-            "command": command,
-            "returncode": returncode,
-            "elapsed_sec": elapsed_sec,
-        }))
-    }
-
-    fn record_summary(&self, returncode: i32) -> Result<()> {
-        self.write(serde_json::json!({
-            "kind": "summary",
-            "run_count": self.run_count,
-            "skip_count": self.skip_count,
-            "returncode": returncode,
-            "total_elapsed_sec": self.total_start.elapsed().as_secs_f64(),
-        }))
-    }
-}
-
 fn main() -> Result<()> {
     let mut args = env::args().skip(1);
     let Some(command) = args.next() else {
@@ -501,19 +350,6 @@ fn main() -> Result<()> {
                 }
             }
             run_host_profile(&format)
-        }
-        "local-nextest-plan" => run_local_nextest_plan(LocalNextestCli::try_parse_from(
-            std::iter::once("local-nextest-plan".to_string()).chain(args),
-        )?),
-        "validate-local" | "gate-local" => {
-            let cli = ValidateLocalCli::try_parse_from(
-                std::iter::once("validate-local".to_string()).chain(args),
-            )?;
-            let exit_code = run_validate_local(cli)?;
-            if exit_code != 0 {
-                std::process::exit(exit_code);
-            }
-            Ok(())
         }
         "validation-timing-summary" | "gate-timing-summary" => {
             let cli = ValidationTimingSummaryCli::try_parse_from(
@@ -582,6 +418,11 @@ fn main() -> Result<()> {
         "ci-route" => run_ci_route(CiRouteCli::try_parse_from(
             std::iter::once("ci-route".to_string()).chain(args),
         )?),
+        "ci-rust-shard-matrix" => run_ci_rust_shard_matrix(
+            CiRustShardMatrixCli::try_parse_from(
+                std::iter::once("ci-rust-shard-matrix".to_string()).chain(args),
+            )?,
+        ),
         "ascii-check" => run_ascii_check(args.any(|arg| arg == "--fix")),
         "ascii-cleanup" => run_ascii_cleanup(args.any(|arg| arg == "--fix")),
         "coq-stub" => {
@@ -612,7 +453,6 @@ fn main() -> Result<()> {
             }
             run_cpd_file_list(&output)
         }
-        "worker-budget" => run_worker_budget(),
         other => bail!("unknown xtask command: {other}; run `cargo run -p xtask -- --help`"),
     }
 }
@@ -920,6 +760,376 @@ struct CiRouteCli {
     base: Option<String>,
     #[arg(long)]
     verbose: bool,
+}
+
+#[derive(Parser, Debug)]
+#[command(
+    name = "ci-rust-shard-matrix",
+    about = "Partition routed Rust packages into deterministic GitHub job shards"
+)]
+struct CiRustShardMatrixCli {
+    #[arg(long, default_value = "Cargo.toml")]
+    workspace_manifest: PathBuf,
+    #[arg(long, allow_hyphen_values = true)]
+    rust_scope: String,
+    #[arg(long, allow_hyphen_values = true)]
+    clippy_scope: String,
+    #[arg(long, default_value_t = 8)]
+    light_shard_count: usize,
+    #[arg(long = "heavy-package")]
+    heavy_packages: Vec<String>,
+    #[arg(long = "target-shard-package")]
+    target_shard_packages: Vec<String>,
+    #[arg(long, default_value_t = 8)]
+    target_shard_count: usize,
+}
+
+#[derive(Debug, Deserialize)]
+struct ShardWorkspaceManifest {
+    workspace: ShardWorkspace,
+}
+
+#[derive(Debug, Deserialize)]
+struct ShardWorkspace {
+    members: Vec<String>,
+}
+
+#[derive(Debug, Deserialize)]
+struct ShardPackageManifest {
+    package: ShardPackage,
+    #[serde(default, rename = "bin")]
+    binaries: Vec<ShardBinary>,
+}
+
+#[derive(Debug, Deserialize)]
+struct ShardPackage {
+    name: String,
+}
+
+#[derive(Debug, Clone, Deserialize, PartialEq, Eq)]
+struct ShardBinary {
+    name: String,
+    #[serde(default, rename = "required-features")]
+    required_features: Vec<String>,
+}
+
+#[derive(Debug, Serialize)]
+struct RustShardMatrix {
+    include: Vec<RustShard>,
+}
+
+#[derive(Debug, Serialize)]
+struct RustShard {
+    lane: String,
+    target: &'static str,
+    rust_scope: String,
+    clippy_scope: String,
+    cargo_target_args: String,
+    cargo_features: String,
+}
+
+fn workspace_package_inventory(manifest_path: &Path) -> Result<BTreeMap<String, Vec<ShardBinary>>> {
+    let manifest_text = fs::read_to_string(manifest_path)
+        .with_context(|| format!("read workspace manifest {}", manifest_path.display()))?;
+    let manifest: ShardWorkspaceManifest = toml::from_str(&manifest_text)
+        .with_context(|| format!("parse workspace manifest {}", manifest_path.display()))?;
+    let workspace_root = manifest_path
+        .parent()
+        .context("workspace manifest has no parent directory")?;
+    let mut packages = BTreeMap::new();
+    for member in manifest.workspace.members {
+        if member
+            .chars()
+            .any(|character| matches!(character, '*' | '?' | '[' | ']'))
+        {
+            bail!("workspace member glob is unsupported for CI sharding: {member}");
+        }
+        let member_manifest_path = workspace_root.join(&member).join("Cargo.toml");
+        let member_manifest_text = fs::read_to_string(&member_manifest_path).with_context(|| {
+            format!(
+                "workspace member {member} has no readable manifest at {}",
+                member_manifest_path.display()
+            )
+        })?;
+        let member_manifest: ShardPackageManifest = toml::from_str(&member_manifest_text)
+            .with_context(|| format!("parse member manifest {}", member_manifest_path.display()))?;
+        let package_name = member_manifest.package.name;
+        let mut binaries = member_manifest.binaries;
+        for binary in &mut binaries {
+            binary.required_features.sort();
+            binary.required_features.dedup();
+            for feature in &binary.required_features {
+                if feature.is_empty()
+                    || !feature
+                        .chars()
+                        .all(|character| character.is_ascii_alphanumeric() || matches!(character, '-' | '_'))
+                {
+                    bail!(
+                        "binary target {} in package {} has an invalid required feature: {}",
+                        binary.name,
+                        package_name,
+                        feature
+                    );
+                }
+            }
+        }
+        binaries.sort_by(|left, right| left.name.cmp(&right.name));
+        if binaries.windows(2).any(|pair| pair[0].name == pair[1].name) {
+            bail!("duplicate binary target name in CI shard inventory: {package_name}");
+        }
+        if packages.insert(package_name.clone(), binaries).is_some() {
+            bail!(
+                "duplicate workspace package name in CI shard inventory: {}",
+                package_name
+            );
+        }
+    }
+    Ok(packages)
+}
+
+fn parse_routed_package_scope(scope: &str, workspace_packages: &[String]) -> Result<Vec<String>> {
+    if scope.trim() == "--workspace" {
+        return Ok(workspace_packages.to_vec());
+    }
+    let tokens: Vec<&str> = scope.split_whitespace().collect();
+    if tokens.is_empty() || !tokens.len().is_multiple_of(2) {
+        bail!("Rust scope requires --workspace or explicit -p package pairs");
+    }
+    let workspace_set: std::collections::BTreeSet<&str> =
+        workspace_packages.iter().map(String::as_str).collect();
+    let mut selected = std::collections::BTreeSet::new();
+    for pair in tokens.chunks_exact(2) {
+        if pair[0] != "-p" {
+            bail!("Rust scope requires --workspace or explicit -p package pairs");
+        }
+        if !workspace_set.contains(pair[1]) {
+            bail!("Rust scope names package absent from the workspace: {}", pair[1]);
+        }
+        if !selected.insert(pair[1].to_string()) {
+            bail!("Rust scope names package more than once: {}", pair[1]);
+        }
+    }
+    Ok(selected.into_iter().collect())
+}
+
+fn stable_shard_index(package_name: &str, shard_count: usize) -> usize {
+    let hash = package_name.bytes().fold(0xcbf29ce484222325_u64, |hash, byte| {
+        (hash ^ u64::from(byte)).wrapping_mul(0x100000001b3)
+    });
+    (hash % shard_count as u64) as usize
+}
+
+fn cargo_package_scope(package_names: &[String]) -> String {
+    package_names
+        .iter()
+        .map(|package_name| format!("-p {package_name}"))
+        .collect::<Vec<_>>()
+        .join(" ")
+}
+
+fn build_rust_shard_matrix(cli: &CiRustShardMatrixCli) -> Result<RustShardMatrix> {
+    if cli.light_shard_count == 0 || cli.target_shard_count == 0 {
+        bail!("light and target shard counts must be greater than zero");
+    }
+    let workspace_inventory = workspace_package_inventory(&cli.workspace_manifest)?;
+    let workspace_packages = workspace_inventory.keys().cloned().collect::<Vec<_>>();
+    let selected_packages = parse_routed_package_scope(&cli.rust_scope, &workspace_packages)?;
+    let selected_set: std::collections::BTreeSet<String> =
+        selected_packages.iter().cloned().collect();
+    let workspace_set: std::collections::BTreeSet<&str> =
+        workspace_packages.iter().map(String::as_str).collect();
+    let heavy_set: std::collections::BTreeSet<&str> =
+        cli.heavy_packages.iter().map(String::as_str).collect();
+    for heavy_package in &heavy_set {
+        if !workspace_set.contains(heavy_package) {
+            bail!("heavy package is absent from the workspace: {heavy_package}");
+        }
+    }
+    let target_shard_set: std::collections::BTreeSet<&str> = cli
+        .target_shard_packages
+        .iter()
+        .map(String::as_str)
+        .collect();
+    if target_shard_set.len() != cli.target_shard_packages.len() {
+        bail!("target-shard package is named more than once");
+    }
+    for target_shard_package in &target_shard_set {
+        if !workspace_set.contains(target_shard_package) {
+            bail!("target-shard package is absent from the workspace: {target_shard_package}");
+        }
+        if heavy_set.contains(target_shard_package) {
+            bail!(
+                "package cannot be both heavy and target-sharded: {target_shard_package}"
+            );
+        }
+    }
+
+    let mut include = vec![RustShard {
+        lane: "clippy".to_string(),
+        target: "clippy",
+        rust_scope: String::new(),
+        clippy_scope: cli.clippy_scope.clone(),
+        cargo_target_args: String::new(),
+        cargo_features: String::new(),
+    }];
+    let mut light_shards = vec![Vec::new(); cli.light_shard_count];
+    let mut heavy_packages = Vec::new();
+    let mut selected_target_shard_packages = Vec::new();
+    for package_name in selected_packages {
+        if target_shard_set.contains(package_name.as_str()) {
+            selected_target_shard_packages.push(package_name);
+        } else if heavy_set.contains(package_name.as_str()) {
+            heavy_packages.push(package_name);
+        } else {
+            let shard_index = stable_shard_index(&package_name, cli.light_shard_count);
+            light_shards[shard_index].push(package_name);
+        }
+    }
+    for (shard_index, package_names) in light_shards.into_iter().enumerate() {
+        if package_names.is_empty() {
+            continue;
+        }
+        include.push(RustShard {
+            lane: format!("light-{shard_index}"),
+            target: "light",
+            rust_scope: cargo_package_scope(&package_names),
+            clippy_scope: String::new(),
+            cargo_target_args: "--lib --bins --tests --examples".to_string(),
+            cargo_features: String::new(),
+        });
+    }
+    if !heavy_packages.is_empty() {
+        include.push(RustShard {
+            lane: "heavy".to_string(),
+            target: "heavy",
+            rust_scope: cargo_package_scope(&heavy_packages),
+            clippy_scope: String::new(),
+            cargo_target_args: "--lib --bins --tests --examples".to_string(),
+            cargo_features: String::new(),
+        });
+    }
+    for target_shard_package in &selected_target_shard_packages {
+        let binary_names = workspace_inventory
+            .get(target_shard_package)
+            .context("target-shard package is absent from the workspace inventory")?;
+        if binary_names.is_empty() {
+            bail!("target-shard package declares no explicit binary targets");
+        }
+        include.push(RustShard {
+            lane: format!("{target_shard_package}-lib-tests"),
+            target: "light",
+            rust_scope: format!("-p {target_shard_package}"),
+            clippy_scope: String::new(),
+            cargo_target_args: "--lib --tests".to_string(),
+            cargo_features: String::new(),
+        });
+        let mut binary_groups = BTreeMap::<Vec<String>, Vec<&ShardBinary>>::new();
+        for binary in binary_names {
+            binary_groups
+                .entry(binary.required_features.clone())
+                .or_default()
+                .push(binary);
+        }
+        for (required_features, grouped_binaries) in binary_groups {
+            let shard_count = if required_features.is_empty() {
+                cli.target_shard_count
+            } else {
+                1
+            };
+            let mut binary_shards = vec![Vec::new(); shard_count];
+            for binary in grouped_binaries {
+                let shard_index = stable_shard_index(&binary.name, shard_count);
+                binary_shards[shard_index].push(binary.name.as_str());
+            }
+            for (shard_index, shard_binary_names) in binary_shards.into_iter().enumerate() {
+                if shard_binary_names.is_empty() {
+                    continue;
+                }
+                let cargo_target_args = shard_binary_names
+                    .iter()
+                    .map(|binary_name| format!("--bin {binary_name}"))
+                    .collect::<Vec<_>>()
+                    .join(" ");
+                let lane_suffix = if required_features.is_empty() {
+                    shard_index.to_string()
+                } else {
+                    format!("features-{}", required_features.join("+"))
+                };
+                include.push(RustShard {
+                    lane: format!("{target_shard_package}-bins-{lane_suffix}"),
+                    target: "light",
+                    rust_scope: format!("-p {target_shard_package}"),
+                    clippy_scope: String::new(),
+                    cargo_target_args,
+                    cargo_features: required_features.join(","),
+                });
+            }
+        }
+    }
+    let mut emitted_packages = std::collections::BTreeSet::new();
+    for shard in include
+        .iter()
+        .filter(|shard| {
+            shard.target != "clippy"
+                && shard.cargo_target_args == "--lib --bins --tests --examples"
+        })
+    {
+        for package_name in parse_routed_package_scope(&shard.rust_scope, &workspace_packages)? {
+            if !emitted_packages.insert(package_name) {
+                bail!("CI shard matrix emits one package more than once");
+            }
+        }
+    }
+    for target_shard_package in &selected_target_shard_packages {
+        emitted_packages.insert(target_shard_package.clone());
+        let expected_binaries: BTreeMap<&str, Vec<String>> = workspace_inventory
+            .get(target_shard_package)
+            .context("target-shard package is absent from the workspace inventory")?
+            .iter()
+            .map(|binary| (binary.name.as_str(), binary.required_features.clone()))
+            .collect();
+        let mut emitted_binaries = BTreeMap::new();
+        let mut non_binary_shard_count = 0;
+        for shard in include
+            .iter()
+            .filter(|shard| shard.rust_scope == format!("-p {target_shard_package}"))
+        {
+            if shard.cargo_target_args == "--lib --tests" {
+                non_binary_shard_count += 1;
+                continue;
+            }
+            let target_tokens: Vec<&str> = shard.cargo_target_args.split_whitespace().collect();
+            if target_tokens.is_empty() || !target_tokens.len().is_multiple_of(2) {
+                bail!("target shard matrix emits malformed binary target arguments");
+            }
+            for pair in target_tokens.chunks_exact(2) {
+                let required_features = if shard.cargo_features.is_empty() {
+                    Vec::new()
+                } else {
+                    shard.cargo_features.split(',').map(str::to_string).collect()
+                };
+                if pair[0] != "--bin"
+                    || emitted_binaries
+                        .insert(pair[1], required_features)
+                        .is_some()
+                {
+                    bail!("target shard matrix emits an invalid or duplicate binary target");
+                }
+            }
+        }
+        if non_binary_shard_count != 1 || emitted_binaries != expected_binaries {
+            bail!("target shard matrix differs from the package's exact target and feature set");
+        }
+    }
+    if emitted_packages != selected_set {
+        bail!("CI shard matrix package set differs from the routed package set");
+    }
+    Ok(RustShardMatrix { include })
+}
+
+fn run_ci_rust_shard_matrix(cli: CiRustShardMatrixCli) -> Result<()> {
+    println!("{}", serde_json::to_string(&build_rust_shard_matrix(&cli)?)?);
+    Ok(())
 }
 
 fn run_ci_route(cli: CiRouteCli) -> Result<()> {
@@ -1442,7 +1652,7 @@ fn parse_validation_report_args(
 }
 
 fn run_host_profile(format: &str) -> Result<()> {
-    let profile = detect_host_profile();
+    let profile = detect_host_profile()?;
     match format {
         "shell" => {
             println!("HOST_PHYSICAL_CORES={}", profile.physical_core_count);
@@ -2031,282 +2241,6 @@ fn run_registry_emit_all_mirrors() -> Result<()> {
     Ok(())
 }
 
-fn run_local_nextest_plan(cli: LocalNextestCli) -> Result<()> {
-    let exit_code = local_nextest_plan(cli)?;
-    if exit_code != 0 {
-        bail!("local-nextest-plan failed with exit code {exit_code}");
-    }
-    Ok(())
-}
-
-fn local_nextest_plan(cli: LocalNextestCli) -> Result<i32> {
-    let root = repo_root()?;
-    let mut timing = TimingRecorder::new(cli.timing_json_out);
-    let mut package_plans = BTreeMap::<String, PackagePlan>::new();
-    let mut lib_packages = Vec::<String>::new();
-    let mut test_packages = Vec::<String>::new();
-
-    for package in &cli.packages {
-        let Some(plan) = package_plan(&root, package)? else {
-            let reason = "no inline lib tests and no integration tests";
-            println!("[local-nextest] skip {package}: {reason}");
-            timing.record_skip(package, reason)?;
-            continue;
-        };
-        if plan.has_lib_tests {
-            lib_packages.push(package.clone());
-        }
-        if !plan.tests.is_empty() {
-            test_packages.push(package.clone());
-        }
-        package_plans.insert(package.clone(), plan);
-    }
-
-    let mut exit_code = 0;
-    if !lib_packages.is_empty() {
-        let command = build_local_nextest_command(
-            &lib_packages,
-            true,
-            false,
-            &cli.build_jobs,
-            &cli.test_threads,
-            &cli.filterset,
-        );
-        let targets = lib_packages
-            .iter()
-            .map(|package| (package.clone(), serde_json::json!(["lib"])))
-            .collect::<serde_json::Map<String, serde_json::Value>>();
-        exit_code = run_local_nextest_command(
-            &root,
-            &lib_packages,
-            &command,
-            &serde_json::Value::Object(targets),
-            &mut timing,
-        )?;
-        if exit_code != 0 {
-            timing.record_summary(exit_code)?;
-            return Ok(exit_code);
-        }
-    }
-    let run_integration_tests = matches!(cli.kinds.as_str(), "all" | "tests");
-    if !run_integration_tests && !test_packages.is_empty() {
-        println!(
-            "[local-nextest] skip integration-test phase for {} packages (kinds={}). Run with --kinds all to include.",
-            test_packages.len(),
-            cli.kinds
-        );
-    }
-    if run_integration_tests && !test_packages.is_empty() {
-        let command = build_local_nextest_command(
-            &test_packages,
-            false,
-            true,
-            &cli.build_jobs,
-            &cli.test_threads,
-            &cli.filterset,
-        );
-        let targets = test_packages
-            .iter()
-            .map(|package| {
-                let selected = package_plans
-                    .get(package)
-                    .map(|plan| {
-                        if plan.tests.is_empty() {
-                            vec!["tests".to_string()]
-                        } else {
-                            plan.tests
-                                .iter()
-                                .map(|name| format!("test:{name}"))
-                                .collect::<Vec<_>>()
-                        }
-                    })
-                    .unwrap_or_else(|| vec!["tests".to_string()]);
-                (package.clone(), serde_json::json!(selected))
-            })
-            .collect::<serde_json::Map<String, serde_json::Value>>();
-        exit_code = run_local_nextest_command(
-            &root,
-            &test_packages,
-            &command,
-            &serde_json::Value::Object(targets),
-            &mut timing,
-        )?;
-        if exit_code != 0 {
-            timing.record_summary(exit_code)?;
-            return Ok(exit_code);
-        }
-    }
-
-    timing.record_summary(exit_code)?;
-    Ok(exit_code)
-}
-
-/// Workspace members live under `crates/<package>` except `xtask`, which
-/// sits at the repo root; a package with no `crates/` directory resolves
-/// to `<root>/<package>` so its integration tests enter the plan.
-fn package_root(root: &Path, package: &str) -> PathBuf {
-    let nested = root.join("crates").join(package);
-    if nested.is_dir() {
-        return nested;
-    }
-    root.join(package)
-}
-
-fn has_library(root: &Path, package: &str) -> bool {
-    package_root(root, package)
-        .join("src")
-        .join("lib.rs")
-        .is_file()
-}
-
-fn has_inline_tests(root: &Path, package: &str) -> Result<bool> {
-    let src_root = package_root(root, package).join("src");
-    if !src_root.is_dir() {
-        return Ok(false);
-    }
-    let bin_root = src_root.join("bin");
-    for entry in WalkDir::new(&src_root)
-        .into_iter()
-        .filter_map(std::result::Result::ok)
-    {
-        if !entry.file_type().is_file() {
-            continue;
-        }
-        let path = entry.path();
-        if path.extension().and_then(|ext| ext.to_str()) != Some("rs") {
-            continue;
-        }
-        if path.starts_with(&bin_root) {
-            continue;
-        }
-        let text = fs::read_to_string(path)
-            .with_context(|| format!("read Rust source {}", path.display()))?;
-        for raw_line in text.lines() {
-            let line = raw_line.trim();
-            if line.starts_with("//") || line.starts_with("/*") || line.starts_with('*') {
-                continue;
-            }
-            if INLINE_TEST_MARKERS
-                .iter()
-                .any(|marker| line.starts_with(marker))
-            {
-                return Ok(true);
-            }
-        }
-    }
-    Ok(false)
-}
-
-fn integration_tests(root: &Path, package: &str) -> Result<Vec<String>> {
-    let tests_dir = package_root(root, package).join("tests");
-    if !tests_dir.is_dir() {
-        return Ok(Vec::new());
-    }
-    let mut tests = Vec::new();
-    for entry in fs::read_dir(&tests_dir)
-        .with_context(|| format!("read tests directory {}", tests_dir.display()))?
-    {
-        let entry = entry?;
-        let path = entry.path();
-        if entry.file_type()?.is_file()
-            && path.extension().and_then(|ext| ext.to_str()) == Some("rs")
-            && let Some(stem) = path.file_stem().and_then(|stem| stem.to_str())
-        {
-            tests.push(stem.to_string());
-        }
-    }
-    tests.sort();
-    Ok(tests)
-}
-
-fn package_plan(root: &Path, package: &str) -> Result<Option<PackagePlan>> {
-    let has_lib = has_library(root, package);
-    let has_lib_tests = has_lib && has_inline_tests(root, package)?;
-    let tests = integration_tests(root, package)?;
-    if !has_lib_tests && tests.is_empty() {
-        return Ok(None);
-    }
-    Ok(Some(PackagePlan {
-        has_lib_tests,
-        tests,
-    }))
-}
-
-fn build_local_nextest_command(
-    packages: &[String],
-    run_lib: bool,
-    run_tests: bool,
-    build_jobs: &str,
-    test_threads: &str,
-    filterset: &str,
-) -> Vec<String> {
-    let mut command = vec![
-        "cargo".to_string(),
-        "nextest".to_string(),
-        "run".to_string(),
-        "--build-jobs".to_string(),
-        build_jobs.to_string(),
-        "--test-threads".to_string(),
-        test_threads.to_string(),
-    ];
-    if run_lib {
-        command.push("--lib".to_string());
-    }
-    if run_tests {
-        command.push("--tests".to_string());
-    }
-    for package in packages {
-        command.push("-p".to_string());
-        command.push(package.clone());
-    }
-    if !filterset.is_empty() {
-        command.push("-E".to_string());
-        command.push(filterset.to_string());
-    }
-    command
-}
-
-fn run_local_nextest_command(
-    root: &Path,
-    packages: &[String],
-    command: &[String],
-    targets: &serde_json::Value,
-    timing: &mut TimingRecorder,
-) -> Result<i32> {
-    let targets_object = targets
-        .as_object()
-        .expect("selected targets must be a JSON object");
-    for package in packages {
-        let joined = targets_object
-            .get(package)
-            .and_then(|value| value.as_array())
-            .map(|entries| {
-                entries
-                    .iter()
-                    .filter_map(|entry| entry.as_str())
-                    .collect::<Vec<_>>()
-                    .join(", ")
-            })
-            .unwrap_or_else(|| "(none)".to_string());
-        println!("[local-nextest] run {package}: {joined}");
-    }
-    let start = Instant::now();
-    let status = Command::new(&command[0])
-        .args(&command[1..])
-        .current_dir(root)
-        .status()
-        .with_context(|| format!("run {}", command.join(" ")))?;
-    let code = status.code().unwrap_or(1);
-    timing.record_run(
-        packages,
-        targets,
-        command,
-        code,
-        start.elapsed().as_secs_f64(),
-    )?;
-    Ok(code)
-}
-
 struct GeneratedSchemaOutputs {
     schema_sql: String,
     schema_json: String,
@@ -2619,21 +2553,24 @@ fn render_catalog_markdown_raw(snapshot: &SchemaSnapshot) -> String {
     out
 }
 
-fn detect_host_profile() -> HostProfile {
+fn detect_host_profile() -> Result<HostProfile> {
     let topo = HardwareTopology::current();
-    let physical_core_count = topo.physical_core_ids.len().max(1);
-    HostProfile {
+    let physical_core_count = topo.physical_core_ids.len();
+    let worker_budget = std::thread::available_parallelism()
+        .context("failed to detect process-visible CPUs")?
+        .get();
+    Ok(HostProfile {
         physical_core_ids: topo.physical_core_ids.clone(),
         physical_core_count,
         l3_cache_bytes: topo.l3_cache_bytes,
         l3_safe_working_set_bytes: topo.l3_safe_working_set_bytes,
-        worker_budget: physical_core_count,
-        cargo_jobs: physical_core_count,
-        rayon_threads: physical_core_count,
-        rust_test_threads: physical_core_count,
-        nextest_test_threads: physical_core_count,
-        pytest_workers: physical_core_count,
-    }
+        worker_budget,
+        cargo_jobs: worker_budget,
+        rayon_threads: worker_budget,
+        rust_test_threads: worker_budget,
+        nextest_test_threads: worker_budget,
+        pytest_workers: worker_budget,
+    })
 }
 
 fn join_usize(items: &[usize]) -> String {
@@ -2784,31 +2721,6 @@ fn run_cpd_file_list(output: &Path) -> Result<()> {
     Ok(())
 }
 
-// ---- Worker budget ----
-//
-// WHY: scripts/detect_worker_budget.sh used a 60-line chain of nproc /
-//      getconf / sysctl / lscpu / /proc/cpuinfo fallbacks plus awk to compute
-//      nproc/2.  std::thread::available_parallelism() covers all platforms in
-//      one call.  This subcommand is the preferred non-Makefile consumer.
-//
-// NOTE: The Makefile still uses `$(shell sh scripts/detect_worker_budget.sh)`
-//       for the WORKER_BUDGET variable because that variable is evaluated at
-//       Make parse time, before any cargo compilation step runs.  The shell
-//       script is therefore retained as a zero-overhead fallback for that
-//       specific context.  All other callers should use this subcommand.
-//
-// HOW: `cargo run -p xtask -- worker-budget`
-//      Prints a single integer: available_parallelism / 2, minimum 1.
-
-fn run_worker_budget() -> Result<()> {
-    let threads = std::thread::available_parallelism()
-        .map(|n| n.get())
-        .unwrap_or(1);
-    let budget = (threads / 2).max(1);
-    println!("{budget}");
-    Ok(())
-}
-
 fn repo_root() -> Result<PathBuf> {
     Ok(repo_root::resolve!())
 }
@@ -2942,206 +2854,6 @@ fn configured_cargo_path(configured: Option<std::ffi::OsString>, fallback: &Path
 
 fn cargo_path_from_environment(variable: &str, fallback: &Path) -> PathBuf {
     configured_cargo_path(env::var_os(variable), fallback)
-}
-
-// ===========================================================================
-// validate-local xtask driver
-// ===========================================================================
-
-/// Routing flags emitted by workspace-routing CLI (parsed from stderr lines
-/// like `[ci-routing] run_rust=True`).
-#[derive(Debug, Default)]
-struct RoutingFlags {
-    run_rust: bool,
-    run_governance: bool,
-    run_check: bool,
-    scope: String,
-}
-
-fn parse_routing_flags(stderr: &str, stdout: &str) -> RoutingFlags {
-    let mut flags = RoutingFlags {
-        scope: stdout.trim().to_string(),
-        ..Default::default()
-    };
-    for line in stderr.lines() {
-        let Some(rest) = line.strip_prefix("[ci-routing] ") else {
-            continue;
-        };
-        let Some((key, val)) = rest.split_once('=') else {
-            continue;
-        };
-        match key {
-            "run_rust" => flags.run_rust = val == "True",
-            "run_governance" => flags.run_governance = val == "True",
-            "run_check" => flags.run_check = val == "True",
-            _ => {}
-        }
-    }
-    flags
-}
-
-/// Run a make sub-target, streaming stdout/stderr to the parent terminal,
-/// and return (exit_code, elapsed_seconds).
-fn run_make_target(root: &Path, target: &str, env: &[(&str, &str)]) -> Result<(i32, f64)> {
-    let start = Instant::now();
-    let mut command = std::process::Command::new("make");
-    command.current_dir(root);
-    command.arg(target);
-    for (key, value) in env {
-        command.env(key, value);
-    }
-    let status = command
-        .status()
-        .with_context(|| format!("spawn make {target}"))?;
-    let elapsed = start.elapsed().as_secs_f64();
-    Ok((status.code().unwrap_or(-1), elapsed))
-}
-
-fn run_validate_local(cli: ValidateLocalCli) -> Result<i32> {
-    let root = repo_root()?;
-    let routing_bin = cli
-        .routing_bin
-        .unwrap_or_else(|| root.join(".cache/gate-target/validation-tools/workspace-routing"));
-
-    // Default timing path: data/output/audit/<date>/validation-timing-<ts>.jsonl
-    let timing_path = cli.timing_json.unwrap_or_else(|| {
-        let now = std::time::SystemTime::now()
-            .duration_since(std::time::UNIX_EPOCH)
-            .map(|d| d.as_secs())
-            .unwrap_or(0);
-        let date = chrono::Local::now().format("%Y-%m-%d").to_string();
-        root.join("data/output/audit")
-            .join(date)
-            .join(format!("validation-timing-{now}.jsonl"))
-    });
-
-    let timing = TimingRecorder::new(Some(timing_path.clone()));
-
-    // Routing decision via cached workspace-routing binary.
-    let mut flags = RoutingFlags {
-        run_rust: true,
-        run_governance: true,
-        run_check: true,
-        scope: "--workspace".to_string(),
-    };
-    let routing_start = Instant::now();
-    if routing_bin.exists() {
-        let output = std::process::Command::new(&routing_bin)
-            .arg("--local")
-            .arg("--verbose")
-            .current_dir(&root)
-            .output()
-            .with_context(|| format!("run workspace-routing at {}", routing_bin.display()))?;
-        let stderr = String::from_utf8_lossy(&output.stderr);
-        let stdout = String::from_utf8_lossy(&output.stdout);
-        eprint!("{}", stderr);
-        flags = parse_routing_flags(&stderr, &stdout);
-    } else {
-        eprintln!(
-            "[validate-local] WARNING: workspace-routing cache not found at {}; running full workspace",
-            routing_bin.display()
-        );
-    }
-    timing.write(serde_json::json!({
-        "kind": "routing",
-        "elapsed_sec": routing_start.elapsed().as_secs_f64(),
-        "run_rust": flags.run_rust,
-        "run_governance": flags.run_governance,
-        "run_check": flags.run_check,
-        "scope": flags.scope,
-    }))?;
-
-    let mut total_exit = 0;
-
-    // Phase: cache-check (always, near-instant when memoized).
-    let (code, elapsed) = run_make_target(&root, "cache-check", &[])?;
-    timing.write(serde_json::json!({
-        "kind": "phase",
-        "phase": "cache-check",
-        "exit_code": code,
-        "elapsed_sec": elapsed,
-    }))?;
-    if code != 0 {
-        return Ok(code);
-    }
-
-    // Phase: make check.
-    if flags.run_check || cli.force_check {
-        let (code, elapsed) = run_make_target(&root, "check", &[])?;
-        timing.write(serde_json::json!({
-            "kind": "phase",
-            "phase": "check",
-            "exit_code": code,
-            "elapsed_sec": elapsed,
-        }))?;
-        if code != 0 {
-            return Ok(code);
-        }
-    } else {
-        eprintln!("[validate-local] SKIP: no check-relevant (non-Rust) file changes detected.");
-        timing.write(serde_json::json!({
-            "kind": "skip",
-            "phase": "check",
-            "reason": "run_check=False",
-        }))?;
-    }
-
-    // Phase: rust-regression-scoped.
-    if flags.run_rust || cli.force_rust {
-        let scope = if flags.scope.is_empty() {
-            "--workspace".to_string()
-        } else {
-            flags.scope.clone()
-        };
-        let env_pairs: Vec<(&str, &str)> =
-            vec![("RUST_SCOPE", scope.as_str()), ("RUST_RUN_HEAVY", "0")];
-        let (code, elapsed) = run_make_target(&root, "rust-regression-scoped", &env_pairs)?;
-        timing.write(serde_json::json!({
-            "kind": "phase",
-            "phase": "rust-regression-scoped",
-            "exit_code": code,
-            "elapsed_sec": elapsed,
-            "scope": scope,
-        }))?;
-        if code != 0 {
-            total_exit = code;
-        }
-    } else {
-        eprintln!("[validate-local] SKIP: no Rust-relevant changes detected.");
-        timing.write(serde_json::json!({
-            "kind": "skip",
-            "phase": "rust-regression-scoped",
-            "reason": "run_rust=False",
-        }))?;
-    }
-
-    // Phase: validate-governance.
-    if flags.run_governance || cli.force_governance {
-        let (code, elapsed) = run_make_target(&root, "validate-governance", &[])?;
-        timing.write(serde_json::json!({
-            "kind": "phase",
-            "phase": "validate-governance",
-            "exit_code": code,
-            "elapsed_sec": elapsed,
-        }))?;
-        if code != 0 && total_exit == 0 {
-            total_exit = code;
-        }
-    } else {
-        eprintln!("[validate-local] SKIP: no governance-relevant changes detected.");
-        timing.write(serde_json::json!({
-            "kind": "skip",
-            "phase": "validate-governance",
-            "reason": "run_governance=False",
-        }))?;
-    }
-
-    timing.record_summary(total_exit)?;
-    eprintln!(
-        "[validate-local] xtask driver complete. Timing JSONL at {}",
-        timing_path.display()
-    );
-    Ok(total_exit)
 }
 
 // ===========================================================================
@@ -3395,10 +3107,8 @@ struct ToolStatusEntry {
     cached_path: PathBuf,
     /// Source files whose mtime would trigger rebuild.
     source_deps: Vec<PathBuf>,
-    /// True when the entry is a transient runtime artifact whose
-    /// missing/absent state is the EXPECTED steady-state (e.g.,
-    /// validation.lock is written at validation start and removed by trap
-    /// at validation end -- absence means no validation is running).
+    /// True when the entry is a transient runtime artifact whose absence is
+    /// the expected steady state.
     runtime_artifact: bool,
 }
 
@@ -3455,12 +3165,6 @@ fn run_validation_tools_status(cli: ValidationToolsStatusCli) -> Result<()> {
         ToolStatusEntry {
             name: "cache-check.last",
             cached_path: tools_dir.join("cache-check.last"),
-            source_deps: vec![],
-            runtime_artifact: true,
-        },
-        ToolStatusEntry {
-            name: "validation.lock",
-            cached_path: tools_dir.join("validation.lock"),
             source_deps: vec![],
             runtime_artifact: true,
         },

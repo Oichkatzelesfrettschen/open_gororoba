@@ -2,7 +2,9 @@
 
 use anyhow::{Context, Result, bail, ensure};
 use clap::Parser;
-use provenance_store::retained_archive::{ArchiveObject, MANIFEST_PATH, RetainedArchive};
+use provenance_store::retained_archive::{
+    ArchiveObject, MANIFEST_PATH, Materialization, RetainedArchive,
+};
 use serde::Serialize;
 use sha2::{Digest, Sha256};
 use std::{
@@ -21,12 +23,16 @@ struct Args {
     archive: PathBuf,
     #[arg(long)]
     repo_root: PathBuf,
+    /// Repository-relative retained path to install. Repeat for a bounded subset.
+    #[arg(long = "path")]
+    paths: Vec<String>,
 }
 
 #[derive(Default, Serialize)]
 struct Report {
     verified_archive_sha256: String,
     verified_objects: usize,
+    selected_objects: usize,
     installed_files: usize,
     reused_files: usize,
     globally_atomic: bool,
@@ -159,6 +165,7 @@ impl<R: Read> Read for ExpansionBound<R> {
 fn stage_objects(
     archive_file: File,
     objects: &BTreeMap<String, ArchiveObject>,
+    selected_objects: &BTreeSet<String>,
     staging: &Path,
 ) -> Result<()> {
     let expansion_bound = objects.values().try_fold(10240_u64, |bound, object| {
@@ -199,15 +206,22 @@ fn stage_objects(
             entry.size() == object.byte_length,
             "archive header size differs from declared object"
         );
-        let mut output = fs::OpenOptions::new()
-            .write(true)
-            .create_new(true)
-            .open(staging.join(&object.sha256))?;
-        ensure!(
-            copy_hashed(&mut entry, &mut output, object.byte_length)? == object.sha256,
-            "archive object digest mismatch"
-        );
-        output.sync_all()?;
+        if selected_objects.contains(&object.sha256) {
+            let mut output = fs::OpenOptions::new()
+                .write(true)
+                .create_new(true)
+                .open(staging.join(&object.sha256))?;
+            ensure!(
+                copy_hashed(&mut entry, &mut output, object.byte_length)? == object.sha256,
+                "archive object digest mismatch"
+            );
+            output.sync_all()?;
+        } else {
+            ensure!(
+                io::copy(&mut entry, &mut io::sink())? == object.byte_length,
+                "archive object byte length mismatch"
+            );
+        }
     }
     ensure!(
         seen.len() == objects.len(),
@@ -256,6 +270,28 @@ fn hydrate(args: &Args) -> Result<Report> {
         !objects.is_empty() && manifest.members().next().is_some(),
         "empty retention inventory"
     );
+    let requested_paths: BTreeSet<&str> = args.paths.iter().map(String::as_str).collect();
+    ensure!(
+        requested_paths.len() == args.paths.len(),
+        "retained path is requested more than once"
+    );
+    for path in &requested_paths {
+        safe_relative(path)?;
+    }
+    let selected_payloads = manifest
+        .members()
+        .filter(|payload| {
+            requested_paths.is_empty() || requested_paths.contains(payload.path.as_str())
+        })
+        .collect::<Vec<_>>();
+    ensure!(
+        requested_paths.is_empty() || selected_payloads.len() == requested_paths.len(),
+        "requested retained path is absent from the manifest"
+    );
+    let selected_objects = selected_payloads
+        .iter()
+        .map(|payload| payload.sha256.clone())
+        .collect::<BTreeSet<_>>();
     let mut archive_file = File::open(&args.archive)?;
     ensure!(
         archive_file.metadata()?.is_file(),
@@ -270,21 +306,22 @@ fn hydrate(args: &Args) -> Result<Report> {
         "archive SHA256 mismatch"
     );
     archive_file.seek(SeekFrom::Start(0))?;
-    for payload in manifest.members() {
+    for payload in &selected_payloads {
         check_existing(&root, &payload.path, &payload.sha256, payload.byte_length)?;
     }
     let staging = tempfile::Builder::new()
         .prefix(".scientific-payload-hydration-")
         .tempdir_in(&root)?;
-    stage_objects(archive_file, objects, staging.path())?;
+    stage_objects(archive_file, objects, &selected_objects, staging.path())?;
     let mut report = Report {
         verified_archive_sha256: manifest.archive.sha256.clone(),
         verified_objects: objects.len(),
+        selected_objects: selected_objects.len(),
         installation_scope: "Each new file is atomically persisted without replacement; a later failure preserves earlier installed files and created directories. The complete operation is not globally atomic.",
         ..Report::default()
     };
     let install = (|| -> Result<()> {
-        for payload in manifest.members() {
+        for payload in &selected_payloads {
             if check_existing(&root, &payload.path, &payload.sha256, payload.byte_length)? {
                 report.reused_files += 1;
                 continue;
@@ -309,6 +346,14 @@ fn hydrate(args: &Args) -> Result<Report> {
         Ok(())
     })();
     install.with_context(|| format!("hydration stopped after {} installed and {} reused files; earlier installations and created directories remain", report.installed_files, report.reused_files))?;
+    for payload in selected_payloads {
+        ensure!(
+            manifest.materialization(&payload.path, &payload.sha256)?
+                == Materialization::Verified,
+            "selected retained payload remains unmaterialized: {}",
+            payload.path
+        );
+    }
     Ok(report)
 }
 
@@ -389,6 +434,7 @@ mod tests {
                     manifest: root.join(MANIFEST_PATH),
                     archive: archive_path,
                     repo_root: root,
+                    paths: Vec::new(),
                 },
                 _directory: directory,
                 manifest,
@@ -609,7 +655,51 @@ mod tests {
         let path = fixture._directory.path().join("padding.zst");
         fs::write(&path, padding)?;
         let staging = tempfile::tempdir()?;
-        assert!(stage_objects(File::open(path)?, &objects, staging.path()).is_err());
+        assert!(
+            stage_objects(
+                File::open(path)?,
+                &objects,
+                &objects.keys().cloned().collect(),
+                staging.path()
+            )
+            .is_err()
+        );
         Ok(())
+    }
+
+    #[test]
+    fn selected_paths_install_only_the_declared_subset() -> Result<()> {
+        let mut fixture = Fixture::new(
+            &[b"first", b"second"],
+            &[regular(b"first"), regular(b"second")],
+        )?;
+        fixture.args.paths = vec!["payloads/1.dat".to_owned()];
+
+        let report = hydrate(&fixture.args)?;
+        assert_eq!(report.verified_objects, 2);
+        assert_eq!(report.selected_objects, 1);
+        assert_eq!(report.installed_files, 1);
+        assert!(!fixture.args.repo_root.join("payloads/0.dat").exists());
+        assert_eq!(
+            fs::read(fixture.args.repo_root.join("payloads/1.dat"))?,
+            b"second"
+        );
+        Ok(())
+    }
+
+    #[test]
+    fn selected_path_absent_from_manifest_is_rejected() -> Result<()> {
+        let mut fixture = Fixture::new(&[b"good"], &[regular(b"good")])?;
+        fixture.args.paths = vec!["payloads/missing.dat".to_owned()];
+
+        fixture.assert_clean_failure()
+    }
+
+    #[test]
+    fn duplicate_selected_path_is_rejected() -> Result<()> {
+        let mut fixture = Fixture::new(&[b"good"], &[regular(b"good")])?;
+        fixture.args.paths = vec!["payloads/0.dat".to_owned(); 2];
+
+        fixture.assert_clean_failure()
     }
 }

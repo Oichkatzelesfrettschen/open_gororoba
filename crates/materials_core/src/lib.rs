@@ -30,10 +30,13 @@ pub mod crystal_symmetry;
 pub mod e8_crystal_bridge;
 pub mod effective_medium;
 pub mod featurizer;
+pub mod gold_optical_candidates;
 pub mod kramers_kronig;
 pub mod landy_absorber;
 pub mod liquid_crystal;
+pub mod material_records;
 pub mod metamaterial;
+pub mod multilayer_lifshitz;
 pub mod nonlocal_metamaterial;
 pub mod optical_database;
 pub mod pathion_toy_mapping;
@@ -52,6 +55,12 @@ pub use nonlocal_metamaterial::{
     AssessorNode, AssessorTopology, FloquetEffectiveModel, LcAdmittanceModel, M3ProjectionConfig,
     MaterialCalibrationRecord, SyntheticCouplingModel, SyntheticCouplingReport,
     find_calibration_record, load_calibration_records,
+};
+
+pub use multilayer_lifshitz::{
+    FiniteTemperatureOptions, HalfSpace, HighFrequencyCompletion, Layer, LifshitzError,
+    LifshitzModel, Multilayer, ZeroTemperatureOptions, local_drude_finite_temperature_pressure,
+    local_drude_zero_mode_pressure, zero_temperature_energy_per_area, zero_temperature_pressure,
 };
 
 pub use pathion_toy_mapping::{
@@ -75,8 +84,12 @@ pub use effective_medium::{
 pub use periodic_table::{CrystalStructure, Element, get_element, get_element_by_z};
 
 pub use featurizer::{
-    CompositionFeatures, PropertyStats, composition_fractions, feature_names, feature_vector,
-    featurize, parse_formula,
+    CompositionFeatures, MaskedFeatureVector, PropertyStats, composition_fractions, feature_names,
+    feature_vector, featurize, parse_formula,
+};
+
+pub use gold_optical_candidates::{
+    GoldOpticalCandidate, GoldOpticalCandidateCatalog, GoldOpticalSelection,
 };
 
 pub use baselines::{RegressionResult, ols_fit, run_baseline, train_test_split};

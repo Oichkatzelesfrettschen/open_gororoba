@@ -49,7 +49,10 @@ fn featurize_jarvis(materials: &[jarvis::JarvisMaterial]) -> Vec<Sample> {
             _ => continue,
         };
         let feats = match featurizer::featurize(&mat.formula) {
-            Ok(f) => featurizer::feature_vector(&f),
+            Ok(features) => match featurizer::feature_vector(&features).into_complete_values() {
+                Some(values) => values,
+                None => continue,
+            },
             Err(_) => continue,
         };
         samples.push(Sample {
@@ -70,7 +73,10 @@ fn featurize_aflow(materials: &[aflow::AflowMaterial]) -> Vec<Sample> {
             continue;
         }
         let feats = match featurizer::featurize(&mat.compound) {
-            Ok(f) => featurizer::feature_vector(&f),
+            Ok(features) => match featurizer::feature_vector(&features).into_complete_values() {
+                Some(values) => values,
+                None => continue,
+            },
             Err(_) => continue,
         };
         samples.push(Sample {

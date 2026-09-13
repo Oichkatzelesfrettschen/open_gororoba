@@ -1,0 +1,174 @@
+schema_version = 1
+producer = "crates/gororoba_cli_physics/src/bin/casimir_optics_discrimination_audit.rs"
+producer_sha256 = "e35bb34fc48d499e6d13e4089f905929419a0edde477a2ffd26fda6f34c3ab88"
+source_model_identity = "sha256:8cd0953d2fc6cfb186006c19229728afad416c9c14f5450eb2952541ecb80fd2"
+source_model_identity_algorithm = "SHA-256 over path UTF-8, NUL, file bytes, NUL for source_model_input entries in manifest order"
+command = "cargo run -p gororoba_cli_physics --bin casimir-optics-discrimination-audit --profile validation"
+scope = "native model outputs; no laboratory observations"
+
+[[source_model_input]]
+path = "Cargo.toml"
+sha256 = "d5d26b8628149218190267809b27431c4e405c70f35e68d138ae79c0d98b9299"
+
+[[source_model_input]]
+path = "Cargo.lock"
+sha256 = "74d356b0467cb4def5afb4e8dc39b30cd66fcd6c5bd8048f09c5971027ed8369"
+
+[[source_model_input]]
+path = "rust-toolchain.toml"
+sha256 = "c0864e4045ce7847ebe68e13423671c7007fbbe77d8b10ad5f5bacb8a1601ab3"
+
+[[source_model_input]]
+path = "crates/gororoba_cli_physics/Cargo.toml"
+sha256 = "7e32b8472965f6bcfbc99592cdf81fd2ce1639486900f0d511e3768de4225773"
+
+[[source_model_input]]
+path = "crates/gororoba_cli_physics/src/bin/casimir_optics_discrimination_audit.rs"
+sha256 = "e35bb34fc48d499e6d13e4089f905929419a0edde477a2ffd26fda6f34c3ab88"
+
+[[source_model_input]]
+path = "crates/materials_core/Cargo.toml"
+sha256 = "67798a91caabcf5a782a1f1ac4e43d8b68114c6e789cce188eda5e66a385cadf"
+
+[[source_model_input]]
+path = "crates/materials_core/src/multilayer_lifshitz.rs"
+sha256 = "7c48f9d6255ba24238f2ce3ec6e6ef176c2169ea60ab825265870593982fc4b8"
+
+[[source_model_input]]
+path = "crates/materials_core/src/optical_database.rs"
+sha256 = "1216d6727efd3fe7c690fc4b5349ff2ded61c5225450ea455b97fb0b1898b67d"
+
+[[source_model_input]]
+path = "crates/materials_core/src/optical_database/metals_dl.rs"
+sha256 = "6734b9f349dbb57dc2562b48a5a3ffea8cc3810b614213a291ec68aaa62ba325"
+
+[[source_model_input]]
+path = "crates/materials_core/src/optical_database/oxides_tcos.rs"
+sha256 = "1f10caebd95b7cc8f6470ed0b12ae73c9bac0d8391d93b7cc30bdc630d671b34"
+
+[[source_model_input]]
+path = "crates/materials_core/src/optical_database/semiconductors.rs"
+sha256 = "cc7063a3ffb9bb7c65be3f205cd549782c0917b82aef1ddce23715eabc113ed3"
+
+[[source_model_input]]
+path = "crates/materials_core/src/optical_database/thin_film_coating.rs"
+sha256 = "784b80fa5d94a73c82d8d8ad7f5a3d64e176c955241caad3e91a7b39fdcb1b81"
+
+[[source_model_input]]
+path = "crates/materials_core/src/optical_database/tungstates.rs"
+sha256 = "840c0d5fd9ff37e13a637f6cb52b80583a62786f386dc7502e9dc8fe5ef406ba"
+
+[[source_model_input]]
+path = "crates/materials_data/build.rs"
+sha256 = "157da3fc995262ecb9b751e6acabfd252048ef626f5fc4e701d7e94a86e1dd9e"
+
+[[source_model_input]]
+path = "crates/materials_data/Cargo.toml"
+sha256 = "3ba6da3cf94e232bb6b41ff7e2035b2f9c88f26487bac8d4b7937f6be64165ce"
+
+[[source_model_input]]
+path = "crates/materials_data/data/optical/drude_metals.toml"
+sha256 = "fbe72bf7d90476647b96d3901f0956a67097c89592dc3002a5f25c00f42ccb16"
+
+[[source_model_input]]
+path = "crates/materials_data/data/optical/lorentz_models.toml"
+sha256 = "7f0bd7da90d30d4b199ebec264f2ec49ca4e8c8bf8bf6c7e4b150c181ceed018"
+
+[[source_model_input]]
+path = "crates/materials_data/src/lib.rs"
+sha256 = "507dde72c6d7f6e039e182cf43ad3440b819e0a9cf17c9551d95aea9a695ff16"
+
+[[source_model_input]]
+path = "crates/quantum_core/src/casimir.rs"
+sha256 = "d732b84d91e1eff1187a085c34588978a7beee1797740fab9f83299e9decead4"
+
+[[source_model_input]]
+path = "crates/quantum_core/Cargo.toml"
+sha256 = "e3f0c7a3afba91049bbdf15c2b1e0650346e341fd9187fb45534f504477e01c0"
+
+[[source_model_input]]
+path = "crates/quantum_core/src/casimir/lifshitz.rs"
+sha256 = "089be4ffe0006786b87f6290c217eed5dd1d482ccf2adcb8584802f69f413ea6"
+
+[[source_model_input]]
+path = "crates/quantum_core/src/channel_admissibility.rs"
+sha256 = "47844290c6208f0587a4a4779b12e0133e3d781afd13f84074ff871504d17c2f"
+
+[[source_model_input]]
+path = "crates/stats_core/src/calibrated_discrimination.rs"
+sha256 = "11b29cd5f00410b083b500d098277fc170b03d47ada86de7d7ed81c0ff6bcf16"
+
+[[source_model_input]]
+path = "crates/stats_core/Cargo.toml"
+sha256 = "a2a7349de351863a55003cf4bcb088189c5ae2dd56a34ecf2e25233502577075"
+
+[[output]]
+path = "bounded_mimic.tsv"
+sha256 = "2015aa18d39b6c5616eb196eafb11b9bd1b1e6c441fd8191c89839982191c793"
+bytes = 366
+
+[[output]]
+path = "bounded_mimic_coefficients.tsv"
+sha256 = "5291b8b4faead511bb069dedbfa54ed8b378fde358bc817cf6b1c9502806ddce"
+bytes = 2571
+
+[[output]]
+path = "calibration_priority.tsv"
+sha256 = "5d8b76a74b29914f9e8d4fda9653890699b793fa9bdab62bd29eadfcb8614464"
+bytes = 1673
+
+[[output]]
+path = "commutator_and_null_controls.tsv"
+sha256 = "932846a8e99d23b4f67c434635998b55fc4932e35e5ba28fe4cce9b650eac0b8"
+bytes = 976
+
+[[output]]
+path = "derivative_step_study.tsv"
+sha256 = "30120cc99eb925326931774f8d09e5c5a83803e06e53647d6219705b6126cbe3"
+bytes = 354
+
+[[output]]
+path = "finite_temperature.tsv"
+sha256 = "5071df9bd7eb3414e183f068a85a206e696a07e1a7c67a238ed564b65f2a3696"
+bytes = 730
+
+[[output]]
+path = "local_tolerances.tsv"
+sha256 = "9c37fefabe408073a4ba2cc7d988b9ac7b205ab5058f07e4a843186c7c68ac23"
+bytes = 298
+
+[[output]]
+path = "model_outputs.tsv"
+sha256 = "27e5b4ce31893398074b4d1a5e9760f9d3acf59394daf23c032884134290f4b8"
+bytes = 866
+
+[[output]]
+path = "multilayer_pressure.tsv"
+sha256 = "0ca1c199731e3366b9a18a29373ae9831a7ba1c71e78dd5ce1ab02497d87fa78"
+bytes = 217
+
+[[output]]
+path = "physical_jacobian.tsv"
+sha256 = "b23e86c3746f64b284f0224f685108aeba70fdeda1b3ac3a8a1f13b0ea3a6280"
+bytes = 3237
+
+[[output]]
+path = "planar_convergence.tsv"
+sha256 = "8a179f9172affb02115a238e9e0a132e67e2f9fa3406539e409be9c8b6c5104f"
+bytes = 2816
+
+[[output]]
+path = "summary.toml"
+sha256 = "287b20349e8b43bb2389bfcd951be3d46f5f19494f57085725f3dc609f880ce1"
+bytes = 2651
+
+[[output]]
+path = "unbounded_mimic_coefficients.tsv"
+sha256 = "0fa5bad7a20f3a2f42aef4fc382dd72ca7f020aaa80bab72736bac894eeb2b07"
+bytes = 850
+
+[[output]]
+path = "uv_model_sensitivity.tsv"
+sha256 = "cd17ea2831159644046498bedc09e4112ca2ede80a698594f8c07f3e60922292"
+bytes = 1390
+

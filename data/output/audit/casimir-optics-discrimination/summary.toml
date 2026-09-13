@@ -1,0 +1,76 @@
+schema_version = 1
+scope = "native Rust model audit; no laboratory observations"
+
+[planar]
+gap_m = 0.0000002
+sphere_radius_m = 0.0001
+pressure_pa = -0.8125786077798438
+exact_pressure_pa = -0.812578607779846
+pressure_relative_error = 0.000000000000002732592303059871
+energy_j_m2 = -0.000000054171907182106185
+exact_energy_j_m2 = -0.000000054171907185323064
+energy_relative_error = 0.00000000005938278896908913
+sphere_force_n = -0.00000000003403721312685059
+exact_sphere_force_n = -0.00000000003403721312887181
+sphere_force_relative_error = 0.00000000005938271977406318
+pressure_energy_identity_relative_error = 0.00000000005938005052670807
+
+[thermal]
+temperature_k = 300.0
+drude_tm_zero_mode_energy_j_m2 = -0.000000002476279814882528
+exact_drude_tm_zero_mode_energy_j_m2 = -0.000000002476279814882528
+relative_error = 0.0
+
+[optics]
+energy_ev = 0.09272
+wavelength_um = 13.371893712780746
+wo3_imaginary_epsilon = 3.523416017398252
+wo3_x_imaginary_epsilon = 52.956025780518935
+halfspace_delta_reflectance = 0.46643539547353163
+film_100nm_delta_reflectance = 0.10798987427128548
+
+[channel]
+kernel_weight = 4.0
+kernel_decay = 0.2
+time = 1.5727635114440008
+depolarizing_eigenvalue = -0.8544678930067565
+minimum_normalized_choi_eigenvalue = -0.39085091975506736
+
+[inference]
+synthetic_uncalibrated_information = 1.0
+synthetic_calibrated_information = 1.5
+synthetic_unrestricted_distance = 0.0
+synthetic_bounded_distance = 1.0000000000212257
+arithmetic_error_margin_lower_bound = 0.5000000000212257
+arithmetic_error_margin_hypothesis_0 = 0.2
+arithmetic_error_margin_hypothesis_1 = 0.3
+original_derived_feature_information = 5.25
+augmented_derived_feature_information = 5.249999999999998
+
+[multilayer]
+au20_stack_pressure_200nm_pa = -0.4709381888912518
+au20_stack_energy_200nm_j_m2 = -0.00000003517732696843673
+pressure_energy_derivative_relative_error = 0.000000027242956623585554
+maximum_common_cap_zero_mode_difference_pa = 0.0
+maximum_uv_completion_relative_change = 0.006524644855622985
+
+[physical_inference]
+gap_count = 13
+unrestricted_residual_fraction = 0.00000005004907411968903
+one_width_bounded_residual_fraction = 0.6701836916848736
+baseline_effective_information = 51.485234044207786
+strongest_calibration_coordinate = "full_differential_gap"
+strongest_calibration_relative_information_gain = 1.1659118882804016
+
+[controls]
+classical_forward_loop = 0.06
+classical_reverse_loop = -0.06
+schedule_residual_fraction = 1.0
+monte_carlo_seed = 20260911
+trials_per_arm = 100000
+normal_critical_value = 2.575829303548901
+null_false_positive_fraction = 0.01029
+simulated_power = 0.89382
+analytic_power = 0.8946236551130011
+matched_null_identity_error = 0.0
+

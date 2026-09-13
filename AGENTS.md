@@ -43,10 +43,10 @@ hardware-specific tables are replaced with the scientific stack.
 | ----------------------------------------------------- | ----------------------------------------------------------------------------------------------------------- |
 | `Cargo.toml` (root)                                   | Workspace members + `[workspace.lints]` (warnings-as-errors source of truth)                                |
 | `rust-toolchain.toml`                                 | Stable pin (`1.97.0`); do not bump without coordinating repository validation.                               |
-| `.github/workflows/ci.yml`                           | Automatic scoped CI; manual `make validate-local` remains available.                                     |
+| `.github/workflows/ci.yml`                           | Sole repository-validation authority: scoped PR/push CI plus scheduled full validation.                  |
 | `Makefile`                                            | Top-level lanes (`make rust-clippy`, `make integrity`, `make cpd-audit`).                                   |
 | `registry/canonical/control_plane.sqlite3`            | Canonical write target for the claim/insight/experiment registry.                                           |
-| `registry/*.toml`                                     | AUTO-GENERATED read-only compat exports. Do NOT hand-edit.                                                  |
+| `registry/*.toml`                                     | Mixed migration surface; generated headers forbid edits, while manifest-declared unmigrated lanes remain TOML-canonical. |
 | `crates/gororoba_gpu_bridge/`                         | Canonical type vocabulary (`ComputeBackend`, `HardwareCaps`, `StoragePrecision`).                           |
 | `crates/gororoba_gpu_vulkan/`                         | Shared Vulkan helpers (Instance, Adapter, Device, ShaderModule, DispatchScope).                             |
 | `crates/gororoba_gpu_cubecl/`                         | Shared cubecl-wgpu probe + test-support macros.                                                             |
@@ -83,21 +83,47 @@ hardware-specific tables are replaced with the scientific stack.
 - **Warnings-as-errors** via `[workspace.lints]` in root `Cargo.toml`.
   Do NOT bypass with crate-local `#![allow(warnings)]`. Narrow-scope
   `#[allow(clippy::<lint>)]` with a documented rationale is permitted.
-- **SQLite-canonical registry**. The 36 TOML files under `registry/`
-  are AUTO-GENERATED. The canonical write path is
-  `registry/canonical/control_plane.sqlite3`. See the
-  "Registry: SQLite-canonical" section below for the exact mutation
-  workflow.
+- **SQLite-canonical registry**. Migrated registry lanes use
+  `registry/canonical/control_plane.sqlite3` as the canonical write path and
+  expose generated compatibility TOMLs. See the "Registry: SQLite-canonical"
+  section below for the exact mutation workflow.
+  `registry/engineering_standards.toml` and `registry/agents_contract.toml`
+  remain declared but unmigrated manifest lanes: SQLite has no corresponding
+  tables or typed exporter, so their TOMLs remain the canonical mutation
+  surface until that migration lands. Their policy must stay aligned with
+  `AGENTS.md`, `agents.toml`, `Makefile`, and hosted workflows.
 - **Pure Rust**. No `.sh` scripts. No `.py` analysis scripts. Use
   PyO3 if a Python library must be wrapped; call it from a typed
   Rust binary.
 - **No symlinks** as workarounds. Use a separate `CARGO_TARGET_DIR`
   per worktree.
-- **Cloud CI owns automatic validation**. `.githooks/pre-push` exits
-  successfully without running checks. `make validate-local` remains an
-  explicit diagnostic command. GitHub Actions runs scoped lint, reverse
-  dependency tests including binaries, canonical governance and relevant
-  dependency policy checks. Scheduled full validation covers workspace drift.
+- **Cloud CI owns repository validation**. The repository installs no local
+  Git hooks. `make validate-local` and its legacy aliases fail before building
+  tools, and repository validation targets accept
+  only the GitHub Actions execution boundary. Push a branch to run scoped lint,
+  reverse dependency tests including binaries, canonical governance, and
+  relevant dependency policy checks. Scheduled full validation covers
+  workspace drift. A developer may run a named Cargo command for diagnosis;
+  that command is evidence for its named surface, not a repository gate.
+- **Hosted jobs use every process-visible CPU**. Each Rust-bearing job detects
+  its own count and passes that exact value to Cargo, nextest, Rayon, Rust test
+  harnesses, and Make. Do not divide, clamp, substitute physical cores, infer a
+  RAM budget, provide a fallback count, or add CPU-safety serialization groups.
+  A one-device GPU exclusion may serialize access to that declared device.
+- **Hosted validation collects independent failures**. Use Cargo and Make
+  keep-going modes, nextest no-fail-fast mode, independent workflow leaves, and
+  one final aggregate verdict. A failed check must not suppress another check
+  whose inputs and tools remain available. The Rust matrix separates Clippy,
+  deterministic light-package shards, and heavy-profile tests at job level.
+  Packages with very large explicit binary inventories use deterministic target
+  shards plus one library/integration-test shard.
+  General correctness shards use Cargo's `test` profile; optimized scientific
+  audits retain their validation or parity profiles.
+- **Hydration-dependent tests require execution evidence**. A retained archive
+  identity with `Materialization::Missing` proves provenance metadata, not a
+  scientific computation. Hosted replay verifies the complete archive
+  identity, materializes the declared bounded paths, and records
+  `blocked_input`, `executed_fail`, or `executed_pass`.
 
 ## Build environment
 
@@ -119,12 +145,13 @@ hardware-specific tables are replaced with the scientific stack.
 - An isolated worktree on a capacity-constrained filesystem MUST set
   `REPO_CARGO_HOME`, `REPO_CARGO_TARGET_DIR`, and `REPO_CARGO_BUILD_DIR` to
   distinct paths on a filesystem that satisfies the cache budget.
-- A linked worktree on the same filesystem as the primary checkout
-  SHOULD run the gate with `REPO_SHARE_PRIMARY_CACHE=1`. The roots are
+- A linked worktree that explicitly builds a focused developer target on the
+  same filesystem as the primary checkout SHOULD set
+  `REPO_SHARE_PRIMARY_CACHE=1`. The roots are
   resolved in `mk/cache_roots.mk`: the cargo-home and the Cargo
   build-dir are shared with the primary checkout, while the target-dir,
-  the validation-tools copies, the cache-check sentinel and the
-  validate-local lock stay under the worktree's own `.cache/`. The
+  the validation-tools copies and cache-check sentinel stay under the
+  worktree's own `.cache/`. The
   build-dir carries the dependency artifacts and is the path the
   sccache hash covers, so sharing it alone turns a cold ~70 min chain
   into ~10 min; keeping the target-dir local means a worktree with
@@ -164,14 +191,12 @@ hardware-specific tables are replaced with the scientific stack.
   staged file and fails on an absolute path under `$(REPO_WORKTREES_ROOT)`
   (default `$(HOME)/worktrees`) that names neither the running checkout nor a
   directory any live entry accounts for.
-  `validate-local` runs it after the tools are staged and before a lane
-  executes one. `validate-repository` builds the tools through
-  `$(MAKE) validation-tools` and does not run the scan.
+  `make validation-tools-check-paths` performs this explicit maintenance
+  check. Repository validation itself runs from a fresh GitHub checkout.
 - `make validation-tools-rebuild` discards every staged binary, stamp and
   identity file through `guarded_rm`, rebuilds through the `validation-tools`
-  lane, and reruns the path scan. The validation lock and the cache-check
-  sentinel stay in place, so a rebuild beside an in-flight `validate-local`
-  leaves that run's lock intact. It also runs `cargo clean` over the tool
+  lane, and reruns the path scan. The cache-check sentinel stays in place.
+  The rebuild also runs `cargo clean` over the tool
   packages and `repo_root`, because discarding the copy alone leaves Cargo
   free to answer the next build from the shared build-dir with the artifact
   another worktree compiled. Use it when a staged tool fails on a path from a
@@ -203,20 +228,19 @@ CARGO_TARGET_DIR="$(pwd)/.cache/gate-target" cargo clippy -p <crate> --all-targe
 CARGO_TARGET_DIR="$(pwd)/.cache/gate-target" cargo nextest run -p <crate> --lib --cargo-profile validation
 ```
 
-### Manual local validation chain
+### Hosted validation chain
 
 | # | Check                    | Purpose                                                                          |
 | - | ------------------------ | -------------------------------------------------------------------------------- |
 | 1 | cache-check              | Soft cap (150G) + hard cap (200G) on `.cache/`                                   |
 | 2 | terminology-gate         | 8 banned legacy terms; prefer `sign_imbalance` for the renamed crate vocabulary. |
 | 3 | ansi-check               | Reject emojis and non-whitespace control characters; non-ASCII text passes       |
-| 4 | rust-regression-scoped   | Scoped clippy + nextest on changed-crate closure                                 |
+| 4 | validate-ci-scoped-rust  | Scoped clippy + nextest on changed-crate closure                                 |
 | 5 | validate-governance      | Verify registry policy, signatures, cross-references, and checked-in TOMLs      |
 
-`git config --get core.hooksPath` reports `/dev/null` when hooks are disabled
-locally, or `.githooks` for the repository's inactive pre-push hook. Both
-configurations leave automatic validation to CI. `make hooks-install` installs
-the inactive hook; manual `make validate-local` still runs the listed checks.
+The repository carries no hook installer and no tracked pre-push executable.
+Legacy local gate entry points refuse execution without building a validation
+tool.
 
 CI runs on pull requests and main pushes, with superseded runs canceled per
 event and ref. The router tests affected consumers and lints directly changed
@@ -227,9 +251,10 @@ Default-feature documentation builds share freshness checks in one job. Set
 ## Registry: SQLite-canonical (since 2026-03-23)
 
 - Canonical write target: `registry/canonical/control_plane.sqlite3`.
-- `registry/*.toml` are AUTO-GENERATED read-only compat exports.
-  Every TOML file in `registry/` starts with the header
-  `# AUTO-GENERATED: READ-ONLY COMPATIBILITY EXPORT.`
+- Migrated `registry/*.toml` lanes are AUTO-GENERATED read-only compat
+  exports. Those TOMLs start with the header
+  `# AUTO-GENERATED: READ-ONLY COMPATIBILITY EXPORT.` Unmigrated lanes named
+  in `registry/source_manifest.toml` remain hand-authored canonical inputs.
 - Source manifest: `registry/source_manifest.toml` declares the 36
   TOMLs that participate in compatibility round-trip verification.
 - Architecture walkthrough:
@@ -433,6 +458,47 @@ transformations. Experiment determines whether an invariant reaches an
 observable. State each claim at the layer its evidence supports and no
 higher; when the decisive experiment has not run, say so plainly and
 run it next.
+
+## Condition-bound materials
+
+These rules apply to every material property, model, experiment, and claim in
+the repository. The detailed contract is
+`docs/engineering/casimir_optics_discrimination_contract.md`.
+
+- A name or chemical formula identifies a material family, not a unique phase,
+  specimen, dataset, measurement, or model.
+- Use the typed chain `Material -> MaterialState -> Specimen -> Measurement ->
+  QuantityValue`. Keep `ModelRun` and `DerivedValue` on separate nodes with
+  explicit measured inputs.
+- Assign stable IDs to material, phase or state, specimen, dataset,
+  measurement, raw artifact, processing recipe, quantity, and model run.
+- Record temperature, pressure, atmosphere, phase fraction, orientation,
+  strain, applied fields, processing history, and time since processing when
+  they affect applicability.
+- Record purity and composition assays, synthesis or deposition, anneal,
+  thickness, substrate, adhesion layers, grain size, texture, porosity,
+  roughness, and geometry for each specimen.
+- Bind every observed quantity to a unit, representation, tensor component or
+  basis, conditions, applicability range, method, instrument, calibration,
+  operator or facility, repeat count, uncertainty or covariance, detection
+  limit, and raw artifact.
+- Preserve `experimental_direct`, `experimental_fitted`, `computed`, and
+  `inferred_proxy` as distinct evidence classes. A fitted value names its
+  inputs, fit model and version, residual artifact, and parameter covariance.
+- A computed repository such as JARVIS or Materials Project remains computed.
+  It cannot satisfy an experimental property requirement. An experimental
+  crystal source such as COD remains separately identified.
+- Represent absence as `not_measured`, `below_detection_limit`,
+  `not_applicable`, `withheld`, or `unknown`. Never encode missingness as `0.0`
+  or an empty string.
+- Retain DOI or stable source ID, page/table/figure or source row, license,
+  retrieval date, source-byte SHA-256, parser version, and transformation
+  lineage. A database record also cites its underlying paper and specimen.
+- Treat default lookups such as `get_material_model("gold")` as model
+  selection only. They never select a physical specimen or universal response.
+- Validate a model and an optical witness against the same specimen, geometry,
+  constitutive model, conditions, and state history before joining them in a
+  claim.
 
 ## GPU backend foundation (Wave B)
 

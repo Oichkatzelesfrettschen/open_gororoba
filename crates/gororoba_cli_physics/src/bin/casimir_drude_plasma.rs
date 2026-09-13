@@ -3,8 +3,8 @@
 //! Demonstrates the Drude-plasma controversy in Casimir physics:
 //! the Drude model predicts r_TE(xi=0) = 0 while the plasma model gives
 //! a finite TE contribution at the n=0 Matsubara term.  The difference is
-//! ~1-2% of the total force at room temperature -- experimentally relevant
-//! because modern Casimir experiments reach sub-1% precision.
+//! starts near two percent at 100 nm for these model parameters and grows as
+//! the zero-frequency term dominates at larger separation.
 //!
 //! Sweeps separation from 100 nm to 5 um for Au/Au, Ag/Ag, Cu/Cu plates.
 //!
@@ -14,7 +14,7 @@
 //!
 //! Example usage:
 //! ```bash
-//! cargo run --release --bin casimir-drude-plasma
+//! cargo run --profile validation --bin casimir-drude-plasma
 //! ```
 
 use clap::Parser;
@@ -22,7 +22,11 @@ use materials_core::{
     DrudeLorentzParams, casimir_drude_plasma_discrepancy, copper_drude_lorentz, gold_drude_lorentz,
     silver_drude_lorentz,
 };
-use std::io::Write;
+use std::{
+    fs,
+    io::{self, Write},
+    path::PathBuf,
+};
 
 #[derive(Parser)]
 #[command(name = "casimir-drude-plasma")]
@@ -43,6 +47,10 @@ struct Args {
     /// Number of separation points (log-spaced 100 nm to 5 um)
     #[arg(long, default_value_t = 12)]
     n_points: usize,
+
+    /// Optional retained output path; stdout remains the default.
+    #[arg(long)]
+    output: Option<PathBuf>,
 }
 
 /// Material descriptor: name, model, plasma frequency in eV.
@@ -81,10 +89,9 @@ fn main() {
         .map(|i| d_min * (d_max / d_min).powf(i as f64 / (n - 1).max(1) as f64))
         .collect();
 
-    let stdout = std::io::stdout();
-    let mut out = stdout.lock();
+    let mut out = Vec::new();
 
-    writeln!(out, "# Casimir Drude vs plasma model (Sprint 45)").unwrap();
+    writeln!(out, "# Casimir Drude vs plasma model").unwrap();
     writeln!(
         out,
         "# T={:.1} K, N_Matsubara={}, N_GL={}",
@@ -158,7 +165,14 @@ fn main() {
     eprintln!("  Drude: r_TE(xi=0) = 0  (TE mode cannot couple at zero frequency)");
     eprintln!("  Plasma: r_TE_plasma(k_perp) = (k_perp - sqrt(k_perp^2 + wp^2/c^2)) / (...)");
     eprintln!("  The difference is in the n=0 Matsubara term only.");
-    eprintln!("  Plasma is more attractive (larger |E|) -> larger discrepancy at small d");
-    eprintln!("  because the n=0 term dominates at large separations (thermal regime).");
+    eprintln!("  Plasma is more attractive (larger |E|), and the relative discrepancy grows");
+    eprintln!("  as the n=0 term dominates at large separations (thermal regime).");
     eprintln!("Refs: Klimchitskaya et al. Rev. Mod. Phys. 81, 1827 (2009)");
+    if let Some(path) = &args.output {
+        fs::write(path, &out).expect("write retained Drude-plasma comparison");
+    } else {
+        io::stdout()
+            .write_all(&out)
+            .expect("write Drude-plasma comparison to stdout");
+    }
 }

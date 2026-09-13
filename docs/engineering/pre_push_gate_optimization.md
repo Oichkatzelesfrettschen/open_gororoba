@@ -1,10 +1,10 @@
 # Pre-push validation optimization, 2026-05-11..12
 
 This document preserves historical measurements and command names from the
-optimization campaign. The active vocabulary is `validate-local`,
-`validate-ci`, `validate-governance`, `registry-integrity`, and the
-`validation` Cargo profile. Historical `gate-*` names remain compatibility
-aliases where the document records the original replay commands.
+optimization campaign. The active validation surface is
+`.github/workflows/ci.yml`; `registry-integrity` remains a mutation generator,
+and the `validation` Cargo profile remains a build-artifact layout. Historical
+local and `gate-*` names describe retained evidence only.
 
 Engineering note for future maintainers on the chain of fixes that
 brought the local pre-push gate from ~16 minutes per push to ~88 seconds
@@ -94,10 +94,9 @@ defense-in-depth:
 - `sccache` re-enabled in `.cargo/config.toml`. Passes through for
   the local incremental build (~5ms/crate); caches across sessions
   when `CARGO_INCREMENTAL=0` (CI).
-- `cargo xtask validate-local` driver: replicates the Makefile validate-local
-  flow with structured JSONL timing output to
-  `data/output/audit/<date>/validation-timing-<unix-ts>.jsonl`. Opt-in via
-  `make validate-local-xtask`.
+- The `cargo xtask validate-local` and `local-nextest-plan` executors were
+  removed. Legacy Make entry points fail at parse time before compiling a
+  tool.
 - `cargo xtask validation-timing-summary`: aggregate the JSONL files into
   per-phase stats (count, mean, median, p95, min, max, last).
 - `cargo xtask validation-timing-regression-check`: per-phase comparison
@@ -107,10 +106,8 @@ defense-in-depth:
 - `cargo xtask validation-tools-status`: inspect cached binary mtime vs
   source-dep mtime, surface `STALE` / `MISSING` so "why is the gate
   rebuilding tools every time" becomes a one-line diagnosis.
-- `$(VALIDATION_LOCK)`: pid + timestamp file written at gate-local start,
-  cleaned via shell trap on EXIT/INT/TERM. `make gate-lock-status`
-  reports state. Prevents the wave-2 PH-MOD bug where mid-gate
-  source edits broke the test compile.
+- The obsolete worktree validation lock was removed. Active repository
+  validation uses an isolated GitHub checkout.
 - `cache-sweep` policy: switched from `--maxsize 100GB` (destructive
   when triggered mid-session) to `--time 7 days` preservation with
   conditional gate-cbuild debug wipe (>14 days only).
@@ -118,9 +115,8 @@ defense-in-depth:
 
 ## Layered gate model
 
-- **Pre-push (local, `make validate-local` or `cargo xtask validate-local`)**:
-  smoke gate. Direct-changed crates only. `--lib` only. Skip make check
-  on Rust-only diffs. Target: under 2 minutes warm-cache.
+- **Retired local gate (`make validate-local`)**: fails before building tools
+  and directs the operator to push the branch for scoped GitHub Actions.
 - **PR CI (`validate-ci-rust` in ci.yml)**: full workspace closure +
   `--lib --tests` + integrity gates + governance. Target: 10-15
   minutes.
@@ -134,9 +130,10 @@ it preemptively on every PR. Pre-push is intentionally a smoke gate.
 
 ## Architectural decisions worth preserving
 
-1. **`workspace-routing` lives in `gororoba_cli_data`.** It is one
-   `[[bin]]` of many. Always invoke with `-p gororoba_cli_data --bin
-   workspace-routing`, or via the cached binary at
+1. **Local routing uses the slim governance owner.** The
+   `workspace-routing-proxy` target belongs to `gororoba_cli_governance` and
+   reuses the routing source without inheriting the broad data CLI dependency
+   graph. Invoke the staged binary at
    `.cache/gate-target/validation-tools/workspace-routing`.
 
 2. **`repo_utilities` is its own crate.** Do not move it back into
@@ -153,18 +150,25 @@ it preemptively on every PR. Pre-push is intentionally a smoke gate.
    real cross-session wins under `CARGO_INCREMENTAL=0` (CI). Removing
    it would lose the CI win.
 
-5. **Pre-push runs `--lib` only by default.** Do not change this
-   without verifying that PR CI runs `--lib --tests`. Integration
-   test compile is the largest single contributor to gate wall time.
+5. **PR CI includes integration targets.** Integration-test compilation is a
+   major contributor to wall time, so the scope router must remain precise.
 
-6. **validate-local must always release `$(VALIDATION_LOCK)`.** The shell trap
-   in the validate-local target body handles EXIT/INT/TERM. If you
-   refactor validate-local to multiple shells, preserve the trap or move
-   the lock management to the xtask driver.
+6. **validate-local must remain compilation-free.** The compatibility target
+   prints the CI route and exits nonzero without Make prerequisites.
 
-7. **`cargo sweep --time 7` preserves the working set.** The previous
+7. **Repository validation requires the GitHub Actions boundary.** GitHub
+   Actions supplies `CI=true` and `GITHUB_ACTIONS=true`. Validation Make
+   targets have no workstation override.
+
+8. **`cargo sweep --time 7` preserves the working set.** The previous
    `--maxsize 100GB` policy was destructive. Do not revert without
    adding `--dry-run` first to measure what would be lost.
+
+9. **Registry integrity has a dedicated slim cache.** The
+   `registry-integrity` binary belongs to `gororoba_cli_governance`, and
+   `make registry-integrity` depends only on its dedicated stamp. Do not attach
+   that target to `registry-validation-tools`; doing so restores the measured
+   8-minute broad compile path.
 
 ## File index
 
@@ -173,17 +177,14 @@ Persistent caches:
 - `.cache/gate-target/validation-tools/workspace-routing` -- routing-CLI binary.
 - `.cache/gate-target/validation-tools/host-profile.sh` -- pre-computed HOST_*
   shell vars.
-- `.cache/gate-target/validation-tools/xtask` -- xtask binary for the opt-in
-  driver.
+- `.cache/gate-target/validation-tools/xtask` -- staged CI orchestration tool.
 - `.cache/gate-target/validation-tools/cache-check.last` -- memoized
   cache-check output (30 min TTL).
-- `.cache/gate-target/validation-tools/validation.lock` -- validate-local in-flight
-  marker (cleaned by trap on exit).
 
 Per-run artifacts:
 
-- `data/output/audit/<YYYY-MM-DD>/gate-timing-<unix-ts>.jsonl` --
-  one JSONL line per phase from `validate-local-xtask` runs.
+- `data/output/audit/<YYYY-MM-DD>/gate-timing-<unix-ts>.jsonl` -- historical
+  timing records from the retired local driver.
 
 Reference RCAs:
 

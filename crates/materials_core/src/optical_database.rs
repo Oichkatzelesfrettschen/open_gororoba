@@ -19,6 +19,7 @@
 //! - Angular frequency omega in rad/s
 //! - Energy in eV (1 eV = 1.51927e15 rad/s)
 //! - Wavelength conversions provided
+//! - Passive real-frequency response uses exp(-i*omega*t), so Im(epsilon) >= 0
 //!
 //! # Literature
 //! - Palik (1998): Handbook of Optical Constants of Solids
@@ -27,6 +28,8 @@
 
 use gauss_quad::GaussLegendre;
 use num_complex::Complex64;
+
+use crate::material_records::Missingness;
 use std::{f64::consts::PI, num::NonZeroUsize};
 
 /// Conversion factor: 1 eV in rad/s.
@@ -151,16 +154,22 @@ pub enum OpticSign {
     Isotropic,
 }
 
+/// Legacy crystallographic catalog fields accompanying an optical model.
+///
+/// This compatibility type predates condition-bound specimen and measurement
+/// records. Call [`MineralMetadata::quarantine_legacy_sentinels`] before data
+/// crosses into the material evidence graph. The conversion preserves missing
+/// values as [`Missingness`] and does not promote catalog values into direct
+/// measurements.
+///
 /// Crystallographic + measured properties accompanying a mineral's optical
 /// dispersion model. Complements `DrudeLorentzParams` (which captures the
 /// frequency-dependent dielectric response) with the static gemological /
 /// mineralogical context used in identification, classification, and
 /// downstream geochemistry calculations.
 ///
-/// All fields are optional in the sense that a sentinel value (`0.0`,
-/// empty string) may be supplied when the property is not catalogued for
-/// a specific species; the field set is intentionally a superset so that
-/// adding new properties to the registry does not require a struct change.
+/// Existing constructors may contain historical numeric or string sentinels.
+/// New condition-bound code must use the material evidence graph instead.
 #[derive(Debug, Clone, Copy)]
 pub struct MineralMetadata {
     /// IMA-approved species name (e.g. "schorl", "dravite", "elbaite").
@@ -187,6 +196,79 @@ pub struct MineralMetadata {
     pub color: &'static str,
     /// Reference citation for the catalogued values.
     pub reference: &'static str,
+}
+
+/// Reported legacy catalog value or an explicit missingness reason.
+#[derive(Debug, Clone, PartialEq)]
+pub enum QuarantinedCatalogValue<T> {
+    Reported(T),
+    Missing(Missingness),
+}
+
+/// Sentinel-free compatibility projection of [`MineralMetadata`].
+///
+/// The projection remains a catalog draft. It lacks specimen, acquisition,
+/// uncertainty, raw-artifact, and processing identities and therefore cannot
+/// satisfy [`crate::material_records::EvidenceClass::ExperimentalDirect`].
+#[derive(Debug, Clone, PartialEq)]
+pub struct QuarantinedMineralMetadata {
+    pub species_name: QuarantinedCatalogValue<String>,
+    pub formula: QuarantinedCatalogValue<String>,
+    pub crystal_system: QuarantinedCatalogValue<String>,
+    pub space_group: QuarantinedCatalogValue<String>,
+    pub n_omega: QuarantinedCatalogValue<f64>,
+    pub n_epsilon: QuarantinedCatalogValue<f64>,
+    pub birefringence: QuarantinedCatalogValue<f64>,
+    pub optic_sign: OpticSign,
+    pub hardness_mohs: QuarantinedCatalogValue<f64>,
+    pub density_g_cm3: QuarantinedCatalogValue<f64>,
+    pub color: QuarantinedCatalogValue<String>,
+    pub reference: QuarantinedCatalogValue<String>,
+}
+
+impl MineralMetadata {
+    /// Convert historical zero and empty-string sentinels into typed absence.
+    pub fn quarantine_legacy_sentinels(self) -> QuarantinedMineralMetadata {
+        fn text(value: &str) -> QuarantinedCatalogValue<String> {
+            if value.trim().is_empty() {
+                QuarantinedCatalogValue::Missing(Missingness::Unknown)
+            } else {
+                QuarantinedCatalogValue::Reported(value.to_owned())
+            }
+        }
+
+        fn positive(value: f64) -> QuarantinedCatalogValue<f64> {
+            if value.is_finite() && value > 0.0 {
+                QuarantinedCatalogValue::Reported(value)
+            } else {
+                QuarantinedCatalogValue::Missing(Missingness::Unknown)
+            }
+        }
+
+        let birefringence = if self.birefringence.is_finite()
+            && (self.birefringence > 0.0
+                || (self.birefringence == 0.0 && self.optic_sign == OpticSign::Isotropic))
+        {
+            QuarantinedCatalogValue::Reported(self.birefringence)
+        } else {
+            QuarantinedCatalogValue::Missing(Missingness::Unknown)
+        };
+
+        QuarantinedMineralMetadata {
+            species_name: text(self.species_name),
+            formula: text(self.formula),
+            crystal_system: text(self.crystal_system),
+            space_group: text(self.space_group),
+            n_omega: positive(self.n_omega),
+            n_epsilon: positive(self.n_epsilon),
+            birefringence,
+            optic_sign: self.optic_sign,
+            hardness_mohs: positive(self.hardness_mohs),
+            density_g_cm3: positive(self.density_g_cm3),
+            color: text(self.color),
+            reference: text(self.reference),
+        }
+    }
 }
 
 impl UniaxialOptical {
@@ -467,7 +549,7 @@ impl DrudeLorentzParams {
             let gamma = osc.gamma_ev * EV_TO_RADS;
             let omega_p_sq = osc.strength * omega_0 * omega_0;
 
-            let denom = Complex64::new(omega_0 * omega_0 - omega * omega, gamma * omega);
+            let denom = Complex64::new(omega_0 * omega_0 - omega * omega, -gamma * omega);
             eps += omega_p_sq / denom;
         }
 
@@ -503,14 +585,9 @@ impl DrudeLorentzParams {
     // Derived optical properties (Sprint 44)
     // ====================================================================
 
-    /// Complex refractive index n + ik from the dielectric function.
-    ///
-    /// n = Re(sqrt(eps)), k = |Im(sqrt(eps))|.
-    /// Both components forced non-negative regardless of the sign convention
-    /// used for Im(eps) in the Drude-Lorentz model (+i*gamma*omega denominator).
+    /// Complex refractive index n + ik on the passive square-root branch.
     pub fn refractive_index(&self, omega: f64) -> Complex64 {
-        let n = self.epsilon(omega).sqrt();
-        Complex64::new(n.re, n.im.abs())
+        self.epsilon(omega).sqrt()
     }
 
     /// Normal-incidence reflectivity R from vacuum.
@@ -525,20 +602,19 @@ impl DrudeLorentzParams {
     /// Electron energy loss function -Im(1/epsilon).
     ///
     /// Peaks at the screened plasma frequency where eps.re crosses zero.
-    /// Always non-negative; sign-convention independent.
+    /// Non-negative for a passive exp(-i*omega*t) dielectric response.
     pub fn loss_function(&self, omega: f64) -> f64 {
         let eps = self.epsilon(omega);
-        // -Im(1/eps) = |Im(eps)| / |eps|^2; convention-robust via abs
-        eps.im.abs() / eps.norm_sqr()
+        eps.im / eps.norm_sqr()
     }
 
     /// Absorptive part of optical conductivity sigma_1(omega) in S/m (SI).
     ///
-    /// sigma_1 = eps_0 * omega * |Im(eps)|. Always non-negative.
+    /// sigma_1 = eps_0 * omega * Im(eps). Non-negative for passive response.
     /// Connects dielectric function to AC transport / IR spectroscopy.
     pub fn optical_conductivity_re(&self, omega: f64) -> f64 {
         let eps = self.epsilon(omega);
-        EPS_0 * omega * eps.im.abs()
+        EPS_0 * omega * eps.im
     }
 
     /// Reactive part of optical conductivity sigma_2(omega) in S/m (SI).
@@ -556,7 +632,7 @@ impl DrudeLorentzParams {
     /// Returns None if the material is transparent at this frequency (k ~ 0).
     pub fn skin_depth(&self, omega: f64) -> Option<f64> {
         let n_complex = self.refractive_index(omega);
-        let k = n_complex.im; // Already non-negative from refractive_index
+        let k = n_complex.im;
         if k > 1e-30 {
             Some(C / (omega * k))
         } else {
@@ -570,7 +646,7 @@ impl DrudeLorentzParams {
     /// Always non-negative.
     pub fn absorption_coefficient(&self, omega: f64) -> f64 {
         let n_complex = self.refractive_index(omega);
-        2.0 * omega * n_complex.im / C // im already non-negative
+        2.0 * omega * n_complex.im / C
     }
 
     /// DC conductivity sigma_dc in S/m (from Drude parameters only).
@@ -788,10 +864,15 @@ impl DrudeLorentzParams {
     ///
     /// For dielectrics: eps_static = eps_inf + sum_j S_j (Lorentz oscillator
     /// static contribution). For metals: diverges (Drude -> -infinity at omega=0).
-    /// Returns None for metals.
+    /// Returns None when the active Drude term has positive plasma strength.
     pub fn static_dielectric(&self) -> Option<f64> {
-        if self.drude.is_some() || self.extended_drude.is_some() {
-            return None; // Drude diverges at omega=0
+        let carrier_strength_ev = self
+            .extended_drude
+            .as_ref()
+            .map(|drude| drude.omega_p_ev)
+            .or_else(|| self.drude.as_ref().map(|drude| drude.omega_p_ev));
+        if carrier_strength_ev.is_some_and(|omega_p_ev| omega_p_ev > 0.0) {
+            return None;
         }
         let mut eps_0_val = self.eps_inf;
         for osc in &self.oscillators {
@@ -1450,6 +1531,31 @@ fn lf_r_tm(p: f64, eps: f64) -> f64 {
     (eps * p - s) / (eps * p + s)
 }
 
+/// Integral of `u*ln(1-r*exp(-u))` over the nonnegative real line.
+///
+/// Expanding the logarithm gives `-Li_3(r)`. The exact conductor endpoint
+/// avoids applying polynomial quadrature across the logarithmic singularity
+/// at `u=0`.
+fn static_tm_zero_mode_integral(reflection_product: f64) -> f64 {
+    const APERY: f64 = 1.202_056_903_159_594;
+    if reflection_product == 1.0 {
+        return -APERY;
+    }
+
+    let mut trilogarithm = 0.0;
+    let mut power = reflection_product;
+    for order in 1..=1_000_000_u64 {
+        let denominator = (order as f64).powi(3);
+        let term = power / denominator;
+        trilogarithm += term;
+        if term.abs() < 1e-16 {
+            break;
+        }
+        power *= reflection_product;
+    }
+    -trilogarithm
+}
+
 /// Casimir energy per unit area from the correct Lifshitz formula with
 /// Gauss-Legendre quadrature.
 ///
@@ -1462,9 +1568,9 @@ fn lf_r_tm(p: f64, eps: f64) -> f64 {
 ///
 /// Formula (Lifshitz 1956; Dzyaloshinskii et al. 1961):
 /// ```text
-///   E/A = (kT/4pi^2) * { (1/2)*E0 + sum_{n=1}^{N} (xi_n/c)^2 * I_n }
+///   E/A = (kT/2pi) * { (1/2)*E0 + sum_{n=1}^{N} (xi_n/c)^2 * I_n }
 ///
-///   E0  = (1/(4d^2)) * integral_0^u_max u * ln(1 - r_TM1*r_TM2*e^{-u}) du
+///   E0  = (1/(4d^2)) * integral_0^infinity u * ln(1 - r_TM1*r_TM2*e^{-u}) du
 ///         (quasi-static n=0 term; Drude convention: r_TE = 0 at xi = 0)
 ///
 ///   I_n = integral_1^{p_max} p * [ln(1-r_TE1*r_TE2*D) + ln(1-r_TM1*r_TM2*D)] dp
@@ -1491,7 +1597,7 @@ pub fn casimir_lifshitz_energy(
     n_gauss: usize,
 ) -> f64 {
     let k_b_t_si = K_B_EV * temperature_k * E_CHARGE; // J
-    let global_pref = k_b_t_si / (4.0 * PI * PI);
+    let global_pref = k_b_t_si / (2.0 * PI);
     let xi_unit = 2.0 * PI * K_B_EV * temperature_k * EV_TO_RADS; // xi_1 in rad/s
     let d = separation_m;
     let quad = GaussLegendre::new(
@@ -1505,19 +1611,29 @@ pub fn casimir_lifshitz_energy(
     // Substitution: u = 2*k_perp*d, so k_perp dk_perp = u/(4d^2) du.
     // ------------------------------------------------------------------
     {
-        // Use xi=1 rad/s as "dc limit": Drude metals give eps >> 1, r_TM -> 1;
-        // dielectrics give their static permittivity.
-        let xi_dc: f64 = 1.0;
-        let eps_s1 = mat1.epsilon_imaginary(xi_dc);
-        let eps_s2 = mat2.epsilon_imaginary(xi_dc);
-        let r_tm1 = ((eps_s1 - 1.0) / (eps_s1 + 1.0)).clamp(0.0, 1.0);
-        let r_tm2 = ((eps_s2 - 1.0) / (eps_s2 + 1.0)).clamp(0.0, 1.0);
+        let static_tm_reflection = |material: &DrudeLorentzParams| {
+            let carrier_strength_ev = material
+                .extended_drude
+                .as_ref()
+                .map(|drude| drude.omega_p_ev)
+                .or_else(|| material.drude.as_ref().map(|drude| drude.omega_p_ev));
+            let has_conducting_carrier =
+                carrier_strength_ev.is_some_and(|omega_p_ev| omega_p_ev > 0.0);
+            if has_conducting_carrier {
+                // A local Drude conductor has an infinite static permittivity,
+                // so its electrostatic TM reflection amplitude is exactly one.
+                1.0
+            } else {
+                let eps_static = material
+                    .static_dielectric()
+                    .expect("a non-Drude material has finite static permittivity");
+                ((eps_static - 1.0) / (eps_static + 1.0)).clamp(-1.0, 1.0)
+            }
+        };
+        let r_tm1 = static_tm_reflection(mat1);
+        let r_tm2 = static_tm_reflection(mat2);
         let r_prod = r_tm1 * r_tm2;
-        let u_max = 40.0_f64;
-        let n0_int = quad.integrate(0.0, u_max, |u| {
-            let g = 1.0 - r_prod * (-u).exp();
-            if g > 0.0 { u * g.ln() } else { 0.0 }
-        });
+        let n0_int = static_tm_zero_mode_integral(r_prod);
         // Factor: global_pref * (1/2) from n=0 half-weight * (1/(4d^2)) from substitution.
         energy += global_pref * 0.5 * n0_int / (4.0 * d * d);
     }
@@ -1617,8 +1733,9 @@ pub fn casimir_lifshitz_eta(
 /// The Drude-plasma controversy (Klimchitskaya et al. 2009): the Drude model sets
 /// r_TE(xi=0) = 0 while the plasma model gives a finite r_TE(xi=0) via
 ///   r_TE_plasma(k_perp) = (k_perp - sqrt(k_perp^2 + omega_p^2/c^2)) / (ditto +).
-/// The difference is purely in the n=0 quasi-static TE term and amounts to ~1-2%
-/// of the total Casimir force at room temperature.
+/// The difference is introduced through the n=0 quasi-static TE term. Its
+/// fraction of the total is separation- and model-dependent and can grow well
+/// beyond one or two percent in the thermal regime.
 ///
 /// Returns `(e_drude, e_plasma, discrepancy_percent)`.
 /// `e_drude` is the Lifshitz result (Drude convention).
@@ -1635,7 +1752,7 @@ pub fn casimir_drude_plasma_discrepancy(
     let e_drude =
         casimir_lifshitz_energy(mat, mat, separation_m, temperature_k, n_matsubara, n_gauss);
     let k_b_t_si = K_B_EV * temperature_k * E_CHARGE;
-    let global_pref = k_b_t_si / (4.0 * PI * PI);
+    let global_pref = k_b_t_si / (2.0 * PI);
     let d = separation_m;
     // x_p = omega_p * d / c (dimensionless plasma parameter)
     let x_p = omega_p_ev * EV_TO_RADS * d / C;
@@ -1679,7 +1796,11 @@ pub enum MaterialType {
     ConductiveOxide,
 }
 
-/// Material library entry with full optical model and provenance.
+/// Optical-model catalog entry for a material family.
+///
+/// The entry does not identify a physical specimen or measurement. Use the
+/// records in material_records to bind a model to material state, specimen,
+/// measurement, quantity semantics, and source-byte provenance.
 #[derive(Debug, Clone)]
 pub struct MaterialEntry {
     /// Material name
@@ -1704,8 +1825,15 @@ pub struct MaterialEntry {
     pub uniaxial: Option<UniaxialOptical>,
 }
 
-/// Get a material from the database by name.
+/// Select a default optical model by material-family alias.
+///
+/// The alias is a convenience model selection, not a specimen identity.
 pub fn get_material(name: &str) -> Option<MaterialEntry> {
+    get_material_model(name)
+}
+
+/// Select an optical model by catalog alias.
+pub fn get_material_model(name: &str) -> Option<MaterialEntry> {
     let name_lower = name.to_lowercase();
     match name_lower.as_str() {
         "gold" | "au" => Some(MaterialEntry {
@@ -4126,6 +4254,45 @@ mod tests {
     }
 
     #[test]
+    fn test_static_dielectric_uses_background_for_zero_strength_carriers() {
+        let oscillator = LorentzOscillator {
+            strength: 1.5,
+            omega_0_ev: 5.0,
+            gamma_ev: 0.1,
+        };
+        let zero_strength_drude = DrudeLorentzParams {
+            drude: Some(DrudeParams {
+                omega_p_ev: 0.0,
+                gamma_ev: 0.035,
+                eps_inf: 2.5,
+            }),
+            oscillators: vec![oscillator.clone()],
+            eps_inf: 2.5,
+            extended_drude: None,
+        };
+        let zero_strength_extended_drude = DrudeLorentzParams {
+            drude: Some(DrudeParams {
+                omega_p_ev: 9.0,
+                gamma_ev: 0.035,
+                eps_inf: 2.5,
+            }),
+            oscillators: vec![oscillator],
+            eps_inf: 2.5,
+            extended_drude: Some(ExtendedDrudeParams {
+                omega_p_ev: 0.0,
+                scattering: ScatteringModel::Constant { gamma_ev: 0.035 },
+                eps_inf: 2.5,
+            }),
+        };
+
+        assert_eq!(zero_strength_drude.static_dielectric(), Some(4.0));
+        assert_eq!(
+            zero_strength_extended_drude.static_dielectric(),
+            Some(4.0)
+        );
+    }
+
+    #[test]
     fn test_intraband_weight_gold() {
         let gold = gold_drude_lorentz();
         let w = gold.intraband_weight();
@@ -4499,8 +4666,8 @@ mod tests {
     }
 
     #[test]
-    fn test_thermal_broadening_drude_bloch_gruneisen() {
-        // Drude damping should increase with (T/T_Debye)^2.
+    fn test_thermal_broadening_drude_quadratic_heuristic() {
+        // The declared Drude heuristic increases with (T/T_Debye)^2.
         let gold = gold_drude_lorentz();
         let hot = gold.at_temperature(300.0, Some(170.0)); // Gold T_Debye ~ 170K
         let cold = gold.at_temperature(10.0, Some(170.0));
@@ -5002,6 +5169,148 @@ mod tests {
             "SiO2 static eps should be ~3.80, got {:.4}",
             eps_static
         );
+    }
+
+    #[test]
+    fn test_mineral_metadata_quarantine_distinguishes_zero_from_missing() {
+        let polymer = pedot_pss_metadata().quarantine_legacy_sentinels();
+        assert_eq!(
+            polymer.hardness_mohs,
+            QuarantinedCatalogValue::Missing(Missingness::Unknown)
+        );
+
+        let diamond = oxides_tcos::diamond_metadata().quarantine_legacy_sentinels();
+        assert_eq!(
+            diamond.birefringence,
+            QuarantinedCatalogValue::Reported(0.0),
+            "isotropic zero birefringence is a reported physical zero"
+        );
+
+        let tungsten_oxide = tungstates::wo3_metadata().quarantine_legacy_sentinels();
+        assert_eq!(
+            tungsten_oxide.birefringence,
+            QuarantinedCatalogValue::Missing(Missingness::Unknown),
+            "biaxial zero sentinel is typed absence"
+        );
+    }
+
+    #[test]
+    fn test_mineral_metadata_quarantine_types_empty_identity_as_missing() {
+        let legacy = MineralMetadata {
+            species_name: "",
+            formula: "",
+            crystal_system: "",
+            space_group: "",
+            n_omega: 0.0,
+            n_epsilon: 0.0,
+            birefringence: f64::NAN,
+            optic_sign: OpticSign::Isotropic,
+            hardness_mohs: 0.0,
+            density_g_cm3: 0.0,
+            color: "",
+            reference: "",
+        }
+        .quarantine_legacy_sentinels();
+
+        assert_eq!(
+            legacy.species_name,
+            QuarantinedCatalogValue::Missing(Missingness::Unknown)
+        );
+        assert_eq!(
+            legacy.n_omega,
+            QuarantinedCatalogValue::Missing(Missingness::Unknown)
+        );
+        assert_eq!(
+            legacy.birefringence,
+            QuarantinedCatalogValue::Missing(Missingness::Unknown)
+        );
+    }
+
+    #[test]
+    fn test_lorentz_response_is_passive_and_matches_imaginary_axis_formula() {
+        let material = DrudeLorentzParams {
+            drude: None,
+            oscillators: vec![LorentzOscillator {
+                strength: 1.0,
+                omega_0_ev: 1.0,
+                gamma_ev: 0.2,
+            }],
+            eps_inf: 0.0,
+            extended_drude: None,
+        };
+        let omega = 0.7 * EV_TO_RADS;
+        assert!(
+            material.epsilon(omega).im > 0.0,
+            "a passive exp(-i*omega*t) oscillator must have positive loss"
+        );
+
+        let xi = 0.7 * EV_TO_RADS;
+        let imaginary_axis = material.epsilon_imaginary(xi);
+        let expected = 1.0 / (1.0 + 0.7_f64.powi(2) + 0.2 * 0.7);
+        assert!(
+            (imaginary_axis - expected).abs() < 1e-14,
+            "imaginary-axis oscillator mismatch: {imaginary_axis} versus {expected}"
+        );
+    }
+
+    #[test]
+    fn test_lifshitz_drude_zero_mode_prefactor() {
+        let metal = gold_drude_lorentz();
+        let separation = 200e-9;
+        let temperature = 300.0;
+        let numerical = casimir_lifshitz_energy(&metal, &metal, separation, temperature, 0, 128);
+        let boltzmann_temperature = K_B_EV * temperature * E_CHARGE;
+        let apery = 1.202_056_903_159_594;
+        let exact = -boltzmann_temperature * apery / (16.0 * PI * separation.powi(2));
+        let relative_error = (numerical / exact - 1.0).abs();
+        assert!(
+            relative_error < 2e-10,
+            "Drude TM zero-mode prefactor mismatch: relative error {relative_error:e}"
+        );
+    }
+
+    #[test]
+    fn test_lifshitz_zero_strength_carriers_preserve_dielectric_zero_mode() {
+        let dielectric = DrudeLorentzParams {
+            drude: None,
+            oscillators: vec![],
+            eps_inf: 4.0,
+            extended_drude: None,
+        };
+        let zero_strength_drude = DrudeLorentzParams {
+            drude: Some(DrudeParams {
+                omega_p_ev: 0.0,
+                gamma_ev: 0.035,
+                eps_inf: 4.0,
+            }),
+            oscillators: vec![],
+            eps_inf: 4.0,
+            extended_drude: None,
+        };
+        let zero_strength_extended_drude = DrudeLorentzParams {
+            drude: Some(DrudeParams {
+                omega_p_ev: 9.0,
+                gamma_ev: 0.035,
+                eps_inf: 4.0,
+            }),
+            oscillators: vec![],
+            eps_inf: 4.0,
+            extended_drude: Some(ExtendedDrudeParams {
+                omega_p_ev: 0.0,
+                scattering: ScatteringModel::Constant { gamma_ev: 0.035 },
+                eps_inf: 4.0,
+            }),
+        };
+        let separation = 200e-9;
+        let temperature = 300.0;
+        let dielectric_energy =
+            casimir_lifshitz_energy(&dielectric, &dielectric, separation, temperature, 0, 128);
+
+        for material in [&zero_strength_drude, &zero_strength_extended_drude] {
+            let carrier_energy =
+                casimir_lifshitz_energy(material, material, separation, temperature, 0, 128);
+            assert_eq!(carrier_energy, dielectric_energy);
+        }
     }
 
     #[test]
@@ -6508,6 +6817,39 @@ mod tests {
             (0.0..=1.0).contains(&r),
             "Thin film R should be in [0, 1], got {:.4}",
             r
+        );
+    }
+
+    #[test]
+    fn test_thin_film_zero_thickness_reduces_to_substrate() {
+        let film = wo3_optical();
+        let substrate = silicon_optical();
+        let omega = ev_to_omega(0.09272);
+        let film_result = film.thin_film_reflectance_on_material(omega, 0.0, &substrate);
+        let substrate_result = substrate.reflectivity_normal(omega);
+        assert!(
+            (film_result - substrate_result).abs() < 1e-12,
+            "zero-thickness film must expose the substrate: {film_result} versus {substrate_result}"
+        );
+    }
+
+    #[test]
+    fn test_wo3_state_meter_preserves_finite_film_geometry() {
+        let insulating = wo3_optical();
+        let conducting = wo3_x_optical();
+        let substrate = silicon_optical();
+        let omega = ev_to_omega(0.09272);
+        let halfspace_contrast =
+            conducting.reflectivity_normal(omega) - insulating.reflectivity_normal(omega);
+        let film_contrast = conducting.thin_film_reflectance_on_material(omega, 100e-9, &substrate)
+            - insulating.thin_film_reflectance_on_material(omega, 100e-9, &substrate);
+        assert!(
+            (halfspace_contrast - film_contrast).abs() > 0.1,
+            "finite-film and half-space state meters must remain distinct"
+        );
+        assert!(
+            (-1.0..=1.0).contains(&film_contrast),
+            "finite-film reflectivity contrast must stay physical"
         );
     }
 
