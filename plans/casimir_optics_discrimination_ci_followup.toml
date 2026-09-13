@@ -152,3 +152,31 @@ status = "implemented_pending_ci"
 finding = "The finite-frontier verifier existed but the routed hosted Casimir audit leaf did not execute it."
 required_change = "Run verify-finite-frontier in the same routed fail-slow CI leaf as native output freshness and pin the command in the validation-resource contract."
 verification = "Hosted validation-policy and routed Casimir audit jobs execute the exact frontier partition verifier."
+
+[[task]]
+id = "final-generation-denominator"
+status = "complete"
+finding = "CI run 34746905311 completed all 47 jobs without cancellation: 43 passed, two independent leaves failed, aggregate validation failed by construction, and docs deployment skipped by admission policy."
+required_change = "Repair the policy contract's source boundary and both stats_core failures in one final follow-up."
+verification = "The four companion workflows passed. Scientific replay, docs-gate, validation-core, and 39 of 40 Rust matrix jobs passed. The independent failures were validation-policy and light-2."
+
+[[task]]
+id = "frontier-contract-source-boundary"
+status = "implemented_pending_ci"
+finding = "The policy verifier searched ci.yml for the finite-frontier command even though the command belongs to the routed Make target."
+required_change = "Search workflow contracts in ci.yml and inspect the bounded frontier-check Make recipe separately for its verifier and canonical-plan arguments."
+verification = "Hosted validation-policy passes both source-specific contract checks."
+
+[[task]]
+id = "fixed-nuisance-profile-distance"
+status = "implemented_pending_ci"
+finding = "Clarabel rejected an exact zero-width nuisance box before the overflow-safe distance calculation could classify the finite residual."
+required_change = "Evaluate an all-fixed nuisance box directly at its unique parameter vector and classify every coordinate as active at both bounds."
+verification = "Hosted stats_core tests return sqrt(2)*1e200 for a fixed zero nuisance parameter and reject an unrepresentable sqrt(2)*1e308 distance."
+
+[[task]]
+id = "calibration-fixture-mechanical-edit-repair"
+status = "implemented_pending_ci"
+finding = "A broad replacement accidentally changed the established independent-calibration fixture from a unit nuisance column to a 1e308 column."
+required_change = "Restore the original unit nuisance fixture while retaining dedicated extreme-scale tests in their own cases."
+verification = "Hosted stats_core independent_calibration_increases_information passes unchanged semantics."

@@ -113,6 +113,9 @@ fn all_finite_vector(vector: &DVector<f64>) -> bool {
 }
 
 fn finite_euclidean_norm(vector: &DVector<f64>) -> Result<f64, DiscriminationError> {
+    if !all_finite_vector(vector) {
+        return Err(DiscriminationError::NumericalFailure);
+    }
     let direct_norm = vector.norm();
     if direct_norm.is_finite() {
         return Ok(direct_norm);
@@ -318,6 +321,21 @@ pub fn bounded_profile_distance(
             || bound.unit.trim().is_empty()
     }) {
         return Err(DiscriminationError::InvalidBounds);
+    }
+
+    if bounds.iter().all(|bound| bound.lower == bound.upper) {
+        let parameters = DVector::from_iterator(
+            bounds.len(),
+            bounds.iter().map(|bound| bound.lower),
+        );
+        let distance = finite_euclidean_norm(&(target - nuisance * &parameters))?;
+        let active_bounds = (0..bounds.len()).collect::<Vec<_>>();
+        return Ok(BoundedProfileResult {
+            distance,
+            nuisance_parameters: parameters,
+            active_lower_bounds: active_bounds.clone(),
+            active_upper_bounds: active_bounds,
+        });
     }
 
     let parameter_count = nuisance.ncols();
@@ -594,7 +612,7 @@ mod tests {
     #[test]
     fn independent_calibration_increases_information() {
         let target = DVector::from_vec(vec![1.0, 1.0]);
-        let nuisance = DMatrix::from_column_slice(2, 1, &[1e308, 1e308]);
+        let nuisance = DMatrix::from_column_slice(2, 1, &[1.0, 1.0]);
         let no_calibration = DMatrix::zeros(0, 1);
         let calibrated = DMatrix::from_element(1, 1, 2.0);
         let uncalibrated_information =
