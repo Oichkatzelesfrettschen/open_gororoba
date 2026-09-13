@@ -333,7 +333,7 @@ id = "exact-head-41325237-lockfile-precondition"
 status = "implemented_pending_ci"
 finding = "Run 34774800856 admitted 40 concurrent hosted jobs, but the lbm_3d replay relocation added repo_root and sha2 dev-dependencies without adding them to the lbm_3d Cargo.lock package dependency list. Scientific hydration and both benchmark architectures independently stopped at Cargo's --locked precondition before source validation."
 required_change = "Add the two existing workspace packages to the lbm_3d lockfile dependency list, then publish one replacement generation after the canceled run reaches terminal state."
-verification = "The replacement generation passes Cargo's locked dependency-graph check in scientific hydration, both benchmark architectures, and every selected Rust validation leaf."
+verification = "Run 34775470409 proved that the workspace's simultaneous sha2 0.10.9 and 0.11.0 packages require the disambiguated sha2 0.11.0 lock dependency. The next replacement generation must pass Cargo's locked dependency-graph check in scientific hydration, both benchmark architectures, and every selected Rust validation leaf."
 
 [[task]]
 id = "long-job-scientific-replay-compile-surface"
