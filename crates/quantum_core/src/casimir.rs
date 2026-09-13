@@ -739,7 +739,7 @@ mod tests {
 
     #[test]
     fn test_lifshitz_ideal_pressure_normalization() {
-        let gap = 200e-9;
+        let gap: f64 = 200e-9;
         let ideal = DielectricModel::PerfectConductor;
         let numerical = lifshitz_pressure_plates(gap, &ideal, &ideal, 96, 48);
         let exact = -PI * PI * HBAR * C / (240.0 * gap.powi(4));
@@ -748,7 +748,7 @@ mod tests {
 
     #[test]
     fn test_lifshitz_ideal_energy_normalization() {
-        let gap = 200e-9;
+        let gap: f64 = 200e-9;
         let ideal = DielectricModel::PerfectConductor;
         let numerical = lifshitz_energy_plates(gap, &ideal, &ideal, 256, 48);
         let exact = -PI * PI * HBAR * C / (720.0 * gap.powi(3));
@@ -761,7 +761,7 @@ mod tests {
 
     #[test]
     fn test_lifshitz_ideal_cutoff_and_order_convergence() {
-        let gap = 200e-9;
+        let gap: f64 = 200e-9;
         let ideal = DielectricModel::PerfectConductor;
         let exact_pressure = -PI * PI * HBAR * C / (240.0 * gap.powi(4));
         let exact_energy = -PI * PI * HBAR * C / (720.0 * gap.powi(3));

@@ -8,7 +8,7 @@
 #   default  -- standard dev loop (60s slow-timeout)
 #   ci       -- CI gate (90s slow-timeout, immediate failure output)
 #   smoke    -- quick correctness check (fail-fast, no timeout override)
-#   heavy    -- long-running #[ignore]-gated tests (600s, single-threaded math)
+#   heavy    -- long-running #[ignore]-gated tests (extended slow-test timeouts)
 #   gpu      -- CUDA tests that require physical GPU hardware
 #
 # HOW: `cargo nextest run -P <profile>` selects a profile.

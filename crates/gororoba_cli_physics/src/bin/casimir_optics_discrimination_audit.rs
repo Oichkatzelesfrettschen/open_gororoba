@@ -50,7 +50,7 @@ struct SourceModelInput {
     bytes: &'static [u8],
 }
 
-const SOURCE_MODEL_INPUTS: [SourceModelInput; 15] = [
+const SOURCE_MODEL_INPUTS: [SourceModelInput; 16] = [
     SourceModelInput {
         path: "crates/gororoba_cli_physics/src/bin/casimir_optics_discrimination_audit.rs",
         bytes: include_bytes!("casimir_optics_discrimination_audit.rs"),
@@ -88,6 +88,10 @@ const SOURCE_MODEL_INPUTS: [SourceModelInput; 15] = [
     SourceModelInput {
         path: "crates/materials_data/build.rs",
         bytes: include_bytes!("../../../materials_data/build.rs"),
+    },
+    SourceModelInput {
+        path: "crates/materials_data/data/optical/drude_metals.toml",
+        bytes: include_bytes!("../../../materials_data/data/optical/drude_metals.toml"),
     },
     SourceModelInput {
         path: "crates/materials_data/data/optical/lorentz_models.toml",
@@ -497,7 +501,7 @@ fn cutoff_convergence_options() -> [LifshitzQuadratureOptions; 3] {
 }
 
 fn radial_convergence_options() -> [LifshitzQuadratureOptions; 3] {
-    [96, 128, 256]
+    [128, 256, 512]
         .map(|kappa_order| LifshitzQuadratureOptions::new(24.0, kappa_order, 64))
 }
 
@@ -1693,7 +1697,7 @@ mod tests {
         let radial_options = radial_convergence_options();
         assert_eq!(
             radial_options.map(|options| options.kappa_order),
-            [96, 128, 256]
+            [128, 256, 512]
         );
         assert!(
             radial_options
