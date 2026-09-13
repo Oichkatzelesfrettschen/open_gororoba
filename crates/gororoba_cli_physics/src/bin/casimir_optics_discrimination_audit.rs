@@ -15,7 +15,10 @@ use materials_core::{
 };
 use nalgebra::{DMatrix, DVector};
 use quantum_core::{
-    casimir::{C, DielectricModel, HBAR, lifshitz_energy_plates},
+    casimir::{
+        C, DielectricModel, HBAR, LifshitzQuadratureOptions, lifshitz_energy_plates,
+        lifshitz_energy_plates_with_options, lifshitz_pressure_plates_with_options,
+    },
     channel_admissibility::{
         exponential_memory_depolarizing_eigenvalue, qubit_depolarizing_minimum_choi_eigenvalue,
     },
@@ -1052,6 +1055,52 @@ fn generate_report() -> Result<GeneratedAudit> {
     let exact_pressure = -PI.powi(2) * HBAR * C / (240.0 * GAP_METERS.powi(4));
     let exact_energy = -PI.powi(2) * HBAR * C / (720.0 * GAP_METERS.powi(3));
     let exact_sphere_force = 2.0 * PI * SPHERE_RADIUS_METERS * exact_energy;
+    let convergence_configurations = [
+        LifshitzQuadratureOptions::new(16.0, 96, 32),
+        LifshitzQuadratureOptions::new(20.0, 128, 48),
+        LifshitzQuadratureOptions::new(24.0, 256, 64),
+    ];
+    let convergence_observations = convergence_configurations.map(|options| {
+        (
+            options,
+            lifshitz_pressure_plates_with_options(
+                GAP_METERS,
+                &perfect_conductor,
+                &perfect_conductor,
+                options,
+            ),
+            lifshitz_energy_plates_with_options(
+                GAP_METERS,
+                &perfect_conductor,
+                &perfect_conductor,
+                options,
+            ),
+        )
+    });
+    let finest_pressure = convergence_observations[2].1;
+    let finest_energy = convergence_observations[2].2;
+    ensure!(
+        relative_error(finest_pressure, exact_pressure) < 2.0e-9
+            && relative_error(finest_energy, exact_energy) < 5.0e-10
+            && relative_error(convergence_observations[1].1, finest_pressure) < 2.0e-9
+            && relative_error(convergence_observations[1].2, finest_energy) < 2.0e-9,
+        "planar cutoff or order refinement exceeded its declared tolerance"
+    );
+    let planar_convergence_table = tsv(
+        "kappa_cutoff\tkappa_order\tangle_order\tpressure_pa\texact_pressure_pa\tpressure_relative_error\tpressure_relative_change_from_finest\tenergy_j_m2\texact_energy_j_m2\tenergy_relative_error\tenergy_relative_change_from_finest",
+        convergence_observations.map(|(options, observed_pressure, observed_energy)| {
+            format!(
+                "{:.17e}\t{}\t{}\t{observed_pressure:.17e}\t{exact_pressure:.17e}\t{:.17e}\t{:.17e}\t{observed_energy:.17e}\t{exact_energy:.17e}\t{:.17e}\t{:.17e}",
+                options.kappa_cutoff,
+                options.kappa_order,
+                options.angle_order,
+                relative_error(observed_pressure, exact_pressure),
+                relative_error(observed_pressure, finest_pressure),
+                relative_error(observed_energy, exact_energy),
+                relative_error(observed_energy, finest_energy),
+            )
+        }),
+    );
 
     let gold = get_material("gold").context("gold optical model is unavailable")?;
     let temperature = 300.0;
@@ -1144,13 +1193,14 @@ fn generate_report() -> Result<GeneratedAudit> {
         extended_drude: None,
     };
     let casimir_silica = silica_casimir_optical();
-    let (multilayer, physical_inference, controls, tables) =
+    let (multilayer, physical_inference, controls, mut tables) =
         generate_extended_reports(LifshitzMaterials {
             gold: &casimir_gold,
             silica: &casimir_silica,
             alumina: &alumina.optical,
             silicon: &silicon.optical,
         })?;
+    tables.insert("planar_convergence.tsv", planar_convergence_table);
 
     Ok(GeneratedAudit {
         report: AuditReport {

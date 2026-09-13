@@ -22,6 +22,35 @@ use super::{C, HBAR, casimir_force_pfa};
 
 const DIMENSIONLESS_KAPPA_CUTOFF: f64 = 24.0;
 
+/// Numerical domain and Gauss-Legendre orders for the zero-temperature
+/// dimensionless polar quadrature.
+#[derive(Debug, Clone, Copy, PartialEq)]
+pub struct LifshitzQuadratureOptions {
+    /// Upper limit for q = kappa * gap.
+    pub kappa_cutoff: f64,
+    /// Gauss-Legendre order along q.
+    pub kappa_order: usize,
+    /// Gauss-Legendre order along mu = xi / (c * kappa).
+    pub angle_order: usize,
+}
+
+impl LifshitzQuadratureOptions {
+    /// Construct an explicit quadrature configuration.
+    pub const fn new(kappa_cutoff: f64, kappa_order: usize, angle_order: usize) -> Self {
+        Self {
+            kappa_cutoff,
+            kappa_order,
+            angle_order,
+        }
+    }
+}
+
+impl Default for LifshitzQuadratureOptions {
+    fn default() -> Self {
+        Self::new(DIMENSIONLESS_KAPPA_CUTOFF, 32, 32)
+    }
+}
+
 /// Dielectric model for computing optical response at imaginary frequency.
 ///
 /// The dielectric function at imaginary frequency \epsilon(i\xi) is always real and
@@ -223,21 +252,24 @@ fn lifshitz_dimensionless_integrals(
     gap: f64,
     eps1: &DielectricModel,
     eps2: &DielectricModel,
-    kappa_order: usize,
-    angle_order: usize,
+    options: LifshitzQuadratureOptions,
 ) -> (f64, f64) {
     assert!(
         gap.is_finite() && gap > 0.0,
         "gap must be finite and positive"
     );
-    let kappa_quadrature = GaussLegendre::new(
-        NonZeroUsize::new(kappa_order).expect("kappa quadrature order must be non-zero"),
+    assert!(
+        options.kappa_cutoff.is_finite() && options.kappa_cutoff > 0.0,
+        "kappa cutoff must be finite and positive"
     );
+    let kappa_quadrature = GaussLegendre::new(NonZeroUsize::new(options.kappa_order).expect(
+        "kappa quadrature order must be non-zero",
+    ));
     let angle_quadrature = GaussLegendre::new(
-        NonZeroUsize::new(angle_order).expect("angle quadrature order must be non-zero"),
+        NonZeroUsize::new(options.angle_order).expect("angle quadrature order must be non-zero"),
     );
 
-    let pressure_integral = kappa_quadrature.integrate(0.0, DIMENSIONLESS_KAPPA_CUTOFF, |q| {
+    let pressure_integral = kappa_quadrature.integrate(0.0, options.kappa_cutoff, |q| {
         angle_quadrature.integrate(0.0, 1.0, |mu| {
             let xi = C * q * mu / gap;
             let k_parallel = q * (1.0 - mu * mu).sqrt() / gap;
@@ -253,7 +285,7 @@ fn lifshitz_dimensionless_integrals(
         })
     });
 
-    let energy_integral = kappa_quadrature.integrate(0.0, DIMENSIONLESS_KAPPA_CUTOFF, |q| {
+    let energy_integral = kappa_quadrature.integrate(0.0, options.kappa_cutoff, |q| {
         angle_quadrature.integrate(0.0, 1.0, |mu| {
             let xi = C * q * mu / gap;
             let k_parallel = q * (1.0 - mu * mu).sqrt() / gap;
@@ -292,7 +324,22 @@ pub fn lifshitz_pressure_plates(
     n_xi: usize,
     n_k: usize,
 ) -> f64 {
-    let (pressure_integral, _) = lifshitz_dimensionless_integrals(gap, eps1, eps2, n_xi, n_k);
+    lifshitz_pressure_plates_with_options(
+        gap,
+        eps1,
+        eps2,
+        LifshitzQuadratureOptions::new(DIMENSIONLESS_KAPPA_CUTOFF, n_xi, n_k),
+    )
+}
+
+/// Lifshitz pressure with an explicit dimensionless integration domain.
+pub fn lifshitz_pressure_plates_with_options(
+    gap: f64,
+    eps1: &DielectricModel,
+    eps2: &DielectricModel,
+    options: LifshitzQuadratureOptions,
+) -> f64 {
+    let (pressure_integral, _) = lifshitz_dimensionless_integrals(gap, eps1, eps2, options);
     -HBAR * C * pressure_integral / (2.0 * PI * PI * gap.powi(4))
 }
 
@@ -308,8 +355,22 @@ pub fn lifshitz_energy_plates(
     kappa_order: usize,
     angle_order: usize,
 ) -> f64 {
-    let (_, energy_integral) =
-        lifshitz_dimensionless_integrals(gap, eps1, eps2, kappa_order, angle_order);
+    lifshitz_energy_plates_with_options(
+        gap,
+        eps1,
+        eps2,
+        LifshitzQuadratureOptions::new(DIMENSIONLESS_KAPPA_CUTOFF, kappa_order, angle_order),
+    )
+}
+
+/// Lifshitz energy per unit area with an explicit dimensionless integration domain.
+pub fn lifshitz_energy_plates_with_options(
+    gap: f64,
+    eps1: &DielectricModel,
+    eps2: &DielectricModel,
+    options: LifshitzQuadratureOptions,
+) -> f64 {
+    let (_, energy_integral) = lifshitz_dimensionless_integrals(gap, eps1, eps2, options);
     HBAR * C * energy_integral / (4.0 * PI * PI * gap.powi(3))
 }
 
