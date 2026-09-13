@@ -675,8 +675,8 @@ mod tests {
 
     #[test]
     fn bounded_profile_rejects_an_overflowed_distance() {
-        let target = DVector::from_vec(vec![1e308, 1e308]);
-        let nuisance = DMatrix::from_column_slice(2, 1, &[1e308, 1e308]);
+        let target = DVector::from_vec(vec![1.3e308, 1.3e308]);
+        let nuisance = DMatrix::from_column_slice(2, 1, &[1.3e308, 1.3e308]);
         let bounds = vec![NuisanceBound {
             lower: 0.0,
             upper: 0.0,
@@ -687,6 +687,20 @@ mod tests {
             bounded_profile_distance(&target, &nuisance, &bounds),
             Err(DiscriminationError::NumericalFailure)
         );
+    }
+
+    #[test]
+    fn bounded_profile_recovers_a_near_limit_finite_distance() {
+        let target = DVector::from_vec(vec![1e308, 1e308]);
+        let nuisance = DMatrix::from_column_slice(2, 1, &[1e308, 1e308]);
+        let bounds = vec![NuisanceBound {
+            lower: 0.0,
+            upper: 0.0,
+            unit: "Pa".to_owned(),
+        }];
+
+        let result = bounded_profile_distance(&target, &nuisance, &bounds).unwrap();
+        assert_relative_eq!(result.distance / 1e308, 2.0_f64.sqrt(), epsilon = 1e-12);
     }
 
     #[test]

@@ -134,21 +134,21 @@ verification = "Hosted stats_core tests reject overflow for covariance one and s
 
 [[task]]
 id = "review-retained-source-exact-denominator"
-status = "implemented_pending_ci"
+status = "complete"
 finding = "The native audit accepted any nonempty subset of the twelve load-bearing retained sources."
 required_change = "Compile and compare the exact source-ID and repository-path denominator before hashing source bytes."
 verification = "Hosted native-audit tests reject replacement of any expected source identity."
 
 [[task]]
 id = "review-retained-source-symlink-boundary"
-status = "implemented_pending_ci"
+status = "complete"
 finding = "Lexically safe retained-source paths could traverse symbolic links and hash bytes outside the repository retention boundary."
 required_change = "Inspect every repository-relative path component with symlink metadata and reject symbolic links before reading bytes."
 verification = "Hosted Unix native-audit tests reject a retained path whose final component is a symbolic link."
 
 [[task]]
 id = "review-frontier-verifier-ci-execution"
-status = "implemented_pending_ci"
+status = "complete"
 finding = "The finite-frontier verifier existed but the routed hosted Casimir audit leaf did not execute it."
 required_change = "Run verify-finite-frontier in the same routed fail-slow CI leaf as native output freshness and pin the command in the validation-resource contract."
 verification = "Hosted validation-policy and routed Casimir audit jobs execute the exact frontier partition verifier."
@@ -162,7 +162,7 @@ verification = "The four companion workflows passed. Scientific replay, docs-gat
 
 [[task]]
 id = "frontier-contract-source-boundary"
-status = "implemented_pending_ci"
+status = "complete"
 finding = "The policy verifier searched ci.yml for the finite-frontier command even though the command belongs to the routed Make target."
 required_change = "Search workflow contracts in ci.yml and inspect the bounded frontier-check Make recipe separately for its verifier and canonical-plan arguments."
 verification = "Hosted validation-policy passes both source-specific contract checks."
@@ -172,39 +172,39 @@ id = "fixed-nuisance-profile-distance"
 status = "implemented_pending_ci"
 finding = "Clarabel rejected an exact zero-width nuisance box before the overflow-safe distance calculation could classify the finite residual."
 required_change = "Evaluate an all-fixed nuisance box directly at its unique parameter vector and classify every coordinate as active at both bounds."
-verification = "Hosted stats_core tests return sqrt(2)*1e200 for a fixed zero nuisance parameter and reject an unrepresentable sqrt(2)*1e308 distance."
+verification = "Hosted stats_core tests must return the finite sqrt(2)*1e308 distance for a fixed zero nuisance parameter and reject the overflowing sqrt(2)*1.3e308 distance."
 
 [[task]]
 id = "calibration-fixture-mechanical-edit-repair"
-status = "implemented_pending_ci"
+status = "complete"
 finding = "A broad replacement accidentally changed the established independent-calibration fixture from a unit nuisance column to a 1e308 column."
 required_change = "Restore the original unit nuisance fixture while retaining dedicated extreme-scale tests in their own cases."
 verification = "Hosted stats_core independent_calibration_increases_information passes unchanged semantics."
 
 [[task]]
 id = "account-hosted-runner-admission-rca"
-status = "diagnosed_external_pending_replay"
+status = "complete"
 finding = "At exact head a0fcf3a0, four workflows remained queued with zero jobs and the byte-identical proofs workflow ended startup_failure with zero jobs. An exhaustive scan of 548 active owned repositories found zero live hosted jobs outside these records. The public repository uses free standard runners, the Pro account permits 40 concurrent standard jobs, repository Actions are enabled, and September billing reports zero net Actions charges."
 required_change = "Treat the five-run split as pre-job scheduler admission failure rather than source validation, and replay through one repository-controlled event root."
 verification = "The next exact-head ci run creates jobs and reaches a terminal denominator; any repeated zero-job startup failure is escalated with run, check-suite, account-scan, and billing evidence."
 
 [[task]]
 id = "single-ci-event-admission-root"
-status = "implemented_pending_ci"
+status = "complete"
 finding = "One broad pull request independently created benchmark, ci, paper, proofs, and unsafe-survey workflow runs. The reachable job frontier can exceed the account's 40-job concurrency even though each runner correctly uses all process-visible CPUs."
 required_change = "Make ci.yml the sole pull-request and main-push event root, route component paths once, and invoke benchmark, proof, paper, and unsafe-survey evidence through reusable workflows. Preserve manual component dispatch and the monthly unsafe schedule."
 verification = "Hosted actionlint and validation-resource-contract pass; one exact-head pull-request workflow contains each selected component job and the aggregate verdict accounts for selected and skipped components."
 
 [[task]]
 id = "retired-local-validation-target-removal"
-status = "implemented_pending_ci"
+status = "complete"
 finding = "Retired local Make targets remained callable refusal stubs and preserved obsolete orchestration names in the active Make graph."
 required_change = "Remove every local, pre-push, and local-scoped compatibility target and retain a CI policy check that rejects their reintroduction."
 verification = "Hosted validation-resource-contract proves every retired name is unresolved, hook executors remain absent, and CI-only targets reject a non-GitHub execution boundary."
 
 [[task]]
 id = "local-command-worker-limit-removal"
-status = "implemented_pending_ci"
+status = "complete"
 finding = "The shared Cargo environment injected one worker into local mutation and generator commands even though repository validation was closed locally."
 required_change = "Leave Cargo, Rayon, and Rust test worker variables unset outside an admitted GitHub job; preserve exact process-visible CPU propagation inside hosted jobs."
 verification = "Hosted validation-resource-contract observes workers=automatic outside GitHub Actions and the exact supplied worker count inside the trusted boundary."
@@ -218,7 +218,7 @@ verification = "DELETE accepted runs 25907145181, 25907085641, 26596485186, and 
 
 [[task]]
 id = "single-root-replacement-generation"
-status = "pending_publication"
+status = "complete"
 finding = "The a0fcf3a0 generation cannot validate source because GitHub admitted zero jobs."
 required_change = "Publish one consolidated CI admission repair after static source review and do not supersede its generation."
-verification = "The exact replacement head completes one fail-slow CI denominator with hosted source, workflow, Rust, proof, paper, benchmark, unsafe-survey, documentation, and scientific-replay outcomes."
+verification = "Run 34769957057 at exact head 67af5dfa completed 52 jobs without cancellation: 49 passed, one Rust leaf exposed the incorrect overflow fixture, the aggregate failed by construction, and one deployment job skipped by admission policy."
