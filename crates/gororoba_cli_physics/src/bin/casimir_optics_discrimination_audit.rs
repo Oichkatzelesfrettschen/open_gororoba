@@ -6,6 +6,7 @@ use std::{
 };
 
 use anyhow::{Context, Result, anyhow, ensure};
+use chrono::NaiveDate;
 use clap::Parser;
 use materials_core::{
     E_CHARGE, FiniteTemperatureOptions, HalfSpace, HighFrequencyCompletion, K_B_EV, Layer,
@@ -204,6 +205,7 @@ const SOURCE_MODEL_INPUTS: [SourceModelInput; 24] = [
 #[derive(Debug, Deserialize)]
 struct SourceRetrievalManifest {
     schema_version: u32,
+    retrieval_date: String,
     source: Vec<RetainedSource>,
 }
 
@@ -397,6 +399,26 @@ fn source_model_identity() -> String {
     format!("sha256:{}", hex_encode(&digest.finalize()))
 }
 
+fn validate_retrieval_date(retrieval_date: &str) -> Result<()> {
+    let bytes = retrieval_date.as_bytes();
+    ensure!(
+        bytes.len() == 10
+            && bytes[0..4].iter().all(u8::is_ascii_digit)
+            && bytes[4] == b'-'
+            && bytes[5..7].iter().all(u8::is_ascii_digit)
+            && bytes[7] == b'-'
+            && bytes[8..10].iter().all(u8::is_ascii_digit)
+            && &bytes[0..4] != b"0000",
+        "source-retrieval manifest retrieval_date must use YYYY-MM-DD with a nonzero year"
+    );
+    NaiveDate::parse_from_str(retrieval_date, "%Y-%m-%d").with_context(|| {
+        format!(
+            "source-retrieval manifest retrieval_date {retrieval_date:?} is not a valid calendar date"
+        )
+    })?;
+    Ok(())
+}
+
 fn verify_source_retrieval_manifest_source(source: &str, repository_root: &Path) -> Result<()> {
     let manifest: SourceRetrievalManifest =
         toml::from_str(source).context("parsing retained source-retrieval manifest")?;
@@ -405,6 +427,7 @@ fn verify_source_retrieval_manifest_source(source: &str, repository_root: &Path)
         "unexpected source-retrieval manifest schema version {}",
         manifest.schema_version
     );
+    validate_retrieval_date(&manifest.retrieval_date)?;
     let mut source_ids = BTreeSet::new();
     let mut source_paths = BTreeSet::new();
     for retained_source in &manifest.source {
@@ -1783,6 +1806,17 @@ fn main() -> Result<()> {
 mod tests {
     use super::*;
 
+    fn retained_source_manifest_fixture() -> (PathBuf, String, String) {
+        let repository_root = repo_root::resolve!();
+        let manifest_path = repository_root
+            .join(DEFAULT_OUTPUT_DIRECTORY)
+            .join(SOURCE_RETRIEVAL_MANIFEST);
+        let manifest_source = fs::read_to_string(manifest_path).unwrap();
+        let manifest: SourceRetrievalManifest = toml::from_str(&manifest_source).unwrap();
+        let date_declaration = format!("retrieval_date = \"{}\"", manifest.retrieval_date);
+        (repository_root, manifest_source, date_declaration)
+    }
+
     #[test]
     fn native_audit_satisfies_every_output_contract() {
         let report = generate_report().unwrap();
@@ -1908,6 +1942,63 @@ mod tests {
         let error = verify_source_retrieval_manifest_source(&stale_manifest, &repository_root)
             .unwrap_err();
         assert!(error.to_string().contains("SHA-256 mismatch"));
+    }
+
+    #[test]
+    fn retained_source_manifest_rejects_deleted_retrieval_date() {
+        let (repository_root, manifest_source, date_declaration) =
+            retained_source_manifest_fixture();
+        let missing_date_manifest = manifest_source.replacen(&date_declaration, "", 1);
+        assert_ne!(missing_date_manifest, manifest_source);
+
+        let error =
+            verify_source_retrieval_manifest_source(&missing_date_manifest, &repository_root)
+                .unwrap_err();
+        assert!(format!("{error:#}").contains("missing field `retrieval_date`"));
+    }
+
+    #[test]
+    fn retained_source_manifest_rejects_blank_retrieval_date() {
+        let (repository_root, manifest_source, date_declaration) =
+            retained_source_manifest_fixture();
+        let blank_date_manifest =
+            manifest_source.replacen(&date_declaration, "retrieval_date = \"\"", 1);
+        assert_ne!(blank_date_manifest, manifest_source);
+
+        let error = verify_source_retrieval_manifest_source(&blank_date_manifest, &repository_root)
+            .unwrap_err();
+        assert!(error.to_string().contains("must use YYYY-MM-DD"));
+    }
+
+    #[test]
+    fn retained_source_manifest_rejects_malformed_retrieval_date() {
+        let (repository_root, manifest_source, date_declaration) =
+            retained_source_manifest_fixture();
+        let malformed_date_manifest =
+            manifest_source.replacen(&date_declaration, "retrieval_date = \"2026-9-12\"", 1);
+        assert_ne!(malformed_date_manifest, manifest_source);
+
+        let error =
+            verify_source_retrieval_manifest_source(&malformed_date_manifest, &repository_root)
+                .unwrap_err();
+        assert!(error.to_string().contains("must use YYYY-MM-DD"));
+    }
+
+    #[test]
+    fn retained_source_manifest_rejects_impossible_retrieval_date() {
+        let (repository_root, manifest_source, date_declaration) =
+            retained_source_manifest_fixture();
+        let impossible_date_manifest = manifest_source.replacen(
+            &date_declaration,
+            "retrieval_date = \"2026-02-30\"",
+            1,
+        );
+        assert_ne!(impossible_date_manifest, manifest_source);
+
+        let error =
+            verify_source_retrieval_manifest_source(&impossible_date_manifest, &repository_root)
+                .unwrap_err();
+        assert!(error.to_string().contains("is not a valid calendar date"));
     }
 
     #[test]

@@ -428,7 +428,49 @@ verification = "The replacement matrix contains separate gororoba_cli_data libra
 
 [[task]]
 id = "cd-papers-rustdoc-reexport-inlining"
+status = "complete"
+finding = "Run 34777625713 restored a successful documentation cache and spent 20 minutes 4 seconds in cd_papers. Adding #[doc(no_inline)] preserved the public re-exports but run 34779748262 then spent 28 minutes 2 seconds in the same rustdoc unit. Output duplication did not explain the hosted timing."
+required_change = "Remove the ineffective attributes and retain the failed hosted measurement as the falsifier for re-export inlining as a performance repair."
+verification = "Run 34779748262 was force-canceled after every other job terminated and cargo doc exceeded 33 minutes; the sealed log places the 28-minute critical interval in cd_papers."
+
+[[task]]
+id = "exact-head-022b5308-compile-and-policy-denominator"
+status = "complete"
+finding = "Run 34779748262 detected E0425 because xtask used BTreeSet without importing it. The policy lane also expanded $GITHUB_ENV inside a double-quoted expected literal, searched for the runner's temporary environment-file path in ci.yml, and therefore rejected the present DIFF_BASE initialization."
+required_change = "Import BTreeSet and replace the expansion-prone literal check with a structural check that conservative full=true initialization precedes fallible worker and comparison-base discovery."
+verification = "Run 34779748262 ended canceled after every non-docs job terminated. It exposed the policy quoting defect, the missing import through four independent build surfaces, and the ineffective 28-minute cd_papers rustdoc interval."
+
+[[task]]
+id = "cd-papers-reexport-facade-rustdoc-exclusion"
 status = "implemented_pending_ci"
-finding = "Run 34777625713 restored a successful documentation cache and still spent 27 minutes 50 seconds in docs-freshness. Rustdoc started cd_papers at 19:30:26 and did not release the dependent queue until 19:50:31. The retained site contains duplicated cd_papers::prelude pages for cross-crate re-exports."
-required_change = "Apply rustdoc's official #[doc(no_inline)] attribute to cd_papers prelude and crate re-exports so the meta-crate links to owning documentation instead of reconstructing imported item pages; clear inherited Make jobserver variables before Cargo while preserving CARGO_BUILD_JOBS=available_parallelism."
-verification = "Hosted docs-gate keeps all re-exports visible, reports four workers without a stale jobserver warning, and materially reduces the interval from Documenting cd_papers to the next rustdoc unit."
+finding = "cd_papers owns no implementation API: its public module contains only item and crate re-exports, while the owning crates already receive canonical rustdoc. Hosted runs spent 20 to 28 minutes documenting this facade before releasing the remaining rustdoc queue."
+required_change = "Exclude cd_papers from workspace rustdoc while retaining its source guidance, compile/test coverage, and canonical documentation for every owning crate."
+verification = "Hosted docs-gate reports four workers, omits Documenting cd_papers, completes the full owning-crate rustdoc and mdBook freshness surfaces, and materially reduces wall time."
+
+[[task]]
+id = "target-sharded-example-test-coverage"
+status = "implemented_pending_ci"
+finding = "Target-sharded packages removed the broad --lib --tests selector but omitted example test targets; gororoba_cli_data therefore omitted the 11 tests in examples/enso_local_outlook.rs."
+required_change = "Inventory automatic and explicit example targets with required features, emit one named example row per package, verify exact library/test/example/binary coverage, and admit --example through the guarded CI target parser."
+verification = "Hosted xtask tests prove automatic file, directory, explicit, and required-feature example coverage; the gororoba_cli_data example row executes in the Rust matrix."
+
+[[task]]
+id = "lattice-replay-hydration-only-selection"
+status = "implemented_pending_ci"
+finding = "The broad cd_external::tests:: ignored-test filter also selected the unrelated 128D full invariant-suite characterization."
+required_change = "Execute exactly the 22 tests marked as requiring the hydrated scientific payload archive, aggregate their failures, and reject both broad module selection and the heavy non-hydration test in CI policy."
+verification = "Hosted lattice replay runs all 22 named hydration-backed tests, reports every failure before exit, and excludes test_thesis_e_xor_involution_invariants_128d."
+
+[[task]]
+id = "scientific-replay-repo-root-routing"
+status = "implemented_pending_ci"
+finding = "Every replay resolves retained inputs through repo_root, but repo_root changes did not route any replay leaf."
+required_change = "Add repo_root to the scientific replay common dependency pattern so each replay leaf runs after path-resolution changes."
+verification = "Hosted routing tests select lattice, NuFIT, and box-counting replay leaves for a repo_root source change."
+
+[[task]]
+id = "retained-source-retrieval-date-validation"
+status = "implemented_pending_ci"
+finding = "The retained source manifest declared retrieval_date, but deserialization ignored that field and accepted deletion, blank values, malformed forms, and impossible calendar dates."
+required_change = "Require a strict nonzero-year YYYY-MM-DD calendar date and add mutation tests for missing, blank, malformed, and impossible values."
+verification = "Hosted Casimir audit tests accept the retained date and reject every date mutation; refreshed source hashes and path-repair evidence bind the changed producer."

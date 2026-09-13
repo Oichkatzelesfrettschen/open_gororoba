@@ -643,7 +643,7 @@ jobs:
             fi
             git cat-file -e "$comparison_base^{commit}"
             git diff --no-renames --name-only "$comparison_base" HEAD > "$RUNNER_TEMP/scientific-replay-changed-paths.txt"
-            common_pattern='^(Cargo\.(toml|lock)|rust-toolchain\.toml|Makefile|\.github/workflows/ci\.yml|data/retention/scientific-payloads\.json|crates/(provenance_store|gororoba_cli_provenance)/)'
+            common_pattern='^(Cargo\.(toml|lock)|rust-toolchain\.toml|Makefile|\.github/workflows/ci\.yml|data/retention/scientific-payloads\.json|crates/(provenance_store|gororoba_cli_provenance|repo_root)/)'
             if grep -Eq "$common_pattern" "$RUNNER_TEMP/scientific-replay-changed-paths.txt"; then
               run_lattice=true
               run_nufit=true
@@ -853,7 +853,37 @@ jobs:
           set -o pipefail
           case '${{ matrix.lane }}' in
             lattice)
-              cargo test --locked --profile validation --no-fail-fast -p algebra_experimental --lib 'cd_external::tests::' -- --ignored --nocapture
+              hydration_backed_tests=(
+                cd_external::tests::test_thesis_a_codebook_parity_256d
+                cd_external::tests::test_thesis_a_codebook_parity_512d
+                cd_external::tests::test_thesis_a_codebook_parity_1024d
+                cd_external::tests::test_thesis_a_codebook_parity_2048d
+                cd_external::tests::test_thesis_b_filtration_nesting
+                cd_external::tests::test_thesis_c_2048_to_1024_prefix_cut
+                cd_external::tests::test_thesis_c_1024_to_512_prefix_cut
+                cd_external::tests::test_thesis_c_512_to_256_prefix_cut
+                cd_external::tests::test_thesis_c_full_filtration_cuts
+                cd_external::tests::test_base_universe_size_and_exclusion_count
+                cd_external::tests::test_lambda_32_as_predicate_cut_of_256
+                cd_external::tests::test_lambda_256_csv_vs_predicates
+                cd_external::tests::test_thesis_d_scalar_shadow_basic
+                cd_external::tests::test_thesis_d_scalar_shadow_addition_mode
+                cd_external::tests::test_dictionary_coupling_sample_256d
+                cd_external::tests::test_c452_c453_lattice_header_schema_stability
+                cd_external::tests::test_c452_c453_embedding_is_injective_and_roundtrip
+                cd_external::tests::test_c452_c453_codomain_and_index_coverage_all_dims
+                cd_external::tests::test_c453_filtration_growth_has_expected_new_points
+                cd_external::tests::test_c453_filtration_layers_are_disjoint_and_partition_2048
+                cd_external::tests::test_c453_filtration_intersection_cardinalities_are_exact
+                cd_external::tests::test_c453_filtration_is_lexicographic_prefix_chain
+              )
+              lattice_status=0
+              for hydration_backed_test in "${hydration_backed_tests[@]}"; do
+                cargo test --locked --profile validation --no-fail-fast \
+                  -p algebra_experimental --lib "$hydration_backed_test" -- \
+                  --ignored --exact --nocapture || lattice_status=1
+              done
+              exit "$lattice_status"
               ;;
             nufit)
               cargo test --locked --profile validation --no-fail-fast -p algebra_experimental --test nufit_reference_identity fixed_angle_reference_membership_and_pdf_receipts_agree -- --ignored --exact --nocapture

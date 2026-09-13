@@ -118,18 +118,36 @@ fn workspace_scope_partitions_into_one_exact_package_set() {
 }
 
 #[test]
-fn target_shards_cover_every_declared_binary_exactly_once() {
+fn target_shards_cover_every_declared_target_exactly_once() {
     let temp = tempfile::tempdir().unwrap();
     write_workspace(temp.path(), &[("crates/physics", "physics")]);
     std::fs::create_dir_all(temp.path().join("crates/physics/tests")).unwrap();
+    std::fs::create_dir_all(temp.path().join("crates/physics/examples/directory_example"))
+        .unwrap();
     std::fs::write(
         temp.path().join("crates/physics/tests/automatic_test.rs"),
         "",
     )
     .unwrap();
     std::fs::write(
+        temp.path().join("crates/physics/examples/automatic_example.rs"),
+        "",
+    )
+    .unwrap();
+    std::fs::write(
+        temp.path().join("crates/physics/examples/feature-example.rs"),
+        "",
+    )
+    .unwrap();
+    std::fs::write(
+        temp.path()
+            .join("crates/physics/examples/directory_example/main.rs"),
+        "",
+    )
+    .unwrap();
+    std::fs::write(
         temp.path().join("crates/physics/Cargo.toml"),
-        "[package]\nname = \"physics\"\nversion = \"0.1.0\"\n\n[[bin]]\nname = \"alpha-bin\"\npath = \"src/bin/alpha.rs\"\n\n[[bin]]\nname = \"beta-bin\"\npath = \"src/bin/beta.rs\"\nrequired-features = [\"gpu\"]\n\n[[bin]]\nname = \"gamma-bin\"\npath = \"src/bin/gamma.rs\"\n\n[[test]]\nname = \"feature-test\"\npath = \"tests/feature.rs\"\nrequired-features = [\"payload\"]\n",
+        "[package]\nname = \"physics\"\nversion = \"0.1.0\"\n\n[[bin]]\nname = \"alpha-bin\"\npath = \"src/bin/alpha.rs\"\n\n[[bin]]\nname = \"beta-bin\"\npath = \"src/bin/beta.rs\"\nrequired-features = [\"gpu\"]\n\n[[bin]]\nname = \"gamma-bin\"\npath = \"src/bin/gamma.rs\"\n\n[[test]]\nname = \"feature-test\"\npath = \"tests/feature.rs\"\nrequired-features = [\"payload\"]\n\n[[example]]\nname = \"feature-example\"\npath = \"examples/feature-example.rs\"\nrequired-features = [\"visualization\", \"gpu\"]\n",
     )
     .unwrap();
     let output = run_target_sharder(temp.path(), &["physics"]);
@@ -144,8 +162,11 @@ fn target_shards_cover_every_declared_binary_exactly_once() {
     let mut library_shards = 0;
     let mut gpu_shards = 0;
     let mut observed_tests = BTreeSet::new();
+    let mut observed_examples = BTreeSet::new();
+    let mut example_rows = 0;
     for entry in entries {
         let target_args = entry["cargo_target_args"].as_str().unwrap();
+        assert_ne!(target_args, "--lib --tests");
         if target_args == "--lib" {
             library_shards += 1;
         } else if target_args.starts_with("--test ") {
@@ -162,6 +183,14 @@ fn target_shards_cover_every_declared_binary_exactly_once() {
                     }
                 );
                 assert!(observed_tests.insert(pair[1].to_string()));
+            }
+        } else if target_args.starts_with("--example ") {
+            example_rows += 1;
+            assert_eq!(entry["cargo_features"], "gpu,visualization");
+            let tokens: Vec<&str> = target_args.split_whitespace().collect();
+            for pair in tokens.chunks_exact(2) {
+                assert_eq!(pair[0], "--example");
+                assert!(observed_examples.insert(pair[1].to_string()));
             }
         } else if target_args.starts_with("--bin ") {
             let features = entry["cargo_features"].as_str().unwrap();
@@ -180,9 +209,17 @@ fn target_shards_cover_every_declared_binary_exactly_once() {
     }
     assert_eq!(library_shards, 1);
     assert_eq!(gpu_shards, 1);
+    assert_eq!(example_rows, 1);
     assert_eq!(
         observed_tests,
         ["automatic_test", "feature-test"]
+            .into_iter()
+            .map(str::to_string)
+            .collect()
+    );
+    assert_eq!(
+        observed_examples,
+        ["automatic_example", "directory_example", "feature-example"]
             .into_iter()
             .map(str::to_string)
             .collect()
@@ -281,6 +318,7 @@ fn repository_cli_target_shards_isolate_declared_integration_tests() {
     let mut data_tests = BTreeSet::new();
     let mut physics_tests = BTreeSet::new();
     let mut library_rows = BTreeSet::new();
+    let mut example_rows = BTreeSet::new();
     for entry in entries {
         if entry["target"] == "clippy" {
             continue;
@@ -292,6 +330,12 @@ fn repository_cli_target_shards_isolate_declared_integration_tests() {
         assert_ne!(target_args, "--lib --tests");
         if target_args == "--lib" {
             assert!(library_rows.insert(package_name.to_string()));
+            continue;
+        }
+        if target_args.starts_with("--example ") {
+            assert!(example_rows.insert(package_name.to_string()));
+            let example_tokens = target_args.split_whitespace().collect::<Vec<_>>();
+            assert_eq!(example_tokens, ["--example", "enso_local_outlook"]);
             continue;
         }
         if !target_args.starts_with("--test ") {
@@ -313,6 +357,13 @@ fn repository_cli_target_shards_isolate_declared_integration_tests() {
     assert_eq!(
         library_rows,
         ["gororoba_cli_data", "gororoba_cli_physics"]
+            .into_iter()
+            .map(str::to_string)
+            .collect()
+    );
+    assert_eq!(
+        example_rows,
+        ["gororoba_cli_data"]
             .into_iter()
             .map(str::to_string)
             .collect()

@@ -6,7 +6,7 @@ use provenance_store::ProvenanceStore;
 use rusqlite::Connection;
 use serde::{Deserialize, Serialize};
 use std::{
-    collections::BTreeMap,
+    collections::{BTreeMap, BTreeSet},
     env, fs,
     path::{Path, PathBuf},
     process::Command,
@@ -801,6 +801,8 @@ struct ShardPackageManifest {
     binaries: Vec<ShardTarget>,
     #[serde(default, rename = "test")]
     tests: Vec<ShardTarget>,
+    #[serde(default, rename = "example")]
+    examples: Vec<ShardTarget>,
 }
 
 #[derive(Debug, Deserialize)]
@@ -808,6 +810,8 @@ struct ShardPackage {
     name: String,
     #[serde(default = "default_true")]
     autotests: bool,
+    #[serde(default = "default_true")]
+    autoexamples: bool,
 }
 
 #[derive(Debug, Clone, Deserialize, PartialEq, Eq)]
@@ -821,6 +825,7 @@ struct ShardTarget {
 struct ShardPackageInventory {
     binaries: Vec<ShardTarget>,
     tests: Vec<ShardTarget>,
+    examples: Vec<ShardTarget>,
 }
 
 // Cargo builds a package's binary targets when it selects an integration test
@@ -879,27 +884,36 @@ fn normalize_shard_targets(
     Ok(())
 }
 
-fn discover_automatic_tests(
+fn discover_automatic_targets(
     member_root: &Path,
-    explicit_tests: &[ShardTarget],
+    directory_name: &str,
+    target_kind: &str,
+    explicit_targets: &[ShardTarget],
 ) -> Result<Vec<ShardTarget>> {
-    let tests_root = member_root.join("tests");
-    if !tests_root.is_dir() {
+    let targets_root = member_root.join(directory_name);
+    if !targets_root.is_dir() {
         return Ok(Vec::new());
     }
-    let explicit_names: BTreeSet<&str> = explicit_tests
+    let explicit_names: BTreeSet<&str> = explicit_targets
         .iter()
         .map(|target| target.name.as_str())
         .collect();
-    let mut tests = Vec::new();
-    for entry in fs::read_dir(&tests_root)
-        .with_context(|| format!("read automatic test targets in {}", tests_root.display()))?
+    let mut targets = Vec::new();
+    for entry in fs::read_dir(&targets_root).with_context(|| {
+        format!(
+            "read automatic {target_kind} targets in {}",
+            targets_root.display()
+        )
+    })?
     {
         let entry = entry.with_context(|| {
-            format!("read automatic test target entry in {}", tests_root.display())
+            format!(
+                "read automatic {target_kind} target entry in {}",
+                targets_root.display()
+            )
         })?;
         let path = entry.path();
-        let test_name =
+        let target_name =
             if path.is_file() && path.extension().is_some_and(|extension| extension == "rs") {
                 path.file_stem()
             } else if path.is_dir() && path.join("main.rs").is_file() {
@@ -907,20 +921,23 @@ fn discover_automatic_tests(
             } else {
                 None
             };
-        let Some(test_name) = test_name else {
+        let Some(target_name) = target_name else {
             continue;
         };
-        let test_name = test_name.to_str().with_context(|| {
-            format!("automatic test target name is not UTF-8: {}", path.display())
+        let target_name = target_name.to_str().with_context(|| {
+            format!(
+                "automatic {target_kind} target name is not UTF-8: {}",
+                path.display()
+            )
         })?;
-        if !explicit_names.contains(test_name) {
-            tests.push(ShardTarget {
-                name: test_name.to_string(),
+        if !explicit_names.contains(target_name) {
+            targets.push(ShardTarget {
+                name: target_name.to_string(),
                 required_features: Vec::new(),
             });
         }
     }
-    Ok(tests)
+    Ok(targets)
 }
 
 fn workspace_package_inventory(
@@ -953,18 +970,37 @@ fn workspace_package_inventory(
         let package_name = member_manifest.package.name;
         let mut binaries = member_manifest.binaries;
         let mut tests = member_manifest.tests;
+        let mut examples = member_manifest.examples;
         normalize_shard_targets(&package_name, "binary", &mut binaries)?;
         normalize_shard_targets(&package_name, "test", &mut tests)?;
+        normalize_shard_targets(&package_name, "example", &mut examples)?;
         if member_manifest.package.autotests {
-            tests.extend(discover_automatic_tests(
+            tests.extend(discover_automatic_targets(
                 member_manifest_path
                     .parent()
                     .context("member manifest has no parent directory")?,
+                "tests",
+                "test",
                 &tests,
             )?);
             normalize_shard_targets(&package_name, "test", &mut tests)?;
         }
-        let inventory = ShardPackageInventory { binaries, tests };
+        if member_manifest.package.autoexamples {
+            examples.extend(discover_automatic_targets(
+                member_manifest_path
+                    .parent()
+                    .context("member manifest has no parent directory")?,
+                "examples",
+                "example",
+                &examples,
+            )?);
+            normalize_shard_targets(&package_name, "example", &mut examples)?;
+        }
+        let inventory = ShardPackageInventory {
+            binaries,
+            tests,
+            examples,
+        };
         if packages.insert(package_name.clone(), inventory).is_some() {
             bail!(
                 "duplicate workspace package name in CI shard inventory: {}",
@@ -1065,6 +1101,37 @@ fn append_named_target_shards(
             });
         }
     }
+}
+
+fn append_example_target_shard(
+    include: &mut Vec<RustShard>,
+    package_name: &str,
+    examples: &[ShardTarget],
+) {
+    if examples.is_empty() {
+        return;
+    }
+    // Cargo features apply to the package command rather than one named target.
+    // Their exact union makes every inventoried example eligible in one row.
+    let required_features = examples
+        .iter()
+        .flat_map(|example| example.required_features.iter().cloned())
+        .collect::<BTreeSet<_>>()
+        .into_iter()
+        .collect::<Vec<_>>();
+    let cargo_target_args = examples
+        .iter()
+        .map(|example| format!("--example {}", example.name))
+        .collect::<Vec<_>>()
+        .join(" ");
+    include.push(RustShard {
+        lane: format!("{package_name}-examples"),
+        target: "light",
+        rust_scope: format!("-p {package_name}"),
+        clippy_scope: String::new(),
+        cargo_target_args,
+        cargo_features: required_features.join(","),
+    });
 }
 
 fn build_rust_shard_matrix(cli: &CiRustShardMatrixCli) -> Result<RustShardMatrix> {
@@ -1171,6 +1238,11 @@ fn build_rust_shard_matrix(cli: &CiRustShardMatrixCli) -> Result<RustShardMatrix
             &package_inventory.tests,
             INTEGRATION_TEST_SHARD_COUNT,
         );
+        append_example_target_shard(
+            &mut include,
+            target_shard_package,
+            &package_inventory.examples,
+        );
         append_named_target_shards(
             &mut include,
             target_shard_package,
@@ -1209,9 +1281,22 @@ fn build_rust_shard_matrix(cli: &CiRustShardMatrixCli) -> Result<RustShardMatrix
             .iter()
             .map(|test| (test.name.as_str(), test.required_features.clone()))
             .collect();
+        let expected_examples = package_inventory
+            .examples
+            .iter()
+            .map(|example| example.name.as_str())
+            .collect::<BTreeSet<_>>();
+        let expected_example_features = package_inventory
+            .examples
+            .iter()
+            .flat_map(|example| example.required_features.iter().cloned())
+            .collect::<BTreeSet<_>>();
         let mut emitted_binaries = BTreeMap::new();
         let mut emitted_tests = BTreeMap::new();
+        let mut emitted_examples = BTreeSet::new();
+        let mut emitted_example_features = BTreeSet::new();
         let mut library_shard_count = 0;
+        let mut example_shard_count = 0;
         for shard in include
             .iter()
             .filter(|shard| shard.rust_scope == format!("-p {target_shard_package}"))
@@ -1224,24 +1309,55 @@ fn build_rust_shard_matrix(cli: &CiRustShardMatrixCli) -> Result<RustShardMatrix
             if target_tokens.is_empty() || !target_tokens.len().is_multiple_of(2) {
                 bail!("target shard matrix emits malformed named target arguments");
             }
+            let required_features = if shard.cargo_features.is_empty() {
+                Vec::new()
+            } else {
+                shard.cargo_features.split(',').map(str::to_string).collect()
+            };
+            let target_option = target_tokens[0];
+            if !target_tokens
+                .chunks_exact(2)
+                .all(|pair| pair[0] == target_option)
+            {
+                bail!("target shard matrix mixes named target options in one row");
+            }
+            if target_option == "--example" {
+                example_shard_count += 1;
+                emitted_example_features.extend(required_features.iter().cloned());
+            }
             for pair in target_tokens.chunks_exact(2) {
-                let required_features = if shard.cargo_features.is_empty() {
-                    Vec::new()
-                } else {
-                    shard.cargo_features.split(',').map(str::to_string).collect()
-                };
-                let emitted_targets = match pair[0] {
-                    "--bin" => &mut emitted_binaries,
-                    "--test" => &mut emitted_tests,
+                match pair[0] {
+                    "--bin" => {
+                        if emitted_binaries
+                            .insert(pair[1], required_features.clone())
+                            .is_some()
+                        {
+                            bail!("target shard matrix emits a duplicate named target");
+                        }
+                    }
+                    "--test" => {
+                        if emitted_tests
+                            .insert(pair[1], required_features.clone())
+                            .is_some()
+                        {
+                            bail!("target shard matrix emits a duplicate named target");
+                        }
+                    }
+                    "--example" => {
+                        if !emitted_examples.insert(pair[1]) {
+                            bail!("target shard matrix emits a duplicate named target");
+                        }
+                    }
                     _ => bail!("target shard matrix emits an invalid named target option"),
-                };
-                if emitted_targets.insert(pair[1], required_features).is_some() {
-                    bail!("target shard matrix emits a duplicate named target");
                 }
             }
         }
+        let expected_example_shard_count = if expected_examples.is_empty() { 0 } else { 1 };
         if library_shard_count != 1
             || emitted_tests != expected_tests
+            || example_shard_count != expected_example_shard_count
+            || emitted_examples != expected_examples
+            || emitted_example_features != expected_example_features
             || emitted_binaries != expected_binaries
         {
             bail!("target shard matrix differs from the package's exact target and feature set");
