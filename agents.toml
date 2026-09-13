@@ -106,23 +106,28 @@ purpose = "Studio and app assets."
 
 [[shared.command]]
 id = "rust.build.workspace"
-cmd = "WORKER_BUDGET=$$(sh scripts/detect_worker_budget.sh) CARGO_BUILD_JOBS=$$WORKER_BUDGET cargo build --workspace"
+cmd = "cargo build --workspace"
 purpose = "full workspace build"
 
 [[shared.command]]
-id = "rust.test.workspace"
-cmd = "make rust-regression"
-purpose = "run the required Rust regression lane"
+id = "ci.validation.scoped"
+cmd = "git push origin HEAD"
+purpose = "trigger changed-owner lint and affected-consumer tests in GitHub Actions"
+
+[[shared.command]]
+id = "ci.validation.full"
+cmd = "gh workflow run ci.yml --ref <branch> -f full=true"
+purpose = "dispatch complete workspace and dependency validation in GitHub Actions"
 
 [[shared.command]]
 id = "rust.test.focused"
-cmd = "WORKER_BUDGET=$$(sh scripts/detect_worker_budget.sh) CARGO_BUILD_JOBS=$$WORKER_BUDGET RAYON_NUM_THREADS=$$WORKER_BUDGET RUST_TEST_THREADS=$$WORKER_BUDGET cargo nextest run --build-jobs $$WORKER_BUDGET --test-threads $$WORKER_BUDGET -p <crate> <filter-or-test>"
-purpose = "run a focused Rust test loop via nextest"
+cmd = "cargo nextest run -p <crate> <filter-or-test>"
+purpose = "run a focused developer diagnostic; GitHub Actions owns validation verdicts"
 
 [[shared.command]]
 id = "rust.check.focused"
-cmd = "WORKER_BUDGET=$$(sh scripts/detect_worker_budget.sh) CARGO_BUILD_JOBS=$$WORKER_BUDGET cargo check -p <crate> --all-targets"
-purpose = "fast crate-scoped compile loop for iterative edits"
+cmd = "cargo check -p <crate> --all-targets"
+purpose = "run a focused developer compile diagnostic; GitHub Actions owns validation verdicts"
 
 [[shared.command]]
 id = "rust.agents.render"
@@ -136,43 +141,8 @@ purpose = "fail if AGENTS.md has drifted from agents.toml"
 
 [[shared.command]]
 id = "rust.clippy.focused"
-cmd = "WORKER_BUDGET=$$(sh scripts/detect_worker_budget.sh) CARGO_BUILD_JOBS=$$WORKER_BUDGET cargo clippy -p <crate> --all-targets -- -D warnings"
-purpose = "fast crate-scoped lint gate with warnings-as-errors"
-
-[[shared.command]]
-id = "rust.clippy.workspace"
-cmd = "WORKER_BUDGET=$$(sh scripts/detect_worker_budget.sh) CARGO_BUILD_JOBS=$$WORKER_BUDGET cargo clippy --workspace -- -D warnings"
-purpose = "warnings-as-errors lint gate"
-
-[[shared.command]]
-id = "rust.smoke"
-cmd = "make rust-smoke"
-purpose = "dedicated fast Rust smoke lane"
-
-[[shared.command]]
-id = "rust.regression"
-cmd = "make rust-regression"
-purpose = "workspace Rust regression lane with nextest heavy-crate routing"
-
-[[shared.command]]
-id = "rust.regression.scoped"
-cmd = "make rust-regression-scoped RUST_SCOPE=\"-p <crate>\""
-purpose = "scoped Rust regression lane with nextest heavy-crate routing"
-
-[[shared.command]]
-id = "rust.heavy"
-cmd = "make heavy"
-purpose = "ignored/GPU/research-heavy Rust lane"
-
-[[shared.command]]
-id = "python.smoke"
-cmd = "make python-smoke"
-purpose = "run only smoke-marked pytest coverage"
-
-[[shared.command]]
-id = "python.regression"
-cmd = "make python-regression"
-purpose = "run only regression-marked pytest coverage"
+cmd = "cargo clippy -p <crate> --all-targets -- -D warnings"
+purpose = "run a focused developer lint diagnostic; GitHub Actions owns validation verdicts"
 
 [[shared.command]]
 id = "rust.studio.run"
@@ -231,7 +201,7 @@ purpose = "criterion benchmarks"
 
 [[shared.command]]
 id = "rust.release"
-cmd = "WORKER_BUDGET=$$(sh scripts/detect_worker_budget.sh) CARGO_BUILD_JOBS=$$WORKER_BUDGET cargo build --release --workspace"
+cmd = "cargo build --release --workspace"
 purpose = "optimized release build"
 
 [[shared.command]]
@@ -343,7 +313,7 @@ summary = "Combined outputs are compared against cosmological observables."
 
 [shared.runtime_model]
 gpu_default = "cpu_only"
-gpu_enable_cmd = "WORKER_BUDGET=$$(sh scripts/detect_worker_budget.sh) CARGO_BUILD_JOBS=$$WORKER_BUDGET cargo build --workspace --features gpu"
+gpu_enable_cmd = "cargo build --workspace --features gpu"
 gpu_note = "CUDA support is feature-gated; cudarc uses NVRTC runtime compilation."
 gpu_policy = "Use CUDA-first, Vulkan-second for pure GPU compute backends. Use strictly Pure Vulkan (via Rust kernels/SPIR-V) for all hybrid simulation-visualization tasks."
 clock_model = "two_phase"

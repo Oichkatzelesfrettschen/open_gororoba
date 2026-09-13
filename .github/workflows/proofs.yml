@@ -28,6 +28,11 @@ jobs:
 
       - uses: dtolnay/rust-toolchain@1.97.0
 
+      - name: Resolve process-visible worker count
+        run: |
+          echo "MAKE_JOBS=$(nproc)" >> "$GITHUB_ENV"
+          echo "Hosted proof validation uses $(nproc) process-visible CPUs."
+
       - name: Install opam
         run: |
           sudo apt-get update
@@ -57,19 +62,46 @@ jobs:
           key: ${{ steps.opam-cache.outputs.cache-primary-key }}
 
       - name: Compile all proofs
+        id: compile
+        continue-on-error: true
         working-directory: proofs
         run: |
           eval "$(opam env --switch=rocq-9.1.1)"
-          make all
+          make --jobs="$MAKE_JOBS" --keep-going all
 
       - name: Zero-Admitted check
+        id: admitted
+        continue-on-error: true
         working-directory: proofs
         run: |
           eval "$(opam env --switch=rocq-9.1.1)"
-          make check
+          make --jobs="$MAKE_JOBS" --keep-going check
 
       - name: Extraction golden-file diff
+        id: extraction
+        continue-on-error: true
         working-directory: proofs
         run: |
           eval "$(opam env --switch=rocq-9.1.1)"
-          make extract-check
+          make --jobs="$MAKE_JOBS" --keep-going extract-check
+
+      - name: Report collected proof failures
+        if: always()
+        env:
+          COMPILE_OUTCOME: ${{ steps.compile.outcome }}
+          ADMITTED_OUTCOME: ${{ steps.admitted.outcome }}
+          EXTRACTION_OUTCOME: ${{ steps.extraction.outcome }}
+        run: |
+          set -euo pipefail
+          failure_count=0
+          for lane in COMPILE ADMITTED EXTRACTION; do
+            outcome="${!lane}"
+            printf '%s=%s\n' "$lane" "$outcome"
+            if [ "$outcome" = failure ]; then
+              failure_count=$((failure_count + 1))
+            fi
+          done
+          if [ "$failure_count" -ne 0 ]; then
+            echo "Collected $failure_count failing proof lane(s)." >&2
+            exit 1
+          fi

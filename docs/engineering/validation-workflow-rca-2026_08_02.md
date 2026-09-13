@@ -251,10 +251,13 @@ limit, reports that count in the job log, routes lint to changed owners and
 tests to their reverse dependency closure, and includes binary test targets.
 Make uses one worker outside GitHub Actions and executes no local resource
 detector. Weekly full validation covers workspace drift.
-Clippy uses Cargo's keep-going mode, nextest disables fail-fast, and the hosted
-workflow records every applicable lane outcome before returning a combined
-failure verdict. One CI run therefore reports the complete reachable failure
-surface instead of stopping at the first independent validation error.
+Clippy uses Cargo's keep-going mode, nextest disables fail-fast, and GNU Make
+uses keep-going mode for composite validation targets. The hosted workflow
+records every applicable lane outcome before returning a combined failure
+verdict. One CI run therefore reports the complete reachable failure surface
+instead of stopping at the first independent validation error. The Rocq
+workflow applies the same collector pattern and passes every process-visible
+CPU to Make.
 Documentation builds and freshness checks share a runner; default features
 avoid requiring GPU SDKs for hosted documentation. Reports under
 `reports/validation/**` retain each executed lane.

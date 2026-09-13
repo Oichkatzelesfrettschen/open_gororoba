@@ -68,7 +68,7 @@
 .NOTPARALLEL: bootstrap-dev check smoke integrity integrity-rust validate-rust-integrity rust-smoke rust-regression rust-regression-scoped heavy cargo-deny-check validate-local validate-ci validate-ci-registry validate-ci-rust validate-repository validate-repository-fast validate-supply-chain validate-dataset-experiments pre-push-gate pre-push-gate-scoped pre-push-gate-strict governance-gate governance-gate-readonly registry-control-plane-gate-readonly registry-acceptance-gate-readonly validate-registry validation-tools
 
 # Non-Cargo mutation generators default to one worker. GitHub Actions exports
-# the typed Rust detector's bounded worker count before invoking validation.
+# every CPU visible to the validation process before invoking Cargo workloads.
 NPROC := $(shell nproc 2>/dev/null || echo 4)
 NJOBS := $(shell expr $(NPROC) \* 3 / 4)
 TRUSTED_GITHUB_ACTIONS := $(if $(and $(filter true,$(CI)),$(filter true,$(GITHUB_ACTIONS))),1,0)
@@ -298,15 +298,30 @@ validation-resource-contract:
 	    echo "ERROR: registry-integrity remains owned by the broad data CLI package." >&2; exit 1; \
 	fi; \
 	grep -Fq 'detect_worker_budget.rs' .github/workflows/ci.yml; \
+	grep -Fq 'std::thread::available_parallelism()' crates/gororoba_cli/src/bin/detect_worker_budget.rs; \
+	if grep -Eq 'GOROROBA_WORKER_TEST_CPUS|max\\(|min\\(|clamp|/ *2|checked_div' crates/gororoba_cli/src/bin/detect_worker_budget.rs; then \
+	    echo "ERROR: worker detection contains an override, divisor, or clamp." >&2; exit 1; \
+	fi; \
 	grep -Fq 'cargo clippy --keep-going' Makefile; \
 	grep -Fq 'cargo nextest run --no-fail-fast' Makefile; \
+	grep -Fq 'make --keep-going validate-ci-scoped-rust' .github/workflows/ci.yml; \
+	grep -Fq 'make --jobs="$$MAKE_JOBS" --keep-going all' .github/workflows/proofs.yml; \
+	grep -Fq 'Report collected proof failures' .github/workflows/proofs.yml; \
 	grep -Fq 'Report collected validation failures' .github/workflows/ci.yml; \
 	grep -Fq 'CI_WORKER_BUDGET' .github/workflows/ci.yml; \
 	test ! -e scripts/detect_worker_budget.sh; \
+	if grep -Fq 'scripts/detect_worker_budget.sh' agents.toml; then \
+	    echo "ERROR: agents.toml advertises the retired shell worker detector." >&2; exit 1; \
+	fi; \
+	if grep -Eq 'cmd = "make (rust-smoke|rust-regression|heavy|python-smoke|python-regression)' agents.toml; then \
+	    echo "ERROR: agents.toml advertises a local repository-validation command." >&2; exit 1; \
+	fi; \
+	grep -Fq 'id = "ci.validation.scoped"' agents.toml; \
+	grep -Fq 'id = "ci.validation.full"' agents.toml; \
 	test ! -e scripts/detect_physical_cores.sh; \
 	grep -Fq 'check-local validate-local validate-local-xtask' Makefile; \
 	grep -Fq 'make validation-resource-contract' .github/workflows/ci.yml; \
-	grep -Fq 'make casimir-optics-discrimination-audit-check' .github/workflows/ci.yml; \
+	grep -Fq 'make --keep-going casimir-optics-discrimination-audit-check' .github/workflows/ci.yml; \
 	echo "OK: CI-only validation authority and worker boundaries are pinned."
 
 casimir-optics-discrimination-audit-check: require-ci-validation-authority
