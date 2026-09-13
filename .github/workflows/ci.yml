@@ -175,7 +175,7 @@ jobs:
           fi
 
       - name: Build the repository scope router
-        run: make "$CARGO_TARGET_DIR/validation-tools/workspace-routing"
+        run: make --jobs="$WORKER_BUDGET" "$CARGO_TARGET_DIR/validation-tools/workspace-routing"
 
       - name: Route reverse dependency test closure
         id: route
@@ -204,13 +204,13 @@ jobs:
         id: hygiene
         if: steps.route.outputs.run_check == 'true'
         continue-on-error: true
-        run: make --keep-going check 2>&1 | tee reports/validation/hygiene.log
+        run: make --jobs="$WORKER_BUDGET" --keep-going check 2>&1 | tee reports/validation/hygiene.log
 
       - name: Validate canonical evidence and governance
         id: governance
         if: steps.route.outputs.run_governance == 'true'
         continue-on-error: true
-        run: make --keep-going validate-ci-registry 2>&1 | tee reports/validation/governance.log
+        run: make --jobs="$WORKER_BUDGET" --keep-going validate-ci-registry 2>&1 | tee reports/validation/governance.log
 
       - name: Lint owners and test affected consumers including binaries
         id: rust
@@ -219,19 +219,19 @@ jobs:
         env:
           CI_RUST_SCOPE: ${{ steps.route.outputs.rust_scope }}
           CI_CLIPPY_SCOPE: ${{ steps.lint.outputs.rust_scope }}
-        run: make --keep-going validate-ci-scoped-rust 2>&1 | tee reports/validation/rust.log
+        run: make --jobs="$WORKER_BUDGET" --keep-going validate-ci-scoped-rust 2>&1 | tee reports/validation/rust.log
 
       - name: Verify provider inventory and database schema documentation
         id: integrity
         if: steps.route.outputs.run_rust == 'true' || steps.route.outputs.run_governance == 'true'
         continue-on-error: true
-        run: make --keep-going validate-rust-integrity db-schema-drift-check 2>&1 | tee reports/validation/integrity.log
+        run: make --jobs="$WORKER_BUDGET" --keep-going validate-rust-integrity db-schema-drift-check 2>&1 | tee reports/validation/integrity.log
 
       - name: Verify retained Casimir and optics audit freshness
         id: casimir-audit
         if: steps.paths.outputs.casimir_audit == 'true'
         continue-on-error: true
-        run: make --keep-going casimir-optics-discrimination-audit-check 2>&1 | tee reports/validation/casimir-optics-discrimination.log
+        run: make --jobs="$WORKER_BUDGET" --keep-going casimir-optics-discrimination-audit-check 2>&1 | tee reports/validation/casimir-optics-discrimination.log
 
       - name: Install dependency policy verifier
         id: dependency-tool
@@ -245,7 +245,7 @@ jobs:
         id: dependencies
         if: steps.paths.outputs.dependencies == 'true'
         continue-on-error: true
-        run: make --keep-going cargo-deny-check 2>&1 | tee reports/validation/dependencies.log
+        run: make --jobs="$WORKER_BUDGET" --keep-going cargo-deny-check 2>&1 | tee reports/validation/dependencies.log
 
       - name: Validate retained Warp HDF5 artifacts
         id: warp
@@ -342,7 +342,7 @@ jobs:
             docs-v2-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('rust-toolchain.toml', '.cargo/config.toml') }}-${{ hashFiles('Cargo.lock') }}-
             docs-v2-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('rust-toolchain.toml', '.cargo/config.toml') }}-
       - name: Build default-feature docs and check freshness together
-        run: make --keep-going docs-freshness DOCS_CARGO_BUILD_DIR="$GITHUB_WORKSPACE/.cache/docs-cbuild"
+        run: make --jobs="$WORKER_BUDGET" --keep-going docs-freshness DOCS_CARGO_BUILD_DIR="$GITHUB_WORKSPACE/.cache/docs-cbuild"
       - name: Retain documentation dependencies after validation failures
         if: always() && steps.docs-cache.outputs.cache-primary-key != '' && steps.docs-cache.outputs.cache-hit != 'true'
         uses: actions/cache/save@v4

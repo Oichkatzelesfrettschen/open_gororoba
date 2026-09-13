@@ -330,7 +330,7 @@ validation-resource-contract-workers:
 
 validation-resource-contract-collectors:
 	@status=0; \
-	for contract in 'make --keep-going validate-ci-scoped-rust' 'Report collected validation failures' "needs.validation.result == 'success'" 'make --keep-going validation-resource-contract' 'make --keep-going casimir-optics-discrimination-audit-check'; do \
+	for contract in 'make --jobs="$$WORKER_BUDGET" --keep-going validate-ci-scoped-rust' 'Report collected validation failures' "needs.validation.result == 'success'" 'make --keep-going validation-resource-contract' 'make --jobs="$$WORKER_BUDGET" --keep-going casimir-optics-discrimination-audit-check' 'make --jobs="$$WORKER_BUDGET" --keep-going docs-freshness'; do \
 	    if ! grep -Fq "$$contract" .github/workflows/ci.yml; then echo "ERROR: main CI collector contract is missing: $$contract" >&2; status=1; fi; \
 	done; \
 	if ! grep -Fq 'Report collected proof failures' .github/workflows/proofs.yml; then echo "ERROR: proof collector contract is missing." >&2; status=1; fi; \
