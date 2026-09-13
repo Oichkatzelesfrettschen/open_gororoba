@@ -635,8 +635,8 @@ jobs:
           fi
 
   docs-gate:
-    needs: [validation-core, validation]
-    if: always() && needs.validation.result == 'success' && needs.validation-core.outputs.docs == 'true'
+    needs: [validation-core]
+    if: always() && needs.validation-core.outputs.docs == 'true'
     runs-on: ubuntu-24.04
     timeout-minutes: 60
     steps:

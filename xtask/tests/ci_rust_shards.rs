@@ -43,6 +43,7 @@ fn run_sharder(root: &Path, rust_scope: &str) -> Output {
 fn run_target_sharder(root: &Path, package_names: &[&str]) -> Output {
     let mut sorted_package_names = package_names.to_vec();
     sorted_package_names.sort_unstable();
+    sorted_package_names.dedup();
     let package_scope = sorted_package_names
         .iter()
         .map(|package_name| format!("-p {package_name}"))

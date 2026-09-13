@@ -32,6 +32,7 @@ struct Args {
 struct Report {
     verified_archive_sha256: String,
     verified_objects: usize,
+    selected_objects: usize,
     installed_files: usize,
     reused_files: usize,
     globally_atomic: bool,
@@ -314,7 +315,8 @@ fn hydrate(args: &Args) -> Result<Report> {
     stage_objects(archive_file, objects, &selected_objects, staging.path())?;
     let mut report = Report {
         verified_archive_sha256: manifest.archive.sha256.clone(),
-        verified_objects: selected_objects.len(),
+        verified_objects: objects.len(),
+        selected_objects: selected_objects.len(),
         installation_scope: "Each new file is atomically persisted without replacement; a later failure preserves earlier installed files and created directories. The complete operation is not globally atomic.",
         ..Report::default()
     };
@@ -674,7 +676,8 @@ mod tests {
         fixture.args.paths = vec!["payloads/1.dat".to_owned()];
 
         let report = hydrate(&fixture.args)?;
-        assert_eq!(report.verified_objects, 1);
+        assert_eq!(report.verified_objects, 2);
+        assert_eq!(report.selected_objects, 1);
         assert_eq!(report.installed_files, 1);
         assert!(!fixture.args.repo_root.join("payloads/0.dat").exists());
         assert_eq!(

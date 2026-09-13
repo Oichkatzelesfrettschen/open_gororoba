@@ -8,7 +8,7 @@
 .PHONY: heavy test-inventory
 .PHONY: rust-test rust-clippy rust-semver-check rust-smoke rust-regression rust-regression-scoped miri-cd-kernel dep-audit cargo-deny-check mcp-smoke e027-validate studio-run studio-check profile-tensor-avt x87-strategy-bench x87-strategy-perf x87-strategy-hyperfine x87-strategy-flamegraph x87-givens-microbench x87-givens-microbench-perf jacobi-backend-sweep jacobi-backend-perf jacobi-backend-flamegraph jacobi-backend-samply jacobi-backend-samply-compare gpu-bench gpu-bench-ncu gpu-bench-nsys
 .PHONY: cpu-bench cpu-bench-perf cpu-bench-cachegrind cpu-bench-flamegraph parity-bench parity-report
-.PHONY: pre-push-gate-scoped submodule-sync validate-local validate-local-xtask validate-ci validate-ci-registry validate-ci-rust validate-repository validate-repository-fast validate-governance validation-tools registry-validation-tools validation-tools-clean validation-tools-rebuild validation-tools-check-paths validation-resource-contract validation-resource-contract-authority validation-resource-contract-retired-local validation-resource-contract-registry validation-resource-contract-workers validation-resource-contract-collectors print-validation-resource-config require-ci-validation-authority casimir-optics-discrimination-audit-check data-core-pure-check
+.PHONY: pre-push-gate-scoped submodule-sync validate-local validate-local-xtask validate-ci validate-ci-registry validate-ci-rust validate-repository validate-repository-fast validate-governance validation-tools registry-validation-tools validation-tools-clean validation-tools-rebuild validation-tools-check-paths validation-resource-contract validation-resource-contract-authority validation-resource-contract-retired-local validation-resource-contract-registry validation-resource-contract-workers validation-resource-contract-collectors print-validation-resource-config require-ci-validation-authority casimir-optics-discrimination-audit-check casimir-optics-discrimination-output-check casimir-optics-discrimination-frontier-check data-core-pure-check
 .PHONY: gate-local gate-local-xtask gate-ci-registry gate-ci-rust gate-audit gate-audit-fast
 .PHONY: cache-status cache-sweep cache-sweep-soft cache-purge-exp cache-check cache-check-force
 .PHONY: v6-branch-transport-artifacts pathion-control-artifacts pathion-resonance-artifacts
@@ -339,8 +339,9 @@ validation-resource-contract-workers:
 validation-resource-contract-collectors:
 	@status=0; \
 	rust_shard_block="$$(sed -n '/id: rust-shards/,/name: Check repository hygiene/p' .github/workflows/ci.yml)"; \
-	for contract in 'ci-rust-shard-matrix' 'target-shard-package=gororoba_cli_physics' 'target-shard-package=gororoba_cli_data' 'target-shard-package=gororoba_cli_algebra' 'fallback_matrix=' 'CI_CARGO_TARGET_ARGS: $${{ matrix.cargo_target_args }}' 'CI_CARGO_FEATURES: $${{ matrix.cargo_features }}' 'matrix: $${{ fromJSON(needs.validation-core.outputs.rust_matrix) }}' 'make --jobs="$$WORKER_BUDGET" --keep-going "validate-ci-scoped-$${{ matrix.target }}"' 'timeout-minutes: 80' 'fail-fast: false' 'Report collected validation failures' 'Report aggregate validation admission' 'needs: [validation-policy, validation-core, rust-validation, scientific-replay]' 'scientific-replay:' '--bin hydrate-scientific-payloads' '--no-fail-fast -p algebra_experimental --lib' '--no-fail-fast -p algebra_experimental --test nufit_reference_identity' '--no-fail-fast -p gororoba_cli_physics --test box_counting_amplitude_identity' 'state=blocked_input' 'state=not_selected' 'executed_pass' 'executed_fail' "needs.validation-policy.result == 'success'" "needs.validation.result == 'success'" 'make --keep-going validation-resource-contract' 'make --jobs="$$WORKER_BUDGET" --keep-going casimir-optics-discrimination-audit-check' 'make --jobs="$$WORKER_BUDGET" --keep-going docs-freshness'; do \
-	    if ! grep -Fq "$$contract" .github/workflows/ci.yml; then echo "ERROR: main CI collector contract is missing: $$contract" >&2; status=1; fi; \
+	docs_gate_block="$$(sed -n '/^  docs-gate:/,/^  docs-deploy:/p' .github/workflows/ci.yml)"; \
+	for contract in 'ci-rust-shard-matrix' 'target-shard-package=gororoba_cli_physics' 'target-shard-package=gororoba_cli_data' 'target-shard-package=gororoba_cli_algebra' 'fallback_matrix=' 'CI_CARGO_TARGET_ARGS: $${{ matrix.cargo_target_args }}' 'CI_CARGO_FEATURES: $${{ matrix.cargo_features }}' 'matrix: $${{ fromJSON(needs.validation-core.outputs.rust_matrix) }}' 'make --jobs="$$WORKER_BUDGET" --keep-going "validate-ci-scoped-$${{ matrix.target }}"' 'timeout-minutes: 80' 'fail-fast: false' 'Report collected validation failures' 'Report aggregate validation admission' 'needs: [validation-policy, validation-core, rust-validation, scientific-replay]' 'scientific-replay:' '--bin hydrate-scientific-payloads' '--no-fail-fast -p algebra_experimental --lib' '--no-fail-fast -p algebra_experimental --test nufit_reference_identity' '--no-fail-fast -p gororoba_cli_physics --test box_counting_amplitude_identity' 'state=blocked_input' 'state=not_selected' 'executed_pass' 'executed_fail' "needs.validation-policy.result == 'success'" "needs.validation.result == 'success'" 'make --keep-going validation-resource-contract' 'make --jobs="$$WORKER_BUDGET" --keep-going casimir-optics-discrimination-audit-check' 'verify-finite-frontier --frontier plans/casimir_optics_discrimination_frontier.toml' 'make --jobs="$$WORKER_BUDGET" --keep-going docs-freshness'; do \
+	    if ! grep -Fq -- "$$contract" .github/workflows/ci.yml; then echo "ERROR: main CI collector contract is missing: $$contract" >&2; status=1; fi; \
 	done; \
 	for package in gororoba_cli_physics gororoba_cli_data gororoba_cli_algebra; do \
 	    occurrences="$$(printf '%s\n' "$$rust_shard_block" | grep -Fc -- "--target-shard-package=$$package")"; \
@@ -348,6 +349,8 @@ validation-resource-contract-collectors:
 	done; \
 	target_package_count="$$(printf '%s\n' "$$rust_shard_block" | grep -Fc -- '--target-shard-package=')"; \
 	if [ "$$target_package_count" -ne 3 ]; then echo "ERROR: Rust shard block must select exactly three large binary packages." >&2; status=1; fi; \
+	if ! printf '%s\n' "$$docs_gate_block" | grep -Fq 'needs: [validation-core]'; then echo "ERROR: docs-gate must depend only on its routing authority." >&2; status=1; fi; \
+	if printf '%s\n' "$$docs_gate_block" | grep -Fq 'needs.validation.result'; then echo "ERROR: docs-gate hides documentation failures behind aggregate validation." >&2; status=1; fi; \
 	for lane in clippy light heavy; do \
 	    if ! grep -Fq "validate-ci-scoped-$$lane" Makefile; then echo "ERROR: missing independently runnable Rust CI shard: $$lane" >&2; status=1; fi; \
 	done; \
@@ -378,12 +381,19 @@ validation-resource-contract-collectors:
 	done; \
 	exit "$$status"
 
-casimir-optics-discrimination-audit-check: require-ci-validation-authority
+casimir-optics-discrimination-audit-check: casimir-optics-discrimination-output-check casimir-optics-discrimination-frontier-check
+
+casimir-optics-discrimination-output-check: require-ci-validation-authority
 	$(CARGO_ENV) cargo run --locked --profile validation -p gororoba_cli_physics \
 	    --bin casimir-optics-discrimination-audit -- \
 	    --output-directory data/output/audit/casimir-optics-discrimination \
 	    --check \
 	    --expected-output-directory reports/validation/casimir-optics-discrimination-expected
+
+casimir-optics-discrimination-frontier-check: require-ci-validation-authority
+	$(CARGO_ENV) cargo run --locked --profile validation -p gororoba_cli_provenance \
+	    --bin provenance -- --repo-root . verify-finite-frontier \
+	    --frontier plans/casimir_optics_discrimination_frontier.toml
 
 .PHONY: validate-static validate-static-and-registry validate-comprehensive
 .PHONY: audit-comprehensive audit-comprehensive-structured validate-supply-chain validate-dataset-experiments gate-fast gate-warm gate-deep audit-deep audit-deep-structured typos machete audit geiger supply-chain-gate ndlb-gate

@@ -112,6 +112,27 @@ fn all_finite_vector(vector: &DVector<f64>) -> bool {
     vector.iter().all(|value| value.is_finite())
 }
 
+fn finite_euclidean_norm(vector: &DVector<f64>) -> Result<f64, DiscriminationError> {
+    let direct_norm = vector.norm();
+    if direct_norm.is_finite() {
+        return Ok(direct_norm);
+    }
+    let maximum_component = vector
+        .iter()
+        .map(|value| value.abs())
+        .fold(0.0_f64, f64::max);
+    if maximum_component == 0.0 {
+        return Ok(0.0);
+    }
+    let scaled_norm = (vector / maximum_component).norm();
+    let norm = maximum_component * scaled_norm;
+    if norm.is_finite() {
+        Ok(norm)
+    } else {
+        Err(DiscriminationError::NumericalFailure)
+    }
+}
+
 fn nuisance_bound_scale(bound: &NuisanceBound) -> f64 {
     (bound.upper - bound.lower)
         .abs()
@@ -155,28 +176,50 @@ fn least_squares(
     design: &DMatrix<f64>,
     response: &DVector<f64>,
 ) -> Result<DVector<f64>, DiscriminationError> {
-    let scales: Vec<f64> = design
-        .column_iter()
-        .map(|column| {
-            let norm = column.norm();
-            if norm > 0.0 { norm } else { 1.0 }
-        })
-        .collect();
     let mut normalized = design.clone();
-    for (mut column, scale) in normalized.column_iter_mut().zip(&scales) {
-        column.scale_mut(1.0 / scale);
+    let mut scales = Vec::with_capacity(normalized.ncols());
+    for mut column in normalized.column_iter_mut() {
+        let direct_norm = column.norm();
+        if direct_norm.is_finite() && direct_norm > 0.0 {
+            column.scale_mut(1.0 / direct_norm);
+            scales.push((direct_norm, 1.0));
+            continue;
+        }
+        let maximum_component = column
+            .iter()
+            .map(|value| value.abs())
+            .fold(0.0_f64, f64::max);
+        if maximum_component == 0.0 {
+            scales.push((1.0, 1.0));
+            continue;
+        }
+        for value in column.iter_mut() {
+            *value /= maximum_component;
+        }
+        let scaled_norm = column.norm();
+        if !scaled_norm.is_finite() || scaled_norm == 0.0 {
+            return Err(DiscriminationError::NumericalFailure);
+        }
+        column.scale_mut(1.0 / scaled_norm);
+        scales.push((maximum_component, scaled_norm));
     }
     let scaled_solution = normalized
         .svd(true, true)
         .solve(response, f64::EPSILON.sqrt())
         .map_err(|_| DiscriminationError::NumericalFailure)?;
-    Ok(DVector::from_iterator(
+    let solution = DVector::from_iterator(
         scaled_solution.len(),
         scaled_solution
             .iter()
             .zip(scales)
-            .map(|(value, scale)| value / scale),
-    ))
+            .map(|(value, (maximum_component, scaled_norm))| {
+                value / scaled_norm / maximum_component
+            }),
+    );
+    if !all_finite_vector(&solution) {
+        return Err(DiscriminationError::NumericalFailure);
+    }
+    Ok(solution)
 }
 
 /// Efficient information after independent calibration constrains nuisances.
@@ -384,7 +427,7 @@ pub fn bounded_profile_distance(
         bounds,
         &parameters,
     )?;
-    let distance = (target - nuisance * &parameters).norm();
+    let distance = finite_euclidean_norm(&(target - nuisance * &parameters))?;
     let (active_lower_bounds, active_upper_bounds) = classify_active_bounds(&parameters, bounds);
     Ok(BoundedProfileResult {
         distance,
@@ -414,11 +457,18 @@ pub fn fisher_information_with_pseudoinverse(
     {
         return Err(DiscriminationError::NonFiniteInput);
     }
-    let symmetry_error = covariance - covariance.transpose();
-    if symmetry_error.norm() > 1e-10 * covariance.norm() {
-        return Err(DiscriminationError::NumericalFailure);
+    let covariance_scale = covariance
+        .iter()
+        .map(|value| value.abs())
+        .fold(0.0_f64, f64::max);
+    if covariance_scale > 0.0 {
+        let scaled_covariance = covariance / covariance_scale;
+        let scaled_symmetry_error = &scaled_covariance - scaled_covariance.transpose();
+        if scaled_symmetry_error.norm() > 1e-10 * scaled_covariance.norm() {
+            return Err(DiscriminationError::NumericalFailure);
+        }
     }
-    let symmetric_covariance = (covariance + covariance.transpose()) * 0.5;
+    let symmetric_covariance = covariance * 0.5 + covariance.transpose() * 0.5;
     let decomposition = SymmetricEigen::new(symmetric_covariance);
     let spectral_scale = decomposition
         .eigenvalues
@@ -451,6 +501,9 @@ pub fn fisher_information_with_pseudoinverse(
     {
         if *eigenvalue > threshold {
             information += coordinate * coordinate / eigenvalue;
+            if !information.is_finite() {
+                return Err(DiscriminationError::NumericalFailure);
+            }
         } else {
             let projection_scale: f64 = decomposition
                 .eigenvectors
@@ -530,9 +583,18 @@ mod tests {
     }
 
     #[test]
+    fn unrestricted_residual_preserves_extreme_finite_column_scales() {
+        for scale in [1e-200, 1e200] {
+            let target = DVector::from_element(1, 1.0);
+            let nuisance = DMatrix::from_element(1, 1, scale);
+            assert!(unrestricted_residual(&target, &nuisance).unwrap().norm() < 1e-12);
+        }
+    }
+
+    #[test]
     fn independent_calibration_increases_information() {
         let target = DVector::from_vec(vec![1.0, 1.0]);
-        let nuisance = DMatrix::from_column_slice(2, 1, &[1.0, 1.0]);
+        let nuisance = DMatrix::from_column_slice(2, 1, &[1e308, 1e308]);
         let no_calibration = DMatrix::zeros(0, 1);
         let calibrated = DMatrix::from_element(1, 1, 2.0);
         let uncalibrated_information =
@@ -591,6 +653,36 @@ mod tests {
         assert_relative_eq!(bounded.nuisance_parameters[0], 1.0, epsilon = 1e-7);
         assert_eq!(bounded.active_upper_bounds, vec![0]);
         assert!(unrestricted_residual(&target, &nuisance).unwrap().norm() < 1e-12);
+    }
+
+    #[test]
+    fn bounded_profile_rejects_an_overflowed_distance() {
+        let target = DVector::from_vec(vec![1e308, 1e308]);
+        let nuisance = DMatrix::from_column_slice(2, 1, &[1e308, 1e308]);
+        let bounds = vec![NuisanceBound {
+            lower: 0.0,
+            upper: 0.0,
+            unit: "Pa".to_owned(),
+        }];
+
+        assert_eq!(
+            bounded_profile_distance(&target, &nuisance, &bounds),
+            Err(DiscriminationError::NumericalFailure)
+        );
+    }
+
+    #[test]
+    fn bounded_profile_recovers_a_large_finite_distance() {
+        let target = DVector::from_vec(vec![1e200, 1e200]);
+        let nuisance = DMatrix::from_column_slice(2, 1, &[1e200, 1e200]);
+        let bounds = vec![NuisanceBound {
+            lower: 0.0,
+            upper: 0.0,
+            unit: "Pa".to_owned(),
+        }];
+
+        let result = bounded_profile_distance(&target, &nuisance, &bounds).unwrap();
+        assert_relative_eq!(result.distance / 1e200, 2.0_f64.sqrt(), epsilon = 1e-12);
     }
 
     #[test]
@@ -776,6 +868,26 @@ mod tests {
         let asymmetric = DMatrix::from_row_slice(2, 2, &[1e-20, 1e-20, 0.0, 1e-20]);
         assert_eq!(
             fisher_information_with_pseudoinverse(&signal, &asymmetric, 1e-12),
+            Err(DiscriminationError::NumericalFailure)
+        );
+    }
+
+    #[test]
+    fn covariance_symmetry_check_survives_large_finite_entries() {
+        let signal = DVector::from_vec(vec![1.0, 0.0]);
+        let asymmetric = DMatrix::from_row_slice(2, 2, &[1e200, 1e200, 0.0, 1e200]);
+        assert_eq!(
+            fisher_information_with_pseudoinverse(&signal, &asymmetric, 1e-12),
+            Err(DiscriminationError::NumericalFailure)
+        );
+    }
+
+    #[test]
+    fn fisher_information_rejects_an_overflowed_noisy_result() {
+        let signal = DVector::from_element(1, 1e200);
+        let covariance = DMatrix::identity(1, 1);
+        assert_eq!(
+            fisher_information_with_pseudoinverse(&signal, &covariance, 1e-12),
             Err(DiscriminationError::NumericalFailure)
         );
     }

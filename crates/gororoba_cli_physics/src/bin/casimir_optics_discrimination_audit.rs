@@ -44,6 +44,56 @@ const MULTILAYER_ANGULAR_CONVERGENCE_RELATIVE_TOLERANCE: f64 = 1.0e-8;
 const ANGULAR_CONVERGENCE_TARGET: &str = "Au20/SiO2-50/Al2O3-50/Si_vs_Au";
 const PRODUCER_SOURCE: &str = include_str!("casimir_optics_discrimination_audit.rs");
 const SOURCE_RETRIEVAL_MANIFEST: &str = "source-retrieval-manifest.toml";
+const EXPECTED_RETAINED_SOURCES: [(&str, &str); 12] = [
+    (
+        "LIFSHITZ-1956",
+        "data/output/audit/casimir-optics-discrimination/sources/lifshitz-planar-media-1956.pdf",
+    ),
+    (
+        "CASIMIR-REVIEW-2009",
+        "data/output/audit/casimir-optics-discrimination/sources/casimir-scattering-review-2009.pdf",
+    ),
+    (
+        "HNLS-2017",
+        "data/output/audit/casimir-optics-discrimination/sources/hnls-quantum-metrology-2017.pdf",
+    ),
+    (
+        "MEMORY-KERNEL-CP-2009",
+        "data/output/audit/casimir-optics-discrimination/sources/quantum-memory-kernel-cp-2009.pdf",
+    ),
+    (
+        "AUTOQEC-METROLOGY-2026",
+        "data/output/audit/casimir-optics-discrimination/sources/autonomous-qec-metrology-2026.pdf",
+    ),
+    (
+        "MCPEAK-2015-MANUSCRIPT",
+        "data/output/audit/casimir-optics-discrimination/sources/mcpeak-plasmonic-films-2015.pdf",
+    ),
+    (
+        "RIINFO-AU-JOHNSON",
+        "data/output/audit/casimir-optics-discrimination/sources/au-Johnson.yml",
+    ),
+    (
+        "RIINFO-AU-OLMON-EVAPORATED",
+        "data/output/audit/casimir-optics-discrimination/sources/au-Olmon-ev.yml",
+    ),
+    (
+        "RIINFO-AU-MCPEAK",
+        "data/output/audit/casimir-optics-discrimination/sources/au-McPeak.yml",
+    ),
+    (
+        "RIINFO-AU-KLINAVICIUS-11NM",
+        "data/output/audit/casimir-optics-discrimination/sources/au-Klinavicius-11.4nm.yml",
+    ),
+    (
+        "RIINFO-DATABASE-LICENSE",
+        "data/output/audit/casimir-optics-discrimination/sources/refractiveindex-info-database-license.txt",
+    ),
+    (
+        "REJECTED-ARXIV-0801.1757",
+        "data/output/audit/casimir-optics-discrimination/sources/master-equation-tutorial-nonsupporting-2008.pdf",
+    ),
+];
 
 struct SourceModelInput {
     path: &'static str,
@@ -355,14 +405,9 @@ fn verify_source_retrieval_manifest_source(source: &str, repository_root: &Path)
         "unexpected source-retrieval manifest schema version {}",
         manifest.schema_version
     );
-    ensure!(
-        !manifest.source.is_empty(),
-        "source-retrieval manifest declares zero sources"
-    );
-
     let mut source_ids = BTreeSet::new();
     let mut source_paths = BTreeSet::new();
-    for retained_source in manifest.source {
+    for retained_source in &manifest.source {
         ensure!(
             !retained_source.id.trim().is_empty(),
             "source-retrieval manifest declares an empty source id"
@@ -398,8 +443,44 @@ fn verify_source_retrieval_manifest_source(source: &str, repository_root: &Path)
             retained_source.id,
             retained_source.sha256
         );
+    }
 
+    let expected_sources = EXPECTED_RETAINED_SOURCES
+        .iter()
+        .map(|(id, path)| ((*id).to_owned(), PathBuf::from(*path)))
+        .collect::<BTreeSet<_>>();
+    let observed_sources = manifest
+        .source
+        .iter()
+        .map(|retained_source| (retained_source.id.clone(), retained_source.path.clone()))
+        .collect::<BTreeSet<_>>();
+    ensure!(
+        observed_sources == expected_sources && manifest.source.len() == expected_sources.len(),
+        "source-retrieval manifest does not declare the exact retained source set"
+    );
+
+    for retained_source in &manifest.source {
         let retained_path = repository_root.join(&retained_source.path);
+        let mut inspected_path = repository_root.to_path_buf();
+        for component in retained_source.path.components() {
+            let Component::Normal(component) = component else {
+                unreachable!("path components were validated above")
+            };
+            inspected_path.push(component);
+            let metadata = fs::symlink_metadata(&inspected_path).with_context(|| {
+                format!(
+                    "inspecting retained source {} path component {}",
+                    retained_source.id,
+                    inspected_path.display()
+                )
+            })?;
+            ensure!(
+                !metadata.file_type().is_symlink(),
+                "retained source {} path contains a symbolic link at {}",
+                retained_source.id,
+                inspected_path.display()
+            );
+        }
         let retained_bytes = fs::read(&retained_path).with_context(|| {
             format!(
                 "reading retained source {} at {}",
@@ -1842,6 +1923,45 @@ mod tests {
         let error = verify_source_retrieval_manifest_source(&unsafe_manifest, &repository_root)
             .unwrap_err();
         assert!(error.to_string().contains("unsafe repository-relative path"));
+    }
+
+    #[test]
+    fn retained_source_manifest_requires_the_exact_source_set() {
+        let repository_root = repo_root::resolve!();
+        let manifest_path = repository_root
+            .join(DEFAULT_OUTPUT_DIRECTORY)
+            .join(SOURCE_RETRIEVAL_MANIFEST);
+        let manifest_source = fs::read_to_string(manifest_path).unwrap();
+        let incomplete_manifest = manifest_source.replacen("LIFSHITZ-1956", "OTHER-SOURCE", 1);
+        let error = verify_source_retrieval_manifest_source(&incomplete_manifest, &repository_root)
+            .unwrap_err();
+        assert!(error.to_string().contains("exact retained source set"));
+    }
+
+    #[cfg(unix)]
+    #[test]
+    fn retained_source_manifest_rejects_symbolic_links() {
+        use std::os::unix::fs::symlink;
+
+        let repository_root = repo_root::resolve!();
+        let manifest_path = repository_root
+            .join(DEFAULT_OUTPUT_DIRECTORY)
+            .join(SOURCE_RETRIEVAL_MANIFEST);
+        let manifest_source = fs::read_to_string(manifest_path).unwrap();
+        let temporary_repository = tempfile::tempdir().unwrap();
+        let first_path = PathBuf::from(EXPECTED_RETAINED_SOURCES[0].1);
+        let retained_path = temporary_repository.path().join(&first_path);
+        fs::create_dir_all(retained_path.parent().unwrap()).unwrap();
+        let external_file = temporary_repository.path().join("external-source.pdf");
+        fs::write(&external_file, b"external bytes").unwrap();
+        symlink(&external_file, &retained_path).unwrap();
+
+        let error = verify_source_retrieval_manifest_source(
+            &manifest_source,
+            temporary_repository.path(),
+        )
+        .unwrap_err();
+        assert!(error.to_string().contains("symbolic link"));
     }
 
     #[test]

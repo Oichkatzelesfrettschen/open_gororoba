@@ -3,7 +3,7 @@ id = "casimir-optics-discrimination-ci-review-closure"
 pr = 185
 diagnostic_head = "602804651073313b253e24a698f78b3e30ab7121"
 execution_policy = "GitHub Actions owns builds, tests, lint, formatting, and repository gates. Local work is limited to source inspection, hashes, and git diff --check."
-publication_policy = "Collect the complete diagnostic-head workflow denominator, apply one consolidated repair, push once, and wait for one replacement generation."
+publication_policy = "Collect the complete diagnostic-head denominator before one consolidated CI repair. If review findings arrive after that push, let its generation terminate, consolidate the review repairs once, and publish one final closure generation without canceling or superseding an active run."
 completion_gate = "The replacement generation passes, every review thread has an evidence-backed disposition, PR 185 merges, canonical main fast-forwards to the merge, and the isolated worktree is removed after parity proof."
 
 [[task]]
@@ -54,3 +54,101 @@ status = "implemented_pending_ci"
 finding = "A material-record test moved its graph into one mutation and then reused the moved value in a second mutation."
 required_change = "Clone the graph for the first independently mutated fixture."
 verification = "Hosted materials_core tests and workspace Clippy pass."
+
+[[task]]
+id = "review-extreme-column-scale-invariance"
+status = "implemented_pending_ci"
+finding = "Direct column norms can underflow or overflow for finite nuisance scales and erase an exact nuisance direction."
+required_change = "Normalize each column through a maximum-component factor and a bounded scaled norm without multiplying the factors."
+verification = "Hosted stats_core tests preserve exact one-coordinate fits at scales 1e-200 and 1e200."
+
+[[task]]
+id = "review-quantity-basis-single-authority"
+status = "implemented_pending_ci"
+finding = "Vector and tensor payload basis metadata can disagree with the quantity-level basis field."
+required_change = "Keep the payload basis authoritative; reject empty optional aliases and require any populated alias to agree exactly."
+verification = "Hosted materials_core tests accept the single payload authority and reject empty or contradictory aliases."
+
+[[task]]
+id = "review-specimen-substrate-acyclicity"
+status = "implemented_pending_ci"
+finding = "Existence checks alone admit self-referential and multi-specimen substrate cycles."
+required_change = "Walk each single-parent substrate chain and reject the first repeated specimen identity."
+verification = "Hosted materials_core tests reject one-node and two-node cycles."
+
+[[task]]
+id = "review-docs-fail-slow-independence"
+status = "implemented_pending_ci"
+finding = "The documentation job waits for aggregate validation success and therefore hides independently executable documentation failures."
+required_change = "Depend only on validation-core routing output; retain aggregate validation as a separate Pages deployment prerequisite."
+verification = "Hosted validation-resource-contract and actionlint pass, and docs-gate executes whenever routing selects documentation."
+
+[[task]]
+id = "ci-contract-leading-option-literals"
+status = "implemented_pending_ci"
+finding = "The collector contract passed patterns beginning with two hyphens to grep without an option terminator."
+required_change = "Terminate grep options before every literal workflow contract."
+verification = "Hosted validation-resource-contract accepts the scientific replay command literals."
+
+[[task]]
+id = "hydrator-archive-selection-count-semantics"
+status = "implemented_pending_ci"
+finding = "Bounded hydration overloaded the established verified_objects report field with the selected-object count."
+required_change = "Retain the complete archive-inventory count and report the selected hash/install denominator in a separate field."
+verification = "Hosted hydrator tests cover historical archive supersets and bounded one-of-two selection."
+
+[[task]]
+id = "target-shard-duplicate-mutation-isolation"
+status = "implemented_pending_ci"
+finding = "The duplicate target-package mutation also duplicated the routed package scope and exercised the wrong earlier rejection."
+required_change = "Deduplicate only the synthetic routed scope while retaining repeated target-package options."
+verification = "Hosted xtask tests reach and assert the dedicated duplicate target-package diagnostic."
+
+[[task]]
+id = "replacement-generation-denominator"
+status = "complete"
+finding = "CI run 34744700854 exercised the consolidated CI architecture and retained independent leaf outcomes through aggregate failure."
+required_change = "Classify every failed leaf before the final review-closure push."
+verification = "Scientific replay and all three companion workflows passed. Forty CI jobs passed. The three failed leaves reduce to the grep option boundary, the hydrator report-field regression, and the target-shard mutation fixture; each has one tracked repair above."
+
+[[task]]
+id = "review-bounded-distance-finite-result"
+status = "implemented_pending_ci"
+finding = "A finite residual vector can have an overflowing naive Euclidean norm, making bounded profile distance return infinity as a successful result."
+required_change = "Compute the residual norm through maximum-component scaling and reject a result outside the finite output domain."
+verification = "Hosted stats_core tests reject an overflowing two-component bounded-profile distance."
+
+[[task]]
+id = "review-covariance-symmetry-scaled-comparison"
+status = "implemented_pending_ci"
+finding = "Frobenius norms of large finite covariance entries can both overflow and admit an asymmetric covariance."
+required_change = "Scale covariance entries by their maximum magnitude before comparing the relative symmetry error."
+verification = "Hosted stats_core tests reject an asymmetric covariance with 1e200 entries."
+
+[[task]]
+id = "review-fisher-information-finite-result"
+status = "implemented_pending_ci"
+finding = "A noisy signal component can overflow the Fisher-information accumulator and collide with the intentional infinity result for a deterministic null direction."
+required_change = "Reject non-finite accumulation in positive-noise eigendirections while retaining intentional infinity only for deterministic signal components."
+verification = "Hosted stats_core tests reject overflow for covariance one and signal 1e200."
+
+[[task]]
+id = "review-retained-source-exact-denominator"
+status = "implemented_pending_ci"
+finding = "The native audit accepted any nonempty subset of the twelve load-bearing retained sources."
+required_change = "Compile and compare the exact source-ID and repository-path denominator before hashing source bytes."
+verification = "Hosted native-audit tests reject replacement of any expected source identity."
+
+[[task]]
+id = "review-retained-source-symlink-boundary"
+status = "implemented_pending_ci"
+finding = "Lexically safe retained-source paths could traverse symbolic links and hash bytes outside the repository retention boundary."
+required_change = "Inspect every repository-relative path component with symlink metadata and reject symbolic links before reading bytes."
+verification = "Hosted Unix native-audit tests reject a retained path whose final component is a symbolic link."
+
+[[task]]
+id = "review-frontier-verifier-ci-execution"
+status = "implemented_pending_ci"
+finding = "The finite-frontier verifier existed but the routed hosted Casimir audit leaf did not execute it."
+required_change = "Run verify-finite-frontier in the same routed fail-slow CI leaf as native output freshness and pin the command in the validation-resource contract."
+verification = "Hosted validation-policy and routed Casimir audit jobs execute the exact frontier partition verifier."

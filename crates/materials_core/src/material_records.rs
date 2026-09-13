@@ -454,6 +454,28 @@ impl QuantityValue {
         match &self.observation {
             QuantityObservation::Observed { payload } => {
                 payload.validate()?;
+                match payload {
+                    QuantityPayload::Vector { basis, .. }
+                    | QuantityPayload::Tensor { basis, .. } => {
+                        if let Some(declared_basis) = &self.tensor_component_or_basis {
+                            require_nonempty("quantity basis metadata", declared_basis)?;
+                            if declared_basis != basis {
+                                return Err(
+                                    "quantity basis metadata must match the payload basis"
+                                        .to_owned(),
+                                );
+                            }
+                        }
+                    }
+                    QuantityPayload::Scalar { .. } | QuantityPayload::Spectrum { .. } => {
+                        if let Some(component_or_basis) = &self.tensor_component_or_basis {
+                            require_nonempty(
+                                "quantity tensor component or basis",
+                                component_or_basis,
+                            )?;
+                        }
+                    }
+                }
                 if self.conditions.is_empty() {
                     return Err("observed quantity requires conditions".to_owned());
                 }
@@ -1028,6 +1050,21 @@ impl MaterialEvidenceGraph {
             }
         }
         for specimen in &self.specimens {
+            let mut substrate_chain = BTreeSet::new();
+            let mut current_id = Some(&specimen.specimen_id);
+            while let Some(specimen_id) = current_id {
+                if !substrate_chain.insert(specimen_id) {
+                    return Err(format!(
+                        "specimen substrate references contain a cycle at {}",
+                        specimen_id.0
+                    ));
+                }
+                current_id = specimens_by_id
+                    .get(specimen_id)
+                    .and_then(|record| record.substrate_specimen_id.as_ref());
+            }
+        }
+        for specimen in &self.specimens {
             if !state_ids.contains(&specimen.state_id) {
                 return Err(format!(
                     "specimen {} references unknown state {}",
@@ -1534,6 +1571,7 @@ mod tests {
                 basis: "Cartesian".to_owned(),
             },
         };
+        quantity.tensor_component_or_basis = Some("Cartesian".to_owned());
         quantity.uncertainty = Uncertainty::Covariance {
             dimension: 2,
             values_row_major: vec![1.0, 0.0, 0.0, 1.0],
@@ -1563,6 +1601,50 @@ mod tests {
             quantity.validate().unwrap_err(),
             "detection limit must be finite and nonnegative"
         );
+    }
+
+    #[test]
+    fn vector_and_tensor_basis_metadata_has_one_consistent_identity() {
+        let origin = QuantityOrigin::Measurement {
+            measurement_id: identifier("measurement:ellipsometry"),
+        };
+        let mut quantity = scalar_quantity(origin, EvidenceBasis::ExperimentalDirect);
+        quantity.observation = QuantityObservation::Observed {
+            payload: QuantityPayload::Vector {
+                values: vec![0.1, 0.2, 0.3],
+                basis: "Cartesian".to_owned(),
+            },
+        };
+
+        assert!(quantity.validate().is_ok());
+        quantity.tensor_component_or_basis = Some(" ".to_owned());
+        assert_eq!(
+            quantity.validate().unwrap_err(),
+            "quantity basis metadata must be nonempty"
+        );
+        quantity.tensor_component_or_basis = Some("cylindrical".to_owned());
+        assert_eq!(
+            quantity.validate().unwrap_err(),
+            "quantity basis metadata must match the payload basis"
+        );
+        quantity.tensor_component_or_basis = Some("Cartesian".to_owned());
+        assert!(quantity.validate().is_ok());
+
+        quantity.observation = QuantityObservation::Observed {
+            payload: QuantityPayload::Tensor {
+                values_row_major: vec![1.0, 0.0, 0.0, 1.0],
+                rows: 2,
+                columns: 2,
+                basis: "crystallographic".to_owned(),
+            },
+        };
+        quantity.tensor_component_or_basis = Some("Cartesian".to_owned());
+        assert_eq!(
+            quantity.validate().unwrap_err(),
+            "quantity basis metadata must match the payload basis"
+        );
+        quantity.tensor_component_or_basis = Some("crystallographic".to_owned());
+        assert!(quantity.validate().is_ok());
     }
 
     #[test]
@@ -2330,6 +2412,31 @@ mod tests {
             derived_values: Vec::new(),
         };
         assert!(graph.validate().is_err());
+    }
+
+    #[test]
+    fn evidence_graph_rejects_specimen_substrate_cycles() {
+        let graph = graph_with_quantities(Vec::new());
+
+        let mut self_cycle = graph.clone();
+        self_cycle.specimens[0].substrate_specimen_id =
+            Some(self_cycle.specimens[0].specimen_id.clone());
+        assert_eq!(
+            self_cycle.validate().unwrap_err(),
+            "specimen substrate references contain a cycle at specimen:au:test"
+        );
+
+        let mut two_specimen_cycle = graph;
+        let mut substrate = two_specimen_cycle.specimens[0].clone();
+        substrate.specimen_id = identifier("specimen:au:substrate");
+        substrate.substrate_specimen_id = Some(identifier("specimen:au:test"));
+        two_specimen_cycle.specimens[0].substrate_specimen_id =
+            Some(substrate.specimen_id.clone());
+        two_specimen_cycle.specimens.push(substrate);
+        assert_eq!(
+            two_specimen_cycle.validate().unwrap_err(),
+            "specimen substrate references contain a cycle at specimen:au:test"
+        );
     }
 
     #[test]

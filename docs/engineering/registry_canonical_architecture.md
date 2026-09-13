@@ -498,7 +498,9 @@ hydrator still verifies the complete compressed archive identity and archive
 inventory, hashes every selected object, installs only selected current paths,
 and confirms that each selected path is materialized after installation. An
 unknown or duplicate selected path fails before extraction. Omitting `--path`
-preserves complete current-path hydration.
+preserves complete current-path hydration. The JSON report keeps
+`verified_objects` as the complete archive-inventory count and records the
+bounded hash/install denominator separately as `selected_objects`.
 
 ```bash
 mkdir -p .cache/retention
