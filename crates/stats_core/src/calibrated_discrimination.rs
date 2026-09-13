@@ -117,7 +117,9 @@ fn finite_euclidean_norm(vector: &DVector<f64>) -> Result<f64, DiscriminationErr
         return Err(DiscriminationError::NumericalFailure);
     }
     let direct_norm = vector.norm();
-    if direct_norm.is_finite() {
+    if direct_norm.is_finite()
+        && (direct_norm > 0.0 || vector.iter().all(|component| *component == 0.0))
+    {
         return Ok(direct_norm);
     }
     let maximum_component = vector
@@ -735,6 +737,21 @@ mod tests {
     }
 
     #[test]
+    fn bounded_profile_preserves_a_tiny_nonzero_distance() {
+        let target = DVector::from_element(1, 1e-200);
+        let nuisance = DMatrix::identity(1, 1);
+        let bounds = vec![NuisanceBound {
+            lower: 0.0,
+            upper: 0.0,
+            unit: "Pa".to_owned(),
+        }];
+
+        let result = bounded_profile_distance(&target, &nuisance, &bounds).unwrap();
+        assert!(result.distance > 0.0);
+        assert_relative_eq!(result.distance / 1e-200, 1.0, epsilon = 1e-12);
+    }
+
+    #[test]
     fn active_bound_classification_respects_small_parameter_units() {
         let parameters = DVector::from_vec(vec![1e-10, 2e-10, 1.5e-10]);
         let bounds = vec![
@@ -779,8 +796,13 @@ mod tests {
         }];
 
         let result = bounded_profile_distance(&target, &nuisance, &bounds).unwrap();
-        assert!(result.distance <= SOLVER_CERTIFICATE_TOLERANCE);
-        assert_relative_eq!(result.nuisance_parameters[0] / 1e200, 1.0, epsilon = 1e-12);
+        let active_solution_tolerance = SOLVER_CERTIFICATE_TOLERANCE.sqrt();
+        assert!(result.distance <= active_solution_tolerance);
+        assert_relative_eq!(
+            result.nuisance_parameters[0] / 1e200,
+            1.0,
+            epsilon = active_solution_tolerance
+        );
     }
 
     #[test]

@@ -798,19 +798,38 @@ struct ShardWorkspace {
 struct ShardPackageManifest {
     package: ShardPackage,
     #[serde(default, rename = "bin")]
-    binaries: Vec<ShardBinary>,
+    binaries: Vec<ShardTarget>,
+    #[serde(default, rename = "test")]
+    tests: Vec<ShardTarget>,
 }
 
 #[derive(Debug, Deserialize)]
 struct ShardPackage {
     name: String,
+    #[serde(default = "default_true")]
+    autotests: bool,
 }
 
 #[derive(Debug, Clone, Deserialize, PartialEq, Eq)]
-struct ShardBinary {
+struct ShardTarget {
     name: String,
     #[serde(default, rename = "required-features")]
     required_features: Vec<String>,
+}
+
+#[derive(Debug)]
+struct ShardPackageInventory {
+    binaries: Vec<ShardTarget>,
+    tests: Vec<ShardTarget>,
+}
+
+// Cargo builds a package's binary targets when it selects an integration test
+// so CARGO_BIN_EXE_* is available. One integration-test row lets nextest use
+// all detected test threads without rebuilding the same binaries per row.
+const INTEGRATION_TEST_SHARD_COUNT: usize = 1;
+
+const fn default_true() -> bool {
+    true
 }
 
 #[derive(Debug, Serialize)]
@@ -828,7 +847,85 @@ struct RustShard {
     cargo_features: String,
 }
 
-fn workspace_package_inventory(manifest_path: &Path) -> Result<BTreeMap<String, Vec<ShardBinary>>> {
+fn normalize_shard_targets(
+    package_name: &str,
+    target_kind: &str,
+    targets: &mut Vec<ShardTarget>,
+) -> Result<()> {
+    for target in targets.iter_mut() {
+        target.required_features.sort();
+        target.required_features.dedup();
+        for feature in &target.required_features {
+            if feature.is_empty()
+                || !feature
+                    .chars()
+                    .all(|character| {
+                        character.is_ascii_alphanumeric() || matches!(character, '-' | '_')
+                    })
+            {
+                bail!(
+                    "{target_kind} target {} in package {} has an invalid required feature: {}",
+                    target.name,
+                    package_name,
+                    feature
+                );
+            }
+        }
+    }
+    targets.sort_by(|left, right| left.name.cmp(&right.name));
+    if targets.windows(2).any(|pair| pair[0].name == pair[1].name) {
+        bail!("duplicate {target_kind} target name in CI shard inventory: {package_name}");
+    }
+    Ok(())
+}
+
+fn discover_automatic_tests(
+    member_root: &Path,
+    explicit_tests: &[ShardTarget],
+) -> Result<Vec<ShardTarget>> {
+    let tests_root = member_root.join("tests");
+    if !tests_root.is_dir() {
+        return Ok(Vec::new());
+    }
+    let explicit_names: BTreeSet<&str> = explicit_tests
+        .iter()
+        .map(|target| target.name.as_str())
+        .collect();
+    let mut tests = Vec::new();
+    for entry in fs::read_dir(&tests_root)
+        .with_context(|| format!("read automatic test targets in {}", tests_root.display()))?
+    {
+        let entry = entry.with_context(|| {
+            format!("read automatic test target entry in {}", tests_root.display())
+        })?;
+        let path = entry.path();
+        let test_name =
+            if path.is_file() && path.extension().is_some_and(|extension| extension == "rs") {
+                path.file_stem()
+            } else if path.is_dir() && path.join("main.rs").is_file() {
+                path.file_name()
+            } else {
+                None
+            };
+        let Some(test_name) = test_name else {
+            continue;
+        };
+        let test_name = test_name.to_str().with_context(|| {
+            format!("automatic test target name is not UTF-8: {}", path.display())
+        })?;
+        if !explicit_names.contains(test_name) {
+            tests.push(ShardTarget {
+                name: test_name.to_string(),
+                required_features: Vec::new(),
+            });
+        }
+    }
+    Ok(tests)
+}
+
+fn workspace_package_inventory(
+    manifest_path: &Path,
+) -> Result<BTreeMap<String, ShardPackageInventory>> {
     let manifest_text = fs::read_to_string(manifest_path)
         .with_context(|| format!("read workspace manifest {}", manifest_path.display()))?;
     let manifest: ShardWorkspaceManifest = toml::from_str(&manifest_text)
@@ -855,29 +952,20 @@ fn workspace_package_inventory(manifest_path: &Path) -> Result<BTreeMap<String, 
             .with_context(|| format!("parse member manifest {}", member_manifest_path.display()))?;
         let package_name = member_manifest.package.name;
         let mut binaries = member_manifest.binaries;
-        for binary in &mut binaries {
-            binary.required_features.sort();
-            binary.required_features.dedup();
-            for feature in &binary.required_features {
-                if feature.is_empty()
-                    || !feature
-                        .chars()
-                        .all(|character| character.is_ascii_alphanumeric() || matches!(character, '-' | '_'))
-                {
-                    bail!(
-                        "binary target {} in package {} has an invalid required feature: {}",
-                        binary.name,
-                        package_name,
-                        feature
-                    );
-                }
-            }
+        let mut tests = member_manifest.tests;
+        normalize_shard_targets(&package_name, "binary", &mut binaries)?;
+        normalize_shard_targets(&package_name, "test", &mut tests)?;
+        if member_manifest.package.autotests {
+            tests.extend(discover_automatic_tests(
+                member_manifest_path
+                    .parent()
+                    .context("member manifest has no parent directory")?,
+                &tests,
+            )?);
+            normalize_shard_targets(&package_name, "test", &mut tests)?;
         }
-        binaries.sort_by(|left, right| left.name.cmp(&right.name));
-        if binaries.windows(2).any(|pair| pair[0].name == pair[1].name) {
-            bail!("duplicate binary target name in CI shard inventory: {package_name}");
-        }
-        if packages.insert(package_name.clone(), binaries).is_some() {
+        let inventory = ShardPackageInventory { binaries, tests };
+        if packages.insert(package_name.clone(), inventory).is_some() {
             bail!(
                 "duplicate workspace package name in CI shard inventory: {}",
                 package_name
@@ -925,6 +1013,58 @@ fn cargo_package_scope(package_names: &[String]) -> String {
         .map(|package_name| format!("-p {package_name}"))
         .collect::<Vec<_>>()
         .join(" ")
+}
+
+fn append_named_target_shards(
+    include: &mut Vec<RustShard>,
+    package_name: &str,
+    target_kind: &str,
+    cargo_target_option: &str,
+    targets: &[ShardTarget],
+    target_shard_count: usize,
+) {
+    let mut target_groups = BTreeMap::<Vec<String>, Vec<&ShardTarget>>::new();
+    for target in targets {
+        target_groups
+            .entry(target.required_features.clone())
+            .or_default()
+            .push(target);
+    }
+    for (required_features, grouped_targets) in target_groups {
+        let shard_count = if required_features.is_empty() {
+            target_shard_count
+        } else {
+            1
+        };
+        let mut target_shards = vec![Vec::new(); shard_count];
+        for target in grouped_targets {
+            let shard_index = stable_shard_index(&target.name, shard_count);
+            target_shards[shard_index].push(target.name.as_str());
+        }
+        for (shard_index, shard_target_names) in target_shards.into_iter().enumerate() {
+            if shard_target_names.is_empty() {
+                continue;
+            }
+            let cargo_target_args = shard_target_names
+                .iter()
+                .map(|target_name| format!("{cargo_target_option} {target_name}"))
+                .collect::<Vec<_>>()
+                .join(" ");
+            let lane_suffix = if required_features.is_empty() {
+                shard_index.to_string()
+            } else {
+                format!("features-{}", required_features.join("+"))
+            };
+            include.push(RustShard {
+                lane: format!("{package_name}-{target_kind}-{lane_suffix}"),
+                target: "light",
+                rust_scope: format!("-p {package_name}"),
+                clippy_scope: String::new(),
+                cargo_target_args,
+                cargo_features: required_features.join(","),
+            });
+        }
+    }
 }
 
 fn build_rust_shard_matrix(cli: &CiRustShardMatrixCli) -> Result<RustShardMatrix> {
@@ -1009,62 +1149,36 @@ fn build_rust_shard_matrix(cli: &CiRustShardMatrixCli) -> Result<RustShardMatrix
         });
     }
     for target_shard_package in &selected_target_shard_packages {
-        let binary_names = workspace_inventory
+        let package_inventory = workspace_inventory
             .get(target_shard_package)
             .context("target-shard package is absent from the workspace inventory")?;
-        if binary_names.is_empty() {
+        if package_inventory.binaries.is_empty() {
             bail!("target-shard package declares no explicit binary targets");
         }
         include.push(RustShard {
-            lane: format!("{target_shard_package}-lib-tests"),
+            lane: format!("{target_shard_package}-lib"),
             target: "light",
             rust_scope: format!("-p {target_shard_package}"),
             clippy_scope: String::new(),
-            cargo_target_args: "--lib --tests".to_string(),
+            cargo_target_args: "--lib".to_string(),
             cargo_features: String::new(),
         });
-        let mut binary_groups = BTreeMap::<Vec<String>, Vec<&ShardBinary>>::new();
-        for binary in binary_names {
-            binary_groups
-                .entry(binary.required_features.clone())
-                .or_default()
-                .push(binary);
-        }
-        for (required_features, grouped_binaries) in binary_groups {
-            let shard_count = if required_features.is_empty() {
-                cli.target_shard_count
-            } else {
-                1
-            };
-            let mut binary_shards = vec![Vec::new(); shard_count];
-            for binary in grouped_binaries {
-                let shard_index = stable_shard_index(&binary.name, shard_count);
-                binary_shards[shard_index].push(binary.name.as_str());
-            }
-            for (shard_index, shard_binary_names) in binary_shards.into_iter().enumerate() {
-                if shard_binary_names.is_empty() {
-                    continue;
-                }
-                let cargo_target_args = shard_binary_names
-                    .iter()
-                    .map(|binary_name| format!("--bin {binary_name}"))
-                    .collect::<Vec<_>>()
-                    .join(" ");
-                let lane_suffix = if required_features.is_empty() {
-                    shard_index.to_string()
-                } else {
-                    format!("features-{}", required_features.join("+"))
-                };
-                include.push(RustShard {
-                    lane: format!("{target_shard_package}-bins-{lane_suffix}"),
-                    target: "light",
-                    rust_scope: format!("-p {target_shard_package}"),
-                    clippy_scope: String::new(),
-                    cargo_target_args,
-                    cargo_features: required_features.join(","),
-                });
-            }
-        }
+        append_named_target_shards(
+            &mut include,
+            target_shard_package,
+            "tests",
+            "--test",
+            &package_inventory.tests,
+            INTEGRATION_TEST_SHARD_COUNT,
+        );
+        append_named_target_shards(
+            &mut include,
+            target_shard_package,
+            "bins",
+            "--bin",
+            &package_inventory.binaries,
+            cli.target_shard_count,
+        );
     }
     let mut emitted_packages = std::collections::BTreeSet::new();
     for shard in include
@@ -1082,25 +1196,33 @@ fn build_rust_shard_matrix(cli: &CiRustShardMatrixCli) -> Result<RustShardMatrix
     }
     for target_shard_package in &selected_target_shard_packages {
         emitted_packages.insert(target_shard_package.clone());
-        let expected_binaries: BTreeMap<&str, Vec<String>> = workspace_inventory
+        let package_inventory = workspace_inventory
             .get(target_shard_package)
-            .context("target-shard package is absent from the workspace inventory")?
+            .context("target-shard package is absent from the workspace inventory")?;
+        let expected_binaries: BTreeMap<&str, Vec<String>> = package_inventory
+            .binaries
             .iter()
             .map(|binary| (binary.name.as_str(), binary.required_features.clone()))
             .collect();
+        let expected_tests: BTreeMap<&str, Vec<String>> = package_inventory
+            .tests
+            .iter()
+            .map(|test| (test.name.as_str(), test.required_features.clone()))
+            .collect();
         let mut emitted_binaries = BTreeMap::new();
-        let mut non_binary_shard_count = 0;
+        let mut emitted_tests = BTreeMap::new();
+        let mut library_shard_count = 0;
         for shard in include
             .iter()
             .filter(|shard| shard.rust_scope == format!("-p {target_shard_package}"))
         {
-            if shard.cargo_target_args == "--lib --tests" {
-                non_binary_shard_count += 1;
+            if shard.cargo_target_args == "--lib" {
+                library_shard_count += 1;
                 continue;
             }
             let target_tokens: Vec<&str> = shard.cargo_target_args.split_whitespace().collect();
             if target_tokens.is_empty() || !target_tokens.len().is_multiple_of(2) {
-                bail!("target shard matrix emits malformed binary target arguments");
+                bail!("target shard matrix emits malformed named target arguments");
             }
             for pair in target_tokens.chunks_exact(2) {
                 let required_features = if shard.cargo_features.is_empty() {
@@ -1108,16 +1230,20 @@ fn build_rust_shard_matrix(cli: &CiRustShardMatrixCli) -> Result<RustShardMatrix
                 } else {
                     shard.cargo_features.split(',').map(str::to_string).collect()
                 };
-                if pair[0] != "--bin"
-                    || emitted_binaries
-                        .insert(pair[1], required_features)
-                        .is_some()
-                {
-                    bail!("target shard matrix emits an invalid or duplicate binary target");
+                let emitted_targets = match pair[0] {
+                    "--bin" => &mut emitted_binaries,
+                    "--test" => &mut emitted_tests,
+                    _ => bail!("target shard matrix emits an invalid named target option"),
+                };
+                if emitted_targets.insert(pair[1], required_features).is_some() {
+                    bail!("target shard matrix emits a duplicate named target");
                 }
             }
         }
-        if non_binary_shard_count != 1 || emitted_binaries != expected_binaries {
+        if library_shard_count != 1
+            || emitted_tests != expected_tests
+            || emitted_binaries != expected_binaries
+        {
             bail!("target shard matrix differs from the package's exact target and feature set");
         }
     }

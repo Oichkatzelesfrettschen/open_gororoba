@@ -373,8 +373,8 @@ verification = "The exact-head run reached terminal state with zero canceled job
 [[task]]
 id = "bounded-profile-test-certificate-tolerance"
 status = "implemented_pending_ci"
-finding = "The tiny-column bounded-profile test required a residual below 1e-12 even though the API accepts a global solver certificate tolerance of 1e-7 and configures Clarabel's internal feasibility tolerance at 1e-10. The solve remained feasible and finite but the test asserted unsupported precision."
-required_change = "Require the tiny-column residual to remain within the public solver-certificate tolerance while preserving the recovered 1e200 physical coefficient check."
+finding = "The tiny-column bounded-profile test required 1e-12 boundary-solution accuracy. Clarabel's 1e-10 objective-gap tolerance permits an interior-point boundary offset proportional to the square root of that gap; run 34777625713 confirmed that even the unsquared 1e-7 certificate threshold remained too strict for the returned primal value."
+required_change = "Require the residual and recovered 1e200 coefficient to remain within the square root of the public solver-certificate tolerance, which still proves that the 1e-200 nuisance column was retained rather than collapsed to zero."
 verification = "Hosted stats_core tests pass the tiny-column case and retain the extreme-column, overflow, feasibility, and exact-fixed-box regressions."
 
 [[task]]
@@ -390,3 +390,45 @@ status = "implemented_pending_ci"
 finding = "Hosted Casimir regeneration in run 34775591219 produced three deterministic solver-output changes after robust nuisance-column scaling. Cargo.lock and the bounded-profile certificate test also changed the native source-model identity."
 required_change = "Retain the three hosted output files byte-for-byte, refresh all 24 ordered source-input hashes and the source-model identity, preserve the generated manifest's two-newline ending, and bind the path-repair receipt to the refreshed manifest hash."
 verification = "Hosted Casimir freshness, source identity, output hashes, byte counts, and path-repair verification all pass on one exact commit."
+
+[[task]]
+id = "material-assay-typed-missingness"
+status = "implemented_pending_ci"
+finding = "Optional purity and composition strings could not distinguish an unmeasured assay, an inapplicable assay, a withheld result, a below-detection result, and an unknown state."
+required_change = "Require every specimen to carry a typed assay status and validate reported records, withholding reasons, and detection-limit values and units."
+verification = "Hosted materials_core tests accept each explicit absence class and reject blank or invalid populated assay metadata."
+
+[[task]]
+id = "bounded-distance-nonzero-underflow"
+status = "implemented_pending_ci"
+finding = "The direct Euclidean norm underflowed a finite nonzero residual such as 1e-200 to zero and incorrectly reported exact nuisance imitation."
+required_change = "Preserve the direct finite norm for ordinary vectors and use component scaling when the direct norm overflows or underflows a nonzero vector."
+verification = "Hosted stats_core tests preserve the 1e-200 distance, reject overflow, and retain existing bounded-profile output parity."
+
+[[task]]
+id = "ci-schedule-and-routing-completeness"
+status = "implemented_pending_ci"
+finding = "Scheduled full validation disabled component evidence, algebra_analysis changes omitted the lattice replay, and a comparison-base failure could leave DIFF_BASE unset before fail-slow path classification."
+required_change = "Select all component workflows on schedule, route algebra_analysis through lattice replay, and establish conservative full-routing outputs before fallible comparison-base work."
+verification = "Hosted CI policy checks the schedule and route contracts; a path-routing failure still exposes initialized values and all selected leaves remain collectable."
+
+[[task]]
+id = "exact-head-9b6fc93e-denominator"
+status = "complete"
+finding = "Run 34777625713 reached a terminal 58-job denominator: 55 jobs passed, Rust light-2 and aggregate validation failed, and docs deployment skipped. The sole independent failure was the bounded-profile tiny-column boundary assertion."
+required_change = "Retain the successful denominator, repair the assertion from the solver's objective-gap certificate, and publish one consolidated replacement only after every pending review correction is ready."
+verification = "The run completed without cancellation; validation-casimir-audit passed, all three scientific replay leaves passed, and docs-gate passed after 29 minutes 49 seconds."
+
+[[task]]
+id = "large-cli-library-integration-target-isolation"
+status = "implemented_pending_ci"
+finding = "The gororoba_cli_data --lib --tests row compiled 122 binary test harnesses before executing 249 tests and completed in 13 minutes 39 seconds in run 34775591219 and 10 minutes in run 34777625713. Cargo target selection, rather than a processor cap, created the oversized compilation surface."
+required_change = "Emit one --lib row, one named integration-test row, and existing named --bin rows for each target-sharded CLI package; verify exact target and required-feature coverage against Cargo manifests and automatic tests. Keep each package's integration tests together because Cargo builds package binaries to provide CARGO_BIN_EXE_* whenever an integration test is selected."
+verification = "The replacement matrix contains separate gororoba_cli_data library and four named integration-test targets in one row plus separate gororoba_cli_physics library and six named integration-test targets in one row, with no --lib --tests row and no repeated integration-triggered binary build per package."
+
+[[task]]
+id = "cd-papers-rustdoc-reexport-inlining"
+status = "implemented_pending_ci"
+finding = "Run 34777625713 restored a successful documentation cache and still spent 27 minutes 50 seconds in docs-freshness. Rustdoc started cd_papers at 19:30:26 and did not release the dependent queue until 19:50:31. The retained site contains duplicated cd_papers::prelude pages for cross-crate re-exports."
+required_change = "Apply rustdoc's official #[doc(no_inline)] attribute to cd_papers prelude and crate re-exports so the meta-crate links to owning documentation instead of reconstructing imported item pages; clear inherited Make jobserver variables before Cargo while preserving CARGO_BUILD_JOBS=available_parallelism."
+verification = "Hosted docs-gate keeps all re-exports visible, reports four workers without a stale jobserver warning, and materially reduces the interval from Documenting cd_papers to the next rustdoc unit."

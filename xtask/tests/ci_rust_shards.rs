@@ -121,9 +121,15 @@ fn workspace_scope_partitions_into_one_exact_package_set() {
 fn target_shards_cover_every_declared_binary_exactly_once() {
     let temp = tempfile::tempdir().unwrap();
     write_workspace(temp.path(), &[("crates/physics", "physics")]);
+    std::fs::create_dir_all(temp.path().join("crates/physics/tests")).unwrap();
+    std::fs::write(
+        temp.path().join("crates/physics/tests/automatic_test.rs"),
+        "",
+    )
+    .unwrap();
     std::fs::write(
         temp.path().join("crates/physics/Cargo.toml"),
-        "[package]\nname = \"physics\"\nversion = \"0.1.0\"\n\n[[bin]]\nname = \"alpha-bin\"\npath = \"src/bin/alpha.rs\"\n\n[[bin]]\nname = \"beta-bin\"\npath = \"src/bin/beta.rs\"\nrequired-features = [\"gpu\"]\n\n[[bin]]\nname = \"gamma-bin\"\npath = \"src/bin/gamma.rs\"\n",
+        "[package]\nname = \"physics\"\nversion = \"0.1.0\"\n\n[[bin]]\nname = \"alpha-bin\"\npath = \"src/bin/alpha.rs\"\n\n[[bin]]\nname = \"beta-bin\"\npath = \"src/bin/beta.rs\"\nrequired-features = [\"gpu\"]\n\n[[bin]]\nname = \"gamma-bin\"\npath = \"src/bin/gamma.rs\"\n\n[[test]]\nname = \"feature-test\"\npath = \"tests/feature.rs\"\nrequired-features = [\"payload\"]\n",
     )
     .unwrap();
     let output = run_target_sharder(temp.path(), &["physics"]);
@@ -135,12 +141,28 @@ fn target_shards_cover_every_declared_binary_exactly_once() {
     let matrix: Value = serde_json::from_slice(&output.stdout).unwrap();
     let entries = matrix["include"].as_array().unwrap();
     let mut observed = BTreeSet::new();
-    let mut non_binary_shards = 0;
+    let mut library_shards = 0;
     let mut gpu_shards = 0;
+    let mut observed_tests = BTreeSet::new();
     for entry in entries {
         let target_args = entry["cargo_target_args"].as_str().unwrap();
-        if target_args == "--lib --tests" {
-            non_binary_shards += 1;
+        if target_args == "--lib" {
+            library_shards += 1;
+        } else if target_args.starts_with("--test ") {
+            let features = entry["cargo_features"].as_str().unwrap();
+            let tokens: Vec<&str> = target_args.split_whitespace().collect();
+            for pair in tokens.chunks_exact(2) {
+                assert_eq!(pair[0], "--test");
+                assert_eq!(
+                    features,
+                    if pair[1] == "feature-test" {
+                        "payload"
+                    } else {
+                        ""
+                    }
+                );
+                assert!(observed_tests.insert(pair[1].to_string()));
+            }
         } else if target_args.starts_with("--bin ") {
             let features = entry["cargo_features"].as_str().unwrap();
             let tokens: Vec<&str> = target_args.split_whitespace().collect();
@@ -156,8 +178,15 @@ fn target_shards_cover_every_declared_binary_exactly_once() {
             }
         }
     }
-    assert_eq!(non_binary_shards, 1);
+    assert_eq!(library_shards, 1);
     assert_eq!(gpu_shards, 1);
+    assert_eq!(
+        observed_tests,
+        ["automatic_test", "feature-test"]
+            .into_iter()
+            .map(str::to_string)
+            .collect()
+    );
     assert_eq!(
         observed,
         ["alpha-bin", "beta-bin", "gamma-bin"]
@@ -197,7 +226,7 @@ fn multiple_target_shard_packages_cover_each_package_and_binary_once() {
     );
     let matrix: Value = serde_json::from_slice(&output.stdout).unwrap();
     let entries = matrix["include"].as_array().unwrap();
-    let mut observed_non_binary = BTreeSet::new();
+    let mut observed_libraries = BTreeSet::new();
     let mut observed_binaries = BTreeSet::new();
     for entry in entries {
         let package_name = packages_from_scope(entry["rust_scope"].as_str().unwrap());
@@ -207,8 +236,8 @@ fn multiple_target_shard_packages_cover_each_package_and_binary_once() {
         assert_eq!(package_name.len(), 1);
         let package_name = package_name[0];
         let target_args = entry["cargo_target_args"].as_str().unwrap();
-        if target_args == "--lib --tests" {
-            assert!(observed_non_binary.insert(package_name.to_string()));
+        if target_args == "--lib" {
+            assert!(observed_libraries.insert(package_name.to_string()));
             continue;
         }
         let target_tokens: Vec<&str> = target_args.split_whitespace().collect();
@@ -218,7 +247,7 @@ fn multiple_target_shard_packages_cover_each_package_and_binary_once() {
         }
     }
     assert_eq!(
-        observed_non_binary,
+        observed_libraries,
         ["data", "physics"].into_iter().map(str::to_string).collect()
     );
     assert_eq!(
@@ -231,6 +260,87 @@ fn multiple_target_shard_packages_cover_each_package_and_binary_once() {
         ]
         .into_iter()
         .map(|(package, binary)| (package.to_string(), binary.to_string()))
+        .collect()
+    );
+}
+
+#[test]
+fn repository_cli_target_shards_isolate_declared_integration_tests() {
+    let workspace_root = repo_root::resolve!();
+    let output = run_target_sharder(
+        &workspace_root,
+        &["gororoba_cli_data", "gororoba_cli_physics"],
+    );
+    assert!(
+        output.status.success(),
+        "{}",
+        String::from_utf8_lossy(&output.stderr)
+    );
+    let matrix: Value = serde_json::from_slice(&output.stdout).unwrap();
+    let entries = matrix["include"].as_array().unwrap();
+    let mut data_tests = BTreeSet::new();
+    let mut physics_tests = BTreeSet::new();
+    let mut library_rows = BTreeSet::new();
+    for entry in entries {
+        if entry["target"] == "clippy" {
+            continue;
+        }
+        let package_names = packages_from_scope(entry["rust_scope"].as_str().unwrap());
+        assert_eq!(package_names.len(), 1);
+        let package_name = package_names[0];
+        let target_args = entry["cargo_target_args"].as_str().unwrap();
+        assert_ne!(target_args, "--lib --tests");
+        if target_args == "--lib" {
+            assert!(library_rows.insert(package_name.to_string()));
+            continue;
+        }
+        if !target_args.starts_with("--test ") {
+            continue;
+        }
+        for pair in target_args
+            .split_whitespace()
+            .collect::<Vec<_>>()
+            .chunks_exact(2)
+        {
+            assert_eq!(pair[0], "--test");
+            match package_name {
+                "gororoba_cli_data" => assert!(data_tests.insert(pair[1].to_string())),
+                "gororoba_cli_physics" => assert!(physics_tests.insert(pair[1].to_string())),
+                _ => panic!("unexpected target-sharded package: {package_name}"),
+            };
+        }
+    }
+    assert_eq!(
+        library_rows,
+        ["gororoba_cli_data", "gororoba_cli_physics"]
+            .into_iter()
+            .map(str::to_string)
+            .collect()
+    );
+    assert_eq!(
+        data_tests,
+        [
+            "cli_smoke",
+            "facade_reexport_integrity",
+            "library_modules",
+            "nanograv_reexport_integrity",
+        ]
+        .into_iter()
+        .map(str::to_string)
+        .collect()
+    );
+    assert_eq!(
+        physics_tests,
+        [
+            "box_counting_amplitude_identity",
+            "c053_pathion_metamaterial_mapping",
+            "ephemeris_loader",
+            "integration_snia_ddt",
+            "nonlocal_algebraic_metamaterial",
+            "null_pilot_receipts",
+        ]
+        .into_iter()
+        .map(str::to_string)
         .collect()
     );
 }

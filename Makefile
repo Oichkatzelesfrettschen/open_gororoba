@@ -161,7 +161,7 @@ DOCS_BOOK_DIR ?= $(DOCS_SITE_DIR)/book
 DOCS_RUSTDOC_DIR ?= $(DOCS_SITE_DIR)/rustdoc
 DOCS_CARGO_TARGET_DIR ?= $(CURDIR)/target/docs-target
 DOCS_CARGO_BUILD_DIR ?= $(REPO_TMP_CARGO_ROOT)/docs
-DOCS_CARGO_ENV = CARGO_HOME=$(REPO_CARGO_HOME) CARGO_TARGET_DIR=$(DOCS_CARGO_TARGET_DIR) CARGO_BUILD_BUILD_DIR=$(DOCS_CARGO_BUILD_DIR) $(VALIDATION_PARALLEL_ENV)
+DOCS_CARGO_ENV = CARGO_HOME=$(REPO_CARGO_HOME) CARGO_TARGET_DIR=$(DOCS_CARGO_TARGET_DIR) CARGO_BUILD_BUILD_DIR=$(DOCS_CARGO_BUILD_DIR) MAKEFLAGS= MFLAGS= CARGO_MAKEFLAGS= $(VALIDATION_PARALLEL_ENV)
 # Hosted documentation uses default features; SDK-equipped hosts can opt in.
 DOCS_FEATURE_FLAGS ?=
 SEMVER_BASELINE_REV ?= v1.0-methods
@@ -343,6 +343,7 @@ validation-resource-contract-collectors:
 	@status=0; \
 	rust_shard_block="$$(sed -n '/id: rust-shards/,/name: Check repository hygiene/p' .github/workflows/ci.yml)"; \
 	docs_gate_block="$$(sed -n '/^  docs-gate:/,/^  docs-deploy:/p' .github/workflows/ci.yml)"; \
+	docs_cargo_env_line="$$(sed -n '/^DOCS_CARGO_ENV =/p' Makefile)"; \
 	casimir_path_block="$$(sed -n '/casimir_audit) pattern=/p' .github/workflows/ci.yml)"; \
 	frontier_check_block="$$(sed -n '/^casimir-optics-discrimination-frontier-check:/,/^$$/p' Makefile)"; \
 	for contract in 'ci-rust-shard-matrix' 'target-shard-package=gororoba_cli_physics' 'target-shard-package=gororoba_cli_data' 'target-shard-package=gororoba_cli_algebra' 'fallback_matrix=' 'CI_CARGO_TARGET_ARGS: $${{ matrix.cargo_target_args }}' 'CI_CARGO_FEATURES: $${{ matrix.cargo_features }}' 'matrix: $${{ fromJSON(needs.validation-core.outputs.rust_matrix) }}' 'make --jobs="$$WORKER_BUDGET" --keep-going "validate-ci-scoped-$${{ matrix.target }}"' 'timeout-minutes: 80' 'fail-fast: false' 'Report collected validation failures' 'Report aggregate validation admission' 'needs: [validation-policy, validation-core, validation-governance, validation-casimir-audit, rust-validation, scientific-replay, benchmark, proofs, paper, unsafe-survey]' 'uses: ./.github/workflows/bench-cd-kernel.yml' 'uses: ./.github/workflows/proofs.yml' 'uses: ./.github/workflows/paper.yml' 'uses: ./.github/workflows/unsafe-survey.yml' 'run_workspace_survey:' 'BENCHMARK_SELECTED:' 'PROOFS_SELECTED:' 'PAPER_SELECTED:' 'UNSAFE_SURVEY_SELECTED:' 'scientific-replay-inputs:' 'scientific-replay-leaf:' 'scientific-replay:' 'matrix: $${{ fromJSON(needs.scientific-replay-inputs.outputs.matrix) }}' '--bin hydrate-scientific-payloads' '--no-fail-fast -p algebra_experimental --lib' '--no-fail-fast -p algebra_experimental --test nufit_reference_identity' '--no-fail-fast -p lbm_3d --test box_counting_amplitude_identity' 'state=blocked_input' 'state=not_selected' 'state=executed_pass' 'state=executed_fail' "needs.validation-policy.result == 'success'" "needs.validation.result == 'success'" 'make --keep-going validation-resource-contract' 'make --jobs="$$WORKER_BUDGET" --keep-going casimir-optics-discrimination-audit-check' 'make --jobs="$$WORKER_BUDGET" --keep-going docs-freshness'; do \
@@ -352,10 +353,16 @@ validation-resource-contract-collectors:
 	    occurrences="$$(printf '%s\n' "$$rust_shard_block" | grep -Fc -- "--target-shard-package=$$package")"; \
 	    if [ "$$occurrences" -ne 1 ]; then echo "ERROR: Rust shard block must select $$package exactly once." >&2; status=1; fi; \
 	done; \
+	for contract in 'cargo_target_args: "--lib".to_string()' '"--test"' 'emitted_tests != expected_tests' 'INTEGRATION_TEST_SHARD_COUNT: usize = 1'; do \
+	    if ! grep -Fq -- "$$contract" xtask/src/main.rs; then echo "ERROR: target-sharded integration-test isolation contract is missing: $$contract" >&2; status=1; fi; \
+	done; \
+	if grep -Fq 'cargo_target_args: "--lib --tests".to_string()' xtask/src/main.rs; then echo "ERROR: target-sharded library row still selects every binary test target." >&2; status=1; fi; \
 	target_package_count="$$(printf '%s\n' "$$rust_shard_block" | grep -Fc -- '--target-shard-package=')"; \
 	if [ "$$target_package_count" -ne 3 ]; then echo "ERROR: Rust shard block must select exactly three large binary packages." >&2; status=1; fi; \
 	if ! printf '%s\n' "$$docs_gate_block" | grep -Fq 'needs: [validation-core]'; then echo "ERROR: docs-gate must depend only on its routing authority." >&2; status=1; fi; \
 	if printf '%s\n' "$$docs_gate_block" | grep -Fq 'needs.validation.result'; then echo "ERROR: docs-gate hides documentation failures behind aggregate validation." >&2; status=1; fi; \
+	if [ "$$(grep -Fc '#[doc(no_inline)]' crates/cd_papers/src/lib.rs)" -lt 14 ]; then echo "ERROR: cd_papers re-exports can inline duplicate cross-crate rustdoc pages." >&2; status=1; fi; \
+	if ! printf '%s\n' "$$docs_cargo_env_line" | grep -Fq 'MAKEFLAGS= MFLAGS= CARGO_MAKEFLAGS='; then echo "ERROR: docs Cargo inherits stale GNU make jobserver descriptors." >&2; status=1; fi; \
 	if ! printf '%s\n' "$$casimir_path_block" | grep -Fq 'rust-toolchain\.toml$$'; then echo "ERROR: Casimir audit routing omits the hashed Rust toolchain identity." >&2; status=1; fi; \
 	if ! printf '%s\n' "$$frontier_check_block" | grep -Fq -- 'verify-finite-frontier'; then echo "ERROR: routed Casimir audit omits finite-frontier verification." >&2; status=1; fi; \
 	if ! printf '%s\n' "$$frontier_check_block" | grep -Fq 'plans/casimir_optics_discrimination_frontier.toml'; then echo "ERROR: finite-frontier verification omits the canonical plan." >&2; status=1; fi; \
@@ -367,6 +374,9 @@ validation-resource-contract-collectors:
 	if ! printf '%s\n' "$$docs_gate_block" | grep -Fq 'if: success() && steps.docs-cache.outputs.cache-primary-key'; then echo "ERROR: docs-gate can retain an incomplete or failed build cache." >&2; status=1; fi; \
 	for contract in 'selected_paths=(' 'selected_files=(' 'cp --parents' 'path: $${{ runner.temp }}/scientific-replay-inputs'; do \
 	    if ! grep -Fq -- "$$contract" .github/workflows/ci.yml; then echo "ERROR: selected scientific replay staging contract is missing: $$contract" >&2; status=1; fi; \
+	done; \
+	for contract in "printf 'benchmark=true\\nproofs=true\\npaper=true\\nunsafe_survey=true\\n'" "echo 'DIFF_BASE=' >> \"$$GITHUB_ENV\"" "crates/(algebra_analysis|algebra_experimental)/"; do \
+	    if ! grep -Fq -- "$$contract" .github/workflows/ci.yml; then echo "ERROR: scheduled or fail-slow CI routing contract is missing: $$contract" >&2; status=1; fi; \
 	done; \
 	for lane in clippy light heavy; do \
 	    if ! grep -Fq "validate-ci-scoped-$$lane" Makefile; then echo "ERROR: missing independently runnable Rust CI shard: $$lane" >&2; status=1; fi; \
@@ -843,19 +853,20 @@ validate-ci-scoped-rust-lane: require-ci-validation-authority
 	fi; \
 	case "$${cargo_target_args[0]}" in \
 	    --lib) \
-	        if ! { [ "$${#cargo_target_args[@]}" -eq 2 ] && [ "$${cargo_target_args[1]}" = --tests ]; } && \
+	        if ! { [ "$${#cargo_target_args[@]}" -eq 1 ]; } && \
 	           ! { [ "$${#cargo_target_args[@]}" -eq 4 ] && [ "$${cargo_target_args[1]}" = --bins ] && [ "$${cargo_target_args[2]}" = --tests ] && [ "$${cargo_target_args[3]}" = --examples ]; }; then \
-	            echo "ERROR: non-binary target shard requires --lib --tests or --lib --bins --tests --examples." >&2; exit 1; \
+	            echo "ERROR: library target shard requires --lib or --lib --bins --tests --examples." >&2; exit 1; \
 	        fi \
 	        ;; \
-	    --bin) \
-	        no_tests_args=(--no-tests=pass); \
-	        if (( $${#cargo_target_args[@]} % 2 != 0 )); then echo "ERROR: binary target shard requires --bin name pairs." >&2; exit 1; fi; \
+	    --bin|--test) \
+	        target_option="$${cargo_target_args[0]}"; \
+	        if [ "$$target_option" = --bin ]; then no_tests_args=(--no-tests=pass); fi; \
+	        if (( $${#cargo_target_args[@]} % 2 != 0 )); then echo "ERROR: named target shard requires option and name pairs." >&2; exit 1; fi; \
 	        for ((target_index=0; target_index<$${#cargo_target_args[@]}; target_index+=2)); do \
-	            if [ "$${cargo_target_args[target_index]}" != --bin ] || [[ ! "$${cargo_target_args[target_index+1]}" =~ ^[A-Za-z0-9_][A-Za-z0-9_-]*$$ ]]; then echo "ERROR: invalid binary target shard." >&2; exit 1; fi; \
+	            if [ "$${cargo_target_args[target_index]}" != "$$target_option" ] || [[ ! "$${cargo_target_args[target_index+1]}" =~ ^[A-Za-z0-9_][A-Za-z0-9_-]*$$ ]]; then echo "ERROR: invalid named target shard." >&2; exit 1; fi; \
 	        done \
 	        ;; \
-	    *) echo "ERROR: CI_CARGO_TARGET_ARGS must select all targets, library and tests, or named binaries." >&2; exit 1 ;; \
+	    *) echo "ERROR: CI_CARGO_TARGET_ARGS must select all targets, a library, or named binary or integration-test targets." >&2; exit 1 ;; \
 	esac; \
 	light_scope=(); heavy_scope=(); \
 	if [ "$${rust_scope[0]}" = --workspace ]; then \

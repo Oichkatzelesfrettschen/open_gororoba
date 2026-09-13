@@ -48,25 +48,39 @@
 
 /// Re-exports from all paper crates.
 pub mod prelude {
+    #[doc(no_inline)]
     pub use cd_kernel::cayley_dickson::{cd_conjugate, cd_multiply, cd_norm_sq};
+    #[doc(no_inline)]
     pub use de_marrais_2000::{O_TRIPS, S_TRIPS, TOTAL_ASSESSORS, TOTAL_ZD_PAIRS, all_assessors};
+    #[doc(no_inline)]
     pub use dickson_1919::{CayleyDicksonLevel, PropertyReport, cd_inverse, verify_inverse};
+    #[doc(no_inline)]
     pub use hurwitz_1898::{CliffordSystem, CliffordVerification, HurwitzClassification, classify};
+    #[doc(no_inline)]
     pub use moreno_1997::{
         MorenoDecomposition, find_zd_witness_moreno, has_eigenvalue_minus_2, is_zd_moreno,
         moreno_decomposition, verify_corollary_1_17,
     };
+    #[doc(no_inline)]
     pub use schafer_1945::{DivisionTest, ModifiedCDAlgebra, test_division};
 }
 
 // Full crate re-exports for qualified access
+#[doc(no_inline)]
 pub use brown_1967;
+#[doc(no_inline)]
 pub use brown_1972;
+#[doc(no_inline)]
 pub use de_marrais_2000;
+#[doc(no_inline)]
 pub use dickson_1919;
+#[doc(no_inline)]
 pub use hurwitz_1898;
+#[doc(no_inline)]
 pub use moreno_1997;
+#[doc(no_inline)]
 pub use schafer_1945;
+#[doc(no_inline)]
 pub use wilmot_2025;
 
 #[cfg(test)]

@@ -185,13 +185,25 @@ pub struct MaterialState {
     pub history: Vec<String>,
 }
 
+/// Reported assay evidence or an explicit reason the assay record is absent.
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[serde(rename_all = "snake_case", tag = "status")]
+pub enum AssayStatus {
+    Reported { record: String },
+    NotMeasured,
+    BelowDetectionLimit { upper_bound: f64, unit: String },
+    NotApplicable,
+    Withheld { reason: String },
+    Unknown,
+}
+
 /// Physical specimen carrying preparation and geometry metadata.
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub struct Specimen {
     pub specimen_id: RecordId,
     pub state_id: RecordId,
-    pub purity_assay: Option<String>,
-    pub composition_assay: Option<String>,
+    pub purity_assay: AssayStatus,
+    pub composition_assay: AssayStatus,
     pub synthesis_or_deposition: String,
     pub anneal_history: Option<String>,
     pub thickness_m: Option<f64>,
@@ -767,15 +779,35 @@ impl MaterialState {
     }
 }
 
+impl AssayStatus {
+    fn validate(&self, label: &str) -> Result<(), String> {
+        match self {
+            Self::Reported { record } => require_nonempty(label, record),
+            Self::BelowDetectionLimit { upper_bound, unit } => {
+                if !upper_bound.is_finite() || *upper_bound < 0.0 {
+                    return Err(format!(
+                        "{label} detection limit must be finite and nonnegative"
+                    ));
+                }
+                require_nonempty(&format!("{label} detection-limit unit"), unit)
+            }
+            Self::Withheld { reason } => {
+                require_nonempty(&format!("{label} withholding reason"), reason)
+            }
+            Self::NotMeasured | Self::NotApplicable | Self::Unknown => Ok(()),
+        }
+    }
+}
+
 impl Specimen {
     pub fn validate(&self) -> Result<(), String> {
         self.specimen_id.validate("specimen identifier")?;
         self.state_id.validate("state identifier")?;
+        self.purity_assay.validate("purity assay")?;
+        self.composition_assay.validate("composition assay")?;
         require_nonempty("synthesis or deposition", &self.synthesis_or_deposition)?;
         require_nonempty("specimen geometry", &self.geometry)?;
         for (label, value) in [
-            ("purity assay", self.purity_assay.as_deref()),
-            ("composition assay", self.composition_assay.as_deref()),
             ("anneal history", self.anneal_history.as_deref()),
             ("specimen texture", self.texture.as_deref()),
         ] {
@@ -1336,8 +1368,10 @@ mod tests {
         let evaporated = Specimen {
             specimen_id: identifier("specimen:au:evaporated"),
             state_id: state.state_id.clone(),
-            purity_assay: Some("source assay required".to_owned()),
-            composition_assay: None,
+            purity_assay: AssayStatus::Reported {
+                record: "source assay required".to_owned(),
+            },
+            composition_assay: AssayStatus::Unknown,
             synthesis_or_deposition: "thermal evaporation".to_owned(),
             anneal_history: None,
             thickness_m: Some(200e-9),
@@ -1708,8 +1742,8 @@ mod tests {
             specimens: vec![Specimen {
                 specimen_id: identifier("specimen:au:test"),
                 state_id: identifier("state:au:test"),
-                purity_assay: None,
-                composition_assay: None,
+                purity_assay: AssayStatus::NotMeasured,
+                composition_assay: AssayStatus::Unknown,
                 synthesis_or_deposition: "reported preparation".to_owned(),
                 anneal_history: None,
                 thickness_m: None,
@@ -1933,15 +1967,11 @@ mod tests {
             .unwrap();
 
         for (label, error) in [
-            ("purity", "purity assay must be nonempty"),
-            ("composition", "composition assay must be nonempty"),
             ("anneal", "anneal history must be nonempty"),
             ("texture", "specimen texture must be nonempty"),
         ] {
             let mut blank = specimen.clone();
             match label {
-                "purity" => blank.purity_assay = Some(" ".to_owned()),
-                "composition" => blank.composition_assay = Some(" ".to_owned()),
                 "anneal" => blank.anneal_history = Some(" ".to_owned()),
                 "texture" => blank.texture = Some(" ".to_owned()),
                 _ => unreachable!(),
@@ -1961,6 +1991,56 @@ mod tests {
         assert_eq!(
             blank_adhesion_layer.validate().unwrap_err(),
             "adhesion-layer entry must be nonempty"
+        );
+    }
+
+    #[test]
+    fn specimen_assays_require_explicit_valid_statuses() {
+        let mut specimen = graph_with_quantities(Vec::new())
+            .specimens
+            .into_iter()
+            .next()
+            .unwrap();
+
+        assert_eq!(specimen.purity_assay, AssayStatus::NotMeasured);
+        assert_eq!(specimen.composition_assay, AssayStatus::Unknown);
+        assert!(specimen.validate().is_ok());
+
+        specimen.purity_assay = AssayStatus::Reported {
+            record: " ".to_owned(),
+        };
+        assert_eq!(
+            specimen.validate().unwrap_err(),
+            "purity assay must be nonempty"
+        );
+
+        specimen.purity_assay = AssayStatus::Reported {
+            record: "inductively coupled plasma mass spectrometry".to_owned(),
+        };
+        specimen.composition_assay = AssayStatus::Withheld {
+            reason: String::new(),
+        };
+        assert_eq!(
+            specimen.validate().unwrap_err(),
+            "composition assay withholding reason must be nonempty"
+        );
+
+        specimen.composition_assay = AssayStatus::BelowDetectionLimit {
+            upper_bound: -1.0,
+            unit: "atomic fraction".to_owned(),
+        };
+        assert_eq!(
+            specimen.validate().unwrap_err(),
+            "composition assay detection limit must be finite and nonnegative"
+        );
+
+        specimen.composition_assay = AssayStatus::BelowDetectionLimit {
+            upper_bound: 1e-6,
+            unit: String::new(),
+        };
+        assert_eq!(
+            specimen.validate().unwrap_err(),
+            "composition assay detection-limit unit must be nonempty"
         );
     }
 

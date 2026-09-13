@@ -59,7 +59,7 @@ jobs:
           component_outputs="$RUNNER_TEMP/component-outputs"
           route_components() {
             if [ "${{ github.event_name }}" = schedule ]; then
-              printf 'benchmark=false\nproofs=false\npaper=false\nunsafe_survey=false\n' > "$component_outputs"
+              printf 'benchmark=true\nproofs=true\npaper=true\nunsafe_survey=true\n' > "$component_outputs"
               return
             fi
             if [ "$FULL_COMPONENTS" = true ]; then
@@ -187,11 +187,14 @@ jobs:
 
       - name: Resolve immutable comparison base and worker budget
         id: inputs
+        if: always()
         env:
           EVENT_BASE: ${{ github.event.pull_request.base.sha || github.event.before }}
           FULL: ${{ github.event_name == 'schedule' || inputs.full == true }}
         run: |
           set -euo pipefail
+          echo 'DIFF_BASE=' >> "$GITHUB_ENV"
+          echo 'full=true' >> "$GITHUB_OUTPUT"
           rustc --edition=2024 -D warnings crates/gororoba_cli/src/bin/detect_worker_budget.rs -o "$RUNNER_TEMP/detect-worker-budget"
           worker_budget="$("$RUNNER_TEMP/detect-worker-budget")"
           echo "Hosted validation uses $worker_budget workers from std::thread::available_parallelism()."
@@ -646,7 +649,7 @@ jobs:
               run_nufit=true
               run_box_counting=true
             else
-              if grep -Eq '^(crates/algebra_experimental/|data/csv/cayley_dickson/)' "$RUNNER_TEMP/scientific-replay-changed-paths.txt"; then run_lattice=true; fi
+              if grep -Eq '^(crates/(algebra_analysis|algebra_experimental)/|data/csv/cayley_dickson/)' "$RUNNER_TEMP/scientific-replay-changed-paths.txt"; then run_lattice=true; fi
               if grep -Eq '^(crates/algebra_experimental/|data/output/audit/claim-family-evidence-adjudication/nufit-v6[01]-parameters\.pdf$)' "$RUNNER_TEMP/scientific-replay-changed-paths.txt"; then run_nufit=true; fi
               if grep -Eq '^(crates/(gororoba_cli_physics|lbm_3d|cosmology_core)/|data/output/audit/claim-family-evidence-adjudication/null-pilot-cpu/C1-uniform-fzd-0/(rho|force\.xyz)\.f64le$)' "$RUNNER_TEMP/scientific-replay-changed-paths.txt"; then run_box_counting=true; fi
             fi
