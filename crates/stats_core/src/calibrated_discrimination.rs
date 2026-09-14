@@ -143,6 +143,30 @@ fn finite_euclidean_norm(vector: &DVector<f64>) -> Result<f64, DiscriminationErr
     }
 }
 
+fn scale_bound_for_solver(
+    bound: f64,
+    maximum_component: f64,
+    normalized_norm: f64,
+    objective_scale: f64,
+) -> Result<f64, DiscriminationError> {
+    let component_product = bound * maximum_component;
+    let scaled_bound = if component_product.is_finite() {
+        let norm_product = component_product * normalized_norm;
+        if norm_product.is_finite() {
+            norm_product / objective_scale
+        } else {
+            (component_product / objective_scale) * normalized_norm
+        }
+    } else {
+        ((bound / objective_scale) * maximum_component) * normalized_norm
+    };
+    if scaled_bound.is_finite() {
+        Ok(scaled_bound)
+    } else {
+        Err(DiscriminationError::NumericalFailure)
+    }
+}
+
 fn bound_coordinate_tolerance(bound: &NuisanceBound) -> f64 {
     let interval_width = if bound.lower.is_sign_negative() != bound.upper.is_sign_negative() {
         bound.lower.abs().max(bound.upper.abs())
@@ -516,23 +540,30 @@ pub fn bounded_profile_distance(
         constraint_indices,
         constraint_data,
     );
+    let solver_bounds: Vec<_> = bounds
+        .iter()
+        .zip(&column_scales)
+        .map(|(bound, (maximum_component, normalized_norm))| {
+            Ok(NuisanceBound {
+                lower: scale_bound_for_solver(
+                    bound.lower,
+                    *maximum_component,
+                    *normalized_norm,
+                    objective_scale,
+                )?,
+                upper: scale_bound_for_solver(
+                    bound.upper,
+                    *maximum_component,
+                    *normalized_norm,
+                    objective_scale,
+                )?,
+                unit: bound.unit.clone(),
+            })
+        })
+        .collect::<Result<_, DiscriminationError>>()?;
     let mut right_hand_side = Vec::with_capacity(2 * parameter_count);
-    for (bound, (maximum_component, normalized_norm)) in bounds.iter().zip(&column_scales) {
-        let scaled_upper =
-            ((bound.upper * maximum_component) * normalized_norm) / objective_scale;
-        if !scaled_upper.is_finite() {
-            return Err(DiscriminationError::NumericalFailure);
-        }
-        right_hand_side.push(scaled_upper);
-    }
-    for (bound, (maximum_component, normalized_norm)) in bounds.iter().zip(&column_scales) {
-        let scaled_lower =
-            ((-bound.lower * maximum_component) * normalized_norm) / objective_scale;
-        if !scaled_lower.is_finite() {
-            return Err(DiscriminationError::NumericalFailure);
-        }
-        right_hand_side.push(scaled_lower);
-    }
+    right_hand_side.extend(solver_bounds.iter().map(|bound| bound.upper));
+    right_hand_side.extend(solver_bounds.iter().map(|bound| -bound.lower));
     let cones = [NonnegativeConeT::<f64>(2 * parameter_count)];
     let settings = DefaultSettingsBuilder::default()
         .verbose(false)
@@ -565,15 +596,6 @@ pub fn bounded_profile_distance(
     if !all_finite_vector(&parameters) {
         return Err(DiscriminationError::NumericalFailure);
     }
-    let solver_bounds: Vec<_> = bounds
-        .iter()
-        .zip(&column_scales)
-        .map(|(bound, (maximum_component, normalized_norm))| NuisanceBound {
-            lower: ((bound.lower * maximum_component) * normalized_norm) / objective_scale,
-            upper: ((bound.upper * maximum_component) * normalized_norm) / objective_scale,
-            unit: bound.unit.clone(),
-        })
-        .collect();
     validate_bounded_solution(
         SolverCertificate {
             status: solver.solution.status,
@@ -1083,6 +1105,21 @@ mod tests {
             1.0,
             epsilon = active_solution_tolerance
         );
+    }
+
+    #[test]
+    fn bounded_profile_avoids_intermediate_bound_scaling_overflow() {
+        let target = DVector::from_element(1, 1.0);
+        let nuisance = DMatrix::from_element(1, 1, 1e200);
+        let bounds = vec![NuisanceBound {
+            lower: 0.0,
+            upper: 1e200,
+            unit: "dimensionless".to_owned(),
+        }];
+
+        let result = bounded_profile_distance(&target, &nuisance, &bounds).unwrap();
+        assert!(result.distance <= SOLVER_CERTIFICATE_TOLERANCE);
+        assert_relative_eq!(result.nuisance_parameters[0] / 1e-200, 1.0, epsilon = 1e-7);
     }
 
     #[test]

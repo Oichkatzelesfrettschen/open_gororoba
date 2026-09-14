@@ -96,7 +96,7 @@ sha256 = "47844290c6208f0587a4a4779b12e0133e3d781afd13f84074ff871504d17c2f"
 
 [[source_model_input]]
 path = "crates/stats_core/src/calibrated_discrimination.rs"
-sha256 = "85a94b09d7964171402bf15f3c2c0e349465fe949a48a6455afd6ebab42c0f80"
+sha256 = "3d8f1f3bfb049fa9a6bae4f5c5e017c5f589693c2c8879ae5971757ad50afe43"
 
 [[source_model_input]]
 path = "crates/stats_core/Cargo.toml"

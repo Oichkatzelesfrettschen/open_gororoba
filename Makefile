@@ -357,6 +357,7 @@ validation-resource-contract-collectors:
 	validation_tools_status_block="$$(sed -n '/fn run_validation_tools_status/,/let now =/p' xtask/src/main.rs)"; \
 	cargo_target_parser_block="$$(sed -n '/^[[:space:]]*case .*cargo_target_args.* in/,/^[[:space:]]*light_scope=()/p' Makefile)"; \
 	casimir_path_block="$$(sed -n '/casimir_audit) pattern=/p' .github/workflows/ci.yml)"; \
+	box_counting_route_block="$$(sed -n '/run_box_counting=true; fi/p' .github/workflows/ci.yml)"; \
 	unsafe_survey_job_block="$$(sed -n '/^  unsafe-survey:/,/^  validation:/p' .github/workflows/ci.yml)"; \
 	frontier_check_block="$$(sed -n '/^casimir-optics-discrimination-frontier-check:/,/^$$/p' Makefile)"; \
 	hydration_input_block="$$(sed -n '/name: Materialize and stage bounded scientific replay inputs per lane/,/name: Upload bounded scientific replay inputs/p' .github/workflows/ci.yml)"; \
@@ -427,6 +428,8 @@ validation-resource-contract-collectors:
 	done; \
 	if ! printf '%s\n' "$$casimir_path_block" | grep -Fq 'rust-toolchain\.toml$$'; then echo "ERROR: Casimir audit routing omits the hashed Rust toolchain identity." >&2; status=1; fi; \
 	if ! printf '%s\n' "$$casimir_path_block" | grep -Fq 'gororoba_cli_provenance'; then echo "ERROR: Casimir audit routing omits its finite-frontier verifier owner." >&2; status=1; fi; \
+	if ! printf '%s\n' "$$casimir_path_block" | grep -Fq 'Makefile$$'; then echo "ERROR: Casimir audit routing omits its Make-owned execution recipes." >&2; status=1; fi; \
+	if ! printf '%s\n' "$$box_counting_route_block" | grep -Fq 'verified_core'; then echo "ERROR: box-counting replay routing omits its hardware-topology dependency." >&2; status=1; fi; \
 	if ! printf '%s\n' "$$unsafe_survey_job_block" | grep -Fq 'run_workspace_survey: true'; then echo "ERROR: routed unsafe-survey selection does not run the workspace inventory." >&2; status=1; fi; \
 	if ! printf '%s\n' "$$frontier_check_block" | grep -Fq -- 'verify-finite-frontier'; then echo "ERROR: routed Casimir audit omits finite-frontier verification." >&2; status=1; fi; \
 	if ! printf '%s\n' "$$frontier_check_block" | grep -Fq 'plans/casimir_optics_discrimination_frontier.toml'; then echo "ERROR: finite-frontier verification omits the canonical plan." >&2; status=1; fi; \

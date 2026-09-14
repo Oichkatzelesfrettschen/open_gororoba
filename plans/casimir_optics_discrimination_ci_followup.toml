@@ -1100,35 +1100,35 @@ verification = "GitHub Actions run 34882788520 completed without cancellation at
 
 [[task]]
 id = "fisher-information-coordinate-scale-invariance"
-status = "implemented_pending_ci"
+status = "complete"
 finding = "A global covariance-eigenvalue cutoff classified small positive variances as deterministic when coordinates used different units, so Fisher information changed under an invertible coordinate rescaling."
 required_change = "Decompose the coordinate-normalized correlation matrix, transform the signal by the same coordinate scales, and apply rank and null-space tests in that common basis."
 verification = "Hosted stats_core tests preserve unit Fisher information for diag(1, 1e-20) with signal (0, 1e-10) and its unit-rescaled representation."
 
 [[task]]
 id = "gold-candidate-optional-metadata-nonempty"
-status = "implemented_pending_ci"
+status = "complete"
 finding = "Optional gold-candidate metadata accepted Some values containing only empty or whitespace text, making present metadata indistinguishable from malformed absence."
 required_change = "Reject blank temperature, preparation, geometry, method, and uncertainty strings while retaining None as typed absence."
 verification = "Hosted materials_core tests reject empty and whitespace-only optional metadata and accept explicit None values."
 
 [[task]]
 id = "quantity-specific-detection-limit"
-status = "implemented_pending_ci"
+status = "complete"
 finding = "One measurement-level detection-limit unit was applied to every output, so a valid acquisition producing quantities with different units could not be represented."
 required_change = "Store and validate detection-limit status per quantity, using the legacy measurement-level value only for a single-output compatibility record."
 verification = "Hosted materials_core tests accept mixed-unit outputs with independent limits and preserve exact below-detection-limit matching."
 
 [[task]]
 id = "raw-artifact-immutable-provenance"
-status = "implemented_pending_ci"
+status = "complete"
 finding = "RawArtifact stored only an identifier, allowing measurements sharing that identifier to declare contradictory source, locator, or byte-hash provenance."
 required_change = "Bind path, source identity, locator, and SHA-256 to the raw-artifact record and require every referencing measurement to match the immutable provenance."
 verification = "Hosted materials_core tests reject each contradictory measurement field and malformed artifact path or digest metadata."
 
 [[task]]
 id = "cargo-config-scientific-replay-routing"
-status = "implemented_pending_ci"
+status = "complete"
 finding = "A pull request changing only .cargo/config.toml selected no hydrated scientific replay even though every replay leaf inherits Cargo configuration."
 required_change = "Include .cargo/config.toml in the common replay trigger and bind that trigger and all four selected lanes in the CI policy contract."
 verification = "Hosted validation-resource-contract and actionlint pass, and a Cargo-configuration-only path selects lattice, NuFIT, box-counting, and optics replay."
@@ -1142,7 +1142,35 @@ verification = "GitHub Actions run 34886936177 completed at exact head 0c7cdf1ef
 
 [[task]]
 id = "fisher-information-derived-output-freshness"
-status = "implemented_pending_ci"
+status = "complete"
 finding = "Coordinate-normalized Fisher decomposition changed one derived-information value at floating-point roundoff, leaving summary.toml and its manifest output digest stale while every other retained numerical output remained byte-identical."
 required_change = "Retain the exact hosted summary bytes and refresh only the summary output digest and enclosing path-repair receipt."
 verification = "The replacement validation-casimir-audit job reproduces summary.toml and native-output-manifest.toml byte for byte."
+
+[[task]]
+id = "exact-head-ci-32756ee4"
+status = "complete"
+finding = "Run 34889713033 reached a terminal 42-job denominator: 41 jobs passed, docs deployment skipped by pull-request policy, and no job failed or was canceled."
+required_change = "Retain this successful exact-head denominator as validation of the normalized Fisher-information outputs and every preceding published repair before applying the final three review findings."
+verification = "GitHub Actions run 34889713033 completed without cancellation at exact head 32756ee4801d3421a279f5f25797a5e8cebe3619."
+
+[[task]]
+id = "bounded-profile-bound-product-scaling"
+status = "implemented_pending_ci"
+finding = "A finite physical bound and finite nuisance-column scale could overflow during multiplication before division by the objective scale, rejecting a profile whose scaled bound and optimum are representable."
+required_change = "Scale each bound with an overflow-aware product ratio that preserves direct finite products and applies the objective divisor before an otherwise overflowing intermediate."
+verification = "Hosted stats_core tests recover the one-coordinate optimum 1e-200 for target 1, nuisance response 1e200, and physical bounds [0, 1e200]."
+
+[[task]]
+id = "casimir-audit-makefile-routing"
+status = "implemented_pending_ci"
+finding = "A pull request changing only Makefile could alter the Make-owned Casimir replay and freshness recipes without selecting validation-casimir-audit."
+required_change = "Include Makefile in the Casimir audit path trigger and bind that ownership edge in validation-resource-contract-collectors."
+verification = "Hosted validation-resource-contract and actionlint pass, and a Makefile-only path selects the Casimir audit lane."
+
+[[task]]
+id = "box-counting-topology-routing"
+status = "implemented_pending_ci"
+finding = "A pull request changing only verified_core could alter the HardwareTopology branch used by LbmSolver3D::evolve_one_step without selecting the ignored hydrated box-counting replay."
+required_change = "Include verified_core in the box-counting replay trigger and bind that dependency edge in validation-resource-contract-collectors."
+verification = "Hosted validation-resource-contract and actionlint pass, and a verified_core-only path selects the box-counting replay lane."
