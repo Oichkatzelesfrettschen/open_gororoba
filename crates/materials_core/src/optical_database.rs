@@ -113,6 +113,12 @@ pub struct DrudeLorentzParams {
     pub extended_drude: Option<ExtendedDrudeParams>,
 }
 
+#[derive(Debug, Clone, Copy, PartialEq)]
+enum StaticPermittivity {
+    Finite(f64),
+    Conductor,
+}
+
 /// Lorentz oscillator parameters.
 #[derive(Debug, Clone, Copy)]
 pub struct LorentzOscillator {
@@ -863,22 +869,50 @@ impl DrudeLorentzParams {
     /// Static dielectric constant (zero-frequency limit).
     ///
     /// For dielectrics: eps_static = eps_inf + sum_j S_j (Lorentz oscillator
-    /// static contribution). For metals: diverges (Drude -> -infinity at omega=0).
-    /// Returns None when the active Drude term has positive plasma strength.
+    /// static contribution). A Drude-Smith carrier term with complete
+    /// backscattering contributes omega_p^2 / gamma^2. Other active Drude
+    /// carrier terms diverge at zero frequency.
     pub fn static_dielectric(&self) -> Option<f64> {
-        let carrier_strength_ev = self
-            .extended_drude
-            .as_ref()
-            .map(|drude| drude.omega_p_ev)
-            .or_else(|| self.drude.as_ref().map(|drude| drude.omega_p_ev));
-        if carrier_strength_ev.is_some_and(|omega_p_ev| omega_p_ev > 0.0) {
-            return None;
+        match self.static_permittivity() {
+            StaticPermittivity::Finite(permittivity) => Some(permittivity),
+            StaticPermittivity::Conductor => None,
         }
-        let mut eps_0_val = self.eps_inf;
-        for osc in &self.oscillators {
-            eps_0_val += osc.strength;
+    }
+
+    fn static_permittivity(&self) -> StaticPermittivity {
+        let background = self.eps_inf
+            + self
+                .oscillators
+                .iter()
+                .map(|oscillator| oscillator.strength)
+                .sum::<f64>();
+
+        if let Some(extended_drude) = &self.extended_drude {
+            if extended_drude.omega_p_ev <= 0.0 {
+                return StaticPermittivity::Finite(background);
+            }
+            if let ScatteringModel::DrudeSmith {
+                gamma_ev,
+                backscatter_c,
+            } = &extended_drude.scattering
+            {
+                if *backscatter_c == -1.0 && *gamma_ev > 0.0 {
+                    let static_carrier =
+                        (extended_drude.omega_p_ev / *gamma_ev).powi(2);
+                    return StaticPermittivity::Finite(background + static_carrier);
+                }
+            }
+            return StaticPermittivity::Conductor;
         }
-        Some(eps_0_val)
+
+        if self
+            .drude
+            .is_some_and(|drude| drude.omega_p_ev > 0.0)
+        {
+            StaticPermittivity::Conductor
+        } else {
+            StaticPermittivity::Finite(background)
+        }
     }
 
     // Bandgap analysis methods (5) extracted to the `bandgap_analysis` submodule
@@ -1612,22 +1646,13 @@ pub fn casimir_lifshitz_energy(
     // ------------------------------------------------------------------
     {
         let static_tm_reflection = |material: &DrudeLorentzParams| {
-            let carrier_strength_ev = material
-                .extended_drude
-                .as_ref()
-                .map(|drude| drude.omega_p_ev)
-                .or_else(|| material.drude.as_ref().map(|drude| drude.omega_p_ev));
-            let has_conducting_carrier =
-                carrier_strength_ev.is_some_and(|omega_p_ev| omega_p_ev > 0.0);
-            if has_conducting_carrier {
+            match material.static_permittivity() {
+                StaticPermittivity::Finite(permittivity) => {
+                    ((permittivity - 1.0) / (permittivity + 1.0)).clamp(-1.0, 1.0)
+                }
                 // A local Drude conductor has an infinite static permittivity,
                 // so its electrostatic TM reflection amplitude is exactly one.
-                1.0
-            } else {
-                let eps_static = material
-                    .static_dielectric()
-                    .expect("a non-Drude material has finite static permittivity");
-                ((eps_static - 1.0) / (eps_static + 1.0)).clamp(-1.0, 1.0)
+                StaticPermittivity::Conductor => 1.0,
             }
         };
         let r_tm1 = static_tm_reflection(mat1);
@@ -4293,6 +4318,34 @@ mod tests {
     }
 
     #[test]
+    fn test_static_dielectric_drude_smith_complete_backscatter_is_finite() {
+        let material = DrudeLorentzParams {
+            drude: None,
+            oscillators: vec![LorentzOscillator {
+                strength: 1.5,
+                omega_0_ev: 5.0,
+                gamma_ev: 0.1,
+            }],
+            eps_inf: 4.0,
+            extended_drude: Some(ExtendedDrudeParams {
+                omega_p_ev: 1.2,
+                scattering: ScatteringModel::DrudeSmith {
+                    gamma_ev: 0.15,
+                    backscatter_c: -1.0,
+                },
+                eps_inf: 4.0,
+            }),
+        };
+
+        let expected = 4.0 + 1.5 + (1.2_f64 / 0.15).powi(2);
+        assert_eq!(
+            material.static_permittivity(),
+            StaticPermittivity::Finite(expected)
+        );
+        assert_eq!(material.static_dielectric(), Some(expected));
+    }
+
+    #[test]
     fn test_intraband_weight_gold() {
         let gold = gold_drude_lorentz();
         let w = gold.intraband_weight();
@@ -5311,6 +5364,58 @@ mod tests {
                 casimir_lifshitz_energy(material, material, separation, temperature, 0, 128);
             assert_eq!(carrier_energy, dielectric_energy);
         }
+    }
+
+    #[test]
+    fn test_lifshitz_drude_smith_complete_backscatter_uses_finite_zero_mode() {
+        let backscattered = DrudeLorentzParams {
+            drude: None,
+            oscillators: vec![LorentzOscillator {
+                strength: 1.5,
+                omega_0_ev: 5.0,
+                gamma_ev: 0.1,
+            }],
+            eps_inf: 4.0,
+            extended_drude: Some(ExtendedDrudeParams {
+                omega_p_ev: 1.2,
+                scattering: ScatteringModel::DrudeSmith {
+                    gamma_ev: 0.15,
+                    backscatter_c: -1.0,
+                },
+                eps_inf: 4.0,
+            }),
+        };
+        let finite_static_permittivity = 4.0 + 1.5 + (1.2_f64 / 0.15).powi(2);
+        let equivalent_dielectric = DrudeLorentzParams {
+            drude: None,
+            oscillators: vec![],
+            eps_inf: finite_static_permittivity,
+            extended_drude: None,
+        };
+        let conductor = gold_drude_lorentz();
+        let separation = 200e-9;
+        let temperature = 300.0;
+        let backscattered_energy = casimir_lifshitz_energy(
+            &backscattered,
+            &backscattered,
+            separation,
+            temperature,
+            0,
+            128,
+        );
+        let dielectric_energy = casimir_lifshitz_energy(
+            &equivalent_dielectric,
+            &equivalent_dielectric,
+            separation,
+            temperature,
+            0,
+            128,
+        );
+        let conductor_energy =
+            casimir_lifshitz_energy(&conductor, &conductor, separation, temperature, 0, 128);
+
+        assert_eq!(backscattered_energy, dielectric_energy);
+        assert_ne!(backscattered_energy, conductor_energy);
     }
 
     #[test]

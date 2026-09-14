@@ -516,23 +516,68 @@ pub fn fisher_information_with_pseudoinverse(
             return Err(DiscriminationError::NumericalFailure);
         }
     }
-    let symmetric_covariance = covariance * 0.5 + covariance.transpose() * 0.5;
-    let decomposition = SymmetricEigen::new(symmetric_covariance);
-    let spectral_scale = decomposition
+    if (0..covariance.nrows()).any(|index| covariance[(index, index)] < 0.0) {
+        return Err(DiscriminationError::NumericalFailure);
+    }
+    // Positive diagonal congruence preserves inertia. Normalize through the
+    // standard deviations so a large coordinate cannot hide an invalid mode
+    // elsewhere. A zero-variance coordinate must have zero covariance with
+    // every other coordinate.
+    let mut correlation = DMatrix::identity(covariance.nrows(), covariance.ncols());
+    let effective_relative_tolerance = relative_tolerance.max(64.0 * f64::EPSILON);
+    for row in 0..covariance.nrows() {
+        if covariance[(row, row)] == 0.0 {
+            correlation[(row, row)] = 0.0;
+        }
+        for column in (row + 1)..covariance.ncols() {
+            let row_deviation = covariance[(row, row)].sqrt();
+            let column_deviation = covariance[(column, column)].sqrt();
+            let upper = covariance[(row, column)];
+            let lower = covariance[(column, row)];
+            if row_deviation == 0.0 || column_deviation == 0.0 {
+                if upper != 0.0 || lower != 0.0 {
+                    return Err(DiscriminationError::NumericalFailure);
+                }
+                correlation[(row, column)] = 0.0;
+                correlation[(column, row)] = 0.0;
+                continue;
+            }
+            let larger_deviation = row_deviation.max(column_deviation);
+            let smaller_deviation = row_deviation.min(column_deviation);
+            let upper_correlation = upper / larger_deviation / smaller_deviation;
+            let lower_correlation = lower / larger_deviation / smaller_deviation;
+            if !upper_correlation.is_finite()
+                || !lower_correlation.is_finite()
+                || (upper_correlation - lower_correlation).abs()
+                    > effective_relative_tolerance
+            {
+                return Err(DiscriminationError::NumericalFailure);
+            }
+            let symmetric_correlation = 0.5 * (upper_correlation + lower_correlation);
+            if symmetric_correlation.abs() > 1.0 + effective_relative_tolerance {
+                return Err(DiscriminationError::NumericalFailure);
+            }
+            correlation[(row, column)] = symmetric_correlation;
+            correlation[(column, row)] = symmetric_correlation;
+        }
+    }
+    let coordinate_scaled_decomposition = SymmetricEigen::new(correlation);
+    let coordinate_scaled_spectral_scale = coordinate_scaled_decomposition
         .eigenvalues
         .iter()
         .copied()
         .map(f64::abs)
         .fold(0.0_f64, f64::max);
-    let effective_relative_tolerance = relative_tolerance.max(64.0 * f64::EPSILON);
-    let eigenvalue_tolerance = effective_relative_tolerance * spectral_scale;
-    if decomposition
+    let eigenvalue_tolerance = effective_relative_tolerance * coordinate_scaled_spectral_scale;
+    if coordinate_scaled_decomposition
         .eigenvalues
         .iter()
         .any(|eigenvalue| *eigenvalue < -eigenvalue_tolerance)
     {
         return Err(DiscriminationError::NumericalFailure);
     }
+    let symmetric_covariance = covariance * 0.5 + covariance.transpose() * 0.5;
+    let decomposition = SymmetricEigen::new(symmetric_covariance);
     let maximum = decomposition
         .eigenvalues
         .iter()
@@ -548,7 +593,10 @@ pub fn fisher_information_with_pseudoinverse(
         .enumerate()
     {
         if *eigenvalue > threshold {
-            information += coordinate * coordinate / eigenvalue;
+            // Division before squaring preserves quotients whose unscaled
+            // coordinate square underflows even though the Fisher term does not.
+            let standardized_coordinate = coordinate / eigenvalue.sqrt();
+            information += standardized_coordinate * standardized_coordinate;
             if !information.is_finite() {
                 return Err(DiscriminationError::NumericalFailure);
             }
@@ -973,17 +1021,57 @@ mod tests {
     }
 
     #[test]
-    fn covariance_rejects_indefinite_input_but_accepts_roundoff() {
+    fn covariance_rejects_negative_variance_but_accepts_symmetric_roundoff() {
         let signal = DVector::from_vec(vec![0.0, 1.0]);
         let indefinite = DMatrix::from_diagonal(&DVector::from_vec(vec![-1e-3, 1.0]));
         assert!(fisher_information_with_pseudoinverse(&signal, &indefinite, 1e-12).is_err());
 
-        let roundoff = DMatrix::from_diagonal(&DVector::from_vec(vec![-1e-14, 1.0]));
-        assert_relative_eq!(
-            fisher_information_with_pseudoinverse(&signal, &roundoff, 1e-12).unwrap(),
-            1.0,
-            epsilon = 1e-12
+        let negative_roundoff = DMatrix::from_diagonal(&DVector::from_vec(vec![-1e-14, 1.0]));
+        assert!(
+            fisher_information_with_pseudoinverse(&signal, &negative_roundoff, 1e-12).is_err()
         );
+
+        let symmetric_roundoff = DMatrix::from_row_slice(2, 2, &[1.0, 1.0, 1.0, 1.0]);
+        assert!(
+            fisher_information_with_pseudoinverse(&signal, &symmetric_roundoff, 1e-12).is_ok()
+        );
+    }
+
+    #[test]
+    fn covariance_psd_validation_scales_each_coordinate() {
+        let signal = DVector::from_vec(vec![1.0, 1.0]);
+        let indefinite = DMatrix::from_diagonal(&DVector::from_vec(vec![1e200, -1.0]));
+        let tiny_negative_variance =
+            DMatrix::from_diagonal(&DVector::from_vec(vec![1e-300, -1e-320]));
+        let zero_variance_with_covariance =
+            DMatrix::from_row_slice(2, 2, &[1e200, 1e90, 1e90, 0.0]);
+
+        assert_eq!(
+            fisher_information_with_pseudoinverse(&signal, &indefinite, 1e-12),
+            Err(DiscriminationError::NumericalFailure)
+        );
+        assert_eq!(
+            fisher_information_with_pseudoinverse(&signal, &tiny_negative_variance, 1e-12),
+            Err(DiscriminationError::NumericalFailure)
+        );
+        assert_eq!(
+            fisher_information_with_pseudoinverse(
+                &signal,
+                &zero_variance_with_covariance,
+                1e-12
+            ),
+            Err(DiscriminationError::NumericalFailure)
+        );
+    }
+
+    #[test]
+    fn fisher_information_scales_tiny_signal_before_squaring() {
+        let signal = DVector::from_element(1, 1e-200);
+        let covariance = DMatrix::from_element(1, 1, 1e-300);
+
+        let information =
+            fisher_information_with_pseudoinverse(&signal, &covariance, 1e-12).unwrap();
+        assert_relative_eq!(information, 1e-100, max_relative = 1e-12);
     }
 
     #[test]

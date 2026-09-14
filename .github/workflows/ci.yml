@@ -298,7 +298,7 @@ jobs:
           CI_CLIPPY_SCOPE: ${{ steps.lint.outputs.rust_scope }}
         run: |
           set -euo pipefail
-          fallback_matrix='{"include":[{"lane":"clippy-fallback","target":"clippy","rust_scope":"","clippy_scope":"--workspace","cargo_target_args":"","cargo_features":""},{"lane":"workspace-fallback","target":"light","rust_scope":"--workspace","clippy_scope":"","cargo_target_args":"--lib --bins --tests --examples","cargo_features":""}]}'
+          fallback_matrix='{"include":[{"lane":"clippy-fallback","target":"clippy","rust_scope":"","clippy_scope":"--workspace","cargo_target_args":"","cargo_features":""},{"lane":"workspace-fallback","target":"light","rust_scope":"--workspace","clippy_scope":"","cargo_target_args":"--lib --bins --tests --examples","cargo_features":""},{"lane":"heavy-fallback","target":"heavy","rust_scope":"-p algebra_analysis -p gr_core","clippy_scope":"","cargo_target_args":"--lib --bins --tests --examples","cargo_features":""}]}'
           if ! make --jobs="$WORKER_BUDGET" "$CARGO_TARGET_DIR/validation-tools/xtask"; then
             printf 'matrix=%s\n' "$fallback_matrix" >> "$GITHUB_OUTPUT"
             exit 1

@@ -593,3 +593,87 @@ status = "implemented_pending_ci"
 finding = "Governance succeeded in run 34783811255 despite the stale committed lockfile because staged validation-tool Cargo builds omitted --locked and could update the runner checkout before executing registry checks."
 required_change = "Run every staged validation-tool Cargo build with --locked and pin those command forms in the hosted resource contract."
 verification = "Hosted validation-policy passes the locked-tool contract, and governance builds and executes its staged tools without changing or bypassing the committed dependency graph."
+
+[[task]]
+id = "exact-head-42ffd1f2-terminal-denominator"
+status = "complete"
+finding = "Run 34784435524 reached a terminal 39-job denominator. Hydration, both benchmarks, proofs, governance, paper, unsafe survey, and all three scientific replay leaves passed. Every Rust shard shared one Bash parser failure, while Casimir audit and documentation shared one missing production dependency."
+required_change = "Terminate the complete denominator before repairing the two independent source defects."
+verification = "The run completed without cancellation at exact head 42ffd1f2a2a38a2cdc15de569a6170d82ed8af17."
+
+[[task]]
+id = "target-parser-command-separators"
+status = "implemented_pending_ci"
+finding = "The generated-target parser omitted semicolons after a multiline fi and done before the next command, so Bash rejected every Rust shard before Cargo execution."
+required_change = "Terminate both compound commands with semicolons while preserving the guarded library, binary, integration-test, and example target grammar."
+verification = "Hosted validation-policy passes and every routed Rust shard enters Cargo with the generated target arguments."
+
+[[task]]
+id = "casimir-audit-production-provenance-dependency"
+status = "implemented_pending_ci"
+finding = "casimir-optics-discrimination-audit imports provenance_store in its production binary, but gororoba_cli_physics declared provenance_store only under dev-dependencies. Rustdoc and the routed native audit both failed with E0432."
+required_change = "Move provenance_store to the package's production dependencies and refresh the Cargo-manifest-bound native source identity."
+verification = "Hosted rustdoc and validation-casimir-audit compile and execute the production binary."
+
+[[task]]
+id = "rust-router-heavy-fallback-coverage"
+status = "implemented_pending_ci"
+finding = "The Rust matrix fallback contains Clippy and light-package tests but omits the heavy algebra_analysis and gr_core test lane when matrix generation fails."
+required_change = "Add the heavy package selector and complete library, binary, test, and example target arguments to the static fallback matrix."
+verification = "Hosted validation-policy requires the exact heavy fallback row, including package scope and complete target arguments, and the exact-head matrix retains that row when generated routing is unavailable."
+
+[[task]]
+id = "drude-smith-finite-static-endpoint"
+status = "implemented_pending_ci"
+finding = "The static conductor predicate treats every positive-strength Drude-Smith model as divergent, although backscatter_c = -1 cancels the 1/xi term and leaves finite static permittivity."
+required_change = "Derive the zero-frequency material response from the selected scattering model and preserve the finite omega_p^2/gamma^2 endpoint."
+verification = "Hosted materials_core tests distinguish the fully backscattered finite endpoint from genuinely divergent Drude and Drude-Smith responses."
+
+[[task]]
+id = "retained-source-role-contract"
+status = "implemented_pending_ci"
+finding = "The retained-source parser ignores each source role, so a non-supporting witness can be relabeled as positive evidence without invalidating the audit."
+required_change = "Deserialize roles and require exact source ID, retained path, and role equality for the complete retained-source set."
+verification = "Hosted Casimir audit mutation tests reject missing and altered roles, including promotion of the non-supporting witness."
+
+[[task]]
+id = "fitted-quantity-specimen-condition-lineage"
+status = "implemented_pending_ci"
+finding = "An experimental fitted quantity can cite direct measurements from another specimen or condition set and still pass graph validation."
+required_change = "Require fitted-input measurements to match the fitted quantity's specimen and conditions unless an explicit typed transfer records the relationship."
+verification = "Hosted materials_core tests reject cross-specimen and cross-condition fitted inputs while accepting matched direct-measurement lineage."
+
+[[task]]
+id = "fisher-scaled-coordinate-accumulation"
+status = "implemented_pending_ci"
+finding = "The covariance pseudoinverse squares a tiny signal coordinate before variance scaling, which can underflow a finite Fisher contribution to zero."
+required_change = "Scale each retained signal coordinate by the covariance-mode standard deviation before squaring and accumulate with overflow-safe arithmetic."
+verification = "Hosted stats_core tests recover 1e-100 information from signal 1e-200 and variance 1e-300."
+
+[[task]]
+id = "covariance-coordinate-scaled-psd-rejection"
+status = "implemented_pending_ci"
+finding = "A global eigenvalue tolerance can hide a physically invalid negative variance when covariance coordinates span extreme scales."
+required_change = "Validate covariance diagonals and coordinate-scaled positive semidefiniteness before applying the numerical pseudoinverse cutoff."
+verification = "Hosted stats_core tests reject diag(1e200, -1) and preserve valid singular covariance handling."
+
+[[task]]
+id = "heavy-fallback-mutation-oracle"
+status = "implemented_pending_ci"
+finding = "Adding the heavy fallback row without a policy oracle left its package scope and target coverage removable while validation-policy still passed."
+required_change = "Require the exact heavy fallback JSON row once inside the bounded Rust-shard workflow block."
+verification = "Hosted validation-policy fails when the heavy target, algebra_analysis or gr_core scope, or complete target arguments are removed from the fallback row."
+
+[[task]]
+id = "covariance-zero-variance-cross-term-rejection"
+status = "implemented_pending_ci"
+finding = "Row-maximum congruence scaling let a zero-variance coordinate borrow its off-diagonal magnitude as a scale and could hide an invalid negative mode."
+required_change = "Normalize through diagonal standard deviations and reject every nonzero covariance attached to a zero-variance coordinate before spectral tolerance."
+verification = "Hosted stats_core tests reject [[1e200, 1e90], [1e90, 0]] and retain valid singular covariance handling."
+
+[[task]]
+id = "pr185-review-thread-denominator"
+status = "in_progress"
+finding = "The paginated exact-head review query reports 107 total threads, 2 resolved threads, and 105 unresolved threads before the consolidated repair."
+required_change = "Classify every stable thread ID against the final exact-head source, record an evidence-backed disposition, and resolve each implemented or superseded thread after hosted validation."
+verification = "A post-settling-window paginated GraphQL query reports exact set equality with the classified denominator and zero unresolved review threads."

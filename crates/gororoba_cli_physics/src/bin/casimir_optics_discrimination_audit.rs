@@ -49,55 +49,74 @@ const ANGULAR_CONVERGENCE_TARGET: &str = "Au20/SiO2-50/Al2O3-50/Si_vs_Au";
 const PRODUCER_SOURCE: &str = include_str!("casimir_optics_discrimination_audit.rs");
 const SOURCE_RETRIEVAL_MANIFEST: &str = "source-retrieval-manifest.toml";
 const SOURCE_OBSERVATION_DIRECTORY: &str = "source-observations";
-const EXPECTED_RETAINED_SOURCES: [(&str, &str); 12] = [
-    (
-        "LIFSHITZ-1956",
-        "data/output/audit/casimir-optics-discrimination/sources/lifshitz-planar-media-1956.pdf",
-    ),
-    (
-        "CASIMIR-REVIEW-2009",
-        "data/output/audit/casimir-optics-discrimination/sources/casimir-scattering-review-2009.pdf",
-    ),
-    (
-        "HNLS-2017",
-        "data/output/audit/casimir-optics-discrimination/sources/hnls-quantum-metrology-2017.pdf",
-    ),
-    (
-        "MEMORY-KERNEL-CP-2009",
-        "data/output/audit/casimir-optics-discrimination/sources/quantum-memory-kernel-cp-2009.pdf",
-    ),
-    (
-        "AUTOQEC-METROLOGY-2026",
-        "data/output/audit/casimir-optics-discrimination/sources/autonomous-qec-metrology-2026.pdf",
-    ),
-    (
-        "MCPEAK-2015-MANUSCRIPT",
-        "data/output/audit/casimir-optics-discrimination/sources/mcpeak-plasmonic-films-2015.pdf",
-    ),
-    (
-        "RIINFO-AU-JOHNSON",
-        "data/output/audit/casimir-optics-discrimination/sources/au-Johnson.yml",
-    ),
-    (
-        "RIINFO-AU-OLMON-EVAPORATED",
-        "data/output/audit/casimir-optics-discrimination/sources/au-Olmon-ev.yml",
-    ),
-    (
-        "RIINFO-AU-MCPEAK",
-        "data/output/audit/casimir-optics-discrimination/sources/au-McPeak.yml",
-    ),
-    (
-        "RIINFO-AU-KLINAVICIUS-11NM",
-        "data/output/audit/casimir-optics-discrimination/sources/au-Klinavicius-11.4nm.yml",
-    ),
-    (
-        "RIINFO-DATABASE-LICENSE",
-        "data/output/audit/casimir-optics-discrimination/sources/refractiveindex-info-database-license.txt",
-    ),
-    (
-        "REJECTED-ARXIV-0801.1757",
-        "data/output/audit/casimir-optics-discrimination/sources/master-equation-tutorial-nonsupporting-2008.pdf",
-    ),
+#[derive(Clone, Copy)]
+struct ExpectedRetainedSource {
+    id: &'static str,
+    path: &'static str,
+    role: &'static str,
+}
+
+const EXPECTED_RETAINED_SOURCES: [ExpectedRetainedSource; 12] = [
+    ExpectedRetainedSource {
+        id: "LIFSHITZ-1956",
+        path: "data/output/audit/casimir-optics-discrimination/sources/lifshitz-planar-media-1956.pdf",
+        role: "Primary derivation of electromagnetic fluctuation forces between planar media.",
+    },
+    ExpectedRetainedSource {
+        id: "CASIMIR-REVIEW-2009",
+        path: "data/output/audit/casimir-optics-discrimination/sources/casimir-scattering-review-2009.pdf",
+        role: "Review cross-check for planar Lifshitz and sphere-plane PFA equations.",
+    },
+    ExpectedRetainedSource {
+        id: "HNLS-2017",
+        path: "data/output/audit/casimir-optics-discrimination/sources/hnls-quantum-metrology-2017.pdf",
+        role: "Primary theorem source for Hamiltonian-not-in-Lindblad-span assumptions and conclusion.",
+    },
+    ExpectedRetainedSource {
+        id: "MEMORY-KERNEL-CP-2009",
+        path: "data/output/audit/casimir-optics-discrimination/sources/quantum-memory-kernel-cp-2009.pdf",
+        role: "Primary source showing that quantum memory kernels need explicit complete-positivity conditions.",
+    },
+    ExpectedRetainedSource {
+        id: "AUTOQEC-METROLOGY-2026",
+        path: "data/output/audit/casimir-optics-discrimination/sources/autonomous-qec-metrology-2026.pdf",
+        role: "Primary finite-time sufficient-condition source for autonomous QEC metrology.",
+    },
+    ExpectedRetainedSource {
+        id: "MCPEAK-2015-MANUSCRIPT",
+        path: "data/output/audit/casimir-optics-discrimination/sources/mcpeak-plasmonic-films-2015.pdf",
+        role: "Primary specimen preparation and ellipsometry source for template-stripped gold.",
+    },
+    ExpectedRetainedSource {
+        id: "RIINFO-AU-JOHNSON",
+        path: "data/output/audit/casimir-optics-discrimination/sources/au-Johnson.yml",
+        role: "CC0 digitized Johnson-Christy optical table; underlying paper remains the experimental authority.",
+    },
+    ExpectedRetainedSource {
+        id: "RIINFO-AU-OLMON-EVAPORATED",
+        path: "data/output/audit/casimir-optics-discrimination/sources/au-Olmon-ev.yml",
+        role: "CC0 digitized evaporated-gold optical table; underlying paper remains the experimental authority.",
+    },
+    ExpectedRetainedSource {
+        id: "RIINFO-AU-MCPEAK",
+        path: "data/output/audit/casimir-optics-discrimination/sources/au-McPeak.yml",
+        role: "CC0 digitized template-stripped-gold optical table linked to the retained primary manuscript.",
+    },
+    ExpectedRetainedSource {
+        id: "RIINFO-AU-KLINAVICIUS-11NM",
+        path: "data/output/audit/casimir-optics-discrimination/sources/au-Klinavicius-11.4nm.yml",
+        role: "CC0 digitized nanoparticle optical table demonstrating geometry- and preparation-specific gold records.",
+    },
+    ExpectedRetainedSource {
+        id: "RIINFO-DATABASE-LICENSE",
+        path: "data/output/audit/casimir-optics-discrimination/sources/refractiveindex-info-database-license.txt",
+        role: "Pinned CC0 database license text.",
+    },
+    ExpectedRetainedSource {
+        id: "REJECTED-ARXIV-0801.1757",
+        path: "data/output/audit/casimir-optics-discrimination/sources/master-equation-tutorial-nonsupporting-2008.pdf",
+        role: "Retained negative provenance witness: this tutorial does not support the memory-kernel CP proposition and carries no evidentiary weight for that claim.",
+    },
 ];
 const EXPECTED_SOURCE_OBSERVATIONS: [(&str, &str); 12] = [
     ("LIFSHITZ-1956", "lifshitz-1956.toml"),
@@ -245,6 +264,7 @@ struct RetainedSource {
     url: String,
     path: PathBuf,
     sha256: String,
+    role: String,
 }
 
 #[derive(Debug, Deserialize)]
@@ -511,16 +531,28 @@ fn verify_source_retrieval_manifest_source(source: &str, repository_root: &Path)
 
     let expected_sources = EXPECTED_RETAINED_SOURCES
         .iter()
-        .map(|(id, path)| ((*id).to_owned(), PathBuf::from(*path)))
+        .map(|source| {
+            (
+                source.id.to_owned(),
+                PathBuf::from(source.path),
+                source.role.to_owned(),
+            )
+        })
         .collect::<BTreeSet<_>>();
     let observed_sources = manifest
         .source
         .iter()
-        .map(|retained_source| (retained_source.id.clone(), retained_source.path.clone()))
+        .map(|retained_source| {
+            (
+                retained_source.id.clone(),
+                retained_source.path.clone(),
+                retained_source.role.clone(),
+            )
+        })
         .collect::<BTreeSet<_>>();
     ensure!(
         observed_sources == expected_sources && manifest.source.len() == expected_sources.len(),
-        "source-retrieval manifest does not declare the exact retained source set"
+        "source-retrieval manifest does not declare the exact retained source ID/path/role set"
     );
 
     for retained_source in &manifest.source {
@@ -2326,7 +2358,48 @@ mod tests {
         let incomplete_manifest = manifest_source.replacen("LIFSHITZ-1956", "OTHER-SOURCE", 1);
         let error = verify_source_retrieval_manifest_source(&incomplete_manifest, &repository_root)
             .unwrap_err();
-        assert!(error.to_string().contains("exact retained source set"));
+        assert!(error.to_string().contains("exact retained source ID/path/role set"));
+    }
+
+    #[test]
+    fn retained_source_manifest_requires_every_source_role() {
+        let (repository_root, manifest_source, _) = retained_source_manifest_fixture();
+        let first_role = manifest_source
+            .lines()
+            .find(|line| line.starts_with("role = "))
+            .unwrap();
+        let missing_role_manifest = manifest_source.replacen(first_role, "", 1);
+        assert_ne!(missing_role_manifest, manifest_source);
+
+        let error =
+            verify_source_retrieval_manifest_source(&missing_role_manifest, &repository_root)
+                .unwrap_err();
+        assert!(format!("{error:#}").contains("missing field `role`"));
+    }
+
+    #[test]
+    fn retained_source_manifest_preserves_the_non_supporting_witness_role() {
+        let (repository_root, manifest_source, _) = retained_source_manifest_fixture();
+        let non_supporting_role = EXPECTED_RETAINED_SOURCES
+            .iter()
+            .find(|source| source.id == "REJECTED-ARXIV-0801.1757")
+            .unwrap()
+            .role;
+        let role_declaration = format!("role = {non_supporting_role:?}");
+        let promoted_manifest = manifest_source.replacen(
+            &role_declaration,
+            "role = \"Primary source supporting the memory-kernel CP proposition.\"",
+            1,
+        );
+        assert_ne!(promoted_manifest, manifest_source);
+
+        let error = verify_source_retrieval_manifest_source(&promoted_manifest, &repository_root)
+            .unwrap_err();
+        assert!(
+            error
+                .to_string()
+                .contains("exact retained source ID/path/role set")
+        );
     }
 
     #[test]
@@ -2407,7 +2480,7 @@ mod tests {
             .join(SOURCE_RETRIEVAL_MANIFEST);
         let manifest_source = fs::read_to_string(manifest_path).unwrap();
         let temporary_repository = tempfile::tempdir().unwrap();
-        let first_path = PathBuf::from(EXPECTED_RETAINED_SOURCES[0].1);
+        let first_path = PathBuf::from(EXPECTED_RETAINED_SOURCES[0].path);
         let retained_path = temporary_repository.path().join(&first_path);
         fs::create_dir_all(retained_path.parent().unwrap()).unwrap();
         let external_file = temporary_repository.path().join("external-source.pdf");

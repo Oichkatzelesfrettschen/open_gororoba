@@ -743,6 +743,7 @@ optics_core = { path = "../optics_core" }
 ort = { workspace = true, optional = true }
 pathion_ellip = { version = "0.1.0", path = "../pathion_ellip" }
 plotters = { workspace = true }
+provenance_store = { workspace = true }
 qgp_scaling = { path = "../qgp_scaling" }
 quantum_core = { path = "../quantum_core" }
 rand = { workspace = true }
@@ -771,7 +772,6 @@ zarrs_filesystem = { workspace = true, optional = true }
 zip = { workspace = true }
 
 [dev-dependencies]
-provenance_store = { workspace = true }
 tempfile = { workspace = true }
 
 [features]

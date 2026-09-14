@@ -1215,6 +1215,23 @@ impl MaterialEvidenceGraph {
                 input_quantity_ids, ..
             } = &quantity.evidence
             {
+                let QuantityOrigin::Measurement {
+                    measurement_id: fitted_measurement_id,
+                } = &quantity.origin
+                else {
+                    return Err(format!(
+                        "fitted quantity {} does not originate from a measurement",
+                        quantity.quantity_id.0
+                    ));
+                };
+                let fitted_measurement = measurements_by_id
+                    .get(fitted_measurement_id)
+                    .ok_or_else(|| {
+                        format!(
+                            "fitted quantity {} references unknown measurement {}",
+                            quantity.quantity_id.0, fitted_measurement_id.0
+                        )
+                    })?;
                 for input_quantity_id in input_quantity_ids {
                     let input_quantity =
                         quantities_by_id.get(input_quantity_id).ok_or_else(|| {
@@ -1235,6 +1252,36 @@ impl MaterialEvidenceGraph {
                     ) {
                         return Err(format!(
                             "fitted quantity {} input {} is not an observed quantity",
+                            quantity.quantity_id.0, input_quantity_id.0
+                        ));
+                    }
+                    let QuantityOrigin::Measurement {
+                        measurement_id: input_measurement_id,
+                    } = &input_quantity.origin
+                    else {
+                        return Err(format!(
+                            "fitted quantity {} input {} does not originate from a measurement",
+                            quantity.quantity_id.0, input_quantity_id.0
+                        ));
+                    };
+                    let input_measurement =
+                        measurements_by_id.get(input_measurement_id).ok_or_else(|| {
+                            format!(
+                                "fitted quantity {} input {} references unknown measurement {}",
+                                quantity.quantity_id.0,
+                                input_quantity_id.0,
+                                input_measurement_id.0
+                            )
+                        })?;
+                    if input_measurement.specimen_id != fitted_measurement.specimen_id {
+                        return Err(format!(
+                            "fitted quantity {} specimen does not match input {} specimen",
+                            quantity.quantity_id.0, input_quantity_id.0
+                        ));
+                    }
+                    if input_quantity.conditions != quantity.conditions {
+                        return Err(format!(
+                            "fitted quantity {} conditions do not match input {} conditions",
                             quantity.quantity_id.0, input_quantity_id.0
                         ));
                     }
@@ -2351,6 +2398,84 @@ mod tests {
             graph_with_quantities(vec![direct, fitted])
                 .validate()
                 .is_err()
+        );
+    }
+
+    #[test]
+    fn fitted_inputs_match_the_fitted_quantity_specimen() {
+        let mut direct = scalar_quantity(
+            QuantityOrigin::Measurement {
+                measurement_id: identifier("measurement:alternate"),
+            },
+            EvidenceBasis::ExperimentalDirect,
+        );
+        direct.quantity_id = identifier("quantity:psi-delta");
+        let mut fitted = scalar_quantity(
+            QuantityOrigin::Measurement {
+                measurement_id: identifier("measurement:ellipsometry"),
+            },
+            EvidenceBasis::ExperimentalFitted {
+                input_quantity_ids: vec![direct.quantity_id.clone()],
+                fit_model: "Drude-Lorentz".to_owned(),
+                fit_model_version: "1".to_owned(),
+                residual_artifact_id: identifier("artifact:fit-residuals"),
+                parameter_covariance: Uncertainty::Covariance {
+                    dimension: 1,
+                    values_row_major: vec![0.01],
+                    unit_squared: "1".to_owned(),
+                },
+            },
+        );
+        fitted.quantity_id = identifier("quantity:fitted-n");
+        let mut graph = graph_with_quantities(vec![direct, fitted]);
+        let mut alternate_specimen = graph.specimens[0].clone();
+        alternate_specimen.specimen_id = identifier("specimen:au:alternate");
+        graph.specimens.push(alternate_specimen);
+        let mut alternate_measurement = graph.measurements[0].clone();
+        alternate_measurement.measurement_id = identifier("measurement:alternate");
+        alternate_measurement.specimen_id = identifier("specimen:au:alternate");
+        graph.measurements.push(alternate_measurement);
+
+        assert_eq!(
+            graph.validate().unwrap_err(),
+            "fitted quantity quantity:fitted-n specimen does not match input quantity:psi-delta specimen"
+        );
+    }
+
+    #[test]
+    fn fitted_inputs_match_the_fitted_quantity_conditions() {
+        let mut direct = scalar_quantity(
+            QuantityOrigin::Measurement {
+                measurement_id: identifier("measurement:ellipsometry"),
+            },
+            EvidenceBasis::ExperimentalDirect,
+        );
+        direct.quantity_id = identifier("quantity:psi-delta");
+        direct.conditions =
+            BTreeMap::from([("wavelength".to_owned(), "0.600 um".to_owned())]);
+        let mut fitted = scalar_quantity(
+            QuantityOrigin::Measurement {
+                measurement_id: identifier("measurement:ellipsometry"),
+            },
+            EvidenceBasis::ExperimentalFitted {
+                input_quantity_ids: vec![direct.quantity_id.clone()],
+                fit_model: "Drude-Lorentz".to_owned(),
+                fit_model_version: "1".to_owned(),
+                residual_artifact_id: identifier("artifact:fit-residuals"),
+                parameter_covariance: Uncertainty::Covariance {
+                    dimension: 1,
+                    values_row_major: vec![0.01],
+                    unit_squared: "1".to_owned(),
+                },
+            },
+        );
+        fitted.quantity_id = identifier("quantity:fitted-n");
+
+        assert_eq!(
+            graph_with_quantities(vec![direct, fitted])
+                .validate()
+                .unwrap_err(),
+            "fitted quantity quantity:fitted-n conditions do not match input quantity:psi-delta conditions"
         );
     }
 

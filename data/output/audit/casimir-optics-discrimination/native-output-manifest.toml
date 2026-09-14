@@ -1,7 +1,7 @@
 schema_version = 1
 producer = "crates/gororoba_cli_physics/src/bin/casimir_optics_discrimination_audit.rs"
-producer_sha256 = "3f92d1bb8f891aa121418fb9bf799629d204657d637bd0211d4dbb10e68ce3dc"
-source_model_identity = "sha256:e8cba0112920b47f1dc362f88e11600990b48d2f296fa8b9fd44f0a8a5fd1c59"
+producer_sha256 = "cb34204749ef70f5bb42855db0bd93a57f70c8dd3dd5f9c59cc41fa83ef59bf1"
+source_model_identity = "sha256:63d51eb6abcbfe589419221c0c1dd02416751100c6bc3c25fa4660b8a637f4f6"
 source_model_identity_algorithm = "SHA-256 over path UTF-8, NUL, file bytes, NUL for source_model_input entries in manifest order"
 command = "cargo run -p gororoba_cli_physics --bin casimir-optics-discrimination-audit --profile validation"
 scope = "native model outputs; no laboratory observations"
@@ -20,11 +20,11 @@ sha256 = "c0864e4045ce7847ebe68e13423671c7007fbbe77d8b10ad5f5bacb8a1601ab3"
 
 [[source_model_input]]
 path = "crates/gororoba_cli_physics/Cargo.toml"
-sha256 = "7e32b8472965f6bcfbc99592cdf81fd2ce1639486900f0d511e3768de4225773"
+sha256 = "37e5ef21c1ddf90495b656d6bcc223581e5b081bce5239698e609fdd94f6b1d5"
 
 [[source_model_input]]
 path = "crates/gororoba_cli_physics/src/bin/casimir_optics_discrimination_audit.rs"
-sha256 = "3f92d1bb8f891aa121418fb9bf799629d204657d637bd0211d4dbb10e68ce3dc"
+sha256 = "cb34204749ef70f5bb42855db0bd93a57f70c8dd3dd5f9c59cc41fa83ef59bf1"
 
 [[source_model_input]]
 path = "crates/materials_core/Cargo.toml"
@@ -36,7 +36,7 @@ sha256 = "7ff25c137ef5c4757b7dd00c6041feb541923451b1b3252a8cbcfaed33f817d5"
 
 [[source_model_input]]
 path = "crates/materials_core/src/optical_database.rs"
-sha256 = "1216d6727efd3fe7c690fc4b5349ff2ded61c5225450ea455b97fb0b1898b67d"
+sha256 = "44193e84bf301eac4ce66ba240c9f1fda6a53ce07ef36201adad254e754985df"
 
 [[source_model_input]]
 path = "crates/materials_core/src/optical_database/metals_dl.rs"
@@ -96,7 +96,7 @@ sha256 = "47844290c6208f0587a4a4779b12e0133e3d781afd13f84074ff871504d17c2f"
 
 [[source_model_input]]
 path = "crates/stats_core/src/calibrated_discrimination.rs"
-sha256 = "e63f31ff1662fea84783cb1af45798e9e3460ead77553f7db557e3367a9f3c71"
+sha256 = "c0360d20e3e1b1f5ad7003eb85f6b899063335aa03126091baacd02968bfe9dd"
 
 [[source_model_input]]
 path = "crates/stats_core/Cargo.toml"

@@ -452,6 +452,8 @@ validation-resource-contract-collectors:
 	if ! grep -Fq 'no_tests_args=(--no-tests=pass)' Makefile; then echo "ERROR: binary-only CI shards reject successful zero-test compilation." >&2; status=1; fi; \
 	if [ "$$(sed -n '/id: rust-shards/,/name: Check repository hygiene/p' .github/workflows/ci.yml | grep -Fc "printf 'matrix=%s\\n' \"\$$rust_matrix\" >> \"\$$GITHUB_OUTPUT\"")" -ne 1 ]; then echo "ERROR: dynamic Rust shard matrix must be emitted exactly once." >&2; status=1; fi; \
 	if [ "$$(sed -n '/id: rust-shards/,/name: Check repository hygiene/p' .github/workflows/ci.yml | grep -Fc "printf 'matrix=%s\\n' \"\$$fallback_matrix\" >> \"\$$GITHUB_OUTPUT\"")" -ne 2 ]; then echo "ERROR: fallback Rust shard matrix must be emitted only by the two failure branches." >&2; status=1; fi; \
+	fallback_heavy_row='{\"lane\":\"heavy-fallback\",\"target\":\"heavy\",\"rust_scope\":\"-p algebra_analysis -p gr_core\",\"clippy_scope\":\"\",\"cargo_target_args\":\"--lib --bins --tests --examples\",\"cargo_features\":\"\"}'; \
+	if [ "$$(printf '%s\n' "$$rust_shard_block" | grep -Fc "$$fallback_heavy_row")" -ne 1 ]; then echo "ERROR: fallback Rust shard matrix must retain complete heavy-package coverage." >&2; status=1; fi; \
 	if ! sed -n '/name: Retain successful core validation artifacts/,/key: $${{ steps.rust-cache.outputs.cache-primary-key }}/p' .github/workflows/ci.yml | grep -Fq 'if: success()'; then echo "ERROR: core cache retention is not success-only." >&2; status=1; fi; \
 	if ! grep -Fq 'Report collected proof failures' .github/workflows/proofs.yml; then echo "ERROR: proof collector contract is missing." >&2; status=1; fi; \
 	if ! grep -Fq 'data/output/audit/casimir-optics-discrimination/sources/** -text' .gitattributes; then echo "ERROR: hash-bound source-byte contract is missing." >&2; status=1; fi; \
@@ -910,7 +912,7 @@ validate-ci-scoped-rust-lane: require-ci-validation-authority
 	        if ! { [ "$${#cargo_target_args[@]}" -eq 1 ]; } && \
 	           ! { [ "$${#cargo_target_args[@]}" -eq 4 ] && [ "$${cargo_target_args[1]}" = --bins ] && [ "$${cargo_target_args[2]}" = --tests ] && [ "$${cargo_target_args[3]}" = --examples ]; }; then \
 	            echo "ERROR: library target shard requires --lib or --lib --bins --tests --examples." >&2; exit 1; \
-	        fi \
+	        fi; \
 	        if [ "$${#cargo_target_args[@]}" -eq 1 ]; then no_tests_args=(--no-tests=pass); fi; \
 	        ;; \
 	    --bin|--test|--example) \
@@ -919,7 +921,7 @@ validate-ci-scoped-rust-lane: require-ci-validation-authority
 	        if (( $${#cargo_target_args[@]} % 2 != 0 )); then echo "ERROR: named target shard requires option and name pairs." >&2; exit 1; fi; \
 	        for ((target_index=0; target_index<$${#cargo_target_args[@]}; target_index+=2)); do \
 	            if [ "$${cargo_target_args[target_index]}" != "$$target_option" ] || [[ ! "$${cargo_target_args[target_index+1]}" =~ ^[A-Za-z0-9_][A-Za-z0-9_-]*$$ ]]; then echo "ERROR: invalid named target shard." >&2; exit 1; fi; \
-	        done \
+	        done; \
 	        ;; \
 	    *) echo "ERROR: CI_CARGO_TARGET_ARGS must select all targets, a library, or named binary, integration-test, or example targets." >&2; exit 1 ;; \
 	esac; \
