@@ -50,6 +50,9 @@ pub const EXPECTED_OPEN_FRONTIER_IDS: [&str; 2] = [
     "selected-schedule-independent-monte-carlo",
 ];
 
+const EXPECTED_DEPENDENCY_GRAPH_SHA256: &str =
+    "6e25fd4e7a8449f3620d90a5a532674b429eccb370b07e2d447c92d537600145";
+
 // Each tuple binds a frontier ID to SHA-256 of the exact UTF-8 witness and
 // verifier field values in the canonical frontier document.
 const EXPECTED_CLOSED_ROW_IDENTITIES: [(&str, &str, &str); 28] = [
@@ -479,6 +482,13 @@ fn verify_document(document: &FrontierDocument) -> Result<FiniteFrontierReport> 
         }
     }
 
+    let observed_dependency_graph_sha256 = dependency_graph_identity(&document.row);
+    if observed_dependency_graph_sha256 != EXPECTED_DEPENDENCY_GRAPH_SHA256 {
+        diagnostics.push(format!(
+            "frontier dependency graph identity mismatch: expected {EXPECTED_DEPENDENCY_GRAPH_SHA256}, observed {observed_dependency_graph_sha256}"
+        ));
+    }
+
     for row in &document.row {
         if row.completion_state != "closed" {
             continue;
@@ -552,6 +562,19 @@ fn sha256_hex(value: &str) -> String {
         .iter()
         .map(|byte| format!("{byte:02x}"))
         .collect()
+}
+
+fn dependency_graph_identity(rows: &[FrontierRow]) -> String {
+    let mut graph_rows = rows
+        .iter()
+        .map(|row| {
+            let mut dependencies = row.ordering_dependencies.clone();
+            dependencies.sort();
+            format!("{}={}", row.frontier_id, dependencies.join(","))
+        })
+        .collect::<Vec<_>>();
+    graph_rows.sort();
+    sha256_hex(&graph_rows.join("\n"))
 }
 
 fn dependency_cycle_keys(rows_by_id: &BTreeMap<&str, &FrontierRow>) -> Option<Vec<String>> {
@@ -738,7 +761,7 @@ mod tests {
             .iter_mut()
             .find(|row| EXPECTED_OPEN_FRONTIER_IDS.contains(&row.frontier_id.as_str()))
             .unwrap();
-        open_row.next_action.clear();
+        open_row.next_action = None;
         open_row.required_generator.clear();
         let error = error_text(&document);
         assert!(error.contains("lacks a next action or required generator"));
@@ -760,6 +783,21 @@ mod tests {
             .push("outside-compiled-denominator".to_owned());
         let error = error_text(&document);
         assert!(error.contains("references unknown dependency outside-compiled-denominator"));
+    }
+
+    #[test]
+    fn rejects_known_dependency_set_mutations() {
+        for replacement in [Vec::new(), vec!["primary-source-intake".to_owned()]] {
+            let mut document = baseline_document();
+            let row = document
+                .row
+                .iter_mut()
+                .find(|row| row.frontier_id == "lifshitz-sphere-pfa-energy-conversion")
+                .unwrap();
+            row.ordering_dependencies = replacement;
+            let error = error_text(&document);
+            assert!(error.contains("frontier dependency graph identity mismatch"));
+        }
     }
 
     #[test]

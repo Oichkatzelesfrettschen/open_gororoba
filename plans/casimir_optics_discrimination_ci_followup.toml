@@ -674,7 +674,7 @@ verification = "Hosted stats_core tests reject [[1e200, 1e90], [1e90, 0]] and re
 [[task]]
 id = "pr185-review-thread-denominator"
 status = "in_progress"
-finding = "The paginated review denominator began at 107 threads, increased to 109 after review of 7da85c94, 113 after review of e7b688e0, 117 after review of 340601b1, 121 after review of f28cb6e4, 124 after review of e9581451, and 127 after review of 9d532ed8. Two threads are resolved and 125 require final exact-head disposition."
+finding = "The paginated review denominator began at 107 threads, increased to 109 after review of 7da85c94, 113 after review of e7b688e0, 117 after review of 340601b1, 121 after review of f28cb6e4, 124 after review of e9581451, 127 after review of 9d532ed8, and 129 after review of 6656dad0. Two threads are resolved and 127 require final exact-head disposition."
 required_change = "Classify every stable thread ID against the final exact-head source, record an evidence-backed disposition, and resolve each implemented or superseded thread after hosted validation."
 verification = "A post-settling-window paginated GraphQL query reports exact set equality with the classified denominator and zero unresolved review threads."
 
@@ -863,8 +863,8 @@ verification = "GitHub Actions run 34830883673 completed without cancellation at
 [[task]]
 id = "finite-frontier-actionless-open-row-mutation"
 status = "implemented_pending_ci"
-finding = "The actionless-open-row regression cleared required_generator but left next_action populated, so the unchanged open-row invariant correctly accepted the mutated fixture and the test called unwrap_err on success."
-required_change = "Clear both next_action and required_generator to construct the intended actionless open row."
+finding = "The actionless-open-row regression cleared required_generator but left next_action populated, so the unchanged open-row invariant correctly accepted the mutated fixture and the test called unwrap_err on success. The first repair treated optional next_action as a String and failed to compile in exact-head run 34834493666."
+required_change = "Set optional next_action to None and clear required_generator to construct the intended actionless open row."
 verification = "Hosted gororoba_cli_provenance tests reject the genuinely actionless open row while retaining the exact two-row residual frontier report."
 
 [[task]]
@@ -886,7 +886,7 @@ id = "ruan-fan-pdf-verified-materialization"
 status = "implemented_pending_ci"
 finding = "The Ruan-Fan source-receipt test accepted a retention-manifest entry even when the hash-bound PDF payload remained unmaterialized."
 required_change = "Require verified PDF materialization and execute the ignored receipt test only after an independent optics replay lane hydrates the exact retained payload."
-verification = "Hosted routing and policy checks select and hydrate the optics lane exactly once, and the optics_core replay requires Materialization::Verified for the retained PDF."
+verification = "Hosted routing and policy checks pin optics matrix membership, select and hydrate the exact PDF once, require the full exact ignored test command in the optics case, and require Materialization::Verified for the retained PDF."
 
 [[task]]
 id = "scientific-replay-blocked-input-aggregate-state"
@@ -901,3 +901,24 @@ status = "implemented_pending_ci"
 finding = "The ignored combined Ruan-Fan receipt test hashes two tracked source artifacts, but changes to those artifacts did not select the optics replay lane."
 required_change = "Route the retained archive download, TeX source, and hydrated PDF paths through the optics replay lane."
 verification = "Hosted routing policy pins all three receipt inputs and executes their combined exact identity test."
+
+[[task]]
+id = "bounded-profile-active-bound-width-scaling"
+status = "implemented_pending_ci"
+finding = "Active-bound diagnostics scaled tolerance to absolute endpoint magnitude, so every point in a narrow interval with a large offset could be labeled at both bounds."
+required_change = "Use one coordinate tolerance for classification and certificate feasibility, based on interval width plus endpoint floating-point resolution and capped below one-quarter of a nonzero interval."
+verification = "Hosted stats_core tests classify the lower endpoint, midpoint, and upper endpoint of [1e12, 1e12 + 1] and [0, 1e-20] distinctly, and reject a large-offset feasibility violation."
+
+[[task]]
+id = "finite-frontier-dependency-graph-identity"
+status = "implemented_pending_ci"
+finding = "The finite-frontier verifier rejected unknown, duplicate, cyclic, and closed-to-open dependencies but accepted deletion or substitution with another valid closed frontier ID."
+required_change = "Bind the complete sorted per-row dependency graph to a compiled SHA-256 identity."
+verification = "Hosted finite-frontier mutation tests reject deleting or replacing the lifshitz-sphere prerequisite with another known closed row."
+
+[[task]]
+id = "exact-head-6656dad0-terminal-denominator"
+status = "complete"
+finding = "Run 34834493666 reached a terminal 42-job fail-slow denominator: 38 jobs passed, workspace Clippy and provenance light-7 failed on the same invalid Option<String>::clear fixture mutation, aggregate validation failed by construction, and docs deployment skipped by pull-request policy. Policy, materials, statistics, governance, Casimir audit, docs, proofs, all four hydrated replay leaves including optics, benchmarks, survey, paper, and every unaffected Rust shard passed."
+required_change = "Set optional next_action to None, retain the newly reviewed dependency-graph and active-bound repairs, and rerun one complete exact-head denominator."
+verification = "GitHub Actions run 34834493666 completed without cancellation at exact head 6656dad02268357d13c71863502750746fa12490."

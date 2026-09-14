@@ -70,7 +70,7 @@ fn validate_bounded_solution(
     }
 
     for (parameter, bound) in parameters.iter().zip(bounds) {
-        let feasibility_tolerance = SOLVER_CERTIFICATE_TOLERANCE * nuisance_bound_scale(bound);
+        let feasibility_tolerance = bound_coordinate_tolerance(bound);
         if *parameter < bound.lower - feasibility_tolerance
             || *parameter > bound.upper + feasibility_tolerance
         {
@@ -138,12 +138,21 @@ fn finite_euclidean_norm(vector: &DVector<f64>) -> Result<f64, DiscriminationErr
     }
 }
 
-fn nuisance_bound_scale(bound: &NuisanceBound) -> f64 {
-    bound
-        .lower
-        .abs()
-        .max(bound.upper.abs())
-        .max(f64::MIN_POSITIVE)
+fn bound_coordinate_tolerance(bound: &NuisanceBound) -> f64 {
+    let interval_width = if bound.lower.is_sign_negative() != bound.upper.is_sign_negative() {
+        bound.lower.abs().max(bound.upper.abs())
+    } else {
+        (bound.upper - bound.lower).abs()
+    };
+    let width_tolerance = SOLVER_CERTIFICATE_TOLERANCE * interval_width;
+    let floating_tolerance =
+        8.0 * f64::EPSILON * bound.lower.abs().max(bound.upper.abs());
+    let tolerance = width_tolerance.max(floating_tolerance);
+    if interval_width > 0.0 {
+        tolerance.min(0.25 * interval_width)
+    } else {
+        tolerance
+    }
 }
 
 fn classify_active_bounds(
@@ -153,7 +162,7 @@ fn classify_active_bounds(
     let mut active_lower_bounds = Vec::new();
     let mut active_upper_bounds = Vec::new();
     for (index, (parameter, bound)) in parameters.iter().zip(bounds).enumerate() {
-        let active_tolerance = SOLVER_CERTIFICATE_TOLERANCE * nuisance_bound_scale(bound);
+        let active_tolerance = bound_coordinate_tolerance(bound);
         if (*parameter - bound.lower).abs() <= active_tolerance {
             active_lower_bounds.push(index);
         }
@@ -856,6 +865,46 @@ mod tests {
     }
 
     #[test]
+    fn active_bound_classification_uses_interval_width_at_large_offsets() {
+        let lower = 1e12;
+        let upper = lower + 1.0;
+        let parameters = DVector::from_vec(vec![lower, lower + 0.5, upper]);
+        let bounds = vec![
+            NuisanceBound {
+                lower,
+                upper,
+                unit: "Pa".to_owned(),
+            };
+            3
+        ];
+
+        let (active_lower_bounds, active_upper_bounds) =
+            classify_active_bounds(&parameters, &bounds);
+
+        assert_eq!(active_lower_bounds, vec![0]);
+        assert_eq!(active_upper_bounds, vec![2]);
+    }
+
+    #[test]
+    fn active_bound_classification_preserves_tiny_interval_interior() {
+        let parameters = DVector::from_vec(vec![0.0, 5e-21, 1e-20]);
+        let bounds = vec![
+            NuisanceBound {
+                lower: 0.0,
+                upper: 1e-20,
+                unit: "Pa".to_owned(),
+            };
+            3
+        ];
+
+        let (active_lower_bounds, active_upper_bounds) =
+            classify_active_bounds(&parameters, &bounds);
+
+        assert_eq!(active_lower_bounds, vec![0]);
+        assert_eq!(active_upper_bounds, vec![2]);
+    }
+
+    #[test]
     fn bounded_profile_preserves_a_tiny_nuisance_column() {
         let target = DVector::from_vec(vec![1.0]);
         let nuisance = DMatrix::from_vec(1, 1, vec![1e-200]);
@@ -1002,6 +1051,34 @@ mod tests {
             unit: "m".to_owned(),
         }];
         let outside = DVector::from_vec(vec![0.0]);
+        assert_eq!(
+            validate_bounded_solution(
+                SolverCertificate {
+                    status: SolverStatus::Solved,
+                    primal_residual: 0.0,
+                    dual_residual: 0.0,
+                    absolute_gap: 0.0,
+                    relative_gap: 0.0,
+                },
+                &target,
+                &nuisance,
+                &bounds,
+                &outside,
+            ),
+            Err(DiscriminationError::NumericalFailure)
+        );
+    }
+
+    #[test]
+    fn bounded_solution_feasibility_uses_width_at_large_offsets() {
+        let target = DVector::from_vec(vec![0.0]);
+        let nuisance = DMatrix::zeros(1, 1);
+        let bounds = vec![NuisanceBound {
+            lower: 1e12,
+            upper: 1e12 + 1.0,
+            unit: "Pa".to_owned(),
+        }];
+        let outside = DVector::from_vec(vec![1e12 + 1001.0]);
         assert_eq!(
             validate_bounded_solution(
                 SolverCertificate {

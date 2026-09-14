@@ -360,10 +360,12 @@ validation-resource-contract-collectors:
 	unsafe_survey_job_block="$$(sed -n '/^  unsafe-survey:/,/^  validation:/p' .github/workflows/ci.yml)"; \
 	frontier_check_block="$$(sed -n '/^casimir-optics-discrimination-frontier-check:/,/^$$/p' Makefile)"; \
 	hydration_input_block="$$(sed -n '/name: Materialize and stage bounded scientific replay inputs per lane/,/name: Upload bounded scientific replay inputs/p' .github/workflows/ci.yml)"; \
+	optics_hydration_block="$$(sed -n '/if \[ "$$RUN_OPTICS" = true \]; then/,/^[[:space:]]*fi$$/p' .github/workflows/ci.yml)"; \
 	hydration_upload_block="$$(sed -n '/name: Upload bounded scientific replay inputs/,/name: Retain scientific hydration build artifacts/p' .github/workflows/ci.yml)"; \
 	hydration_cache_block="$$(sed -n '/name: Retain scientific hydration build artifacts/,/^  scientific-replay-leaf:/p' .github/workflows/ci.yml)"; \
 	replay_selection_block="$$(sed -n '/^  scientific-replay-inputs:/,/uses: dtolnay\/rust-toolchain/p' .github/workflows/ci.yml)"; \
 	replay_leaf_execution_block="$$(sed -n '/name: Execute hydrated scientific replay leaf/,/name: Upload scientific replay leaf report/p' .github/workflows/ci.yml)"; \
+	optics_replay_block="$$(sed -n '/^[[:space:]]*optics)/,/^[[:space:]]*\*)/p' .github/workflows/ci.yml)"; \
 	replay_verdict_block="$$(sed -n '/name: Report hydrated scientific replay outcomes/,/name: Retain scientific replay verdict/p' .github/workflows/ci.yml)"; \
 	for contract in 'ci-rust-shard-matrix' 'fallback_matrix=' 'CI_CARGO_TARGET_ARGS: $${{ matrix.cargo_target_args }}' 'CI_CARGO_FEATURES: $${{ matrix.cargo_features }}' 'matrix: $${{ fromJSON(needs.validation-core.outputs.rust_matrix) }}' 'make --jobs="$$WORKER_BUDGET" --keep-going "validate-ci-scoped-$${{ matrix.target }}"' 'timeout-minutes: 80' 'fail-fast: false' 'Report collected validation failures' 'Report aggregate validation admission' 'needs: [validation-policy, validation-core, validation-governance, validation-casimir-audit, rust-validation, scientific-replay, benchmark, proofs, paper, unsafe-survey, docs-gate]' 'DOCS_RESULT:' 'RUN_DOCS:' 'for lane in GOVERNANCE CASIMIR_AUDIT DOCS' 'uses: ./.github/workflows/bench-cd-kernel.yml' 'uses: ./.github/workflows/proofs.yml' 'uses: ./.github/workflows/paper.yml' 'uses: ./.github/workflows/unsafe-survey.yml' 'run_workspace_survey:' 'BENCHMARK_SELECTED:' 'PROOFS_SELECTED:' 'PAPER_SELECTED:' 'UNSAFE_SURVEY_SELECTED:' 'scientific-replay-inputs:' 'scientific-replay-leaf:' 'scientific-replay:' 'matrix: $${{ fromJSON(needs.scientific-replay-inputs.outputs.matrix) }}' '--bin hydrate-scientific-payloads' '--no-fail-fast -p algebra_experimental --test nufit_reference_identity' '--no-fail-fast -p lbm_3d --test box_counting_amplitude_identity' '--no-fail-fast -p optics_core --test ruan_fan_source_receipts' 'state=blocked_input' 'state=not_selected' 'state=executed_pass' 'state=executed_fail' "needs.validation-policy.result == 'success'" "needs.validation.result == 'success'" 'make --keep-going validation-resource-contract' 'make --jobs="$$WORKER_BUDGET" --keep-going casimir-optics-discrimination-audit-check' 'make --jobs="$$WORKER_BUDGET" --keep-going docs-freshness'; do \
 	    if ! grep -Fq -- "$$contract" .github/workflows/ci.yml; then echo "ERROR: main CI collector contract is missing: $$contract" >&2; status=1; fi; \
@@ -439,6 +441,9 @@ validation-resource-contract-collectors:
 	    occurrences="$$(printf '%s\n' "$$hydration_input_block" | grep -Fc "hydrate_lane $$lane")"; \
 	    if [ "$$occurrences" -ne 1 ]; then echo "ERROR: scientific replay hydration must invoke $$lane exactly once." >&2; status=1; fi; \
 	done; \
+	for contract in 'hydrate_lane optics' 'data/output/audit/claim-family-evidence-adjudication/optics-replay/ruan-fan-0909.3323v2.pdf'; do \
+	    if ! printf '%s\n' "$$optics_hydration_block" | grep -Fq -- "$$contract"; then echo "ERROR: optics hydration block is missing: $$contract" >&2; status=1; fi; \
+	done; \
 	if ! printf '%s\n' "$$hydration_cache_block" | grep -Fq "if: success() && steps.hydrate.outputs.all_hydrated == 'true'"; then echo "ERROR: scientific replay hydration cache is not gated on complete per-lane success." >&2; status=1; fi; \
 	for contract in 'lane_status_path=' 'state=blocked_input' 'state=orchestration_error'; do \
 	    if ! printf '%s\n' "$$replay_leaf_execution_block" | grep -Fq -- "$$contract"; then echo "ERROR: scientific replay leaf input-state contract is missing: $$contract" >&2; status=1; fi; \
@@ -456,6 +461,9 @@ validation-resource-contract-collectors:
 	for contract in 'crates/optics_core/' 'arxiv-source\.download' 'Fano_Scattering\.tex' 'ruan-fan-0909\.3323v2\.pdf' 'run_optics=true'; do \
 	    if ! printf '%s\n' "$$replay_selection_block" | grep -Fq -- "$$contract"; then echo "ERROR: optics scientific replay routing contract is missing: $$contract" >&2; status=1; fi; \
 	done; \
+	if ! printf '%s\n' "$$replay_selection_block" | grep -Fq 'for lane in lattice nufit box-counting optics; do'; then echo "ERROR: optics scientific replay is absent from matrix construction." >&2; status=1; fi; \
+	optics_command='cargo test --locked --profile validation --no-fail-fast -p optics_core --test ruan_fan_source_receipts admitted_archive_tex_and_pdf_have_distinct_verified_identities -- --ignored --exact --nocapture'; \
+	if [ "$$(printf '%s\n' "$$optics_replay_block" | grep -Fc -- "$$optics_command")" -ne 1 ]; then echo "ERROR: optics replay must execute its exact hydrated receipt test once." >&2; status=1; fi; \
 	for contract in "printf 'benchmark=true\\nproofs=true\\npaper=true\\nunsafe_survey=true\\n'" "crates/(algebra_analysis|algebra_experimental)/" "crates/(provenance_store|gororoba_cli_provenance|repo_root)/" 'Scientific replay routing could not resolve the comparison base; selecting every replay lane.'; do \
 	    if ! grep -Fq -- "$$contract" .github/workflows/ci.yml; then echo "ERROR: scheduled or fail-slow CI routing contract is missing: $$contract" >&2; status=1; fi; \
 	done; \
