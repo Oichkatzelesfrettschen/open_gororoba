@@ -49,9 +49,11 @@ const ANGULAR_CONVERGENCE_TARGET: &str = "Au20/SiO2-50/Al2O3-50/Si_vs_Au";
 const PRODUCER_SOURCE: &str = include_str!("casimir_optics_discrimination_audit.rs");
 const SOURCE_RETRIEVAL_MANIFEST: &str = "source-retrieval-manifest.toml";
 const SOURCE_OBSERVATION_DIRECTORY: &str = "source-observations";
+const EXPECTED_RETRIEVAL_SCOPE: &str = "Observed source bytes for the Casimir, optical, materials, and quantum-admissibility audit. A retained body establishes byte identity and source inspection only.";
 #[derive(Clone, Copy)]
 struct ExpectedRetainedSource {
     id: &'static str,
+    url: &'static str,
     path: &'static str,
     role: &'static str,
 }
@@ -59,61 +61,73 @@ struct ExpectedRetainedSource {
 const EXPECTED_RETAINED_SOURCES: [ExpectedRetainedSource; 12] = [
     ExpectedRetainedSource {
         id: "LIFSHITZ-1956",
+        url: "https://www.jetp.ras.ru/cgi-bin/dn/e_002_01_0073.pdf",
         path: "data/output/audit/casimir-optics-discrimination/sources/lifshitz-planar-media-1956.pdf",
         role: "Primary derivation of electromagnetic fluctuation forces between planar media.",
     },
     ExpectedRetainedSource {
         id: "CASIMIR-REVIEW-2009",
+        url: "https://arxiv.org/pdf/0902.4022",
         path: "data/output/audit/casimir-optics-discrimination/sources/casimir-scattering-review-2009.pdf",
         role: "Review cross-check for planar Lifshitz and sphere-plane PFA equations.",
     },
     ExpectedRetainedSource {
         id: "HNLS-2017",
+        url: "https://arxiv.org/pdf/1706.02445",
         path: "data/output/audit/casimir-optics-discrimination/sources/hnls-quantum-metrology-2017.pdf",
         role: "Primary theorem source for Hamiltonian-not-in-Lindblad-span assumptions and conclusion.",
     },
     ExpectedRetainedSource {
         id: "MEMORY-KERNEL-CP-2009",
+        url: "https://arxiv.org/pdf/0902.2318",
         path: "data/output/audit/casimir-optics-discrimination/sources/quantum-memory-kernel-cp-2009.pdf",
         role: "Primary source showing that quantum memory kernels need explicit complete-positivity conditions.",
     },
     ExpectedRetainedSource {
         id: "AUTOQEC-METROLOGY-2026",
+        url: "https://www.nature.com/articles/s41534-026-01268-1.pdf",
         path: "data/output/audit/casimir-optics-discrimination/sources/autonomous-qec-metrology-2026.pdf",
         role: "Primary finite-time sufficient-condition source for autonomous QEC metrology.",
     },
     ExpectedRetainedSource {
         id: "MCPEAK-2015-MANUSCRIPT",
+        url: "https://arxiv.org/pdf/1603.02132",
         path: "data/output/audit/casimir-optics-discrimination/sources/mcpeak-plasmonic-films-2015.pdf",
         role: "Primary specimen preparation and ellipsometry source for template-stripped gold.",
     },
     ExpectedRetainedSource {
         id: "RIINFO-AU-JOHNSON",
+        url: "https://raw.githubusercontent.com/polyanskiy/refractiveindex.info-database/c5c2f188e848453def5970e347399d653df2ffc2/database/data/main/Au/nk/Johnson.yml",
         path: "data/output/audit/casimir-optics-discrimination/sources/au-Johnson.yml",
         role: "CC0 digitized Johnson-Christy optical table; underlying paper remains the experimental authority.",
     },
     ExpectedRetainedSource {
         id: "RIINFO-AU-OLMON-EVAPORATED",
+        url: "https://raw.githubusercontent.com/polyanskiy/refractiveindex.info-database/c5c2f188e848453def5970e347399d653df2ffc2/database/data/main/Au/nk/Olmon-ev.yml",
         path: "data/output/audit/casimir-optics-discrimination/sources/au-Olmon-ev.yml",
         role: "CC0 digitized evaporated-gold optical table; underlying paper remains the experimental authority.",
     },
     ExpectedRetainedSource {
         id: "RIINFO-AU-MCPEAK",
+        url: "https://raw.githubusercontent.com/polyanskiy/refractiveindex.info-database/c5c2f188e848453def5970e347399d653df2ffc2/database/data/main/Au/nk/McPeak.yml",
         path: "data/output/audit/casimir-optics-discrimination/sources/au-McPeak.yml",
         role: "CC0 digitized template-stripped-gold optical table linked to the retained primary manuscript.",
     },
     ExpectedRetainedSource {
         id: "RIINFO-AU-KLINAVICIUS-11NM",
+        url: "https://raw.githubusercontent.com/polyanskiy/refractiveindex.info-database/c5c2f188e848453def5970e347399d653df2ffc2/database/data/main/Au/nk/Klinavicius-11.4nm.yml",
         path: "data/output/audit/casimir-optics-discrimination/sources/au-Klinavicius-11.4nm.yml",
         role: "CC0 digitized nanoparticle optical table demonstrating geometry- and preparation-specific gold records.",
     },
     ExpectedRetainedSource {
         id: "RIINFO-DATABASE-LICENSE",
+        url: "https://raw.githubusercontent.com/polyanskiy/refractiveindex.info-database/c5c2f188e848453def5970e347399d653df2ffc2/LICENSE",
         path: "data/output/audit/casimir-optics-discrimination/sources/refractiveindex-info-database-license.txt",
         role: "Pinned CC0 database license text.",
     },
     ExpectedRetainedSource {
         id: "REJECTED-ARXIV-0801.1757",
+        url: "https://arxiv.org/pdf/0801.1757",
         path: "data/output/audit/casimir-optics-discrimination/sources/master-equation-tutorial-nonsupporting-2008.pdf",
         role: "Retained negative provenance witness: this tutorial does not support the memory-kernel CP proposition and carries no evidentiary weight for that claim.",
     },
@@ -255,6 +269,7 @@ const SOURCE_MODEL_INPUTS: [SourceModelInput; 24] = [
 struct SourceRetrievalManifest {
     schema_version: u32,
     retrieval_date: String,
+    scope: String,
     source: Vec<RetainedSource>,
 }
 
@@ -489,6 +504,10 @@ fn verify_source_retrieval_manifest_source(source: &str, repository_root: &Path)
         manifest.schema_version
     );
     validate_retrieval_date(&manifest.retrieval_date)?;
+    ensure!(
+        manifest.scope == EXPECTED_RETRIEVAL_SCOPE,
+        "source-retrieval manifest does not preserve the expected evidence scope"
+    );
     let mut source_ids = BTreeSet::new();
     let mut source_paths = BTreeSet::new();
     for retained_source in &manifest.source {
@@ -534,6 +553,7 @@ fn verify_source_retrieval_manifest_source(source: &str, repository_root: &Path)
         .map(|source| {
             (
                 source.id.to_owned(),
+                source.url.to_owned(),
                 PathBuf::from(source.path),
                 source.role.to_owned(),
             )
@@ -545,6 +565,7 @@ fn verify_source_retrieval_manifest_source(source: &str, repository_root: &Path)
         .map(|retained_source| {
             (
                 retained_source.id.clone(),
+                retained_source.url.clone(),
                 retained_source.path.clone(),
                 retained_source.role.clone(),
             )
@@ -552,7 +573,7 @@ fn verify_source_retrieval_manifest_source(source: &str, repository_root: &Path)
         .collect::<BTreeSet<_>>();
     ensure!(
         observed_sources == expected_sources && manifest.source.len() == expected_sources.len(),
-        "source-retrieval manifest does not declare the exact retained source ID/path/role set"
+        "source-retrieval manifest does not declare the exact retained source ID/URL/path/role set"
     );
 
     for retained_source in &manifest.source {
@@ -2358,7 +2379,11 @@ mod tests {
         let incomplete_manifest = manifest_source.replacen("LIFSHITZ-1956", "OTHER-SOURCE", 1);
         let error = verify_source_retrieval_manifest_source(&incomplete_manifest, &repository_root)
             .unwrap_err();
-        assert!(error.to_string().contains("exact retained source ID/path/role set"));
+        assert!(
+            error
+                .to_string()
+                .contains("exact retained source ID/URL/path/role set")
+        );
     }
 
     #[test]
@@ -2398,7 +2423,44 @@ mod tests {
         assert!(
             error
                 .to_string()
-                .contains("exact retained source ID/path/role set")
+                .contains("exact retained source ID/URL/path/role set")
+        );
+    }
+
+    #[test]
+    fn retained_source_manifest_preserves_evidence_scope() {
+        let (repository_root, manifest_source, _) = retained_source_manifest_fixture();
+        let scope_declaration = format!("scope = {EXPECTED_RETRIEVAL_SCOPE:?}");
+        let promoted_manifest = manifest_source.replacen(
+            &scope_declaration,
+            "scope = \"Retained sources establish physical support.\"",
+            1,
+        );
+        assert_ne!(promoted_manifest, manifest_source);
+
+        let error = verify_source_retrieval_manifest_source(&promoted_manifest, &repository_root)
+            .unwrap_err();
+        assert!(error.to_string().contains("expected evidence scope"));
+    }
+
+    #[test]
+    fn retained_source_manifest_preserves_each_source_url() {
+        let (repository_root, manifest_source, _) = retained_source_manifest_fixture();
+        let expected_url = EXPECTED_RETAINED_SOURCES[0].url;
+        let url_declaration = format!("url = {expected_url:?}");
+        let mutable_manifest = manifest_source.replacen(
+            &url_declaration,
+            "url = \"https://example.invalid/mutable-source\"",
+            1,
+        );
+        assert_ne!(mutable_manifest, manifest_source);
+
+        let error = verify_source_retrieval_manifest_source(&mutable_manifest, &repository_root)
+            .unwrap_err();
+        assert!(
+            error
+                .to_string()
+                .contains("exact retained source ID/URL/path/role set")
         );
     }
 

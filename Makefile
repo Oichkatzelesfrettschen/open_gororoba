@@ -462,7 +462,7 @@ validation-resource-contract-collectors:
 	done; \
 	exit "$$status"
 
-casimir-optics-discrimination-audit-check: casimir-optics-discrimination-output-check casimir-optics-discrimination-frontier-check
+casimir-optics-discrimination-audit-check: casimir-optics-discrimination-output-check casimir-optics-discrimination-frontier-check casimir-optics-discrimination-experiment-output-check
 
 casimir-optics-discrimination-output-check: require-ci-validation-authority
 	$(CARGO_ENV) cargo run --locked --profile validation -p gororoba_cli_physics \
@@ -475,6 +475,19 @@ casimir-optics-discrimination-frontier-check: require-ci-validation-authority
 	$(CARGO_ENV) cargo run --locked --profile validation -p gororoba_cli_provenance \
 	    --bin provenance -- --repo-root . verify-finite-frontier \
 	    --frontier plans/casimir_optics_discrimination_frontier.toml
+
+casimir-optics-discrimination-experiment-output-check: require-ci-validation-authority
+	mkdir -p reports/validation/casimir-optics-discrimination-expected
+	$(CARGO_ENV) cargo run --locked --profile validation -p gororoba_cli_physics \
+	    --bin casimir-plate-compare -- \
+	    --output reports/validation/casimir-optics-discrimination-expected/e043-casimir-plate-compare.txt
+	cmp data/output/audit/casimir-optics-discrimination/e043-casimir-plate-compare.txt \
+	    reports/validation/casimir-optics-discrimination-expected/e043-casimir-plate-compare.txt
+	$(CARGO_ENV) cargo run --locked --profile validation -p gororoba_cli_physics \
+	    --bin casimir-drude-plasma -- \
+	    --output reports/validation/casimir-optics-discrimination-expected/e044-casimir-drude-plasma.txt
+	cmp data/output/audit/casimir-optics-discrimination/e044-casimir-drude-plasma.txt \
+	    reports/validation/casimir-optics-discrimination-expected/e044-casimir-drude-plasma.txt
 
 .PHONY: validate-static validate-static-and-registry validate-comprehensive
 .PHONY: audit-comprehensive audit-comprehensive-structured validate-supply-chain validate-dataset-experiments gate-fast gate-warm gate-deep audit-deep audit-deep-structured typos machete audit geiger supply-chain-gate ndlb-gate

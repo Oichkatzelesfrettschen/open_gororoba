@@ -244,6 +244,11 @@ in the typed graph. The legacy `MineralMetadata` surface is a catalog
 compatibility type; its quarantine conversion maps historical sentinels to
 typed absence and cannot satisfy direct-measurement admission.
 
+Every measurement also carries a required detection-limit status. The status
+contains a finite nonnegative bound and unit when reported, or records
+`not_measured`, `not_applicable`, `withheld`, or `unknown`; an omitted optional
+tuple cannot erase that evidence state.
+
 `get_material_model("gold")` selects one scalar 300 K optical model. The legacy
 `get_material("gold")` alias has the same model-selection semantics. Neither API
 selects a physical gold specimen. Johnson-Christy, Olmon evaporated gold,

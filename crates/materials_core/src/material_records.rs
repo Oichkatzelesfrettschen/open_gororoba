@@ -197,6 +197,17 @@ pub enum AssayStatus {
     Unknown,
 }
 
+/// Reported measurement detection limit or an explicit reason it is absent.
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[serde(rename_all = "snake_case", tag = "status")]
+pub enum DetectionLimitStatus {
+    Reported { upper_bound: f64, unit: String },
+    NotMeasured,
+    NotApplicable,
+    Withheld { reason: String },
+    Unknown,
+}
+
 /// Physical specimen carrying preparation and geometry metadata.
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub struct Specimen {
@@ -241,7 +252,7 @@ pub struct Measurement {
     pub raw_artifact_id: RecordId,
     pub processing_recipe_id: RecordId,
     pub repeat_count: usize,
-    pub detection_limit: Option<(f64, String)>,
+    pub detection_limit: DetectionLimitStatus,
     pub provenance: Provenance,
 }
 
@@ -886,13 +897,21 @@ impl Measurement {
         if self.repeat_count == 0 {
             return Err("measurement repeat count must be positive".to_owned());
         }
-        if let Some((detection_limit, unit)) = &self.detection_limit {
-            require_nonempty("measurement detection-limit unit", unit)?;
-            if !detection_limit.is_finite() || *detection_limit < 0.0 {
-                return Err(
-                    "measurement detection limit must be finite and nonnegative".to_owned(),
-                );
+        match &self.detection_limit {
+            DetectionLimitStatus::Reported { upper_bound, unit } => {
+                require_nonempty("measurement detection-limit unit", unit)?;
+                if !upper_bound.is_finite() || *upper_bound < 0.0 {
+                    return Err(
+                        "measurement detection limit must be finite and nonnegative".to_owned(),
+                    );
+                }
             }
+            DetectionLimitStatus::Withheld { reason } => {
+                require_nonempty("measurement detection-limit withholding reason", reason)?;
+            }
+            DetectionLimitStatus::NotMeasured
+            | DetectionLimitStatus::NotApplicable
+            | DetectionLimitStatus::Unknown => {}
         }
         require_nonempty("source identifier", &self.provenance.source_id)?;
         require_nonempty(
@@ -1190,15 +1209,16 @@ impl MaterialEvidenceGraph {
                         reason: Missingness::BelowDetectionLimit { upper_bound, unit },
                     } = &quantity.observation
                     {
-                        let (measurement_limit, measurement_unit) = measurement
-                            .detection_limit
-                            .as_ref()
-                            .ok_or_else(|| {
-                                format!(
-                                    "quantity {} claims a below-detection limit but measurement {} has no detection limit",
-                                    quantity.quantity_id.0, measurement_id.0
-                                )
-                            })?;
+                        let DetectionLimitStatus::Reported {
+                            upper_bound: measurement_limit,
+                            unit: measurement_unit,
+                        } = &measurement.detection_limit
+                        else {
+                            return Err(format!(
+                                "quantity {} claims a below-detection limit but measurement {} has no detection limit",
+                                quantity.quantity_id.0, measurement_id.0
+                            ));
+                        };
                         if upper_bound.to_bits() != measurement_limit.to_bits()
                             || unit != measurement_unit
                         {
@@ -1876,7 +1896,7 @@ mod tests {
                 raw_artifact_id: identifier("artifact:raw"),
                 processing_recipe_id: identifier("recipe:fit"),
                 repeat_count: 1,
-                detection_limit: None,
+                detection_limit: DetectionLimitStatus::Unknown,
                 provenance: Provenance {
                     source_id: "source:test".to_owned(),
                     doi_or_stable_id: "doi:10.example/test".to_owned(),
@@ -2003,19 +2023,28 @@ mod tests {
         let mut graph = graph_with_quantities(Vec::new());
         let measurement = &mut graph.measurements[0];
 
-        measurement.detection_limit = Some((f64::NAN, "m".to_owned()));
+        measurement.detection_limit = DetectionLimitStatus::Reported {
+            upper_bound: f64::NAN,
+            unit: "m".to_owned(),
+        };
         assert_eq!(
             measurement.validate().unwrap_err(),
             "measurement detection limit must be finite and nonnegative"
         );
 
-        measurement.detection_limit = Some((-1.0, "m".to_owned()));
+        measurement.detection_limit = DetectionLimitStatus::Reported {
+            upper_bound: -1.0,
+            unit: "m".to_owned(),
+        };
         assert_eq!(
             measurement.validate().unwrap_err(),
             "measurement detection limit must be finite and nonnegative"
         );
 
-        measurement.detection_limit = Some((0.0, " ".to_owned()));
+        measurement.detection_limit = DetectionLimitStatus::Reported {
+            upper_bound: 0.0,
+            unit: " ".to_owned(),
+        };
         assert_eq!(
             measurement.validate().unwrap_err(),
             "measurement detection-limit unit must be nonempty"
@@ -2183,19 +2212,28 @@ mod tests {
             "quantity quantity:below-detection claims a below-detection limit but measurement measurement:ellipsometry has no detection limit"
         );
 
-        graph.measurements[0].detection_limit = Some((2e-9, "m".to_owned()));
+        graph.measurements[0].detection_limit = DetectionLimitStatus::Reported {
+            upper_bound: 2e-9,
+            unit: "m".to_owned(),
+        };
         assert_eq!(
             graph.validate().unwrap_err(),
             "quantity quantity:below-detection below-detection limit does not match measurement measurement:ellipsometry"
         );
 
-        graph.measurements[0].detection_limit = Some((1e-9, "Pa".to_owned()));
+        graph.measurements[0].detection_limit = DetectionLimitStatus::Reported {
+            upper_bound: 1e-9,
+            unit: "Pa".to_owned(),
+        };
         assert_eq!(
             graph.validate().unwrap_err(),
             "quantity quantity:below-detection below-detection limit does not match measurement measurement:ellipsometry"
         );
 
-        graph.measurements[0].detection_limit = Some((1e-9, "m".to_owned()));
+        graph.measurements[0].detection_limit = DetectionLimitStatus::Reported {
+            upper_bound: 1e-9,
+            unit: "m".to_owned(),
+        };
         assert!(graph.validate().is_ok());
     }
 
@@ -2728,7 +2766,7 @@ mod tests {
             raw_artifact_id: identifier("artifact:raw"),
             processing_recipe_id: identifier("recipe:ellipsometry"),
             repeat_count: 1,
-            detection_limit: None,
+            detection_limit: DetectionLimitStatus::Unknown,
             provenance: Provenance {
                 source_id: "source:test".to_owned(),
                 doi_or_stable_id: "doi:10.example/test".to_owned(),
