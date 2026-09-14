@@ -1975,6 +1975,11 @@ fn render_outputs(generated: &GeneratedAudit) -> Result<BTreeMap<String, String>
             contents.len()
         ));
     }
+    ensure!(
+        manifest.ends_with("\n\n"),
+        "native output manifest must end with an entry separator"
+    );
+    manifest.truncate(manifest.len() - 1);
     outputs.insert("native-output-manifest.toml".to_owned(), manifest);
     Ok(outputs)
 }
