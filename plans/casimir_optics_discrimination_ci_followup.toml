@@ -950,3 +950,17 @@ status = "complete"
 finding = "Run 34836722242 reached a terminal 42-job fail-slow denominator: 39 jobs passed, validation-casimir-audit failed on the stale native-output manifest, aggregate validation failed by construction, and docs deployment skipped by pull-request policy. Documentation, proofs, all routed Rust shards, governance, all four scientific replay leaves, benchmarks, survey, paper, policy, and every unaffected validation lane passed."
 required_change = "Refresh the hash-bound native manifest after the final source repairs, retain the three newly reviewed identity and missingness fixes, and run one replacement exact-head denominator."
 verification = "GitHub Actions run 34836722242 completed without cancellation at exact head 590ed05ee55aa4f0871099082032877803c05746."
+
+[[task]]
+id = "retained-source-byte-mutation-regression"
+status = "implemented_pending_ci"
+finding = "The retained-source digest regression changed the manifest digest and expected a runtime byte mismatch, but the compiled source-body identity correctly rejected the manifest mutation first."
+required_change = "Keep the manifest and compiled identity fixed, copy the exact retained corpus to an isolated test root, alter one retained body, and require the runtime SHA-256 mismatch."
+verification = "Hosted gororoba_cli_physics tests retain separate compiled-manifest mutation coverage and retained-byte mutation coverage."
+
+[[task]]
+id = "exact-head-fc206cc4-terminal-denominator"
+status = "complete"
+finding = "Run 34839469460 reached a terminal 42-job fail-slow denominator: 39 jobs passed, the gororoba_cli_physics bins-4 shard failed only because one stale mutation test expected the pre-pin runtime hash error, aggregate validation failed by construction, and docs deployment skipped by pull-request policy. Casimir audit, documentation, workspace Clippy, materials, statistics, provenance, governance, proofs, all scientific replays, benchmarks, survey, paper, and every other routed shard passed."
+required_change = "Repair the stale test so it mutates retained bytes under an unchanged compiled and manifest identity, then run one replacement exact-head denominator."
+verification = "GitHub Actions run 34839469460 completed without cancellation at exact head fc206cc4863a5248375825820e6344e893cdf7d6."

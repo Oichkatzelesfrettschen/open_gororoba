@@ -2349,11 +2349,24 @@ mod tests {
         let manifest_source = fs::read_to_string(manifest_path).unwrap();
         verify_source_retrieval_manifest_source(&manifest_source, &repository_root).unwrap();
 
-        let manifest: SourceRetrievalManifest = toml::from_str(&manifest_source).unwrap();
-        let first_digest = &manifest.source.first().unwrap().sha256;
-        let stale_manifest = manifest_source.replacen(first_digest.as_str(), &"0".repeat(64), 1);
-        let error = verify_source_retrieval_manifest_source(&stale_manifest, &repository_root)
-            .unwrap_err();
+        let temporary_repository = tempfile::tempdir().unwrap();
+        for source in EXPECTED_RETAINED_SOURCES {
+            let destination = temporary_repository.path().join(source.path);
+            fs::create_dir_all(destination.parent().unwrap()).unwrap();
+            fs::copy(repository_root.join(source.path), destination).unwrap();
+        }
+        fs::write(
+            temporary_repository
+                .path()
+                .join(EXPECTED_RETAINED_SOURCES[0].path),
+            b"substituted retained source bytes",
+        )
+        .unwrap();
+        let error = verify_source_retrieval_manifest_source(
+            &manifest_source,
+            temporary_repository.path(),
+        )
+        .unwrap_err();
         assert!(error.to_string().contains("SHA-256 mismatch"));
     }
 
