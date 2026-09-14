@@ -486,7 +486,9 @@ the repository. The detailed contract is
   limit, and raw artifact.
 - Preserve `experimental_direct`, `experimental_fitted`, `computed`, and
   `inferred_proxy` as distinct evidence classes. A fitted value names its
-  inputs, fit model and version, residual artifact, and parameter covariance.
+  inputs, fit model and version, residual artifact, ordered parameter basis,
+  and matching parameter covariance. Measurement artifact and processing-recipe
+  IDs resolve to unique typed records; a nonempty unresolved ID is insufficient.
 - A computed repository such as JARVIS or Materials Project remains computed.
   It cannot satisfy an experimental property requirement. An experimental
   crystal source such as COD remains separately identified.

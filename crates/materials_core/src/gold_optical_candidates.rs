@@ -14,6 +14,12 @@ use serde::Deserialize;
 
 use crate::material_records::RecordId;
 
+const EXPECTED_SOURCE_DOIS: [(&str, &str); 3] = [
+    ("RIINFO-AU-JOHNSON", "10.1103/PhysRevB.6.4370"),
+    ("RIINFO-AU-OLMON-EVAPORATED", "10.1103/PhysRevB.86.235147"),
+    ("RIINFO-AU-MCPEAK", "10.1021/ph5004237"),
+];
+
 #[derive(Clone, Debug, PartialEq, Eq)]
 pub struct GoldOpticalSelection {
     pub dataset_id: RecordId,
@@ -144,6 +150,23 @@ impl GoldOpticalCandidate {
         }
         for identifier in [&self.dataset_id, &self.state_id, &self.specimen_id] {
             RecordId::new(identifier.clone())?;
+        }
+        let expected_doi = EXPECTED_SOURCE_DOIS
+            .iter()
+            .find_map(|(source_id, doi)| {
+                (*source_id == self.source_id.as_str()).then_some(*doi)
+            })
+            .ok_or_else(|| {
+                format!(
+                    "candidate {} has unrecognized source identity {}",
+                    self.dataset_id, self.source_id
+                )
+            })?;
+        if self.underlying_doi != expected_doi {
+            return Err(format!(
+                "candidate {} source {} DOI mismatch: expected {}, observed {}",
+                self.dataset_id, self.source_id, expected_doi, self.underlying_doi
+            ));
         }
         if self.source_sha256.len() != 64
             || !self
@@ -522,6 +545,25 @@ mod tests {
                 .validate_retained_sources(&repo_root::resolve!())
                 .is_ok()
         );
+    }
+
+    #[test]
+    fn source_identities_pin_underlying_dois() {
+        let catalog = GoldOpticalCandidateCatalog::load().unwrap();
+        for dataset_index in 0..catalog.dataset.len() {
+            let mut mutated_catalog = catalog.clone();
+            let candidate = &mut mutated_catalog.dataset[dataset_index];
+            let source_id = candidate.source_id.clone();
+            candidate.underlying_doi = "10.0000/misattributed-source".to_owned();
+            let error = mutated_catalog.validate().unwrap_err();
+            assert!(error.contains(&format!("source {source_id} DOI mismatch")));
+        }
+
+        let mut catalog = catalog;
+        let candidate = &mut catalog.dataset[0];
+        candidate.source_id = "RIINFO-AU-UNREVIEWED".to_owned();
+        let error = catalog.validate().unwrap_err();
+        assert!(error.contains("unrecognized source identity"));
     }
 
     #[test]

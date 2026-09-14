@@ -75,12 +75,19 @@ pub enum EvidenceBasis {
         fit_model: String,
         fit_model_version: String,
         residual_artifact_id: RecordId,
+        parameter_basis: FittedParameterBasis,
         parameter_covariance: Uncertainty,
     },
     Computed,
     InferredProxy {
         rationale: String,
     },
+}
+
+/// Ordered fitted-parameter identities defining covariance row and column order.
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub struct FittedParameterBasis {
+    pub parameter_ids: Vec<RecordId>,
 }
 
 impl EvidenceBasis {
@@ -240,6 +247,18 @@ pub struct Provenance {
     pub transformation_lineage: Vec<String>,
 }
 
+/// Raw acquisition artifact available to measurements in the graph.
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub struct RawArtifact {
+    pub raw_artifact_id: RecordId,
+}
+
+/// Processing recipe available to measurements in the graph.
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub struct ProcessingRecipe {
+    pub processing_recipe_id: RecordId,
+}
+
 /// Measurement acquisition and processing identity.
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub struct Measurement {
@@ -307,10 +326,31 @@ pub struct MaterialEvidenceGraph {
     pub materials: Vec<Material>,
     pub states: Vec<MaterialState>,
     pub specimens: Vec<Specimen>,
+    pub raw_artifacts: Vec<RawArtifact>,
+    pub processing_recipes: Vec<ProcessingRecipe>,
     pub measurements: Vec<Measurement>,
     pub quantities: Vec<QuantityValue>,
     pub model_runs: Vec<ModelRun>,
     pub derived_values: Vec<DerivedValue>,
+}
+
+impl FittedParameterBasis {
+    fn validate(&self) -> Result<(), String> {
+        if self.parameter_ids.is_empty() {
+            return Err("experimental fit requires a fitted-parameter basis".to_owned());
+        }
+        let mut unique_parameter_ids = BTreeSet::new();
+        for parameter_id in &self.parameter_ids {
+            parameter_id.validate("fitted-parameter identifier")?;
+            if !unique_parameter_ids.insert(parameter_id) {
+                return Err(format!(
+                    "experimental fit repeats fitted parameter {}",
+                    parameter_id.0
+                ));
+            }
+        }
+        Ok(())
+    }
 }
 
 fn require_nonempty(label: &str, value: &str) -> Result<(), String> {
@@ -586,6 +626,7 @@ impl QuantityValue {
                     fit_model,
                     fit_model_version,
                     residual_artifact_id,
+                    parameter_basis,
                     parameter_covariance,
                 },
             ) => {
@@ -605,9 +646,16 @@ impl QuantityValue {
                 require_nonempty("fit model", fit_model)?;
                 require_nonempty("fit model version", fit_model_version)?;
                 residual_artifact_id.validate("fit residual artifact identifier")?;
+                parameter_basis.validate()?;
                 parameter_covariance.validate()?;
-                if !matches!(parameter_covariance, Uncertainty::Covariance { .. }) {
+                let Uncertainty::Covariance { dimension, .. } = parameter_covariance else {
                     return Err("experimental fit requires parameter covariance".to_owned());
+                };
+                if *dimension != parameter_basis.parameter_ids.len() {
+                    return Err(
+                        "fitted-parameter covariance dimension must match parameter basis"
+                            .to_owned(),
+                    );
                 }
             }
             (QuantityOrigin::ModelRun { .. }, EvidenceBasis::Computed) => {}
@@ -1088,6 +1136,18 @@ impl MaterialEvidenceGraph {
             .iter()
             .map(|specimen| (&specimen.specimen_id, specimen))
             .collect();
+        let raw_artifact_ids = unique_ids(
+            "raw artifact identifier",
+            self.raw_artifacts
+                .iter()
+                .map(|record| &record.raw_artifact_id),
+        )?;
+        let processing_recipe_ids = unique_ids(
+            "processing recipe identifier",
+            self.processing_recipes
+                .iter()
+                .map(|record| &record.processing_recipe_id),
+        )?;
         unique_ids(
             "measurement identifier",
             self.measurements
@@ -1177,6 +1237,18 @@ impl MaterialEvidenceGraph {
                     measurement.measurement_id.0, measurement.specimen_id.0
                 ));
             }
+            if !raw_artifact_ids.contains(&measurement.raw_artifact_id) {
+                return Err(format!(
+                    "measurement {} references unknown raw artifact {}",
+                    measurement.measurement_id.0, measurement.raw_artifact_id.0
+                ));
+            }
+            if !processing_recipe_ids.contains(&measurement.processing_recipe_id) {
+                return Err(format!(
+                    "measurement {} references unknown processing recipe {}",
+                    measurement.measurement_id.0, measurement.processing_recipe_id.0
+                ));
+            }
         }
         for quantity in &self.quantities {
             match &quantity.origin {
@@ -1205,6 +1277,16 @@ impl MaterialEvidenceGraph {
                         &quantity.quantity_id,
                         &quantity.conditions,
                     )?;
+                    if let DetectionLimitStatus::Reported { unit, .. } =
+                        &measurement.detection_limit
+                        && matches!(quantity.observation, QuantityObservation::Observed { .. })
+                        && unit != &quantity.unit
+                    {
+                        return Err(format!(
+                            "quantity {} unit does not match measurement {} detection-limit unit",
+                            quantity.quantity_id.0, measurement_id.0
+                        ));
+                    }
                     if let QuantityObservation::Missing {
                         reason: Missingness::BelowDetectionLimit { upper_bound, unit },
                     } = &quantity.observation
@@ -1573,6 +1655,9 @@ mod tests {
                 fit_model: "Drude-Lorentz".to_owned(),
                 fit_model_version: "1".to_owned(),
                 residual_artifact_id: identifier("artifact:fit-residuals"),
+                parameter_basis: FittedParameterBasis {
+                    parameter_ids: vec![identifier("parameter:fit")],
+                },
                 parameter_covariance: Uncertainty::Standard {
                     value: 0.01,
                     unit: "1".to_owned(),
@@ -1836,6 +1921,9 @@ mod tests {
                 fit_model: "Drude-Lorentz".to_owned(),
                 fit_model_version: "1".to_owned(),
                 residual_artifact_id: RecordId(" ".to_owned()),
+                parameter_basis: FittedParameterBasis {
+                    parameter_ids: vec![identifier("parameter:fit")],
+                },
                 parameter_covariance: Uncertainty::Covariance {
                     dimension: 1,
                     values_row_major: vec![0.01],
@@ -1846,6 +1934,77 @@ mod tests {
         assert_eq!(
             fitted.validate().unwrap_err(),
             "fit residual artifact identifier must be nonempty"
+        );
+    }
+
+    #[test]
+    fn fitted_parameter_basis_matches_covariance_dimension() {
+        let fitted = scalar_quantity(
+            QuantityOrigin::Measurement {
+                measurement_id: identifier("measurement:ellipsometry"),
+            },
+            EvidenceBasis::ExperimentalFitted {
+                input_quantity_ids: vec![identifier("quantity:psi-delta")],
+                fit_model: "Drude-Lorentz".to_owned(),
+                fit_model_version: "1".to_owned(),
+                residual_artifact_id: identifier("artifact:fit-residuals"),
+                parameter_basis: FittedParameterBasis {
+                    parameter_ids: vec![
+                        identifier("parameter:plasma-frequency"),
+                        identifier("parameter:damping-rate"),
+                    ],
+                },
+                parameter_covariance: Uncertainty::Covariance {
+                    dimension: 2,
+                    values_row_major: vec![1.0, 0.0, 0.0, 1.0],
+                    unit_squared: "1".to_owned(),
+                },
+            },
+        );
+        assert!(fitted.validate().is_ok());
+
+        let mut dimension_mismatch = fitted.clone();
+        let EvidenceBasis::ExperimentalFitted {
+            parameter_covariance,
+            ..
+        } = &mut dimension_mismatch.evidence
+        else {
+            unreachable!()
+        };
+        *parameter_covariance = Uncertainty::Covariance {
+            dimension: 1,
+            values_row_major: vec![1.0],
+            unit_squared: "1".to_owned(),
+        };
+        assert_eq!(
+            dimension_mismatch.validate().unwrap_err(),
+            "fitted-parameter covariance dimension must match parameter basis"
+        );
+
+        let mut repeated_parameter = fitted.clone();
+        let EvidenceBasis::ExperimentalFitted {
+            parameter_basis, ..
+        } = &mut repeated_parameter.evidence
+        else {
+            unreachable!()
+        };
+        parameter_basis.parameter_ids[1] = parameter_basis.parameter_ids[0].clone();
+        assert_eq!(
+            repeated_parameter.validate().unwrap_err(),
+            "experimental fit repeats fitted parameter parameter:plasma-frequency"
+        );
+
+        let mut empty_basis = fitted;
+        let EvidenceBasis::ExperimentalFitted {
+            parameter_basis, ..
+        } = &mut empty_basis.evidence
+        else {
+            unreachable!()
+        };
+        parameter_basis.parameter_ids.clear();
+        assert_eq!(
+            empty_basis.validate().unwrap_err(),
+            "experimental fit requires a fitted-parameter basis"
         );
     }
 
@@ -1885,6 +2044,12 @@ mod tests {
                 porosity_fraction: None,
                 roughness_rms_m: None,
                 geometry: "reported geometry".to_owned(),
+            }],
+            raw_artifacts: vec![RawArtifact {
+                raw_artifact_id: identifier("artifact:raw"),
+            }],
+            processing_recipes: vec![ProcessingRecipe {
+                processing_recipe_id: identifier("recipe:fit"),
             }],
             measurements: vec![Measurement {
                 measurement_id: identifier("measurement:ellipsometry"),
@@ -2048,6 +2213,75 @@ mod tests {
         assert_eq!(
             measurement.validate().unwrap_err(),
             "measurement detection-limit unit must be nonempty"
+        );
+    }
+
+    #[test]
+    fn reported_measurement_detection_limit_matches_observed_quantity_unit() {
+        let quantity = scalar_quantity(
+            QuantityOrigin::Measurement {
+                measurement_id: identifier("measurement:ellipsometry"),
+            },
+            EvidenceBasis::ExperimentalDirect,
+        );
+        let mut graph = graph_with_quantities(vec![quantity]);
+        graph.measurements[0].detection_limit = DetectionLimitStatus::Reported {
+            upper_bound: 1.0,
+            unit: "Pa".to_owned(),
+        };
+        assert_eq!(
+            graph.validate().unwrap_err(),
+            "quantity quantity:test unit does not match measurement measurement:ellipsometry detection-limit unit"
+        );
+
+        graph.measurements[0].detection_limit = DetectionLimitStatus::Reported {
+            upper_bound: 1.0,
+            unit: "1".to_owned(),
+        };
+        assert!(graph.validate().is_ok());
+
+        graph.quantities[0].unit = "Pa".to_owned();
+        graph.quantities[0].observation = QuantityObservation::Missing {
+            reason: Missingness::Unknown,
+        };
+        assert!(graph.validate().is_ok());
+    }
+
+    #[test]
+    fn measurement_artifact_and_recipe_references_resolve_uniquely() {
+        let graph = graph_with_quantities(Vec::new());
+        assert!(graph.validate().is_ok());
+
+        let mut unknown_artifact = graph.clone();
+        unknown_artifact.measurements[0].raw_artifact_id = identifier("artifact:missing");
+        assert_eq!(
+            unknown_artifact.validate().unwrap_err(),
+            "measurement measurement:ellipsometry references unknown raw artifact artifact:missing"
+        );
+
+        let mut unknown_recipe = graph.clone();
+        unknown_recipe.measurements[0].processing_recipe_id = identifier("recipe:missing");
+        assert_eq!(
+            unknown_recipe.validate().unwrap_err(),
+            "measurement measurement:ellipsometry references unknown processing recipe recipe:missing"
+        );
+
+        let mut duplicate_artifact = graph.clone();
+        duplicate_artifact
+            .raw_artifacts
+            .push(duplicate_artifact.raw_artifacts[0].clone());
+        assert_eq!(
+            duplicate_artifact.validate().unwrap_err(),
+            "duplicate raw artifact identifier: artifact:raw"
+        );
+
+        let mut duplicate_recipe = graph;
+        duplicate_recipe
+            .processing_recipes
+            .push(duplicate_recipe.processing_recipes[0].clone());
+        assert_eq!(
+            duplicate_recipe.validate().unwrap_err(),
+            "duplicate processing recipe identifier: recipe:fit"
         );
     }
 
@@ -2227,7 +2461,7 @@ mod tests {
         };
         assert_eq!(
             graph.validate().unwrap_err(),
-            "quantity quantity:below-detection below-detection limit does not match measurement measurement:ellipsometry"
+            "quantity quantity:below-detection unit does not match measurement measurement:ellipsometry detection-limit unit"
         );
 
         graph.measurements[0].detection_limit = DetectionLimitStatus::Reported {
@@ -2424,6 +2658,9 @@ mod tests {
                 fit_model: "Drude-Lorentz".to_owned(),
                 fit_model_version: "1".to_owned(),
                 residual_artifact_id: identifier("artifact:fit-residuals"),
+                parameter_basis: FittedParameterBasis {
+                    parameter_ids: vec![identifier("parameter:fit")],
+                },
                 parameter_covariance: Uncertainty::Covariance {
                     dimension: 1,
                     values_row_major: vec![0.01],
@@ -2481,6 +2718,9 @@ mod tests {
                 fit_model: "Drude-Lorentz".to_owned(),
                 fit_model_version: "1".to_owned(),
                 residual_artifact_id: identifier("artifact:fit-residuals"),
+                parameter_basis: FittedParameterBasis {
+                    parameter_ids: vec![identifier("parameter:fit")],
+                },
                 parameter_covariance: Uncertainty::Covariance {
                     dimension: 1,
                     values_row_major: vec![0.01],
@@ -2524,6 +2764,9 @@ mod tests {
                 fit_model: "Drude-Lorentz".to_owned(),
                 fit_model_version: "1".to_owned(),
                 residual_artifact_id: identifier("artifact:fit-residuals"),
+                parameter_basis: FittedParameterBasis {
+                    parameter_ids: vec![identifier("parameter:fit")],
+                },
                 parameter_covariance: Uncertainty::Covariance {
                     dimension: 1,
                     values_row_major: vec![0.01],
@@ -2621,6 +2864,9 @@ mod tests {
                 fit_model: "Drude-Lorentz".to_owned(),
                 fit_model_version: "1".to_owned(),
                 residual_artifact_id: identifier("artifact:fit-residuals"),
+                parameter_basis: FittedParameterBasis {
+                    parameter_ids: vec![identifier("parameter:fit")],
+                },
                 parameter_covariance: Uncertainty::Covariance {
                     dimension: 1,
                     values_row_major: vec![0.01],
@@ -2782,6 +3028,12 @@ mod tests {
             materials: Vec::new(),
             states: Vec::new(),
             specimens: Vec::new(),
+            raw_artifacts: vec![RawArtifact {
+                raw_artifact_id: identifier("artifact:raw"),
+            }],
+            processing_recipes: vec![ProcessingRecipe {
+                processing_recipe_id: identifier("recipe:ellipsometry"),
+            }],
             measurements: vec![measurement],
             quantities: Vec::new(),
             model_runs: Vec::new(),

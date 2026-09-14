@@ -49,6 +49,7 @@ const ANGULAR_CONVERGENCE_TARGET: &str = "Au20/SiO2-50/Al2O3-50/Si_vs_Au";
 const PRODUCER_SOURCE: &str = include_str!("casimir_optics_discrimination_audit.rs");
 const SOURCE_RETRIEVAL_MANIFEST: &str = "source-retrieval-manifest.toml";
 const SOURCE_OBSERVATION_DIRECTORY: &str = "source-observations";
+const EXPECTED_RETRIEVAL_DATE: &str = "2026-09-12";
 const EXPECTED_RETRIEVAL_SCOPE: &str = "Observed source bytes for the Casimir, optical, materials, and quantum-admissibility audit. A retained body establishes byte identity and source inspection only.";
 #[derive(Clone, Copy)]
 struct ExpectedRetainedSource {
@@ -504,6 +505,10 @@ fn verify_source_retrieval_manifest_source(source: &str, repository_root: &Path)
         manifest.schema_version
     );
     validate_retrieval_date(&manifest.retrieval_date)?;
+    ensure!(
+        manifest.retrieval_date == EXPECTED_RETRIEVAL_DATE,
+        "source-retrieval manifest retrieval_date does not preserve the retained observation date"
+    );
     ensure!(
         manifest.scope == EXPECTED_RETRIEVAL_SCOPE,
         "source-retrieval manifest does not preserve the expected evidence scope"
@@ -2357,6 +2362,27 @@ mod tests {
             verify_source_retrieval_manifest_source(&impossible_date_manifest, &repository_root)
                 .unwrap_err();
         assert!(error.to_string().contains("is not a valid calendar date"));
+    }
+
+    #[test]
+    fn retained_source_manifest_rejects_changed_retrieval_date() {
+        let (repository_root, manifest_source, date_declaration) =
+            retained_source_manifest_fixture();
+        let changed_date_manifest = manifest_source.replacen(
+            &date_declaration,
+            "retrieval_date = \"2026-09-13\"",
+            1,
+        );
+        assert_ne!(changed_date_manifest, manifest_source);
+
+        let error =
+            verify_source_retrieval_manifest_source(&changed_date_manifest, &repository_root)
+                .unwrap_err();
+        assert!(
+            error
+                .to_string()
+                .contains("does not preserve the retained observation date")
+        );
     }
 
     #[test]

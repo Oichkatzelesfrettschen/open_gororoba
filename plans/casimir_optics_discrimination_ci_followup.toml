@@ -674,7 +674,7 @@ verification = "Hosted stats_core tests reject [[1e200, 1e90], [1e90, 0]] and re
 [[task]]
 id = "pr185-review-thread-denominator"
 status = "in_progress"
-finding = "The paginated review denominator began at 107 threads, increased to 109 after review of 7da85c94, and increased to 113 after review of e7b688e0. Two threads are resolved and 111 require final exact-head disposition."
+finding = "The paginated review denominator began at 107 threads, increased to 109 after review of 7da85c94, 113 after review of e7b688e0, 117 after review of 340601b1, and 121 after review of f28cb6e4. Two threads are resolved and 119 require final exact-head disposition."
 required_change = "Classify every stable thread ID against the final exact-head source, record an evidence-backed disposition, and resolve each implemented or superseded thread after hosted validation."
 verification = "A post-settling-window paginated GraphQL query reports exact set equality with the classified denominator and zero unresolved review threads."
 
@@ -743,7 +743,70 @@ verification = "The GitHub Actions run completed without cancellation at exact h
 
 [[task]]
 id = "native-manifest-single-terminal-newline"
-status = "implemented_pending_ci"
+status = "complete"
 finding = "The manifest renderer emitted two terminal newlines while repository patch tooling retained one, producing a one-byte freshness mismatch."
 required_change = "Make the renderer deterministically truncate the final entry separator to one terminal newline and refresh the producer, source-model, and path-repair hashes."
 verification = "Hosted validation-casimir-audit regenerates byte-identical native-output-manifest.toml while retaining all declared output entries."
+
+[[task]]
+id = "exact-head-f28cb6e4-terminal-denominator"
+status = "complete"
+finding = "Run 34821607978 reached a terminal 41-job denominator: 40 jobs passed and docs deployment skipped by policy. Every selected Rust, materials, statistics, Casimir audit, governance, documentation, proof, replay, benchmark, paper, and unsafe-survey job passed."
+required_change = "Preserve the one-newline manifest rendering and all exact-head implementation-conformance results while closing newly arrived review findings."
+verification = "GitHub Actions run 34821607978 completed successfully without cancellation at exact head f28cb6e4a37c8d5f49d0738e4aed4cd975d5fbfb."
+
+[[task]]
+id = "retained-source-retrieval-date-contract"
+status = "implemented_pending_ci"
+finding = "The retained-source verifier validated retrieval-date syntax but permitted replacement with another valid calendar date."
+required_change = "Pin the immutable retained observation date and reject a syntactically valid replacement date."
+verification = "Hosted Casimir audit mutation tests reject redating while accepting the retained 2026-09-12 observation date."
+
+[[task]]
+id = "measurement-detection-limit-unit-join"
+status = "implemented_pending_ci"
+finding = "An observed experimental quantity can reference a measurement whose reported detection limit uses a different unit."
+required_change = "Require each observed quantity unit to equal its measurement's reported detection-limit unit."
+verification = "Hosted materials_core tests reject a dimensionally incompatible reported detection limit."
+
+[[task]]
+id = "casimir-frontier-verifier-routing"
+status = "implemented_pending_ci"
+finding = "Changes to gororoba_cli_provenance can alter the canonical frontier verifier without selecting the Casimir audit lane."
+required_change = "Route the provenance CLI source tree through validation-casimir-audit and pin the selector in validation-policy."
+verification = "Hosted routing tests select Casimir audit for a finite-frontier verifier mutation."
+
+[[task]]
+id = "gold-candidate-underlying-doi-contract"
+status = "implemented_pending_ci"
+finding = "Gold optical candidates require a nonempty DOI but do not bind that DOI to the retained source identity."
+required_change = "Pin each candidate's exact underlying DOI and reject attribution mutations."
+verification = "Hosted materials_core tests reject a changed DOI while retaining source-byte identity."
+
+[[task]]
+id = "material-evidence-artifact-recipe-references"
+status = "implemented_pending_ci"
+finding = "Measurements accept nonempty raw-artifact and processing-recipe IDs without resolving them to graph records."
+required_change = "Add typed artifact and recipe inventories, enforce unique IDs, and reject unresolved measurement references."
+verification = "Hosted materials_core tests reject unknown artifact and recipe IDs and accept complete lineage."
+
+[[task]]
+id = "finite-frontier-witness-identity"
+status = "implemented_pending_ci"
+finding = "Closed frontier rows require nonempty witness and verifier text but do not preserve the canonical per-row identities."
+required_change = "Bind each closed row to the expected witness and verifier and add mutation-sensitive tests."
+verification = "Hosted finite-frontier tests reject fabricated nonempty witness and verifier replacements."
+
+[[task]]
+id = "unsafe-survey-routed-pr-execution"
+status = "implemented_pending_ci"
+finding = "Dependency-changing pull requests select the unsafe-survey job but pass a false reusable-workflow input, so the workspace inventory step skips."
+required_change = "Pass the routed selection into run_workspace_survey for pull-request execution and pin the behavior in validation-policy."
+verification = "Hosted dependency routing runs and validates the workspace unsafe inventory."
+
+[[task]]
+id = "fitted-covariance-parameter-basis"
+status = "implemented_pending_ci"
+finding = "Experimental fitted evidence can attach a covariance matrix whose dimension does not cover the fit's undeclared parameter basis."
+required_change = "Declare typed fitted-parameter identities and require covariance dimension equality."
+verification = "Hosted materials_core tests reject incomplete fitted covariance and accept exact parameter-basis coverage."

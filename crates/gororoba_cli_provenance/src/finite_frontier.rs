@@ -2,6 +2,7 @@
 
 use anyhow::{Context, Result, bail};
 use serde::{Deserialize, Serialize};
+use sha2::{Digest, Sha256};
 use std::{
     collections::{BTreeMap, BTreeSet, VecDeque},
     fs,
@@ -49,6 +50,151 @@ pub const EXPECTED_OPEN_FRONTIER_IDS: [&str; 2] = [
     "selected-schedule-independent-monte-carlo",
 ];
 
+// Each tuple binds a frontier ID to SHA-256 of the exact UTF-8 witness and
+// verifier field values in the canonical frontier document.
+const EXPECTED_CLOSED_ROW_IDENTITIES: [(&str, &str, &str); 28] = [
+    (
+        "lifshitz-planar-polar-normalization",
+        "69d9a2c8016fba4803b3c6527317440450f3f97ff21ac8c3e6336e3dac706cb2",
+        "9e1cd64e63ae2ed09b51510bf0f13910f5fb98b7565335d6f5a94c37df8a5f73",
+    ),
+    (
+        "lifshitz-sphere-pfa-energy-conversion",
+        "d62d93a4315e8f7b12796f6a5e5103dbcb8624cbac542659a1d8c92197161ad1",
+        "5e3283f2c6e44d073955670bb3baec789efef9786aa5dd8de6b34377b3c792e9",
+    ),
+    (
+        "materials-lifshitz-matsubara-prefactor",
+        "99ab4b0c55777c22a4a42d95f8f1dee0128ad867fa8d1d186b97eb452d174ba9",
+        "916c65483111bdf7814ec0c1352a3668810a9ac63e9f3049b01a116ac798e236",
+    ),
+    (
+        "optics-passive-fourier-convention",
+        "d3a7bf093834b3dcdb0af6c1f1cb982188a7492003d67bfa8ffacf6191f9c0bb",
+        "97549ac3f3b1f61d02e398ae295df278edb01fd9997e65e92fc4182dc512cbb2",
+    ),
+    (
+        "optics-finite-film-state-meter",
+        "5fec20d532a4bd9c9e267ed249590a918f7734d7d7bb3a9cca4109f538c4145a",
+        "916c65483111bdf7814ec0c1352a3668810a9ac63e9f3049b01a116ac798e236",
+    ),
+    (
+        "calibrated-efficient-information",
+        "d2727a84429061b73c35cc23279e9f73d52f2f4ce4c45aae631380b0436000a0",
+        "d15849ca9c0451b6297e61522d0c761dfd55266dd78fd1cf117bfa8260d31704",
+    ),
+    (
+        "bounded-nuisance-profile-distance",
+        "a8a612a3bae94342c3712c30ebfa11946cf0f1508d39165bc40b0932324937ff",
+        "d15849ca9c0451b6297e61522d0c761dfd55266dd78fd1cf117bfa8260d31704",
+    ),
+    (
+        "derived-feature-joint-covariance",
+        "3b6d4cc9affdcd0fad1954d3baa7de3af60fb6d35e65eb20477daf4729d24598",
+        "d15849ca9c0451b6297e61522d0c761dfd55266dd78fd1cf117bfa8260d31704",
+    ),
+    (
+        "discrimination-error-margin",
+        "49b3e689d7ae8357da8733eded2c8c6ff29e207483a5bc40070cbaa35716a65b",
+        "0a66219fcfbf824297a347abacfd967ab265514ed15dfca5cf089cf55fbfebb1",
+    ),
+    (
+        "quantum-memory-complete-positivity-gate",
+        "2a06fc933bf6a17c4bf603f692325ce4246dd09e0230caabc12891e445dc8065",
+        "640f8d6688f2cd880cf0a5734c87cc3734bb08b44cc6563765485cb09b0bb937",
+    ),
+    (
+        "hnls-operator-span-scope",
+        "af4a3a76e36c5a40f4d35e884227bc6dda403cc802481ca8d60cbd5740362c08",
+        "60311da45247006701474cb9be7d527439f988d409f14e88b51fd756f70b91a9",
+    ),
+    (
+        "primary-source-intake",
+        "d2fbfb5ade08bf9293615c8255fba2200c64201734b1f09f577fc4d108743a47",
+        "f863b4b130a5d678a2e623034f5aead38cccadf2d31b872b264cd8636a1a9c6f",
+    ),
+    (
+        "casimir-optics-rust-audit-producer",
+        "4e974928ffd1f89f1cff4da9f7c3d87ff2685f191e20cf724e710921e3633599",
+        "bd8cd763b987f63a1ce6bfe463e299476002ab4d0241605909a7fc46d7edb5b3",
+    ),
+    (
+        "claim-experiment-scope-reconciliation",
+        "b71443d1ff98b9650ac6852d5eeb32e52f1409575495eec6ab4c3eb2843c8ce2",
+        "fb00f61ebacf1686d900d81775c2fe1c911d6810854d547e5b02b3286a69db04",
+    ),
+    (
+        "material-state-specimen-identity",
+        "f6366b40cbd8dc549687f6f443113c6eee59be26205925788682d8e4c64f0f8c",
+        "2509c04ab696d293d04b3692991a5e94ca1c71a0f40feb014be74a21678f8d09",
+    ),
+    (
+        "material-measurement-quantity-semantics",
+        "45080d146123784fbbae40dfe87afcc652939aa4ed8574b2273eede26e3ec76d",
+        "2509c04ab696d293d04b3692991a5e94ca1c71a0f40feb014be74a21678f8d09",
+    ),
+    (
+        "material-derivation-evidence-classes",
+        "ba1a5a9b358084f368ff4522afefd86968f597f34fa6e1229faae894fa3ef2e2",
+        "2509c04ab696d293d04b3692991a5e94ca1c71a0f40feb014be74a21678f8d09",
+    ),
+    (
+        "material-typed-missingness-featurizer",
+        "ac7d813c8b2014d1ed583bd14a6a26a87ee9790d626f3bb86fdb2390cf9c75e8",
+        "d9d259e83977a59547f2bcd41ceeaffddabdee1125ee18b56caf985f241779e8",
+    ),
+    (
+        "mineral-metadata-sentinel-elimination",
+        "f75e03ef69616c6d5d2ad7fee253784f0b91f5b829557d344d778fbc573feda8",
+        "916c65483111bdf7814ec0c1352a3668810a9ac63e9f3049b01a116ac798e236",
+    ),
+    (
+        "gold-specimen-source-admission",
+        "b1ce398837650c815c968807c6218c50f685d105449b8d2d77d1cb80ab68c09c",
+        "827fcba491a30d70f30e8360fa6bf03f3305e5ae85210291307e93e99b2588e7",
+    ),
+    (
+        "ci-owned-broad-validation-resource-boundary",
+        "018c043cc862df6b48a6423fb9833c9f6a7cab9e7235d4109d29682f4ea76484",
+        "ceeb44aba9d10360550385dbbfb14075b8a3af137034368aa01c59f2cf7e5809",
+    ),
+    (
+        "multilayer-au-oxide-pressure-replay",
+        "a1052486bded65344c3e3d0db047c30b03f32ae82ff2f9037116c2f62c5ea5e9",
+        "f897e1ddbe66d82179f4990b1025bd33675b4144b45b0a4d541b28462220246f",
+    ),
+    (
+        "common-cap-finite-temperature-contrast",
+        "2dcacfd27e417c691de1c4561cc1e582ef85280c5c332734693f4fe001044815",
+        "f897e1ddbe66d82179f4990b1025bd33675b4144b45b0a4d541b28462220246f",
+    ),
+    (
+        "uv-background-model-sensitivity",
+        "24677cf3d67fee44e441e6da14044b38443a01b0ebdcb008c13aa0f01ca5ca65",
+        "a9949b6f78d1dedeaaae1d95655492d8a1bb50e98e67b9377fea5bce08c6d22c",
+    ),
+    (
+        "physical-nuisance-jacobian-replay",
+        "e78ba6534993767ae1bed29c437b11daff844a3e7588b5f10947e072b099492c",
+        "bd8cd763b987f63a1ce6bfe463e299476002ab4d0241605909a7fc46d7edb5b3",
+    ),
+    (
+        "physical-calibration-priority-replay",
+        "9c4fb8c5e28eadba87cdd704dcd39cb3d6130b3200b454db310fe16325ca9fcf",
+        "3691ef55161dbcb3defe94cca40bdf6619a6eae5eadecdd0525a1995d3565fd8",
+    ),
+    (
+        "classical-commutator-loop-control",
+        "b4bbcd7ac0d32076e644a8b7170fb9247cedabc1005fe9a6a891077319566fda",
+        "bd8cd763b987f63a1ce6bfe463e299476002ab4d0241605909a7fc46d7edb5b3",
+    ),
+    (
+        "matched-active-sham-null-identity",
+        "c18e61ecce18751ecfb5e638133eeeeda0ed698f3ace498faa833cdefdb5e675",
+        "bd8cd763b987f63a1ce6bfe463e299476002ab4d0241605909a7fc46d7edb5b3",
+    ),
+];
+
 #[derive(Clone, Debug, Deserialize)]
 struct FrontierDocument {
     frontier: FrontierHeader,
@@ -87,18 +233,6 @@ impl FrontierRow {
                 (!self.required_generator.trim().is_empty())
                     .then_some(self.required_generator.as_str())
             })
-    }
-
-    fn has_completion_witness(&self) -> bool {
-        self.completion_witness
-            .as_deref()
-            .is_some_and(|witness| !witness.trim().is_empty())
-    }
-
-    fn has_completion_verifier(&self) -> bool {
-        self.completion_verifier
-            .as_deref()
-            .is_some_and(|verifier| !verifier.trim().is_empty())
     }
 }
 
@@ -161,7 +295,39 @@ pub fn verify_finite_frontier_source(source: &str) -> Result<FiniteFrontierRepor
 fn verify_document(document: &FrontierDocument) -> Result<FiniteFrontierReport> {
     let expected_ids: BTreeSet<&str> = EXPECTED_FRONTIER_IDS.into_iter().collect();
     let expected_open_ids: BTreeSet<&str> = EXPECTED_OPEN_FRONTIER_IDS.into_iter().collect();
+    let expected_closed_ids: BTreeSet<&str> = expected_ids
+        .difference(&expected_open_ids)
+        .copied()
+        .collect();
+    let expected_identity_ids: BTreeSet<&str> = EXPECTED_CLOSED_ROW_IDENTITIES
+        .iter()
+        .map(|(frontier_id, _, _)| *frontier_id)
+        .collect();
     let mut diagnostics = Vec::new();
+
+    if expected_identity_ids.len() != EXPECTED_CLOSED_ROW_IDENTITIES.len() {
+        diagnostics.push("compiled closed-row identities contain duplicate IDs".to_owned());
+    }
+    let missing_identity_ids: BTreeSet<_> = expected_closed_ids
+        .difference(&expected_identity_ids)
+        .copied()
+        .collect();
+    let unexpected_identity_ids: BTreeSet<_> = expected_identity_ids
+        .difference(&expected_closed_ids)
+        .copied()
+        .collect();
+    if !missing_identity_ids.is_empty() {
+        diagnostics.push(format!(
+            "closed frontier IDs lack compiled witness identities: {}",
+            join_set(&missing_identity_ids)
+        ));
+    }
+    if !unexpected_identity_ids.is_empty() {
+        diagnostics.push(format!(
+            "compiled witness identities name non-closed frontier IDs: {}",
+            join_set(&unexpected_identity_ids)
+        ));
+    }
 
     if document.frontier.id != EXPECTED_FRONTIER_ID {
         diagnostics.push(format!(
@@ -234,17 +400,52 @@ fn verify_document(document: &FrontierDocument) -> Result<FiniteFrontierReport> 
         }
         match row.completion_state.as_str() {
             "closed" => {
-                if !row.has_completion_witness() {
+                let expected_identity = EXPECTED_CLOSED_ROW_IDENTITIES
+                    .iter()
+                    .find(|(frontier_id, _, _)| *frontier_id == row.frontier_id.as_str());
+                if expected_identity.is_none() && expected_ids.contains(row.frontier_id.as_str()) {
                     diagnostics.push(format!(
-                        "closed row {} lacks completion_witness",
+                        "closed row {} lacks a compiled witness identity",
                         row.frontier_id
                     ));
                 }
-                if !row.has_completion_verifier() {
-                    diagnostics.push(format!(
+                match (expected_identity, row.completion_witness.as_deref()) {
+                    (_, None) => diagnostics.push(format!(
+                        "closed row {} lacks completion_witness",
+                        row.frontier_id
+                    )),
+                    (_, Some(witness)) if witness.trim().is_empty() => diagnostics.push(format!(
+                        "closed row {} lacks completion_witness",
+                        row.frontier_id
+                    )),
+                    (Some((_, expected_witness_sha256, _)), Some(witness))
+                        if sha256_hex(witness) != *expected_witness_sha256 =>
+                    {
+                        diagnostics.push(format!(
+                            "closed row {} completion_witness identity mismatch",
+                            row.frontier_id
+                        ));
+                    }
+                    _ => {}
+                }
+                match (expected_identity, row.completion_verifier.as_deref()) {
+                    (_, None) => diagnostics.push(format!(
                         "closed row {} lacks completion_verifier",
                         row.frontier_id
-                    ));
+                    )),
+                    (_, Some(verifier)) if verifier.trim().is_empty() => diagnostics.push(format!(
+                        "closed row {} lacks completion_verifier",
+                        row.frontier_id
+                    )),
+                    (Some((_, _, expected_verifier_sha256)), Some(verifier))
+                        if sha256_hex(verifier) != *expected_verifier_sha256 =>
+                    {
+                        diagnostics.push(format!(
+                            "closed row {} completion_verifier identity mismatch",
+                            row.frontier_id
+                        ));
+                    }
+                    _ => {}
                 }
             }
             "open" => {
@@ -346,6 +547,10 @@ fn verify_document(document: &FrontierDocument) -> Result<FiniteFrontierReport> 
     })
 }
 
+fn sha256_hex(value: &str) -> String {
+    format!("{:x}", Sha256::digest(value.as_bytes()))
+}
+
 fn dependency_cycle_keys(rows_by_id: &BTreeMap<&str, &FrontierRow>) -> Option<Vec<String>> {
     let mut remaining_dependencies: BTreeMap<&str, usize> = rows_by_id
         .iter()
@@ -402,28 +607,10 @@ mod tests {
     use super::*;
 
     fn baseline_document() -> FrontierDocument {
-        FrontierDocument {
-            frontier: FrontierHeader {
-                id: EXPECTED_FRONTIER_ID.to_owned(),
-                stable_key: EXPECTED_STABLE_KEY.to_owned(),
-                declared_rows: EXPECTED_FRONTIER_IDS.len(),
-            },
-            row: EXPECTED_FRONTIER_IDS
-                .iter()
-                .map(|frontier_id| {
-                    let is_open = EXPECTED_OPEN_FRONTIER_IDS.contains(frontier_id);
-                    FrontierRow {
-                        frontier_id: (*frontier_id).to_owned(),
-                        completion_state: if is_open { "open" } else { "closed" }.to_owned(),
-                        ordering_dependencies: Vec::new(),
-                        required_generator: format!("verify {frontier_id}"),
-                        next_action: None,
-                        completion_witness: (!is_open).then(|| format!("witness/{frontier_id}")),
-                        completion_verifier: (!is_open).then(|| format!("verify {frontier_id}")),
-                    }
-                })
-                .collect(),
-        }
+        toml::from_str(include_str!(
+            "../../../plans/casimir_optics_discrimination_frontier.toml"
+        ))
+        .unwrap()
     }
 
     fn error_text(document: &FrontierDocument) -> String {
@@ -500,6 +687,44 @@ mod tests {
         let error = error_text(&document);
         assert!(error.contains("lacks completion_witness"));
         assert!(error.contains("lacks completion_verifier"));
+    }
+
+    #[test]
+    fn rejects_closed_row_witness_and_verifier_identity_mutations() {
+        let baseline = baseline_document();
+        let closed_ids: Vec<_> = baseline
+            .row
+            .iter()
+            .filter(|row| row.completion_state == "closed")
+            .map(|row| row.frontier_id.clone())
+            .collect();
+        assert_eq!(closed_ids.len(), EXPECTED_CLOSED_ROW_IDENTITIES.len());
+
+        for frontier_id in closed_ids {
+            let mut document = baseline.clone();
+            let closed_row = document
+                .row
+                .iter_mut()
+                .find(|row| row.frontier_id == frontier_id)
+                .unwrap();
+            closed_row.completion_witness = Some("fabricated witness".to_owned());
+            let error = error_text(&document);
+            assert!(error.contains(&format!(
+                "closed row {frontier_id} completion_witness identity mismatch"
+            )));
+
+            let mut document = baseline.clone();
+            let closed_row = document
+                .row
+                .iter_mut()
+                .find(|row| row.frontier_id == frontier_id)
+                .unwrap();
+            closed_row.completion_verifier = Some("fabricated verifier".to_owned());
+            let error = error_text(&document);
+            assert!(error.contains(&format!(
+                "closed row {frontier_id} completion_verifier identity mismatch"
+            )));
+        }
     }
 
     #[test]
