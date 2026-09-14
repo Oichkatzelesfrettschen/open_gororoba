@@ -474,6 +474,27 @@ pub fn bounded_profile_distance(
         });
     }
 
+    // A feasible unconstrained optimum is also the global box-constrained
+    // optimum. Returning it before QP scaling avoids erasing a small optimum
+    // when physically loose bounds map beyond the useful solver range.
+    let unrestricted_parameters = least_squares(nuisance, target)?;
+    if unrestricted_parameters
+        .iter()
+        .zip(bounds)
+        .all(|(parameter, bound)| *parameter >= bound.lower && *parameter <= bound.upper)
+    {
+        let distance =
+            finite_euclidean_norm(&(target - nuisance * &unrestricted_parameters))?;
+        let (active_lower_bounds, active_upper_bounds) =
+            classify_active_bounds(&unrestricted_parameters, bounds);
+        return Ok(BoundedProfileResult {
+            distance,
+            nuisance_parameters: unrestricted_parameters,
+            active_lower_bounds,
+            active_upper_bounds,
+        });
+    }
+
     let parameter_count = nuisance.ncols();
     let objective_scale = target
         .amax()
