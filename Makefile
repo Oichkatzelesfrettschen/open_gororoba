@@ -357,6 +357,7 @@ validation-resource-contract-collectors:
 	validation_tools_status_block="$$(sed -n '/fn run_validation_tools_status/,/let now =/p' xtask/src/main.rs)"; \
 	cargo_target_parser_block="$$(sed -n '/^[[:space:]]*case .*cargo_target_args.* in/,/^[[:space:]]*light_scope=()/p' Makefile)"; \
 	casimir_path_block="$$(sed -n '/casimir_audit) pattern=/p' .github/workflows/ci.yml)"; \
+	lattice_route_block="$$(sed -n '/run_lattice=true; fi/p' .github/workflows/ci.yml)"; \
 	box_counting_route_block="$$(sed -n '/run_box_counting=true; fi/p' .github/workflows/ci.yml)"; \
 	unsafe_survey_job_block="$$(sed -n '/^  unsafe-survey:/,/^  validation:/p' .github/workflows/ci.yml)"; \
 	frontier_check_block="$$(sed -n '/^casimir-optics-discrimination-frontier-check:/,/^$$/p' Makefile)"; \
@@ -429,6 +430,7 @@ validation-resource-contract-collectors:
 	if ! printf '%s\n' "$$casimir_path_block" | grep -Fq 'rust-toolchain\.toml$$'; then echo "ERROR: Casimir audit routing omits the hashed Rust toolchain identity." >&2; status=1; fi; \
 	if ! printf '%s\n' "$$casimir_path_block" | grep -Fq 'gororoba_cli_provenance'; then echo "ERROR: Casimir audit routing omits its finite-frontier verifier owner." >&2; status=1; fi; \
 	if ! printf '%s\n' "$$casimir_path_block" | grep -Fq 'Makefile$$'; then echo "ERROR: Casimir audit routing omits its Make-owned execution recipes." >&2; status=1; fi; \
+	if ! printf '%s\n' "$$lattice_route_block" | grep -Fq 'cd_kernel'; then echo "ERROR: lattice replay routing omits its Cayley-Dickson kernel dependency." >&2; status=1; fi; \
 	if ! printf '%s\n' "$$box_counting_route_block" | grep -Fq 'verified_core'; then echo "ERROR: box-counting replay routing omits its hardware-topology dependency." >&2; status=1; fi; \
 	if ! printf '%s\n' "$$unsafe_survey_job_block" | grep -Fq 'run_workspace_survey: true'; then echo "ERROR: routed unsafe-survey selection does not run the workspace inventory." >&2; status=1; fi; \
 	if ! printf '%s\n' "$$frontier_check_block" | grep -Fq -- 'verify-finite-frontier'; then echo "ERROR: routed Casimir audit omits finite-frontier verification." >&2; status=1; fi; \
@@ -475,7 +477,7 @@ validation-resource-contract-collectors:
 	if ! printf '%s\n' "$$replay_selection_block" | grep -Fq 'for lane in lattice nufit box-counting optics; do'; then echo "ERROR: optics scientific replay is absent from matrix construction." >&2; status=1; fi; \
 	optics_command='cargo test --locked --profile validation --no-fail-fast -p optics_core --test ruan_fan_source_receipts admitted_archive_tex_and_pdf_have_distinct_verified_identities -- --ignored --exact --nocapture'; \
 	if [ "$$(printf '%s\n' "$$optics_replay_block" | grep -Fc -- "$$optics_command")" -ne 1 ]; then echo "ERROR: optics replay must execute its exact hydrated receipt test once." >&2; status=1; fi; \
-	for contract in "printf 'benchmark=true\\nproofs=true\\npaper=true\\nunsafe_survey=true\\n'" "crates/(algebra_analysis|algebra_experimental)/" "crates/(provenance_store|gororoba_cli_provenance|repo_root)/" 'Scientific replay routing could not resolve the comparison base; selecting every replay lane.'; do \
+	for contract in "printf 'benchmark=true\\nproofs=true\\npaper=true\\nunsafe_survey=true\\n'" "crates/(algebra_analysis|algebra_experimental|cd_kernel)/" "crates/(provenance_store|gororoba_cli_provenance|repo_root)/" 'Scientific replay routing could not resolve the comparison base; selecting every replay lane.'; do \
 	    if ! grep -Fq -- "$$contract" .github/workflows/ci.yml; then echo "ERROR: scheduled or fail-slow CI routing contract is missing: $$contract" >&2; status=1; fi; \
 	done; \
 	conservative_full_line="$$(printf '%s\n' "$$validation_inputs_block" | grep -nF "echo 'full=true' >> \"\$$GITHUB_OUTPUT\"" | head -n 1 | cut -d: -f1)"; \

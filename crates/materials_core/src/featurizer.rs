@@ -35,11 +35,12 @@ pub struct MaskedFeatureVector {
 }
 
 impl MaskedFeatureVector {
-    /// Return numerical features only when every value is observed.
+    /// Return numerical features only when every value is observed and finite.
     pub fn into_complete_values(self) -> Option<Vec<f64>> {
         (self.values.len() == self.observed.len()
-            && self.observed.iter().all(|observed| *observed))
-            .then_some(self.values)
+            && self.observed.iter().all(|observed| *observed)
+            && self.values.iter().all(|value| value.is_finite()))
+        .then_some(self.values)
     }
 }
 
@@ -387,6 +388,17 @@ mod tests {
             let vector = MaskedFeatureVector {
                 values: vec![1.0, 2.0],
                 observed,
+            };
+            assert!(vector.into_complete_values().is_none());
+        }
+    }
+
+    #[test]
+    fn complete_values_reject_non_finite_observations() {
+        for non_finite_value in [f64::NAN, f64::INFINITY, f64::NEG_INFINITY] {
+            let vector = MaskedFeatureVector {
+                values: vec![1.0, non_finite_value],
+                observed: vec![true, true],
             };
             assert!(vector.into_complete_values().is_none());
         }

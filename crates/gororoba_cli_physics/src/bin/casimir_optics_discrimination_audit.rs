@@ -51,6 +51,23 @@ const SOURCE_RETRIEVAL_MANIFEST: &str = "source-retrieval-manifest.toml";
 const SOURCE_OBSERVATION_DIRECTORY: &str = "source-observations";
 const EXPECTED_RETRIEVAL_DATE: &str = "2026-09-12";
 const EXPECTED_RETRIEVAL_SCOPE: &str = "Observed source bytes for the Casimir, optical, materials, and quantum-admissibility audit. A retained body establishes byte identity and source inspection only.";
+const PRODUCER_OWNED_OUTPUT_NAMES: [&str; 15] = [
+    "bounded_mimic.tsv",
+    "bounded_mimic_coefficients.tsv",
+    "calibration_priority.tsv",
+    "commutator_and_null_controls.tsv",
+    "derivative_step_study.tsv",
+    "finite_temperature.tsv",
+    "local_tolerances.tsv",
+    "model_outputs.tsv",
+    "multilayer_pressure.tsv",
+    "native-output-manifest.toml",
+    "physical_jacobian.tsv",
+    "planar_convergence.tsv",
+    "summary.toml",
+    "unbounded_mimic_coefficients.tsv",
+    "uv_model_sensitivity.tsv",
+];
 #[derive(Clone, Copy)]
 struct ExpectedRetainedSource {
     id: &'static str,
@@ -2064,7 +2081,9 @@ fn remove_obsolete_manifest_outputs(
             .path
             .to_str()
             .context("prior native output path is not UTF-8")?;
-        if current_outputs.contains_key(prior_name) {
+        if current_outputs.contains_key(prior_name)
+            || !PRODUCER_OWNED_OUTPUT_NAMES.contains(&prior_name)
+        {
             continue;
         }
         let obsolete_path = output_directory.join(&prior_output.path);
@@ -2193,29 +2212,76 @@ mod tests {
     }
 
     #[test]
+    fn producer_output_allowlist_matches_rendered_outputs() {
+        let report = generate_report().unwrap();
+        let rendered_outputs = render_outputs(&report).unwrap();
+        let rendered_names = rendered_outputs
+            .keys()
+            .map(String::as_str)
+            .collect::<BTreeSet<_>>();
+        let owned_names = PRODUCER_OWNED_OUTPUT_NAMES
+            .iter()
+            .copied()
+            .collect::<BTreeSet<_>>();
+        assert_eq!(rendered_names, owned_names);
+    }
+
+    #[test]
     fn regeneration_removes_only_obsolete_manifested_outputs() {
         let temporary_output = tempfile::tempdir().unwrap();
-        let manifest = "[[output]]\npath = \"retained.tsv\"\n\n[[output]]\npath = \"obsolete.tsv\"\n";
+        let manifest = "[[output]]\npath = \"summary.toml\"\n\n[[output]]\npath = \"bounded_mimic.tsv\"\n";
         fs::write(
             temporary_output.path().join("native-output-manifest.toml"),
             manifest,
         )
         .unwrap();
-        fs::write(temporary_output.path().join("retained.tsv"), "retained").unwrap();
-        fs::write(temporary_output.path().join("obsolete.tsv"), "obsolete").unwrap();
+        fs::write(temporary_output.path().join("summary.toml"), "retained").unwrap();
+        fs::write(
+            temporary_output.path().join("bounded_mimic.tsv"),
+            "obsolete",
+        )
+        .unwrap();
         fs::write(temporary_output.path().join("source-retrieval-manifest.toml"), "auxiliary")
             .unwrap();
-        let current_outputs = BTreeMap::from([("retained.tsv".to_owned(), String::new())]);
+        let current_outputs = BTreeMap::from([("summary.toml".to_owned(), String::new())]);
 
         remove_obsolete_manifest_outputs(temporary_output.path(), &current_outputs).unwrap();
 
-        assert!(temporary_output.path().join("retained.tsv").is_file());
-        assert!(!temporary_output.path().join("obsolete.tsv").exists());
+        assert!(temporary_output.path().join("summary.toml").is_file());
+        assert!(
+            !temporary_output
+                .path()
+                .join("bounded_mimic.tsv")
+                .exists()
+        );
         assert!(
             temporary_output
                 .path()
                 .join("source-retrieval-manifest.toml")
                 .is_file()
+        );
+    }
+
+    #[test]
+    fn regeneration_preserves_manifested_non_output_artifacts() {
+        let temporary_output = tempfile::tempdir().unwrap();
+        fs::write(
+            temporary_output.path().join("native-output-manifest.toml"),
+            "[[output]]\npath = \"derived-output-manifest.toml\"\n",
+        )
+        .unwrap();
+        let retained_path = temporary_output.path().join("derived-output-manifest.toml");
+        fs::write(&retained_path, "historical provenance").unwrap();
+
+        remove_obsolete_manifest_outputs(
+            temporary_output.path(),
+            &BTreeMap::<String, String>::new(),
+        )
+        .unwrap();
+
+        assert_eq!(
+            fs::read_to_string(retained_path).unwrap(),
+            "historical provenance"
         );
     }
 

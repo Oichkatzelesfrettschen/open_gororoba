@@ -658,7 +658,7 @@ jobs:
                 run_box_counting=true
                 run_optics=true
               else
-                if grep -Eq '^(crates/(algebra_analysis|algebra_experimental)/|data/csv/cayley_dickson/)' "$RUNNER_TEMP/scientific-replay-changed-paths.txt"; then run_lattice=true; fi
+                if grep -Eq '^(crates/(algebra_analysis|algebra_experimental|cd_kernel)/|data/csv/cayley_dickson/)' "$RUNNER_TEMP/scientific-replay-changed-paths.txt"; then run_lattice=true; fi
                 if grep -Eq '^(crates/algebra_experimental/|data/output/audit/claim-family-evidence-adjudication/nufit-v6[01]-parameters\.pdf$)' "$RUNNER_TEMP/scientific-replay-changed-paths.txt"; then run_nufit=true; fi
                 if grep -Eq '^(crates/(gororoba_cli_physics|lbm_3d|cosmology_core|verified_core)/|data/output/audit/claim-family-evidence-adjudication/null-pilot-cpu/C1-uniform-fzd-0/(rho|force\.xyz)\.f64le$)' "$RUNNER_TEMP/scientific-replay-changed-paths.txt"; then run_box_counting=true; fi
                 if grep -Eq '^(crates/optics_core/|data/output/audit/claim-family-evidence-adjudication/optics-replay/(arxiv-source\.download|Fano_Scattering\.tex|ruan-fan-0909\.3323v2\.pdf)$)' "$RUNNER_TEMP/scientific-replay-changed-paths.txt"; then run_optics=true; fi
