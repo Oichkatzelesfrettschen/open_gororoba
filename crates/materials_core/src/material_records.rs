@@ -268,14 +268,15 @@ pub enum AssayStatus {
     Unknown,
 }
 
-/// Reported measurement detection limit or an explicit reason it is absent.
-#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+/// Reported quantity or legacy single-output detection limit.
+#[derive(Debug, Clone, Default, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "snake_case", tag = "status")]
 pub enum DetectionLimitStatus {
     Reported { upper_bound: f64, unit: String },
     NotMeasured,
     NotApplicable,
     Withheld { reason: String },
+    #[default]
     Unknown,
 }
 
@@ -315,6 +316,16 @@ pub struct Provenance {
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 pub struct RawArtifact {
     pub raw_artifact_id: RecordId,
+    #[serde(default)]
+    pub path: String,
+    #[serde(default)]
+    pub source_id: String,
+    #[serde(default)]
+    pub doi_or_stable_id: String,
+    #[serde(default)]
+    pub locator: String,
+    #[serde(default)]
+    pub source_sha256: String,
 }
 
 /// Processing recipe available to measurements in the graph.
@@ -335,6 +346,7 @@ pub struct Measurement {
     pub raw_artifact_id: RecordId,
     pub processing_recipe_id: RecordId,
     pub repeat_count: usize,
+    /// Compatibility limit used only when exactly one quantity names this measurement.
     pub detection_limit: DetectionLimitStatus,
     pub provenance: Provenance,
 }
@@ -349,6 +361,9 @@ pub struct QuantityValue {
     pub unit: String,
     pub tensor_component_or_basis: Option<String>,
     pub observation: QuantityObservation,
+    /// Detection limit for this quantity, independent of sibling output units.
+    #[serde(default)]
+    pub detection_limit: DetectionLimitStatus,
     pub uncertainty: Uncertainty,
     pub conditions: BTreeMap<String, String>,
     pub applicability_range: Option<String>,
@@ -437,6 +452,14 @@ fn validate_retrieval_date(value: &str) -> Result<(), String> {
         || NaiveDate::parse_from_str(value, "%Y-%m-%d").is_err()
     {
         return Err("retrieval date must be a valid YYYY-MM-DD calendar date".to_owned());
+    }
+    Ok(())
+}
+
+fn validate_sha256(label: &str, value: &str) -> Result<(), String> {
+    require_nonempty(label, value)?;
+    if value.len() != 64 || !value.bytes().all(|byte| byte.is_ascii_hexdigit()) {
+        return Err(format!("{label} must contain 64 hexadecimal digits"));
     }
     Ok(())
 }
@@ -627,6 +650,7 @@ impl QuantityValue {
         self.quantity_id.validate("quantity identifier")?;
         require_nonempty("quantity kind", &self.quantity_kind)?;
         require_nonempty("quantity unit", &self.unit)?;
+        self.detection_limit.validate("quantity")?;
         self.uncertainty.validate()?;
         self.uncertainty.validate_quantity_unit(&self.unit)?;
         match &self.observation {
@@ -1054,6 +1078,43 @@ impl Specimen {
     }
 }
 
+impl DetectionLimitStatus {
+    fn validate(&self, label: &str) -> Result<(), String> {
+        match self {
+            Self::Reported { upper_bound, unit } => {
+                require_nonempty(&format!("{label} detection-limit unit"), unit)?;
+                if !upper_bound.is_finite() || *upper_bound < 0.0 {
+                    return Err(format!(
+                        "{label} detection limit must be finite and nonnegative"
+                    ));
+                }
+            }
+            Self::Withheld { reason } => {
+                require_nonempty(
+                    &format!("{label} detection-limit withholding reason"),
+                    reason,
+                )?;
+            }
+            Self::NotMeasured | Self::NotApplicable | Self::Unknown => {}
+        }
+        Ok(())
+    }
+}
+
+impl RawArtifact {
+    pub fn validate(&self) -> Result<(), String> {
+        self.raw_artifact_id.validate("raw artifact identifier")?;
+        require_nonempty("raw artifact path", &self.path)?;
+        require_nonempty("raw artifact source identifier", &self.source_id)?;
+        require_nonempty(
+            "raw artifact source DOI or stable identifier",
+            &self.doi_or_stable_id,
+        )?;
+        require_nonempty("raw artifact source locator", &self.locator)?;
+        validate_sha256("raw artifact source SHA-256", &self.source_sha256)
+    }
+}
+
 impl Measurement {
     pub fn validate(&self) -> Result<(), String> {
         self.measurement_id.validate("measurement identifier")?;
@@ -1068,22 +1129,7 @@ impl Measurement {
         if self.repeat_count == 0 {
             return Err("measurement repeat count must be positive".to_owned());
         }
-        match &self.detection_limit {
-            DetectionLimitStatus::Reported { upper_bound, unit } => {
-                require_nonempty("measurement detection-limit unit", unit)?;
-                if !upper_bound.is_finite() || *upper_bound < 0.0 {
-                    return Err(
-                        "measurement detection limit must be finite and nonnegative".to_owned(),
-                    );
-                }
-            }
-            DetectionLimitStatus::Withheld { reason } => {
-                require_nonempty("measurement detection-limit withholding reason", reason)?;
-            }
-            DetectionLimitStatus::NotMeasured
-            | DetectionLimitStatus::NotApplicable
-            | DetectionLimitStatus::Unknown => {}
-        }
+        self.detection_limit.validate("measurement")?;
         require_nonempty("source identifier", &self.provenance.source_id)?;
         require_nonempty(
             "source DOI or stable identifier",
@@ -1102,16 +1148,7 @@ impl Measurement {
         {
             return Err("transformation lineage requires nonempty steps".to_owned());
         }
-        require_nonempty("source SHA-256", &self.provenance.source_sha256)?;
-        if self.provenance.source_sha256.len() != 64
-            || !self
-                .provenance
-                .source_sha256
-                .bytes()
-                .all(|byte| byte.is_ascii_hexdigit())
-        {
-            return Err("source SHA-256 must contain 64 hexadecimal digits".to_owned());
-        }
+        validate_sha256("source SHA-256", &self.provenance.source_sha256)?;
         Ok(())
     }
 }
@@ -1224,6 +1261,9 @@ impl MaterialEvidenceGraph {
         for specimen in &self.specimens {
             specimen.validate()?;
         }
+        for raw_artifact in &self.raw_artifacts {
+            raw_artifact.validate()?;
+        }
         for measurement in &self.measurements {
             measurement.validate()?;
         }
@@ -1265,6 +1305,11 @@ impl MaterialEvidenceGraph {
                 .iter()
                 .map(|record| &record.raw_artifact_id),
         )?;
+        let raw_artifacts_by_id: BTreeMap<_, _> = self
+            .raw_artifacts
+            .iter()
+            .map(|artifact| (&artifact.raw_artifact_id, artifact))
+            .collect();
         let processing_recipe_ids = unique_ids(
             "processing recipe identifier",
             self.processing_recipes
@@ -1360,11 +1405,42 @@ impl MaterialEvidenceGraph {
                     measurement.measurement_id.0, measurement.specimen_id.0
                 ));
             }
-            if !raw_artifact_ids.contains(&measurement.raw_artifact_id) {
-                return Err(format!(
-                    "measurement {} references unknown raw artifact {}",
-                    measurement.measurement_id.0, measurement.raw_artifact_id.0
-                ));
+            let raw_artifact = raw_artifacts_by_id
+                .get(&measurement.raw_artifact_id)
+                .ok_or_else(|| {
+                    format!(
+                        "measurement {} references unknown raw artifact {}",
+                        measurement.measurement_id.0, measurement.raw_artifact_id.0
+                    )
+                })?;
+            for (field, artifact_value, measurement_value) in [
+                (
+                    "source identifier",
+                    &raw_artifact.source_id,
+                    &measurement.provenance.source_id,
+                ),
+                (
+                    "source DOI or stable identifier",
+                    &raw_artifact.doi_or_stable_id,
+                    &measurement.provenance.doi_or_stable_id,
+                ),
+                (
+                    "source locator",
+                    &raw_artifact.locator,
+                    &measurement.provenance.locator,
+                ),
+                (
+                    "source SHA-256",
+                    &raw_artifact.source_sha256,
+                    &measurement.provenance.source_sha256,
+                ),
+            ] {
+                if artifact_value != measurement_value {
+                    return Err(format!(
+                        "measurement {} {field} does not match raw artifact {}",
+                        measurement.measurement_id.0, raw_artifact.raw_artifact_id.0
+                    ));
+                }
             }
             if !processing_recipe_ids.contains(&measurement.processing_recipe_id) {
                 return Err(format!(
@@ -1373,6 +1449,15 @@ impl MaterialEvidenceGraph {
                 ));
             }
         }
+        let measurement_output_counts = self.quantities.iter().fold(
+            BTreeMap::<&RecordId, usize>::new(),
+            |mut counts, quantity| {
+                if let QuantityOrigin::Measurement { measurement_id } = &quantity.origin {
+                    *counts.entry(measurement_id).or_default() += 1;
+                }
+                counts
+            },
+        );
         for quantity in &self.quantities {
             match &quantity.origin {
                 QuantityOrigin::Measurement { measurement_id } => {
@@ -1400,8 +1485,16 @@ impl MaterialEvidenceGraph {
                         &quantity.quantity_id,
                         &quantity.conditions,
                     )?;
-                    if let DetectionLimitStatus::Reported { unit, .. } =
+                    let detection_limit = if matches!(
+                        &quantity.detection_limit,
+                        DetectionLimitStatus::Unknown
+                    ) && measurement_output_counts.get(measurement_id) == Some(&1)
+                    {
                         &measurement.detection_limit
+                    } else {
+                        &quantity.detection_limit
+                    };
+                    if let DetectionLimitStatus::Reported { unit, .. } = detection_limit
                         && matches!(quantity.observation, QuantityObservation::Observed { .. })
                         && unit != &quantity.unit
                     {
@@ -1417,7 +1510,7 @@ impl MaterialEvidenceGraph {
                         let DetectionLimitStatus::Reported {
                             upper_bound: measurement_limit,
                             unit: measurement_unit,
-                        } = &measurement.detection_limit
+                        } = detection_limit
                         else {
                             return Err(format!(
                                 "quantity {} claims a below-detection limit but measurement {} has no detection limit",
@@ -1751,6 +1844,7 @@ mod tests {
             observation: QuantityObservation::Observed {
                 payload: QuantityPayload::Scalar { value: 0.82 },
             },
+            detection_limit: DetectionLimitStatus::Unknown,
             uncertainty: Uncertainty::Standard {
                 value: 0.01,
                 unit: "1".to_owned(),
@@ -2181,9 +2275,19 @@ mod tests {
             raw_artifacts: vec![
                 RawArtifact {
                     raw_artifact_id: identifier("artifact:raw"),
+                    path: "inputs/test-source.csv".to_owned(),
+                    source_id: "source:test".to_owned(),
+                    doi_or_stable_id: "doi:10.example/test".to_owned(),
+                    locator: "table".to_owned(),
+                    source_sha256: "0".repeat(64),
                 },
                 RawArtifact {
                     raw_artifact_id: identifier("artifact:fit-residuals"),
+                    path: "outputs/test-fit-residuals.csv".to_owned(),
+                    source_id: "source:test-fit".to_owned(),
+                    doi_or_stable_id: "doi:10.example/test".to_owned(),
+                    locator: "fit residuals".to_owned(),
+                    source_sha256: "1".repeat(64),
                 },
             ],
             processing_recipes: vec![ProcessingRecipe {
@@ -2406,6 +2510,66 @@ mod tests {
     }
 
     #[test]
+    fn mixed_unit_measurement_uses_per_quantity_detection_limits() {
+        let origin = QuantityOrigin::Measurement {
+            measurement_id: identifier("measurement:ellipsometry"),
+        };
+        let mut refractive_index =
+            scalar_quantity(origin.clone(), EvidenceBasis::ExperimentalDirect);
+        refractive_index.detection_limit = DetectionLimitStatus::Reported {
+            upper_bound: 0.01,
+            unit: "1".to_owned(),
+        };
+
+        let mut pressure = scalar_quantity(origin, EvidenceBasis::ExperimentalDirect);
+        pressure.quantity_id = identifier("quantity:pressure");
+        pressure.quantity_kind = "pressure".to_owned();
+        pressure.unit = "Pa".to_owned();
+        pressure.uncertainty = Uncertainty::Standard {
+            value: 0.01,
+            unit: "Pa".to_owned(),
+        };
+        pressure.detection_limit = DetectionLimitStatus::Reported {
+            upper_bound: 0.02,
+            unit: "Pa".to_owned(),
+        };
+
+        let graph = graph_with_quantities(vec![refractive_index, pressure]);
+        assert!(graph.validate().is_ok());
+    }
+
+    #[test]
+    fn quantity_detection_limit_must_match_its_below_limit_observation() {
+        let mut quantity = scalar_quantity(
+            QuantityOrigin::Measurement {
+                measurement_id: identifier("measurement:ellipsometry"),
+            },
+            EvidenceBasis::ExperimentalDirect,
+        );
+        quantity.observation = QuantityObservation::Missing {
+            reason: Missingness::BelowDetectionLimit {
+                upper_bound: 0.01,
+                unit: "1".to_owned(),
+            },
+        };
+        quantity.detection_limit = DetectionLimitStatus::Reported {
+            upper_bound: 0.02,
+            unit: "1".to_owned(),
+        };
+        let mut graph = graph_with_quantities(vec![quantity]);
+        assert_eq!(
+            graph.validate().unwrap_err(),
+            "quantity quantity:test below-detection limit does not match measurement measurement:ellipsometry"
+        );
+
+        graph.quantities[0].detection_limit = DetectionLimitStatus::Reported {
+            upper_bound: 0.01,
+            unit: "1".to_owned(),
+        };
+        assert!(graph.validate().is_ok());
+    }
+
+    #[test]
     fn measurement_artifact_and_recipe_references_resolve_uniquely() {
         let graph = graph_with_quantities(Vec::new());
         assert!(graph.validate().is_ok());
@@ -2440,6 +2604,71 @@ mod tests {
         assert_eq!(
             duplicate_recipe.validate().unwrap_err(),
             "duplicate processing recipe identifier: recipe:fit"
+        );
+    }
+
+    #[test]
+    fn measurements_reconcile_immutable_raw_artifact_metadata() {
+        let graph = graph_with_quantities(Vec::new());
+
+        for (field, expected_error) in [
+            (
+                "source_id",
+                "measurement measurement:ellipsometry source identifier does not match raw artifact artifact:raw",
+            ),
+            (
+                "doi_or_stable_id",
+                "measurement measurement:ellipsometry source DOI or stable identifier does not match raw artifact artifact:raw",
+            ),
+            (
+                "locator",
+                "measurement measurement:ellipsometry source locator does not match raw artifact artifact:raw",
+            ),
+            (
+                "source_sha256",
+                "measurement measurement:ellipsometry source SHA-256 does not match raw artifact artifact:raw",
+            ),
+        ] {
+            let mut mismatch = graph.clone();
+            match field {
+                "source_id" => mismatch.measurements[0].provenance.source_id = "other".to_owned(),
+                "doi_or_stable_id" => {
+                    mismatch.measurements[0].provenance.doi_or_stable_id = "other".to_owned();
+                }
+                "locator" => mismatch.measurements[0].provenance.locator = "other".to_owned(),
+                "source_sha256" => {
+                    mismatch.measurements[0].provenance.source_sha256 = "f".repeat(64);
+                }
+                _ => unreachable!(),
+            }
+            assert_eq!(mismatch.validate().unwrap_err(), expected_error);
+        }
+
+        let mut second_reference = graph;
+        let mut measurement = second_reference.measurements[0].clone();
+        measurement.measurement_id = identifier("measurement:second");
+        measurement.provenance.locator = "contradictory locator".to_owned();
+        second_reference.measurements.push(measurement);
+        assert_eq!(
+            second_reference.validate().unwrap_err(),
+            "measurement measurement:second source locator does not match raw artifact artifact:raw"
+        );
+    }
+
+    #[test]
+    fn raw_artifact_requires_path_and_valid_hash_metadata() {
+        let mut graph = graph_with_quantities(Vec::new());
+        graph.raw_artifacts[0].path = " ".to_owned();
+        assert_eq!(
+            graph.validate().unwrap_err(),
+            "raw artifact path must be nonempty"
+        );
+
+        graph.raw_artifacts[0].path = "inputs/test-source.csv".to_owned();
+        graph.raw_artifacts[0].source_sha256 = "xyz".to_owned();
+        assert_eq!(
+            graph.validate().unwrap_err(),
+            "raw artifact source SHA-256 must contain 64 hexadecimal digits"
         );
     }
 
@@ -3311,6 +3540,11 @@ mod tests {
             specimens: Vec::new(),
             raw_artifacts: vec![RawArtifact {
                 raw_artifact_id: identifier("artifact:raw"),
+                path: "inputs/test-source.csv".to_owned(),
+                source_id: "source:test".to_owned(),
+                doi_or_stable_id: "doi:10.example/test".to_owned(),
+                locator: "Table 1".to_owned(),
+                source_sha256: "0".repeat(64),
             }],
             processing_recipes: vec![ProcessingRecipe {
                 processing_recipe_id: identifier("recipe:ellipsometry"),
@@ -3362,6 +3596,7 @@ mod tests {
             observation: QuantityObservation::Observed {
                 payload: QuantityPayload::Scalar { value: 0.5 },
             },
+            detection_limit: DetectionLimitStatus::Unknown,
             uncertainty: Uncertainty::NotReported {
                 rationale: "model sensitivity remains open".to_owned(),
             },

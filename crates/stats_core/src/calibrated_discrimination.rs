@@ -636,13 +636,23 @@ pub fn fisher_information_with_pseudoinverse(
     // elsewhere. A zero-variance coordinate must have zero covariance with
     // every other coordinate.
     let mut correlation = DMatrix::identity(covariance.nrows(), covariance.ncols());
+    let mut normalized_signal = DVector::zeros(signal.len());
+    let mut has_deterministic_signal = false;
     let effective_relative_tolerance = relative_tolerance.max(64.0 * f64::EPSILON);
     for row in 0..covariance.nrows() {
-        if covariance[(row, row)] == 0.0 {
+        let row_deviation = covariance[(row, row)].sqrt();
+        if row_deviation == 0.0 {
             correlation[(row, row)] = 0.0;
+            if signal[row] != 0.0 {
+                has_deterministic_signal = true;
+            }
+        } else {
+            normalized_signal[row] = signal[row] / row_deviation;
+            if !normalized_signal[row].is_finite() {
+                return Err(DiscriminationError::NumericalFailure);
+            }
         }
         for column in (row + 1)..covariance.ncols() {
-            let row_deviation = covariance[(row, row)].sqrt();
             let column_deviation = covariance[(column, column)].sqrt();
             let upper = covariance[(row, column)];
             let lower = covariance[(column, row)];
@@ -673,6 +683,9 @@ pub fn fisher_information_with_pseudoinverse(
             correlation[(column, row)] = symmetric_correlation;
         }
     }
+    if has_deterministic_signal {
+        return Ok(f64::INFINITY);
+    }
     let coordinate_scaled_decomposition = SymmetricEigen::new(correlation);
     let coordinate_scaled_spectral_scale = coordinate_scaled_decomposition
         .eigenvalues
@@ -688,23 +701,16 @@ pub fn fisher_information_with_pseudoinverse(
     {
         return Err(DiscriminationError::NumericalFailure);
     }
-    let symmetric_covariance = covariance * 0.5 + covariance.transpose() * 0.5;
-    let decomposition = SymmetricEigen::new(symmetric_covariance);
-    let maximum = decomposition
-        .eigenvalues
-        .iter()
-        .copied()
-        .fold(0.0_f64, f64::max);
-    let threshold = effective_relative_tolerance * maximum;
-    let coordinates = decomposition.eigenvectors.transpose() * signal;
+    let coordinates =
+        coordinate_scaled_decomposition.eigenvectors.transpose() * &normalized_signal;
     let mut information = 0.0;
-    for (coordinate_index, (eigenvalue, coordinate)) in decomposition
+    for (coordinate_index, (eigenvalue, coordinate)) in coordinate_scaled_decomposition
         .eigenvalues
         .iter()
         .zip(coordinates.iter())
         .enumerate()
     {
-        if *eigenvalue > threshold {
+        if *eigenvalue > eigenvalue_tolerance {
             // Division before squaring preserves quotients whose unscaled
             // coordinate square underflows even though the Fisher term does not.
             let standardized_coordinate = coordinate / eigenvalue.sqrt();
@@ -713,16 +719,17 @@ pub fn fisher_information_with_pseudoinverse(
                 return Err(DiscriminationError::NumericalFailure);
             }
         } else {
-            let projection_scale: f64 = decomposition
+            let projection_scale: f64 = coordinate_scaled_decomposition
                 .eigenvectors
                 .column(coordinate_index)
                 .iter()
-                .zip(signal.iter())
+                .zip(normalized_signal.iter())
                 .map(|(basis_component, signal_component)| {
                     (basis_component * signal_component).abs()
                 })
                 .sum();
-            let roundoff_tolerance = signal.len() as f64 * f64::EPSILON * projection_scale;
+            let roundoff_tolerance =
+                normalized_signal.len() as f64 * f64::EPSILON * projection_scale;
             if coordinate.abs() > roundoff_tolerance {
                 return Ok(f64::INFINITY);
             }
@@ -865,6 +872,19 @@ mod tests {
             efficient_information(&target, &nuisance, &calibration).unwrap(),
             0.0,
             epsilon = 1e-12
+        );
+    }
+
+    #[test]
+    fn calibration_sensitivity_rejects_scaled_rank_deficient_nuisance_coordinates() {
+        let target = DVector::from_vec(vec![1.0, -1.0]);
+        let nuisance =
+            DMatrix::from_column_slice(2, 2, &[1e-200, -1e-200, 1e200, -1e200]);
+        let calibration = DMatrix::zeros(0, 2);
+
+        assert_eq!(
+            calibration_precision_sensitivity(&target, &nuisance, &calibration, 0),
+            Err(DiscriminationError::RankDeficientDesign)
         );
     }
 
@@ -1313,6 +1333,23 @@ mod tests {
         let information =
             fisher_information_with_pseudoinverse(&signal, &covariance, 1e-12).unwrap();
         assert_relative_eq!(information, 1e-100, max_relative = 1e-12);
+    }
+
+    #[test]
+    fn fisher_information_is_invariant_under_coordinate_unit_scaling() {
+        let signal = DVector::from_vec(vec![0.0, 1e-10]);
+        let covariance = DMatrix::from_diagonal(&DVector::from_vec(vec![1.0, 1e-20]));
+        let rescaled_signal = DVector::from_vec(vec![0.0, 1.0]);
+        let rescaled_covariance = DMatrix::identity(2, 2);
+
+        let information =
+            fisher_information_with_pseudoinverse(&signal, &covariance, 1e-12).unwrap();
+        let rescaled_information =
+            fisher_information_with_pseudoinverse(&rescaled_signal, &rescaled_covariance, 1e-12)
+                .unwrap();
+
+        assert_relative_eq!(information, 1.0, epsilon = 1e-12);
+        assert_relative_eq!(rescaled_information, information, epsilon = 1e-12);
     }
 
     #[test]

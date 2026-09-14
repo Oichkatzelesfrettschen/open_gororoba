@@ -1090,3 +1090,45 @@ status = "complete"
 finding = "Run 34875858674 reached a terminal 42-job fail-slow denominator: 39 component jobs passed, docs-gate was canceled at its exact 60-minute job timeout while the workspace rustdoc command remained active, aggregate validation failed by construction, and docs deployment skipped by pull-request policy. Dependency policy, workspace Clippy, Casimir audit, governance, every routed Rust test shard, proofs, all scientific replay leaves, benchmarks, survey, paper, and policy passed."
 required_change = "Set the workspace-wide documentation job timeout to the established 90-minute validation envelope without changing the process-visible worker count, then run one replacement exact-head denominator."
 verification = "GitHub Actions run 34875858674 completed at exact head da54f5668ec311480b563f956dd56ad09a4669b1; docs-gate job 104084195869 ran from 17:41:39Z to 18:41:59Z and its build step was canceled at 18:41:56Z."
+
+[[task]]
+id = "exact-head-8486a096-terminal-denominator"
+status = "complete"
+finding = "Run 34882788520 reached a terminal 42-job denominator: 41 jobs passed, docs deployment skipped by pull-request policy, and no job failed or was canceled."
+required_change = "Retain this successful exact-head denominator as validation of the 90-minute documentation envelope before applying the final settled-review repairs."
+verification = "GitHub Actions run 34882788520 completed without cancellation at exact head 8486a09630bc07a76afb63c6c7203bbe7e74ca0f."
+
+[[task]]
+id = "fisher-information-coordinate-scale-invariance"
+status = "implemented_pending_ci"
+finding = "A global covariance-eigenvalue cutoff classified small positive variances as deterministic when coordinates used different units, so Fisher information changed under an invertible coordinate rescaling."
+required_change = "Decompose the coordinate-normalized correlation matrix, transform the signal by the same coordinate scales, and apply rank and null-space tests in that common basis."
+verification = "Hosted stats_core tests preserve unit Fisher information for diag(1, 1e-20) with signal (0, 1e-10) and its unit-rescaled representation."
+
+[[task]]
+id = "gold-candidate-optional-metadata-nonempty"
+status = "implemented_pending_ci"
+finding = "Optional gold-candidate metadata accepted Some values containing only empty or whitespace text, making present metadata indistinguishable from malformed absence."
+required_change = "Reject blank temperature, preparation, geometry, method, and uncertainty strings while retaining None as typed absence."
+verification = "Hosted materials_core tests reject empty and whitespace-only optional metadata and accept explicit None values."
+
+[[task]]
+id = "quantity-specific-detection-limit"
+status = "implemented_pending_ci"
+finding = "One measurement-level detection-limit unit was applied to every output, so a valid acquisition producing quantities with different units could not be represented."
+required_change = "Store and validate detection-limit status per quantity, using the legacy measurement-level value only for a single-output compatibility record."
+verification = "Hosted materials_core tests accept mixed-unit outputs with independent limits and preserve exact below-detection-limit matching."
+
+[[task]]
+id = "raw-artifact-immutable-provenance"
+status = "implemented_pending_ci"
+finding = "RawArtifact stored only an identifier, allowing measurements sharing that identifier to declare contradictory source, locator, or byte-hash provenance."
+required_change = "Bind path, source identity, locator, and SHA-256 to the raw-artifact record and require every referencing measurement to match the immutable provenance."
+verification = "Hosted materials_core tests reject each contradictory measurement field and malformed artifact path or digest metadata."
+
+[[task]]
+id = "cargo-config-scientific-replay-routing"
+status = "implemented_pending_ci"
+finding = "A pull request changing only .cargo/config.toml selected no hydrated scientific replay even though every replay leaf inherits Cargo configuration."
+required_change = "Include .cargo/config.toml in the common replay trigger and bind that trigger and all four selected lanes in the CI policy contract."
+verification = "Hosted validation-resource-contract and actionlint pass, and a Cargo-configuration-only path selects lattice, NuFIT, box-counting, and optics replay."

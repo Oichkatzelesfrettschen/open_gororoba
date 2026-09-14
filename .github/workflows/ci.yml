@@ -651,7 +651,7 @@ jobs:
               run_box_counting=true
               run_optics=true
             else
-              common_pattern='^(Cargo\.(toml|lock)|rust-toolchain\.toml|Makefile|\.github/workflows/ci\.yml|data/retention/scientific-payloads\.json|crates/(provenance_store|gororoba_cli_provenance|repo_root)/)'
+              common_pattern='^(Cargo\.(toml|lock)|rust-toolchain\.toml|\.cargo/config\.toml|Makefile|\.github/workflows/ci\.yml|data/retention/scientific-payloads\.json|crates/(provenance_store|gororoba_cli_provenance|repo_root)/)'
               if grep -Eq "$common_pattern" "$RUNNER_TEMP/scientific-replay-changed-paths.txt"; then
                 run_lattice=true
                 run_nufit=true

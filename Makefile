@@ -364,6 +364,7 @@ validation-resource-contract-collectors:
 	hydration_upload_block="$$(sed -n '/name: Upload bounded scientific replay inputs/,/name: Retain scientific hydration build artifacts/p' .github/workflows/ci.yml)"; \
 	hydration_cache_block="$$(sed -n '/name: Retain scientific hydration build artifacts/,/^  scientific-replay-leaf:/p' .github/workflows/ci.yml)"; \
 	replay_selection_block="$$(sed -n '/^  scientific-replay-inputs:/,/uses: dtolnay\/rust-toolchain/p' .github/workflows/ci.yml)"; \
+	replay_common_route_block="$$(printf '%s\n' "$$replay_selection_block" | sed -n '/^[[:space:]]*common_pattern=/,/^[[:space:]]*else$$/p')"; \
 	replay_leaf_execution_block="$$(sed -n '/name: Execute hydrated scientific replay leaf/,/name: Upload scientific replay leaf report/p' .github/workflows/ci.yml)"; \
 	optics_replay_block="$$(sed -n '/^[[:space:]]*optics)/,/^[[:space:]]*\*)/p' .github/workflows/ci.yml)"; \
 	replay_verdict_block="$$(sed -n '/name: Report hydrated scientific replay outcomes/,/name: Retain scientific replay verdict/p' .github/workflows/ci.yml)"; \
@@ -453,6 +454,13 @@ validation-resource-contract-collectors:
 	    if ! printf '%s\n' "$$replay_verdict_block" | grep -Fq -- "$$contract"; then echo "ERROR: aggregate scientific replay blocked-input contract is missing: $$contract" >&2; status=1; fi; \
 	done; \
 	if ! printf '%s\n' "$$replay_selection_block" | grep -Fq 'all_hydrated: $${{ steps.hydrate.outputs.all_hydrated }}'; then echo "ERROR: scientific replay input job does not expose complete hydration state." >&2; status=1; fi; \
+	if [ "$$(printf '%s\n' "$$replay_common_route_block" | grep -Fc "common_pattern='")" -ne 1 ]; then echo "ERROR: scientific replay must define exactly one common path trigger." >&2; status=1; fi; \
+	for contract in 'Cargo\.(toml|lock)' 'rust-toolchain\.toml' '\.cargo/config\.toml' 'Makefile' '\.github/workflows/ci\.yml' 'data/retention/scientific-payloads\.json' 'crates/(provenance_store|gororoba_cli_provenance|repo_root)/'; do \
+	    if ! printf '%s\n' "$$replay_common_route_block" | grep -Fq -- "$$contract"; then echo "ERROR: common scientific replay routing omits: $$contract" >&2; status=1; fi; \
+	done; \
+	for lane in lattice nufit box_counting optics; do \
+	    if ! printf '%s\n' "$$replay_common_route_block" | grep -Fq "run_$$lane=true"; then echo "ERROR: common scientific replay trigger does not select $$lane." >&2; status=1; fi; \
+	done; \
 	input_failure_line="$$(printf '%s\n' "$$replay_verdict_block" | grep -nF 'if [ "$$INPUT_RESULT" != success ]' | cut -d: -f1)"; \
 	not_selected_line="$$(printf '%s\n' "$$replay_verdict_block" | grep -nF 'if [ "$$RUN_REPLAY" != true ]' | cut -d: -f1)"; \
 	blocked_input_line="$$(printf '%s\n' "$$replay_verdict_block" | grep -nF 'if [ "$$ALL_HYDRATED" != true ]' | cut -d: -f1)"; \
@@ -490,6 +498,11 @@ validation-resource-contract-collectors:
 	if ! grep -Fq 'no_tests_args=(--no-tests=pass)' Makefile; then echo "ERROR: binary-only CI shards reject successful zero-test compilation." >&2; status=1; fi; \
 	if [ "$$(sed -n '/id: rust-shards/,/name: Check repository hygiene/p' .github/workflows/ci.yml | grep -Fc "printf 'matrix=%s\\n' \"\$$rust_matrix\" >> \"\$$GITHUB_OUTPUT\"")" -ne 1 ]; then echo "ERROR: dynamic Rust shard matrix must be emitted exactly once." >&2; status=1; fi; \
 	if [ "$$(sed -n '/id: rust-shards/,/name: Check repository hygiene/p' .github/workflows/ci.yml | grep -Fc "printf 'matrix=%s\\n' \"\$$fallback_matrix\" >> \"\$$GITHUB_OUTPUT\"")" -ne 2 ]; then echo "ERROR: fallback Rust shard matrix must be emitted only by the two failure branches." >&2; status=1; fi; \
+	experiment_freshness_target="$$(sed -n '/^casimir-optics-discrimination-experiment-output-check:/p' Makefile)"; \
+	if [ "$$experiment_freshness_target" != 'casimir-optics-discrimination-experiment-output-check: casimir-optics-discrimination-e043-output-check casimir-optics-discrimination-e044-output-check' ]; then echo "ERROR: E-043 and E-044 freshness checks must remain independent prerequisites." >&2; status=1; fi; \
+	for experiment_id in e043 e044; do \
+	    if [ "$$(grep -Ec "^casimir-optics-discrimination-$$experiment_id-output-check: require-ci-validation-authority$$" Makefile)" -ne 1 ]; then echo "ERROR: $$experiment_id freshness check lacks an independent CI-authorized target." >&2; status=1; fi; \
+	done; \
 	fallback_heavy_row='{"lane":"heavy-fallback","target":"heavy","rust_scope":"-p algebra_analysis -p gr_core","clippy_scope":"","cargo_target_args":"--lib --bins --tests --examples","cargo_features":""}'; \
 	if [ "$$(printf '%s\n' "$$rust_shard_block" | grep -Fc "$$fallback_heavy_row")" -ne 1 ]; then echo "ERROR: fallback Rust shard matrix must retain complete heavy-package coverage." >&2; status=1; fi; \
 	if ! sed -n '/name: Retain successful core validation artifacts/,/key: $${{ steps.rust-cache.outputs.cache-primary-key }}/p' .github/workflows/ci.yml | grep -Fq 'if: success()'; then echo "ERROR: core cache retention is not success-only." >&2; status=1; fi; \

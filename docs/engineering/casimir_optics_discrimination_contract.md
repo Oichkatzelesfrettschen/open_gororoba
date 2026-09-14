@@ -244,10 +244,17 @@ in the typed graph. The legacy `MineralMetadata` surface is a catalog
 compatibility type; its quarantine conversion maps historical sentinels to
 typed absence and cannot satisfy direct-measurement admission.
 
-Every measurement also carries a required detection-limit status. The status
-contains a finite nonnegative bound and unit when reported, or records
+Every quantity carries a required detection-limit status. The status contains a
+finite nonnegative bound and matching quantity unit when reported, or records
 `not_measured`, `not_applicable`, `withheld`, or `unknown`; an omitted optional
-tuple cannot erase that evidence state.
+tuple cannot erase that evidence state. A legacy measurement-level status is a
+single-output compatibility input only and never applies across mixed-unit
+outputs.
+
+Each raw-artifact identity owns one repository path, source identity, source
+locator, and source-byte SHA-256. Measurements that reference one raw artifact
+must agree with its immutable provenance, so shared evidence bytes cannot carry
+contradictory source metadata.
 
 `get_material_model("gold")` selects one scalar 300 K optical model. The legacy
 `get_material("gold")` alias has the same model-selection semantics. Neither API

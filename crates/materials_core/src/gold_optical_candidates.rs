@@ -210,6 +210,20 @@ impl GoldOpticalCandidate {
         ] {
             require_nonempty(label, value)?;
         }
+        for (label, value) in [
+            ("temperature_label", self.temperature_label.as_deref()),
+            ("specimen_preparation", self.specimen_preparation.as_deref()),
+            ("geometry", self.geometry.as_deref()),
+            ("measurement_method", self.measurement_method.as_deref()),
+            (
+                "measurement_uncertainty",
+                self.measurement_uncertainty.as_deref(),
+            ),
+        ] {
+            if let Some(value) = value {
+                require_nonempty(label, value)?;
+            }
+        }
         for identifier in [&self.dataset_id, &self.state_id, &self.specimen_id] {
             RecordId::new(identifier.clone())?;
         }
@@ -631,6 +645,50 @@ mod tests {
                 catalog.dataset[0].dataset_id
             )
         );
+    }
+
+    #[test]
+    fn optional_candidate_metadata_rejects_blank_values_and_retains_typed_absence() {
+        for (field, blank) in [
+            ("temperature_label", ""),
+            ("temperature_label", " \t"),
+            ("specimen_preparation", ""),
+            ("specimen_preparation", " \t"),
+            ("geometry", ""),
+            ("geometry", " \t"),
+            ("measurement_method", ""),
+            ("measurement_method", " \t"),
+            ("measurement_uncertainty", ""),
+            ("measurement_uncertainty", " \t"),
+        ] {
+            let mut catalog = GoldOpticalCandidateCatalog::load().unwrap();
+            let candidate = &mut catalog.dataset[0];
+            match field {
+                "temperature_label" => candidate.temperature_label = Some(blank.to_owned()),
+                "specimen_preparation" => {
+                    candidate.specimen_preparation = Some(blank.to_owned());
+                }
+                "geometry" => candidate.geometry = Some(blank.to_owned()),
+                "measurement_method" => candidate.measurement_method = Some(blank.to_owned()),
+                "measurement_uncertainty" => {
+                    candidate.measurement_uncertainty = Some(blank.to_owned());
+                }
+                _ => unreachable!("the mutation table lists every optional metadata field"),
+            }
+            assert_eq!(
+                catalog.validate().unwrap_err(),
+                format!("{field} must be nonempty")
+            );
+        }
+
+        let mut catalog = GoldOpticalCandidateCatalog::load().unwrap();
+        let candidate = &mut catalog.dataset[0];
+        candidate.temperature_label = None;
+        candidate.specimen_preparation = None;
+        candidate.geometry = None;
+        candidate.measurement_method = None;
+        candidate.measurement_uncertainty = None;
+        assert!(catalog.validate().is_ok());
     }
 
     #[test]

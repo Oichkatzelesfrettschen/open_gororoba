@@ -484,6 +484,12 @@ the repository. The detailed contract is
   basis, conditions, applicability range, method, instrument, calibration,
   operator or facility, repeat count, uncertainty or covariance, detection
   limit, and raw artifact.
+- Bind each detection limit to the quantity it constrains. A shared acquisition
+  may produce quantities with different units; one measurement-level limit
+  cannot stand in for all of them.
+- Let each raw-artifact ID own one immutable path, source identity, locator, and
+  source-byte SHA-256. Every measurement that references the ID must agree with
+  that artifact metadata.
 - Preserve `experimental_direct`, `experimental_fitted`, `computed`, and
   `inferred_proxy` as distinct evidence classes. A fitted value names its
   inputs, fit model and version, residual artifact, ordered parameter basis,
