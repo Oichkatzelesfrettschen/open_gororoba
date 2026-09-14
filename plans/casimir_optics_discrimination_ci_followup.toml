@@ -1191,21 +1191,49 @@ verification = "GitHub Actions run 34896807672 completed without cancellation at
 
 [[task]]
 id = "lattice-replay-cd-kernel-routing"
-status = "implemented_pending_ci"
+status = "complete"
 finding = "A pull request changing only cd_kernel could alter Cayley-Dickson behavior exercised by the ignored hydrated lattice replay without selecting that replay leaf."
 required_change = "Include cd_kernel in the lattice replay trigger and bind that dependency edge in validation-resource-contract-collectors."
 verification = "Hosted validation-resource-contract and actionlint pass, and a cd_kernel-only path selects the lattice replay lane."
 
 [[task]]
 id = "native-output-deletion-ownership"
-status = "implemented_pending_ci"
+status = "complete"
 finding = "The native audit trusted any safe single-component path in a prior manifest as deletion authority, allowing a stale or malicious manifest to remove retained provenance artifacts."
 required_change = "Restrict obsolete-output deletion to an exact producer-owned filename set while retaining traversal rejection and preserving every path outside that set."
 verification = "Hosted gororoba_cli_physics tests remove a known obsolete producer output and preserve derived-output-manifest.toml even when a prior native manifest lists it as output."
 
 [[task]]
 id = "masked-feature-vector-finite-values"
-status = "implemented_pending_ci"
+status = "complete"
 finding = "MaskedFeatureVector::into_complete_values accepted NaN and infinite features whenever all observation bits were true."
 required_change = "Require equal value and mask lengths, all observation bits true, and every returned feature finite."
 verification = "Hosted materials_core tests reject NaN, positive infinity, and negative infinity from complete-value conversion."
+
+[[task]]
+id = "exact-head-dbb1405a-terminal-denominator"
+status = "complete"
+finding = "Run 34901216506 reached a terminal 42-job fail-slow denominator: 41 jobs passed, docs deployment skipped by pull-request policy, and no job failed or was canceled."
+required_change = "Retain this successful exact-head denominator as validation of lattice routing, producer-owned output cleanup, and finite materials features before applying the three late review findings submitted during the run."
+verification = "GitHub Actions run 34901216506 completed without cancellation at exact head dbb1405a796972e4c20bcda429612d0f4e9bd60a."
+
+[[task]]
+id = "deterministic-fisher-covariance-admissibility"
+status = "implemented_pending_ci"
+finding = "A nonzero signal on a zero-variance coordinate returned infinite Fisher information before the remaining covariance correlation block was checked for positive semidefiniteness."
+required_change = "Validate the complete coordinate-normalized covariance spectrum before returning deterministic information."
+verification = "Hosted stats_core tests reject an indefinite three-coordinate correlation block even when an independent zero-variance coordinate carries nonzero signal."
+
+[[task]]
+id = "cuda-runtime-device-count-error-class"
+status = "implemented_pending_ci"
+finding = "runtime_device_count converted every cudaGetDeviceCount runtime error to a successful zero count, conflating unavailable CUDA infrastructure with a host that has zero devices."
+required_change = "Map cudaGetDeviceCount errors to RuntimeUnavailable and reserve NoDevice for a successful zero count."
+verification = "Hosted gororoba_gpu_cuda tests map cudaErrorInsufficientDriver to RuntimeUnavailable."
+
+[[task]]
+id = "casimir-audit-provenance-store-routing"
+status = "implemented_pending_ci"
+finding = "A provenance_store-only change could alter source-observation receipt types or validation semantics without selecting validation-casimir-audit."
+required_change = "Include provenance_store in the Casimir audit trigger and bind that direct dependency edge in validation-resource-contract-collectors."
+verification = "Hosted validation-resource-contract and actionlint pass, and a provenance_store-only path selects validation-casimir-audit."

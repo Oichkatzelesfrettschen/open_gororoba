@@ -726,9 +726,6 @@ pub fn fisher_information_with_pseudoinverse(
             correlation[(column, row)] = symmetric_correlation;
         }
     }
-    if has_deterministic_signal {
-        return Ok(f64::INFINITY);
-    }
     let coordinate_scaled_decomposition = SymmetricEigen::new(correlation);
     let coordinate_scaled_spectral_scale = coordinate_scaled_decomposition
         .eigenvalues
@@ -743,6 +740,9 @@ pub fn fisher_information_with_pseudoinverse(
         .any(|eigenvalue| *eigenvalue < -eigenvalue_tolerance)
     {
         return Err(DiscriminationError::NumericalFailure);
+    }
+    if has_deterministic_signal {
+        return Ok(f64::INFINITY);
     }
     let coordinates =
         coordinate_scaled_decomposition.eigenvectors.transpose() * &normalized_signal;
@@ -1379,6 +1379,23 @@ mod tests {
                 &zero_variance_with_covariance,
                 1e-12
             ),
+            Err(DiscriminationError::NumericalFailure)
+        );
+    }
+
+    #[test]
+    fn deterministic_signal_does_not_bypass_covariance_psd_validation() {
+        let signal = DVector::from_vec(vec![1.0, 0.0, 0.0, 0.0]);
+        let covariance = DMatrix::from_row_slice(
+            4,
+            4,
+            &[
+                0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.9, 0.9, 0.0, 0.9, 1.0, -0.9, 0.0, 0.9, -0.9, 1.0,
+            ],
+        );
+
+        assert_eq!(
+            fisher_information_with_pseudoinverse(&signal, &covariance, 1e-12),
             Err(DiscriminationError::NumericalFailure)
         );
     }

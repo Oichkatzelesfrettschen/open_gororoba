@@ -8,23 +8,42 @@ use std::{panic::AssertUnwindSafe, sync::Arc};
 
 use cudarc::{
     driver::{CudaContext, CudaStream},
-    runtime::result::device as cudart_device,
+    runtime::result::{RuntimeError, device as cudart_device},
 };
 
 use crate::error::{CudaError, Result};
 
+fn normalize_runtime_device_count(
+    runtime_result: std::result::Result<i32, RuntimeError>,
+) -> Result<usize> {
+    let count = runtime_result.map_err(|_| CudaError::RuntimeUnavailable)?;
+    Ok(count.max(0) as usize)
+}
+
 pub(crate) fn runtime_device_count() -> Result<usize> {
-    let count = std::panic::catch_unwind(cudart_device::get_count)
-        .map_err(|_| CudaError::RuntimeUnavailable)?
-        .unwrap_or(0)
-        .max(0) as usize;
-    Ok(count)
+    let runtime_result = std::panic::catch_unwind(cudart_device::get_count)
+        .map_err(|_| CudaError::RuntimeUnavailable)?;
+    normalize_runtime_device_count(runtime_result)
 }
 
 /// Acquired CUDA context, clone-cheap via internal Arc.
 #[derive(Clone)]
 pub struct Context {
     inner: Arc<CudaContext>,
+}
+
+#[cfg(test)]
+mod tests {
+    use cudarc::runtime::{result::RuntimeError, sys::cudaError_t::cudaErrorInsufficientDriver};
+
+    use super::normalize_runtime_device_count;
+    use crate::error::CudaError;
+
+    #[test]
+    fn runtime_device_count_preserves_runtime_failure_class() {
+        let result = normalize_runtime_device_count(Err(RuntimeError(cudaErrorInsufficientDriver)));
+        assert!(matches!(result, Err(CudaError::RuntimeUnavailable)));
+    }
 }
 
 impl Context {

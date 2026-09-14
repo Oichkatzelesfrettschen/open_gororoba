@@ -236,7 +236,7 @@ jobs:
                 docs) pattern='^(docs/book/|crates/|xtask/|Cargo\.(toml|lock)$|rust-toolchain\.toml$|Makefile$|mk/|\.cargo/|\.github/workflows/ci\.yml$)' ;;
                 dependencies) pattern='(^|/)Cargo\.(toml|lock)$|(^|/)deny\.toml$|^rust-toolchain\.toml$|^\.github/workflows/ci\.yml$' ;;
                 warp) pattern='^data/h5/|^crates/gororoba_cli_warp/|^crates/data_artifacts_core/|^\.github/workflows/ci\.yml$' ;;
-                casimir_audit) pattern='^crates/(gororoba_cli_physics|gororoba_cli_provenance|materials_core|materials_data|quantum_core|stats_core)/|^data/output/audit/casimir-optics-discrimination/|^plans/casimir_optics_discrimination_frontier\.toml$|^Cargo\.(toml|lock)$|^rust-toolchain\.toml$|^Makefile$|^\.github/workflows/ci\.yml$' ;;
+                casimir_audit) pattern='^crates/(gororoba_cli_physics|gororoba_cli_provenance|materials_core|materials_data|provenance_store|quantum_core|stats_core)/|^data/output/audit/casimir-optics-discrimination/|^plans/casimir_optics_discrimination_frontier\.toml$|^Cargo\.(toml|lock)$|^rust-toolchain\.toml$|^Makefile$|^\.github/workflows/ci\.yml$' ;;
               esac
               if grep -Eq "$pattern" reports/validation/changed-paths.txt; then
                 echo "$lane=true" >> "$GITHUB_OUTPUT"

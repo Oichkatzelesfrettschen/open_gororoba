@@ -429,6 +429,7 @@ validation-resource-contract-collectors:
 	done; \
 	if ! printf '%s\n' "$$casimir_path_block" | grep -Fq 'rust-toolchain\.toml$$'; then echo "ERROR: Casimir audit routing omits the hashed Rust toolchain identity." >&2; status=1; fi; \
 	if ! printf '%s\n' "$$casimir_path_block" | grep -Fq 'gororoba_cli_provenance'; then echo "ERROR: Casimir audit routing omits its finite-frontier verifier owner." >&2; status=1; fi; \
+	if ! printf '%s\n' "$$casimir_path_block" | grep -Fq 'provenance_store'; then echo "ERROR: Casimir audit routing omits its source-observation contract dependency." >&2; status=1; fi; \
 	if ! printf '%s\n' "$$casimir_path_block" | grep -Fq 'Makefile$$'; then echo "ERROR: Casimir audit routing omits its Make-owned execution recipes." >&2; status=1; fi; \
 	if ! printf '%s\n' "$$lattice_route_block" | grep -Fq 'cd_kernel'; then echo "ERROR: lattice replay routing omits its Cayley-Dickson kernel dependency." >&2; status=1; fi; \
 	if ! printf '%s\n' "$$box_counting_route_block" | grep -Fq 'verified_core'; then echo "ERROR: box-counting replay routing omits its hardware-topology dependency." >&2; status=1; fi; \
