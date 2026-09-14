@@ -1319,9 +1319,17 @@ impl MaterialEvidenceGraph {
                 }
             }
             if let EvidenceBasis::ExperimentalFitted {
-                input_quantity_ids, ..
+                input_quantity_ids,
+                residual_artifact_id,
+                ..
             } = &quantity.evidence
             {
+                if !raw_artifact_ids.contains(residual_artifact_id) {
+                    return Err(format!(
+                        "fitted quantity {} references unknown residual artifact {}",
+                        quantity.quantity_id.0, residual_artifact_id.0
+                    ));
+                }
                 let QuantityOrigin::Measurement {
                     measurement_id: fitted_measurement_id,
                 } = &quantity.origin
@@ -2045,9 +2053,14 @@ mod tests {
                 roughness_rms_m: None,
                 geometry: "reported geometry".to_owned(),
             }],
-            raw_artifacts: vec![RawArtifact {
-                raw_artifact_id: identifier("artifact:raw"),
-            }],
+            raw_artifacts: vec![
+                RawArtifact {
+                    raw_artifact_id: identifier("artifact:raw"),
+                },
+                RawArtifact {
+                    raw_artifact_id: identifier("artifact:fit-residuals"),
+                },
+            ],
             processing_recipes: vec![ProcessingRecipe {
                 processing_recipe_id: identifier("recipe:fit"),
             }],
@@ -2676,6 +2689,22 @@ mod tests {
             graph_with_quantities(vec![direct.clone(), fitted.clone()])
                 .validate()
                 .is_ok()
+        );
+
+        let mut unknown_residual = fitted.clone();
+        let EvidenceBasis::ExperimentalFitted {
+            residual_artifact_id,
+            ..
+        } = &mut unknown_residual.evidence
+        else {
+            unreachable!()
+        };
+        *residual_artifact_id = identifier("artifact:missing-fit-residuals");
+        assert_eq!(
+            graph_with_quantities(vec![direct.clone(), unknown_residual])
+                .validate()
+                .unwrap_err(),
+            "fitted quantity quantity:fitted-n references unknown residual artifact artifact:missing-fit-residuals"
         );
 
         let mut missing_direct = direct.clone();

@@ -716,77 +716,80 @@ jobs:
           wget --user-agent='Mozilla/5.0' --timeout=30 --tries=3 --continue \
             --output-document="$RUNNER_TEMP/scientific-payloads.tar.zst" \
             "$archive_url"
-      - name: Materialize the bounded scientific replay inputs
+      - name: Materialize and stage bounded scientific replay inputs per lane
+        id: hydrate
         if: steps.select.outputs.run_any == 'true'
         env:
           RUN_LATTICE: ${{ steps.select.outputs.run_lattice }}
           RUN_NUFIT: ${{ steps.select.outputs.run_nufit }}
           RUN_BOX_COUNTING: ${{ steps.select.outputs.run_box_counting }}
         run: |
-          set -euo pipefail
-          selected_paths=()
-          if [ "$RUN_LATTICE" = true ]; then
-            selected_paths+=(
-              --path data/csv/cayley_dickson/256d_lattice_mapping.csv
-              --path data/csv/cayley_dickson/512d_lattice_mapping.csv
-              --path data/csv/cayley_dickson/1024d_lattice_mapping.csv
-              --path data/csv/cayley_dickson/2048d_lattice_mapping.csv
-            )
-          fi
-          if [ "$RUN_NUFIT" = true ]; then
-            selected_paths+=(
-              --path data/output/audit/claim-family-evidence-adjudication/nufit-v60-parameters.pdf
-              --path data/output/audit/claim-family-evidence-adjudication/nufit-v61-parameters.pdf
-            )
-          fi
-          if [ "$RUN_BOX_COUNTING" = true ]; then
-            selected_paths+=(
-              --path data/output/audit/claim-family-evidence-adjudication/null-pilot-cpu/C1-uniform-fzd-0/rho.f64le
-              --path data/output/audit/claim-family-evidence-adjudication/null-pilot-cpu/C1-uniform-fzd-0/force.xyz.f64le
-            )
-          fi
-          cargo run --locked --profile validation -p gororoba_cli_provenance \
-            --bin hydrate-scientific-payloads -- \
-            --repo-root "$GITHUB_WORKSPACE" \
-            --manifest "$GITHUB_WORKSPACE/data/retention/scientific-payloads.json" \
-            --archive "$RUNNER_TEMP/scientific-payloads.tar.zst" \
-            "${selected_paths[@]}" \
-            | tee scientific-replay-hydration.json
-      - name: Stage selected scientific replay inputs
-        if: steps.select.outputs.run_any == 'true'
-        env:
-          RUN_LATTICE: ${{ steps.select.outputs.run_lattice }}
-          RUN_NUFIT: ${{ steps.select.outputs.run_nufit }}
-          RUN_BOX_COUNTING: ${{ steps.select.outputs.run_box_counting }}
-        run: |
-          set -euo pipefail
+          set -uo pipefail
           staging_root="$RUNNER_TEMP/scientific-replay-inputs"
-          mkdir -p "$staging_root"
-          cp scientific-replay-hydration.json "$staging_root/"
-          selected_files=()
+          status_root="$staging_root/scientific-replay-input-status"
+          mkdir -p "$status_root"
+          hydration_failure_count=0
+          hydrate_lane() {
+            local lane="$1"
+            shift
+            local selected_paths=("$@")
+            local hydration_args=()
+            local lane_success=true
+            for selected_path in "${selected_paths[@]}"; do
+              hydration_args+=(--path "$selected_path")
+            done
+            if ! cargo run --locked --profile validation -p gororoba_cli_provenance \
+              --bin hydrate-scientific-payloads -- \
+              --repo-root "$GITHUB_WORKSPACE" \
+              --manifest "$GITHUB_WORKSPACE/data/retention/scientific-payloads.json" \
+              --archive "$RUNNER_TEMP/scientific-payloads.tar.zst" \
+              "${hydration_args[@]}" \
+              2> "$staging_root/scientific-replay-hydration-$lane.stderr.log" \
+              | tee "$staging_root/scientific-replay-hydration-$lane.json"
+            then
+              lane_success=false
+            fi
+            if ! command cat "$staging_root/scientific-replay-hydration-$lane.stderr.log" >&2; then
+              lane_success=false
+            fi
+            if [ "$lane_success" = true ]; then
+              for selected_path in "${selected_paths[@]}"; do
+                if ! cp --parents "$selected_path" "$staging_root/"; then
+                  lane_success=false
+                fi
+              done
+            fi
+            if [ "$lane_success" = true ]; then
+              printf 'success\n' > "$status_root/$lane.status"
+            else
+              printf 'blocked_input\n' > "$status_root/$lane.status"
+              hydration_failure_count=$((hydration_failure_count + 1))
+            fi
+          }
           if [ "$RUN_LATTICE" = true ]; then
-            selected_files+=(
-              data/csv/cayley_dickson/256d_lattice_mapping.csv
-              data/csv/cayley_dickson/512d_lattice_mapping.csv
-              data/csv/cayley_dickson/1024d_lattice_mapping.csv
+            hydrate_lane lattice \
+              data/csv/cayley_dickson/256d_lattice_mapping.csv \
+              data/csv/cayley_dickson/512d_lattice_mapping.csv \
+              data/csv/cayley_dickson/1024d_lattice_mapping.csv \
               data/csv/cayley_dickson/2048d_lattice_mapping.csv
-            )
           fi
           if [ "$RUN_NUFIT" = true ]; then
-            selected_files+=(
-              data/output/audit/claim-family-evidence-adjudication/nufit-v60-parameters.pdf
+            hydrate_lane nufit \
+              data/output/audit/claim-family-evidence-adjudication/nufit-v60-parameters.pdf \
               data/output/audit/claim-family-evidence-adjudication/nufit-v61-parameters.pdf
-            )
           fi
           if [ "$RUN_BOX_COUNTING" = true ]; then
-            selected_files+=(
-              data/output/audit/claim-family-evidence-adjudication/null-pilot-cpu/C1-uniform-fzd-0/rho.f64le
+            hydrate_lane box-counting \
+              data/output/audit/claim-family-evidence-adjudication/null-pilot-cpu/C1-uniform-fzd-0/rho.f64le \
               data/output/audit/claim-family-evidence-adjudication/null-pilot-cpu/C1-uniform-fzd-0/force.xyz.f64le
-            )
           fi
-          for selected_file in "${selected_files[@]}"; do
-            cp --parents "$selected_file" "$staging_root/"
-          done
+          if [ "$hydration_failure_count" -eq 0 ]; then
+            echo 'all_hydrated=true' >> "$GITHUB_OUTPUT"
+          else
+            echo 'all_hydrated=false' >> "$GITHUB_OUTPUT"
+            printf '%s selected scientific replay lane(s) report blocked_input.\n' \
+              "$hydration_failure_count"
+          fi
       - name: Upload bounded scientific replay inputs
         if: steps.select.outputs.run_any == 'true'
         uses: actions/upload-artifact@v4
@@ -796,7 +799,7 @@ jobs:
           if-no-files-found: error
           retention-days: 1
       - name: Retain scientific hydration build artifacts
-        if: success() && steps.hydration-cache.outputs.cache-primary-key != '' && steps.hydration-cache.outputs.cache-hit != 'true'
+        if: success() && steps.hydrate.outputs.all_hydrated == 'true' && steps.hydration-cache.outputs.cache-primary-key != '' && steps.hydration-cache.outputs.cache-hit != 'true'
         uses: actions/cache/save@v4
         with:
           path: |
@@ -855,6 +858,24 @@ jobs:
       - name: Execute hydrated scientific replay leaf
         run: |
           set -o pipefail
+          lane='${{ matrix.lane }}'
+          lane_status_path="scientific-replay-input-status/$lane.status"
+          lane_report="scientific-replay-$lane.txt"
+          if [ ! -f "$lane_status_path" ]; then
+            printf 'state=orchestration_error\nmissing_status=%s\n' "$lane_status_path" \
+              | tee "$lane_report"
+            exit 2
+          fi
+          lane_status="$(cat "$lane_status_path")"
+          if [ "$lane_status" = blocked_input ]; then
+            printf 'state=blocked_input\nlane=%s\n' "$lane" | tee "$lane_report"
+            exit 1
+          fi
+          if [ "$lane_status" != success ]; then
+            printf 'state=orchestration_error\nlane=%s\nstatus=%s\n' "$lane" "$lane_status" \
+              | tee "$lane_report"
+            exit 2
+          fi
           case '${{ matrix.lane }}' in
             lattice)
               hydration_backed_tests=(

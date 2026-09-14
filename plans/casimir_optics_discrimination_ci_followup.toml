@@ -674,7 +674,7 @@ verification = "Hosted stats_core tests reject [[1e200, 1e90], [1e90, 0]] and re
 [[task]]
 id = "pr185-review-thread-denominator"
 status = "in_progress"
-finding = "The paginated review denominator began at 107 threads, increased to 109 after review of 7da85c94, 113 after review of e7b688e0, 117 after review of 340601b1, and 121 after review of f28cb6e4. Two threads are resolved and 119 require final exact-head disposition."
+finding = "The paginated review denominator began at 107 threads, increased to 109 after review of 7da85c94, 113 after review of e7b688e0, 117 after review of 340601b1, 121 after review of f28cb6e4, and 124 after review of e9581451. Two threads are resolved and 122 require final exact-head disposition."
 required_change = "Classify every stable thread ID against the final exact-head source, record an evidence-backed disposition, and resolve each implemented or superseded thread after hosted validation."
 verification = "A post-settling-window paginated GraphQL query reports exact set equality with the classified denominator and zero unresolved review threads."
 
@@ -831,3 +831,24 @@ status = "implemented_pending_ci"
 finding = "Two materials tests retained expectations from the discarded all-quantity detection-limit join: typed missingness left an incompatible uncertainty attached, and the below-detection mismatch expected the observed-quantity diagnostic."
 required_change = "Use NotReported uncertainty for the typed-missingness regression and retain the exact below-detection value-and-unit diagnostic for censored observations."
 verification = "Hosted materials_core tests preserve observed-quantity unit joins, exact below-detection joins, and typed missingness without fabricating uncertainty."
+
+[[task]]
+id = "fitted-residual-artifact-resolution"
+status = "implemented_pending_ci"
+finding = "Experimental fitted evidence validated a nonempty residual artifact identifier without resolving it against the material graph's typed raw-artifact inventory."
+required_change = "Require each fitted quantity's residual artifact identifier to resolve to a declared raw artifact and retain an exact missing-reference regression."
+verification = "Hosted materials_core tests reject an unknown fitted residual artifact while accepting the complete fitted-evidence graph."
+
+[[task]]
+id = "source-observation-document-limit-identity"
+status = "implemented_pending_ci"
+finding = "Source-observation receipts required nonempty document-identity limits but allowed a replacement statement to promote retained bytes across evidence layers."
+required_change = "Bind every retained receipt to its exact source-specific evidence limitation and reject a nonempty physical-evidence promotion."
+verification = "Hosted Casimir audit tests accept all 12 retained limitations and reject mutation of a receipt's document-identity limit."
+
+[[task]]
+id = "scientific-replay-independent-input-hydration"
+status = "implemented_pending_ci"
+finding = "One combined hydration command blocked every selected scientific replay lane when any lane's retained input could not materialize."
+required_change = "Hydrate and stage each selected lane independently, emit a typed per-lane input status, run unaffected leaves, and retain caches only when every selected lane hydrates."
+verification = "Hosted validation-policy pins the per-lane staging and blocked-input contract; hosted replay leaves report the affected lane as blocked_input while executing independently hydrated lanes."

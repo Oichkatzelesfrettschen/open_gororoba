@@ -133,30 +133,66 @@ const EXPECTED_RETAINED_SOURCES: [ExpectedRetainedSource; 12] = [
         role: "Retained negative provenance witness: this tutorial does not support the memory-kernel CP proposition and carries no evidentiary weight for that claim.",
     },
 ];
-const EXPECTED_SOURCE_OBSERVATIONS: [(&str, &str); 12] = [
-    ("LIFSHITZ-1956", "lifshitz-1956.toml"),
-    ("CASIMIR-REVIEW-2009", "casimir-review-2009.toml"),
-    ("HNLS-2017", "hnls-2017.toml"),
-    ("MEMORY-KERNEL-CP-2009", "memory-kernel-cp-2009.toml"),
-    ("AUTOQEC-METROLOGY-2026", "autoqec-metrology-2026.toml"),
-    ("MCPEAK-2015-MANUSCRIPT", "mcpeak-2015-manuscript.toml"),
-    ("RIINFO-AU-JOHNSON", "riinfo-au-johnson.toml"),
+const EXPECTED_SOURCE_OBSERVATIONS: [(&str, &str, &str); 12] = [
+    (
+        "LIFSHITZ-1956",
+        "lifshitz-1956.toml",
+        "Retained source bytes support source-proposition review only; they do not establish implementation conformance or physical measurement.",
+    ),
+    (
+        "CASIMIR-REVIEW-2009",
+        "casimir-review-2009.toml",
+        "Retained review bytes support equation cross-checking only; they do not replace primary-source attribution or native execution.",
+    ),
+    (
+        "HNLS-2017",
+        "hnls-2017.toml",
+        "Retained source bytes support the finite-dimensional Markovian theorem and its stated control assumptions only.",
+    ),
+    (
+        "MEMORY-KERNEL-CP-2009",
+        "memory-kernel-cp-2009.toml",
+        "Retained source bytes establish a source for complete-positivity conditions; they do not validate every memory-kernel implementation.",
+    ),
+    (
+        "AUTOQEC-METROLOGY-2026",
+        "autoqec-metrology-2026.toml",
+        "Retained source bytes support the stated finite-time sufficient-condition scope only; they do not certify repository hardware or control resources.",
+    ),
+    (
+        "MCPEAK-2015-MANUSCRIPT",
+        "mcpeak-2015-manuscript.toml",
+        "Retained manuscript bytes support reported specimen preparation and ellipsometry context; missing fit covariance prevents direct dataset admission.",
+    ),
+    (
+        "RIINFO-AU-JOHNSON",
+        "riinfo-au-johnson.toml",
+        "Retained CC0 table bytes preserve digitized n and k values; the underlying paper and complete specimen, method, calibration, and uncertainty metadata remain authoritative and incomplete.",
+    ),
     (
         "RIINFO-AU-OLMON-EVAPORATED",
         "riinfo-au-olmon-evaporated.toml",
+        "Retained CC0 table bytes preserve digitized evaporated-film values; blocked primary-paper retrieval and missing calibration metadata prevent direct admission.",
     ),
-    ("RIINFO-AU-MCPEAK", "riinfo-au-mcpeak.toml"),
+    (
+        "RIINFO-AU-MCPEAK",
+        "riinfo-au-mcpeak.toml",
+        "Retained CC0 table and separate manuscript preserve specimen-specific fitted values; fit residuals and parameter covariance remain absent.",
+    ),
     (
         "RIINFO-AU-KLINAVICIUS-11NM",
         "riinfo-au-klinavicius-11nm.toml",
+        "Retained CC0 nanoparticle table demonstrates a condition-specific gold dataset; it is not interchangeable with bulk or planar-film optical response.",
     ),
     (
         "RIINFO-DATABASE-LICENSE",
         "riinfo-database-license.toml",
+        "Retained license text establishes the database-level CC0 statement only; underlying papers retain their own attribution and authority.",
     ),
     (
         "REJECTED-ARXIV-0801.1757",
         "rejected-arxiv-0801-1757.toml",
+        "Negative provenance witness: retained tutorial bytes do not support the memory-kernel complete-positivity proposition and carry no evidentiary weight for it.",
     ),
 ];
 
@@ -636,6 +672,7 @@ fn verify_source_retrieval_manifest(manifest_path: &Path, repository_root: &Path
 fn verify_source_observation_source(
     receipt_source: &str,
     receipt_filename: &str,
+    expected_document_identity_limit: &str,
     manifest: &SourceRetrievalManifest,
     manifest_bytes: &[u8],
     retained_source: &RetainedSource,
@@ -655,6 +692,7 @@ fn verify_source_observation_source(
             && receipt.source_key == retained_source.id
             && receipt.requested_url == retained_source.url
             && receipt.observed_at == manifest.retrieval_date
+            && receipt.document_identity_limit == expected_document_identity_limit
             && matches!(receipt.outcome, SourceTransportOutcome::BodyRetained)
             && matches!(receipt.time_precision, SourceTimePrecision::Day)
             && receipt.final_url.is_none()
@@ -674,10 +712,6 @@ fn verify_source_observation_source(
         (
             "absent_prior_expectation_reason",
             receipt.absent_prior_expectation_reason.as_str(),
-        ),
-        (
-            "document_identity_limit",
-            receipt.document_identity_limit.as_str(),
         ),
     ] {
         ensure!(
@@ -767,7 +801,7 @@ fn verify_source_observations(manifest_path: &Path, repository_root: &Path) -> R
     }
     let expected_filenames = EXPECTED_SOURCE_OBSERVATIONS
         .iter()
-        .map(|(_, filename)| (*filename).to_owned())
+        .map(|(_, filename, _)| (*filename).to_owned())
         .collect::<BTreeSet<_>>();
     ensure!(
         observed_filenames == expected_filenames,
@@ -779,7 +813,7 @@ fn verify_source_observations(manifest_path: &Path, repository_root: &Path) -> R
         .iter()
         .map(|source| (source.id.as_str(), source))
         .collect::<BTreeMap<_, _>>();
-    for (source_id, receipt_filename) in EXPECTED_SOURCE_OBSERVATIONS {
+    for (source_id, receipt_filename, document_identity_limit) in EXPECTED_SOURCE_OBSERVATIONS {
         let retained_source = manifest_sources
             .get(&source_id)
             .with_context(|| {
@@ -792,6 +826,7 @@ fn verify_source_observations(manifest_path: &Path, repository_root: &Path) -> R
         verify_source_observation_source(
             &receipt_source,
             receipt_filename,
+            document_identity_limit,
             &manifest,
             &manifest_bytes,
             retained_source,
@@ -2513,7 +2548,8 @@ mod tests {
         let manifest_bytes = fs::read(&manifest_path).unwrap();
         let manifest_source = std::str::from_utf8(&manifest_bytes).unwrap();
         let manifest: SourceRetrievalManifest = toml::from_str(manifest_source).unwrap();
-        let (source_id, receipt_filename) = EXPECTED_SOURCE_OBSERVATIONS[0];
+        let (source_id, receipt_filename, document_identity_limit) =
+            EXPECTED_SOURCE_OBSERVATIONS[0];
         let retained_source = manifest
             .source
             .iter()
@@ -2545,6 +2581,12 @@ mod tests {
                 format!("storage_sha256 = \"{}\"", "0".repeat(64)),
                 "body evidence",
             ),
+            (
+                format!("document_identity_limit = {document_identity_limit:?}"),
+                "document_identity_limit = \"Retained bytes establish physical evidence.\""
+                    .to_owned(),
+                "identity or observation fields",
+            ),
         ];
         for (declaration, replacement, expected_error) in mutations {
             let mutated = receipt_source.replacen(&declaration, &replacement, 1);
@@ -2552,6 +2594,7 @@ mod tests {
             let error = verify_source_observation_source(
                 &mutated,
                 receipt_filename,
+                document_identity_limit,
                 &manifest,
                 &manifest_bytes,
                 retained_source,
