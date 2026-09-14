@@ -974,14 +974,49 @@ verification = "GitHub Actions run 34842357168 completed without cancellation at
 
 [[task]]
 id = "specimen-property-typed-missingness"
-status = "implemented_pending_ci"
+status = "complete"
 finding = "Specimen anneal history, thickness, grain size, texture, porosity, and roughness used bare Option fields, erasing the reason each unavailable property was absent."
 required_change = "Use the shared observed-value-or-Missingness representation for state and specimen properties, and validate typed detection-limit and withheld metadata."
 verification = "Hosted materials_core tests preserve a below-detection specimen thickness and reject malformed specimen-property missingness."
 
 [[task]]
 id = "measurement-provenance-calendar-date"
-status = "implemented_pending_ci"
+status = "complete"
 finding = "Measurement provenance accepted any nonempty retrieval-date text, including impossible calendar dates and unstructured unknown markers."
 required_change = "Require an exact, nonzero-year YYYY-MM-DD representation that parses as a Gregorian calendar date."
 verification = "Hosted materials_core tests reject unstructured, impossible, and zero-year retrieval dates and accept a valid leap day."
+
+[[task]]
+id = "exact-head-ci-ab388636"
+status = "complete"
+finding = "Run 34846107733 reached a terminal 42-job fail-slow denominator: 41 jobs passed, docs deployment skipped by pull-request policy, and no job failed."
+required_change = "Retain this successful denominator as validation of typed specimen missingness and calendar-date provenance before publishing the settled-review repairs."
+verification = "GitHub Actions run 34846107733 completed without cancellation at exact head ab388636f23ca0794cd4edebff7e2fa34a582852."
+
+[[task]]
+id = "featurizer-valence-typed-missingness"
+status = "implemented_pending_ci"
+finding = "The elemental table encoded its uncovered valence range for atomic numbers 104 through 112 as zero, and the featurizer marked the resulting statistics as observed physical values."
+required_change = "Represent locally undefined valence-electron counts as absent and propagate that absence through the feature observation mask."
+verification = "Hosted materials_core tests require Rf valence statistics and all five flattened valence coordinates to remain unobserved; the hosted materials-baseline binary test rejects Rf from the OLS input."
+
+[[task]]
+id = "bounded-profile-extreme-column-scaling"
+status = "implemented_pending_ci"
+finding = "Bounded profiling divided the entire nuisance matrix by one global maximum before per-column normalization, so a smaller finite column could underflow to zero and remove an admissible explanation."
+required_change = "Eliminate fixed coordinates before optimization, normalize each original free column independently, and transform bounds and parameters through the objective scale without forming a globally scaled nuisance matrix."
+verification = "Hosted stats_core tests recover the exact bounded fit for a diagonal nuisance matrix spanning 1e400 in finite column scale."
+
+[[task]]
+id = "gold-catalog-material-identity"
+status = "implemented_pending_ci"
+finding = "The gold optical candidate catalog validated the material ID and formula only for nonemptiness, allowing retained Au measurements to be relabeled as another material family."
+required_change = "Pin the catalog material ID and formula to the Au family identity alongside the retained database identity."
+verification = "Hosted materials_core mutation tests reject non-Au material IDs and formulas."
+
+[[task]]
+id = "gold-license-symlink-boundary"
+status = "implemented_pending_ci"
+finding = "Retained candidate source paths rejected symbolic-link components, but the retained database-license path followed symbolic links before hashing."
+required_change = "Resolve both source and license inputs through one repository-relative, component-by-component no-symlink validator before reading bytes."
+verification = "Hosted Unix materials_core tests reject a retained database-license symlink before candidate-source validation."

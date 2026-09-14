@@ -358,4 +358,9 @@ mod tests {
 
         assert!(select_baseline_features(&masked_features).is_none());
     }
+
+    #[test]
+    fn baseline_rejects_elements_with_uncovered_valence_data() {
+        assert!(baseline_features("Rf").is_none());
+    }
 }

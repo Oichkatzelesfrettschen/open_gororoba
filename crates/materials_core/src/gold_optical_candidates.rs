@@ -7,7 +7,7 @@
 use std::{
     collections::BTreeSet,
     fs,
-    path::{Component, Path},
+    path::{Component, Path, PathBuf},
 };
 
 use serde::Deserialize;
@@ -19,6 +19,8 @@ const EXPECTED_SOURCE_DOIS: [(&str, &str); 3] = [
     ("RIINFO-AU-OLMON-EVAPORATED", "10.1103/PhysRevB.86.235147"),
     ("RIINFO-AU-MCPEAK", "10.1021/ph5004237"),
 ];
+const EXPECTED_MATERIAL_ID: &str = "material:au";
+const EXPECTED_FORMULA: &str = "Au";
 const EXPECTED_DATABASE_ID: &str = "refractiveindex-info";
 const EXPECTED_DATABASE_COMMIT: &str = "c5c2f188e848453def5970e347399d653df2ffc2";
 const EXPECTED_DATABASE_LICENSE: &str = "CC0-1.0";
@@ -89,9 +91,9 @@ impl GoldOpticalCandidateCatalog {
                 self.schema_version
             ));
         }
-        require_nonempty("material_id", &self.material_id)?;
-        require_nonempty("formula", &self.formula)?;
         for (field, observed, expected) in [
+            ("material_id", self.material_id.as_str(), EXPECTED_MATERIAL_ID),
+            ("formula", self.formula.as_str(), EXPECTED_FORMULA),
             ("database_id", self.database_id.as_str(), EXPECTED_DATABASE_ID),
             (
                 "database_commit",
@@ -129,7 +131,11 @@ impl GoldOpticalCandidateCatalog {
     }
 
     pub fn validate_retained_sources(&self, repository_root: &Path) -> Result<(), String> {
-        let license_path = repository_root.join(EXPECTED_DATABASE_LICENSE_PATH);
+        let license_path = resolve_retained_repository_file(
+            repository_root,
+            Path::new(EXPECTED_DATABASE_LICENSE_PATH),
+            "retained database license",
+        )?;
         let license_bytes = fs::read(&license_path).map_err(|error| {
             format!(
                 "read retained database license {}: {error}",
@@ -245,54 +251,11 @@ impl GoldOpticalCandidate {
 
     fn validate_retained_source(&self, repository_root: &Path) -> Result<(), String> {
         let relative_path = Path::new(&self.source_path);
-        if relative_path.is_absolute()
-            || relative_path
-                .components()
-                .any(|component| !matches!(component, Component::Normal(_)))
-        {
-            return Err(format!(
-                "candidate {} source path must be repository-relative without traversal",
-                self.dataset_id
-            ));
-        }
-        let canonical_repository_root = repository_root.canonicalize().map_err(|error| {
-            format!(
-                "resolve repository root {}: {error}",
-                repository_root.display()
-            )
-        })?;
-        let mut source_path = canonical_repository_root.clone();
-        for component in relative_path.components() {
-            let Component::Normal(component) = component else {
-                unreachable!("source path components were validated above")
-            };
-            source_path.push(component);
-            let metadata = fs::symlink_metadata(&source_path).map_err(|error| {
-                format!(
-                    "inspect candidate {} source path component {}: {error}",
-                    self.dataset_id,
-                    source_path.display()
-                )
-            })?;
-            if metadata.file_type().is_symlink() {
-                return Err(format!(
-                    "candidate {} source path contains a symbolic link at {}",
-                    self.dataset_id,
-                    source_path.display()
-                ));
-            }
-        }
-        let canonical_source_path = source_path.canonicalize().map_err(|error| {
-            format!("resolve retained source {}: {error}", source_path.display())
-        })?;
-        canonical_source_path
-            .strip_prefix(&canonical_repository_root)
-            .map_err(|_| {
-                format!(
-                    "candidate {} source path resolves outside the repository",
-                    self.dataset_id
-                )
-            })?;
+        let canonical_source_path = resolve_retained_repository_file(
+            repository_root,
+            relative_path,
+            &format!("candidate {} source", self.dataset_id),
+        )?;
         let source_bytes = fs::read(&canonical_source_path).map_err(|error| {
             format!(
                 "read retained source {}: {error}",
@@ -345,6 +308,54 @@ impl GoldOpticalCandidate {
         }
         Ok(())
     }
+}
+
+fn resolve_retained_repository_file(
+    repository_root: &Path,
+    relative_path: &Path,
+    label: &str,
+) -> Result<PathBuf, String> {
+    if relative_path.is_absolute()
+        || relative_path
+            .components()
+            .any(|component| !matches!(component, Component::Normal(_)))
+    {
+        return Err(format!(
+            "{label} path must be repository-relative without traversal"
+        ));
+    }
+    let canonical_repository_root = repository_root.canonicalize().map_err(|error| {
+        format!(
+            "resolve repository root {}: {error}",
+            repository_root.display()
+        )
+    })?;
+    let mut resolved_path = canonical_repository_root.clone();
+    for component in relative_path.components() {
+        let Component::Normal(component) = component else {
+            unreachable!("retained path components were validated above")
+        };
+        resolved_path.push(component);
+        let metadata = fs::symlink_metadata(&resolved_path).map_err(|error| {
+            format!(
+                "inspect {label} path component {}: {error}",
+                resolved_path.display()
+            )
+        })?;
+        if metadata.file_type().is_symlink() {
+            return Err(format!(
+                "{label} path contains a symbolic link at {}",
+                resolved_path.display()
+            ));
+        }
+    }
+    let canonical_path = resolved_path
+        .canonicalize()
+        .map_err(|error| format!("resolve {label} {}: {error}", resolved_path.display()))?;
+    canonical_path
+        .strip_prefix(&canonical_repository_root)
+        .map_err(|_| format!("{label} path resolves outside the repository"))?;
+    Ok(canonical_path)
 }
 
 fn parse_nk_row(line: &str) -> Option<(f64, f64, f64)> {
@@ -608,8 +619,10 @@ mod tests {
     }
 
     #[test]
-    fn catalog_pins_database_identity_commit_and_license() {
+    fn catalog_pins_material_and_database_identity() {
         for (field, replacement, expected) in [
+            ("material_id", "material:ag", EXPECTED_MATERIAL_ID),
+            ("formula", "Ag", EXPECTED_FORMULA),
             (
                 "database_id",
                 "another-optical-database",
@@ -628,6 +641,8 @@ mod tests {
         ] {
             let mut catalog = GoldOpticalCandidateCatalog::load().unwrap();
             match field {
+                "material_id" => catalog.material_id = replacement.to_owned(),
+                "formula" => catalog.formula = replacement.to_owned(),
                 "database_id" => catalog.database_id = replacement.to_owned(),
                 "database_commit" => catalog.database_commit = replacement.to_owned(),
                 "database_license" => catalog.database_license = replacement.to_owned(),
@@ -714,6 +729,25 @@ mod tests {
             .validate_retained_source(temporary_repository.path())
             .unwrap_err();
         assert!(final_error.contains("symbolic link"));
+    }
+
+    #[cfg(unix)]
+    #[test]
+    fn retained_database_license_rejects_symbolic_links() {
+        use std::os::unix::fs::symlink;
+
+        let repository_root = repo_root::resolve!();
+        let original_license = repository_root.join(EXPECTED_DATABASE_LICENSE_PATH);
+        let temporary_repository = tempfile::tempdir().unwrap();
+        let linked_license = temporary_repository.path().join(EXPECTED_DATABASE_LICENSE_PATH);
+        fs::create_dir_all(linked_license.parent().unwrap()).unwrap();
+        symlink(&original_license, &linked_license).unwrap();
+
+        let error = GoldOpticalCandidateCatalog::load()
+            .unwrap()
+            .validate_retained_sources(temporary_repository.path())
+            .unwrap_err();
+        assert!(error.contains("retained database license path contains a symbolic link"));
     }
 
     #[test]

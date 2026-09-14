@@ -367,11 +367,65 @@ pub fn bounded_profile_distance(
         });
     }
 
+    let fixed_coordinates: Vec<_> = bounds
+        .iter()
+        .enumerate()
+        .filter_map(|(index, bound)| (bound.lower == bound.upper).then_some(index))
+        .collect();
+    if !fixed_coordinates.is_empty() {
+        let free_coordinates: Vec<_> = bounds
+            .iter()
+            .enumerate()
+            .filter_map(|(index, bound)| (bound.lower != bound.upper).then_some(index))
+            .collect();
+        let mut residual_target = target.clone();
+        for &coordinate in &fixed_coordinates {
+            residual_target -= nuisance.column(coordinate) * bounds[coordinate].lower;
+        }
+        if !all_finite_vector(&residual_target) {
+            return Err(DiscriminationError::NumericalFailure);
+        }
+        let free_nuisance = DMatrix::from_fn(target.len(), free_coordinates.len(), |row, column| {
+            nuisance[(row, free_coordinates[column])]
+        });
+        let free_bounds: Vec<_> = free_coordinates
+            .iter()
+            .map(|&coordinate| bounds[coordinate].clone())
+            .collect();
+        let free_result = bounded_profile_distance(&residual_target, &free_nuisance, &free_bounds)?;
+        let mut parameters = DVector::zeros(bounds.len());
+        let mut active_lower_bounds = fixed_coordinates.clone();
+        let mut active_upper_bounds = fixed_coordinates;
+        for &coordinate in &active_lower_bounds {
+            parameters[coordinate] = bounds[coordinate].lower;
+        }
+        for (free_index, &coordinate) in free_coordinates.iter().enumerate() {
+            parameters[coordinate] = free_result.nuisance_parameters[free_index];
+            if free_result.active_lower_bounds.contains(&free_index) {
+                active_lower_bounds.push(coordinate);
+            }
+            if free_result.active_upper_bounds.contains(&free_index) {
+                active_upper_bounds.push(coordinate);
+            }
+        }
+        active_lower_bounds.sort_unstable();
+        active_upper_bounds.sort_unstable();
+        let distance = finite_euclidean_norm(&(target - nuisance * &parameters))?;
+        return Ok(BoundedProfileResult {
+            distance,
+            nuisance_parameters: parameters,
+            active_lower_bounds,
+            active_upper_bounds,
+        });
+    }
+
     let parameter_count = nuisance.ncols();
-    let objective_scale = target.amax().max(nuisance.amax()).max(f64::MIN_POSITIVE);
+    let objective_scale = target
+        .amax()
+        .max(nuisance.amax())
+        .max(f64::MIN_POSITIVE);
     let scaled_target = target / objective_scale;
-    let scaled_nuisance = nuisance / objective_scale;
-    let column_scales: Vec<(f64, f64)> = scaled_nuisance
+    let column_scales: Vec<(f64, f64)> = nuisance
         .column_iter()
         .map(|column| {
             let maximum_component = column.amax();
@@ -383,7 +437,7 @@ pub fn bounded_profile_distance(
             }
         })
         .collect();
-    let mut solver_nuisance = scaled_nuisance.clone();
+    let mut solver_nuisance = nuisance.clone();
     for (mut column, (maximum_component, normalized_norm)) in
         solver_nuisance.column_iter_mut().zip(&column_scales)
     {
@@ -433,14 +487,16 @@ pub fn bounded_profile_distance(
     );
     let mut right_hand_side = Vec::with_capacity(2 * parameter_count);
     for (bound, (maximum_component, normalized_norm)) in bounds.iter().zip(&column_scales) {
-        let scaled_upper = (bound.upper * maximum_component) * normalized_norm;
+        let scaled_upper =
+            ((bound.upper * maximum_component) * normalized_norm) / objective_scale;
         if !scaled_upper.is_finite() {
             return Err(DiscriminationError::NumericalFailure);
         }
         right_hand_side.push(scaled_upper);
     }
     for (bound, (maximum_component, normalized_norm)) in bounds.iter().zip(&column_scales) {
-        let scaled_lower = (-bound.lower * maximum_component) * normalized_norm;
+        let scaled_lower =
+            ((-bound.lower * maximum_component) * normalized_norm) / objective_scale;
         if !scaled_lower.is_finite() {
             return Err(DiscriminationError::NumericalFailure);
         }
@@ -472,12 +528,21 @@ pub fn bounded_profile_distance(
             .iter()
             .zip(&column_scales)
             .map(|(parameter, (maximum_component, normalized_norm))| {
-                (parameter / normalized_norm) / maximum_component
+                ((parameter * objective_scale) / normalized_norm) / maximum_component
             }),
     );
     if !all_finite_vector(&parameters) {
         return Err(DiscriminationError::NumericalFailure);
     }
+    let solver_bounds: Vec<_> = bounds
+        .iter()
+        .zip(&column_scales)
+        .map(|(bound, (maximum_component, normalized_norm))| NuisanceBound {
+            lower: ((bound.lower * maximum_component) * normalized_norm) / objective_scale,
+            upper: ((bound.upper * maximum_component) * normalized_norm) / objective_scale,
+            unit: bound.unit.clone(),
+        })
+        .collect();
     validate_bounded_solution(
         SolverCertificate {
             status: solver.solution.status,
@@ -487,9 +552,9 @@ pub fn bounded_profile_distance(
             relative_gap: solver.info.gap_rel,
         },
         &scaled_target,
-        &scaled_nuisance,
-        bounds,
-        &parameters,
+        &solver_nuisance,
+        &solver_bounds,
+        &scaled_parameters,
     )?;
     let distance = finite_euclidean_norm(&(target - nuisance * &parameters))?;
     let (active_lower_bounds, active_upper_bounds) = classify_active_bounds(&parameters, bounds);
@@ -950,6 +1015,29 @@ mod tests {
             1.0,
             epsilon = active_solution_tolerance
         );
+    }
+
+    #[test]
+    fn bounded_profile_preserves_columns_across_extreme_finite_scales() {
+        let target = DVector::from_vec(vec![1e200, 1.0]);
+        let nuisance = DMatrix::from_diagonal(&DVector::from_vec(vec![1e200, 1e-200]));
+        let bounds = vec![
+            NuisanceBound {
+                lower: 1.0,
+                upper: 1.0,
+                unit: "fixed".to_owned(),
+            },
+            NuisanceBound {
+                lower: 0.0,
+                upper: 1e200,
+                unit: "free".to_owned(),
+            },
+        ];
+
+        let result = bounded_profile_distance(&target, &nuisance, &bounds).unwrap();
+        assert!(result.distance <= SOLVER_CERTIFICATE_TOLERANCE);
+        assert_eq!(result.nuisance_parameters[0], 1.0);
+        assert_relative_eq!(result.nuisance_parameters[1] / 1e200, 1.0, epsilon = 1e-7);
     }
 
     #[test]

@@ -117,7 +117,7 @@ fn element_property(elem: &Element, index: usize) -> Option<f64> {
         1 => elem.density,
         2 => elem.melting_point,
         3 => elem.boiling_point,
-        4 => Some(elem.valence_electrons as f64),
+        4 => elem.valence_electrons.map(f64::from),
         5 => elem.electronegativity,
         6 => elem.ionization_energy,
         7 => elem.electron_affinity,
@@ -366,6 +366,18 @@ mod tests {
             vector.observed.iter().any(|observed| !observed),
             "helium must retain absent elemental fields in the feature mask"
         );
+        assert!(vector.into_complete_values().is_none());
+    }
+
+    #[test]
+    fn uncovered_valence_electrons_remain_unobserved() {
+        let features = featurize("Rf").unwrap();
+        let valence = features.property_stats[4];
+        assert_eq!(valence.observed_weight, 0.0);
+        assert!(!valence.fully_observed);
+
+        let vector = feature_vector(&features);
+        assert!(vector.observed[24..29].iter().all(|observed| !observed));
         assert!(vector.into_complete_values().is_none());
     }
 
