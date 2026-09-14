@@ -738,6 +738,7 @@ mod tests {
             .iter_mut()
             .find(|row| EXPECTED_OPEN_FRONTIER_IDS.contains(&row.frontier_id.as_str()))
             .unwrap();
+        open_row.next_action.clear();
         open_row.required_generator.clear();
         let error = error_text(&document);
         assert!(error.contains("lacks a next action or required generator"));

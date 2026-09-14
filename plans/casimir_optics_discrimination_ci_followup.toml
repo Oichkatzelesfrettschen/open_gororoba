@@ -674,7 +674,7 @@ verification = "Hosted stats_core tests reject [[1e200, 1e90], [1e90, 0]] and re
 [[task]]
 id = "pr185-review-thread-denominator"
 status = "in_progress"
-finding = "The paginated review denominator began at 107 threads, increased to 109 after review of 7da85c94, 113 after review of e7b688e0, 117 after review of 340601b1, 121 after review of f28cb6e4, and 124 after review of e9581451. Two threads are resolved and 122 require final exact-head disposition."
+finding = "The paginated review denominator began at 107 threads, increased to 109 after review of 7da85c94, 113 after review of e7b688e0, 117 after review of 340601b1, 121 after review of f28cb6e4, 124 after review of e9581451, and 127 after review of 9d532ed8. Two threads are resolved and 125 require final exact-head disposition."
 required_change = "Classify every stable thread ID against the final exact-head source, record an evidence-backed disposition, and resolve each implemented or superseded thread after hosted validation."
 verification = "A post-settling-window paginated GraphQL query reports exact set equality with the classified denominator and zero unresolved review threads."
 
@@ -852,3 +852,52 @@ status = "implemented_pending_ci"
 finding = "One combined hydration command blocked every selected scientific replay lane when any lane's retained input could not materialize."
 required_change = "Hydrate and stage each selected lane independently, emit a typed per-lane input status, run unaffected leaves, and retain caches only when every selected lane hydrates."
 verification = "Hosted validation-policy pins the per-lane staging and blocked-input contract; hosted replay leaves report the affected lane as blocked_input while executing independently hydrated lanes."
+
+[[task]]
+id = "exact-head-9d532ed8-terminal-denominator"
+status = "complete"
+finding = "Run 34830883673 reached a terminal 41-job fail-slow denominator: 38 jobs passed, the provenance light-7 shard failed on one stale mutation test, aggregate validation failed by construction, and docs deployment skipped by pull-request policy. Materials, provenance compilation, governance, Casimir audit, documentation, proofs, all three independent replay leaves, workspace Clippy, survey, paper, benchmarks, and every other routed Rust shard passed."
+required_change = "Preserve all successful exact-head evidence and repair the stale actionless-open-row mutation so it removes both admissible action fields."
+verification = "GitHub Actions run 34830883673 completed without cancellation at exact head 9d532ed8592627553c93ae4cfa017d2fbc9667e3."
+
+[[task]]
+id = "finite-frontier-actionless-open-row-mutation"
+status = "implemented_pending_ci"
+finding = "The actionless-open-row regression cleared required_generator but left next_action populated, so the unchanged open-row invariant correctly accepted the mutated fixture and the test called unwrap_err on success."
+required_change = "Clear both next_action and required_generator to construct the intended actionless open row."
+verification = "Hosted gororoba_cli_provenance tests reject the genuinely actionless open row while retaining the exact two-row residual frontier report."
+
+[[task]]
+id = "masked-feature-vector-length-identity"
+status = "implemented_pending_ci"
+finding = "MaskedFeatureVector::into_complete_values accepted a nonempty value vector when its observation mask was shorter, longer, or empty, allowing malformed missingness metadata to be treated as complete."
+required_change = "Require value and observation-mask lengths to match before exposing a complete numerical vector."
+verification = "Hosted materials_core tests reject shorter, longer, and empty masks paired with nonempty values."
+
+[[task]]
+id = "gold-candidate-database-identity"
+status = "implemented_pending_ci"
+finding = "The gold optical candidate catalog accepted any nonempty database ID, commit, and license, so its retained rows could be relabeled as another database revision or license."
+required_change = "Bind the candidate catalog to refractiveindex-info commit c5c2f188e848453def5970e347399d653df2ffc2 under CC0-1.0 and verify the retained license artifact's exact SHA-256."
+verification = "Hosted materials_core mutation tests reject different nonempty database IDs, commits, licenses, and license bytes."
+
+[[task]]
+id = "ruan-fan-pdf-verified-materialization"
+status = "implemented_pending_ci"
+finding = "The Ruan-Fan source-receipt test accepted a retention-manifest entry even when the hash-bound PDF payload remained unmaterialized."
+required_change = "Require verified PDF materialization and execute the ignored receipt test only after an independent optics replay lane hydrates the exact retained payload."
+verification = "Hosted routing and policy checks select and hydrate the optics lane exactly once, and the optics_core replay requires Materialization::Verified for the retained PDF."
+
+[[task]]
+id = "scientific-replay-blocked-input-aggregate-state"
+status = "implemented_pending_ci"
+finding = "The replay aggregate converted every leaf matrix failure into executed_fail even when a selected lane's typed status was blocked_input."
+required_change = "Expose complete hydration status from the input job and report blocked_input before interpreting the matrix execution result."
+verification = "Hosted validation-policy binds the aggregate verdict to the hydration output, and a selected hydration failure retains state=blocked_input."
+
+[[task]]
+id = "ruan-fan-tracked-source-replay-routing"
+status = "implemented_pending_ci"
+finding = "The ignored combined Ruan-Fan receipt test hashes two tracked source artifacts, but changes to those artifacts did not select the optics replay lane."
+required_change = "Route the retained archive download, TeX source, and hydrated PDF paths through the optics replay lane."
+verification = "Hosted routing policy pins all three receipt inputs and executes their combined exact identity test."

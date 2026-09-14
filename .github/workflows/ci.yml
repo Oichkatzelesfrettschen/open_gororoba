@@ -615,6 +615,8 @@ jobs:
       run_lattice: ${{ steps.select.outputs.run_lattice }}
       run_nufit: ${{ steps.select.outputs.run_nufit }}
       run_box_counting: ${{ steps.select.outputs.run_box_counting }}
+      run_optics: ${{ steps.select.outputs.run_optics }}
+      all_hydrated: ${{ steps.hydrate.outputs.all_hydrated }}
       matrix: ${{ steps.select.outputs.matrix }}
     steps:
       - uses: actions/checkout@v4
@@ -630,10 +632,12 @@ jobs:
           run_lattice=false
           run_nufit=false
           run_box_counting=false
+          run_optics=false
           if [ "$FULL" = true ]; then
             run_lattice=true
             run_nufit=true
             run_box_counting=true
+            run_optics=true
           else
             comparison_base="$EVENT_BASE"
             if [ -z "$comparison_base" ] || [ "$comparison_base" = 0000000000000000000000000000000000000000 ]; then
@@ -645,21 +649,24 @@ jobs:
               run_lattice=true
               run_nufit=true
               run_box_counting=true
+              run_optics=true
             else
               common_pattern='^(Cargo\.(toml|lock)|rust-toolchain\.toml|Makefile|\.github/workflows/ci\.yml|data/retention/scientific-payloads\.json|crates/(provenance_store|gororoba_cli_provenance|repo_root)/)'
               if grep -Eq "$common_pattern" "$RUNNER_TEMP/scientific-replay-changed-paths.txt"; then
                 run_lattice=true
                 run_nufit=true
                 run_box_counting=true
+                run_optics=true
               else
                 if grep -Eq '^(crates/(algebra_analysis|algebra_experimental)/|data/csv/cayley_dickson/)' "$RUNNER_TEMP/scientific-replay-changed-paths.txt"; then run_lattice=true; fi
                 if grep -Eq '^(crates/algebra_experimental/|data/output/audit/claim-family-evidence-adjudication/nufit-v6[01]-parameters\.pdf$)' "$RUNNER_TEMP/scientific-replay-changed-paths.txt"; then run_nufit=true; fi
                 if grep -Eq '^(crates/(gororoba_cli_physics|lbm_3d|cosmology_core)/|data/output/audit/claim-family-evidence-adjudication/null-pilot-cpu/C1-uniform-fzd-0/(rho|force\.xyz)\.f64le$)' "$RUNNER_TEMP/scientific-replay-changed-paths.txt"; then run_box_counting=true; fi
+                if grep -Eq '^(crates/optics_core/|data/output/audit/claim-family-evidence-adjudication/optics-replay/(arxiv-source\.download|Fano_Scattering\.tex|ruan-fan-0909\.3323v2\.pdf)$)' "$RUNNER_TEMP/scientific-replay-changed-paths.txt"; then run_optics=true; fi
               fi
             fi
           fi
           replay_matrix='[]'
-          for lane in lattice nufit box-counting; do
+          for lane in lattice nufit box-counting optics; do
             lane_variable="run_${lane//-/_}"
             if [ "${!lane_variable}" = true ]; then
               replay_matrix="$(jq -c --arg lane "$lane" '. + [{lane: $lane}]' <<< "$replay_matrix")"
@@ -670,8 +677,8 @@ jobs:
           else
             run_any=true
           fi
-          printf 'run_any=%s\nrun_lattice=%s\nrun_nufit=%s\nrun_box_counting=%s\nmatrix={"include":%s}\n' \
-            "$run_any" "$run_lattice" "$run_nufit" "$run_box_counting" "$replay_matrix" >> "$GITHUB_OUTPUT"
+          printf 'run_any=%s\nrun_lattice=%s\nrun_nufit=%s\nrun_box_counting=%s\nrun_optics=%s\nmatrix={"include":%s}\n' \
+            "$run_any" "$run_lattice" "$run_nufit" "$run_box_counting" "$run_optics" "$replay_matrix" >> "$GITHUB_OUTPUT"
       - uses: dtolnay/rust-toolchain@1.97.0
         if: steps.select.outputs.run_any == 'true'
       - uses: taiki-e/install-action@v2
@@ -723,6 +730,7 @@ jobs:
           RUN_LATTICE: ${{ steps.select.outputs.run_lattice }}
           RUN_NUFIT: ${{ steps.select.outputs.run_nufit }}
           RUN_BOX_COUNTING: ${{ steps.select.outputs.run_box_counting }}
+          RUN_OPTICS: ${{ steps.select.outputs.run_optics }}
         run: |
           set -uo pipefail
           staging_root="$RUNNER_TEMP/scientific-replay-inputs"
@@ -782,6 +790,10 @@ jobs:
             hydrate_lane box-counting \
               data/output/audit/claim-family-evidence-adjudication/null-pilot-cpu/C1-uniform-fzd-0/rho.f64le \
               data/output/audit/claim-family-evidence-adjudication/null-pilot-cpu/C1-uniform-fzd-0/force.xyz.f64le
+          fi
+          if [ "$RUN_OPTICS" = true ]; then
+            hydrate_lane optics \
+              data/output/audit/claim-family-evidence-adjudication/optics-replay/ruan-fan-0909.3323v2.pdf
           fi
           if [ "$hydration_failure_count" -eq 0 ]; then
             echo 'all_hydrated=true' >> "$GITHUB_OUTPUT"
@@ -916,6 +928,9 @@ jobs:
             box-counting)
               cargo test --locked --profile validation --no-fail-fast -p lbm_3d --test box_counting_amplitude_identity retained_uniform_force_replay_separates_amplitude_from_adaptive_geometry -- --ignored --exact --nocapture
               ;;
+            optics)
+              cargo test --locked --profile validation --no-fail-fast -p optics_core --test ruan_fan_source_receipts admitted_archive_tex_and_pdf_have_distinct_verified_identities -- --ignored --exact --nocapture
+              ;;
             *)
               echo 'Unknown scientific replay leaf.' >&2
               exit 2
@@ -949,6 +964,7 @@ jobs:
       - name: Report hydrated scientific replay outcomes
         env:
           RUN_REPLAY: ${{ needs.scientific-replay-inputs.outputs.run_any }}
+          ALL_HYDRATED: ${{ needs.scientific-replay-inputs.outputs.all_hydrated }}
           INPUT_RESULT: ${{ needs.scientific-replay-inputs.result }}
           LEAF_RESULT: ${{ needs.scientific-replay-leaf.result }}
         run: |
@@ -960,6 +976,10 @@ jobs:
           if [ "$RUN_REPLAY" != true ]; then
             printf 'state=not_selected\n' > scientific-replay-verdict.txt
             exit 0
+          fi
+          if [ "$ALL_HYDRATED" != true ]; then
+            printf 'state=blocked_input\nleaf_result=%s\n' "$LEAF_RESULT" > scientific-replay-verdict.txt
+            exit 1
           fi
           if [ "$LEAF_RESULT" = success ]; then
             printf 'state=executed_pass\n' > scientific-replay-verdict.txt

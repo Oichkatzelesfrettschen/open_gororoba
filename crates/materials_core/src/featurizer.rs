@@ -37,9 +37,8 @@ pub struct MaskedFeatureVector {
 impl MaskedFeatureVector {
     /// Return numerical features only when every value is observed.
     pub fn into_complete_values(self) -> Option<Vec<f64>> {
-        self.observed
-            .iter()
-            .all(|observed| *observed)
+        (self.values.len() == self.observed.len()
+            && self.observed.iter().all(|observed| *observed))
             .then_some(self.values)
     }
 }
@@ -368,6 +367,17 @@ mod tests {
             "helium must retain absent elemental fields in the feature mask"
         );
         assert!(vector.into_complete_values().is_none());
+    }
+
+    #[test]
+    fn complete_values_reject_mismatched_mask_lengths() {
+        for observed in [vec![true], vec![true, true, true], Vec::new()] {
+            let vector = MaskedFeatureVector {
+                values: vec![1.0, 2.0],
+                observed,
+            };
+            assert!(vector.into_complete_values().is_none());
+        }
     }
 
     #[test]

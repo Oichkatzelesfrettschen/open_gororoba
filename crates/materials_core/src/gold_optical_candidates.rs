@@ -19,6 +19,13 @@ const EXPECTED_SOURCE_DOIS: [(&str, &str); 3] = [
     ("RIINFO-AU-OLMON-EVAPORATED", "10.1103/PhysRevB.86.235147"),
     ("RIINFO-AU-MCPEAK", "10.1021/ph5004237"),
 ];
+const EXPECTED_DATABASE_ID: &str = "refractiveindex-info";
+const EXPECTED_DATABASE_COMMIT: &str = "c5c2f188e848453def5970e347399d653df2ffc2";
+const EXPECTED_DATABASE_LICENSE: &str = "CC0-1.0";
+const EXPECTED_DATABASE_LICENSE_PATH: &str =
+    "data/output/audit/casimir-optics-discrimination/sources/refractiveindex-info-database-license.txt";
+const EXPECTED_DATABASE_LICENSE_SHA256: &str =
+    "36ffd9dc085d529a7e60e1276d73ae5a030b020313e6c5408593a6ae2af39673";
 
 #[derive(Clone, Debug, PartialEq, Eq)]
 pub struct GoldOpticalSelection {
@@ -84,9 +91,25 @@ impl GoldOpticalCandidateCatalog {
         }
         require_nonempty("material_id", &self.material_id)?;
         require_nonempty("formula", &self.formula)?;
-        require_nonempty("database_id", &self.database_id)?;
-        require_nonempty("database_commit", &self.database_commit)?;
-        require_nonempty("database_license", &self.database_license)?;
+        for (field, observed, expected) in [
+            ("database_id", self.database_id.as_str(), EXPECTED_DATABASE_ID),
+            (
+                "database_commit",
+                self.database_commit.as_str(),
+                EXPECTED_DATABASE_COMMIT,
+            ),
+            (
+                "database_license",
+                self.database_license.as_str(),
+                EXPECTED_DATABASE_LICENSE,
+            ),
+        ] {
+            if observed != expected {
+                return Err(format!(
+                    "gold optical candidate {field} mismatch: expected {expected}, observed {observed}"
+                ));
+            }
+        }
         require_nonempty("canonical_owner", &self.canonical_owner)?;
         require_nonempty("admission_scope", &self.admission_scope)?;
         if self.dataset.is_empty() {
@@ -106,6 +129,14 @@ impl GoldOpticalCandidateCatalog {
     }
 
     pub fn validate_retained_sources(&self, repository_root: &Path) -> Result<(), String> {
+        let license_path = repository_root.join(EXPECTED_DATABASE_LICENSE_PATH);
+        let license_bytes = fs::read(&license_path).map_err(|error| {
+            format!(
+                "read retained database license {}: {error}",
+                license_path.display()
+            )
+        })?;
+        validate_database_license_bytes(&license_bytes)?;
         for candidate in &self.dataset {
             candidate.validate_retained_source(repository_root)?;
         }
@@ -326,6 +357,16 @@ fn parse_nk_row(line: &str) -> Option<(f64, f64, f64)> {
         values[1].parse().ok()?,
         values[2].parse().ok()?,
     ))
+}
+
+fn validate_database_license_bytes(bytes: &[u8]) -> Result<(), String> {
+    let observed_sha256 = sha256_hex(bytes);
+    if observed_sha256 != EXPECTED_DATABASE_LICENSE_SHA256 {
+        return Err(format!(
+            "retained database license SHA-256 mismatch: expected {EXPECTED_DATABASE_LICENSE_SHA256}, observed {observed_sha256}"
+        ));
+    }
+    Ok(())
 }
 
 fn sha256_hex(bytes: &[u8]) -> String {
@@ -564,6 +605,46 @@ mod tests {
         candidate.source_id = "RIINFO-AU-UNREVIEWED".to_owned();
         let error = catalog.validate().unwrap_err();
         assert!(error.contains("unrecognized source identity"));
+    }
+
+    #[test]
+    fn catalog_pins_database_identity_commit_and_license() {
+        for (field, replacement, expected) in [
+            (
+                "database_id",
+                "another-optical-database",
+                EXPECTED_DATABASE_ID,
+            ),
+            (
+                "database_commit",
+                "1111111111111111111111111111111111111111",
+                EXPECTED_DATABASE_COMMIT,
+            ),
+            (
+                "database_license",
+                "MIT",
+                EXPECTED_DATABASE_LICENSE,
+            ),
+        ] {
+            let mut catalog = GoldOpticalCandidateCatalog::load().unwrap();
+            match field {
+                "database_id" => catalog.database_id = replacement.to_owned(),
+                "database_commit" => catalog.database_commit = replacement.to_owned(),
+                "database_license" => catalog.database_license = replacement.to_owned(),
+                _ => unreachable!("the mutation table lists every catalog identity field"),
+            }
+            assert_eq!(
+                catalog.validate().unwrap_err(),
+                format!(
+                    "gold optical candidate {field} mismatch: expected {expected}, observed {replacement}"
+                )
+            );
+        }
+    }
+
+    #[test]
+    fn retained_database_license_binds_exact_bytes() {
+        assert!(validate_database_license_bytes(b"different nonempty license text").is_err());
     }
 
     #[test]
