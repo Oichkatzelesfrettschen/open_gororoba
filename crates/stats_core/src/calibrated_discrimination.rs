@@ -10,6 +10,9 @@ use nalgebra::{DMatrix, DVector, SymmetricEigen};
 
 const SOLVER_CERTIFICATE_TOLERANCE: f64 = 1e-7;
 
+type ColumnNormalizationScale = (f64, f64);
+type NormalizedDesign = (DMatrix<f64>, Vec<ColumnNormalizationScale>);
+
 /// Input or numerical failure in a discrimination calculation.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum DiscriminationError {
@@ -221,7 +224,7 @@ fn least_squares(
 
 fn normalize_design_columns(
     design: &DMatrix<f64>,
-) -> Result<(DMatrix<f64>, Vec<(f64, f64)>), DiscriminationError> {
+) -> Result<NormalizedDesign, DiscriminationError> {
     let mut normalized = design.clone();
     let mut scales = Vec::with_capacity(normalized.ncols());
     for mut column in normalized.column_iter_mut() {

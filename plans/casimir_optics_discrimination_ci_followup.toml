@@ -1069,3 +1069,10 @@ status = "implemented_pending_ci"
 finding = "A coordinate-specific calibration derivative used one arbitrary minimum-norm solution when the augmented nuisance design was rank deficient, making the reported priority basis-dependent."
 required_change = "Require full column rank of the normalized augmented nuisance/calibration design before reporting a coordinate-specific sensitivity while retaining efficient information for rank-deficient projections."
 verification = "Hosted stats_core tests reject the duplicate-column sensitivity as RankDeficientDesign while preserving zero efficient information for the same nuisance span."
+
+[[task]]
+id = "exact-head-71f44072-terminal-denominator"
+status = "complete"
+finding = "Run 34863637761 reached a terminal 42-job fail-slow denominator: 39 jobs passed, workspace Clippy failed on one type-complexity diagnostic in the normalized-design return type, aggregate validation failed by construction, and docs deployment skipped by pull-request policy. Casimir audit, documentation, governance, statistics tests, every routed Rust test shard, proofs, all scientific replay leaves, benchmarks, survey, paper, and policy passed."
+required_change = "Name the normalized-design and column-scale return types without suppressing the warning, refresh the source-bound native manifest, and run one replacement exact-head denominator."
+verification = "GitHub Actions run 34863637761 completed without cancellation at exact head 71f44072e31dbcf1ef55ed07cdd03e940fbb9904."
