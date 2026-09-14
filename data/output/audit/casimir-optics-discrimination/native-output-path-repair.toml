@@ -10,5 +10,5 @@ expected_downloaded_paths = [
   "data/output/audit/casimir-optics-discrimination/derived-output-manifest.toml",
 ]
 replacement_path = "data/output/audit/casimir-optics-discrimination/native-output-manifest.toml"
-replacement_sha256 = "b91a600c2e9db2feeec8400bd76456614e2bc6a5335198627bd1f22139d6cec2"
+replacement_sha256 = "5516211b7288cb33f613c2d91043e9190d760b672bd3ee86b325cecd269134eb"
 old_path_relation = "historical_download"

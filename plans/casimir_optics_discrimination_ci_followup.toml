@@ -1076,3 +1076,10 @@ status = "complete"
 finding = "Run 34863637761 reached a terminal 42-job fail-slow denominator: 39 jobs passed, workspace Clippy failed on one type-complexity diagnostic in the normalized-design return type, aggregate validation failed by construction, and docs deployment skipped by pull-request policy. Casimir audit, documentation, governance, statistics tests, every routed Rust test shard, proofs, all scientific replay leaves, benchmarks, survey, paper, and policy passed."
 required_change = "Name the normalized-design and column-scale return types without suppressing the warning, refresh the source-bound native manifest, and run one replacement exact-head denominator."
 verification = "GitHub Actions run 34863637761 completed without cancellation at exact head 71f44072e31dbcf1ef55ed07cdd03e940fbb9904."
+
+[[task]]
+id = "exact-head-15471a4a-terminal-denominator"
+status = "complete"
+finding = "Run 34869866019 reached a terminal 42-job fail-slow denominator: 39 jobs passed, dependency policy failed on rustls 0.23.37 under RUSTSEC-2026-0285, aggregate validation failed by construction, and docs deployment skipped by pull-request policy. Workspace Clippy, Casimir audit, documentation, governance, every routed Rust test shard, proofs, all scientific replay leaves, benchmarks, survey, paper, and policy passed."
+required_change = "Update the compatible rustls lock entry to the fixed 0.23.45 release, retain its resolved rustls-webpki update, refresh the source-bound native manifest, and run one replacement exact-head denominator."
+verification = "GitHub Actions run 34869866019 completed without cancellation at exact head 15471a4a703f05286af214d34d8c0f1e9a9e572e."
