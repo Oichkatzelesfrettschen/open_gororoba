@@ -8,7 +8,7 @@
 .PHONY: heavy test-inventory
 .PHONY: rust-test rust-clippy rust-semver-check rust-smoke rust-regression miri-cd-kernel dep-audit cargo-deny-check mcp-smoke e027-validate studio-run studio-check profile-tensor-avt x87-strategy-bench x87-strategy-perf x87-strategy-hyperfine x87-strategy-flamegraph x87-givens-microbench x87-givens-microbench-perf jacobi-backend-sweep jacobi-backend-perf jacobi-backend-flamegraph jacobi-backend-samply jacobi-backend-samply-compare gpu-bench gpu-bench-ncu gpu-bench-nsys
 .PHONY: cpu-bench cpu-bench-perf cpu-bench-cachegrind cpu-bench-flamegraph parity-bench parity-report
-.PHONY: submodule-sync validate-ci validate-ci-registry validate-ci-rust validate-repository validate-repository-fast validate-governance validation-tools registry-validation-tools validation-tools-clean validation-tools-rebuild validation-tools-check-paths validation-resource-contract validation-resource-contract-authority validation-resource-contract-local-absence validation-resource-contract-registry validation-resource-contract-workers validation-resource-contract-collectors print-validation-resource-config require-ci-validation-authority casimir-optics-discrimination-audit-check casimir-optics-discrimination-output-check casimir-optics-discrimination-frontier-check data-core-pure-check
+.PHONY: submodule-sync validate-ci validate-ci-registry validate-ci-rust validate-repository validate-repository-fast validate-governance validation-tools registry-validation-tools validation-tools-clean validation-tools-rebuild validation-tools-check-paths validation-resource-contract validation-resource-contract-authority validation-resource-contract-local-absence validation-resource-contract-registry validation-resource-contract-workers validation-resource-contract-collectors print-validation-resource-config require-ci-validation-authority casimir-optics-discrimination-audit-check casimir-optics-discrimination-output-check casimir-optics-discrimination-frontier-check casimir-optics-discrimination-experiment-output-check casimir-optics-discrimination-e043-output-check casimir-optics-discrimination-e044-output-check data-core-pure-check
 .PHONY: gate-ci-registry gate-ci-rust gate-audit gate-audit-fast
 .PHONY: cache-status cache-sweep cache-sweep-soft cache-purge-exp cache-check cache-check-force
 .PHONY: v6-branch-transport-artifacts pathion-control-artifacts pathion-resonance-artifacts
@@ -513,13 +513,18 @@ casimir-optics-discrimination-frontier-check: require-ci-validation-authority
 	    --bin provenance -- --repo-root . verify-finite-frontier \
 	    --frontier plans/casimir_optics_discrimination_frontier.toml
 
-casimir-optics-discrimination-experiment-output-check: require-ci-validation-authority
+casimir-optics-discrimination-experiment-output-check: casimir-optics-discrimination-e043-output-check casimir-optics-discrimination-e044-output-check
+
+casimir-optics-discrimination-e043-output-check: require-ci-validation-authority
 	mkdir -p reports/validation/casimir-optics-discrimination-expected
 	$(CARGO_ENV) cargo run --locked --profile validation -p gororoba_cli_physics \
 	    --bin casimir-plate-compare -- \
 	    --output reports/validation/casimir-optics-discrimination-expected/e043-casimir-plate-compare.txt
 	cmp data/output/audit/casimir-optics-discrimination/e043-casimir-plate-compare.txt \
 	    reports/validation/casimir-optics-discrimination-expected/e043-casimir-plate-compare.txt
+
+casimir-optics-discrimination-e044-output-check: require-ci-validation-authority
+	mkdir -p reports/validation/casimir-optics-discrimination-expected
 	$(CARGO_ENV) cargo run --locked --profile validation -p gororoba_cli_physics \
 	    --bin casimir-drude-plasma -- \
 	    --output reports/validation/casimir-optics-discrimination-expected/e044-casimir-drude-plasma.txt

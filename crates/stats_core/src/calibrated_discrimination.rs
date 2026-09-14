@@ -19,6 +19,8 @@ pub enum DiscriminationError {
     NonFiniteInput,
     /// A lower bound exceeds its corresponding upper bound.
     InvalidBounds,
+    /// A coordinate-specific calibration derivative has no unique nuisance basis.
+    RankDeficientDesign,
     /// The least-squares or quadratic solve did not produce a finite result.
     NumericalFailure,
 }
@@ -197,6 +199,29 @@ fn least_squares(
     design: &DMatrix<f64>,
     response: &DVector<f64>,
 ) -> Result<DVector<f64>, DiscriminationError> {
+    let (normalized, scales) = normalize_design_columns(design)?;
+    let scaled_solution = normalized
+        .svd(true, true)
+        .solve(response, f64::EPSILON.sqrt())
+        .map_err(|_| DiscriminationError::NumericalFailure)?;
+    let solution = DVector::from_iterator(
+        scaled_solution.len(),
+        scaled_solution
+            .iter()
+            .zip(scales)
+            .map(|(value, (maximum_component, scaled_norm))| {
+                value / scaled_norm / maximum_component
+            }),
+    );
+    if !all_finite_vector(&solution) {
+        return Err(DiscriminationError::NumericalFailure);
+    }
+    Ok(solution)
+}
+
+fn normalize_design_columns(
+    design: &DMatrix<f64>,
+) -> Result<(DMatrix<f64>, Vec<(f64, f64)>), DiscriminationError> {
     let mut normalized = design.clone();
     let mut scales = Vec::with_capacity(normalized.ncols());
     for mut column in normalized.column_iter_mut() {
@@ -224,23 +249,23 @@ fn least_squares(
         column.scale_mut(1.0 / scaled_norm);
         scales.push((maximum_component, scaled_norm));
     }
-    let scaled_solution = normalized
-        .svd(true, true)
-        .solve(response, f64::EPSILON.sqrt())
-        .map_err(|_| DiscriminationError::NumericalFailure)?;
-    let solution = DVector::from_iterator(
-        scaled_solution.len(),
-        scaled_solution
-            .iter()
-            .zip(scales)
-            .map(|(value, (maximum_component, scaled_norm))| {
-                value / scaled_norm / maximum_component
-            }),
-    );
-    if !all_finite_vector(&solution) {
+    Ok((normalized, scales))
+}
+
+fn has_full_column_rank(design: &DMatrix<f64>) -> Result<bool, DiscriminationError> {
+    let (normalized, _) = normalize_design_columns(design)?;
+    if normalized.column_iter().any(|column| column.amax() == 0.0) {
+        return Ok(false);
+    }
+    let singular_values = normalized.svd(false, false).singular_values;
+    if !all_finite_vector(&singular_values) {
         return Err(DiscriminationError::NumericalFailure);
     }
-    Ok(solution)
+    Ok(singular_values
+        .iter()
+        .filter(|singular_value| **singular_value > f64::EPSILON.sqrt())
+        .count()
+        == design.ncols())
 }
 
 /// Efficient information after independent calibration constrains nuisances.
@@ -310,6 +335,9 @@ pub fn calibration_precision_sensitivity(
             (calibration.nrows(), calibration.ncols()),
         )
         .copy_from(calibration);
+    if !has_full_column_rank(&augmented_design)? {
+        return Err(DiscriminationError::RankDeficientDesign);
+    }
     let mut augmented_target = DVector::zeros(target.len() + calibration.nrows());
     augmented_target.rows_mut(0, target.len()).copy_from(target);
     let solution = least_squares(&augmented_design, &augmented_target)?;
@@ -818,6 +846,23 @@ mod tests {
         let sensitivity =
             calibration_precision_sensitivity(&target, &nuisance, &calibration, 0).unwrap();
         assert_relative_eq!(sensitivity, 1.0, epsilon = 1e-12);
+    }
+
+    #[test]
+    fn calibration_sensitivity_rejects_rank_deficient_nuisance_coordinates() {
+        let target = DVector::from_element(1, 1.0);
+        let nuisance = DMatrix::from_row_slice(1, 2, &[1.0, 1.0]);
+        let calibration = DMatrix::zeros(0, 2);
+
+        assert_eq!(
+            calibration_precision_sensitivity(&target, &nuisance, &calibration, 0),
+            Err(DiscriminationError::RankDeficientDesign)
+        );
+        assert_relative_eq!(
+            efficient_information(&target, &nuisance, &calibration).unwrap(),
+            0.0,
+            epsilon = 1e-12
+        );
     }
 
     #[test]

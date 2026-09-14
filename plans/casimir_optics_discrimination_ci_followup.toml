@@ -1048,3 +1048,24 @@ status = "complete"
 finding = "Run 34851636950 reached a terminal 42-job fail-slow denominator: 38 jobs passed, validation-casimir-audit failed on three stale retained numerical outputs, the stats_core light-2 shard failed on a boundary-confounded extreme-scale regression, aggregate validation failed by construction, and docs deployment skipped by pull-request policy. Documentation, proofs, governance, materials, workspace Clippy, all scientific replay leaves, benchmarks, survey, paper, and every unaffected Rust shard passed."
 required_change = "Import the exact hosted numerical outputs, preserve their source-model identity, move the scale-preservation regression's optimum into the free interval interior, and retain the two valid review findings added during the run."
 verification = "GitHub Actions run 34851636950 completed without cancellation at exact head a7ccef329e26d0d7ac36bc5ec79496f1aeb507a1."
+
+[[task]]
+id = "exact-head-ci-c0b8c8fa"
+status = "complete"
+finding = "Run 34857077707 reached a terminal 42-job denominator: 41 jobs passed, docs deployment skipped by pull-request policy, and no job failed."
+required_change = "Retain this successful exact-head denominator as validation of the compiled gold-source identity, material-property missingness units, interior extreme-scale regression, and refreshed native outputs before applying the final settled-review repairs."
+verification = "GitHub Actions run 34857077707 completed without cancellation at exact head c0b8c8faae2de87f0ae405db5d279f3ca315d141."
+
+[[task]]
+id = "casimir-experiment-freshness-independent-targets"
+status = "implemented_pending_ci"
+finding = "E-043 and E-044 replayed in consecutive recipe lines of one Make target, so an E-043 failure prevented E-044 from executing despite the parent lane's keep-going policy."
+required_change = "Give E-043 and E-044 separate prerequisite targets so make --keep-going can execute and report each freshness check independently."
+verification = "Hosted validation-casimir-audit invokes both named prerequisite targets through the fail-slow aggregate."
+
+[[task]]
+id = "calibration-sensitivity-rank-identifiability"
+status = "implemented_pending_ci"
+finding = "A coordinate-specific calibration derivative used one arbitrary minimum-norm solution when the augmented nuisance design was rank deficient, making the reported priority basis-dependent."
+required_change = "Require full column rank of the normalized augmented nuisance/calibration design before reporting a coordinate-specific sensitivity while retaining efficient information for rank-deficient projections."
+verification = "Hosted stats_core tests reject the duplicate-column sensitivity as RankDeficientDesign while preserving zero efficient information for the same nuisance span."
