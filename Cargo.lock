@@ -6824,6 +6824,7 @@ dependencies = [
  "algebra_analysis",
  "approx",
  "cd_kernel",
+ "chrono",
  "csv",
  "fixedbitset 0.5.7",
  "gauss-quad",

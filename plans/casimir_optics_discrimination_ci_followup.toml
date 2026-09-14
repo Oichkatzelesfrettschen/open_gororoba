@@ -964,3 +964,24 @@ status = "complete"
 finding = "Run 34839469460 reached a terminal 42-job fail-slow denominator: 39 jobs passed, the gororoba_cli_physics bins-4 shard failed only because one stale mutation test expected the pre-pin runtime hash error, aggregate validation failed by construction, and docs deployment skipped by pull-request policy. Casimir audit, documentation, workspace Clippy, materials, statistics, provenance, governance, proofs, all scientific replays, benchmarks, survey, paper, and every other routed shard passed."
 required_change = "Repair the stale test so it mutates retained bytes under an unchanged compiled and manifest identity, then run one replacement exact-head denominator."
 verification = "GitHub Actions run 34839469460 completed without cancellation at exact head fc206cc4863a5248375825820e6344e893cdf7d6."
+
+[[task]]
+id = "exact-head-ci-9175fda9"
+status = "complete"
+finding = "Run 34842357168 reached a terminal 42-job fail-slow denominator: 41 jobs passed, docs deployment skipped by pull-request policy, and no job failed."
+required_change = "Retain this successful denominator as validation of the source-identity mutation repair before publishing the subsequent review-driven materials schema corrections."
+verification = "GitHub Actions run 34842357168 completed without cancellation at exact head 9175fda986a1d5e3900d76fb409eee23e2f12f9a."
+
+[[task]]
+id = "specimen-property-typed-missingness"
+status = "implemented_pending_ci"
+finding = "Specimen anneal history, thickness, grain size, texture, porosity, and roughness used bare Option fields, erasing the reason each unavailable property was absent."
+required_change = "Use the shared observed-value-or-Missingness representation for state and specimen properties, and validate typed detection-limit and withheld metadata."
+verification = "Hosted materials_core tests preserve a below-detection specimen thickness and reject malformed specimen-property missingness."
+
+[[task]]
+id = "measurement-provenance-calendar-date"
+status = "implemented_pending_ci"
+finding = "Measurement provenance accepted any nonempty retrieval-date text, including impossible calendar dates and unstructured unknown markers."
+required_change = "Require an exact, nonzero-year YYYY-MM-DD representation that parses as a Gregorian calendar date."
+verification = "Hosted materials_core tests reject unstructured, impossible, and zero-year retrieval dates and accept a valid leap day."

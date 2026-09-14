@@ -7,6 +7,7 @@
 
 use std::collections::{BTreeMap, BTreeSet};
 
+use chrono::NaiveDate;
 use nalgebra::DMatrix;
 use serde::{Deserialize, Serialize};
 
@@ -131,15 +132,15 @@ impl Missingness {
     }
 }
 
-/// Material-state value or an explicit reason the value is unavailable.
+/// Property value or an explicit reason the value is unavailable.
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "snake_case", tag = "state")]
-pub enum StateProperty<T> {
+pub enum PropertyObservation<T> {
     Observed { value: T },
     Missing { reason: Missingness },
 }
 
-impl<T> StateProperty<T> {
+impl<T> PropertyObservation<T> {
     pub fn observed(value: T) -> Self {
         Self::Observed { value }
     }
@@ -232,14 +233,14 @@ pub struct MaterialState {
     pub state_id: RecordId,
     pub material_id: RecordId,
     pub phase_id: String,
-    pub temperature_k: StateProperty<f64>,
-    pub pressure_pa: StateProperty<f64>,
-    pub atmosphere: StateProperty<String>,
-    pub phase_fraction: StateProperty<f64>,
-    pub orientation: StateProperty<String>,
-    pub strain: StateProperty<Vec<f64>>,
+    pub temperature_k: PropertyObservation<f64>,
+    pub pressure_pa: PropertyObservation<f64>,
+    pub atmosphere: PropertyObservation<String>,
+    pub phase_fraction: PropertyObservation<f64>,
+    pub orientation: PropertyObservation<String>,
+    pub strain: PropertyObservation<Vec<f64>>,
     pub applied_fields: BTreeMap<String, String>,
-    pub time_since_processing_s: StateProperty<f64>,
+    pub time_since_processing_s: PropertyObservation<f64>,
     pub history: Vec<String>,
 }
 
@@ -274,14 +275,14 @@ pub struct Specimen {
     pub purity_assay: AssayStatus,
     pub composition_assay: AssayStatus,
     pub synthesis_or_deposition: String,
-    pub anneal_history: Option<String>,
-    pub thickness_m: Option<f64>,
+    pub anneal_history: PropertyObservation<String>,
+    pub thickness_m: PropertyObservation<f64>,
     pub substrate_specimen_id: Option<RecordId>,
     pub adhesion_layers: Vec<String>,
-    pub grain_size_m: Option<f64>,
-    pub texture: Option<String>,
-    pub porosity_fraction: Option<f64>,
-    pub roughness_rms_m: Option<f64>,
+    pub grain_size_m: PropertyObservation<f64>,
+    pub texture: PropertyObservation<String>,
+    pub porosity_fraction: PropertyObservation<f64>,
+    pub roughness_rms_m: PropertyObservation<f64>,
     pub geometry: String,
 }
 
@@ -410,6 +411,22 @@ fn require_nonempty(label: &str, value: &str) -> Result<(), String> {
     } else {
         Ok(())
     }
+}
+
+fn validate_retrieval_date(value: &str) -> Result<(), String> {
+    let bytes = value.as_bytes();
+    if bytes.len() != 10
+        || !bytes[0..4].iter().all(u8::is_ascii_digit)
+        || bytes[4] != b'-'
+        || !bytes[5..7].iter().all(u8::is_ascii_digit)
+        || bytes[7] != b'-'
+        || !bytes[8..10].iter().all(u8::is_ascii_digit)
+        || &bytes[0..4] == b"0000"
+        || NaiveDate::parse_from_str(value, "%Y-%m-%d").is_err()
+    {
+        return Err("retrieval date must be a valid YYYY-MM-DD calendar date".to_owned());
+    }
+    Ok(())
 }
 
 impl QuantityPayload {
@@ -972,8 +989,14 @@ impl Specimen {
         require_nonempty("synthesis or deposition", &self.synthesis_or_deposition)?;
         require_nonempty("specimen geometry", &self.geometry)?;
         for (label, value) in [
-            ("anneal history", self.anneal_history.as_deref()),
-            ("specimen texture", self.texture.as_deref()),
+            (
+                "anneal history",
+                self.anneal_history.value().map(String::as_str),
+            ),
+            (
+                "specimen texture",
+                self.texture.value().map(String::as_str),
+            ),
         ] {
             if let Some(value) = value {
                 require_nonempty(label, value)?;
@@ -985,10 +1008,21 @@ impl Specimen {
         for adhesion_layer in &self.adhesion_layers {
             require_nonempty("adhesion-layer entry", adhesion_layer)?;
         }
+        self.anneal_history
+            .validate_missingness("anneal history")?;
+        self.thickness_m
+            .validate_missingness("specimen thickness")?;
+        self.grain_size_m
+            .validate_missingness("specimen grain size")?;
+        self.texture.validate_missingness("specimen texture")?;
+        self.porosity_fraction
+            .validate_missingness("specimen porosity fraction")?;
+        self.roughness_rms_m
+            .validate_missingness("specimen roughness")?;
         for (label, value) in [
-            ("thickness", self.thickness_m),
-            ("grain size", self.grain_size_m),
-            ("roughness", self.roughness_rms_m),
+            ("thickness", self.thickness_m.value().copied()),
+            ("grain size", self.grain_size_m.value().copied()),
+            ("roughness", self.roughness_rms_m.value().copied()),
         ] {
             if value.is_some_and(|number| !number.is_finite() || number < 0.0) {
                 return Err(format!("{label} must be finite and nonnegative"));
@@ -996,7 +1030,8 @@ impl Specimen {
         }
         if self
             .porosity_fraction
-            .is_some_and(|value| !value.is_finite() || !(0.0..=1.0).contains(&value))
+            .value()
+            .is_some_and(|value| !value.is_finite() || !(0.0..=1.0).contains(value))
         {
             return Err("porosity fraction must lie in [0, 1]".to_owned());
         }
@@ -1041,7 +1076,7 @@ impl Measurement {
         )?;
         require_nonempty("source locator", &self.provenance.locator)?;
         require_nonempty("source license", &self.provenance.license)?;
-        require_nonempty("retrieval date", &self.provenance.retrieval_date)?;
+        validate_retrieval_date(&self.provenance.retrieval_date)?;
         require_nonempty("parser version", &self.provenance.parser_version)?;
         if self.provenance.transformation_lineage.is_empty()
             || self
@@ -1639,16 +1674,16 @@ mod tests {
             state_id: identifier("state:au:300k"),
             material_id: material.material_id,
             phase_id: "fcc".to_owned(),
-            temperature_k: StateProperty::observed(300.0),
-            pressure_pa: StateProperty::observed(101_325.0),
-            atmosphere: StateProperty::observed(
+            temperature_k: PropertyObservation::observed(300.0),
+            pressure_pa: PropertyObservation::observed(101_325.0),
+            atmosphere: PropertyObservation::observed(
                 "vacuum deposition chamber".to_owned(),
             ),
-            phase_fraction: StateProperty::observed(1.0),
-            orientation: StateProperty::missing(Missingness::NotMeasured),
-            strain: StateProperty::missing(Missingness::NotMeasured),
+            phase_fraction: PropertyObservation::observed(1.0),
+            orientation: PropertyObservation::missing(Missingness::NotMeasured),
+            strain: PropertyObservation::missing(Missingness::NotMeasured),
             applied_fields: BTreeMap::new(),
-            time_since_processing_s: StateProperty::missing(Missingness::Unknown),
+            time_since_processing_s: PropertyObservation::missing(Missingness::Unknown),
             history: Vec::new(),
         };
         let evaporated = Specimen {
@@ -1659,14 +1694,14 @@ mod tests {
             },
             composition_assay: AssayStatus::Unknown,
             synthesis_or_deposition: "thermal evaporation".to_owned(),
-            anneal_history: None,
-            thickness_m: Some(200e-9),
+            anneal_history: PropertyObservation::missing(Missingness::NotMeasured),
+            thickness_m: PropertyObservation::observed(200e-9),
             substrate_specimen_id: Some(identifier("specimen:glass")),
             adhesion_layers: Vec::new(),
-            grain_size_m: None,
-            texture: None,
-            porosity_fraction: None,
-            roughness_rms_m: None,
+            grain_size_m: PropertyObservation::missing(Missingness::NotMeasured),
+            texture: PropertyObservation::missing(Missingness::NotMeasured),
+            porosity_fraction: PropertyObservation::missing(Missingness::NotMeasured),
+            roughness_rms_m: PropertyObservation::missing(Missingness::NotMeasured),
             geometry: "planar film".to_owned(),
         };
         let template_stripped = Specimen {
@@ -2102,14 +2137,14 @@ mod tests {
                 state_id: identifier("state:au:test"),
                 material_id: identifier("material:au"),
                 phase_id: "solid".to_owned(),
-                temperature_k: StateProperty::observed(300.0),
-                pressure_pa: StateProperty::missing(Missingness::NotMeasured),
-                atmosphere: StateProperty::missing(Missingness::Unknown),
-                phase_fraction: StateProperty::missing(Missingness::NotMeasured),
-                orientation: StateProperty::missing(Missingness::NotMeasured),
-                strain: StateProperty::missing(Missingness::NotMeasured),
+                temperature_k: PropertyObservation::observed(300.0),
+                pressure_pa: PropertyObservation::missing(Missingness::NotMeasured),
+                atmosphere: PropertyObservation::missing(Missingness::Unknown),
+                phase_fraction: PropertyObservation::missing(Missingness::NotMeasured),
+                orientation: PropertyObservation::missing(Missingness::NotMeasured),
+                strain: PropertyObservation::missing(Missingness::NotMeasured),
                 applied_fields: BTreeMap::new(),
-                time_since_processing_s: StateProperty::missing(Missingness::Unknown),
+                time_since_processing_s: PropertyObservation::missing(Missingness::Unknown),
                 history: Vec::new(),
             }],
             specimens: vec![Specimen {
@@ -2118,14 +2153,14 @@ mod tests {
                 purity_assay: AssayStatus::NotMeasured,
                 composition_assay: AssayStatus::Unknown,
                 synthesis_or_deposition: "reported preparation".to_owned(),
-                anneal_history: None,
-                thickness_m: None,
+                anneal_history: PropertyObservation::missing(Missingness::NotMeasured),
+                thickness_m: PropertyObservation::missing(Missingness::NotMeasured),
                 substrate_specimen_id: None,
                 adhesion_layers: Vec::new(),
-                grain_size_m: None,
-                texture: None,
-                porosity_fraction: None,
-                roughness_rms_m: None,
+                grain_size_m: PropertyObservation::missing(Missingness::NotMeasured),
+                texture: PropertyObservation::missing(Missingness::Unknown),
+                porosity_fraction: PropertyObservation::missing(Missingness::NotMeasured),
+                roughness_rms_m: PropertyObservation::missing(Missingness::NotMeasured),
                 geometry: "reported geometry".to_owned(),
             }],
             raw_artifacts: vec![
@@ -2305,6 +2340,23 @@ mod tests {
     }
 
     #[test]
+    fn measurement_provenance_requires_a_valid_retrieval_date() {
+        let mut graph = graph_with_quantities(Vec::new());
+        let measurement = &mut graph.measurements[0];
+
+        for invalid_date in ["unknown", "2026-02-30", "0000-01-01"] {
+            measurement.provenance.retrieval_date = invalid_date.to_owned();
+            assert_eq!(
+                measurement.validate().unwrap_err(),
+                "retrieval date must be a valid YYYY-MM-DD calendar date"
+            );
+        }
+
+        measurement.provenance.retrieval_date = "2024-02-29".to_owned();
+        assert!(measurement.validate().is_ok());
+    }
+
+    #[test]
     fn reported_measurement_detection_limit_matches_observed_quantity_unit() {
         let quantity = scalar_quantity(
             QuantityOrigin::Measurement {
@@ -2385,21 +2437,21 @@ mod tests {
             .unwrap();
 
         let mut blank_atmosphere = state.clone();
-        blank_atmosphere.atmosphere = StateProperty::observed(" ".to_owned());
+        blank_atmosphere.atmosphere = PropertyObservation::observed(" ".to_owned());
         assert_eq!(
             blank_atmosphere.validate().unwrap_err(),
             "state atmosphere must be nonempty"
         );
 
         let mut blank_orientation = state.clone();
-        blank_orientation.orientation = StateProperty::observed(String::new());
+        blank_orientation.orientation = PropertyObservation::observed(String::new());
         assert_eq!(
             blank_orientation.validate().unwrap_err(),
             "state orientation must be nonempty"
         );
 
         let mut typed_missing_pressure = state.clone();
-        typed_missing_pressure.pressure_pa = StateProperty::missing(
+        typed_missing_pressure.pressure_pa = PropertyObservation::missing(
             Missingness::BelowDetectionLimit {
                 upper_bound: 1.0,
                 unit: "Pa".to_owned(),
@@ -2408,13 +2460,13 @@ mod tests {
         assert!(typed_missing_pressure.validate().is_ok());
         assert!(matches!(
             typed_missing_pressure.pressure_pa,
-            StateProperty::Missing {
+            PropertyObservation::Missing {
                 reason: Missingness::BelowDetectionLimit { .. }
             }
         ));
 
         let mut malformed_missing_pressure = state.clone();
-        malformed_missing_pressure.pressure_pa = StateProperty::missing(
+        malformed_missing_pressure.pressure_pa = PropertyObservation::missing(
             Missingness::BelowDetectionLimit {
                 upper_bound: f64::NAN,
                 unit: String::new(),
@@ -2465,12 +2517,43 @@ mod tests {
         ] {
             let mut blank = specimen.clone();
             match label {
-                "anneal" => blank.anneal_history = Some(" ".to_owned()),
-                "texture" => blank.texture = Some(" ".to_owned()),
+                "anneal" => {
+                    blank.anneal_history = PropertyObservation::observed(" ".to_owned());
+                }
+                "texture" => {
+                    blank.texture = PropertyObservation::observed(" ".to_owned());
+                }
                 _ => unreachable!(),
             }
             assert_eq!(blank.validate().unwrap_err(), error);
         }
+
+        let mut typed_missing_thickness = specimen.clone();
+        typed_missing_thickness.thickness_m = PropertyObservation::missing(
+            Missingness::BelowDetectionLimit {
+                upper_bound: 1.0e-9,
+                unit: "m".to_owned(),
+            },
+        );
+        assert!(typed_missing_thickness.validate().is_ok());
+        assert!(matches!(
+            typed_missing_thickness.thickness_m,
+            PropertyObservation::Missing {
+                reason: Missingness::BelowDetectionLimit { .. }
+            }
+        ));
+
+        let mut malformed_missing_thickness = specimen.clone();
+        malformed_missing_thickness.thickness_m = PropertyObservation::missing(
+            Missingness::BelowDetectionLimit {
+                upper_bound: -1.0,
+                unit: "m".to_owned(),
+            },
+        );
+        assert_eq!(
+            malformed_missing_thickness.validate().unwrap_err(),
+            "specimen thickness missingness detection limit must be finite and nonnegative"
+        );
 
         let mut blank_substrate = specimen.clone();
         blank_substrate.substrate_specimen_id = Some(RecordId(" ".to_owned()));
@@ -3093,7 +3176,7 @@ mod tests {
 
         let mut strain_match = graph.clone();
         strain_match.states[0].strain =
-            StateProperty::observed(vec![0.001, -0.002]);
+            PropertyObservation::observed(vec![0.001, -0.002]);
         strain_match.quantities[0]
             .conditions
             .insert("strain_component:1".to_owned(), "-0.002".to_owned());
