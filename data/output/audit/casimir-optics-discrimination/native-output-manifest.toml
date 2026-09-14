@@ -1,7 +1,7 @@
 schema_version = 1
 producer = "crates/gororoba_cli_physics/src/bin/casimir_optics_discrimination_audit.rs"
 producer_sha256 = "8ab85bce1088716fe1555572fa82829a133f92d8a2ef86875ab607b2740a6853"
-source_model_identity = "sha256:0200b536a688ffe77074718376433e34311876477e4a8013faa7f94ab0660ede"
+source_model_identity = "sha256:becc4d9f5b9314ec909e617be575918193f2d292fdb0c2378728ec65c729b74e"
 source_model_identity_algorithm = "SHA-256 over path UTF-8, NUL, file bytes, NUL for source_model_input entries in manifest order"
 command = "cargo run -p gororoba_cli_physics --bin casimir-optics-discrimination-audit --profile validation"
 scope = "native model outputs; no laboratory observations"
@@ -96,7 +96,7 @@ sha256 = "47844290c6208f0587a4a4779b12e0133e3d781afd13f84074ff871504d17c2f"
 
 [[source_model_input]]
 path = "crates/stats_core/src/calibrated_discrimination.rs"
-sha256 = "acc91250e480cefa7e7f456c2ee01fcc4e82ef9c3fc1628ea3112d42f5513f2a"
+sha256 = "a35b4d08ef9e4f82fae895763e769c18c47a89041e84077419b41186c47a8de8"
 
 [[source_model_input]]
 path = "crates/stats_core/Cargo.toml"
@@ -104,12 +104,12 @@ sha256 = "a2a7349de351863a55003cf4bcb088189c5ae2dd56a34ecf2e25233502577075"
 
 [[output]]
 path = "bounded_mimic.tsv"
-sha256 = "3b7194b6e1b0344c1ed54e523c252b3f4080014d390e85b43b0dc096a6bbf69a"
+sha256 = "395ef480ab397e7871e8cab8b459b36236694beaf7aedd395c8d1910dc05cf6d"
 bytes = 366
 
 [[output]]
 path = "bounded_mimic_coefficients.tsv"
-sha256 = "a27ddd79d4b65fea8e7a1f1549b81348a1be5c0bde4e5c2f86adcf4df7d5e736"
+sha256 = "f37aa79df36471d4fd34f77243254b8dda3a9b7954028ad2af42a74d5df24b35"
 bytes = 2571
 
 [[output]]
@@ -124,7 +124,7 @@ bytes = 976
 
 [[output]]
 path = "derivative_step_study.tsv"
-sha256 = "d54fcb9139a6740b9247b84567edab8e03adb7aba244c76cd832252428f276b0"
+sha256 = "6ca1c3f8eff61228a82b2bf6d672dab01354d059ef23b4d5d65c9317e57e937a"
 bytes = 354
 
 [[output]]

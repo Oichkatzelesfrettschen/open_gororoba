@@ -114,7 +114,7 @@ pub enum Missingness {
 }
 
 impl Missingness {
-    fn validate(&self, label: &str) -> Result<(), String> {
+    fn validate(&self, label: &str, expected_unit: Option<&str>) -> Result<(), String> {
         match self {
             Self::BelowDetectionLimit { upper_bound, unit } => {
                 if !upper_bound.is_finite() || *upper_bound < 0.0 {
@@ -122,7 +122,15 @@ impl Missingness {
                         "{label} missingness detection limit must be finite and nonnegative"
                     ));
                 }
-                require_nonempty(&format!("{label} missingness detection-limit unit"), unit)
+                let expected_unit = expected_unit.ok_or_else(|| {
+                    format!("{label} missingness does not support a detection limit")
+                })?;
+                if unit != expected_unit {
+                    return Err(format!(
+                        "{label} missingness detection-limit unit must be {expected_unit}"
+                    ));
+                }
+                Ok(())
             }
             Self::Withheld { reason } => {
                 require_nonempty(&format!("{label} withheld reason"), reason)
@@ -156,10 +164,14 @@ impl<T> PropertyObservation<T> {
         }
     }
 
-    fn validate_missingness(&self, label: &str) -> Result<(), String> {
+    fn validate_missingness(
+        &self,
+        label: &str,
+        expected_unit: Option<&str>,
+    ) -> Result<(), String> {
         match self {
             Self::Observed { .. } => Ok(()),
-            Self::Missing { reason } => reason.validate(label),
+            Self::Missing { reason } => reason.validate(label, expected_unit),
         }
     }
 }
@@ -776,17 +788,19 @@ impl MaterialState {
             require_nonempty("state-history entry", history_entry)?;
         }
         self.temperature_k
-            .validate_missingness("state temperature")?;
-        self.pressure_pa.validate_missingness("state pressure")?;
+            .validate_missingness("state temperature", Some("K"))?;
+        self.pressure_pa
+            .validate_missingness("state pressure", Some("Pa"))?;
         self.atmosphere
-            .validate_missingness("state atmosphere")?;
+            .validate_missingness("state atmosphere", None)?;
         self.phase_fraction
-            .validate_missingness("state phase fraction")?;
+            .validate_missingness("state phase fraction", Some("1"))?;
         self.orientation
-            .validate_missingness("state orientation")?;
-        self.strain.validate_missingness("state strain")?;
+            .validate_missingness("state orientation", None)?;
+        self.strain
+            .validate_missingness("state strain", Some("1"))?;
         self.time_since_processing_s
-            .validate_missingness("state time since processing")?;
+            .validate_missingness("state time since processing", Some("s"))?;
         if self
             .temperature_k
             .value()
@@ -1009,16 +1023,17 @@ impl Specimen {
             require_nonempty("adhesion-layer entry", adhesion_layer)?;
         }
         self.anneal_history
-            .validate_missingness("anneal history")?;
+            .validate_missingness("anneal history", None)?;
         self.thickness_m
-            .validate_missingness("specimen thickness")?;
+            .validate_missingness("specimen thickness", Some("m"))?;
         self.grain_size_m
-            .validate_missingness("specimen grain size")?;
-        self.texture.validate_missingness("specimen texture")?;
+            .validate_missingness("specimen grain size", Some("m"))?;
+        self.texture
+            .validate_missingness("specimen texture", None)?;
         self.porosity_fraction
-            .validate_missingness("specimen porosity fraction")?;
+            .validate_missingness("specimen porosity fraction", Some("1"))?;
         self.roughness_rms_m
-            .validate_missingness("specimen roughness")?;
+            .validate_missingness("specimen roughness", Some("m"))?;
         for (label, value) in [
             ("thickness", self.thickness_m.value().copied()),
             ("grain size", self.grain_size_m.value().copied()),
@@ -2477,6 +2492,30 @@ mod tests {
             "state pressure missingness detection limit must be finite and nonnegative"
         );
 
+        let mut dimensionally_invalid_temperature = state.clone();
+        dimensionally_invalid_temperature.temperature_k = PropertyObservation::missing(
+            Missingness::BelowDetectionLimit {
+                upper_bound: 1.0,
+                unit: "m".to_owned(),
+            },
+        );
+        assert_eq!(
+            dimensionally_invalid_temperature.validate().unwrap_err(),
+            "state temperature missingness detection-limit unit must be K"
+        );
+
+        let mut invalid_atmosphere_detection_limit = state.clone();
+        invalid_atmosphere_detection_limit.atmosphere = PropertyObservation::missing(
+            Missingness::BelowDetectionLimit {
+                upper_bound: 1.0,
+                unit: "Pa".to_owned(),
+            },
+        );
+        assert_eq!(
+            invalid_atmosphere_detection_limit.validate().unwrap_err(),
+            "state atmosphere missingness does not support a detection limit"
+        );
+
         let mut blank_field_name = state.clone();
         blank_field_name
             .applied_fields
@@ -2553,6 +2592,30 @@ mod tests {
         assert_eq!(
             malformed_missing_thickness.validate().unwrap_err(),
             "specimen thickness missingness detection limit must be finite and nonnegative"
+        );
+
+        let mut dimensionally_invalid_thickness = specimen.clone();
+        dimensionally_invalid_thickness.thickness_m = PropertyObservation::missing(
+            Missingness::BelowDetectionLimit {
+                upper_bound: 1.0e-9,
+                unit: "K".to_owned(),
+            },
+        );
+        assert_eq!(
+            dimensionally_invalid_thickness.validate().unwrap_err(),
+            "specimen thickness missingness detection-limit unit must be m"
+        );
+
+        let mut invalid_texture_detection_limit = specimen.clone();
+        invalid_texture_detection_limit.texture = PropertyObservation::missing(
+            Missingness::BelowDetectionLimit {
+                upper_bound: 1.0,
+                unit: "1".to_owned(),
+            },
+        );
+        assert_eq!(
+            invalid_texture_detection_limit.validate().unwrap_err(),
+            "specimen texture missingness does not support a detection limit"
         );
 
         let mut blank_substrate = specimen.clone();

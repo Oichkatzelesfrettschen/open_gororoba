@@ -14,10 +14,35 @@ use serde::Deserialize;
 
 use crate::material_records::RecordId;
 
-const EXPECTED_SOURCE_DOIS: [(&str, &str); 3] = [
-    ("RIINFO-AU-JOHNSON", "10.1103/PhysRevB.6.4370"),
-    ("RIINFO-AU-OLMON-EVAPORATED", "10.1103/PhysRevB.86.235147"),
-    ("RIINFO-AU-MCPEAK", "10.1021/ph5004237"),
+struct ExpectedSourceIdentity {
+    source_id: &'static str,
+    source_path: &'static str,
+    source_sha256: &'static str,
+    underlying_doi: &'static str,
+}
+
+const EXPECTED_SOURCE_IDENTITIES: [ExpectedSourceIdentity; 3] = [
+    ExpectedSourceIdentity {
+        source_id: "RIINFO-AU-JOHNSON",
+        source_path:
+            "data/output/audit/casimir-optics-discrimination/sources/au-Johnson.yml",
+        source_sha256: "9f4bdab6bd49f7c6a1c48b5fb5482c7448caf4b6de39594a34ecd66dcf592774",
+        underlying_doi: "10.1103/PhysRevB.6.4370",
+    },
+    ExpectedSourceIdentity {
+        source_id: "RIINFO-AU-OLMON-EVAPORATED",
+        source_path:
+            "data/output/audit/casimir-optics-discrimination/sources/au-Olmon-ev.yml",
+        source_sha256: "be778621e6491fc4e2db6eee400fb329d44ada2b987f7bfd2e219c83fe32a338",
+        underlying_doi: "10.1103/PhysRevB.86.235147",
+    },
+    ExpectedSourceIdentity {
+        source_id: "RIINFO-AU-MCPEAK",
+        source_path:
+            "data/output/audit/casimir-optics-discrimination/sources/au-McPeak.yml",
+        source_sha256: "d104232ae43a9b04f978552a7e3dbc448962163e48a023ecca38764eca55e82d",
+        underlying_doi: "10.1021/ph5004237",
+    },
 ];
 const EXPECTED_MATERIAL_ID: &str = "material:au";
 const EXPECTED_FORMULA: &str = "Au";
@@ -188,21 +213,40 @@ impl GoldOpticalCandidate {
         for identifier in [&self.dataset_id, &self.state_id, &self.specimen_id] {
             RecordId::new(identifier.clone())?;
         }
-        let expected_doi = EXPECTED_SOURCE_DOIS
+        let expected_source = EXPECTED_SOURCE_IDENTITIES
             .iter()
-            .find_map(|(source_id, doi)| {
-                (*source_id == self.source_id.as_str()).then_some(*doi)
-            })
+            .find(|expected| expected.source_id == self.source_id.as_str())
             .ok_or_else(|| {
                 format!(
                     "candidate {} has unrecognized source identity {}",
                     self.dataset_id, self.source_id
                 )
             })?;
-        if self.underlying_doi != expected_doi {
+        if self.source_path != expected_source.source_path {
+            return Err(format!(
+                "candidate {} source {} path mismatch: expected {}, observed {}",
+                self.dataset_id,
+                self.source_id,
+                expected_source.source_path,
+                self.source_path
+            ));
+        }
+        if self.source_sha256 != expected_source.source_sha256 {
+            return Err(format!(
+                "candidate {} source {} SHA-256 identity mismatch: expected {}, observed {}",
+                self.dataset_id,
+                self.source_id,
+                expected_source.source_sha256,
+                self.source_sha256
+            ));
+        }
+        if self.underlying_doi != expected_source.underlying_doi {
             return Err(format!(
                 "candidate {} source {} DOI mismatch: expected {}, observed {}",
-                self.dataset_id, self.source_id, expected_doi, self.underlying_doi
+                self.dataset_id,
+                self.source_id,
+                expected_source.underlying_doi,
+                self.underlying_doi
             ));
         }
         if self.source_sha256.len() != 64
@@ -616,6 +660,26 @@ mod tests {
         candidate.source_id = "RIINFO-AU-UNREVIEWED".to_owned();
         let error = catalog.validate().unwrap_err();
         assert!(error.contains("unrecognized source identity"));
+    }
+
+    #[test]
+    fn source_identities_pin_retained_paths_and_digests() {
+        for dataset_index in 0..EXPECTED_SOURCE_IDENTITIES.len() {
+            let mut catalog = GoldOpticalCandidateCatalog::load().unwrap();
+            let candidate = &mut catalog.dataset[dataset_index];
+            candidate.source_path = EXPECTED_DATABASE_LICENSE_PATH.to_owned();
+            assert!(catalog.validate().unwrap_err().contains("path mismatch"));
+
+            let mut catalog = GoldOpticalCandidateCatalog::load().unwrap();
+            let candidate = &mut catalog.dataset[dataset_index];
+            candidate.source_sha256 = "0".repeat(64);
+            assert!(
+                catalog
+                    .validate()
+                    .unwrap_err()
+                    .contains("SHA-256 identity mismatch")
+            );
+        }
     }
 
     #[test]

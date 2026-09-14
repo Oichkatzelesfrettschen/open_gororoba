@@ -1029,7 +1029,7 @@ mod tests {
             },
             NuisanceBound {
                 lower: 0.0,
-                upper: 1e200,
+                upper: 2e200,
                 unit: "free".to_owned(),
             },
         ];

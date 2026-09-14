@@ -1020,3 +1020,31 @@ status = "implemented_pending_ci"
 finding = "Retained candidate source paths rejected symbolic-link components, but the retained database-license path followed symbolic links before hashing."
 required_change = "Resolve both source and license inputs through one repository-relative, component-by-component no-symlink validator before reading bytes."
 verification = "Hosted Unix materials_core tests reject a retained database-license symlink before candidate-source validation."
+
+[[task]]
+id = "bounded-profile-interior-scale-regression"
+status = "implemented_pending_ci"
+finding = "The extreme-column regression placed its exact optimum on the free coordinate's upper bound and required an absolute residual below the solver-certificate tolerance, conflating finite-column preservation with interior-point boundary convergence."
+required_change = "Place the exact optimum strictly inside the finite free interval while retaining the diagonal nuisance matrix's 1e400 scale ratio."
+verification = "Hosted stats_core tests recover the interior exact fit and its 1e200 physical nuisance coordinate without an active-bound barrier confound."
+
+[[task]]
+id = "gold-candidate-compiled-source-identity"
+status = "implemented_pending_ci"
+finding = "A retained gold YAML and its mutable catalog row could change together because the catalog compiled only each source ID and DOI, not the expected retained path and SHA-256."
+required_change = "Bind each recognized gold source ID to its compiled DOI, repository-relative path, and exact retained-byte SHA-256 before runtime catalog/file agreement checks."
+verification = "Hosted materials_core mutation tests reject replacement paths and digests even when mutable catalog fields remain internally consistent."
+
+[[task]]
+id = "material-property-missingness-unit-identity"
+status = "implemented_pending_ci"
+finding = "State and specimen properties accepted any nonempty unit in typed below-detection-limit missingness, allowing dimensionally incompatible absence records."
+required_change = "Validate quantitative property detection limits against each field's SI unit and reject detection-limit semantics for textual properties."
+verification = "Hosted materials_core tests reject metre-valued temperature limits, kelvin-valued thickness limits, and detection limits attached to atmosphere or texture text."
+
+[[task]]
+id = "exact-head-a7ccef32-terminal-denominator"
+status = "complete"
+finding = "Run 34851636950 reached a terminal 42-job fail-slow denominator: 38 jobs passed, validation-casimir-audit failed on three stale retained numerical outputs, the stats_core light-2 shard failed on a boundary-confounded extreme-scale regression, aggregate validation failed by construction, and docs deployment skipped by pull-request policy. Documentation, proofs, governance, materials, workspace Clippy, all scientific replay leaves, benchmarks, survey, paper, and every unaffected Rust shard passed."
+required_change = "Import the exact hosted numerical outputs, preserve their source-model identity, move the scale-preservation regression's optimum into the free interval interior, and retain the two valid review findings added during the run."
+verification = "GitHub Actions run 34851636950 completed without cancellation at exact head a7ccef329e26d0d7ac36bc5ec79496f1aeb507a1."
