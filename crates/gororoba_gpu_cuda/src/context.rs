@@ -32,20 +32,6 @@ pub struct Context {
     inner: Arc<CudaContext>,
 }
 
-#[cfg(test)]
-mod tests {
-    use cudarc::runtime::{result::RuntimeError, sys::cudaError_t::cudaErrorInsufficientDriver};
-
-    use super::normalize_runtime_device_count;
-    use crate::error::CudaError;
-
-    #[test]
-    fn runtime_device_count_preserves_runtime_failure_class() {
-        let result = normalize_runtime_device_count(Err(RuntimeError(cudaErrorInsufficientDriver)));
-        assert!(matches!(result, Err(CudaError::RuntimeUnavailable)));
-    }
-}
-
 impl Context {
     /// Acquire a CUDA context for the default device (ordinal 0).
     ///
@@ -85,5 +71,19 @@ impl Context {
     /// lbm_3d_cuda use this pattern.
     pub fn default_stream(&self) -> Arc<CudaStream> {
         self.inner.default_stream()
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use cudarc::runtime::{result::RuntimeError, sys::cudaError_t::cudaErrorInsufficientDriver};
+
+    use super::normalize_runtime_device_count;
+    use crate::error::CudaError;
+
+    #[test]
+    fn runtime_device_count_preserves_runtime_failure_class() {
+        let result = normalize_runtime_device_count(Err(RuntimeError(cudaErrorInsufficientDriver)));
+        assert!(matches!(result, Err(CudaError::RuntimeUnavailable)));
     }
 }

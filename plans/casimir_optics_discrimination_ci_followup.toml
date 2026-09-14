@@ -1237,3 +1237,17 @@ status = "implemented_pending_ci"
 finding = "A provenance_store-only change could alter source-observation receipt types or validation semantics without selecting validation-casimir-audit."
 required_change = "Include provenance_store in the Casimir audit trigger and bind that direct dependency edge in validation-resource-contract-collectors."
 verification = "Hosted validation-resource-contract and actionlint pass, and a provenance_store-only path selects validation-casimir-audit."
+
+[[task]]
+id = "exact-head-aac1bec7-terminal-denominator"
+status = "complete"
+finding = "Run 34905765319 reached a terminal 42-job fail-slow denominator: 39 jobs passed, workspace Clippy failed on items_after_test_module in the new CUDA regression, aggregate validation failed by construction, docs deployment skipped by pull-request policy, and no job was canceled."
+required_change = "Move the CUDA regression module after every production item and run one replacement exact-head denominator."
+verification = "GitHub Actions run 34905765319 completed without cancellation at exact head aac1bec755b0ef3e8a5a2c824be5467a9259952d; every non-aggregate job except workspace Clippy passed."
+
+[[task]]
+id = "cuda-regression-module-order"
+status = "implemented_pending_ci"
+finding = "The CUDA runtime-error regression module preceded impl Context, violating the workspace items_after_test_module warnings-as-errors policy."
+required_change = "Place the test module after every production item in context.rs without changing the tested runtime-error mapping."
+verification = "Pinned rustfmt accepts context.rs and replacement workspace Clippy passes."
