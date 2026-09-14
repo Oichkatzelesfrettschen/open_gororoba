@@ -674,6 +674,34 @@ verification = "Hosted stats_core tests reject [[1e200, 1e90], [1e90, 0]] and re
 [[task]]
 id = "pr185-review-thread-denominator"
 status = "in_progress"
-finding = "The paginated exact-head review query reports 107 total threads, 2 resolved threads, and 105 unresolved threads before the consolidated repair."
+finding = "The paginated review denominator began at 107 threads and increased to 109 after exact-head review of 7da85c94, with 2 resolved and 107 unresolved before the final repair."
 required_change = "Classify every stable thread ID against the final exact-head source, record an evidence-backed disposition, and resolve each implemented or superseded thread after hosted validation."
 verification = "A post-settling-window paginated GraphQL query reports exact set equality with the classified denominator and zero unresolved review threads."
+
+[[task]]
+id = "exact-head-7da85c94-terminal-denominator"
+status = "complete"
+finding = "Run 34813637324 reached a terminal 41-job denominator: 38 jobs passed, validation-policy failed on the newly added heavy-fallback oracle string, aggregate validation failed by construction, and docs deployment skipped. Every executable Rust, materials, statistics, Casimir audit, documentation, governance, proof, replay, benchmark, paper, and survey job passed."
+required_change = "Correct the oracle's representation of literal JSON without changing the validated heavy fallback row, then rerun the complete hosted denominator."
+verification = "The GitHub Actions run completed without cancellation at exact head 7da85c9492b7a3f39b1384522db60f3fc72a4539."
+
+[[task]]
+id = "heavy-fallback-oracle-literal-json"
+status = "implemented_pending_ci"
+finding = "The policy oracle searched the extracted workflow block for backslash-escaped quotes, but the shell variable contains literal JSON quotes, so the valid heavy fallback row produced zero matches."
+required_change = "Match the exact literal JSON row while retaining one bounded occurrence requirement."
+verification = "Hosted validation-policy accepts the intact row and retains mutation sensitivity for its lane, target, package scope, and target arguments."
+
+[[task]]
+id = "materials-baseline-masked-row-retention"
+status = "implemented_pending_ci"
+finding = "The materials baseline converts only fully observed ten-property elemental vectors and silently drops compounds containing any element with one missing optional property, including ordinary Al2O3 inputs."
+required_change = "Consume the typed observation mask or select a declared viable feature subset without converting absence to zero."
+verification = "Hosted baseline tests retain an Al2O3-like row with partial optional properties and preserve typed missingness semantics."
+
+[[task]]
+id = "model-run-fitted-constitutive-identity"
+status = "implemented_pending_ci"
+finding = "A model run can consume an experimental fitted quantity whose fit_model and version differ from the run's constitutive model, while specimen and condition joins still pass."
+required_change = "Bind consuming model runs to the fitted witness model identity and version or require an explicit typed conversion."
+verification = "Hosted materials_core tests reject incompatible fitted witness and model-run constitutive identities and accept exact matches."

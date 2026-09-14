@@ -272,6 +272,7 @@ pub struct ModelRun {
     pub specimen_id: RecordId,
     pub geometry: String,
     pub constitutive_model: String,
+    pub constitutive_model_version: String,
     pub conditions: BTreeMap<String, String>,
     pub state_history: Vec<String>,
     pub parameters: BTreeMap<String, String>,
@@ -934,6 +935,10 @@ impl ModelRun {
         require_nonempty("model version", &self.model_version)?;
         require_nonempty("model-run geometry", &self.geometry)?;
         require_nonempty("constitutive model", &self.constitutive_model)?;
+        require_nonempty(
+            "constitutive model version",
+            &self.constitutive_model_version,
+        )?;
         require_nonempty("validation status", &self.validation_status)?;
         if self.input_quantity_ids.is_empty() {
             return Err("model run requires at least one input quantity".to_owned());
@@ -1356,6 +1361,24 @@ impl MaterialEvidenceGraph {
                     return Err(format!(
                         "model run {} conditions do not match input {} conditions",
                         model_run.model_run_id.0, input_quantity_id.0
+                    ));
+                }
+                if let EvidenceBasis::ExperimentalFitted {
+                    fit_model,
+                    fit_model_version,
+                    ..
+                } = &input_quantity.evidence
+                    && (fit_model != &model_run.constitutive_model
+                        || fit_model_version != &model_run.constitutive_model_version)
+                {
+                    return Err(format!(
+                        "model run {} constitutive model {} version {} does not match fitted input {} model {} version {}",
+                        model_run.model_run_id.0,
+                        model_run.constitutive_model,
+                        model_run.constitutive_model_version,
+                        input_quantity_id.0,
+                        fit_model,
+                        fit_model_version
                     ));
                 }
             }
@@ -1880,7 +1903,8 @@ mod tests {
             input_quantity_ids,
             specimen_id: identifier("specimen:au:test"),
             geometry: "reported geometry".to_owned(),
-            constitutive_model: "Drude-Lorentz permittivity".to_owned(),
+            constitutive_model: "Drude-Lorentz".to_owned(),
+            constitutive_model_version: "1".to_owned(),
             conditions: BTreeMap::from([(
                 "wavelength".to_owned(),
                 "0.500 um".to_owned(),
@@ -2520,6 +2544,13 @@ mod tests {
         );
 
         let mut run = model_run("model:missing-binding", vec![identifier("quantity:input")]);
+        run.constitutive_model_version.clear();
+        assert_eq!(
+            run.validate().unwrap_err(),
+            "constitutive model version must be nonempty"
+        );
+
+        let mut run = model_run("model:missing-binding", vec![identifier("quantity:input")]);
         run.conditions.clear();
         assert_eq!(
             run.validate().unwrap_err(),
@@ -2531,6 +2562,54 @@ mod tests {
         assert_eq!(
             run.validate().unwrap_err(),
             "model-run state-history entry must be nonempty"
+        );
+    }
+
+    #[test]
+    fn fitted_model_identity_must_match_the_consuming_constitutive_model() {
+        let mut direct = scalar_quantity(
+            QuantityOrigin::Measurement {
+                measurement_id: identifier("measurement:ellipsometry"),
+            },
+            EvidenceBasis::ExperimentalDirect,
+        );
+        direct.quantity_id = identifier("quantity:psi-delta");
+        let mut fitted = scalar_quantity(
+            QuantityOrigin::Measurement {
+                measurement_id: identifier("measurement:ellipsometry"),
+            },
+            EvidenceBasis::ExperimentalFitted {
+                input_quantity_ids: vec![direct.quantity_id.clone()],
+                fit_model: "Drude-Lorentz".to_owned(),
+                fit_model_version: "1".to_owned(),
+                residual_artifact_id: identifier("artifact:fit-residuals"),
+                parameter_covariance: Uncertainty::Covariance {
+                    dimension: 1,
+                    values_row_major: vec![0.01],
+                    unit_squared: "1".to_owned(),
+                },
+            },
+        );
+        fitted.quantity_id = identifier("quantity:fitted-permittivity");
+        let mut graph = graph_with_quantities(vec![direct, fitted.clone()]);
+        graph.model_runs.push(model_run(
+            "model:lifshitz:v1",
+            vec![fitted.quantity_id],
+        ));
+        assert!(graph.validate().is_ok());
+
+        let mut model_name_mismatch = graph.clone();
+        model_name_mismatch.model_runs[0].constitutive_model = "plasma".to_owned();
+        assert_eq!(
+            model_name_mismatch.validate().unwrap_err(),
+            "model run model:lifshitz:v1 constitutive model plasma version 1 does not match fitted input quantity:fitted-permittivity model Drude-Lorentz version 1"
+        );
+
+        let mut model_version_mismatch = graph;
+        model_version_mismatch.model_runs[0].constitutive_model_version = "2".to_owned();
+        assert_eq!(
+            model_version_mismatch.validate().unwrap_err(),
+            "model run model:lifshitz:v1 constitutive model Drude-Lorentz version 2 does not match fitted input quantity:fitted-permittivity model Drude-Lorentz version 1"
         );
     }
 
