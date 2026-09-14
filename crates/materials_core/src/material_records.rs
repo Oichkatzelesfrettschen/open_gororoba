@@ -112,6 +112,57 @@ pub enum Missingness {
     Unknown,
 }
 
+impl Missingness {
+    fn validate(&self, label: &str) -> Result<(), String> {
+        match self {
+            Self::BelowDetectionLimit { upper_bound, unit } => {
+                if !upper_bound.is_finite() || *upper_bound < 0.0 {
+                    return Err(format!(
+                        "{label} missingness detection limit must be finite and nonnegative"
+                    ));
+                }
+                require_nonempty(&format!("{label} missingness detection-limit unit"), unit)
+            }
+            Self::Withheld { reason } => {
+                require_nonempty(&format!("{label} withheld reason"), reason)
+            }
+            Self::NotMeasured | Self::NotApplicable | Self::Unknown => Ok(()),
+        }
+    }
+}
+
+/// Material-state value or an explicit reason the value is unavailable.
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[serde(rename_all = "snake_case", tag = "state")]
+pub enum StateProperty<T> {
+    Observed { value: T },
+    Missing { reason: Missingness },
+}
+
+impl<T> StateProperty<T> {
+    pub fn observed(value: T) -> Self {
+        Self::Observed { value }
+    }
+
+    pub const fn missing(reason: Missingness) -> Self {
+        Self::Missing { reason }
+    }
+
+    pub const fn value(&self) -> Option<&T> {
+        match self {
+            Self::Observed { value } => Some(value),
+            Self::Missing { .. } => None,
+        }
+    }
+
+    fn validate_missingness(&self, label: &str) -> Result<(), String> {
+        match self {
+            Self::Observed { .. } => Ok(()),
+            Self::Missing { reason } => reason.validate(label),
+        }
+    }
+}
+
 /// Shape of an observed quantity.
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "snake_case", tag = "representation")]
@@ -181,14 +232,14 @@ pub struct MaterialState {
     pub state_id: RecordId,
     pub material_id: RecordId,
     pub phase_id: String,
-    pub temperature_k: Option<f64>,
-    pub pressure_pa: Option<f64>,
-    pub atmosphere: Option<String>,
-    pub phase_fraction: Option<f64>,
-    pub orientation: Option<String>,
-    pub strain: Option<Vec<f64>>,
+    pub temperature_k: StateProperty<f64>,
+    pub pressure_pa: StateProperty<f64>,
+    pub atmosphere: StateProperty<String>,
+    pub phase_fraction: StateProperty<f64>,
+    pub orientation: StateProperty<String>,
+    pub strain: StateProperty<Vec<f64>>,
     pub applied_fields: BTreeMap<String, String>,
-    pub time_since_processing_s: Option<f64>,
+    pub time_since_processing_s: StateProperty<f64>,
     pub history: Vec<String>,
 }
 
@@ -687,8 +738,14 @@ impl MaterialState {
         self.material_id.validate("material identifier")?;
         require_nonempty("phase identifier", &self.phase_id)?;
         for (label, value) in [
-            ("state atmosphere", self.atmosphere.as_deref()),
-            ("state orientation", self.orientation.as_deref()),
+            (
+                "state atmosphere",
+                self.atmosphere.value().map(String::as_str),
+            ),
+            (
+                "state orientation",
+                self.orientation.value().map(String::as_str),
+            ),
         ] {
             if let Some(value) = value {
                 require_nonempty(label, value)?;
@@ -701,31 +758,47 @@ impl MaterialState {
         for history_entry in &self.history {
             require_nonempty("state-history entry", history_entry)?;
         }
+        self.temperature_k
+            .validate_missingness("state temperature")?;
+        self.pressure_pa.validate_missingness("state pressure")?;
+        self.atmosphere
+            .validate_missingness("state atmosphere")?;
+        self.phase_fraction
+            .validate_missingness("state phase fraction")?;
+        self.orientation
+            .validate_missingness("state orientation")?;
+        self.strain.validate_missingness("state strain")?;
+        self.time_since_processing_s
+            .validate_missingness("state time since processing")?;
         if self
             .temperature_k
-            .is_some_and(|value| !value.is_finite() || value < 0.0)
+            .value()
+            .is_some_and(|value| !value.is_finite() || *value < 0.0)
         {
             return Err("temperature must be finite and nonnegative".to_owned());
         }
         if self
             .pressure_pa
-            .is_some_and(|value| !value.is_finite() || value < 0.0)
+            .value()
+            .is_some_and(|value| !value.is_finite() || *value < 0.0)
         {
             return Err("pressure must be finite and nonnegative".to_owned());
         }
         if self
             .phase_fraction
-            .is_some_and(|value| !value.is_finite() || !(0.0..=1.0).contains(&value))
+            .value()
+            .is_some_and(|value| !value.is_finite() || !(0.0..=1.0).contains(value))
         {
             return Err("phase fraction must lie in [0, 1]".to_owned());
         }
         if self
             .time_since_processing_s
-            .is_some_and(|value| !value.is_finite() || value < 0.0)
+            .value()
+            .is_some_and(|value| !value.is_finite() || *value < 0.0)
         {
             return Err("time since processing must be finite and nonnegative".to_owned());
         }
-        if self.strain.as_ref().is_some_and(|values| {
+        if self.strain.value().is_some_and(|values| {
             values.is_empty() || values.iter().any(|value| !value.is_finite())
         }) {
             return Err("strain requires finite components".to_owned());
@@ -788,33 +861,33 @@ impl MaterialState {
             quantity_id,
             conditions,
             "temperature_k",
-            self.temperature_k,
+            self.temperature_k.value().copied(),
         )?;
         numeric_condition(
             self,
             quantity_id,
             conditions,
             "pressure_pa",
-            self.pressure_pa,
+            self.pressure_pa.value().copied(),
         )?;
         numeric_condition(
             self,
             quantity_id,
             conditions,
             "phase_fraction",
-            self.phase_fraction,
+            self.phase_fraction.value().copied(),
         )?;
         numeric_condition(
             self,
             quantity_id,
             conditions,
             "time_since_processing_s",
-            self.time_since_processing_s,
+            self.time_since_processing_s.value().copied(),
         )?;
         for (key, expected) in [
             ("phase_id", Some(self.phase_id.as_str())),
-            ("atmosphere", self.atmosphere.as_deref()),
-            ("orientation", self.orientation.as_deref()),
+            ("atmosphere", self.atmosphere.value().map(String::as_str)),
+            ("orientation", self.orientation.value().map(String::as_str)),
         ] {
             if let Some(observed) = conditions.get(key)
                 && Some(observed.as_str()) != expected
@@ -848,7 +921,7 @@ impl MaterialState {
                 conditions,
                 key,
                 self.strain
-                    .as_ref()
+                    .value()
                     .and_then(|components| components.get(index))
                     .copied(),
             )?;
@@ -1566,14 +1639,16 @@ mod tests {
             state_id: identifier("state:au:300k"),
             material_id: material.material_id,
             phase_id: "fcc".to_owned(),
-            temperature_k: Some(300.0),
-            pressure_pa: Some(101_325.0),
-            atmosphere: Some("vacuum deposition chamber".to_owned()),
-            phase_fraction: Some(1.0),
-            orientation: None,
-            strain: None,
+            temperature_k: StateProperty::observed(300.0),
+            pressure_pa: StateProperty::observed(101_325.0),
+            atmosphere: StateProperty::observed(
+                "vacuum deposition chamber".to_owned(),
+            ),
+            phase_fraction: StateProperty::observed(1.0),
+            orientation: StateProperty::missing(Missingness::NotMeasured),
+            strain: StateProperty::missing(Missingness::NotMeasured),
             applied_fields: BTreeMap::new(),
-            time_since_processing_s: None,
+            time_since_processing_s: StateProperty::missing(Missingness::Unknown),
             history: Vec::new(),
         };
         let evaporated = Specimen {
@@ -2027,14 +2102,14 @@ mod tests {
                 state_id: identifier("state:au:test"),
                 material_id: identifier("material:au"),
                 phase_id: "solid".to_owned(),
-                temperature_k: Some(300.0),
-                pressure_pa: None,
-                atmosphere: None,
-                phase_fraction: None,
-                orientation: None,
-                strain: None,
+                temperature_k: StateProperty::observed(300.0),
+                pressure_pa: StateProperty::missing(Missingness::NotMeasured),
+                atmosphere: StateProperty::missing(Missingness::Unknown),
+                phase_fraction: StateProperty::missing(Missingness::NotMeasured),
+                orientation: StateProperty::missing(Missingness::NotMeasured),
+                strain: StateProperty::missing(Missingness::NotMeasured),
                 applied_fields: BTreeMap::new(),
-                time_since_processing_s: None,
+                time_since_processing_s: StateProperty::missing(Missingness::Unknown),
                 history: Vec::new(),
             }],
             specimens: vec![Specimen {
@@ -2310,17 +2385,44 @@ mod tests {
             .unwrap();
 
         let mut blank_atmosphere = state.clone();
-        blank_atmosphere.atmosphere = Some(" ".to_owned());
+        blank_atmosphere.atmosphere = StateProperty::observed(" ".to_owned());
         assert_eq!(
             blank_atmosphere.validate().unwrap_err(),
             "state atmosphere must be nonempty"
         );
 
         let mut blank_orientation = state.clone();
-        blank_orientation.orientation = Some(String::new());
+        blank_orientation.orientation = StateProperty::observed(String::new());
         assert_eq!(
             blank_orientation.validate().unwrap_err(),
             "state orientation must be nonempty"
+        );
+
+        let mut typed_missing_pressure = state.clone();
+        typed_missing_pressure.pressure_pa = StateProperty::missing(
+            Missingness::BelowDetectionLimit {
+                upper_bound: 1.0,
+                unit: "Pa".to_owned(),
+            },
+        );
+        assert!(typed_missing_pressure.validate().is_ok());
+        assert!(matches!(
+            typed_missing_pressure.pressure_pa,
+            StateProperty::Missing {
+                reason: Missingness::BelowDetectionLimit { .. }
+            }
+        ));
+
+        let mut malformed_missing_pressure = state.clone();
+        malformed_missing_pressure.pressure_pa = StateProperty::missing(
+            Missingness::BelowDetectionLimit {
+                upper_bound: f64::NAN,
+                unit: String::new(),
+            },
+        );
+        assert_eq!(
+            malformed_missing_pressure.validate().unwrap_err(),
+            "state pressure missingness detection limit must be finite and nonnegative"
         );
 
         let mut blank_field_name = state.clone();
@@ -2990,7 +3092,8 @@ mod tests {
         assert!(graph.validate().is_ok());
 
         let mut strain_match = graph.clone();
-        strain_match.states[0].strain = Some(vec![0.001, -0.002]);
+        strain_match.states[0].strain =
+            StateProperty::observed(vec![0.001, -0.002]);
         strain_match.quantities[0]
             .conditions
             .insert("strain_component:1".to_owned(), "-0.002".to_owned());

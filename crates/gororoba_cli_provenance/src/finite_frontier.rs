@@ -53,6 +53,21 @@ pub const EXPECTED_OPEN_FRONTIER_IDS: [&str; 2] = [
 const EXPECTED_DEPENDENCY_GRAPH_SHA256: &str =
     "6e25fd4e7a8449f3620d90a5a532674b429eccb370b07e2d447c92d537600145";
 
+// Each tuple binds an open frontier ID to SHA-256 of its exact next action and
+// required generator. Open state alone must not permit residual work to drift.
+const EXPECTED_OPEN_ROW_IDENTITIES: [(&str, &str, &str); 2] = [
+    (
+        "declared-frontier-denominator-proof",
+        "3b94738104cbb96f46805125d81a5efd627372f3016166b6fe08308699b84219",
+        "4f819c8020c59a3a46341eb993d852b06f0a84f4e6be19d0684da5f14d73a913",
+    ),
+    (
+        "selected-schedule-independent-monte-carlo",
+        "a7fa163a02ff60db7ac56ee463ff1f5c6004bcd85fd8d2c7bd4faba095ead1da",
+        "246c08d80f0f7d03a4180e05324147fb332456eee5539fe343311ec799835de1",
+    ),
+];
+
 // Each tuple binds a frontier ID to SHA-256 of the exact UTF-8 witness and
 // verifier field values in the canonical frontier document.
 const EXPECTED_CLOSED_ROW_IDENTITIES: [(&str, &str, &str); 28] = [
@@ -306,6 +321,10 @@ fn verify_document(document: &FrontierDocument) -> Result<FiniteFrontierReport> 
         .iter()
         .map(|(frontier_id, _, _)| *frontier_id)
         .collect();
+    let expected_open_identity_ids: BTreeSet<&str> = EXPECTED_OPEN_ROW_IDENTITIES
+        .iter()
+        .map(|(frontier_id, _, _)| *frontier_id)
+        .collect();
     let mut diagnostics = Vec::new();
 
     if expected_identity_ids.len() != EXPECTED_CLOSED_ROW_IDENTITIES.len() {
@@ -330,6 +349,10 @@ fn verify_document(document: &FrontierDocument) -> Result<FiniteFrontierReport> 
             "compiled witness identities name non-closed frontier IDs: {}",
             join_set(&unexpected_identity_ids)
         ));
+    }
+    if expected_open_identity_ids != expected_open_ids {
+        diagnostics
+            .push("compiled open-row identities do not equal the open frontier IDs".to_owned());
     }
 
     if document.frontier.id != EXPECTED_FRONTIER_ID {
@@ -452,9 +475,34 @@ fn verify_document(document: &FrontierDocument) -> Result<FiniteFrontierReport> 
                 }
             }
             "open" => {
+                let expected_identity = EXPECTED_OPEN_ROW_IDENTITIES
+                    .iter()
+                    .find(|(frontier_id, _, _)| *frontier_id == row.frontier_id.as_str());
                 if row.residual_action().is_none() {
                     diagnostics.push(format!(
                         "open row {} lacks a next action or required generator",
+                        row.frontier_id
+                    ));
+                }
+                match (expected_identity, row.next_action.as_deref()) {
+                    (Some((_, expected_action_sha256, _)), Some(action))
+                        if sha256_hex(action) != *expected_action_sha256 => {
+                        diagnostics.push(format!(
+                            "open row {} next_action identity mismatch",
+                            row.frontier_id
+                        ));
+                    }
+                    (Some(_), None) => diagnostics.push(format!(
+                        "open row {} lacks its compiled next_action",
+                        row.frontier_id
+                    )),
+                    _ => {}
+                }
+                if let Some((_, _, expected_generator_sha256)) = expected_identity
+                    && sha256_hex(&row.required_generator) != *expected_generator_sha256
+                {
+                    diagnostics.push(format!(
+                        "open row {} required_generator identity mismatch",
                         row.frontier_id
                     ));
                 }
@@ -765,6 +813,36 @@ mod tests {
         open_row.required_generator.clear();
         let error = error_text(&document);
         assert!(error.contains("lacks a next action or required generator"));
+    }
+
+    #[test]
+    fn rejects_open_row_action_and_generator_identity_mutations() {
+        let baseline = baseline_document();
+        for frontier_id in EXPECTED_OPEN_FRONTIER_IDS {
+            let mut document = baseline.clone();
+            let open_row = document
+                .row
+                .iter_mut()
+                .find(|row| row.frontier_id == frontier_id)
+                .unwrap();
+            open_row.next_action = Some("substitute residual action".to_owned());
+            let error = error_text(&document);
+            assert!(error.contains(&format!(
+                "open row {frontier_id} next_action identity mismatch"
+            )));
+
+            let mut document = baseline.clone();
+            let open_row = document
+                .row
+                .iter_mut()
+                .find(|row| row.frontier_id == frontier_id)
+                .unwrap();
+            open_row.required_generator = "substitute generator".to_owned();
+            let error = error_text(&document);
+            assert!(error.contains(&format!(
+                "open row {frontier_id} required_generator identity mismatch"
+            )));
+        }
     }
 
     #[test]

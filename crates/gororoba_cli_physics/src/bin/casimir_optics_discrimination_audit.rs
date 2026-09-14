@@ -56,6 +56,7 @@ struct ExpectedRetainedSource {
     id: &'static str,
     url: &'static str,
     path: &'static str,
+    sha256: &'static str,
     role: &'static str,
 }
 
@@ -64,72 +65,84 @@ const EXPECTED_RETAINED_SOURCES: [ExpectedRetainedSource; 12] = [
         id: "LIFSHITZ-1956",
         url: "https://www.jetp.ras.ru/cgi-bin/dn/e_002_01_0073.pdf",
         path: "data/output/audit/casimir-optics-discrimination/sources/lifshitz-planar-media-1956.pdf",
+        sha256: "94f6bd84212c0ae56f5121485507ee447146b1f866dc3b7787f0a2a8651a1d8c",
         role: "Primary derivation of electromagnetic fluctuation forces between planar media.",
     },
     ExpectedRetainedSource {
         id: "CASIMIR-REVIEW-2009",
         url: "https://arxiv.org/pdf/0902.4022",
         path: "data/output/audit/casimir-optics-discrimination/sources/casimir-scattering-review-2009.pdf",
+        sha256: "86a3ee1f597fa9aed81214a7b20e7d53f7b8fde849b5201ad9ff20998e6bcc0b",
         role: "Review cross-check for planar Lifshitz and sphere-plane PFA equations.",
     },
     ExpectedRetainedSource {
         id: "HNLS-2017",
         url: "https://arxiv.org/pdf/1706.02445",
         path: "data/output/audit/casimir-optics-discrimination/sources/hnls-quantum-metrology-2017.pdf",
+        sha256: "6f8c528029a5608d83ae117462c9eb3533c4fa3117daed8bff3283e1c314f8eb",
         role: "Primary theorem source for Hamiltonian-not-in-Lindblad-span assumptions and conclusion.",
     },
     ExpectedRetainedSource {
         id: "MEMORY-KERNEL-CP-2009",
         url: "https://arxiv.org/pdf/0902.2318",
         path: "data/output/audit/casimir-optics-discrimination/sources/quantum-memory-kernel-cp-2009.pdf",
+        sha256: "2c0864ef3ad0265e0b30ada8ce69bebcd3a49707e7055423945364f40e516b07",
         role: "Primary source showing that quantum memory kernels need explicit complete-positivity conditions.",
     },
     ExpectedRetainedSource {
         id: "AUTOQEC-METROLOGY-2026",
         url: "https://www.nature.com/articles/s41534-026-01268-1.pdf",
         path: "data/output/audit/casimir-optics-discrimination/sources/autonomous-qec-metrology-2026.pdf",
+        sha256: "ec96691f8438ccf712cadbaceb96a23d8d20c7cc2f477b1cfbca7793427dde74",
         role: "Primary finite-time sufficient-condition source for autonomous QEC metrology.",
     },
     ExpectedRetainedSource {
         id: "MCPEAK-2015-MANUSCRIPT",
         url: "https://arxiv.org/pdf/1603.02132",
         path: "data/output/audit/casimir-optics-discrimination/sources/mcpeak-plasmonic-films-2015.pdf",
+        sha256: "0c9b78d3719586778b588e37f34a1908bffbdd92339d9cea924b964b6355cbe5",
         role: "Primary specimen preparation and ellipsometry source for template-stripped gold.",
     },
     ExpectedRetainedSource {
         id: "RIINFO-AU-JOHNSON",
         url: "https://raw.githubusercontent.com/polyanskiy/refractiveindex.info-database/c5c2f188e848453def5970e347399d653df2ffc2/database/data/main/Au/nk/Johnson.yml",
         path: "data/output/audit/casimir-optics-discrimination/sources/au-Johnson.yml",
+        sha256: "9f4bdab6bd49f7c6a1c48b5fb5482c7448caf4b6de39594a34ecd66dcf592774",
         role: "CC0 digitized Johnson-Christy optical table; underlying paper remains the experimental authority.",
     },
     ExpectedRetainedSource {
         id: "RIINFO-AU-OLMON-EVAPORATED",
         url: "https://raw.githubusercontent.com/polyanskiy/refractiveindex.info-database/c5c2f188e848453def5970e347399d653df2ffc2/database/data/main/Au/nk/Olmon-ev.yml",
         path: "data/output/audit/casimir-optics-discrimination/sources/au-Olmon-ev.yml",
+        sha256: "be778621e6491fc4e2db6eee400fb329d44ada2b987f7bfd2e219c83fe32a338",
         role: "CC0 digitized evaporated-gold optical table; underlying paper remains the experimental authority.",
     },
     ExpectedRetainedSource {
         id: "RIINFO-AU-MCPEAK",
         url: "https://raw.githubusercontent.com/polyanskiy/refractiveindex.info-database/c5c2f188e848453def5970e347399d653df2ffc2/database/data/main/Au/nk/McPeak.yml",
         path: "data/output/audit/casimir-optics-discrimination/sources/au-McPeak.yml",
+        sha256: "d104232ae43a9b04f978552a7e3dbc448962163e48a023ecca38764eca55e82d",
         role: "CC0 digitized template-stripped-gold optical table linked to the retained primary manuscript.",
     },
     ExpectedRetainedSource {
         id: "RIINFO-AU-KLINAVICIUS-11NM",
         url: "https://raw.githubusercontent.com/polyanskiy/refractiveindex.info-database/c5c2f188e848453def5970e347399d653df2ffc2/database/data/main/Au/nk/Klinavicius-11.4nm.yml",
         path: "data/output/audit/casimir-optics-discrimination/sources/au-Klinavicius-11.4nm.yml",
+        sha256: "24043ed3549c2bfb50153efbbed625c399b5142b05f015307a0c9fc0151b0b43",
         role: "CC0 digitized nanoparticle optical table demonstrating geometry- and preparation-specific gold records.",
     },
     ExpectedRetainedSource {
         id: "RIINFO-DATABASE-LICENSE",
         url: "https://raw.githubusercontent.com/polyanskiy/refractiveindex.info-database/c5c2f188e848453def5970e347399d653df2ffc2/LICENSE",
         path: "data/output/audit/casimir-optics-discrimination/sources/refractiveindex-info-database-license.txt",
+        sha256: "36ffd9dc085d529a7e60e1276d73ae5a030b020313e6c5408593a6ae2af39673",
         role: "Pinned CC0 database license text.",
     },
     ExpectedRetainedSource {
         id: "REJECTED-ARXIV-0801.1757",
         url: "https://arxiv.org/pdf/0801.1757",
         path: "data/output/audit/casimir-optics-discrimination/sources/master-equation-tutorial-nonsupporting-2008.pdf",
+        sha256: "19b9184c1c12f2c5688506468637d2e908277c10f66bea6e45e3d4e8f7af10f2",
         role: "Retained negative provenance witness: this tutorial does not support the memory-kernel CP proposition and carries no evidentiary weight for that claim.",
     },
 ];
@@ -596,6 +609,7 @@ fn verify_source_retrieval_manifest_source(source: &str, repository_root: &Path)
                 source.id.to_owned(),
                 source.url.to_owned(),
                 PathBuf::from(source.path),
+                source.sha256.to_owned(),
                 source.role.to_owned(),
             )
         })
@@ -608,13 +622,14 @@ fn verify_source_retrieval_manifest_source(source: &str, repository_root: &Path)
                 retained_source.id.clone(),
                 retained_source.url.clone(),
                 retained_source.path.clone(),
+                retained_source.sha256.clone(),
                 retained_source.role.clone(),
             )
         })
         .collect::<BTreeSet<_>>();
     ensure!(
         observed_sources == expected_sources && manifest.source.len() == expected_sources.len(),
-        "source-retrieval manifest does not declare the exact retained source ID/URL/path/role set"
+        "source-retrieval manifest does not declare the exact retained source ID/URL/path/SHA-256/role set"
     );
 
     for retained_source in &manifest.source {
@@ -2448,7 +2463,7 @@ mod tests {
         assert!(
             error
                 .to_string()
-                .contains("exact retained source ID/URL/path/role set")
+                .contains("exact retained source ID/URL/path/SHA-256/role set")
         );
     }
 
@@ -2489,7 +2504,7 @@ mod tests {
         assert!(
             error
                 .to_string()
-                .contains("exact retained source ID/URL/path/role set")
+                .contains("exact retained source ID/URL/path/SHA-256/role set")
         );
     }
 
@@ -2526,7 +2541,28 @@ mod tests {
         assert!(
             error
                 .to_string()
-                .contains("exact retained source ID/URL/path/role set")
+                .contains("exact retained source ID/URL/path/SHA-256/role set")
+        );
+    }
+
+    #[test]
+    fn retained_source_manifest_preserves_each_source_body_identity() {
+        let (repository_root, manifest_source, _) = retained_source_manifest_fixture();
+        let expected_sha256 = EXPECTED_RETAINED_SOURCES[0].sha256;
+        let digest_declaration = format!("sha256 = {expected_sha256:?}");
+        let mutable_manifest = manifest_source.replacen(
+            &digest_declaration,
+            &format!("sha256 = {:?}", "0".repeat(64)),
+            1,
+        );
+        assert_ne!(mutable_manifest, manifest_source);
+
+        let error = verify_source_retrieval_manifest_source(&mutable_manifest, &repository_root)
+            .unwrap_err();
+        assert!(
+            error
+                .to_string()
+                .contains("exact retained source ID/URL/path/SHA-256/role set")
         );
     }
 

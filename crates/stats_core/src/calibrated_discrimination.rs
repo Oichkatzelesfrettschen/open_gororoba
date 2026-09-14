@@ -146,13 +146,20 @@ fn bound_coordinate_tolerance(bound: &NuisanceBound) -> f64 {
     };
     let width_tolerance = SOLVER_CERTIFICATE_TOLERANCE * interval_width;
     let floating_tolerance =
-        8.0 * f64::EPSILON * bound.lower.abs().max(bound.upper.abs());
+        8.0 * endpoint_spacing(bound.lower).max(endpoint_spacing(bound.upper));
     let tolerance = width_tolerance.max(floating_tolerance);
     if interval_width > 0.0 {
         tolerance.min(0.25 * interval_width)
     } else {
         tolerance
     }
+}
+
+fn endpoint_spacing(value: f64) -> f64 {
+    [value.next_up() - value, value - value.next_down()]
+        .into_iter()
+        .filter(|spacing| spacing.is_finite())
+        .fold(0.0_f64, f64::max)
 }
 
 fn classify_active_bounds(
@@ -892,6 +899,27 @@ mod tests {
             NuisanceBound {
                 lower: 0.0,
                 upper: 1e-20,
+                unit: "Pa".to_owned(),
+            };
+            3
+        ];
+
+        let (active_lower_bounds, active_upper_bounds) =
+            classify_active_bounds(&parameters, &bounds);
+
+        assert_eq!(active_lower_bounds, vec![0]);
+        assert_eq!(active_upper_bounds, vec![2]);
+    }
+
+    #[test]
+    fn active_bound_classification_preserves_subnormal_endpoint_spacing() {
+        let lower = 0.0_f64;
+        let upper = 1e-320_f64;
+        let parameters = DVector::from_vec(vec![lower.next_up(), 5e-321, upper.next_down()]);
+        let bounds = vec![
+            NuisanceBound {
+                lower,
+                upper,
                 unit: "Pa".to_owned(),
             };
             3

@@ -906,8 +906,8 @@ verification = "Hosted routing policy pins all three receipt inputs and executes
 id = "bounded-profile-active-bound-width-scaling"
 status = "implemented_pending_ci"
 finding = "Active-bound diagnostics scaled tolerance to absolute endpoint magnitude, so every point in a narrow interval with a large offset could be labeled at both bounds."
-required_change = "Use one coordinate tolerance for classification and certificate feasibility, based on interval width plus endpoint floating-point resolution and capped below one-quarter of a nonzero interval."
-verification = "Hosted stats_core tests classify the lower endpoint, midpoint, and upper endpoint of [1e12, 1e12 + 1] and [0, 1e-20] distinctly, and reject a large-offset feasibility violation."
+required_change = "Use one coordinate tolerance for classification and certificate feasibility, based on interval width plus adjacent-representable endpoint spacing and capped below one-quarter of a nonzero interval."
+verification = "Hosted stats_core tests classify endpoints and midpoints of [1e12, 1e12 + 1], [0, 1e-20], and subnormal [0, 1e-320] intervals distinctly, and reject a large-offset feasibility violation."
 
 [[task]]
 id = "finite-frontier-dependency-graph-identity"
@@ -922,3 +922,31 @@ status = "complete"
 finding = "Run 34834493666 reached a terminal 42-job fail-slow denominator: 38 jobs passed, workspace Clippy and provenance light-7 failed on the same invalid Option<String>::clear fixture mutation, aggregate validation failed by construction, and docs deployment skipped by pull-request policy. Policy, materials, statistics, governance, Casimir audit, docs, proofs, all four hydrated replay leaves including optics, benchmarks, survey, paper, and every unaffected Rust shard passed."
 required_change = "Set optional next_action to None, retain the newly reviewed dependency-graph and active-bound repairs, and rerun one complete exact-head denominator."
 verification = "GitHub Actions run 34834493666 completed without cancellation at exact head 6656dad02268357d13c71863502750746fa12490."
+
+[[task]]
+id = "finite-frontier-open-row-action-identity"
+status = "implemented_pending_ci"
+finding = "Open frontier rows required a nonempty residual action but allowed the exact recovery action or fallback generator to be silently replaced."
+required_change = "Bind each open frontier ID to the SHA-256 identities of its exact next_action and required_generator fields."
+verification = "Hosted finite-frontier mutation tests replace each open row's action and generator independently and require an identity mismatch."
+
+[[task]]
+id = "retained-source-compiled-body-identity"
+status = "implemented_pending_ci"
+finding = "Retained source bytes and their manifest hashes were mutually checked, but both could change together because the compiled source identity omitted the expected body digest."
+required_change = "Bind every expected retained source to its exact SHA-256 alongside source ID, URL, path, and role."
+verification = "Hosted Casimir audit tests mutate a syntactically valid manifest digest and require an exact retained-source identity mismatch before byte agreement can admit it."
+
+[[task]]
+id = "material-state-typed-missingness"
+status = "implemented_pending_ci"
+finding = "MaterialState used bare Option fields, erasing whether temperature, pressure, atmosphere, phase fraction, orientation, strain, and processing age were not measured, below detection, inapplicable, withheld, or unknown."
+required_change = "Represent every optional material-state property as an observed value or a validated typed Missingness reason."
+verification = "Hosted materials_core tests preserve a below-detection state property and reject malformed state-property detection limits."
+
+[[task]]
+id = "exact-head-590ed05e-terminal-denominator"
+status = "complete"
+finding = "Run 34836722242 reached a terminal 42-job fail-slow denominator: 39 jobs passed, validation-casimir-audit failed on the stale native-output manifest, aggregate validation failed by construction, and docs deployment skipped by pull-request policy. Documentation, proofs, all routed Rust shards, governance, all four scientific replay leaves, benchmarks, survey, paper, policy, and every unaffected validation lane passed."
+required_change = "Refresh the hash-bound native manifest after the final source repairs, retain the three newly reviewed identity and missingness fixes, and run one replacement exact-head denominator."
+verification = "GitHub Actions run 34836722242 completed without cancellation at exact head 590ed05ee55aa4f0871099082032877803c05746."

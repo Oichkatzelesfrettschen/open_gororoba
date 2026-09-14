@@ -458,9 +458,8 @@ validation-resource-contract-collectors:
 	executed_pass_line="$$(printf '%s\n' "$$replay_verdict_block" | grep -nF 'if [ "$$LEAF_RESULT" = success ]' | cut -d: -f1)"; \
 	if [ -z "$$input_failure_line" ] || [ -z "$$not_selected_line" ] || [ -z "$$blocked_input_line" ] || [ -z "$$executed_pass_line" ] || [ "$$input_failure_line" -ge "$$not_selected_line" ] || [ "$$not_selected_line" -ge "$$blocked_input_line" ] || [ "$$blocked_input_line" -ge "$$executed_pass_line" ]; then echo "ERROR: scientific replay verdict precedence must be input failure, not selected, blocked input, then execution result." >&2; status=1; fi; \
 	if ! printf '%s\n' "$$hydration_upload_block" | grep -Fq 'path: $${{ runner.temp }}/scientific-replay-inputs'; then echo "ERROR: selected scientific replay input artifact path is missing from its upload step." >&2; status=1; fi; \
-	for contract in 'crates/optics_core/' 'arxiv-source\.download' 'Fano_Scattering\.tex' 'ruan-fan-0909\.3323v2\.pdf' 'run_optics=true'; do \
-	    if ! printf '%s\n' "$$replay_selection_block" | grep -Fq -- "$$contract"; then echo "ERROR: optics scientific replay routing contract is missing: $$contract" >&2; status=1; fi; \
-	done; \
+	optics_route_contract="if grep -Eq '^(crates/optics_core/|data/output/audit/claim-family-evidence-adjudication/optics-replay/(arxiv-source\.download|Fano_Scattering\.tex|ruan-fan-0909\.3323v2\.pdf)$$)' \"\$$RUNNER_TEMP/scientific-replay-changed-paths.txt\"; then run_optics=true; fi"; \
+	if [ "$$(printf '%s\n' "$$replay_selection_block" | grep -Fc -- "$$optics_route_contract")" -ne 1 ]; then echo "ERROR: optics replay source paths must route to run_optics exactly once." >&2; status=1; fi; \
 	if ! printf '%s\n' "$$replay_selection_block" | grep -Fq 'for lane in lattice nufit box-counting optics; do'; then echo "ERROR: optics scientific replay is absent from matrix construction." >&2; status=1; fi; \
 	optics_command='cargo test --locked --profile validation --no-fail-fast -p optics_core --test ruan_fan_source_receipts admitted_archive_tex_and_pdf_have_distinct_verified_identities -- --ignored --exact --nocapture'; \
 	if [ "$$(printf '%s\n' "$$optics_replay_block" | grep -Fc -- "$$optics_command")" -ne 1 ]; then echo "ERROR: optics replay must execute its exact hydrated receipt test once." >&2; status=1; fi; \
