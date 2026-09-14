@@ -1132,3 +1132,17 @@ status = "implemented_pending_ci"
 finding = "A pull request changing only .cargo/config.toml selected no hydrated scientific replay even though every replay leaf inherits Cargo configuration."
 required_change = "Include .cargo/config.toml in the common replay trigger and bind that trigger and all four selected lanes in the CI policy contract."
 verification = "Hosted validation-resource-contract and actionlint pass, and a Cargo-configuration-only path selects lattice, NuFIT, box-counting, and optics replay."
+
+[[task]]
+id = "exact-head-0c7cdf1e-terminal-denominator"
+status = "complete"
+finding = "Run 34886936177 reached a terminal 42-job fail-slow denominator: 39 jobs passed, validation-casimir-audit failed on one roundoff-level stale summary value, aggregate validation failed by construction, docs deployment skipped by pull-request policy, and no job was canceled. Every Rust shard, workspace Clippy, documentation, governance, policy, proofs, scientific replay, benchmarks, paper, and survey passed."
+required_change = "Import the exact hosted derived-information value and its output digest without changing the validated inference implementation."
+verification = "GitHub Actions run 34886936177 completed at exact head 0c7cdf1effd4e89b74028b899cd432cb9e8bc167; the retained expected-output artifact changed augmented_derived_feature_information only from 5.249999999999998 to 5.250000000000002."
+
+[[task]]
+id = "fisher-information-derived-output-freshness"
+status = "implemented_pending_ci"
+finding = "Coordinate-normalized Fisher decomposition changed one derived-information value at floating-point roundoff, leaving summary.toml and its manifest output digest stale while every other retained numerical output remained byte-identical."
+required_change = "Retain the exact hosted summary bytes and refresh only the summary output digest and enclosing path-repair receipt."
+verification = "The replacement validation-casimir-audit job reproduces summary.toml and native-output-manifest.toml byte for byte."

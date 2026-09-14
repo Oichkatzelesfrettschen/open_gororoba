@@ -45,7 +45,7 @@ arithmetic_error_margin_lower_bound = 0.5000000000212257
 arithmetic_error_margin_hypothesis_0 = 0.2
 arithmetic_error_margin_hypothesis_1 = 0.3
 original_derived_feature_information = 5.25
-augmented_derived_feature_information = 5.249999999999998
+augmented_derived_feature_information = 5.250000000000002
 
 [multilayer]
 au20_stack_pressure_200nm_pa = -0.4709381888912518

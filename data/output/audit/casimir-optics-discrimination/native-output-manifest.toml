@@ -159,7 +159,7 @@ bytes = 2816
 
 [[output]]
 path = "summary.toml"
-sha256 = "287b20349e8b43bb2389bfcd951be3d46f5f19494f57085725f3dc609f880ce1"
+sha256 = "14ea126be29ec1237c88c0f1647bdeb06f60994bfee8738e7722bb7d5ac8473a"
 bytes = 2651
 
 [[output]]
