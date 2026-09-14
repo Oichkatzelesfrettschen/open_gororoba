@@ -548,7 +548,10 @@ fn verify_document(document: &FrontierDocument) -> Result<FiniteFrontierReport> 
 }
 
 fn sha256_hex(value: &str) -> String {
-    format!("{:x}", Sha256::digest(value.as_bytes()))
+    Sha256::digest(value.as_bytes())
+        .iter()
+        .map(|byte| format!("{byte:02x}"))
+        .collect()
 }
 
 fn dependency_cycle_keys(rows_by_id: &BTreeMap<&str, &FrontierRow>) -> Option<Vec<String>> {

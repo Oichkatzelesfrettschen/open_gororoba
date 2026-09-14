@@ -810,3 +810,24 @@ status = "implemented_pending_ci"
 finding = "Experimental fitted evidence can attach a covariance matrix whose dimension does not cover the fit's undeclared parameter basis."
 required_change = "Declare typed fitted-parameter identities and require covariance dimension equality."
 verification = "Hosted materials_core tests reject incomplete fitted covariance and accept exact parameter-basis coverage."
+
+[[task]]
+id = "exact-head-e9581451-terminal-denominator"
+status = "complete"
+finding = "Run 34826131020 reached a terminal 39-job fail-slow denominator: 27 jobs passed, 10 failed, and 2 skipped. Eight direct failures reduced to two source defects; docs-gate encountered the same provenance compile defect, scientific-replay and aggregate validation reported dependency failures, scientific-replay-leaf skipped after input materialization failed, and docs deployment skipped by pull-request policy."
+required_change = "Replace the unsupported sha2 0.11 LowerHex formatting and reconcile the two materials tests with the narrowed observed-quantity detection-limit contract without weakening either invariant."
+verification = "GitHub Actions run 34826131020 completed without cancellation at exact head e95814519c7bababb4d403d6564b731b74448890."
+
+[[task]]
+id = "finite-frontier-sha256-hex-encoding"
+status = "implemented_pending_ci"
+finding = "sha2 0.11 returns a digest array that does not implement LowerHex, so format!(\"{:x}\", Sha256::digest(...)) prevented every consumer of gororoba_cli_provenance from compiling."
+required_change = "Encode each digest byte with the repository-established two-digit lowercase hexadecimal representation."
+verification = "Hosted provenance, governance, Casimir audit, scientific replay, docs, survey, and workspace Clippy lanes compile and exercise the shared finite-frontier verifier."
+
+[[task]]
+id = "measurement-detection-limit-test-contract-reconciliation"
+status = "implemented_pending_ci"
+finding = "Two materials tests retained expectations from the discarded all-quantity detection-limit join: typed missingness left an incompatible uncertainty attached, and the below-detection mismatch expected the observed-quantity diagnostic."
+required_change = "Use NotReported uncertainty for the typed-missingness regression and retain the exact below-detection value-and-unit diagnostic for censored observations."
+verification = "Hosted materials_core tests preserve observed-quantity unit joins, exact below-detection joins, and typed missingness without fabricating uncertainty."

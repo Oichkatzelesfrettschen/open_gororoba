@@ -2244,6 +2244,9 @@ mod tests {
         graph.quantities[0].observation = QuantityObservation::Missing {
             reason: Missingness::Unknown,
         };
+        graph.quantities[0].uncertainty = Uncertainty::NotReported {
+            rationale: "quantity is explicitly unknown".to_owned(),
+        };
         assert!(graph.validate().is_ok());
     }
 
@@ -2461,7 +2464,7 @@ mod tests {
         };
         assert_eq!(
             graph.validate().unwrap_err(),
-            "quantity quantity:below-detection unit does not match measurement measurement:ellipsometry detection-limit unit"
+            "quantity quantity:below-detection below-detection limit does not match measurement measurement:ellipsometry"
         );
 
         graph.measurements[0].detection_limit = DetectionLimitStatus::Reported {
