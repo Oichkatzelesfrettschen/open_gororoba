@@ -1083,3 +1083,10 @@ status = "complete"
 finding = "Run 34869866019 reached a terminal 42-job fail-slow denominator: 39 jobs passed, dependency policy failed on rustls 0.23.37 under RUSTSEC-2026-0285, aggregate validation failed by construction, and docs deployment skipped by pull-request policy. Workspace Clippy, Casimir audit, documentation, governance, every routed Rust test shard, proofs, all scientific replay leaves, benchmarks, survey, paper, and policy passed."
 required_change = "Update the compatible rustls lock entry to the fixed 0.23.45 release, retain its resolved rustls-webpki update, refresh the source-bound native manifest, and run one replacement exact-head denominator."
 verification = "GitHub Actions run 34869866019 completed without cancellation at exact head 15471a4a703f05286af214d34d8c0f1e9a9e572e."
+
+[[task]]
+id = "exact-head-da54f566-terminal-denominator"
+status = "complete"
+finding = "Run 34875858674 reached a terminal 42-job fail-slow denominator: 39 component jobs passed, docs-gate was canceled at its exact 60-minute job timeout while the workspace rustdoc command remained active, aggregate validation failed by construction, and docs deployment skipped by pull-request policy. Dependency policy, workspace Clippy, Casimir audit, governance, every routed Rust test shard, proofs, all scientific replay leaves, benchmarks, survey, paper, and policy passed."
+required_change = "Set the workspace-wide documentation job timeout to the established 90-minute validation envelope without changing the process-visible worker count, then run one replacement exact-head denominator."
+verification = "GitHub Actions run 34875858674 completed at exact head da54f5668ec311480b563f956dd56ad09a4669b1; docs-gate job 104084195869 ran from 17:41:39Z to 18:41:59Z and its build step was canceled at 18:41:56Z."

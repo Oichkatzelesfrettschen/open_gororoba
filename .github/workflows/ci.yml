@@ -1100,7 +1100,7 @@ jobs:
     needs: [validation-core]
     if: always() && needs.validation-core.outputs.docs == 'true'
     runs-on: ubuntu-24.04
-    timeout-minutes: 60
+    timeout-minutes: 90
     steps:
       - uses: actions/checkout@v4
       - uses: dtolnay/rust-toolchain@1.97.0
