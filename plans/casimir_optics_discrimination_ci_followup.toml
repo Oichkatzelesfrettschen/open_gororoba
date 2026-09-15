@@ -1286,3 +1286,17 @@ status = "implemented_pending_ci"
 finding = "The Casimir audit followed a symlinked retrieval manifest and accepted arbitrary nonempty actor, reason, tool, and evidence-limit text in retained source-observation receipts."
 required_change = "Reject symbolic links in every repository-relative manifest path component and bind all common receipt attribution and evidence-limit fields to the retained observation contract."
 verification = "Hosted audit tests must reject a symlinked manifest and mutations of receipt actor or tool attribution."
+
+[[task]]
+id = "exact-head-507e4b9b-terminal-denominator"
+status = "complete"
+finding = "Run 34914101985 reached a terminal 42-job fail-slow denominator: 17 jobs passed, 22 direct or transitive materials_core consumers failed on one unused dataset_ids binding, aggregate validation and docs-gate failed by construction, docs deployment skipped by pull-request policy, and no job was canceled."
+required_change = "Preserve dataset identity uniqueness validation while discarding the unused returned set, then run one replacement exact-head denominator."
+verification = "GitHub Actions run 34914101985 completed without cancellation at exact head 507e4b9b1a132126f685217f0836639a01d865e1; the complete failed-log census contains 24 instances of the same unused-variable diagnostic and no second Rust error code or failed test."
+
+[[task]]
+id = "material-dataset-uniqueness-result-binding"
+status = "implemented_pending_ci"
+finding = "MaterialEvidenceGraph validation assigned the successful dataset unique_ids result even though subsequent lookup uses datasets_by_id, so warnings-as-errors rejected every consumer."
+required_change = "Call unique_ids for validation side effects without binding its returned set."
+verification = "Replacement workspace Clippy and every materials_core consumer must compile without the unused-variable diagnostic."

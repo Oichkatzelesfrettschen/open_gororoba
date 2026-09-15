@@ -1334,7 +1334,7 @@ impl MaterialEvidenceGraph {
             .iter()
             .map(|specimen| (&specimen.specimen_id, specimen))
             .collect();
-        let dataset_ids = unique_ids(
+        unique_ids(
             "dataset identifier",
             self.datasets.iter().map(|record| &record.dataset_id),
         )?;
