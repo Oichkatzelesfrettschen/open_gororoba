@@ -8633,6 +8633,20 @@ abandonment_outcomes = ["An independent SI oracle or invalid-input fixture contr
 inconclusive_outcomes = ["Physical characteristic scale, gravitational frame or boundary conditions remain unadmitted."]
 
 [[claim]]
+id = "C-1758"
+last_verified = "2026-09-12"
+statement = "For the exp(-i*omega*t) convention, repository Drude and Lorentz terms use one passive damping sign, produce nonnegative imaginary permittivity for the audited passive models, and agree with the implemented imaginary-frequency continuation without absolute-value repairs. This establishes local implementation conformance only; specimen response, parameter uncertainty, switching history, and force-mechanism attribution remain unresolved."
+status = "Verified"
+where_stated = "crates/materials_core/src/optical_database.rs; docs/engineering/casimir_optics_discrimination_contract.md; data/output/audit/casimir-optics-discrimination/summary.toml"
+
+[[claim]]
+id = "C-1759"
+last_verified = "2026-09-12"
+statement = "DrudeLorentzParams::at_temperature preserves oscillator strengths and frequencies while applying the declared coth oscillator scaling and gamma(T)=gamma(0)*(1+(T/T_D)^2) Drude scaling. Tests establish implementation behavior and limiting arithmetic only. The Drude scaling is a quadratic Debye-scaled heuristic, not a Bloch-Gruneisen transport model or a specimen-calibrated temperature law."
+status = "Verified"
+where_stated = "crates/materials_core/src/optical_database/temperature_dispersion.rs; docs/engineering/casimir_optics_discrimination_contract.md"
+
+[[claim]]
 id = "C-176"
 last_verified = "2026-02-01"
 statement = "Commutator/product norm ratio||[a,b]||/||ab||converges to 2.0 from below as dim increases: 1.14 (dim=4), 1.60 (dim=8), 1.80 (dim=16), 1.95 (dim=64), 1.99 (dim=256). Monotonically increasing. At dim=2 (complex), ratio = 0 (commutative)."
@@ -12558,7 +12572,7 @@ where_stated = "`crates/materials_core/src/optical_database.rs` (UniaxialOptical
 id = "C-716"
 last_verified = "2026-02-17"
 statement = "Sign convention for Lorentz oscillator Im(eps) handled robustly: the +i*gamma*omega denominator convention (engineering) gives Im(eps)<0 in absorption bands. Derived properties use |Im(eps)| and |Im(sqrt(eps))| to produce physically meaningful non-negative quantities (k, alpha, sigma_1) regardless of convention choice. Verified across 7 materials at 4 frequency points."
-status = "Verified"
+status = "Refuted"
 where_stated = "`crates/materials_core/src/optical_database.rs` (refractive_index, loss_function, optical_conductivity_re, test_reflectivity_sum_rule)"
 
 [[claim]]
@@ -12573,6 +12587,7 @@ id = "C-718"
 last_verified = "2026-02-17"
 statement = "Matsubara frequency infrastructure for finite-temperature Casimir calculations: xi_n = 2*pi*n*k_B*T/hbar with xi_1 = 2.47e14 rad/s at 300K (0.163 eV). epsilon_at_matsubara() evaluates eps(i*xi_n) for Lifshitz formula summation. Gold eps(i*xi) monotonically decreasing with n (Drude divergence at n=0), silica eps(i*xi) bounded and modest."
 status = "Verified"
+status_note = "The Matsubara frequency identity remains valid. The corrected finite-temperature Lifshitz implementation uses k_B*T/(2*pi), half-weights n=0, and handles the Drude zero mode analytically; implementation conformance does not establish specimen response."
 where_stated = "`crates/materials_core/src/optical_database.rs` (matsubara_frequencies, epsilon_at_matsubara, 5 Matsubara tests)"
 
 [[claim]]
@@ -12580,6 +12595,7 @@ id = "C-719"
 last_verified = "2026-02-17"
 statement = "Hagen-Rubens reflectivity R ~ 1 - 2*sqrt(2*omega*eps_0/sigma_dc) agrees with full Drude-Lorentz model to within 5% at 5 meV for gold. This validates the low-frequency metallic limit used for Casimir extrapolation below the optical data range."
 status = "Verified"
+status_note = "The Hagen-Rubens comparison is an internal consistency check between approximations derived from the same model. It does not independently validate a specimen-specific extrapolation below measured optical data."
 where_stated = "`crates/materials_core/src/optical_database.rs` (hagen_rubens_reflectivity, test_hagen_rubens_gold, test_hagen_rubens_vs_full_model)"
 
 [[claim]]
@@ -12656,7 +12672,7 @@ where_stated = "`crates/materials_core/src/optical_database.rs` (urbach_energy_e
 id = "C-730"
 last_verified = "2026-02-17"
 statement = "Temperature-dependent Drude-Lorentz via Bose-Einstein phonon broadening: at_temperature(T, debye_t_k) modifies oscillator damping as gamma_j(T) = gamma_j(0) * coth(omega_0j / (2*k_B*T)) for phonon oscillators, and gamma_Drude(T) = gamma_0 * (1 + (T/T_Debye)^2) via Bloch-Gruneisen for the free-electron Drude term. Oscillator strengths and frequencies are preserved (broadening only). At T -> 0 K, coth -> 1 and gamma_j -> gamma_j(0) (correct low-T limit). At 300 K, Drude damping increases by factor (1 + (300/T_D)^2), which for gold (T_D=170 K) gives ~4.1x broadening. Silica at 600 K has higher Im[eps] than at 300 K across all frequencies (more absorptive when hot)."
-status = "Verified"
+status = "Refuted"
 where_stated = "`crates/materials_core/src/optical_database.rs` (at_temperature, test_thermal_broadening_increases_damping, test_thermal_broadening_preserves_oscillator_strength, test_thermal_broadening_low_t_limit, test_thermal_broadening_drude_bloch_gruneisen, test_hot_silica_more_absorptive)"
 
 [[claim]]
@@ -12713,6 +12729,7 @@ id = "C-738"
 last_verified = "2026-02-17"
 statement = "Fresnel interface optics from Drude-Lorentz: fresnel_rs() and fresnel_rp() compute complex amplitude reflection coefficients via Snell's law and complex cos(theta_t). At normal incidence (theta=0), |r_s|^2 = |r_p|^2 = reflectivity_normal() (verified to < 1e-10). At grazing incidence (theta~86 deg), R_s and R_p both approach 1. brewster_angle() = atan(n2/n1) returns None for absorbing metals (Im[n] > 1% of Re[n]) and valid angles for dielectrics (silica: 40-70 deg). R_p has a minimum at the Brewster angle, verified less than both normal and steep-angle reflectance. 14 new Part 10 tests bring optical database to 173 total tests, 3699 workspace tests."
 status = "Verified"
+status_note = "Fresnel tests now run under the passive exp(-i*omega*t) convention without absolute-value sign repairs. They establish implementation conformance for the adopted scalar models, not measured material response."
 where_stated = "`crates/materials_core/src/optical_database.rs` (fresnel_rs, fresnel_rp, brewster_angle, reflectance_angular, test_fresnel_normal_incidence_matches_reflectivity, test_fresnel_total_internal_reflection, test_brewster_angle_silica, test_brewster_angle_metal_none, test_fresnel_rp_minimum_near_brewster)"
 
 [[claim]]
@@ -12720,6 +12737,7 @@ id = "C-739"
 last_verified = "2026-02-17"
 statement = "Gold Rakic 6-oscillator model (gold_rakic_ld): 5 Lorentz oscillators at 0.415, 0.830, 2.969, 4.304, 13.32 eV plus Drude (omega_p_eff=7.87 eV, gamma=0.053 eV) from Rakic et al. Appl. Opt. 37, 5271 (1998). Conversion: S_j = f_j * omega_p^2 / omega_0j^2. Gives LSPR at ~2.6 eV in vacuum (Frohlich condition), matching experimental ~2.5 eV. This is dramatically closer to experiment than the 2-oscillator model (5.93 eV). The low-energy oscillators at 0.415 and 0.830 eV with large S values (~11.4 and ~1.2) capture the d-band contribution that pushes Re[eps] positive at visible frequencies. Database expanded from 30 to 31 materials. 7 new tests, 180 optical tests total, 3706 workspace tests."
 status = "Verified"
+status_note = "gold_rakic_ld is a parameterized scalar optical model. A calculated resonance near a literature value does not select or validate a particular gold specimen, film, surface, temperature, or uncertainty model."
 where_stated = "`crates/materials_core/src/optical_database.rs` (gold_rakic_ld, test_gold_rakic_5_oscillators, test_gold_rakic_effective_plasma_frequency, test_gold_rakic_lspr_near_experimental, test_gold_rakic_lspr_closer_to_experiment_than_2osc, test_gold_rakic_metallic_in_visible, test_gold_rakic_database_lookup, test_gold_rakic_reflectivity_high_in_ir)"
 
 [[claim]]
@@ -12888,6 +12906,7 @@ id = "C-763"
 last_verified = "2026-02-17"
 statement = "Fluctuation electrodynamics and noise methods (fluctuation-dissipation spectral density, thermal noise power density, zero-point energy, Planck spectral energy density, near-field thermal emission, photon tunneling probability, Casimir-Lifshitz force integrand) connect the DL model to thermal radiation and Casimir physics. The fluctuation-dissipation theorem S(omega,T) = (2*hbar*omega/pi)*Im[eps]*(n_BE+1/2) links material loss to thermal noise. Near-field emission is enhanced by 1/(kd)^2. The Casimir integrand uses epsilon at imaginary frequency. 10 tests verify positivity, temperature dependence, ZPE = hbar*omega/2, near-field enhancement, tunneling bounds, and force decay with distance."
 status = "Verified"
+status_note = "The listed fluctuation-electrodynamics functions are implementation-level model utilities. Passivity and formula tests do not establish measured noise, near-field enhancement, or Casimir response for a specimen."
 where_stated = "`crates/materials_core/src/optical_database.rs` (fluctuation_dissipation_spectral, thermal_noise_power_density, zero_point_energy_density, spectral_energy_density, near_field_thermal_emission, photon_tunneling_probability, fluctuation_induced_force_integrand)"
 
 [[claim]]
@@ -13791,7 +13810,7 @@ id = "C-871"
 last_verified = "2026-02-28"
 statement = "Worldline v-loop reproduces parallel plate Casimir energy E/A=-pi^2/(720*a^3) within Monte Carlo error."
 status = "Verified"
-status_note = "Formal proof: proofs/verified/C871_CasimirExact.v (Rocq kernel-checked). Proves cubic scaling E(a)/E(2a)=8 via field, negativity for a>0, general k^{-3} scaling law."
+status_note = "The worldline parallel-plate result belongs to casimir_core and remains separate from the corrected quantum_core Lifshitz quadrature and materials_core Matsubara implementation. Conformance in one solver does not validate another."
 where_stated = "crates/casimir_core/src/energy.rs (test_parallel_plates_exact, test_exact_scales_as_a_minus_3)"
 
 [[claim]]

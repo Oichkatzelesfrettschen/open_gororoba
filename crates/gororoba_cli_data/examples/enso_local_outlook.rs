@@ -192,8 +192,8 @@ struct CdDiagnostic {
 fn main() -> Result<()> {
     let cli = Cli::parse();
     ensure_output_is_not_input(&cli.input, &cli.out)?;
-    let raw = fs::read_to_string(&cli.input)
-        .with_context(|| format!("read {}", cli.input.display()))?;
+    let raw =
+        fs::read_to_string(&cli.input).with_context(|| format!("read {}", cli.input.display()))?;
     let snapshot: Snapshot =
         toml::from_str(&raw).with_context(|| format!("parse {}", cli.input.display()))?;
     validate_snapshot(&snapshot)?;
@@ -246,9 +246,18 @@ fn validate_snapshot(snapshot: &Snapshot) -> Result<()> {
         "unsupported schema_version {}; expected {INPUT_SCHEMA_VERSION}",
         snapshot.schema_version
     );
-    ensure!(!snapshot.instrument_id.trim().is_empty(), "instrument_id is empty");
-    ensure!((-90.0..=90.0).contains(&snapshot.location.latitude_deg), "invalid latitude");
-    ensure!((-180.0..=180.0).contains(&snapshot.location.longitude_deg), "invalid longitude");
+    ensure!(
+        !snapshot.instrument_id.trim().is_empty(),
+        "instrument_id is empty"
+    );
+    ensure!(
+        (-90.0..=90.0).contains(&snapshot.location.latitude_deg),
+        "invalid latitude"
+    );
+    ensure!(
+        (-180.0..=180.0).contains(&snapshot.location.longitude_deg),
+        "invalid longitude"
+    );
     ensure!(
         snapshot.location.annual_normal_precip_inches.is_finite()
             && snapshot.location.annual_normal_precip_inches > 0.0,
@@ -260,8 +269,16 @@ fn validate_snapshot(snapshot: &Snapshot) -> Result<()> {
     let mut source_ids = BTreeSet::new();
     for source in &snapshot.source {
         ensure!(!source.id.trim().is_empty(), "source id is empty");
-        ensure!(!source.url.trim().is_empty(), "source {} has no URL", source.id);
-        ensure!(source_ids.insert(source.id.as_str()), "duplicate source id {}", source.id);
+        ensure!(
+            !source.url.trim().is_empty(),
+            "source {} has no URL",
+            source.id
+        );
+        ensure!(
+            source_ids.insert(source.id.as_str()),
+            "duplicate source id {}",
+            source.id
+        );
     }
     ensure!(
         source_ids.contains(snapshot.current_weather.source_id.as_str()),
@@ -292,9 +309,14 @@ fn validate_snapshot(snapshot: &Snapshot) -> Result<()> {
     // inside that product's own validity interval or the report presents a stale
     // short-range forecast as current.
     let as_of = parse_rfc3339("as_of", &snapshot.as_of)?;
-    let valid_from = parse_rfc3339("current_weather.valid_from", &snapshot.current_weather.valid_from)?;
-    let valid_through =
-        parse_rfc3339("current_weather.valid_through", &snapshot.current_weather.valid_through)?;
+    let valid_from = parse_rfc3339(
+        "current_weather.valid_from",
+        &snapshot.current_weather.valid_from,
+    )?;
+    let valid_through = parse_rfc3339(
+        "current_weather.valid_through",
+        &snapshot.current_weather.valid_through,
+    )?;
     ensure!(
         valid_from <= valid_through,
         "current weather validity window is reversed"
@@ -330,15 +352,26 @@ fn validate_snapshot(snapshot: &Snapshot) -> Result<()> {
                 issue.issued_on
             );
         }
-        validate_probability("very_strong_probability_pct", issue.very_strong_probability_pct)?;
+        validate_probability(
+            "very_strong_probability_pct",
+            issue.very_strong_probability_pct,
+        )?;
         validate_probability(
             "ond_roni_ge_2_5_probability_pct",
             issue.ond_roni_ge_2_5_probability_pct,
         )?;
-        ensure!(!issue.lead.is_empty(), "forecast issue {} has no leads", issue.issued_on);
+        ensure!(
+            !issue.lead.is_empty(),
+            "forecast issue {} has no leads",
+            issue.issued_on
+        );
         let mut seasons = BTreeSet::new();
         for lead in &issue.lead {
-            ensure!(seasons.insert(lead.season.as_str()), "duplicate season {}", lead.season);
+            ensure!(
+                seasons.insert(lead.season.as_str()),
+                "duplicate season {}",
+                lead.season
+            );
             validate_probability("el_nino_probability_pct", lead.el_nino_probability_pct)?;
             validate_probability(
                 "local_precip_probability_floor_pct",
@@ -360,8 +393,7 @@ fn validate_snapshot(snapshot: &Snapshot) -> Result<()> {
                 lead.season
             );
             ensure!(
-                lead.roni_p05_c <= lead.roni_median_c
-                    && lead.roni_median_c <= lead.roni_p95_c,
+                lead.roni_p05_c <= lead.roni_median_c && lead.roni_median_c <= lead.roni_p95_c,
                 "{} RONI quantiles are not ordered",
                 lead.season
             );
@@ -442,7 +474,10 @@ fn build_report(
         .map(|lead| (lead.season.as_str(), lead))
         .collect::<BTreeMap<_, _>>();
     for season in REQUIRED_SEASONS {
-        ensure!(by_season.contains_key(season), "latest issue is missing {season}");
+        ensure!(
+            by_season.contains_key(season),
+            "latest issue is missing {season}"
+        );
     }
     let peak = latest
         .lead
@@ -558,9 +593,10 @@ fn operational_summary(
         ));
     }
     if let Some(strongest) = ordered.iter().max_by(|left, right| {
-        signal_rank(left)
-            .cmp(&signal_rank(right))
-            .then_with(|| left.local_precip_probability_floor_pct.total_cmp(&right.local_precip_probability_floor_pct))
+        signal_rank(left).cmp(&signal_rank(right)).then_with(|| {
+            left.local_precip_probability_floor_pct
+                .total_cmp(&right.local_precip_probability_floor_pct)
+        })
     }) {
         lines.push(format!(
             "Principal seasonal signal for {}: {} at {}. The CPC category, not this ordering, is the operational authority.",
@@ -594,7 +630,12 @@ fn classify_wet_signal(lead: &LeadSeason) -> &'static str {
     } else {
         Strength::Slight
     };
-    match lead.local_precip_category.trim().to_ascii_lowercase().as_str() {
+    match lead
+        .local_precip_category
+        .trim()
+        .to_ascii_lowercase()
+        .as_str()
+    {
         "above" => match strength {
             Strength::Elevated => "elevated_above_normal",
             Strength::Moderate => "moderate_above_normal",
@@ -697,7 +738,10 @@ fn build_issue_vector(issue: &ForecastIssue) -> Result<Vec<f64>> {
         vector.push(lead.el_nino_probability_pct / 100.0);
         vector.push(lead.local_precip_probability_floor_pct / 100.0);
     }
-    ensure!(vector.len() == CD_DIM, "internal issue vector has wrong size");
+    ensure!(
+        vector.len() == CD_DIM,
+        "internal issue vector has wrong size"
+    );
     let norm = vector.iter().map(|value| value * value).sum::<f64>().sqrt();
     ensure!(
         norm.is_finite() && norm > f64::EPSILON,
@@ -921,11 +965,9 @@ mod tests {
         assert_eq!(duplicated.status, "insufficient_issue_history");
         assert_eq!(duplicated.issue_count_available, 1);
 
-        let unparseable = compute_cd_diagnostic(
-            &[issue("august"), issue("later"), issue("latest")],
-            "f64",
-        )
-        .unwrap();
+        let unparseable =
+            compute_cd_diagnostic(&[issue("august"), issue("later"), issue("latest")], "f64")
+                .unwrap();
         assert_eq!(unparseable.status, "insufficient_issue_history");
         assert_eq!(unparseable.issue_count_available, 0);
 

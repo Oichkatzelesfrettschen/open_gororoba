@@ -42,8 +42,8 @@ Status: COMPLETE (2026-04-17). All four scripts removed from `bin/`.
 | ------------------------------------- | ----- | -------- | ------------------------------------------------------------------------------------------------- |
 | `scripts/bootstrap_user_local_xdg.sh` | 199   | PORT     | `crates/xtask/src/bin/bootstrap_xdg.rs` (host-setup logic).                                       |
 | `scripts/detect_native_blas.sh`       | 49    | PORT     | Add to `xtask host-profile` (already detects CPU topology).                                       |
-| `scripts/detect_physical_cores.sh`    | 5     | PORT     | Already replaced by `xtask host-profile`; DELETE after verification.                              |
-| `scripts/detect_worker_budget.sh`     | 11    | PORT     | Already replaced by `xtask host-profile`; DELETE after verification.                              |
+| `scripts/detect_physical_cores.sh`    | 5     | DONE     | Removed; host inspection remains available through `xtask host-profile`.                           |
+| `scripts/detect_worker_budget.sh`     | 11    | DONE     | Removed; hosted CI compiles and executes the typed `detect-worker-budget` Rust utility.            |
 | `scripts/profile_tensor_avt.sh`       | 211   | PORT     | Profiling harness; large port. Convert to a bench-orchestrator binary under gororoba_cli_physics. |
 | `scripts/run_lambda_sweep.sh`         | 100   | PORT     | Research parameter sweep; convert to `gororoba_cli_physics --bin lambda-sweep`.                   |
 | `scripts/run_reynolds_sweep.sh`       | 17    | PORT     | Research parameter sweep; convert similarly.                                                      |

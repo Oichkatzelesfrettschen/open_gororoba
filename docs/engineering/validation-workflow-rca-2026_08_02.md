@@ -13,17 +13,17 @@ targets, repeated Cargo processes, incompatible cache paths, and historical
 names that hide whether a command builds, verifies, mutates, or reports. The
 result consumes compute and human time without producing proportional evidence.
 
-The active design has one declarative entry point per context, one shared build
-per dependency tier, direct binary execution for repeated checks, and
-compatibility aliases for scripts that still use old names. The aliases do not
-form active validation edges.
+The active design has one pull-request and push workflow root, one shared build
+per dependency tier, direct binary execution for repeated checks, and no local
+compatibility gate targets. Component workflows remain independently callable
+through `workflow_call` or manual dispatch without duplicating event admission.
 
 ## Vocabulary
 
 | Historical name | Active name | Meaning |
 | --- | --- | --- |
 | `release-gate` Cargo profile | `validation` Cargo profile | Optimized diagnostic build profile. The physical target path remains compatible. |
-| `gate-local` | `validate-local` | Changed-file local validation before publication. |
+| `gate-local` and `validate-local` | None | Removed local validation entry points. |
 | `gate-ci-registry` | `validate-ci-registry` | CI registry policy and evidence validation. |
 | `gate-ci-rust` | `validate-ci-rust` | CI Rust, dependency, and schema validation. |
 | `gate-audit` | `validate-repository` | Structured repository validation report. |
@@ -148,20 +148,18 @@ those four units. Cflow parsed the two generated C translation units with
 when the units were combined. That result establishes lexical symbol overlap,
 not executable independence.
 
-The Rust map uses Universal Ctags plus source and Cargo metadata inspection.
-The tag inventory contains 1,296 tags over these load-bearing surfaces:
+The Rust map used Universal Ctags plus source and Cargo metadata inspection.
+The retained tag inventory contains 1,296 tags over the historical
+load-bearing surfaces. The active path is now:
 
 ```text
-Makefile
-  validate-local
-    validation-tools
-      core validation bundle (workspace-routing + xtask)
-      host-profile from cached xtask
-      registry validation tool bundle
-      provenance verify-control-plane + project-counter-sync --check
-    check, when non-Rust files changed
-    rust-regression-scoped, when Rust files changed
-    validate-governance, when registry or document policy files changed
+.github/workflows/ci.yml
+  validation job
+    workspace-routing with an immutable comparison base
+    check, when repository hygiene inputs changed
+    validate-ci-scoped-rust, when Rust owners changed
+    validate-ci-registry, when governance inputs changed
+    retained domain audits selected by changed paths
 
 Makefile
   validate-comprehensive
@@ -237,15 +235,67 @@ The optional composite vocabulary follows the same ownership rule. Static
 checks run under `validate-static`; registry-aware checks run under
 `validate-static-and-registry`; the comprehensive target calls
 `rust-regression` once instead of requesting its Clippy prerequisite twice.
-The old `gate-*` and `audit-deep*` names remain compatibility aliases only.
+Historical local names have no Make targets. CI-only compatibility names remain
+aliases inside the hosted workflow implementation.
 
-GitHub Actions owns automatic validation. The tracked pre-push hook exits
-successfully, and local `make validate-local` remains an explicit diagnostic.
-The CI workflow calls Make directly, routes lint to changed owners and tests
-to their reverse dependency closure, and includes binary test targets. Weekly
-full validation covers workspace drift. Documentation builds and freshness
-checks share a runner; default features avoid requiring GPU SDKs for hosted
-documentation. Reports under `reports/validation/**` retain each executed lane.
+GitHub Actions owns repository validation. The repository installs no local
+hook and defines no local compatibility gate target.
+Validation Make targets require both `CI=true` and `GITHUB_ACTIONS=true`; the
+repository provides no workstation override. A developer may invoke one named
+Cargo command for diagnosis, but that command does not establish a repository
+validation verdict.
+
+Each Rust-bearing CI job compiles the typed Rust worker-budget utility before
+its workload, uses every CPU exposed to that job without a divisor, clamp,
+physical-core substitution, fallback, or per-worker memory limit, and reports
+that count in the job log. The main workflow routes lint to changed owners and
+tests to their reverse dependency closure, including binary test targets. A
+typed xtask command reads every workspace member manifest and partitions the
+light package set into deterministic job-level shards; it rejects duplicate
+package names, missing member manifests, and routed packages outside the exact
+workspace set. Clippy and heavy-profile tests remain separate matrix jobs.
+`gororoba_cli_physics` receives a second deterministic partition: eight shards
+cover its exact declared `[[bin]]` set, while one shard covers its library and
+integration tests. This prevents one package's binary-link tail from recreating
+the monolithic light-lane timeout.
+Either router records its own failure and emits an explicit workspace scope, so
+route failure preserves the downstream leaf schedule while the final collector
+still rejects the run.
+Make leaves worker variables unset outside GitHub Actions and executes no local
+resource detector, so local non-validation commands retain each tool's native
+automatic behavior. Weekly full validation covers workspace drift.
+Clippy uses Cargo's keep-going mode, nextest disables fail-fast, and GNU Make
+uses keep-going mode for composite validation targets. The hosted workflow
+records every applicable lane and job-group outcome before returning a combined
+failure verdict. Matrix fail-fast is disabled, and an 80-minute command
+deadline reserves ten minutes inside each 90-minute job for report upload.
+Core and Rust caches are saved only after their corresponding verdict succeeds,
+so a timeout does not start a tar operation while compiler artifacts are
+changing. One CI run therefore reports the complete reachable failure surface
+instead of stopping at the first independent validation error. The reusable
+Rocq job applies the same collector pattern and passes every process-visible
+CPU to Make. Benchmark, proof, paper, and unsafe-survey jobs enter pull requests
+and main pushes through the single `ci.yml` event root; their reusable workflows
+retain manual execution and the unsafe survey retains its monthly schedule.
+Documentation builds and freshness checks share a runner; default features
+avoid requiring GPU SDKs for hosted documentation. Reports under
+`reports/validation/**` retain each executed lane.
+
+General light correctness tests use the workspace `test` profile, whose LTO is
+disabled while overflow checks remain enabled. The profile prevents hundreds
+of CLI binary test harnesses from paying validation-profile thin-LTO link cost.
+The route and nextest invocation still cover every selected package and binary,
+and `--no-fail-fast` remains active. Optimized scientific audit, parity, and
+heavy-test lanes keep their separately declared profiles.
+
+Two policy records remain outside the SQLite write plane:
+`registry/engineering_standards.toml` and `registry/agents_contract.toml` have
+no canonical tables or typed exporter. Their TOMLs remain the canonical
+mutation surfaces and now agree with `AGENTS.md`, `agents.toml`, `Makefile`, and
+the workflows about hosted validation and exact process-visible parallelism.
+The source manifest records the migration boundary. A future repair must add
+typed SQLite storage, mutation, revisions, and deterministic export before
+converting either policy record into a generated compatibility view.
 
 ## Post-refresh validation result
 
@@ -283,31 +333,39 @@ The redesign is accepted only when all of these statements remain true:
 
 | Statement | Falsifier |
 | --- | --- |
-| A local Rust-only change skips non-Rust checks while preserving scoped Rust validation. | `workspace-routing` reports the wrong scope or a Rust-only change runs the non-Rust check. |
+| A Rust-only change receives a bounded, scoped CI closure. | `workspace-routing` reports the wrong scope, routing failure expands without an explicit full-CI decision, or a Rust-only change runs unrelated checks. |
+| Repository validation runs only in GitHub Actions. | A validation Make target starts with either `CI` or `GITHUB_ACTIONS` absent, or a workstation override exists. |
+| Retired local entry points are absent. | Make resolves any retired local validation name to a declared target. |
 | A registry-only change uses the cached validation tools without a Rust workspace regression. | `validate-repository-fast` invokes `rust-regression`, or a cached binary is older than its source dependency. |
 | CI registry and Rust lanes share one target root and do not duplicate either validation bundle. | Two Cargo builds occur for the 11-binary registry bundle in one `validate-ci` invocation, or CI cache paths differ from Make paths. |
 | `validate-registry` executes each registry invariant once. | The active recipe invokes `governance-verify validate-all` or `markdown-registry verify-all` more than once for the same run. |
-| Old names remain usable but do not appear in active CI or pre-push edges. | An active workflow invokes a compatibility alias or a new source comment introduces a historical gate name. |
+| Hosted compatibility names stay outside local and pre-push edges. | A local Make target or hook invokes a compatibility name. |
 | Timing artifacts describe validation, not an implicit gate. | A new run writes `gate-timing-*` instead of `validation-timing-*`, except for preserved historical inputs. |
 
-The remaining structural frontier is the broad `gororoba_cli_data` package.
-The cache stamp removes repeated process and link work, but it does not make a
-large dependency closure small. A future `gororoba_registry_validation` crate
-should own the 11 validation binaries or split them into policy and
-integrity packages. That work belongs in a measured P1 structural change,
-after the current single-session result is captured.
+The `registry-integrity` fast path no longer inherits the broad
+`gororoba_cli_data` package. A measured cold `make registry-integrity` run from
+that owner took 8 minutes 27 seconds and compiled unrelated algebra, GPU,
+materials, plotting, HDF5, and browser dependencies. The binary now belongs to
+the slim `gororoba_cli_governance` package and has its own cache stamp. The
+first cold run through that lane took 55.9 seconds; a cached generation and
+verification took 1.8 seconds. The tool also renders claims, insights, and
+experiments from the read-only canonical SQLite store instead of treating the
+compatibility TOMLs as source truth.
+
+The remaining structural frontier is the other broad validation binaries in
+`gororoba_cli_data`. Their aggregate cache removes repeated process and link
+work but does not make their dependency closure small. Split a binary only
+after a measured direct target demonstrates that package ownership dominates
+its cost; preserve the aggregate CI lane until each replacement has parity
+evidence.
 
 ## Reproduction
 
 Run these commands from an isolated worktree. They use the active vocabulary:
 
 ```bash
-make validate-local
-make validate-ci
-make validate-repository-fast
-make validation-tools-status
-cargo run -p xtask -- validation-timing-summary --since-days 30
-cargo run -p xtask -- validation-timing-regression-check --baseline-days 14
+git push origin <branch>
+gh run watch <run-id> --exit-status
 ```
 
 Registry mutation remains distinct from validation:
@@ -316,9 +374,38 @@ Registry mutation remains distinct from validation:
 cargo run --release -p gororoba_db --bin gororoba-db -- <subcommand>
 cargo run --release -p gororoba_cli_provenance --bin provenance -- export-control-plane
 make registry-integrity
-make validate-registry
 ```
 
-The first three commands change or regenerate artifacts. `make validate-registry`
-is read-only. Keeping mutation and validation separate prevents a verifier from
-silently repairing the bytes that it claims to inspect.
+The mutation commands change or regenerate artifacts. Push those artifacts and
+let the CI registry lane validate them.
+The CI-only `make validate-registry-integrity` target is read-only. Keeping
+mutation and validation separate prevents a verifier from silently repairing
+the bytes that it claims to inspect.
+
+## Hosted admission boundary
+
+Run `34748576258` ended with `startup_failure` before creating a job or check
+run. Four sibling runs at the same `a0fcf3a0` head remained queued without jobs.
+The proofs workflow had the same Git blob identity as its preceding green run.
+An account-wide API scan covered all 548 non-archived owned repositories and
+found zero competing standard hosted jobs. Repository Actions permissions were
+enabled. The repository was public, September Actions usage had zero net cost,
+and the Pro plan documented a 40-job standard-runner concurrency limit.
+
+Those observations reject source execution, repository permission, billable
+minute exhaustion, and competing hosted concurrency as explanations for that
+generation. GitHub's public APIs do not expose the scheduler's internal
+admission reason, so the remaining classification is pre-job hosted scheduler
+failure. The repository response is bounded: one `pull_request` and `push`
+workflow root now routes reusable component jobs and aggregates their results.
+The change reduces scheduler admission surfaces from five to one without
+limiting CPU use inside an admitted runner.
+
+Primary platform contracts:
+
+- [Actions limits](https://docs.github.com/en/actions/reference/limits) defines
+  the Pro standard-runner concurrency limit separately from workflow queuing.
+- [GitHub Actions billing](https://docs.github.com/en/billing/concepts/product-billing/github-actions)
+  states that standard hosted runners are free for public repositories.
+- [Reusing workflow configurations](https://docs.github.com/en/actions/how-tos/reuse-automations/reuse-workflows)
+  defines `workflow_call` and caller-owned runner assignment.

@@ -16,6 +16,8 @@ wide = { workspace = true }
 [dev-dependencies]
 approx = { workspace = true }
 criterion = { workspace = true }
+repo_root = { workspace = true }
+sha2 = { workspace = true }
 
 [[bench]]
 name = "lbm_3d_bench"

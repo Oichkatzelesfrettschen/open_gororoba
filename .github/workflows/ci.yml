@@ -35,11 +35,124 @@ env:
   RUST_BACKTRACE: '1'
 
 jobs:
-  validation:
+  validation-policy:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    outputs:
+      benchmark: ${{ steps.components.outputs.benchmark }}
+      proofs: ${{ steps.components.outputs.proofs }}
+      paper: ${{ steps.components.outputs.paper }}
+      unsafe_survey: ${{ steps.components.outputs.unsafe_survey }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Route independently executable component evidence
+        id: components
+        continue-on-error: true
+        env:
+          EVENT_BASE: ${{ github.event.pull_request.base.sha || github.event.before }}
+          FULL_COMPONENTS: ${{ github.event_name == 'workflow_dispatch' && inputs.full == true }}
+        run: |
+          set -euo pipefail
+          component_outputs="$RUNNER_TEMP/component-outputs"
+          route_components() {
+            if [ "${{ github.event_name }}" = schedule ]; then
+              printf 'benchmark=true\nproofs=true\npaper=true\nunsafe_survey=true\n' > "$component_outputs"
+              return
+            fi
+            if [ "$FULL_COMPONENTS" = true ]; then
+              printf 'benchmark=true\nproofs=true\npaper=true\nunsafe_survey=true\n' > "$component_outputs"
+              return
+            fi
+            comparison_base="$EVENT_BASE"
+            if [ -z "$comparison_base" ] || [ "$comparison_base" = 0000000000000000000000000000000000000000 ]; then
+              comparison_base="$(git rev-parse HEAD^)"
+            fi
+            git cat-file -e "$comparison_base^{commit}"
+            git diff --no-renames --name-only "$comparison_base" HEAD > "$RUNNER_TEMP/component-changed-paths"
+            for component in benchmark proofs paper unsafe_survey; do
+              case "$component" in
+                benchmark) pattern='^crates/(cd_kernel|fwht|verified_core|gororoba_gpu_bridge)/|^crates/gororoba_cli/src/bin/detect_worker_budget\.rs$|^Cargo\.(toml|lock)$|^rust-toolchain\.toml$|^\.cargo/config\.toml$|^\.github/workflows/(bench-cd-kernel|ci)\.yml$' ;;
+                proofs) pattern='^proofs/|^\.github/workflows/(proofs|ci)\.yml$' ;;
+                paper) pattern='^docs/latex/|^papers/bib/|^\.github/workflows/(paper|ci)\.yml$' ;;
+                unsafe_survey) pattern='^tools/vendor/cargo-geiger/|(^|/)Cargo\.(toml|lock)$|^rust-toolchain\.toml$|^\.cargo/config\.toml$|^\.github/workflows/(unsafe-survey|ci)\.yml$' ;;
+              esac
+              if grep -Eq "$pattern" "$RUNNER_TEMP/component-changed-paths"; then
+                echo "$component=true" >> "$component_outputs"
+              else
+                echo "$component=false" >> "$component_outputs"
+              fi
+            done
+          }
+          if route_components; then
+            cat "$component_outputs" >> "$GITHUB_OUTPUT"
+          else
+            printf 'benchmark=true\nproofs=true\npaper=true\nunsafe_survey=true\n' >> "$GITHUB_OUTPUT"
+            echo "Component routing failed; every independent evidence lane remains selected." >&2
+            exit 1
+          fi
+
+      - name: Install pinned actionlint release
+        id: actionlint-install
+        continue-on-error: true
+        run: |
+          curl --fail --location --retry 3 --output "$RUNNER_TEMP/actionlint.tar.gz" https://github.com/rhysd/actionlint/releases/download/v1.7.12/actionlint_1.7.12_linux_amd64.tar.gz
+          printf '%s  %s\n' 8aca8db96f1b94770f1b0d72b6dddcb1ebb8123cb3712530b08cc387b349a3d8 "$RUNNER_TEMP/actionlint.tar.gz" | sha256sum --check --strict
+          mkdir -p "$RUNNER_TEMP/actionlint-bin"
+          tar -xzf "$RUNNER_TEMP/actionlint.tar.gz" -C "$RUNNER_TEMP/actionlint-bin" actionlint
+          echo "$RUNNER_TEMP/actionlint-bin" >> "$GITHUB_PATH"
+
+      - name: Validate workflow syntax and embedded shell
+        id: actionlint
+        if: always()
+        continue-on-error: true
+        run: actionlint
+
+      - name: Validate CI-only execution and worker boundaries
+        id: resource-contract
+        if: always()
+        continue-on-error: true
+        run: make --keep-going validation-resource-contract
+
+      - name: Report collected validation-policy failures
+        if: always()
+        env:
+          ACTIONLINT_INSTALL_OUTCOME: ${{ steps.actionlint-install.outcome }}
+          ACTIONLINT_OUTCOME: ${{ steps.actionlint.outcome }}
+          COMPONENTS_OUTCOME: ${{ steps.components.outcome }}
+          RESOURCE_CONTRACT_OUTCOME: ${{ steps.resource-contract.outcome }}
+        run: |
+          set -euo pipefail
+          failure_count=0
+          for outcome_variable in ACTIONLINT_INSTALL_OUTCOME ACTIONLINT_OUTCOME COMPONENTS_OUTCOME RESOURCE_CONTRACT_OUTCOME; do
+            outcome="${!outcome_variable}"
+            printf '%s=%s\n' "$outcome_variable" "$outcome"
+            if [ "$outcome" = failure ]; then
+              failure_count=$((failure_count + 1))
+            fi
+          done
+          if [ "$failure_count" -ne 0 ]; then
+            echo "Collected $failure_count failing validation-policy lane(s)." >&2
+            exit 1
+          fi
+
+  validation-core:
+    needs: validation-policy
+    if: always()
     runs-on: ubuntu-24.04
     timeout-minutes: 90
     outputs:
       docs: ${{ steps.paths.outputs.docs }}
+      dependencies: ${{ steps.paths.outputs.dependencies }}
+      warp: ${{ steps.paths.outputs.warp }}
+      casimir_audit: ${{ steps.paths.outputs.casimir_audit }}
+      run_rust: ${{ steps.route.outputs.run_rust }}
+      run_governance: ${{ steps.route.outputs.run_governance }}
+      rust_scope: ${{ steps.route.outputs.rust_scope }}
+      clippy_scope: ${{ steps.lint.outputs.rust_scope }}
+      rust_matrix: ${{ steps.rust-shards.outputs.matrix }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -52,21 +165,10 @@ jobs:
       - uses: taiki-e/install-action@v2
         with:
           tool: cargo-nextest@0.9.143,sccache@0.15.0
-      - name: Install pinned actionlint release
-        run: |
-          curl --fail --location --retry 3 --output "$RUNNER_TEMP/actionlint.tar.gz" https://github.com/rhysd/actionlint/releases/download/v1.7.12/actionlint_1.7.12_linux_amd64.tar.gz
-          printf '%s  %s\n' 8aca8db96f1b94770f1b0d72b6dddcb1ebb8123cb3712530b08cc387b349a3d8 "$RUNNER_TEMP/actionlint.tar.gz" | sha256sum --check --strict
-          mkdir -p "$RUNNER_TEMP/actionlint-bin"
-          tar -xzf "$RUNNER_TEMP/actionlint.tar.gz" -C "$RUNNER_TEMP/actionlint-bin" actionlint
-          echo "$RUNNER_TEMP/actionlint-bin" >> "$GITHUB_PATH"
-
       - name: Install compiler and data dependencies
         run: |
           sudo apt-get update
           sudo apt-get install -y clang mold glslc libcfitsio-dev libhdf5-dev libfontconfig1-dev libopenblas-dev libblas-dev liblapack-dev pkg-config shellcheck
-
-      - name: Validate workflow syntax and embedded shell
-        run: actionlint
 
       - name: Cache Rust dependencies and validation artifacts
         id: rust-cache
@@ -85,13 +187,18 @@ jobs:
 
       - name: Resolve immutable comparison base and worker budget
         id: inputs
+        if: always()
         env:
           EVENT_BASE: ${{ github.event.pull_request.base.sha || github.event.before }}
           FULL: ${{ github.event_name == 'schedule' || inputs.full == true }}
         run: |
           set -euo pipefail
-          worker_budget="$(sh scripts/detect_worker_budget.sh)"
-          for variable in WORKER_BUDGET CARGO_JOBS NEXTEST_TEST_THREADS RUST_TEST_THREADS RAYON_THREADS; do
+          echo 'DIFF_BASE=' >> "$GITHUB_ENV"
+          echo 'full=true' >> "$GITHUB_OUTPUT"
+          rustc --edition=2024 -D warnings crates/gororoba_cli/src/bin/detect_worker_budget.rs -o "$RUNNER_TEMP/detect-worker-budget"
+          worker_budget="$("$RUNNER_TEMP/detect-worker-budget")"
+          echo "Hosted validation uses $worker_budget workers from std::thread::available_parallelism()."
+          for variable in CI_WORKER_BUDGET WORKER_BUDGET CARGO_JOBS CARGO_BUILD_JOBS NEXTEST_TEST_THREADS RUST_TEST_THREADS RAYON_THREADS RAYON_NUM_THREADS; do
             echo "$variable=$worker_budget" >> "$GITHUB_ENV"
           done
           if [ "$FULL" = true ]; then
@@ -105,23 +212,31 @@ jobs:
             echo "DIFF_BASE=$comparison_base" >> "$GITHUB_ENV"
             echo 'full=false' >> "$GITHUB_OUTPUT"
           fi
-          mkdir -p reports/validation
+
+      - name: Prepare validation report directory
+        if: always()
+        run: mkdir -p reports/validation
 
       - name: Classify documentation, dependency and artifact changes
         id: paths
+        if: always()
+        continue-on-error: true
         env:
           FULL: ${{ steps.inputs.outputs.full }}
         run: |
           set -euo pipefail
-          if [ "$FULL" = true ]; then
-            printf 'docs=true\ndependencies=true\nwarp=true\n' >> "$GITHUB_OUTPUT"
-          else
+          classify_paths() {
+            if [ "$FULL" = true ]; then
+              printf 'docs=true\ndependencies=true\nwarp=true\ncasimir_audit=true\n' >> "$GITHUB_OUTPUT"
+              return
+            fi
             git diff --no-renames --name-only "$DIFF_BASE" HEAD > reports/validation/changed-paths.txt
-            for lane in docs dependencies warp; do
+            for lane in docs dependencies warp casimir_audit; do
               case "$lane" in
                 docs) pattern='^(docs/book/|crates/|xtask/|Cargo\.(toml|lock)$|rust-toolchain\.toml$|Makefile$|mk/|\.cargo/|\.github/workflows/ci\.yml$)' ;;
                 dependencies) pattern='(^|/)Cargo\.(toml|lock)$|(^|/)deny\.toml$|^rust-toolchain\.toml$|^\.github/workflows/ci\.yml$' ;;
                 warp) pattern='^data/h5/|^crates/gororoba_cli_warp/|^crates/data_artifacts_core/|^\.github/workflows/ci\.yml$' ;;
+                casimir_audit) pattern='^crates/(gororoba_cli_physics|gororoba_cli_provenance|materials_core|materials_data|provenance_store|quantum_core|stats_core)/|^data/output/audit/casimir-optics-discrimination/|^plans/casimir_optics_discrimination_frontier\.toml$|^Cargo\.(toml|lock)$|^rust-toolchain\.toml$|^Makefile$|^\.cargo/config\.toml$|^\.gitattributes$|^\.github/workflows/ci\.yml$' ;;
               esac
               if grep -Eq "$pattern" reports/validation/changed-paths.txt; then
                 echo "$lane=true" >> "$GITHUB_OUTPUT"
@@ -129,69 +244,143 @@ jobs:
                 echo "$lane=false" >> "$GITHUB_OUTPUT"
               fi
             done
+          }
+          if ! classify_paths; then
+            printf 'docs=true\ndependencies=true\nwarp=true\ncasimir_audit=true\n' >> "$GITHUB_OUTPUT"
+            echo "Path classification failed; all independent path-routed leaves remain scheduled." >&2
+            exit 1
           fi
 
       - name: Build the repository scope router
-        run: make "$CARGO_TARGET_DIR/validation-tools/workspace-routing"
+        id: router-build
+        if: always()
+        continue-on-error: true
+        run: make --jobs="$WORKER_BUDGET" "$CARGO_TARGET_DIR/validation-tools/workspace-routing"
 
       - name: Route reverse dependency test closure
         id: route
+        if: always()
+        continue-on-error: true
         env:
           FULL: ${{ steps.inputs.outputs.full }}
         run: |
+          set -euo pipefail
           if [ "$FULL" = true ]; then
             printf 'rust_scope=--workspace\nrun_rust=true\nrun_check=true\nrun_governance=true\n' >> "$GITHUB_OUTPUT"
-          else
-            "$CARGO_TARGET_DIR/validation-tools/workspace-routing" --base "$DIFF_BASE" --verbose
+          elif ! "$CARGO_TARGET_DIR/validation-tools/workspace-routing" --base "$DIFF_BASE" --verbose; then
+            printf 'rust_scope=--workspace\nrun_rust=true\nrun_check=true\nrun_governance=true\n' >> "$GITHUB_OUTPUT"
+            echo "Reverse dependency routing failed; all CI validation surfaces remain scheduled." >&2
+            exit 1
           fi
 
       - name: Route directly changed lint owners
         id: lint
-        if: steps.route.outputs.run_rust == 'true'
+        if: always() && steps.route.outputs.run_rust == 'true'
+        continue-on-error: true
         env:
           FULL: ${{ steps.inputs.outputs.full }}
         run: |
+          set -euo pipefail
           if [ "$FULL" = true ]; then
             echo 'rust_scope=--workspace' >> "$GITHUB_OUTPUT"
-          else
-            "$CARGO_TARGET_DIR/validation-tools/workspace-routing" --base "$DIFF_BASE" --direct-only
+          elif ! "$CARGO_TARGET_DIR/validation-tools/workspace-routing" --base "$DIFF_BASE" --direct-only; then
+            echo 'rust_scope=--workspace' >> "$GITHUB_OUTPUT"
+            echo "Direct-owner lint routing failed; workspace Clippy remains scheduled." >&2
+            exit 1
           fi
 
-      - name: Check repository hygiene
-        if: steps.route.outputs.run_check == 'true'
-        run: make check 2>&1 | tee reports/validation/hygiene.log
-
-      - name: Validate canonical evidence and governance
-        if: steps.route.outputs.run_governance == 'true'
-        run: make validate-ci-registry 2>&1 | tee reports/validation/governance.log
-
-      - name: Lint owners and test affected consumers including binaries
-        if: steps.route.outputs.run_rust == 'true'
+      - name: Partition routed Rust tests into job shards
+        id: rust-shards
+        if: always() && steps.route.outputs.run_rust == 'true'
+        continue-on-error: true
         env:
           CI_RUST_SCOPE: ${{ steps.route.outputs.rust_scope }}
           CI_CLIPPY_SCOPE: ${{ steps.lint.outputs.rust_scope }}
-        run: make validate-ci-scoped-rust 2>&1 | tee reports/validation/rust.log
+        run: |
+          set -euo pipefail
+          fallback_matrix='{"include":[{"lane":"clippy-fallback","target":"clippy","rust_scope":"","clippy_scope":"--workspace","cargo_target_args":"","cargo_features":""},{"lane":"workspace-fallback","target":"light","rust_scope":"--workspace","clippy_scope":"","cargo_target_args":"--lib --bins --tests --examples","cargo_features":""},{"lane":"heavy-fallback","target":"heavy","rust_scope":"-p algebra_analysis -p gr_core","clippy_scope":"","cargo_target_args":"--lib --bins --tests --examples","cargo_features":""}]}'
+          if ! make --jobs="$WORKER_BUDGET" "$CARGO_TARGET_DIR/validation-tools/xtask"; then
+            printf 'matrix=%s\n' "$fallback_matrix" >> "$GITHUB_OUTPUT"
+            exit 1
+          fi
+          if ! rust_matrix="$("$CARGO_TARGET_DIR/validation-tools/xtask" ci-rust-shard-matrix \
+              --rust-scope="$CI_RUST_SCOPE" \
+              --clippy-scope="$CI_CLIPPY_SCOPE" \
+              --light-shard-count=8 \
+              --heavy-package=algebra_analysis \
+              --heavy-package=gr_core \
+              --target-shard-package=gororoba_cli_physics \
+              --target-shard-count=8)"; then
+            printf 'matrix=%s\n' "$fallback_matrix" >> "$GITHUB_OUTPUT"
+            exit 1
+          fi
+          printf 'matrix=%s\n' "$rust_matrix" >> "$GITHUB_OUTPUT"
 
-      - name: Verify provider inventory and database schema documentation
-        if: steps.route.outputs.run_rust == 'true' || steps.route.outputs.run_governance == 'true'
-        run: make validate-rust-integrity db-schema-drift-check 2>&1 | tee reports/validation/integrity.log
+      - name: Check repository hygiene
+        id: hygiene
+        if: always() && steps.route.outputs.run_check == 'true'
+        continue-on-error: true
+        run: make --jobs="$WORKER_BUDGET" --keep-going check 2>&1 | tee reports/validation/hygiene.log
 
       - name: Install dependency policy verifier
-        if: steps.paths.outputs.dependencies == 'true'
+        id: dependency-tool
+        if: always() && steps.paths.outputs.dependencies == 'true'
+        continue-on-error: true
         uses: taiki-e/install-action@v2
         with:
           tool: cargo-deny@0.20.2
 
       - name: Verify dependency policy
-        if: steps.paths.outputs.dependencies == 'true'
-        run: make cargo-deny-check 2>&1 | tee reports/validation/dependencies.log
+        id: dependencies
+        if: always() && steps.paths.outputs.dependencies == 'true'
+        continue-on-error: true
+        run: make --jobs="$WORKER_BUDGET" --keep-going cargo-deny-check 2>&1 | tee reports/validation/dependencies.log
 
       - name: Validate retained Warp HDF5 artifacts
-        if: steps.paths.outputs.warp == 'true' && hashFiles('data/h5/**/*.h5') != ''
+        id: warp
+        if: always() && steps.paths.outputs.warp == 'true' && hashFiles('data/h5/**/*.h5') != ''
+        continue-on-error: true
         run: cargo run --locked --profile validation -p gororoba_cli_warp --features gpu,hdf5-export --bin warp -- acceptance-gate "data/h5/**/*.h5"
 
-      - name: Retain compiled dependencies after validation failures
-        if: always() && steps.rust-cache.outputs.cache-primary-key != '' && steps.rust-cache.outputs.cache-hit != 'true'
+      - name: Upload validation reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: repository-validation-routing-reports
+          path: reports/validation/**
+          if-no-files-found: warn
+          retention-days: 14
+
+      - name: Report collected validation failures
+        if: always()
+        env:
+          PATHS_OUTCOME: ${{ steps.paths.outcome }}
+          ROUTER_BUILD_OUTCOME: ${{ steps.router-build.outcome }}
+          ROUTE_OUTCOME: ${{ steps.route.outcome }}
+          LINT_OUTCOME: ${{ steps.lint.outcome }}
+          RUST_SHARDS_OUTCOME: ${{ steps.rust-shards.outcome }}
+          HYGIENE_OUTCOME: ${{ steps.hygiene.outcome }}
+          DEPENDENCY_TOOL_OUTCOME: ${{ steps.dependency-tool.outcome }}
+          DEPENDENCIES_OUTCOME: ${{ steps.dependencies.outcome }}
+          WARP_OUTCOME: ${{ steps.warp.outcome }}
+        run: |
+          set -euo pipefail
+          failure_count=0
+          for outcome_variable in PATHS_OUTCOME ROUTER_BUILD_OUTCOME ROUTE_OUTCOME LINT_OUTCOME RUST_SHARDS_OUTCOME HYGIENE_OUTCOME DEPENDENCY_TOOL_OUTCOME DEPENDENCIES_OUTCOME WARP_OUTCOME; do
+            outcome="${!outcome_variable}"
+            printf '%s=%s\n' "$outcome_variable" "$outcome"
+            if [ "$outcome" = failure ]; then
+              failure_count=$((failure_count + 1))
+            fi
+          done
+          if [ "$failure_count" -ne 0 ]; then
+            echo "Collected $failure_count failing validation lane(s)." >&2
+            exit 1
+          fi
+
+      - name: Retain successful core validation artifacts
+        if: success() && steps.rust-cache.outputs.cache-primary-key != '' && steps.rust-cache.outputs.cache-hit != 'true'
+        timeout-minutes: 5
         uses: actions/cache/save@v4
         with:
           path: |
@@ -201,18 +390,9 @@ jobs:
             ${{ github.workspace }}/.cache/gate-cbuild
           key: ${{ steps.rust-cache.outputs.cache-primary-key }}
 
-      - name: Upload validation reports
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: repository-validation-reports
-          path: reports/validation/**
-          if-no-files-found: warn
-          retention-days: 14
-
-  docs-gate:
-    needs: validation
-    if: needs.validation.outputs.docs == 'true'
+  validation-governance:
+    needs: validation-core
+    if: always() && (needs.validation-core.outputs.run_rust == 'true' || needs.validation-core.outputs.run_governance == 'true')
     runs-on: ubuntu-24.04
     timeout-minutes: 60
     steps:
@@ -220,7 +400,724 @@ jobs:
       - uses: dtolnay/rust-toolchain@1.97.0
       - uses: taiki-e/install-action@v2
         with:
+          tool: sccache@0.15.0
+      - name: Install governance build dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y clang mold glslc libcfitsio-dev libhdf5-dev libfontconfig1-dev libopenblas-dev libblas-dev liblapack-dev pkg-config
+      - name: Resolve process-visible worker count
+        run: |
+          set -euo pipefail
+          rustc --edition=2024 -D warnings crates/gororoba_cli/src/bin/detect_worker_budget.rs -o "$RUNNER_TEMP/detect-worker-budget"
+          worker_budget="$("$RUNNER_TEMP/detect-worker-budget")"
+          echo "Hosted governance validation uses $worker_budget workers from std::thread::available_parallelism()."
+          for variable in CI_WORKER_BUDGET WORKER_BUDGET CARGO_JOBS CARGO_BUILD_JOBS NEXTEST_TEST_THREADS RUST_TEST_THREADS RAYON_THREADS RAYON_NUM_THREADS; do
+            echo "$variable=$worker_budget" >> "$GITHUB_ENV"
+          done
+      - name: Restore governance build artifacts
+        id: governance-cache
+        uses: actions/cache/restore@v4
+        with:
+          path: |
+            ${{ env.CARGO_HOME }}/registry
+            ${{ env.CARGO_HOME }}/git
+            ${{ env.CARGO_TARGET_DIR }}
+            ${{ github.workspace }}/.cache/gate-cbuild
+          key: governance-v1-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('rust-toolchain.toml', '.cargo/config.toml') }}-${{ hashFiles('Cargo.lock') }}-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
+          restore-keys: |
+            governance-v1-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('rust-toolchain.toml', '.cargo/config.toml') }}-${{ hashFiles('Cargo.lock') }}-${{ github.sha }}-
+            governance-v1-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('rust-toolchain.toml', '.cargo/config.toml') }}-${{ hashFiles('Cargo.lock') }}-
+            ci-v2-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('rust-toolchain.toml', '.cargo/config.toml') }}-${{ hashFiles('Cargo.lock') }}-
+      - name: Validate canonical evidence and governance
+        id: governance
+        if: always() && needs.validation-core.outputs.run_governance == 'true'
+        continue-on-error: true
+        run: make --jobs="$WORKER_BUDGET" --keep-going validate-ci-registry 2>&1 | tee governance.log
+      - name: Verify provider inventory and database schema documentation
+        id: integrity
+        if: always()
+        continue-on-error: true
+        run: make --jobs="$WORKER_BUDGET" --keep-going validate-rust-integrity db-schema-drift-check 2>&1 | tee integrity.log
+      - name: Report collected governance failures
+        if: always()
+        env:
+          GOVERNANCE_OUTCOME: ${{ steps.governance.outcome }}
+          INTEGRITY_OUTCOME: ${{ steps.integrity.outcome }}
+        run: |
+          set -euo pipefail
+          failure_count=0
+          for outcome_variable in GOVERNANCE_OUTCOME INTEGRITY_OUTCOME; do
+            outcome="${!outcome_variable}"
+            printf '%s=%s\n' "$outcome_variable" "$outcome"
+            if [ "$outcome" = failure ]; then
+              failure_count=$((failure_count + 1))
+            fi
+          done
+          [ "$failure_count" -eq 0 ]
+      - name: Upload governance reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: repository-validation-governance-reports
+          path: |
+            governance.log
+            integrity.log
+          if-no-files-found: warn
+          retention-days: 14
+      - name: Retain governance build artifacts
+        if: success() && steps.governance-cache.outputs.cache-primary-key != '' && steps.governance-cache.outputs.cache-hit != 'true'
+        uses: actions/cache/save@v4
+        with:
+          path: |
+            ${{ env.CARGO_HOME }}/registry
+            ${{ env.CARGO_HOME }}/git
+            ${{ env.CARGO_TARGET_DIR }}
+            ${{ github.workspace }}/.cache/gate-cbuild
+          key: ${{ steps.governance-cache.outputs.cache-primary-key }}
+
+  validation-casimir-audit:
+    needs: validation-core
+    if: always() && needs.validation-core.outputs.casimir_audit == 'true'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@1.97.0
+      - uses: taiki-e/install-action@v2
+        with:
+          tool: sccache@0.15.0
+      - name: Install Casimir audit build dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y clang mold glslc libcfitsio-dev libhdf5-dev libfontconfig1-dev libopenblas-dev libblas-dev liblapack-dev pkg-config
+      - name: Resolve process-visible worker count
+        run: |
+          set -euo pipefail
+          rustc --edition=2024 -D warnings crates/gororoba_cli/src/bin/detect_worker_budget.rs -o "$RUNNER_TEMP/detect-worker-budget"
+          worker_budget="$("$RUNNER_TEMP/detect-worker-budget")"
+          echo "Hosted Casimir audit validation uses $worker_budget workers from std::thread::available_parallelism()."
+          for variable in CI_WORKER_BUDGET WORKER_BUDGET CARGO_JOBS CARGO_BUILD_JOBS NEXTEST_TEST_THREADS RUST_TEST_THREADS RAYON_THREADS RAYON_NUM_THREADS; do
+            echo "$variable=$worker_budget" >> "$GITHUB_ENV"
+          done
+      - name: Restore Casimir audit build artifacts
+        id: casimir-cache
+        uses: actions/cache/restore@v4
+        with:
+          path: |
+            ${{ env.CARGO_HOME }}/registry
+            ${{ env.CARGO_HOME }}/git
+            ${{ env.CARGO_TARGET_DIR }}
+            ${{ github.workspace }}/.cache/gate-cbuild
+          key: casimir-audit-v1-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('rust-toolchain.toml', '.cargo/config.toml') }}-${{ hashFiles('Cargo.lock') }}-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
+          restore-keys: |
+            casimir-audit-v1-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('rust-toolchain.toml', '.cargo/config.toml') }}-${{ hashFiles('Cargo.lock') }}-${{ github.sha }}-
+            casimir-audit-v1-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('rust-toolchain.toml', '.cargo/config.toml') }}-${{ hashFiles('Cargo.lock') }}-
+            ci-v2-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('rust-toolchain.toml', '.cargo/config.toml') }}-${{ hashFiles('Cargo.lock') }}-
+      - name: Verify retained Casimir and optics audit freshness
+        run: make --jobs="$WORKER_BUDGET" --keep-going casimir-optics-discrimination-audit-check 2>&1 | tee casimir-optics-discrimination.log
+      - name: Upload Casimir audit reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: repository-validation-casimir-audit-reports
+          path: |
+            casimir-optics-discrimination.log
+            reports/validation/casimir-optics-discrimination-expected/**
+          if-no-files-found: warn
+          retention-days: 14
+      - name: Retain Casimir audit build artifacts
+        if: success() && steps.casimir-cache.outputs.cache-primary-key != '' && steps.casimir-cache.outputs.cache-hit != 'true'
+        uses: actions/cache/save@v4
+        with:
+          path: |
+            ${{ env.CARGO_HOME }}/registry
+            ${{ env.CARGO_HOME }}/git
+            ${{ env.CARGO_TARGET_DIR }}
+            ${{ github.workspace }}/.cache/gate-cbuild
+          key: ${{ steps.casimir-cache.outputs.cache-primary-key }}
+
+  rust-validation:
+    needs: validation-core
+    if: always() && needs.validation-core.outputs.run_rust == 'true' && needs.validation-core.outputs.rust_matrix != ''
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    strategy:
+      fail-fast: false
+      matrix: ${{ fromJSON(needs.validation-core.outputs.rust_matrix) }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: dtolnay/rust-toolchain@1.97.0
+        with:
+          components: clippy, rustfmt
+
+      - uses: taiki-e/install-action@v2
+        with:
+          tool: cargo-nextest@0.9.143,sccache@0.15.0
+
+      - name: Install compiler and data dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y clang mold glslc libcfitsio-dev libhdf5-dev libfontconfig1-dev libopenblas-dev libblas-dev liblapack-dev pkg-config shellcheck
+
+      - name: Resolve process-visible worker count
+        run: |
+          set -euo pipefail
+          rustc --edition=2024 -D warnings crates/gororoba_cli/src/bin/detect_worker_budget.rs -o "$RUNNER_TEMP/detect-worker-budget"
+          worker_budget="$("$RUNNER_TEMP/detect-worker-budget")"
+          echo "Hosted Rust ${{ matrix.lane }} validation uses $worker_budget workers from std::thread::available_parallelism().get()."
+          for variable in CI_WORKER_BUDGET WORKER_BUDGET CARGO_JOBS CARGO_BUILD_JOBS NEXTEST_TEST_THREADS RUST_TEST_THREADS RAYON_THREADS RAYON_NUM_THREADS; do
+            echo "$variable=$worker_budget" >> "$GITHUB_ENV"
+          done
+
+      - name: Restore shared routing build artifacts
+        uses: actions/cache/restore@v4
+        with:
+          path: |
+            ${{ env.CARGO_HOME }}/registry
+            ${{ env.CARGO_HOME }}/git
+            ${{ env.CARGO_TARGET_DIR }}
+            ${{ github.workspace }}/.cache/gate-cbuild
+          key: ci-v2-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('rust-toolchain.toml', '.cargo/config.toml') }}-${{ hashFiles('Cargo.lock') }}-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
+          restore-keys: |
+            ci-v2-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('rust-toolchain.toml', '.cargo/config.toml') }}-${{ hashFiles('Cargo.lock') }}-${{ github.sha }}-
+            ci-v2-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('rust-toolchain.toml', '.cargo/config.toml') }}-${{ hashFiles('Cargo.lock') }}-
+            ci-v2-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('rust-toolchain.toml', '.cargo/config.toml') }}-
+
+      - name: Run scoped Rust ${{ matrix.lane }} shard
+        timeout-minutes: 80
+        env:
+          CI_RUST_SCOPE: ${{ matrix.rust_scope }}
+          CI_CLIPPY_SCOPE: ${{ matrix.clippy_scope }}
+          CI_CARGO_TARGET_ARGS: ${{ matrix.cargo_target_args }}
+          CI_CARGO_FEATURES: ${{ matrix.cargo_features }}
+        run: |
+          set -o pipefail
+          mkdir -p reports/validation
+          make --jobs="$WORKER_BUDGET" --keep-going "validate-ci-scoped-${{ matrix.target }}" 2>&1 | tee "reports/validation/rust-${{ matrix.lane }}.log"
+
+      - name: Upload Rust validation report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: repository-validation-rust-${{ matrix.lane }}
+          path: reports/validation/**
+          if-no-files-found: warn
+          retention-days: 14
+
+  scientific-replay-inputs:
+    needs: validation-policy
+    if: always()
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    outputs:
+      run_any: ${{ steps.select.outputs.run_any }}
+      run_lattice: ${{ steps.select.outputs.run_lattice }}
+      run_nufit: ${{ steps.select.outputs.run_nufit }}
+      run_box_counting: ${{ steps.select.outputs.run_box_counting }}
+      run_optics: ${{ steps.select.outputs.run_optics }}
+      all_hydrated: ${{ steps.hydrate.outputs.all_hydrated }}
+      matrix: ${{ steps.select.outputs.matrix }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Select hydration-dependent scientific replay leaves
+        id: select
+        env:
+          EVENT_BASE: ${{ github.event.pull_request.base.sha || github.event.before }}
+          FULL: ${{ github.event_name == 'schedule' || inputs.full == true }}
+        run: |
+          set -euo pipefail
+          run_lattice=false
+          run_nufit=false
+          run_box_counting=false
+          run_optics=false
+          if [ "$FULL" = true ]; then
+            run_lattice=true
+            run_nufit=true
+            run_box_counting=true
+            run_optics=true
+          else
+            comparison_base="$EVENT_BASE"
+            if [ -z "$comparison_base" ] || [ "$comparison_base" = 0000000000000000000000000000000000000000 ]; then
+              comparison_base="$(git rev-parse HEAD^)"
+            fi
+            if ! git cat-file -e "$comparison_base^{commit}" || \
+               ! git diff --no-renames --name-only "$comparison_base" HEAD > "$RUNNER_TEMP/scientific-replay-changed-paths.txt"; then
+              echo "Scientific replay routing could not resolve the comparison base; selecting every replay lane." >&2
+              run_lattice=true
+              run_nufit=true
+              run_box_counting=true
+              run_optics=true
+            else
+              common_pattern='^(Cargo\.(toml|lock)|rust-toolchain\.toml|\.cargo/config\.toml|Makefile|\.github/workflows/ci\.yml|data/retention/scientific-payloads\.json|crates/(provenance_store|gororoba_cli_provenance|repo_root)/)'
+              if grep -Eq "$common_pattern" "$RUNNER_TEMP/scientific-replay-changed-paths.txt"; then
+                run_lattice=true
+                run_nufit=true
+                run_box_counting=true
+                run_optics=true
+              else
+                if grep -Eq '^(crates/(algebra_analysis|algebra_experimental|cd_kernel)/|data/csv/cayley_dickson/)' "$RUNNER_TEMP/scientific-replay-changed-paths.txt"; then run_lattice=true; fi
+                if grep -Eq '^(crates/algebra_experimental/|data/output/audit/claim-family-evidence-adjudication/nufit-v6[01]-parameters\.pdf$)' "$RUNNER_TEMP/scientific-replay-changed-paths.txt"; then run_nufit=true; fi
+                if grep -Eq '^(crates/(gororoba_cli_physics|lbm_3d|cosmology_core|verified_core)/|data/output/audit/claim-family-evidence-adjudication/null-pilot-cpu/C1-uniform-fzd-0/(rho|force\.xyz)\.f64le$)' "$RUNNER_TEMP/scientific-replay-changed-paths.txt"; then run_box_counting=true; fi
+                if grep -Eq '^(crates/optics_core/|data/output/audit/claim-family-evidence-adjudication/optics-replay/(arxiv-source\.download|Fano_Scattering\.tex|ruan-fan-0909\.3323v2\.pdf)$)' "$RUNNER_TEMP/scientific-replay-changed-paths.txt"; then run_optics=true; fi
+              fi
+            fi
+          fi
+          replay_matrix='[]'
+          for lane in lattice nufit box-counting optics; do
+            lane_variable="run_${lane//-/_}"
+            if [ "${!lane_variable}" = true ]; then
+              replay_matrix="$(jq -c --arg lane "$lane" '. + [{lane: $lane}]' <<< "$replay_matrix")"
+            fi
+          done
+          if [ "$replay_matrix" = '[]' ]; then
+            run_any=false
+          else
+            run_any=true
+          fi
+          printf 'run_any=%s\nrun_lattice=%s\nrun_nufit=%s\nrun_box_counting=%s\nrun_optics=%s\nmatrix={"include":%s}\n' \
+            "$run_any" "$run_lattice" "$run_nufit" "$run_box_counting" "$run_optics" "$replay_matrix" >> "$GITHUB_OUTPUT"
+      - uses: dtolnay/rust-toolchain@1.97.0
+        if: steps.select.outputs.run_any == 'true'
+      - uses: taiki-e/install-action@v2
+        if: steps.select.outputs.run_any == 'true'
+        with:
+          tool: sccache@0.15.0
+      - name: Install scientific hydration build dependencies
+        if: steps.select.outputs.run_any == 'true'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y clang mold glslc libcfitsio-dev libhdf5-dev libfontconfig1-dev libopenblas-dev libblas-dev liblapack-dev pkg-config
+      - name: Resolve process-visible worker count
+        if: steps.select.outputs.run_any == 'true'
+        run: |
+          set -euo pipefail
+          rustc --edition=2024 -D warnings crates/gororoba_cli/src/bin/detect_worker_budget.rs -o "$RUNNER_TEMP/detect-worker-budget"
+          worker_budget="$("$RUNNER_TEMP/detect-worker-budget")"
+          echo "Hosted scientific hydration uses $worker_budget workers from std::thread::available_parallelism()."
+          for variable in CI_WORKER_BUDGET WORKER_BUDGET CARGO_JOBS CARGO_BUILD_JOBS NEXTEST_TEST_THREADS RUST_TEST_THREADS RAYON_THREADS RAYON_NUM_THREADS; do
+            echo "$variable=$worker_budget" >> "$GITHUB_ENV"
+          done
+      - name: Restore scientific hydration build artifacts
+        id: hydration-cache
+        if: steps.select.outputs.run_any == 'true'
+        uses: actions/cache/restore@v4
+        with:
+          path: |
+            ${{ env.CARGO_HOME }}/registry
+            ${{ env.CARGO_HOME }}/git
+            ${{ env.CARGO_TARGET_DIR }}
+            ${{ github.workspace }}/.cache/gate-cbuild
+          key: scientific-hydration-v2-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('rust-toolchain.toml', '.cargo/config.toml') }}-${{ hashFiles('Cargo.lock') }}-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
+          restore-keys: |
+            scientific-hydration-v2-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('rust-toolchain.toml', '.cargo/config.toml') }}-${{ hashFiles('Cargo.lock') }}-${{ github.sha }}-
+            scientific-hydration-v2-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('rust-toolchain.toml', '.cargo/config.toml') }}-${{ hashFiles('Cargo.lock') }}-
+            ci-v2-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('rust-toolchain.toml', '.cargo/config.toml') }}-${{ hashFiles('Cargo.lock') }}-
+      - name: Download the hash-bound scientific payload archive
+        if: steps.select.outputs.run_any == 'true'
+        run: |
+          set -euo pipefail
+          archive_url="$(jq -er '.archive.url' data/retention/scientific-payloads.json)"
+          wget --user-agent='Mozilla/5.0' --timeout=30 --tries=3 --continue \
+            --output-document="$RUNNER_TEMP/scientific-payloads.tar.zst" \
+            "$archive_url"
+      - name: Materialize and stage bounded scientific replay inputs per lane
+        id: hydrate
+        if: steps.select.outputs.run_any == 'true'
+        env:
+          RUN_LATTICE: ${{ steps.select.outputs.run_lattice }}
+          RUN_NUFIT: ${{ steps.select.outputs.run_nufit }}
+          RUN_BOX_COUNTING: ${{ steps.select.outputs.run_box_counting }}
+          RUN_OPTICS: ${{ steps.select.outputs.run_optics }}
+        run: |
+          set -uo pipefail
+          staging_root="$RUNNER_TEMP/scientific-replay-inputs"
+          status_root="$staging_root/scientific-replay-input-status"
+          mkdir -p "$status_root"
+          hydration_failure_count=0
+          hydrate_lane() {
+            local lane="$1"
+            shift
+            local selected_paths=("$@")
+            local hydration_args=()
+            local lane_success=true
+            for selected_path in "${selected_paths[@]}"; do
+              hydration_args+=(--path "$selected_path")
+            done
+            if ! cargo run --locked --profile validation -p gororoba_cli_provenance \
+              --bin hydrate-scientific-payloads -- \
+              --repo-root "$GITHUB_WORKSPACE" \
+              --manifest "$GITHUB_WORKSPACE/data/retention/scientific-payloads.json" \
+              --archive "$RUNNER_TEMP/scientific-payloads.tar.zst" \
+              "${hydration_args[@]}" \
+              2> "$staging_root/scientific-replay-hydration-$lane.stderr.log" \
+              | tee "$staging_root/scientific-replay-hydration-$lane.json"
+            then
+              lane_success=false
+            fi
+            if ! command cat "$staging_root/scientific-replay-hydration-$lane.stderr.log" >&2; then
+              lane_success=false
+            fi
+            if [ "$lane_success" = true ]; then
+              for selected_path in "${selected_paths[@]}"; do
+                if ! cp --parents "$selected_path" "$staging_root/"; then
+                  lane_success=false
+                fi
+              done
+            fi
+            if [ "$lane_success" = true ]; then
+              printf 'success\n' > "$status_root/$lane.status"
+            else
+              printf 'blocked_input\n' > "$status_root/$lane.status"
+              hydration_failure_count=$((hydration_failure_count + 1))
+            fi
+          }
+          if [ "$RUN_LATTICE" = true ]; then
+            hydrate_lane lattice \
+              data/csv/cayley_dickson/256d_lattice_mapping.csv \
+              data/csv/cayley_dickson/512d_lattice_mapping.csv \
+              data/csv/cayley_dickson/1024d_lattice_mapping.csv \
+              data/csv/cayley_dickson/2048d_lattice_mapping.csv
+          fi
+          if [ "$RUN_NUFIT" = true ]; then
+            hydrate_lane nufit \
+              data/output/audit/claim-family-evidence-adjudication/nufit-v60-parameters.pdf \
+              data/output/audit/claim-family-evidence-adjudication/nufit-v61-parameters.pdf
+          fi
+          if [ "$RUN_BOX_COUNTING" = true ]; then
+            hydrate_lane box-counting \
+              data/output/audit/claim-family-evidence-adjudication/null-pilot-cpu/C1-uniform-fzd-0/rho.f64le \
+              data/output/audit/claim-family-evidence-adjudication/null-pilot-cpu/C1-uniform-fzd-0/force.xyz.f64le
+          fi
+          if [ "$RUN_OPTICS" = true ]; then
+            hydrate_lane optics \
+              data/output/audit/claim-family-evidence-adjudication/optics-replay/ruan-fan-0909.3323v2.pdf
+          fi
+          if [ "$hydration_failure_count" -eq 0 ]; then
+            echo 'all_hydrated=true' >> "$GITHUB_OUTPUT"
+          else
+            echo 'all_hydrated=false' >> "$GITHUB_OUTPUT"
+            printf '%s selected scientific replay lane(s) report blocked_input.\n' \
+              "$hydration_failure_count"
+          fi
+      - name: Upload bounded scientific replay inputs
+        if: steps.select.outputs.run_any == 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: scientific-replay-inputs
+          path: ${{ runner.temp }}/scientific-replay-inputs
+          if-no-files-found: error
+          retention-days: 1
+      - name: Retain scientific hydration build artifacts
+        if: success() && steps.hydrate.outputs.all_hydrated == 'true' && steps.hydration-cache.outputs.cache-primary-key != '' && steps.hydration-cache.outputs.cache-hit != 'true'
+        uses: actions/cache/save@v4
+        with:
+          path: |
+            ${{ env.CARGO_HOME }}/registry
+            ${{ env.CARGO_HOME }}/git
+            ${{ env.CARGO_TARGET_DIR }}
+            ${{ github.workspace }}/.cache/gate-cbuild
+          key: ${{ steps.hydration-cache.outputs.cache-primary-key }}
+
+  scientific-replay-leaf:
+    needs: scientific-replay-inputs
+    if: always() && needs.scientific-replay-inputs.result == 'success' && needs.scientific-replay-inputs.outputs.run_any == 'true'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    strategy:
+      fail-fast: false
+      matrix: ${{ fromJSON(needs.scientific-replay-inputs.outputs.matrix) }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@1.97.0
+      - uses: taiki-e/install-action@v2
+        with:
+          tool: sccache@0.15.0
+      - name: Install scientific replay build dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y clang mold glslc libcfitsio-dev libhdf5-dev libfontconfig1-dev libopenblas-dev libblas-dev liblapack-dev pkg-config
+      - name: Resolve process-visible worker count
+        run: |
+          set -euo pipefail
+          rustc --edition=2024 -D warnings crates/gororoba_cli/src/bin/detect_worker_budget.rs -o "$RUNNER_TEMP/detect-worker-budget"
+          worker_budget="$("$RUNNER_TEMP/detect-worker-budget")"
+          echo "Hosted ${{ matrix.lane }} scientific replay uses $worker_budget workers from std::thread::available_parallelism()."
+          for variable in CI_WORKER_BUDGET WORKER_BUDGET CARGO_JOBS CARGO_BUILD_JOBS NEXTEST_TEST_THREADS RUST_TEST_THREADS RAYON_THREADS RAYON_NUM_THREADS; do
+            echo "$variable=$worker_budget" >> "$GITHUB_ENV"
+          done
+      - name: Restore scientific replay build artifacts
+        id: replay-cache
+        uses: actions/cache/restore@v4
+        with:
+          path: |
+            ${{ env.CARGO_HOME }}/registry
+            ${{ env.CARGO_HOME }}/git
+            ${{ env.CARGO_TARGET_DIR }}
+            ${{ github.workspace }}/.cache/gate-cbuild
+          key: scientific-replay-${{ matrix.lane }}-v2-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('rust-toolchain.toml', '.cargo/config.toml') }}-${{ hashFiles('Cargo.lock') }}-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
+          restore-keys: |
+            scientific-replay-${{ matrix.lane }}-v2-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('rust-toolchain.toml', '.cargo/config.toml') }}-${{ hashFiles('Cargo.lock') }}-${{ github.sha }}-
+            scientific-replay-${{ matrix.lane }}-v2-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('rust-toolchain.toml', '.cargo/config.toml') }}-${{ hashFiles('Cargo.lock') }}-
+            scientific-hydration-v2-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('rust-toolchain.toml', '.cargo/config.toml') }}-${{ hashFiles('Cargo.lock') }}-${{ github.sha }}
+            ci-v2-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('rust-toolchain.toml', '.cargo/config.toml') }}-${{ hashFiles('Cargo.lock') }}-
+      - uses: actions/download-artifact@v4
+        with:
+          name: scientific-replay-inputs
+          path: .
+      - name: Execute hydrated scientific replay leaf
+        run: |
+          set -o pipefail
+          lane='${{ matrix.lane }}'
+          lane_status_path="scientific-replay-input-status/$lane.status"
+          lane_report="scientific-replay-$lane.txt"
+          if [ ! -f "$lane_status_path" ]; then
+            printf 'state=orchestration_error\nmissing_status=%s\n' "$lane_status_path" \
+              | tee "$lane_report"
+            exit 2
+          fi
+          lane_status="$(cat "$lane_status_path")"
+          if [ "$lane_status" = blocked_input ]; then
+            printf 'state=blocked_input\nlane=%s\n' "$lane" | tee "$lane_report"
+            exit 1
+          fi
+          if [ "$lane_status" != success ]; then
+            printf 'state=orchestration_error\nlane=%s\nstatus=%s\n' "$lane" "$lane_status" \
+              | tee "$lane_report"
+            exit 2
+          fi
+          case '${{ matrix.lane }}' in
+            lattice)
+              hydration_backed_tests=(
+                cd_external::tests::test_thesis_a_codebook_parity_256d
+                cd_external::tests::test_thesis_a_codebook_parity_512d
+                cd_external::tests::test_thesis_a_codebook_parity_1024d
+                cd_external::tests::test_thesis_a_codebook_parity_2048d
+                cd_external::tests::test_thesis_b_filtration_nesting
+                cd_external::tests::test_thesis_c_2048_to_1024_prefix_cut
+                cd_external::tests::test_thesis_c_1024_to_512_prefix_cut
+                cd_external::tests::test_thesis_c_512_to_256_prefix_cut
+                cd_external::tests::test_thesis_c_full_filtration_cuts
+                cd_external::tests::test_base_universe_size_and_exclusion_count
+                cd_external::tests::test_lambda_32_as_predicate_cut_of_256
+                cd_external::tests::test_lambda_256_csv_vs_predicates
+                cd_external::tests::test_thesis_d_scalar_shadow_basic
+                cd_external::tests::test_thesis_d_scalar_shadow_addition_mode
+                cd_external::tests::test_dictionary_coupling_sample_256d
+                cd_external::tests::test_c452_c453_lattice_header_schema_stability
+                cd_external::tests::test_c452_c453_embedding_is_injective_and_roundtrip
+                cd_external::tests::test_c452_c453_codomain_and_index_coverage_all_dims
+                cd_external::tests::test_c453_filtration_growth_has_expected_new_points
+                cd_external::tests::test_c453_filtration_layers_are_disjoint_and_partition_2048
+                cd_external::tests::test_c453_filtration_intersection_cardinalities_are_exact
+                cd_external::tests::test_c453_filtration_is_lexicographic_prefix_chain
+              )
+              lattice_status=0
+              for hydration_backed_test in "${hydration_backed_tests[@]}"; do
+                cargo test --locked --profile validation --no-fail-fast \
+                  -p algebra_experimental --lib "$hydration_backed_test" -- \
+                  --ignored --exact --nocapture || lattice_status=1
+              done
+              exit "$lattice_status"
+              ;;
+            nufit)
+              cargo test --locked --profile validation --no-fail-fast -p algebra_experimental --test nufit_reference_identity fixed_angle_reference_membership_and_pdf_receipts_agree -- --ignored --exact --nocapture
+              ;;
+            box-counting)
+              cargo test --locked --profile validation --no-fail-fast -p lbm_3d --test box_counting_amplitude_identity retained_uniform_force_replay_separates_amplitude_from_adaptive_geometry -- --ignored --exact --nocapture
+              ;;
+            optics)
+              cargo test --locked --profile validation --no-fail-fast -p optics_core --test ruan_fan_source_receipts admitted_archive_tex_and_pdf_have_distinct_verified_identities -- --ignored --exact --nocapture
+              ;;
+            *)
+              echo 'Unknown scientific replay leaf.' >&2
+              exit 2
+              ;;
+          esac 2>&1 | tee "scientific-replay-${{ matrix.lane }}.txt"
+      - name: Upload scientific replay leaf report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: scientific-replay-${{ matrix.lane }}-report
+          path: scientific-replay-${{ matrix.lane }}.txt
+          if-no-files-found: warn
+          retention-days: 14
+      - name: Retain scientific replay build artifacts
+        if: success() && steps.replay-cache.outputs.cache-primary-key != '' && steps.replay-cache.outputs.cache-hit != 'true'
+        uses: actions/cache/save@v4
+        with:
+          path: |
+            ${{ env.CARGO_HOME }}/registry
+            ${{ env.CARGO_HOME }}/git
+            ${{ env.CARGO_TARGET_DIR }}
+            ${{ github.workspace }}/.cache/gate-cbuild
+          key: ${{ steps.replay-cache.outputs.cache-primary-key }}
+
+  scientific-replay:
+    needs: [scientific-replay-inputs, scientific-replay-leaf]
+    if: always()
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - name: Report hydrated scientific replay outcomes
+        env:
+          RUN_REPLAY: ${{ needs.scientific-replay-inputs.outputs.run_any }}
+          ALL_HYDRATED: ${{ needs.scientific-replay-inputs.outputs.all_hydrated }}
+          INPUT_RESULT: ${{ needs.scientific-replay-inputs.result }}
+          LEAF_RESULT: ${{ needs.scientific-replay-leaf.result }}
+        run: |
+          set -euo pipefail
+          if [ "$INPUT_RESULT" != success ]; then
+            printf 'state=blocked_input\ninput_result=%s\n' "$INPUT_RESULT" > scientific-replay-verdict.txt
+            exit 1
+          fi
+          if [ "$RUN_REPLAY" != true ]; then
+            printf 'state=not_selected\n' > scientific-replay-verdict.txt
+            exit 0
+          fi
+          if [ "$ALL_HYDRATED" != true ]; then
+            printf 'state=blocked_input\nleaf_result=%s\n' "$LEAF_RESULT" > scientific-replay-verdict.txt
+            exit 1
+          fi
+          if [ "$LEAF_RESULT" = success ]; then
+            printf 'state=executed_pass\n' > scientific-replay-verdict.txt
+            exit 0
+          fi
+          printf 'state=executed_fail\nleaf_result=%s\n' "$LEAF_RESULT" > scientific-replay-verdict.txt
+          exit 1
+      - name: Retain scientific replay verdict
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: scientific-replay-verdict
+          path: scientific-replay-verdict.txt
+          if-no-files-found: error
+          retention-days: 14
+
+  benchmark:
+    needs: validation-policy
+    if: always() && needs.validation-policy.outputs.benchmark == 'true'
+    uses: ./.github/workflows/bench-cd-kernel.yml
+
+  proofs:
+    needs: validation-policy
+    if: always() && needs.validation-policy.outputs.proofs == 'true'
+    uses: ./.github/workflows/proofs.yml
+
+  paper:
+    needs: validation-policy
+    if: always() && needs.validation-policy.outputs.paper == 'true'
+    uses: ./.github/workflows/paper.yml
+
+  unsafe-survey:
+    needs: validation-policy
+    if: always() && needs.validation-policy.outputs.unsafe_survey == 'true'
+    uses: ./.github/workflows/unsafe-survey.yml
+    with:
+      run_workspace_survey: true
+
+  validation:
+    needs: [validation-policy, validation-core, validation-governance, validation-casimir-audit, rust-validation, scientific-replay, benchmark, proofs, paper, unsafe-survey, docs-gate]
+    if: always()
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - name: Report aggregate validation admission
+        env:
+          POLICY_RESULT: ${{ needs.validation-policy.result }}
+          CORE_RESULT: ${{ needs.validation-core.result }}
+          GOVERNANCE_RESULT: ${{ needs.validation-governance.result }}
+          CASIMIR_AUDIT_RESULT: ${{ needs.validation-casimir-audit.result }}
+          DOCS_RESULT: ${{ needs.docs-gate.result }}
+          RUST_RESULT: ${{ needs.rust-validation.result }}
+          SCIENTIFIC_REPLAY_RESULT: ${{ needs.scientific-replay.result }}
+          BENCHMARK_SELECTED: ${{ needs.validation-policy.outputs.benchmark }}
+          BENCHMARK_RESULT: ${{ needs.benchmark.result }}
+          PROOFS_SELECTED: ${{ needs.validation-policy.outputs.proofs }}
+          PROOFS_RESULT: ${{ needs.proofs.result }}
+          PAPER_SELECTED: ${{ needs.validation-policy.outputs.paper }}
+          PAPER_RESULT: ${{ needs.paper.result }}
+          UNSAFE_SURVEY_SELECTED: ${{ needs.validation-policy.outputs.unsafe_survey }}
+          UNSAFE_SURVEY_RESULT: ${{ needs.unsafe-survey.result }}
+          RUN_RUST: ${{ needs.validation-core.outputs.run_rust }}
+          RUN_GOVERNANCE: ${{ needs.validation-core.outputs.run_rust == 'true' || needs.validation-core.outputs.run_governance == 'true' }}
+          RUN_CASIMIR_AUDIT: ${{ needs.validation-core.outputs.casimir_audit }}
+          RUN_DOCS: ${{ needs.validation-core.outputs.docs }}
+        run: |
+          set -euo pipefail
+          failure_count=0
+          for result_variable in POLICY_RESULT CORE_RESULT SCIENTIFIC_REPLAY_RESULT; do
+            result="${!result_variable}"
+            printf '%s=%s\n' "$result_variable" "$result"
+            if [ "$result" != success ]; then
+              failure_count=$((failure_count + 1))
+            fi
+          done
+          for lane in GOVERNANCE CASIMIR_AUDIT DOCS; do
+            selected_variable="RUN_${lane}"
+            result_variable="${lane}_RESULT"
+            selected="${!selected_variable}"
+            result="${!result_variable}"
+            printf 'RUN_%s=%s\n%s_RESULT=%s\n' "$lane" "$selected" "$lane" "$result"
+            if [ "$selected" = true ]; then
+              if [ "$result" != success ]; then
+                failure_count=$((failure_count + 1))
+              fi
+            elif [ "$result" != skipped ]; then
+              failure_count=$((failure_count + 1))
+            fi
+          done
+          printf 'RUST_RESULT=%s\n' "$RUST_RESULT"
+          if [ "$RUN_RUST" = true ]; then
+            if [ "$RUST_RESULT" != success ]; then
+              failure_count=$((failure_count + 1))
+            fi
+          elif [ "$RUST_RESULT" != skipped ]; then
+            failure_count=$((failure_count + 1))
+          fi
+          for component in BENCHMARK PROOFS PAPER UNSAFE_SURVEY; do
+            selected_variable="${component}_SELECTED"
+            result_variable="${component}_RESULT"
+            selected="${!selected_variable}"
+            result="${!result_variable}"
+            printf '%s_SELECTED=%s\n%s_RESULT=%s\n' "$component" "$selected" "$component" "$result"
+            if [ "$selected" = true ]; then
+              if [ "$result" != success ]; then
+                failure_count=$((failure_count + 1))
+              fi
+            elif [ "$result" != skipped ]; then
+              failure_count=$((failure_count + 1))
+            fi
+          done
+          if [ "$failure_count" -ne 0 ]; then
+            echo "Collected $failure_count failing validation job group(s)." >&2
+            exit 1
+          fi
+
+  docs-gate:
+    needs: [validation-core]
+    if: always() && needs.validation-core.outputs.docs == 'true'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@1.97.0
+        with:
+          components: clippy, rustfmt
+      - uses: taiki-e/install-action@v2
+        with:
           tool: mdbook@0.4.40,sccache@0.15.0
+      - name: Resolve process-visible worker count
+        run: |
+          set -euo pipefail
+          rustc --edition=2024 -D warnings crates/gororoba_cli/src/bin/detect_worker_budget.rs -o "$RUNNER_TEMP/detect-worker-budget"
+          worker_budget="$("$RUNNER_TEMP/detect-worker-budget")"
+          echo "Hosted documentation validation uses $worker_budget workers from std::thread::available_parallelism()."
+          for variable in CI_WORKER_BUDGET WORKER_BUDGET CARGO_JOBS CARGO_BUILD_JOBS NEXTEST_TEST_THREADS RUST_TEST_THREADS RAYON_THREADS RAYON_NUM_THREADS; do
+            echo "$variable=$worker_budget" >> "$GITHUB_ENV"
+          done
       - name: Install compiler and data dependencies
         run: |
           sudo apt-get update
@@ -242,9 +1139,9 @@ jobs:
             docs-v2-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('rust-toolchain.toml', '.cargo/config.toml') }}-${{ hashFiles('Cargo.lock') }}-
             docs-v2-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('rust-toolchain.toml', '.cargo/config.toml') }}-
       - name: Build default-feature docs and check freshness together
-        run: make docs-freshness DOCS_CARGO_BUILD_DIR="$GITHUB_WORKSPACE/.cache/docs-cbuild"
+        run: make --jobs="$WORKER_BUDGET" --keep-going docs-freshness DOCS_CARGO_BUILD_DIR="$GITHUB_WORKSPACE/.cache/docs-cbuild"
       - name: Retain documentation dependencies after validation failures
-        if: always() && steps.docs-cache.outputs.cache-primary-key != '' && steps.docs-cache.outputs.cache-hit != 'true'
+        if: success() && steps.docs-cache.outputs.cache-primary-key != '' && steps.docs-cache.outputs.cache-hit != 'true'
         uses: actions/cache/save@v4
         with:
           path: |
@@ -255,15 +1152,16 @@ jobs:
             ${{ github.workspace }}/.cache/docs-cbuild
             ${{ github.workspace }}/target/docs-target
           key: ${{ steps.docs-cache.outputs.cache-primary-key }}
-      - uses: actions/upload-artifact@v4
+      - if: always()
+        uses: actions/upload-artifact@v4
         with:
           name: docs-site
           path: target/site-docs
           retention-days: 7
 
   docs-deploy:
-    needs: docs-gate
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    needs: [validation-policy, validation, docs-gate]
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main' && needs.validation-policy.result == 'success' && needs.validation.result == 'success' && needs.docs-gate.result == 'success'
     permissions:
       pages: write
       id-token: write

@@ -136,6 +136,7 @@ gororoba_sparse_grid = { path = "crates/gororoba_sparse_grid" }
 gororoba_structurable = { path = "crates/gororoba_structurable" }
 gororoba_view_core = { path = "crates/gororoba_view_core" }
 gororoba_view_raster = { path = "crates/gororoba_view_raster" }
+provenance_store = { path = "crates/provenance_store" }
 
 # Core numerics
 # PINNED: statrs 0.18.0 requires nalgebra ^0.33 (<0.34). gauss-quad 0.2.4 pulls

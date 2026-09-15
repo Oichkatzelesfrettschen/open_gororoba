@@ -943,7 +943,7 @@ mod tests {
 
     #[test]
     fn test_sedenion_zd_graph() {
-        crate::test_support::init_physical_rayon_pool();
+        crate::test_support::init_process_visible_rayon_pool();
         let analysis = analyze_zd_graph(16, 1e-10);
 
         // Sedenions have known ZD pairs
@@ -966,7 +966,7 @@ mod tests {
 
     #[test]
     fn test_basis_participation() {
-        crate::test_support::init_physical_rayon_pool();
+        crate::test_support::init_process_visible_rayon_pool();
         let result = analyze_basis_participation(16, 1e-10);
 
         // Should have non-zero counts for basis elements involved in ZDs
@@ -1002,7 +1002,7 @@ mod tests {
 
     #[test]
     fn test_associator_graph_sedenions() {
-        crate::test_support::init_physical_rayon_pool();
+        crate::test_support::init_process_visible_rayon_pool();
         // Sedenions have even more non-associativity
         let result_8 = analyze_associator_graph(8, 1e-10);
         let result_16 = analyze_associator_graph(16, 1e-10);
@@ -1013,7 +1013,7 @@ mod tests {
 
     #[test]
     fn test_zd_graph_diameter() {
-        crate::test_support::init_physical_rayon_pool();
+        crate::test_support::init_process_visible_rayon_pool();
         let diameter = zd_graph_diameter(16, 1e-10);
         // Diameter should be finite for connected graph
         assert!(diameter > 0);

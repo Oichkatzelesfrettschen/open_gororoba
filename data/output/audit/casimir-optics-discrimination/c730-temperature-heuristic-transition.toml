@@ -1,0 +1,27 @@
+[transition]
+transition_timestamp = "2026-09-12T12:10:00Z"
+transition_key = "c730-drude-temperature-heuristic-scope"
+source_claim_id = "C-730"
+expected_prior_status = "Verified"
+experiment_verdict = "MethodologyInvalid"
+evidence_artifact_ids = ["LOCAL-CASIMIR-OPTICS-DISCRIMINATION"]
+experiment_ids = []
+exercised_falsifier = "The implemented gamma(T)=gamma(0)*(1+(T/T_D)^2) scaling is a quadratic heuristic, not the Bloch-Gruneisen transport integral named by the claim."
+proposed_claim_status = "Refuted"
+rationale = "Preserve the implemented broadening helper while removing an unsupported physical-model identity. Allocate a successor that states only the tested transformation and its calibration boundary."
+unresolved_assumptions = ["The oscillator coth scaling and quadratic Drude scaling require specimen-specific calibration before physical use.", "Temperature, microstructure, impurity, and film-thickness dependence remain outside the helper."]
+actor = "casimir-optics-discrimination-audit"
+reason = "Separate a tested numerical transformation from an unsupported transport-model attribution"
+expected_source_state_sha256 = "2d843c66f6eadd80ce4c775ce1ccd7a7b55a35ea014e111575af063c3320e341"
+expected_claim_id_max = 1758
+reserved_claim_ids = []
+
+[[successor]]
+proposal_key = "temperature-broadening-heuristic-implementation"
+statement = "DrudeLorentzParams::at_temperature preserves oscillator strengths and frequencies while applying the declared coth oscillator scaling and gamma(T)=gamma(0)*(1+(T/T_D)^2) Drude scaling. Tests establish implementation behavior and limiting arithmetic only. The Drude scaling is a quadratic Debye-scaled heuristic, not a Bloch-Gruneisen transport model or a specimen-calibrated temperature law."
+initial_status = "Verified"
+source_or_implementation_boundary = "crates/materials_core/src/optical_database/temperature_dispersion.rs and its focused tests define the implemented transformation."
+required_falsifier = "The helper changes oscillator strength or frequency, violates its declared low-temperature limit, or is represented as a specimen-calibrated Bloch-Gruneisen transport law."
+where_stated = ["crates/materials_core/src/optical_database/temperature_dispersion.rs", "docs/engineering/casimir_optics_discrimination_contract.md"]
+evidence_artifact_ids = ["LOCAL-CASIMIR-OPTICS-DISCRIMINATION"]
+predecessor_relation_kind = "refines"

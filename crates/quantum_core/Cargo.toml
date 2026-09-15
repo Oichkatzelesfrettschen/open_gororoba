@@ -8,6 +8,7 @@ description = "Quantum physics: MERA tensor networks, holographic entropy, Ryu-T
 [dependencies]
 algebra_experimental = { version = "0.1.0", path = "../algebra_experimental" }
 faer = { workspace = true }
+gauss-quad = { workspace = true }
 lbm_core = { path = "../lbm_core" }
 nalgebra = { workspace = true }
 ndarray = { workspace = true }
