@@ -357,6 +357,7 @@ validation-resource-contract-collectors:
 	validation_tools_status_block="$$(sed -n '/fn run_validation_tools_status/,/let now =/p' xtask/src/main.rs)"; \
 	cargo_target_parser_block="$$(sed -n '/^[[:space:]]*case .*cargo_target_args.* in/,/^[[:space:]]*light_scope=()/p' Makefile)"; \
 	casimir_path_block="$$(sed -n '/casimir_audit) pattern=/p' .github/workflows/ci.yml)"; \
+	benchmark_path_block="$$(sed -n '/benchmark) pattern=/p' .github/workflows/ci.yml)"; \
 	lattice_route_block="$$(sed -n '/run_lattice=true; fi/p' .github/workflows/ci.yml)"; \
 	box_counting_route_block="$$(sed -n '/run_box_counting=true; fi/p' .github/workflows/ci.yml)"; \
 	unsafe_survey_job_block="$$(sed -n '/^  unsafe-survey:/,/^  validation:/p' .github/workflows/ci.yml)"; \
@@ -430,7 +431,10 @@ validation-resource-contract-collectors:
 	if ! printf '%s\n' "$$casimir_path_block" | grep -Fq 'rust-toolchain\.toml$$'; then echo "ERROR: Casimir audit routing omits the hashed Rust toolchain identity." >&2; status=1; fi; \
 	if ! printf '%s\n' "$$casimir_path_block" | grep -Fq 'gororoba_cli_provenance'; then echo "ERROR: Casimir audit routing omits its finite-frontier verifier owner." >&2; status=1; fi; \
 	if ! printf '%s\n' "$$casimir_path_block" | grep -Fq 'provenance_store'; then echo "ERROR: Casimir audit routing omits its source-observation contract dependency." >&2; status=1; fi; \
+	if ! printf '%s\n' "$$casimir_path_block" | grep -Fq '\.cargo/config\.toml'; then echo "ERROR: Casimir audit routing omits Cargo configuration inherited by its producers." >&2; status=1; fi; \
+	if ! printf '%s\n' "$$casimir_path_block" | grep -Fq '\.gitattributes'; then echo "ERROR: Casimir audit routing omits attributes governing retained source bytes." >&2; status=1; fi; \
 	if ! printf '%s\n' "$$casimir_path_block" | grep -Fq 'Makefile$$'; then echo "ERROR: Casimir audit routing omits its Make-owned execution recipes." >&2; status=1; fi; \
+	if ! printf '%s\n' "$$benchmark_path_block" | grep -Fq 'crates/gororoba_cli/src/bin/detect_worker_budget\.rs'; then echo "ERROR: benchmark routing omits its cross-architecture worker detector." >&2; status=1; fi; \
 	if ! printf '%s\n' "$$lattice_route_block" | grep -Fq 'cd_kernel'; then echo "ERROR: lattice replay routing omits its Cayley-Dickson kernel dependency." >&2; status=1; fi; \
 	if ! printf '%s\n' "$$box_counting_route_block" | grep -Fq 'verified_core'; then echo "ERROR: box-counting replay routing omits its hardware-topology dependency." >&2; status=1; fi; \
 	if ! printf '%s\n' "$$unsafe_survey_job_block" | grep -Fq 'run_workspace_survey: true'; then echo "ERROR: routed unsafe-survey selection does not run the workspace inventory." >&2; status=1; fi; \

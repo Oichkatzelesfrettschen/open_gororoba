@@ -1219,21 +1219,21 @@ verification = "GitHub Actions run 34901216506 completed without cancellation at
 
 [[task]]
 id = "deterministic-fisher-covariance-admissibility"
-status = "implemented_pending_ci"
+status = "complete"
 finding = "A nonzero signal on a zero-variance coordinate returned infinite Fisher information before the remaining covariance correlation block was checked for positive semidefiniteness."
 required_change = "Validate the complete coordinate-normalized covariance spectrum before returning deterministic information."
 verification = "Hosted stats_core tests reject an indefinite three-coordinate correlation block even when an independent zero-variance coordinate carries nonzero signal."
 
 [[task]]
 id = "cuda-runtime-device-count-error-class"
-status = "implemented_pending_ci"
+status = "complete"
 finding = "runtime_device_count converted every cudaGetDeviceCount runtime error to a successful zero count, conflating unavailable CUDA infrastructure with a host that has zero devices."
 required_change = "Map cudaGetDeviceCount errors to RuntimeUnavailable and reserve NoDevice for a successful zero count."
 verification = "Hosted gororoba_gpu_cuda tests map cudaErrorInsufficientDriver to RuntimeUnavailable."
 
 [[task]]
 id = "casimir-audit-provenance-store-routing"
-status = "implemented_pending_ci"
+status = "complete"
 finding = "A provenance_store-only change could alter source-observation receipt types or validation semantics without selecting validation-casimir-audit."
 required_change = "Include provenance_store in the Casimir audit trigger and bind that direct dependency edge in validation-resource-contract-collectors."
 verification = "Hosted validation-resource-contract and actionlint pass, and a provenance_store-only path selects validation-casimir-audit."
@@ -1247,7 +1247,42 @@ verification = "GitHub Actions run 34905765319 completed without cancellation at
 
 [[task]]
 id = "cuda-regression-module-order"
-status = "implemented_pending_ci"
+status = "complete"
 finding = "The CUDA runtime-error regression module preceded impl Context, violating the workspace items_after_test_module warnings-as-errors policy."
 required_change = "Place the test module after every production item in context.rs without changing the tested runtime-error mapping."
 verification = "Pinned rustfmt accepts context.rs and replacement workspace Clippy passes."
+
+[[task]]
+id = "exact-head-568f9700-terminal-denominator"
+status = "complete"
+finding = "Run 34909668283 reached a terminal 42-job fail-slow denominator: 41 jobs passed, docs deployment skipped by pull-request policy, and no job failed or was canceled. The Rust and scientific matrix completed in about ten minutes; docs-gate was the sole long tail and completed successfully after about 48 minutes of runner-backed compilation."
+required_change = "Retain this exact-head denominator as validation of the covariance, CUDA error-class, provenance routing, and module-order repairs before applying the review findings submitted during the run."
+verification = "GitHub Actions run 34909668283 completed without cancellation at exact head 568f970088cc0291b8eaa7bd7b71f257e8e37573 with 41 success conclusions and one expected skip."
+
+[[task]]
+id = "casimir-audit-cargo-attribute-routing"
+status = "implemented_pending_ci"
+finding = "Cargo configuration and Git attributes can alter Casimir producer execution or retained source bytes without selecting validation-casimir-audit."
+required_change = "Route .cargo/config.toml and .gitattributes through validation-casimir-audit and bind both ownership edges in the static collector contract."
+verification = "Hosted validation-resource-contract and actionlint must pass, and either path must select validation-casimir-audit."
+
+[[task]]
+id = "benchmark-worker-detector-routing"
+status = "implemented_pending_ci"
+finding = "A detector-only change did not select the ARM benchmark even though that reusable workflow compiles the detector for both hosted architectures."
+required_change = "Route detect_worker_budget.rs through the benchmark component and bind the cross-architecture ownership edge in the static collector contract."
+verification = "Hosted validation-resource-contract and actionlint must pass, and a detector-only path must select both benchmark architectures."
+
+[[task]]
+id = "material-dataset-code-artifact-identities"
+status = "implemented_pending_ci"
+finding = "Material evidence graphs lacked independent dataset records and code-artifact inventories, allowing measurements and model runs to cite unresolved identities."
+required_change = "Add typed Dataset and CodeArtifact nodes, require each measurement artifact to belong to its resolved dataset, and require every model-run code artifact to resolve."
+verification = "Hosted materials_core tests must reject unknown datasets, measurement artifacts outside their dataset, and unknown model code artifacts."
+
+[[task]]
+id = "source-manifest-and-attribution-ownership"
+status = "implemented_pending_ci"
+finding = "The Casimir audit followed a symlinked retrieval manifest and accepted arbitrary nonempty actor, reason, tool, and evidence-limit text in retained source-observation receipts."
+required_change = "Reject symbolic links in every repository-relative manifest path component and bind all common receipt attribution and evidence-limit fields to the retained observation contract."
+verification = "Hosted audit tests must reject a symlinked manifest and mutations of receipt actor or tool attribution."

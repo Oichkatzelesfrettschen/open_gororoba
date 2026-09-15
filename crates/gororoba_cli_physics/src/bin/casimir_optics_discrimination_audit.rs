@@ -15,6 +15,9 @@ use materials_core::{
     silica_casimir_optical, zero_temperature_energy_per_area, zero_temperature_pressure,
 };
 use nalgebra::{DMatrix, DVector};
+use provenance_store::{
+    SourceObservationSpec, SourceStorageEncoding, SourceTimePrecision, SourceTransportOutcome,
+};
 use quantum_core::{
     casimir::{
         C, DielectricModel, HBAR, LifshitzQuadratureOptions, lifshitz_energy_plates,
@@ -28,9 +31,6 @@ use quantum_core::{
 use rand::{RngExt, SeedableRng};
 use rand_chacha::ChaCha8Rng;
 use rand_distr::StandardNormal;
-use provenance_store::{
-    SourceObservationSpec, SourceStorageEncoding, SourceTimePrecision, SourceTransportOutcome,
-};
 use serde::{Deserialize, Serialize};
 use sha2::{Digest, Sha256};
 use statrs::distribution::{ContinuousCDF, Normal};
@@ -51,6 +51,11 @@ const SOURCE_RETRIEVAL_MANIFEST: &str = "source-retrieval-manifest.toml";
 const SOURCE_OBSERVATION_DIRECTORY: &str = "source-observations";
 const EXPECTED_RETRIEVAL_DATE: &str = "2026-09-12";
 const EXPECTED_RETRIEVAL_SCOPE: &str = "Observed source bytes for the Casimir, optical, materials, and quantum-admissibility audit. A retained body establishes byte identity and source inspection only.";
+const EXPECTED_OBSERVATION_ACTOR: &str = "codex";
+const EXPECTED_OBSERVATION_REASON: &str = "Admit retained source bytes through the typed first-observation contract without promoting scientific claims.";
+const EXPECTED_OBSERVATION_TOOL: &str = "curl (audit-manifest attribution)";
+const EXPECTED_REQUEST_EVIDENCE_LIMIT: &str = "The retained manifest associates source key, requested URL, observation day, and body digest. Raw request logs, final redirect URLs, and HTTP status are absent.";
+const EXPECTED_ABSENT_PRIOR_EXPECTATION_REASON: &str = "The audit records observed body identities after retrieval; a hash-bound prerequest body expectation is absent.";
 const PRODUCER_OWNED_OUTPUT_NAMES: [&str; 15] = [
     "bounded_mimic.tsv",
     "bounded_mimic_coefficients.tsv",
@@ -278,9 +283,7 @@ const SOURCE_MODEL_INPUTS: [SourceModelInput; 24] = [
     },
     SourceModelInput {
         path: "crates/materials_core/src/optical_database/thin_film_coating.rs",
-        bytes: include_bytes!(
-            "../../../materials_core/src/optical_database/thin_film_coating.rs"
-        ),
+        bytes: include_bytes!("../../../materials_core/src/optical_database/thin_film_coating.rs"),
     },
     SourceModelInput {
         path: "crates/materials_core/src/optical_database/tungstates.rs",
@@ -525,10 +528,7 @@ fn sha256_hex(bytes: &[u8]) -> String {
 }
 
 fn hex_encode(bytes: &[u8]) -> String {
-    bytes
-        .iter()
-        .map(|byte| format!("{byte:02x}"))
-        .collect()
+    bytes.iter().map(|byte| format!("{byte:02x}")).collect()
 }
 
 fn source_model_identity() -> String {
@@ -692,6 +692,51 @@ fn verify_source_retrieval_manifest_source(source: &str, repository_root: &Path)
 }
 
 fn verify_source_retrieval_manifest(manifest_path: &Path, repository_root: &Path) -> Result<()> {
+    let relative_manifest_path =
+        manifest_path
+            .strip_prefix(repository_root)
+            .with_context(|| {
+                format!(
+                    "source-retrieval manifest {} is outside repository root {}",
+                    manifest_path.display(),
+                    repository_root.display()
+                )
+            })?;
+    ensure!(
+        relative_manifest_path
+            .components()
+            .all(|component| matches!(component, Component::Normal(_))),
+        "source-retrieval manifest path is not a normalized repository-relative path"
+    );
+    let mut inspected_path = repository_root.to_path_buf();
+    for component in relative_manifest_path.components() {
+        let Component::Normal(component) = component else {
+            unreachable!("manifest path components were validated above")
+        };
+        inspected_path.push(component);
+        let metadata = fs::symlink_metadata(&inspected_path).with_context(|| {
+            format!(
+                "inspecting source-retrieval manifest path component {}",
+                inspected_path.display()
+            )
+        })?;
+        ensure!(
+            !metadata.file_type().is_symlink(),
+            "source-retrieval manifest path contains a symbolic link at {}",
+            inspected_path.display()
+        );
+    }
+    ensure!(
+        fs::symlink_metadata(manifest_path)
+            .with_context(|| format!(
+                "inspecting source-retrieval manifest {}",
+                manifest_path.display()
+            ))?
+            .file_type()
+            .is_file(),
+        "source-retrieval manifest is not a regular file at {}",
+        manifest_path.display()
+    );
     let source = fs::read_to_string(manifest_path).with_context(|| {
         format!(
             "reading retained source-retrieval manifest {}",
@@ -733,24 +778,14 @@ fn verify_source_observation_source(
             && receipt.corrects_observation_key.is_none(),
         "source-observation receipt {receipt_filename} identity or observation fields disagree with the retrieval manifest"
     );
-    for (label, value) in [
-        ("actor", receipt.actor.as_str()),
-        ("reason", receipt.reason.as_str()),
-        ("tool", receipt.tool.as_str()),
-        (
-            "request_evidence_limit",
-            receipt.request_evidence_limit.as_str(),
-        ),
-        (
-            "absent_prior_expectation_reason",
-            receipt.absent_prior_expectation_reason.as_str(),
-        ),
-    ] {
-        ensure!(
-            !value.trim().is_empty(),
-            "source-observation receipt {receipt_filename} has empty {label}"
-        );
-    }
+    ensure!(
+        receipt.actor == EXPECTED_OBSERVATION_ACTOR
+            && receipt.reason == EXPECTED_OBSERVATION_REASON
+            && receipt.tool == EXPECTED_OBSERVATION_TOOL
+            && receipt.request_evidence_limit == EXPECTED_REQUEST_EVIDENCE_LIMIT
+            && receipt.absent_prior_expectation_reason == EXPECTED_ABSENT_PRIOR_EXPECTATION_REASON,
+        "source-observation receipt {receipt_filename} attribution or evidence-limit fields disagree with the retained observation contract"
+    );
 
     let manifest_digest = sha256_hex(manifest_bytes);
     let expected_manifest_path = format!("{DEFAULT_OUTPUT_DIRECTORY}/{SOURCE_RETRIEVAL_MANIFEST}");
@@ -797,8 +832,8 @@ fn verify_source_observations(manifest_path: &Path, repository_root: &Path) -> R
             manifest_path.display()
         )
     })?;
-    let manifest_source = std::str::from_utf8(&manifest_bytes)
-        .context("source-retrieval manifest is not UTF-8")?;
+    let manifest_source =
+        std::str::from_utf8(&manifest_bytes).context("source-retrieval manifest is not UTF-8")?;
     verify_source_retrieval_manifest_source(manifest_source, repository_root)?;
     let manifest: SourceRetrievalManifest = toml::from_str(manifest_source)
         .context("parsing source-retrieval manifest for source observations")?;
@@ -846,14 +881,15 @@ fn verify_source_observations(manifest_path: &Path, repository_root: &Path) -> R
         .map(|source| (source.id.as_str(), source))
         .collect::<BTreeMap<_, _>>();
     for (source_id, receipt_filename, document_identity_limit) in EXPECTED_SOURCE_OBSERVATIONS {
-        let retained_source = manifest_sources
-            .get(&source_id)
-            .with_context(|| {
-                format!("source-observation receipt has no manifest source {source_id}")
-            })?;
+        let retained_source = manifest_sources.get(&source_id).with_context(|| {
+            format!("source-observation receipt has no manifest source {source_id}")
+        })?;
         let receipt_path = observation_directory.join(receipt_filename);
         let receipt_source = fs::read_to_string(&receipt_path).with_context(|| {
-            format!("reading source-observation receipt {}", receipt_path.display())
+            format!(
+                "reading source-observation receipt {}",
+                receipt_path.display()
+            )
         })?;
         verify_source_observation_source(
             &receipt_source,
@@ -966,13 +1002,11 @@ fn relative_error(actual: f64, expected: f64) -> f64 {
 }
 
 fn cutoff_convergence_options() -> [LifshitzQuadratureOptions; 3] {
-    [16.0, 20.0, 24.0]
-        .map(|kappa_cutoff| LifshitzQuadratureOptions::new(kappa_cutoff, 256, 64))
+    [16.0, 20.0, 24.0].map(|kappa_cutoff| LifshitzQuadratureOptions::new(kappa_cutoff, 256, 64))
 }
 
 fn radial_convergence_options() -> [LifshitzQuadratureOptions; 3] {
-    [128, 256, 512]
-        .map(|kappa_order| LifshitzQuadratureOptions::new(24.0, kappa_order, 64))
+    [128, 256, 512].map(|kappa_order| LifshitzQuadratureOptions::new(24.0, kappa_order, 64))
 }
 
 fn angular_convergence_options() -> [ZeroTemperatureOptions; 3] {
@@ -2066,12 +2100,12 @@ fn remove_obsolete_manifest_outputs(
     }
     let prior_manifest_source = fs::read_to_string(&manifest_path)
         .with_context(|| format!("reading prior native manifest {}", manifest_path.display()))?;
-    let prior_manifest: NativeOutputManifest = toml::from_str(&prior_manifest_source)
-        .context("parsing prior native output manifest")?;
+    let prior_manifest: NativeOutputManifest =
+        toml::from_str(&prior_manifest_source).context("parsing prior native output manifest")?;
     for prior_output in prior_manifest.output {
         let mut components = prior_output.path.components();
-        let safe_filename = matches!(components.next(), Some(Component::Normal(_)))
-            && components.next().is_none();
+        let safe_filename =
+            matches!(components.next(), Some(Component::Normal(_))) && components.next().is_none();
         ensure!(
             safe_filename,
             "prior native output manifest declares unsafe output path {}",
@@ -2092,7 +2126,10 @@ fn remove_obsolete_manifest_outputs(
             Err(error) if error.kind() == std::io::ErrorKind::NotFound => {}
             Err(error) => {
                 return Err(error).with_context(|| {
-                    format!("removing obsolete native output {}", obsolete_path.display())
+                    format!(
+                        "removing obsolete native output {}",
+                        obsolete_path.display()
+                    )
                 });
             }
         }
@@ -2229,7 +2266,8 @@ mod tests {
     #[test]
     fn regeneration_removes_only_obsolete_manifested_outputs() {
         let temporary_output = tempfile::tempdir().unwrap();
-        let manifest = "[[output]]\npath = \"summary.toml\"\n\n[[output]]\npath = \"bounded_mimic.tsv\"\n";
+        let manifest =
+            "[[output]]\npath = \"summary.toml\"\n\n[[output]]\npath = \"bounded_mimic.tsv\"\n";
         fs::write(
             temporary_output.path().join("native-output-manifest.toml"),
             manifest,
@@ -2241,19 +2279,19 @@ mod tests {
             "obsolete",
         )
         .unwrap();
-        fs::write(temporary_output.path().join("source-retrieval-manifest.toml"), "auxiliary")
-            .unwrap();
+        fs::write(
+            temporary_output
+                .path()
+                .join("source-retrieval-manifest.toml"),
+            "auxiliary",
+        )
+        .unwrap();
         let current_outputs = BTreeMap::from([("summary.toml".to_owned(), String::new())]);
 
         remove_obsolete_manifest_outputs(temporary_output.path(), &current_outputs).unwrap();
 
         assert!(temporary_output.path().join("summary.toml").is_file());
-        assert!(
-            !temporary_output
-                .path()
-                .join("bounded_mimic.tsv")
-                .exists()
-        );
+        assert!(!temporary_output.path().join("bounded_mimic.tsv").exists());
         assert!(
             temporary_output
                 .path()
@@ -2393,10 +2431,7 @@ mod tests {
                 "angular_order" => {
                     assert_eq!(columns[1], ANGULAR_CONVERGENCE_TARGET);
                     assert_eq!(columns[2], "na");
-                    assert_eq!(
-                        tolerance,
-                        MULTILAYER_ANGULAR_CONVERGENCE_RELATIVE_TOLERANCE
-                    );
+                    assert_eq!(tolerance, MULTILAYER_ANGULAR_CONVERGENCE_RELATIVE_TOLERANCE);
                 }
                 factor => panic!("unexpected convergence factor {factor}"),
             }
@@ -2428,11 +2463,9 @@ mod tests {
             b"substituted retained source bytes",
         )
         .unwrap();
-        let error = verify_source_retrieval_manifest_source(
-            &manifest_source,
-            temporary_repository.path(),
-        )
-        .unwrap_err();
+        let error =
+            verify_source_retrieval_manifest_source(&manifest_source, temporary_repository.path())
+                .unwrap_err();
         assert!(error.to_string().contains("SHA-256 mismatch"));
     }
 
@@ -2480,11 +2513,8 @@ mod tests {
     fn retained_source_manifest_rejects_impossible_retrieval_date() {
         let (repository_root, manifest_source, date_declaration) =
             retained_source_manifest_fixture();
-        let impossible_date_manifest = manifest_source.replacen(
-            &date_declaration,
-            "retrieval_date = \"2026-02-30\"",
-            1,
-        );
+        let impossible_date_manifest =
+            manifest_source.replacen(&date_declaration, "retrieval_date = \"2026-02-30\"", 1);
         assert_ne!(impossible_date_manifest, manifest_source);
 
         let error =
@@ -2497,11 +2527,8 @@ mod tests {
     fn retained_source_manifest_rejects_changed_retrieval_date() {
         let (repository_root, manifest_source, date_declaration) =
             retained_source_manifest_fixture();
-        let changed_date_manifest = manifest_source.replacen(
-            &date_declaration,
-            "retrieval_date = \"2026-09-13\"",
-            1,
-        );
+        let changed_date_manifest =
+            manifest_source.replacen(&date_declaration, "retrieval_date = \"2026-09-13\"", 1);
         assert_ne!(changed_date_manifest, manifest_source);
 
         let error =
@@ -2526,7 +2553,11 @@ mod tests {
         let unsafe_manifest = manifest_source.replacen(first_path, "../outside.pdf", 1);
         let error = verify_source_retrieval_manifest_source(&unsafe_manifest, &repository_root)
             .unwrap_err();
-        assert!(error.to_string().contains("unsafe repository-relative path"));
+        assert!(
+            error
+                .to_string()
+                .contains("unsafe repository-relative path")
+        );
     }
 
     #[test]
@@ -2702,6 +2733,16 @@ mod tests {
                     .to_owned(),
                 "identity or observation fields",
             ),
+            (
+                format!("actor = {EXPECTED_OBSERVATION_ACTOR:?}"),
+                "actor = \"other-actor\"".to_owned(),
+                "attribution or evidence-limit fields",
+            ),
+            (
+                format!("tool = {EXPECTED_OBSERVATION_TOOL:?}"),
+                "tool = \"other-tool\"".to_owned(),
+                "attribution or evidence-limit fields",
+            ),
         ];
         for (declaration, replacement, expected_error) in mutations {
             let mutated = receipt_source.replacen(&declaration, &replacement, 1);
@@ -2738,11 +2779,31 @@ mod tests {
         fs::write(&external_file, b"external bytes").unwrap();
         symlink(&external_file, &retained_path).unwrap();
 
-        let error = verify_source_retrieval_manifest_source(
-            &manifest_source,
-            temporary_repository.path(),
-        )
-        .unwrap_err();
+        let error =
+            verify_source_retrieval_manifest_source(&manifest_source, temporary_repository.path())
+                .unwrap_err();
+        assert!(error.to_string().contains("symbolic link"));
+    }
+
+    #[cfg(unix)]
+    #[test]
+    fn retained_source_retrieval_manifest_rejects_symbolic_links() {
+        use std::os::unix::fs::symlink;
+
+        let repository_root = repo_root::resolve!();
+        let retained_manifest = repository_root
+            .join(DEFAULT_OUTPUT_DIRECTORY)
+            .join(SOURCE_RETRIEVAL_MANIFEST);
+        let temporary_repository = tempfile::tempdir().unwrap();
+        let linked_manifest = temporary_repository
+            .path()
+            .join(DEFAULT_OUTPUT_DIRECTORY)
+            .join(SOURCE_RETRIEVAL_MANIFEST);
+        fs::create_dir_all(linked_manifest.parent().unwrap()).unwrap();
+        symlink(&retained_manifest, &linked_manifest).unwrap();
+
+        let error = verify_source_retrieval_manifest(&linked_manifest, temporary_repository.path())
+            .unwrap_err();
         assert!(error.to_string().contains("symbolic link"));
     }
 
@@ -2753,11 +2814,9 @@ mod tests {
         fs::create_dir(&retained_directory).unwrap();
         let relative_alias = retained_directory.join("..").join("retained");
 
-        let error = prepare_distinct_expected_output_directory(
-            &retained_directory,
-            &relative_alias,
-        )
-        .unwrap_err();
+        let error =
+            prepare_distinct_expected_output_directory(&retained_directory, &relative_alias)
+                .unwrap_err();
         assert!(error.to_string().contains("must differ"));
     }
 }

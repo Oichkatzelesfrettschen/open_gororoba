@@ -74,7 +74,7 @@ jobs:
             git diff --no-renames --name-only "$comparison_base" HEAD > "$RUNNER_TEMP/component-changed-paths"
             for component in benchmark proofs paper unsafe_survey; do
               case "$component" in
-                benchmark) pattern='^crates/(cd_kernel|fwht|verified_core|gororoba_gpu_bridge)/|^Cargo\.(toml|lock)$|^rust-toolchain\.toml$|^\.cargo/config\.toml$|^\.github/workflows/(bench-cd-kernel|ci)\.yml$' ;;
+                benchmark) pattern='^crates/(cd_kernel|fwht|verified_core|gororoba_gpu_bridge)/|^crates/gororoba_cli/src/bin/detect_worker_budget\.rs$|^Cargo\.(toml|lock)$|^rust-toolchain\.toml$|^\.cargo/config\.toml$|^\.github/workflows/(bench-cd-kernel|ci)\.yml$' ;;
                 proofs) pattern='^proofs/|^\.github/workflows/(proofs|ci)\.yml$' ;;
                 paper) pattern='^docs/latex/|^papers/bib/|^\.github/workflows/(paper|ci)\.yml$' ;;
                 unsafe_survey) pattern='^tools/vendor/cargo-geiger/|(^|/)Cargo\.(toml|lock)$|^rust-toolchain\.toml$|^\.cargo/config\.toml$|^\.github/workflows/(unsafe-survey|ci)\.yml$' ;;
@@ -236,7 +236,7 @@ jobs:
                 docs) pattern='^(docs/book/|crates/|xtask/|Cargo\.(toml|lock)$|rust-toolchain\.toml$|Makefile$|mk/|\.cargo/|\.github/workflows/ci\.yml$)' ;;
                 dependencies) pattern='(^|/)Cargo\.(toml|lock)$|(^|/)deny\.toml$|^rust-toolchain\.toml$|^\.github/workflows/ci\.yml$' ;;
                 warp) pattern='^data/h5/|^crates/gororoba_cli_warp/|^crates/data_artifacts_core/|^\.github/workflows/ci\.yml$' ;;
-                casimir_audit) pattern='^crates/(gororoba_cli_physics|gororoba_cli_provenance|materials_core|materials_data|provenance_store|quantum_core|stats_core)/|^data/output/audit/casimir-optics-discrimination/|^plans/casimir_optics_discrimination_frontier\.toml$|^Cargo\.(toml|lock)$|^rust-toolchain\.toml$|^Makefile$|^\.github/workflows/ci\.yml$' ;;
+                casimir_audit) pattern='^crates/(gororoba_cli_physics|gororoba_cli_provenance|materials_core|materials_data|provenance_store|quantum_core|stats_core)/|^data/output/audit/casimir-optics-discrimination/|^plans/casimir_optics_discrimination_frontier\.toml$|^Cargo\.(toml|lock)$|^rust-toolchain\.toml$|^Makefile$|^\.cargo/config\.toml$|^\.gitattributes$|^\.github/workflows/ci\.yml$' ;;
               esac
               if grep -Eq "$pattern" reports/validation/changed-paths.txt; then
                 echo "$lane=true" >> "$GITHUB_OUTPUT"

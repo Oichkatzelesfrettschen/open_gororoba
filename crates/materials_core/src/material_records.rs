@@ -164,11 +164,7 @@ impl<T> PropertyObservation<T> {
         }
     }
 
-    fn validate_missingness(
-        &self,
-        label: &str,
-        expected_unit: Option<&str>,
-    ) -> Result<(), String> {
+    fn validate_missingness(&self, label: &str, expected_unit: Option<&str>) -> Result<(), String> {
         match self {
             Self::Observed { .. } => Ok(()),
             Self::Missing { reason } => reason.validate(label, expected_unit),
@@ -272,10 +268,15 @@ pub enum AssayStatus {
 #[derive(Debug, Clone, Default, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "snake_case", tag = "status")]
 pub enum DetectionLimitStatus {
-    Reported { upper_bound: f64, unit: String },
+    Reported {
+        upper_bound: f64,
+        unit: String,
+    },
     NotMeasured,
     NotApplicable,
-    Withheld { reason: String },
+    Withheld {
+        reason: String,
+    },
     #[default]
     Unknown,
 }
@@ -312,6 +313,14 @@ pub struct Provenance {
     pub transformation_lineage: Vec<String>,
 }
 
+/// Stable dataset identity grouping one or more retained acquisition artifacts.
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub struct Dataset {
+    pub dataset_id: RecordId,
+    pub title: String,
+    pub raw_artifact_ids: Vec<RecordId>,
+}
+
 /// Raw acquisition artifact available to measurements in the graph.
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 pub struct RawArtifact {
@@ -328,6 +337,15 @@ pub struct RawArtifact {
     pub source_sha256: String,
 }
 
+/// Versioned executable or source artifact used by a model run.
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub struct CodeArtifact {
+    pub code_artifact_id: RecordId,
+    pub path: String,
+    pub version: String,
+    pub source_sha256: String,
+}
+
 /// Processing recipe available to measurements in the graph.
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 pub struct ProcessingRecipe {
@@ -338,6 +356,7 @@ pub struct ProcessingRecipe {
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub struct Measurement {
     pub measurement_id: RecordId,
+    pub dataset_id: RecordId,
     pub specimen_id: RecordId,
     pub method: String,
     pub instrument: String,
@@ -405,7 +424,9 @@ pub struct MaterialEvidenceGraph {
     pub materials: Vec<Material>,
     pub states: Vec<MaterialState>,
     pub specimens: Vec<Specimen>,
+    pub datasets: Vec<Dataset>,
     pub raw_artifacts: Vec<RawArtifact>,
+    pub code_artifacts: Vec<CodeArtifact>,
     pub processing_recipes: Vec<ProcessingRecipe>,
     pub measurements: Vec<Measurement>,
     pub quantities: Vec<QuantityValue>,
@@ -578,12 +599,8 @@ impl Uncertainty {
                             correlation[(column, row)] = 0.0;
                             continue;
                         }
-                        let larger_deviation = row_variance
-                            .sqrt()
-                            .max(column_variance.sqrt());
-                        let smaller_deviation = row_variance
-                            .sqrt()
-                            .min(column_variance.sqrt());
+                        let larger_deviation = row_variance.sqrt().max(column_variance.sqrt());
+                        let smaller_deviation = row_variance.sqrt().min(column_variance.sqrt());
                         let upper_correlation = upper / larger_deviation / smaller_deviation;
                         let lower_correlation = lower / larger_deviation / smaller_deviation;
                         if !upper_correlation.is_finite() || !lower_correlation.is_finite() {
@@ -634,9 +651,7 @@ impl Uncertainty {
                     format!("{quantity_unit}^2")
                 };
                 if unit_squared != &expected_unit_squared {
-                    return Err(
-                        "covariance unit must match the squared quantity unit".to_owned(),
-                    );
+                    return Err("covariance unit must match the squared quantity unit".to_owned());
                 }
             }
             Self::NotReported { .. } => {}
@@ -662,10 +677,8 @@ impl QuantityValue {
                         if let Some(declared_basis) = &self.tensor_component_or_basis {
                             require_nonempty("quantity basis metadata", declared_basis)?;
                             if declared_basis != basis {
-                                return Err(
-                                    "quantity basis metadata must match the payload basis"
-                                        .to_owned(),
-                                );
+                                return Err("quantity basis metadata must match the payload basis"
+                                    .to_owned());
                             }
                         }
                     }
@@ -685,19 +698,14 @@ impl QuantityValue {
                     require_nonempty("condition name", condition)?;
                     require_nonempty("condition value", value)?;
                 }
-                let applicability_range = self
-                    .applicability_range
-                    .as_deref()
-                    .ok_or_else(|| {
-                        "observed quantity requires an applicability range".to_owned()
-                    })?;
+                let applicability_range = self.applicability_range.as_deref().ok_or_else(|| {
+                    "observed quantity requires an applicability range".to_owned()
+                })?;
                 require_nonempty("applicability range", applicability_range)?;
                 if let Uncertainty::Covariance { dimension, .. } = &self.uncertainty
                     && *dimension != payload.value_count()
                 {
-                    return Err(
-                        "covariance dimension must match the observed payload".to_owned(),
-                    );
+                    return Err("covariance dimension must match the observed payload".to_owned());
                 }
             }
             QuantityObservation::Missing {
@@ -985,9 +993,7 @@ impl MaterialState {
             let Some(field_name) = key.strip_prefix("applied_field:") else {
                 continue;
             };
-            if field_name.is_empty()
-                || self.applied_fields.get(field_name) != Some(observed)
-            {
+            if field_name.is_empty() || self.applied_fields.get(field_name) != Some(observed) {
                 return Err(format!(
                     "quantity {} condition {key} contradicts state {}",
                     quantity_id.0, self.state_id.0
@@ -1031,10 +1037,7 @@ impl Specimen {
                 "anneal history",
                 self.anneal_history.value().map(String::as_str),
             ),
-            (
-                "specimen texture",
-                self.texture.value().map(String::as_str),
-            ),
+            ("specimen texture", self.texture.value().map(String::as_str)),
         ] {
             if let Some(value) = value {
                 require_nonempty(label, value)?;
@@ -1115,9 +1118,37 @@ impl RawArtifact {
     }
 }
 
+impl Dataset {
+    pub fn validate(&self) -> Result<(), String> {
+        self.dataset_id.validate("dataset identifier")?;
+        require_nonempty("dataset title", &self.title)?;
+        if self.raw_artifact_ids.is_empty() {
+            return Err("dataset requires at least one raw artifact".to_owned());
+        }
+        let unique_artifact_ids: BTreeSet<_> = self.raw_artifact_ids.iter().collect();
+        if unique_artifact_ids.len() != self.raw_artifact_ids.len() {
+            return Err("dataset repeats a raw artifact".to_owned());
+        }
+        for raw_artifact_id in &self.raw_artifact_ids {
+            raw_artifact_id.validate("dataset raw artifact identifier")?;
+        }
+        Ok(())
+    }
+}
+
+impl CodeArtifact {
+    pub fn validate(&self) -> Result<(), String> {
+        self.code_artifact_id.validate("code artifact identifier")?;
+        require_nonempty("code artifact path", &self.path)?;
+        require_nonempty("code artifact version", &self.version)?;
+        validate_sha256("code artifact source SHA-256", &self.source_sha256)
+    }
+}
+
 impl Measurement {
     pub fn validate(&self) -> Result<(), String> {
         self.measurement_id.validate("measurement identifier")?;
+        self.dataset_id.validate("measurement dataset identifier")?;
         self.specimen_id.validate("specimen identifier")?;
         self.raw_artifact_id.validate("raw artifact identifier")?;
         self.processing_recipe_id
@@ -1228,9 +1259,7 @@ impl DerivedValue {
         self.output.validate()?;
         self.propagated_uncertainty.validate()?;
         if self.output.uncertainty != self.propagated_uncertainty {
-            return Err(
-                "derived output uncertainty must equal propagated uncertainty".to_owned(),
-            );
+            return Err("derived output uncertainty must equal propagated uncertainty".to_owned());
         }
         Ok(())
     }
@@ -1261,8 +1290,14 @@ impl MaterialEvidenceGraph {
         for specimen in &self.specimens {
             specimen.validate()?;
         }
+        for dataset in &self.datasets {
+            dataset.validate()?;
+        }
         for raw_artifact in &self.raw_artifacts {
             raw_artifact.validate()?;
+        }
+        for code_artifact in &self.code_artifacts {
+            code_artifact.validate()?;
         }
         for measurement in &self.measurements {
             measurement.validate()?;
@@ -1299,6 +1334,15 @@ impl MaterialEvidenceGraph {
             .iter()
             .map(|specimen| (&specimen.specimen_id, specimen))
             .collect();
+        let dataset_ids = unique_ids(
+            "dataset identifier",
+            self.datasets.iter().map(|record| &record.dataset_id),
+        )?;
+        let datasets_by_id: BTreeMap<_, _> = self
+            .datasets
+            .iter()
+            .map(|dataset| (&dataset.dataset_id, dataset))
+            .collect();
         let raw_artifact_ids = unique_ids(
             "raw artifact identifier",
             self.raw_artifacts
@@ -1310,6 +1354,12 @@ impl MaterialEvidenceGraph {
             .iter()
             .map(|artifact| (&artifact.raw_artifact_id, artifact))
             .collect();
+        let code_artifact_ids = unique_ids(
+            "code artifact identifier",
+            self.code_artifacts
+                .iter()
+                .map(|record| &record.code_artifact_id),
+        )?;
         let processing_recipe_ids = unique_ids(
             "processing recipe identifier",
             self.processing_recipes
@@ -1398,6 +1448,16 @@ impl MaterialEvidenceGraph {
                 ));
             }
         }
+        for dataset in &self.datasets {
+            for raw_artifact_id in &dataset.raw_artifact_ids {
+                if !raw_artifact_ids.contains(raw_artifact_id) {
+                    return Err(format!(
+                        "dataset {} references unknown raw artifact {}",
+                        dataset.dataset_id.0, raw_artifact_id.0
+                    ));
+                }
+            }
+        }
         for measurement in &self.measurements {
             if !specimen_ids.contains(&measurement.specimen_id) {
                 return Err(format!(
@@ -1405,6 +1465,12 @@ impl MaterialEvidenceGraph {
                     measurement.measurement_id.0, measurement.specimen_id.0
                 ));
             }
+            let dataset = datasets_by_id.get(&measurement.dataset_id).ok_or_else(|| {
+                format!(
+                    "measurement {} references unknown dataset {}",
+                    measurement.measurement_id.0, measurement.dataset_id.0
+                )
+            })?;
             let raw_artifact = raw_artifacts_by_id
                 .get(&measurement.raw_artifact_id)
                 .ok_or_else(|| {
@@ -1413,6 +1479,17 @@ impl MaterialEvidenceGraph {
                         measurement.measurement_id.0, measurement.raw_artifact_id.0
                     )
                 })?;
+            if !dataset
+                .raw_artifact_ids
+                .contains(&measurement.raw_artifact_id)
+            {
+                return Err(format!(
+                    "measurement {} raw artifact {} is absent from dataset {}",
+                    measurement.measurement_id.0,
+                    measurement.raw_artifact_id.0,
+                    dataset.dataset_id.0
+                ));
+            }
             for (field, artifact_value, measurement_value) in [
                 (
                     "source identifier",
@@ -1467,14 +1544,15 @@ impl MaterialEvidenceGraph {
                             quantity.quantity_id.0, measurement_id.0
                         )
                     })?;
-                    let specimen = specimens_by_id
-                        .get(&measurement.specimen_id)
-                        .ok_or_else(|| {
-                            format!(
-                                "measurement {} references unknown specimen {}",
-                                measurement.measurement_id.0, measurement.specimen_id.0
-                            )
-                        })?;
+                    let specimen =
+                        specimens_by_id
+                            .get(&measurement.specimen_id)
+                            .ok_or_else(|| {
+                                format!(
+                                    "measurement {} references unknown specimen {}",
+                                    measurement.measurement_id.0, measurement.specimen_id.0
+                                )
+                            })?;
                     let state = states_by_id.get(&specimen.state_id).ok_or_else(|| {
                         format!(
                             "specimen {} references unknown state {}",
@@ -1485,15 +1563,14 @@ impl MaterialEvidenceGraph {
                         &quantity.quantity_id,
                         &quantity.conditions,
                     )?;
-                    let detection_limit = if matches!(
-                        &quantity.detection_limit,
-                        DetectionLimitStatus::Unknown
-                    ) && measurement_output_counts.get(measurement_id) == Some(&1)
-                    {
-                        &measurement.detection_limit
-                    } else {
-                        &quantity.detection_limit
-                    };
+                    let detection_limit =
+                        if matches!(&quantity.detection_limit, DetectionLimitStatus::Unknown)
+                            && measurement_output_counts.get(measurement_id) == Some(&1)
+                        {
+                            &measurement.detection_limit
+                        } else {
+                            &quantity.detection_limit
+                        };
                     if let DetectionLimitStatus::Reported { unit, .. } = detection_limit
                         && matches!(quantity.observation, QuantityObservation::Observed { .. })
                         && unit != &quantity.unit
@@ -1555,14 +1632,15 @@ impl MaterialEvidenceGraph {
                         quantity.quantity_id.0
                     ));
                 };
-                let fitted_measurement = measurements_by_id
-                    .get(fitted_measurement_id)
-                    .ok_or_else(|| {
-                        format!(
-                            "fitted quantity {} references unknown measurement {}",
-                            quantity.quantity_id.0, fitted_measurement_id.0
-                        )
-                    })?;
+                let fitted_measurement =
+                    measurements_by_id
+                        .get(fitted_measurement_id)
+                        .ok_or_else(|| {
+                            format!(
+                                "fitted quantity {} references unknown measurement {}",
+                                quantity.quantity_id.0, fitted_measurement_id.0
+                            )
+                        })?;
                 for input_quantity_id in input_quantity_ids {
                     let input_quantity =
                         quantities_by_id.get(input_quantity_id).ok_or_else(|| {
@@ -1595,13 +1673,12 @@ impl MaterialEvidenceGraph {
                             quantity.quantity_id.0, input_quantity_id.0
                         ));
                     };
-                    let input_measurement =
-                        measurements_by_id.get(input_measurement_id).ok_or_else(|| {
+                    let input_measurement = measurements_by_id
+                        .get(input_measurement_id)
+                        .ok_or_else(|| {
                             format!(
                                 "fitted quantity {} input {} references unknown measurement {}",
-                                quantity.quantity_id.0,
-                                input_quantity_id.0,
-                                input_measurement_id.0
+                                quantity.quantity_id.0, input_quantity_id.0, input_measurement_id.0
                             )
                         })?;
                     if input_measurement.specimen_id != fitted_measurement.specimen_id {
@@ -1620,6 +1697,12 @@ impl MaterialEvidenceGraph {
             }
         }
         for model_run in &self.model_runs {
+            if !code_artifact_ids.contains(&model_run.code_artifact_id) {
+                return Err(format!(
+                    "model run {} references unknown code artifact {}",
+                    model_run.model_run_id.0, model_run.code_artifact_id.0
+                ));
+            }
             let specimen = specimens_by_id.get(&model_run.specimen_id).ok_or_else(|| {
                 format!(
                     "model run {} references unknown specimen {}",
@@ -1654,12 +1737,10 @@ impl MaterialEvidenceGraph {
                 if !matches!(
                     &input_quantity.observation,
                     QuantityObservation::Observed { .. }
-                )
-                    || !matches!(
-                        input_quantity.evidence.class(),
-                        EvidenceClass::ExperimentalDirect | EvidenceClass::ExperimentalFitted
-                    )
-                {
+                ) || !matches!(
+                    input_quantity.evidence.class(),
+                    EvidenceClass::ExperimentalDirect | EvidenceClass::ExperimentalFitted
+                ) {
                     return Err(format!(
                         "model run {} input {} is not observed experimental evidence",
                         model_run.model_run_id.0, input_quantity_id.0
@@ -1740,12 +1821,10 @@ impl MaterialEvidenceGraph {
                 if !matches!(
                     &input_quantity.observation,
                     QuantityObservation::Observed { .. }
-                )
-                    || !matches!(
-                        input_quantity.evidence.class(),
-                        EvidenceClass::ExperimentalDirect | EvidenceClass::ExperimentalFitted
-                    )
-                {
+                ) || !matches!(
+                    input_quantity.evidence.class(),
+                    EvidenceClass::ExperimentalDirect | EvidenceClass::ExperimentalFitted
+                ) {
                     return Err(format!(
                         "derived value {} input {} is not observed experimental evidence",
                         derived.derived_value_id.0, input_quantity_id.0
@@ -1784,9 +1863,7 @@ mod tests {
             phase_id: "fcc".to_owned(),
             temperature_k: PropertyObservation::observed(300.0),
             pressure_pa: PropertyObservation::observed(101_325.0),
-            atmosphere: PropertyObservation::observed(
-                "vacuum deposition chamber".to_owned(),
-            ),
+            atmosphere: PropertyObservation::observed("vacuum deposition chamber".to_owned()),
             phase_fraction: PropertyObservation::observed(1.0),
             orientation: PropertyObservation::missing(Missingness::NotMeasured),
             strain: PropertyObservation::missing(Missingness::NotMeasured),
@@ -2272,6 +2349,14 @@ mod tests {
                 roughness_rms_m: PropertyObservation::missing(Missingness::NotMeasured),
                 geometry: "reported geometry".to_owned(),
             }],
+            datasets: vec![Dataset {
+                dataset_id: identifier("dataset:ellipsometry"),
+                title: "Ellipsometry fixture".to_owned(),
+                raw_artifact_ids: vec![
+                    identifier("artifact:raw"),
+                    identifier("artifact:fit-residuals"),
+                ],
+            }],
             raw_artifacts: vec![
                 RawArtifact {
                     raw_artifact_id: identifier("artifact:raw"),
@@ -2290,11 +2375,18 @@ mod tests {
                     source_sha256: "1".repeat(64),
                 },
             ],
+            code_artifacts: vec![CodeArtifact {
+                code_artifact_id: identifier("artifact:model-code"),
+                path: "crates/materials_core/src/material_records.rs".to_owned(),
+                version: "fixture-v1".to_owned(),
+                source_sha256: "2".repeat(64),
+            }],
             processing_recipes: vec![ProcessingRecipe {
                 processing_recipe_id: identifier("recipe:fit"),
             }],
             measurements: vec![Measurement {
                 measurement_id: identifier("measurement:ellipsometry"),
+                dataset_id: identifier("dataset:ellipsometry"),
                 specimen_id: identifier("specimen:au:test"),
                 method: "ellipsometry".to_owned(),
                 instrument: "reported instrument".to_owned(),
@@ -2332,10 +2424,7 @@ mod tests {
             geometry: "reported geometry".to_owned(),
             constitutive_model: "Drude-Lorentz".to_owned(),
             constitutive_model_version: "1".to_owned(),
-            conditions: BTreeMap::from([(
-                "wavelength".to_owned(),
-                "0.500 um".to_owned(),
-            )]),
+            conditions: BTreeMap::from([("wavelength".to_owned(), "0.500 um".to_owned())]),
             state_history: Vec::new(),
             parameters: BTreeMap::from([("oscillators".to_owned(), "3".to_owned())]),
             convergence_settings: BTreeMap::from([(
@@ -2695,12 +2784,11 @@ mod tests {
         );
 
         let mut typed_missing_pressure = state.clone();
-        typed_missing_pressure.pressure_pa = PropertyObservation::missing(
-            Missingness::BelowDetectionLimit {
+        typed_missing_pressure.pressure_pa =
+            PropertyObservation::missing(Missingness::BelowDetectionLimit {
                 upper_bound: 1.0,
                 unit: "Pa".to_owned(),
-            },
-        );
+            });
         assert!(typed_missing_pressure.validate().is_ok());
         assert!(matches!(
             typed_missing_pressure.pressure_pa,
@@ -2710,36 +2798,33 @@ mod tests {
         ));
 
         let mut malformed_missing_pressure = state.clone();
-        malformed_missing_pressure.pressure_pa = PropertyObservation::missing(
-            Missingness::BelowDetectionLimit {
+        malformed_missing_pressure.pressure_pa =
+            PropertyObservation::missing(Missingness::BelowDetectionLimit {
                 upper_bound: f64::NAN,
                 unit: String::new(),
-            },
-        );
+            });
         assert_eq!(
             malformed_missing_pressure.validate().unwrap_err(),
             "state pressure missingness detection limit must be finite and nonnegative"
         );
 
         let mut dimensionally_invalid_temperature = state.clone();
-        dimensionally_invalid_temperature.temperature_k = PropertyObservation::missing(
-            Missingness::BelowDetectionLimit {
+        dimensionally_invalid_temperature.temperature_k =
+            PropertyObservation::missing(Missingness::BelowDetectionLimit {
                 upper_bound: 1.0,
                 unit: "m".to_owned(),
-            },
-        );
+            });
         assert_eq!(
             dimensionally_invalid_temperature.validate().unwrap_err(),
             "state temperature missingness detection-limit unit must be K"
         );
 
         let mut invalid_atmosphere_detection_limit = state.clone();
-        invalid_atmosphere_detection_limit.atmosphere = PropertyObservation::missing(
-            Missingness::BelowDetectionLimit {
+        invalid_atmosphere_detection_limit.atmosphere =
+            PropertyObservation::missing(Missingness::BelowDetectionLimit {
                 upper_bound: 1.0,
                 unit: "Pa".to_owned(),
-            },
-        );
+            });
         assert_eq!(
             invalid_atmosphere_detection_limit.validate().unwrap_err(),
             "state atmosphere missingness does not support a detection limit"
@@ -2797,12 +2882,11 @@ mod tests {
         }
 
         let mut typed_missing_thickness = specimen.clone();
-        typed_missing_thickness.thickness_m = PropertyObservation::missing(
-            Missingness::BelowDetectionLimit {
+        typed_missing_thickness.thickness_m =
+            PropertyObservation::missing(Missingness::BelowDetectionLimit {
                 upper_bound: 1.0e-9,
                 unit: "m".to_owned(),
-            },
-        );
+            });
         assert!(typed_missing_thickness.validate().is_ok());
         assert!(matches!(
             typed_missing_thickness.thickness_m,
@@ -2812,36 +2896,33 @@ mod tests {
         ));
 
         let mut malformed_missing_thickness = specimen.clone();
-        malformed_missing_thickness.thickness_m = PropertyObservation::missing(
-            Missingness::BelowDetectionLimit {
+        malformed_missing_thickness.thickness_m =
+            PropertyObservation::missing(Missingness::BelowDetectionLimit {
                 upper_bound: -1.0,
                 unit: "m".to_owned(),
-            },
-        );
+            });
         assert_eq!(
             malformed_missing_thickness.validate().unwrap_err(),
             "specimen thickness missingness detection limit must be finite and nonnegative"
         );
 
         let mut dimensionally_invalid_thickness = specimen.clone();
-        dimensionally_invalid_thickness.thickness_m = PropertyObservation::missing(
-            Missingness::BelowDetectionLimit {
+        dimensionally_invalid_thickness.thickness_m =
+            PropertyObservation::missing(Missingness::BelowDetectionLimit {
                 upper_bound: 1.0e-9,
                 unit: "K".to_owned(),
-            },
-        );
+            });
         assert_eq!(
             dimensionally_invalid_thickness.validate().unwrap_err(),
             "specimen thickness missingness detection-limit unit must be m"
         );
 
         let mut invalid_texture_detection_limit = specimen.clone();
-        invalid_texture_detection_limit.texture = PropertyObservation::missing(
-            Missingness::BelowDetectionLimit {
+        invalid_texture_detection_limit.texture =
+            PropertyObservation::missing(Missingness::BelowDetectionLimit {
                 upper_bound: 1.0,
                 unit: "1".to_owned(),
-            },
-        );
+            });
         assert_eq!(
             invalid_texture_detection_limit.validate().unwrap_err(),
             "specimen texture missingness does not support a detection limit"
@@ -3262,8 +3343,7 @@ mod tests {
             EvidenceBasis::ExperimentalDirect,
         );
         direct.quantity_id = identifier("quantity:psi-delta");
-        direct.conditions =
-            BTreeMap::from([("wavelength".to_owned(), "0.600 um".to_owned())]);
+        direct.conditions = BTreeMap::from([("wavelength".to_owned(), "0.600 um".to_owned())]);
         let mut fitted = scalar_quantity(
             QuantityOrigin::Measurement {
                 measurement_id: identifier("measurement:ellipsometry"),
@@ -3385,10 +3465,9 @@ mod tests {
         );
         fitted.quantity_id = identifier("quantity:fitted-permittivity");
         let mut graph = graph_with_quantities(vec![direct, fitted.clone()]);
-        graph.model_runs.push(model_run(
-            "model:lifshitz:v1",
-            vec![fitted.quantity_id],
-        ));
+        graph
+            .model_runs
+            .push(model_run("model:lifshitz:v1", vec![fitted.quantity_id]));
         assert!(graph.validate().is_ok());
 
         let mut model_name_mismatch = graph.clone();
@@ -3467,8 +3546,7 @@ mod tests {
         assert!(graph.validate().is_ok());
 
         let mut strain_match = graph.clone();
-        strain_match.states[0].strain =
-            PropertyObservation::observed(vec![0.001, -0.002]);
+        strain_match.states[0].strain = PropertyObservation::observed(vec![0.001, -0.002]);
         strain_match.quantities[0]
             .conditions
             .insert("strain_component:1".to_owned(), "-0.002".to_owned());
@@ -3514,6 +3592,7 @@ mod tests {
     fn evidence_graph_rejects_unknown_specimen_reference() {
         let measurement = Measurement {
             measurement_id: identifier("measurement:missing-specimen"),
+            dataset_id: identifier("dataset:test"),
             specimen_id: identifier("specimen:absent"),
             method: "spectroscopic ellipsometry".to_owned(),
             instrument: "instrument identity retained in source record".to_owned(),
@@ -3538,6 +3617,11 @@ mod tests {
             materials: Vec::new(),
             states: Vec::new(),
             specimens: Vec::new(),
+            datasets: vec![Dataset {
+                dataset_id: identifier("dataset:test"),
+                title: "Test dataset".to_owned(),
+                raw_artifact_ids: vec![identifier("artifact:raw")],
+            }],
             raw_artifacts: vec![RawArtifact {
                 raw_artifact_id: identifier("artifact:raw"),
                 path: "inputs/test-source.csv".to_owned(),
@@ -3546,6 +3630,7 @@ mod tests {
                 locator: "Table 1".to_owned(),
                 source_sha256: "0".repeat(64),
             }],
+            code_artifacts: Vec::new(),
             processing_recipes: vec![ProcessingRecipe {
                 processing_recipe_id: identifier("recipe:ellipsometry"),
             }],
@@ -3555,6 +3640,49 @@ mod tests {
             derived_values: Vec::new(),
         };
         assert!(graph.validate().is_err());
+    }
+
+    #[test]
+    fn evidence_graph_rejects_unknown_dataset_reference() {
+        let mut graph = graph_with_quantities(vec![scalar_quantity(
+            QuantityOrigin::Measurement {
+                measurement_id: identifier("measurement:ellipsometry"),
+            },
+            EvidenceBasis::ExperimentalDirect,
+        )]);
+        graph.measurements[0].dataset_id = identifier("dataset:absent");
+
+        assert_eq!(
+            graph.validate().unwrap_err(),
+            "measurement measurement:ellipsometry references unknown dataset dataset:absent"
+        );
+    }
+
+    #[test]
+    fn evidence_graph_rejects_measurement_artifact_outside_dataset() {
+        let mut graph = graph_with_quantities(vec![scalar_quantity(
+            QuantityOrigin::Measurement {
+                measurement_id: identifier("measurement:ellipsometry"),
+            },
+            EvidenceBasis::ExperimentalDirect,
+        )]);
+        graph.datasets[0].raw_artifact_ids = vec![identifier("artifact:fit-residuals")];
+
+        assert_eq!(
+            graph.validate().unwrap_err(),
+            "measurement measurement:ellipsometry raw artifact artifact:raw is absent from dataset dataset:ellipsometry"
+        );
+    }
+
+    #[test]
+    fn evidence_graph_rejects_unknown_model_code_artifact() {
+        let mut graph = graph_with_model_and_derived();
+        graph.code_artifacts.clear();
+
+        assert_eq!(
+            graph.validate().unwrap_err(),
+            "model run model:drude-lorentz:v1 references unknown code artifact artifact:model-code"
+        );
     }
 
     #[test]
@@ -3573,8 +3701,7 @@ mod tests {
         let mut substrate = two_specimen_cycle.specimens[0].clone();
         substrate.specimen_id = identifier("specimen:au:substrate");
         substrate.substrate_specimen_id = Some(identifier("specimen:au:test"));
-        two_specimen_cycle.specimens[0].substrate_specimen_id =
-            Some(substrate.specimen_id.clone());
+        two_specimen_cycle.specimens[0].substrate_specimen_id = Some(substrate.specimen_id.clone());
         two_specimen_cycle.specimens.push(substrate);
         assert_eq!(
             two_specimen_cycle.validate().unwrap_err(),
