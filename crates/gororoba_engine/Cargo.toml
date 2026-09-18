@@ -35,7 +35,7 @@ rand = { workspace = true }
 serde.workspace = true
 sha2.workspace = true
 sign_imbalance = { path = "../sign_imbalance" }
-spectral_core = { version = "0.1.0", path = "../spectral_core" }
+spectral_core = { version = "0.2.0", path = "../spectral_core" }
 spin_tomography_core = { path = "../spin_tomography_core" }
 stats_core = { path = "../stats_core" }
 

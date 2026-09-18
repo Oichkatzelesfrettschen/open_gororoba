@@ -172,6 +172,235 @@ impl LatticeUnits {
     pub fn diffusivity_to_si(&self, value: f64) -> f64 {
         value * self.diffusivity_unit_m2_s
     }
+    /// Return nu = (tau - 1/2) * dx^2 / (3 * dt) for D3Q19 BGK.
+    pub fn kinematic_viscosity_from_tau(&self, tau: f64) -> Result<f64, UnitError> {
+        if !tau.is_finite() || tau <= 0.5 {
+            return Err(UnitError("BGK relaxation time must exceed one half"));
+        }
+        let viscosity = self.diffusivity_to_si((tau - 0.5) / 3.0);
+        if !positive(viscosity) {
+            return Err(UnitError("physical viscosity overflow or underflow"));
+        }
+        Ok(viscosity)
+    }
+    /// Return a finite BGK relaxation time representing positive physical viscosity.
+    pub fn tau_from_kinematic_viscosity(&self, value_m2_s: f64) -> Result<f64, UnitError> {
+        if !positive(value_m2_s) {
+            return Err(UnitError("physical viscosity must be finite and positive"));
+        }
+        let tau = 0.5 + 3.0 * self.diffusivity_to_lattice(value_m2_s);
+        self.kinematic_viscosity_from_tau(tau)?;
+        Ok(tau)
+    }
+}
+
+/// Comparison metadata for an unforced, periodic, constant-viscosity BGK run.
+///
+/// The initial-data identifier names the same dimensionless spatial profile on
+/// every mesh; `velocity_scale_lattice` supplies its amplitude. Callers must
+/// initialize that profile and exclude forcing, filtering and viscosity changes.
+/// These metadata checks do not inspect solver state or certify continuum error.
+#[derive(Clone, Debug)]
+pub struct PeriodicFlowParameters {
+    mesh: UniformCartesianMesh,
+    units: LatticeUnits,
+    tau: f64,
+    initial_data_id: String,
+    velocity_scale_lattice: f64,
+    steps: usize,
+    domain_lengths_m: [f64; 3],
+    viscosity_m2_s: f64,
+    velocity_scale_m_s: f64,
+    end_time_s: f64,
+}
+
+fn exact_count(value: usize) -> Result<f64, UnitError> {
+    if value as u128 > 1_u128 << 53 {
+        return Err(UnitError("count exceeds the exact binary64 integer range"));
+    }
+    Ok(value as f64)
+}
+
+impl PeriodicFlowParameters {
+    pub fn new(
+        mesh: UniformCartesianMesh,
+        units: LatticeUnits,
+        tau: f64,
+        initial_data_id: impl Into<String>,
+        velocity_scale_lattice: f64,
+        steps: usize,
+    ) -> Result<Self, UnitError> {
+        let initial_data_id = initial_data_id.into();
+        if mesh.spacing_m() != units.spacing_m() {
+            return Err(UnitError("mesh and lattice-unit spacing differ"));
+        }
+        if initial_data_id.trim().is_empty()
+            || !velocity_scale_lattice.is_finite()
+            || velocity_scale_lattice < 0.0
+            || steps == 0
+        {
+            return Err(UnitError(
+                "initial-data identity, velocity scale or step count",
+            ));
+        }
+        let mut domain_lengths_m = [0.0; 3];
+        for (axis, length) in domain_lengths_m.iter_mut().enumerate() {
+            // A periodic mesh spans N spacings, not the N-1 between stored endpoints.
+            *length = exact_count(mesh.dimensions()[axis])? * mesh.spacing_m();
+            if !positive(*length) || !(mesh.origin_m()[axis] + *length).is_finite() {
+                return Err(UnitError("periodic domain extent overflow or underflow"));
+            }
+        }
+        let viscosity_m2_s = units.kinematic_viscosity_from_tau(tau)?;
+        let velocity_scale_m_s = units.velocity_to_si(velocity_scale_lattice);
+        let end_time_s = exact_count(steps)? * units.timestep_s();
+        if !velocity_scale_m_s.is_finite()
+            || (velocity_scale_lattice > 0.0 && velocity_scale_m_s == 0.0)
+            || !positive(end_time_s)
+        {
+            return Err(UnitError(
+                "physical velocity or endpoint overflow or underflow",
+            ));
+        }
+        Ok(Self {
+            mesh,
+            units,
+            tau,
+            initial_data_id,
+            velocity_scale_lattice,
+            steps,
+            domain_lengths_m,
+            viscosity_m2_s,
+            velocity_scale_m_s,
+            end_time_s,
+        })
+    }
+    pub fn mesh(&self) -> &UniformCartesianMesh {
+        &self.mesh
+    }
+    pub fn units(&self) -> &LatticeUnits {
+        &self.units
+    }
+    pub fn tau(&self) -> f64 {
+        self.tau
+    }
+    pub fn initial_data_id(&self) -> &str {
+        &self.initial_data_id
+    }
+    pub fn velocity_scale_lattice(&self) -> f64 {
+        self.velocity_scale_lattice
+    }
+    pub fn steps(&self) -> usize {
+        self.steps
+    }
+    pub fn domain_lengths_m(&self) -> [f64; 3] {
+        self.domain_lengths_m
+    }
+    pub fn viscosity_m2_s(&self) -> f64 {
+        self.viscosity_m2_s
+    }
+    pub fn velocity_scale_m_s(&self) -> f64 {
+        self.velocity_scale_m_s
+    }
+    pub fn end_time_s(&self) -> f64 {
+        self.end_time_s
+    }
+    /// Reject different physical parameters or declared initial-data profiles.
+    ///
+    /// Derived binary64 quantities use a relative tolerance of 32 * EPSILON,
+    /// with no absolute tolerance near zero. This accounts for unit-conversion
+    /// rounding; it is not an interval proof of equality of real-valued inputs.
+    pub fn require_same_continuum_problem(&self, other: &Self) -> Result<(), UnitError> {
+        fn equivalent(left: f64, right: f64) -> bool {
+            if left == right {
+                return true;
+            }
+            let scale = left.abs().max(right.abs());
+            (left / scale - right / scale).abs() <= 32.0 * f64::EPSILON
+        }
+        if self.initial_data_id != other.initial_data_id {
+            return Err(UnitError("initial-data profiles differ"));
+        }
+        for axis in 0..3 {
+            if !equivalent(self.mesh.origin_m()[axis], other.mesh.origin_m()[axis])
+                || !equivalent(self.domain_lengths_m[axis], other.domain_lengths_m[axis])
+            {
+                return Err(UnitError("physical periodic domains differ"));
+            }
+        }
+        for (left, right, error) in [
+            (
+                self.viscosity_m2_s,
+                other.viscosity_m2_s,
+                "physical viscosities differ",
+            ),
+            (
+                self.velocity_scale_m_s,
+                other.velocity_scale_m_s,
+                "physical initial velocities differ",
+            ),
+            (
+                self.end_time_s,
+                other.end_time_s,
+                "physical endpoints differ",
+            ),
+            (
+                self.units.density_ref_kg_m3(),
+                other.units.density_ref_kg_m3(),
+                "reference mass densities differ",
+            ),
+        ] {
+            if !equivalent(left, right) {
+                return Err(UnitError(error));
+            }
+        }
+        Ok(())
+    }
+    /// Refine dx by an integer factor and dt by its square at fixed physical data.
+    pub fn diffusive_refinement(&self, factor: u32) -> Result<Self, UnitError> {
+        if factor < 2 {
+            return Err(UnitError("refinement factor must be at least two"));
+        }
+        let factor_count = usize::try_from(factor)
+            .map_err(|_| UnitError("refinement factor exceeds index range"))?;
+        let factor_squared = factor_count
+            .checked_mul(factor_count)
+            .ok_or(UnitError("refinement factor square overflow"))?;
+        let mut dimensions = self.mesh.dimensions();
+        for size in &mut dimensions {
+            *size = size
+                .checked_mul(factor_count)
+                .ok_or(UnitError("refined mesh dimension overflow"))?;
+        }
+        let steps = self
+            .steps
+            .checked_mul(factor_squared)
+            .ok_or(UnitError("refined step count overflow"))?;
+        let mesh = UniformCartesianMesh::new(
+            dimensions,
+            self.mesh.origin_m(),
+            self.mesh.spacing_m() / f64::from(factor),
+        )?;
+        let units = LatticeUnits::new(
+            &mesh,
+            self.units.timestep_s() / exact_count(factor_squared)?,
+            self.units.density_ref_kg_m3(),
+        )?;
+        let velocity_scale_lattice = self.velocity_scale_lattice / f64::from(factor);
+        if self.velocity_scale_lattice > 0.0 && velocity_scale_lattice == 0.0 {
+            return Err(UnitError("refined lattice velocity underflow"));
+        }
+        let refined = Self::new(
+            mesh,
+            units,
+            self.tau,
+            self.initial_data_id.clone(),
+            velocity_scale_lattice,
+            steps,
+        )?;
+        self.require_same_continuum_problem(&refined)?;
+        Ok(refined)
+    }
 }
 
 /// Axisymmetric steady radial-flow ideal-MHD construction; no external field is added.
@@ -254,6 +483,183 @@ mod tests {
                 (VACUUM_PERMEABILITY_H_M * 1e-20).sqrt() * spacing / 2.0,
             );
         }
+    }
+    fn periodic_flow() -> PeriodicFlowParameters {
+        let mesh = UniformCartesianMesh::new([8, 8, 2], [0.0; 3], 1.0).unwrap();
+        let units = LatticeUnits::new(&mesh, 1.0, 1.0).unwrap();
+        PeriodicFlowParameters::new(mesh, units, 0.8, "xy-vortex", 0.005, 20).unwrap()
+    }
+    #[test]
+    fn bgk_viscosity_conversion_rejects_nonphysical_and_unrepresentable_values() {
+        let flow = periodic_flow();
+        let units = flow.units();
+        close(units.kinematic_viscosity_from_tau(0.8).unwrap(), 0.1);
+        close(units.tau_from_kinematic_viscosity(0.1).unwrap(), 0.8);
+        for tau in [0.0, 0.5, -1.0, f64::INFINITY, f64::NAN] {
+            assert!(units.kinematic_viscosity_from_tau(tau).is_err());
+        }
+        for viscosity in [
+            0.0,
+            -1.0,
+            f64::INFINITY,
+            f64::NAN,
+            f64::MAX,
+            f64::from_bits(1),
+        ] {
+            assert!(units.tau_from_kinematic_viscosity(viscosity).is_err());
+        }
+    }
+    #[test]
+    fn diffusive_refinement_preserves_physical_data_and_scales_lattice_parameters() {
+        let coarse = periodic_flow();
+        for factor in [2, 3] {
+            let fine = coarse.diffusive_refinement(factor).unwrap();
+            let scale = f64::from(factor);
+            assert_eq!(
+                fine.mesh().dimensions(),
+                [
+                    8 * factor as usize,
+                    8 * factor as usize,
+                    2 * factor as usize
+                ]
+            );
+            close(fine.units().spacing_m(), coarse.units().spacing_m() / scale);
+            close(
+                fine.units().timestep_s(),
+                coarse.units().timestep_s() / scale.powi(2),
+            );
+            close(
+                fine.velocity_scale_lattice(),
+                coarse.velocity_scale_lattice() / scale,
+            );
+            assert_eq!(fine.steps(), coarse.steps() * (factor * factor) as usize);
+            assert_eq!(fine.tau(), coarse.tau());
+            coarse.require_same_continuum_problem(&fine).unwrap();
+            fine.require_same_continuum_problem(&coarse).unwrap();
+            close(fine.viscosity_m2_s(), coarse.viscosity_m2_s());
+            close(fine.velocity_scale_m_s(), coarse.velocity_scale_m_s());
+            close(fine.end_time_s(), coarse.end_time_s());
+        }
+    }
+    #[test]
+    fn continuum_comparison_rejects_old_lattice_parameters_and_changed_data() {
+        let coarse = periodic_flow();
+        let fine = coarse.diffusive_refinement(2).unwrap();
+        for (tau, profile, velocity, steps) in [
+            (
+                fine.tau(),
+                fine.initial_data_id(),
+                coarse.velocity_scale_lattice(),
+                fine.steps(),
+            ),
+            (
+                fine.tau(),
+                fine.initial_data_id(),
+                fine.velocity_scale_lattice(),
+                coarse.steps(),
+            ),
+            (
+                0.9,
+                fine.initial_data_id(),
+                fine.velocity_scale_lattice(),
+                fine.steps(),
+            ),
+            (
+                fine.tau(),
+                "different-profile",
+                fine.velocity_scale_lattice(),
+                fine.steps(),
+            ),
+        ] {
+            let mismatched = PeriodicFlowParameters::new(
+                fine.mesh().clone(),
+                fine.units().clone(),
+                tau,
+                profile,
+                velocity,
+                steps,
+            )
+            .unwrap();
+            assert!(coarse.require_same_continuum_problem(&mismatched).is_err());
+        }
+        for (dimensions, origin, density) in [
+            ([16, 8, 2], [0.0; 3], 1.0),
+            ([8, 8, 2], [0.0, 0.125, 0.0], 1.0),
+            ([8, 8, 2], [0.0; 3], 2.0),
+        ] {
+            let mesh = UniformCartesianMesh::new(dimensions, origin, 1.0).unwrap();
+            let units = LatticeUnits::new(&mesh, 1.0, density).unwrap();
+            let mismatched = PeriodicFlowParameters::new(
+                mesh,
+                units,
+                coarse.tau(),
+                coarse.initial_data_id(),
+                coarse.velocity_scale_lattice(),
+                coarse.steps(),
+            )
+            .unwrap();
+            assert!(coarse.require_same_continuum_problem(&mismatched).is_err());
+        }
+    }
+    #[test]
+    fn invalid_flow_metadata_and_refinement_overflow_are_rejected() {
+        let flow = periodic_flow();
+        for (profile, velocity, steps) in [
+            (" ", 0.005, 20),
+            ("xy-vortex", f64::NAN, 20),
+            ("xy-vortex", -0.005, 20),
+            ("xy-vortex", 0.005, 0),
+        ] {
+            assert!(
+                PeriodicFlowParameters::new(
+                    flow.mesh().clone(),
+                    flow.units().clone(),
+                    flow.tau(),
+                    profile,
+                    velocity,
+                    steps,
+                )
+                .is_err()
+            );
+        }
+        let other_mesh = UniformCartesianMesh::new([8, 8, 2], [0.0; 3], 0.5).unwrap();
+        assert!(
+            PeriodicFlowParameters::new(
+                other_mesh,
+                flow.units().clone(),
+                flow.tau(),
+                "xy-vortex",
+                0.005,
+                20,
+            )
+            .is_err()
+        );
+        for factor in [0, 1, u32::MAX] {
+            assert!(flow.diffusive_refinement(factor).is_err());
+        }
+        if let Ok(steps) = usize::try_from((1_u128 << 53) + 1) {
+            assert!(
+                PeriodicFlowParameters::new(
+                    flow.mesh().clone(),
+                    flow.units().clone(),
+                    flow.tau(),
+                    "xy-vortex",
+                    0.005,
+                    steps,
+                )
+                .is_err()
+            );
+        }
+        let tiny = PeriodicFlowParameters::new(
+            flow.mesh().clone(),
+            flow.units().clone(),
+            flow.tau(),
+            "xy-vortex",
+            f64::from_bits(1),
+            20,
+        )
+        .unwrap();
+        assert!(tiny.diffusive_refinement(2).is_err());
     }
     #[test]
     fn parker_radial_scaling_and_source_surface() {
