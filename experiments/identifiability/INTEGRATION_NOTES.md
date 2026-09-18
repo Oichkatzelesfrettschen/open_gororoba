@@ -1,0 +1,114 @@
+# Integration notes
+
+The repository already contains mature Casimir-Lifshitz kernels, optical material models, a claim/falsification registry, and generated audit artifacts. The identifiability work should therefore be an inference layer over those existing forward models rather than another independent physics implementation.
+
+## Immediate integration targets
+
+1. Replace the synthetic boundary target with predictions from `quantum_core::casimir::lifshitz` and specimen optical data from `materials_core`.
+2. Treat patch electrostatics, distance offset, roughness, thickness, optical-model uncertainty, drift, and thermal terms as explicit nuisance tangent vectors.
+3. Compute the whitened nuisance-orthogonal signature and efficient Fisher information over candidate measurement schedules.
+4. Adversarially expand the nuisance basis before promoting any claim.
+5. Register computational claims and falsifiers through the canonical control-plane workflow; do not make this directory a competing registry.
+
+## New hypotheses
+
+- H1: Reversed multilayer ordering has a nonzero Lifshitz differential signature after realistic Au-cap screening.
+- H2: H1 remains identifiable after patch, gap, roughness, thickness, and optical uncertainty are jointly fitted.
+- H3: Multi-observable closure (force plus an independently calibrated boundary-conditioned material observable) increases the minimum principal angle to the conventional nuisance manifold.
+- H4: Symmetry-projected control schedules can be optimized by efficient Fisher information rather than raw response amplitude.
+- H5: The existing claim/falsification registry can use nuisance-orthogonal information as a quantitative promotion gate, turning qualitative falsifiers into executable design criteria.
+- H6: The same inference kernel can score non-Casimir forward models (quantum recovery, temporal-order sensing, plasma/positron transport) without merging their physical mechanisms.
+- H7: Numerical convergence should include convergence of target/nuisance Jacobians and Fisher geometry, not only convergence of mean observables.
+
+## Proposed adversarial evidence ladder
+
+- L0: forward model executes and satisfies invariants.
+- L1: target is detectable against measurement noise.
+- L2: target is locally identifiable against the baseline nuisance family.
+- L3: target survives physically justified nuisance-family expansion.
+- L4: target survives held-out controls/specimens and covariance misspecification tests.
+- L5: one calibrated parameter set closes multiple independent observables.
+- L6: independent experimental replication.
+
+The level is metadata about evidential robustness, not a probability that the claim is true.
+
+## Architecture consequence
+
+The clean repository boundary is `forward physics -> sensitivity/Jacobian -> identifiability -> claim registry`. Physics crates remain responsible for equations and observables. A small inference crate should own whitening, rank-revealing factorization, principal angles, Schur complements, Fisher metrics, schedule optimization, and adversarial nuisance expansion. Registry/data crates should persist provenance and verdicts. This avoids contaminating domain physics with claim semantics while allowing every differentiable model to use the same falsification machinery.
+
+## Mathematical implementation note
+
+Do not form `P_N = N(N^T N)^-1 N^T` directly in production. Whiten first, use pivoted QR or SVD to obtain a rank-revealing nuisance basis, project the target with that orthonormal basis, and report singular values/effective rank. The very large nuisance condition number observed in the boundary prototype is itself a warning that normal-equation implementations would be numerically fragile.
+
+For nonlinear models, `N` is only the local nuisance tangent space. L3/L4 evaluation should therefore sample or optimize over the nuisance manifold, compare profile likelihood/Bayes evidence where appropriate, and detect curvature-driven mimicry that a single Jacobian cannot see.
+
+## Derived claim schema extension
+
+A future canonical experiment record can carry `target_signature_artifact`, `nuisance_family_id`, `covariance_artifact`, `principal_angle_min`, `effective_fisher_information`, `effective_rank`, `adversarial_level`, and `held_out_verdict`. These are proposed fields, not current canonical schema.
+
+## Novel consequence: executable falsification closure
+
+A claim becomes mechanically auditable when its forward-model commit, input-data hashes, target derivative, nuisance-family definition, covariance model, selected schedule, and verdict are all content-addressed. Re-running the experiment can then regenerate both the prediction and the evidential level. This turns provenance from documentation into part of the mathematical experiment.
+
+## Next implementation sequence
+
+1. Add a Rust inference kernel using SVD/QR with deterministic tests against analytic subspace cases.
+2. Add a Casimir adapter that calls existing `quantum_core`/`materials_core` functions and finite-differences or differentiates physical parameters.
+3. Add covariance-aware schedule optimization and adversarial nuisance expansion.
+4. Emit a machine-readable experiment artifact; only then propose canonical registry schema changes.
+5. Run native workspace tests/CI and compare Rust results against this NumPy oracle before considering merge.
+
+## Physical-data requirement
+
+Literature-calibrated optical models are sufficient for sensitivity studies, not for claiming a specimen-specific force residual. Physical L3 requires optical/thickness/roughness/electrostatic characterization of the actual specimens and a covariance model tied to the measurement apparatus.
+
+## Further falsification search
+
+The first physical Casimir adapter should deliberately search for nuisance models that reproduce the predicted reversed-stack signature: gap-dependent contact potential, patch spectra, Au-cap thickness variation, interdiffusion/roughness, dielectric-model extrapolation, and separation-calibration bias. Success means finding a schedule where the Lifshitz target remains separated after these are allowed, not merely finding a large force difference.
+
+The strongest negative control is a deliberately fabricated null pair whose electromagnetic model predicts negligible ordering contrast but whose fabrication/electrostatic systematics are otherwise similar. A nonzero differential signal in that null pair should veto promotion of the target claim until explained.
+
+## Mathematical novelty candidate
+
+Define an inference-refinement criterion in addition to ordinary observable convergence. For refinement levels `h`, require convergence of the whitened target/nuisance subspaces, principal angles, and Fisher spectrum. A discretization that converges in force but not in these sensitivity objects is not adequate for inverse inference. This is a candidate methodological contribution, not yet a proved theorem.
+
+A possible quantitative criterion is `||P_N(h)-P_N(h/2)||_2 -> 0`, `|sin(theta_h)-sin(theta_h/2)| -> 0`, and convergence of nonzero Fisher eigenvalues. Rank changes under refinement must be reported rather than silently regularized away.
+
+## Minimax design objective
+
+For an admitted family of conventional mechanisms `M`, choose schedule `u` to maximize the smallest target-vs-conventional separation, e.g. `u* = argmax_u min_{m in M} D(P_target(.|u), P_m(.|u))`, using a locally efficient-Fisher approximation or a global likelihood/Chernoff/Bayes criterion as appropriate. This is stronger than maximizing the nominal target amplitude.
+
+## Cross-domain invariance
+
+The inference kernel is domain-agnostic only at the level of probability/response geometry. Each adapter must define its own physically justified target, nuisance family, invariants, units, and admissible controls. Shared inference must never be used to imply shared microscopic physics.
+
+## Research-program consequence
+
+This layer supplies a principled pruning mechanism for speculative branches. A visually or mathematically interesting mechanism that cannot be mapped to an observable target signature, differentiated from conventional nuisance families, and assigned a falsifier remains exploratory rather than entering the physical-claim registry. Conversely, unconventional mathematics can be retained when it produces a distinct, testable signature. The criterion is operational distinguishability, not familiarity.
+
+## Required falsification gates
+
+A physical claim is not promoted from simulation unless its target component survives independently justified nuisance-family expansion, mesh/quadrature refinement, held-out control conditions, and uncertainty propagation. Exact target-shaped nuisance degeneracy must reduce identifiability to zero.
+
+## Implementation note
+
+The compact prototype currently depends on NumPy and is intentionally isolated under `experiments/`. The repository is Rust-first; production integration should move the linear algebra and experiment-design kernel into an existing or dedicated Rust crate rather than adding NumPy as a project runtime dependency.
+
+The remote workstation connector was unavailable during this integration, so repository-native Cargo/pytest/CI execution has not been claimed. The synthetic experiment itself was executed in the chat compute environment; repository code was inspected through the GitHub connection.
+
+## The README figures and the test figures describe different expansions
+
+`README.md` reports the boundary design at an initial identifiable fraction of
+0.228671 collapsing to 0.00199202 under cross-condition nuisance expansion.
+`test_identifiability_compiler.py` measures 0.264486 collapsing to 0.027178,
+and `boundary_problem` and `diagnostics` draw no random numbers, so both
+readings are exact for the inputs each uses. The test expands the nuisance
+basis by three columns: `s*c*z**3`, `s*c*z**5`, and a Gaussian in `d` centred
+at 220 with width 60. The README does not state which columns produced its
+figures, so the two are not comparable and the difference is a missing
+statement rather than a disagreement.
+
+The conclusion both readings support is the same and is what the design claims:
+the boundary-differential design is not robustly identifiable under plausible
+cross-condition expansion. Reconciling the two figure sets needs the README's
+expansion written down.
