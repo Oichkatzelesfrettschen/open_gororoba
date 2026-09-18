@@ -1,5 +1,6 @@
 use std::{
     collections::{BTreeMap, BTreeSet},
+    env,
     f64::consts::PI,
     fs,
     path::{Component, Path, PathBuf},
@@ -2152,7 +2153,20 @@ fn write_report(output_directory: &Path, generated: &GeneratedAudit) -> Result<(
 fn check_report(output_directory: &Path, generated: &GeneratedAudit) -> Result<()> {
     let mut failures = Vec::new();
     let repository_root = repo_root::resolve!();
+    // --output-directory arrives relative to the working directory, so the
+    // joined manifest path is relative too. The verifiers below strip the
+    // repository root from it, and stripping an absolute prefix from a
+    // relative path never matches: the audit then reported a path inside the
+    // repository as outside it. Resolving against the working directory here
+    // keeps both verifiers comparing two absolute paths.
     let manifest_path = output_directory.join(SOURCE_RETRIEVAL_MANIFEST);
+    let manifest_path = if manifest_path.is_absolute() {
+        manifest_path
+    } else {
+        env::current_dir()
+            .context("resolving the working directory for the manifest path")?
+            .join(manifest_path)
+    };
     if let Err(error) = verify_source_retrieval_manifest(&manifest_path, &repository_root) {
         failures.push(format!("source retrieval manifest: {error:#}"));
     }
