@@ -399,10 +399,6 @@ name = "workspace-routing"
 path = "src/bin/workspace_routing.rs"
 
 [[bin]]
-name = "local-nextest-plan"
-path = "src/bin/local_nextest_plan.rs"
-
-[[bin]]
 name = "pantheon-physicsforge-verify"
 path = "src/bin/pantheon_physicsforge_verify.rs"
 
@@ -429,10 +425,6 @@ path = "src/bin/semantic_atoms.rs"
 [[bin]]
 name = "evidence-provenance"
 path = "src/bin/evidence_provenance.rs"
-
-[[bin]]
-name = "registry-integrity"
-path = "src/bin/registry_integrity.rs"
 
 [[bin]]
 name = "execution-planning"

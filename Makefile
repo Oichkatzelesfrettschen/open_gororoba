@@ -1,14 +1,15 @@
 # ---- Phony targets ----
+.DEFAULT_GOAL := help
 .PHONY: help bootstrap-dev bootstrap-user-local-xdg fmt fmt-check
-.PHONY: test lint check smoke integrity integrity-rust math-verify governance-gate governance-gate-readonly wave6-gate pre-push-gate pre-push-gate-strict hooks-install hooks-install-strict hooks-status synthesis-execution-contract
+.PHONY: test lint check smoke integrity integrity-rust math-verify governance-gate governance-gate-readonly wave6-gate synthesis-execution-contract
 .PHONY: verify verify-grand verify-c010-c011-theses ansi-check ansi-check-strict terminology-gate doctor doctor-blas provenance cuda-source-ownership
 .PHONY: provenance-registry-index provenance-registry-export provenance-registry-verify provenance-registry-doctor provenance-registry-link-audit provenance-registry-recover
 .PHONY: rocq-proofs rocq-proofs-check rocq-project-check rocq-makefile-check lva-paper
 .PHONY: heavy test-inventory
-.PHONY: rust-test rust-clippy rust-semver-check rust-smoke rust-regression rust-regression-scoped miri-cd-kernel dep-audit cargo-deny-check mcp-smoke e027-validate studio-run studio-check profile-tensor-avt x87-strategy-bench x87-strategy-perf x87-strategy-hyperfine x87-strategy-flamegraph x87-givens-microbench x87-givens-microbench-perf jacobi-backend-sweep jacobi-backend-perf jacobi-backend-flamegraph jacobi-backend-samply jacobi-backend-samply-compare gpu-bench gpu-bench-ncu gpu-bench-nsys
+.PHONY: rust-test rust-clippy rust-semver-check rust-smoke rust-regression miri-cd-kernel dep-audit cargo-deny-check mcp-smoke e027-validate studio-run studio-check profile-tensor-avt x87-strategy-bench x87-strategy-perf x87-strategy-hyperfine x87-strategy-flamegraph x87-givens-microbench x87-givens-microbench-perf jacobi-backend-sweep jacobi-backend-perf jacobi-backend-flamegraph jacobi-backend-samply jacobi-backend-samply-compare gpu-bench gpu-bench-ncu gpu-bench-nsys
 .PHONY: cpu-bench cpu-bench-perf cpu-bench-cachegrind cpu-bench-flamegraph parity-bench parity-report
-.PHONY: pre-push-gate-scoped submodule-sync validate-local validate-local-xtask validate-ci validate-ci-registry validate-ci-rust validate-repository validate-repository-fast validate-governance validation-tools registry-validation-tools validation-tools-clean validation-tools-rebuild validation-tools-check-paths validation-lock-status data-core-pure-check
-.PHONY: gate-local gate-local-xtask gate-ci-registry gate-ci-rust gate-audit gate-audit-fast
+.PHONY: submodule-sync validate-ci validate-ci-registry validate-ci-rust validate-repository validate-repository-fast validate-governance validation-tools registry-validation-tools validation-tools-clean validation-tools-rebuild validation-tools-check-paths validation-resource-contract validation-resource-contract-authority validation-resource-contract-local-absence validation-resource-contract-registry validation-resource-contract-workers validation-resource-contract-collectors print-validation-resource-config require-ci-validation-authority casimir-optics-discrimination-audit-check casimir-optics-discrimination-output-check casimir-optics-discrimination-frontier-check casimir-optics-discrimination-experiment-output-check casimir-optics-discrimination-e043-output-check casimir-optics-discrimination-e044-output-check data-core-pure-check
+.PHONY: gate-ci-registry gate-ci-rust gate-audit gate-audit-fast
 .PHONY: cache-status cache-sweep cache-sweep-soft cache-purge-exp cache-check cache-check-force
 .PHONY: v6-branch-transport-artifacts pathion-control-artifacts pathion-resonance-artifacts
 .PHONY: registry-control-plane-gate-readonly registry-acceptance-gate-readonly validate-registry validate-registry-integrity validate-rust-integrity
@@ -60,32 +61,72 @@
 .PHONY: fetch-data fetch-data-redownload provenance-audit external-redownload-audit semantic-data-validate semantic-data-validate-strict run rocq latex latex-heliosphere latex-heliosphere-figs latex-heliosphere-clean latex-heliosphere-review
 .PHONY: docker-quantum-build docker-quantum-run docker-quantum-shell
 .PHONY: clean clean-builds clean-artifacts clean-all host-profile
+.PHONY: check-ansi check-terminology
+.PHONY: validate-rust-integrity-claims validate-rust-integrity-test-inventory validate-rust-integrity-typed-policy
+.PHONY: validate-registry-control-plane validate-registry-project-counter validate-registry-markdown validate-registry-governance validate-registry-semantic-atoms validate-registry-evidence-provenance validate-registry-execution-planning
 .PHONY: run-e183
 .PHONY: cpd-audit cpd-audit-strict cpd-audit-tooling cpd-audit-generated patch-static-mirror-headers cargo-cache-status cargo-cache-prune cargo-cache-smoke
 .PHONY: cd-row-upgrade-batch cd-row-upgrade-jacobson cd-row-upgrade-freudenthal
 
-.NOTPARALLEL: bootstrap-dev check smoke integrity integrity-rust validate-rust-integrity rust-smoke rust-regression rust-regression-scoped heavy cargo-deny-check validate-local validate-ci validate-ci-registry validate-ci-rust validate-repository validate-repository-fast validate-supply-chain validate-dataset-experiments pre-push-gate pre-push-gate-scoped pre-push-gate-strict governance-gate governance-gate-readonly registry-control-plane-gate-readonly registry-acceptance-gate-readonly validate-registry validation-tools
+.NOTPARALLEL: bootstrap-dev check smoke integrity integrity-rust validate-rust-integrity rust-smoke rust-regression heavy cargo-deny-check validate-ci validate-ci-registry validate-ci-rust validate-repository validate-repository-fast validate-supply-chain validate-dataset-experiments governance-gate governance-gate-readonly registry-control-plane-gate-readonly registry-acceptance-gate-readonly validate-registry validation-tools
 
-# Non-cargo make fanout: 75% of logical CPUs, minimum 1.
-# Cargo and Rust test runners use a shared worker budget equal to logical threads / 2.
-# The authoritative Rust equivalent is `xtask worker-budget`; this shell fallback
-# exists because $(shell ...) runs at Makefile parse time (cargo run too slow).
-NPROC := $(shell nproc 2>/dev/null || echo 4)
-NJOBS := $(shell expr $(NPROC) \* 3 / 4)
-WORKER_BUDGET ?= $(shell sh scripts/detect_worker_budget.sh)
-CARGO_JOBS ?= $(WORKER_BUDGET)
-NEXTEST_TEST_THREADS ?= $(WORKER_BUDGET)
-RUST_TEST_THREADS ?= $(WORKER_BUDGET)
-RAYON_THREADS ?= $(WORKER_BUDGET)
-# Clippy targets default to --all-targets because those dev-profile test
-# artifacts are reused by the subsequent `cargo nextest run --lib` lane.
-# Dropping --all-targets shortens clippy itself, but forces nextest to
-# rebuild the test profile from scratch and lengthens the combined gate.
-#
-# Override per invocation: RUST_SCOPED_CLIPPY_TARGETS=""
-RUST_SCOPED_CLIPPY_TARGETS ?= --all-targets
-LOCAL_NEXTEST_TIMING_JSON ?=
-RUST_LOCAL_SKIP_FILTERSET ?= not ((package(stats_core) and test(/ultrametric::baire_codebook::tests::(test_euclidean_ultrametricity_across_filtration_levels|test_intermediate_filtration_gradient|test_random_removal_control|test_lambda512_to_256_intermediate_gradient|test_lambda512_to_256_random_removal_control|test_sbase_to_lambda2048_gradient|test_l0_subpopulation_ultrametricity|test_lambda2048_to_1024_intermediate_gradient|test_l1_filter_on_l0_neg1_subset|test_recursive_simpsons_paradox_l2|test_cross_stratum_triple_decomposition|test_l0_zero_simpsons_paradox|test_dimensional_universality_simpsons_paradox|test_lambda1024_stratum_paradox_and_summary)/)) or (package(algebra_experimental) and test(test_thesis_e_xor_involution_invariants_128d)) or (package(algebra_experimental) and test(/test_v6_(2d_constrained_scan|joint_4d_optimization)/)) or (package(algebra_experimental) and test(/test_(enumerate_tower|fast_enumerate|benchmark_fast_vs_scalar|compressed_memory|enumerate_8192d|fast_enumerate_16384d)/)) or (package(algebra_experimental) and test(test_pathion_vk_spectrum)) or (package(algebra_analysis) and test(/test_(d64_flat_band|d16_d32_d64_scaling)/)) or (package(materials_core) and test(test_separating_degree_formula_universality)) or (package(gororoba_algebra) and test(test_split_octonion_attractor_regression_dim_128_256_guarded)) or (package(gororoba_cli) and test(test_zero_divisor_scaling)) or (package(sign_imbalance) and test(test_kubo_j1j2_alpha_sweep)) or test(/gpu/))
+# GitHub Actions exports every CPU visible to the validation process before
+# invoking Cargo workloads. Local commands retain each tool's automatic worker
+# detection instead of receiving a repository-defined limit.
+TRUSTED_GITHUB_ACTIONS := $(if $(and $(filter true,$(CI)),$(filter true,$(GITHUB_ACTIONS))),1,0)
+CI_WORKER_BUDGET ?=
+ifeq ($(and $(filter 1,$(TRUSTED_GITHUB_ACTIONS)),$(strip $(CI_WORKER_BUDGET))),)
+override WORKER_BUDGET := automatic
+VALIDATION_PARALLEL_ENV :=
+else
+override WORKER_BUDGET := $(CI_WORKER_BUDGET)
+override CARGO_JOBS := $(WORKER_BUDGET)
+override NEXTEST_TEST_THREADS := $(WORKER_BUDGET)
+override RUST_TEST_THREADS := $(WORKER_BUDGET)
+override RAYON_THREADS := $(WORKER_BUDGET)
+VALIDATION_PARALLEL_ENV := CARGO_BUILD_JOBS=$(CARGO_JOBS) RAYON_NUM_THREADS=$(RAYON_THREADS) RUST_TEST_THREADS=$(RUST_TEST_THREADS)
+endif
+CI_ONLY_VALIDATION_GOALS := test lint check smoke integrity integrity-rust \
+                           math-verify fmt-check governance-gate governance-gate-readonly \
+	                           wave6-gate ndlb-gate validate-ci \
+	                           validate-ci-registry validate-ci-rust validate-ci-scoped-rust \
+	                           validate-ci-scoped-clippy validate-ci-scoped-light \
+	                           validate-ci-scoped-heavy validate-ci-scoped-rust-lane \
+                           validate-repository validate-repository-fast \
+                           validate-governance validate-rust-integrity validate-registry \
+                           validate-registry-integrity validation-tools \
+                           registry-validation-tools validation-tools-rebuild \
+                           validation-tools-check-paths validation-resource-contract \
+                           validate-static validate-static-and-registry \
+                           validate-comprehensive validate-supply-chain \
+                           validate-dataset-experiments rust-test rust-clippy \
+                           rust-smoke rust-regression ansi-check ansi-check-strict \
+                           terminology-gate casimir-optics-discrimination-audit-check \
+                           supply-chain-gate gate-fast gate-warm gate-deep \
+                           gate-ci-registry gate-ci-rust gate-audit gate-audit-fast \
+                           audit audit-comprehensive audit-comprehensive-structured \
+                           audit-deep audit-deep-structured dep-audit cargo-deny-check \
+                           cpd-audit cpd-audit-strict cpd-audit-tooling cpd-audit-generated \
+                           repo-audit repo-audit-strict repo-audit-strict-unjustified \
+                           ref-audit ref-audit-strict docs-gate docs-freshness \
+                           docs-redirect-check rocq-proofs-check rocq-project-check \
+                           rocq-makefile-check registry-control-plane-gate \
+                           registry-control-plane-gate-readonly registry-semantic-atoms-gate \
+                           registry-evidence-provenance-gate \
+                           registry-execution-planning-gate \
+                           registry-integrity-resolution-gate registry-acceptance-gate \
+                           registry-acceptance-gate-readonly registry-csv-pipeline-gate \
+                           provenance-audit provenance-registry-link-audit \
+                           external-redownload-audit semantic-data-validate \
+                           semantic-data-validate-strict data-core-pure-check \
+                           db-schema-drift-check test-inventory mcp-smoke e027-validate \
+                           studio-check cargo-cache-smoke
+REQUESTED_CI_ONLY_VALIDATION_GOALS := $(filter $(CI_ONLY_VALIDATION_GOALS),$(MAKECMDGOALS))
+ifneq ($(strip $(REQUESTED_CI_ONLY_VALIDATION_GOALS)),)
+ifneq ($(TRUSTED_GITHUB_ACTIONS),1)
+$(error repository validation target(s) $(REQUESTED_CI_ONLY_VALIDATION_GOALS) run only in GitHub Actions; push the branch to trigger CI)
+endif
+endif
 REPO_TMPDIR ?= $(or $(TMPDIR),/tmp)
 # Every tool resolves the repository through repo_root::resolve!(), which
 # reads this variable first; the compile-time manifest path inside a binary
@@ -106,12 +147,11 @@ export GOROROBA_REPO_ROOT := $(CURDIR)
 include mk/cache_roots.mk
 CARGO_CACHE_REPO_BUDGET_GIB ?= 150
 CARGO_CACHE_TMP_BUDGET_GIB ?= 16
-CARGO_ENV = CARGO_HOME=$(REPO_CARGO_HOME) CARGO_TARGET_DIR=$(REPO_CARGO_TARGET_DIR) CARGO_BUILD_BUILD_DIR=$(REPO_CARGO_BUILD_DIR) MAKEFLAGS= MFLAGS= CARGO_MAKEFLAGS= CARGO_BUILD_JOBS=$(CARGO_JOBS) RAYON_NUM_THREADS=$(RAYON_THREADS) RUST_TEST_THREADS=$(RUST_TEST_THREADS)
+CARGO_ENV = CARGO_HOME=$(REPO_CARGO_HOME) CARGO_TARGET_DIR=$(REPO_CARGO_TARGET_DIR) CARGO_BUILD_BUILD_DIR=$(REPO_CARGO_BUILD_DIR) MAKEFLAGS= MFLAGS= CARGO_MAKEFLAGS= $(VALIDATION_PARALLEL_ENV)
 # A user-local Cargo config may enforce CARGO_INCREMENTAL=0 globally.
 # Kept here as belt-and-suspenders for CI environments where that config is absent.
 CARGO_ENV_CI = $(CARGO_ENV) CARGO_INCREMENTAL=0
 
-HOOKS_DIR ?= .githooks
 MARKDOWN_EXPORT ?= 0
 MARKDOWN_EXPORT_OUT_DIR ?= docs/generated
 MARKDOWN_EXPORT_EMIT_LEGACY ?= 0
@@ -121,7 +161,7 @@ DOCS_BOOK_DIR ?= $(DOCS_SITE_DIR)/book
 DOCS_RUSTDOC_DIR ?= $(DOCS_SITE_DIR)/rustdoc
 DOCS_CARGO_TARGET_DIR ?= $(CURDIR)/target/docs-target
 DOCS_CARGO_BUILD_DIR ?= $(REPO_TMP_CARGO_ROOT)/docs
-DOCS_CARGO_ENV = CARGO_HOME=$(REPO_CARGO_HOME) CARGO_TARGET_DIR=$(DOCS_CARGO_TARGET_DIR) CARGO_BUILD_BUILD_DIR=$(DOCS_CARGO_BUILD_DIR) CARGO_BUILD_JOBS=$(CARGO_JOBS) RAYON_NUM_THREADS=$(RAYON_THREADS) RUST_TEST_THREADS=$(RUST_TEST_THREADS)
+DOCS_CARGO_ENV = CARGO_HOME=$(REPO_CARGO_HOME) CARGO_TARGET_DIR=$(DOCS_CARGO_TARGET_DIR) CARGO_BUILD_BUILD_DIR=$(DOCS_CARGO_BUILD_DIR) MAKEFLAGS= MFLAGS= CARGO_MAKEFLAGS= $(VALIDATION_PARALLEL_ENV)
 # Hosted documentation uses default features; SDK-equipped hosts can opt in.
 DOCS_FEATURE_FLAGS ?=
 SEMVER_BASELINE_REV ?= v1.0-methods
@@ -199,8 +239,321 @@ fmt-check:
 	DPRINT_CACHE_DIR=$(DPRINT_CACHE_DIR) dprint check
 
 # ---- Validation and audit commands ----
-# Lightweight checks run without Rust compilation. Cargo-heavy checks remain
-# opt-in and serialize through the repository worker budget.
+# Repository validation runs only in GitHub Actions. Developers may invoke a
+# focused Cargo command directly, but no Make validation target starts a local
+# compiler or test closure.
+
+require-ci-validation-authority:
+	@if [ "$(TRUSTED_GITHUB_ACTIONS)" != "1" ]; then \
+	    echo "ERROR: repository validation runs only in GitHub Actions." >&2; \
+	    echo "Push the branch to trigger CI. No local override is supported." >&2; \
+	    exit 2; \
+	fi
+
+print-validation-resource-config:
+	@printf 'workers=%s parallel_env=%s trusted_github_actions=%s\n' "$(WORKER_BUDGET)" "$(if $(VALIDATION_PARALLEL_ENV),set,unset)" "$(TRUSTED_GITHUB_ACTIONS)"
+
+validation-resource-contract: validation-resource-contract-authority \
+                              validation-resource-contract-local-absence \
+                              validation-resource-contract-registry \
+                              validation-resource-contract-workers \
+                              validation-resource-contract-collectors
+	@echo "OK: CI-only validation authority and worker boundaries are pinned."
+
+validation-resource-contract-authority:
+	@status=0; \
+	local_config="$$( $(MAKE) --no-print-directory -s print-validation-resource-config CI=false GITHUB_ACTIONS=false CI_WORKER_BUDGET=99 WORKER_BUDGET=99 CARGO_JOBS=99)" || status=1; \
+	if [ "$$local_config" != 'workers=automatic parallel_env=unset trusted_github_actions=0' ]; then echo "ERROR: local commands do not retain automatic worker selection." >&2; status=1; fi; \
+	ci_config="$$( $(MAKE) --no-print-directory -s print-validation-resource-config CI=true GITHUB_ACTIONS=true CI_WORKER_BUDGET=4 WORKER_BUDGET=99 CARGO_JOBS=99)" || status=1; \
+	if [ "$$ci_config" != 'workers=4 parallel_env=set trusted_github_actions=1' ]; then echo "ERROR: hosted worker configuration does not preserve the supplied count." >&2; status=1; fi; \
+	if $(MAKE) --no-print-directory -s require-ci-validation-authority CI=true GITHUB_ACTIONS=false >/dev/null 2>&1; then echo "ERROR: generic CI variable bypassed broad-validation authority." >&2; status=1; fi; \
+	if $(MAKE) --no-print-directory -s check CI=false GITHUB_ACTIONS=true >/dev/null 2>&1; then echo "ERROR: GitHub Actions marker bypassed CI-only validation authority." >&2; status=1; fi; \
+	$(MAKE) --no-print-directory -s require-ci-validation-authority CI=true GITHUB_ACTIONS=true || status=1; \
+	for contract in 'rust-clippy: require-ci-validation-authority' 'rust-regression: require-ci-validation-authority rust-clippy' 'check: require-ci-validation-authority'; do \
+	    if ! grep -Fq "$$contract" Makefile; then echo "ERROR: missing validation authority contract: $$contract" >&2; status=1; fi; \
+	done; \
+	exit "$$status"
+
+validation-resource-contract-local-absence:
+	@status=0; \
+	for retired_goal in check-local validate-local validate-local-xtask gate-local gate-local-xtask pre-push-gate pre-push-gate-scoped pre-push-gate-strict rust-regression-scoped; do \
+	    if $(MAKE) --no-print-directory -sn "$$retired_goal" >/dev/null 2>&1; then echo "ERROR: retired local validation target remains callable: $$retired_goal" >&2; status=1; fi; \
+	done; \
+	if grep -Fq 'local-nextest-plan' xtask/src/main.rs crates/gororoba_cli_data/Cargo.toml; then echo "ERROR: retired local nextest executor remains registered." >&2; status=1; fi; \
+	for retired_path in crates/gororoba_cli_data/src/bin/local_nextest_plan.rs crates/gororoba_cli/src/bin/pre_push_hook.rs .githooks/pre-push scripts/detect_worker_budget.sh scripts/detect_physical_cores.sh; do \
+	    if [ -e "$$retired_path" ]; then echo "ERROR: retired local validation path remains: $$retired_path" >&2; status=1; fi; \
+	done; \
+	if grep -Fq 'pre-push-hook' crates/gororoba_cli/Cargo.toml; then echo "ERROR: retired local pre-push executor remains registered." >&2; status=1; fi; \
+	if grep -Fq 'scripts/detect_worker_budget.sh' agents.toml; then echo "ERROR: agents.toml advertises the retired shell worker detector." >&2; status=1; fi; \
+	if grep -Eq 'cmd = "make (rust-smoke|rust-regression|heavy|python-smoke|python-regression)' agents.toml; then echo "ERROR: agents.toml advertises a local repository-validation command." >&2; status=1; fi; \
+	for residual in 'path = "registry/engineering_standards.toml"' 'path = "registry/agents_contract.toml"' 'This TOML remains the canonical' 'mutation surface until SQLite migration'; do \
+	    if ! grep -Fq "$$residual" registry/source_manifest.toml; then echo "ERROR: unmigrated generated-policy residual is not tracked: $$residual" >&2; status=1; fi; \
+	done; \
+	if grep -Eq 'scripts/detect_worker_budget[.]sh|make validate-local|make hooks-install|[.]githooks/pre-push|divide by two|logical threads / 2' registry/engineering_standards.toml registry/agents_contract.toml; then echo "ERROR: canonical policy records advertise retired local validation or divided workers." >&2; status=1; fi; \
+	if grep -Eq '^(check-local|validate-local|validate-local-xtask|gate-local|gate-local-xtask|pre-push-gate|pre-push-gate-scoped|pre-push-gate-strict|rust-regression-scoped)[[:space:]]*:' Makefile; then echo "ERROR: retired local validation target declaration remains." >&2; status=1; fi; \
+	exit "$$status"
+
+validation-resource-contract-registry:
+	@status=0; \
+	for contract in '"--profile",' 'registry-integrity: $$(REGISTRY_INTEGRITY_CACHE)' 'cargo build --keep-going --profile validation -p gororoba_cli_governance --bin registry-integrity'; do \
+	    case "$$contract" in \
+	        '"--profile",') contract_file=crates/gororoba_db/src/bin/gororoba_db.rs ;; \
+	        *) contract_file=Makefile ;; \
+	    esac; \
+	    if ! grep -Fq "$$contract" "$$contract_file"; then echo "ERROR: missing registry ownership contract: $$contract" >&2; status=1; fi; \
+	done; \
+	if ! grep -Fq 'name = "registry-integrity"' crates/gororoba_cli_governance/Cargo.toml; then echo "ERROR: governance package does not own registry-integrity." >&2; status=1; fi; \
+	if grep -Fq 'name = "registry-integrity"' crates/gororoba_cli_data/Cargo.toml; then echo "ERROR: registry-integrity remains owned by the broad data CLI package." >&2; status=1; fi; \
+	if grep -Eq '\.env\("(CARGO_BUILD_JOBS|RAYON_NUM_THREADS|RUST_TEST_THREADS)", "[0-9]+"\)' crates/gororoba_db/src/bin/gororoba_db.rs; then echo "ERROR: registry regeneration hard-codes a worker limit." >&2; status=1; fi; \
+	exit "$$status"
+
+validation-resource-contract-workers:
+	@status=0; \
+	for contract in 'detect_worker_budget.rs' 'CI_WORKER_BUDGET'; do \
+	    if ! grep -Fq "$$contract" .github/workflows/ci.yml; then echo "ERROR: main CI worker contract is missing: $$contract" >&2; status=1; fi; \
+	done; \
+	if ! grep -Fq 'std::thread::available_parallelism()' crates/gororoba_cli/src/bin/detect_worker_budget.rs; then echo "ERROR: Rust worker detector does not use process-visible parallelism." >&2; status=1; fi; \
+	if grep -Eq 'GOROROBA_WORKER_TEST_CPUS|max[(]|min[(]|clamp|/ *2|checked_div|unwrap_or' crates/gororoba_cli/src/bin/detect_worker_budget.rs; then echo "ERROR: worker detection contains an override, divisor, clamp, or fallback." >&2; status=1; fi; \
+	if ! awk 'index($$0, "detect_worker_budget.rs") { pending++; setups++ } index($$0, "for variable in CI_WORKER_BUDGET WORKER_BUDGET CARGO_JOBS CARGO_BUILD_JOBS NEXTEST_TEST_THREADS RUST_TEST_THREADS RAYON_THREADS RAYON_NUM_THREADS") { if (pending != 1) bad=1; covered++; pending=0 } END { exit !(setups > 0 && pending == 0 && covered == setups && !bad) }' .github/workflows/ci.yml; then echo "ERROR: main CI does not export every canonical worker variable after each detector invocation." >&2; status=1; fi; \
+	if grep -Eq 'divide by two|logical threads / 2' agents.toml; then echo "ERROR: active agent policy retains a divided-worker rule." >&2; status=1; fi; \
+	if ! grep -Fq 'std::thread::available_parallelism()' xtask/src/main.rs; then echo "ERROR: xtask host profile does not use process-visible parallelism." >&2; status=1; fi; \
+	if grep -Eq '(worker_budget|cargo_jobs|rayon_threads|rust_test_threads|nextest_test_threads|pytest_workers): physical_core_count' xtask/src/main.rs; then echo "ERROR: xtask host profile substitutes physical cores for process-visible workers." >&2; status=1; fi; \
+	if grep -Eq '^(NPROC|NJOBS)[[:space:]]*:=' Makefile; then echo "ERROR: Makefile retains a second CPU-count heuristic." >&2; status=1; fi; \
+	if grep -Eq 'heavy-(math|research)[[:space:]]*=[[:space:]]*\{[[:space:]]*max-threads[[:space:]]*=[[:space:]]*1' .config/nextest.toml; then echo "ERROR: nextest retains a CPU or memory safety serialization group." >&2; status=1; fi; \
+	if grep -Fq -- '--test-threads=1' .github/workflows/bench-cd-kernel.yml; then echo "ERROR: benchmark CI fixes the Rust test harness to one worker." >&2; status=1; fi; \
+	if grep -Eq 'physical_core_ids|init_physical_rayon_pool' crates/algebra_analysis/src/test_support.rs; then echo "ERROR: algebra tests substitute or pin physical cores." >&2; status=1; fi; \
+	if grep -Eq 'PHYS_CORES|PHYS_CPUS|taskset' proofs/Makefile || grep -Fq -- '-j$$(JOBS)' proofs/Makefile; then echo "ERROR: proof validation replaces or constrains the inherited Make jobserver." >&2; status=1; fi; \
+	for contract in 'cargo clippy --keep-going' 'cargo nextest run --no-fail-fast'; do \
+	    if ! grep -Fq "$$contract" Makefile; then echo "ERROR: Rust collector contract is missing: $$contract" >&2; status=1; fi; \
+	done; \
+	for contract in \
+	    'cargo build --locked --profile validation -p repo_utilities --bin repo-utilities' \
+	    'cargo build --locked --profile validation -p gororoba_cli_governance --bin workspace-routing-proxy' \
+	    'cargo build --locked --profile validation -p xtask --bin xtask' \
+	    'cargo build --locked --keep-going --profile validation' \
+	    'cargo build --locked --keep-going --profile validation -p gororoba_cli_governance --bin registry-integrity'; do \
+	    if ! grep -Fq "$$contract" Makefile; then echo "ERROR: staged validation-tool build can mutate Cargo.lock: $$contract" >&2; status=1; fi; \
+	done; \
+	if ! grep -Fq 'make --jobs="$$MAKE_JOBS" --keep-going all' .github/workflows/proofs.yml; then echo "ERROR: proof workflow does not pass every detected worker to Make." >&2; status=1; fi; \
+	if ! grep -Fq 'opam install rocq-core.9.1.1 rocq-stdlib.9.1.0 coq-flocq.4.2.2 --jobs="$$OPAMJOBS" --yes' .github/workflows/proofs.yml; then echo "ERROR: proof workflow does not pass every detected worker to opam." >&2; status=1; fi; \
+	if grep -Fq 'ci-rust-$${{ matrix.lane }}' .github/workflows/ci.yml; then echo "ERROR: Rust matrix jobs retain quota-consuming duplicate target caches." >&2; status=1; fi; \
+	if ! grep -Fq 'components: clippy, rustfmt' .github/workflows/proofs.yml; then echo "ERROR: proof workflow does not provision pinned Rust components before parallel rustc calls." >&2; status=1; fi; \
+	for workflow in .github/workflows/ci.yml .github/workflows/proofs.yml .github/workflows/bench-cd-kernel.yml .github/workflows/unsafe-survey.yml; do \
+	    if ! grep -Fq 'detect_worker_budget.rs' "$$workflow"; then echo "ERROR: hosted Rust workflow lacks process-visible worker detection: $$workflow" >&2; status=1; fi; \
+	done; \
+	for workflow in .github/workflows/proofs.yml .github/workflows/bench-cd-kernel.yml .github/workflows/paper.yml .github/workflows/unsafe-survey.yml; do \
+	    if ! grep -Fq 'workflow_call:' "$$workflow"; then echo "ERROR: component evidence workflow is not reusable: $$workflow" >&2; status=1; fi; \
+	    if grep -Eq '^  (push|pull_request):' "$$workflow"; then echo "ERROR: component workflow retains an independent push or pull-request admission root: $$workflow" >&2; status=1; fi; \
+	done; \
+	exit "$$status"
+
+validation-resource-contract-collectors:
+	@status=0; \
+	rust_shard_block="$$(sed -n '/id: rust-shards/,/name: Check repository hygiene/p' .github/workflows/ci.yml)"; \
+	docs_gate_block="$$(sed -n '/^  docs-gate:/,/^  docs-deploy:/p' .github/workflows/ci.yml)"; \
+	docs_cargo_env_line="$$(sed -n '/^DOCS_CARGO_ENV =/p' Makefile)"; \
+	validation_inputs_block="$$(sed -n '/name: Resolve immutable comparison base and worker budget/,/name: Prepare validation report directory/p' .github/workflows/ci.yml)"; \
+	lattice_replay_block="$$(sed -n '/^[[:space:]]*lattice)/,/^[[:space:]]*nufit)/p' .github/workflows/ci.yml)"; \
+	validation_tools_status_block="$$(sed -n '/fn run_validation_tools_status/,/let now =/p' xtask/src/main.rs)"; \
+	cargo_target_parser_block="$$(sed -n '/^[[:space:]]*case .*cargo_target_args.* in/,/^[[:space:]]*light_scope=()/p' Makefile)"; \
+	casimir_path_block="$$(sed -n '/casimir_audit) pattern=/p' .github/workflows/ci.yml)"; \
+	benchmark_path_block="$$(sed -n '/benchmark) pattern=/p' .github/workflows/ci.yml)"; \
+	lattice_route_block="$$(sed -n '/run_lattice=true; fi/p' .github/workflows/ci.yml)"; \
+	box_counting_route_block="$$(sed -n '/run_box_counting=true; fi/p' .github/workflows/ci.yml)"; \
+	unsafe_survey_job_block="$$(sed -n '/^  unsafe-survey:/,/^  validation:/p' .github/workflows/ci.yml)"; \
+	frontier_check_block="$$(sed -n '/^casimir-optics-discrimination-frontier-check:/,/^$$/p' Makefile)"; \
+	hydration_input_block="$$(sed -n '/name: Materialize and stage bounded scientific replay inputs per lane/,/name: Upload bounded scientific replay inputs/p' .github/workflows/ci.yml)"; \
+	optics_hydration_block="$$(sed -n '/if \[ "$$RUN_OPTICS" = true \]; then/,/^[[:space:]]*fi$$/p' .github/workflows/ci.yml)"; \
+	hydration_upload_block="$$(sed -n '/name: Upload bounded scientific replay inputs/,/name: Retain scientific hydration build artifacts/p' .github/workflows/ci.yml)"; \
+	hydration_cache_block="$$(sed -n '/name: Retain scientific hydration build artifacts/,/^  scientific-replay-leaf:/p' .github/workflows/ci.yml)"; \
+	replay_selection_block="$$(sed -n '/^  scientific-replay-inputs:/,/uses: dtolnay\/rust-toolchain/p' .github/workflows/ci.yml)"; \
+	replay_common_route_block="$$(printf '%s\n' "$$replay_selection_block" | sed -n '/^[[:space:]]*common_pattern=/,/^[[:space:]]*else$$/p')"; \
+	replay_leaf_execution_block="$$(sed -n '/name: Execute hydrated scientific replay leaf/,/name: Upload scientific replay leaf report/p' .github/workflows/ci.yml)"; \
+	optics_replay_block="$$(sed -n '/^[[:space:]]*optics)/,/^[[:space:]]*\*)/p' .github/workflows/ci.yml)"; \
+	replay_verdict_block="$$(sed -n '/name: Report hydrated scientific replay outcomes/,/name: Retain scientific replay verdict/p' .github/workflows/ci.yml)"; \
+	for contract in 'ci-rust-shard-matrix' 'fallback_matrix=' 'CI_CARGO_TARGET_ARGS: $${{ matrix.cargo_target_args }}' 'CI_CARGO_FEATURES: $${{ matrix.cargo_features }}' 'matrix: $${{ fromJSON(needs.validation-core.outputs.rust_matrix) }}' 'make --jobs="$$WORKER_BUDGET" --keep-going "validate-ci-scoped-$${{ matrix.target }}"' 'timeout-minutes: 80' 'fail-fast: false' 'Report collected validation failures' 'Report aggregate validation admission' 'needs: [validation-policy, validation-core, validation-governance, validation-casimir-audit, rust-validation, scientific-replay, benchmark, proofs, paper, unsafe-survey, docs-gate]' 'DOCS_RESULT:' 'RUN_DOCS:' 'for lane in GOVERNANCE CASIMIR_AUDIT DOCS' 'uses: ./.github/workflows/bench-cd-kernel.yml' 'uses: ./.github/workflows/proofs.yml' 'uses: ./.github/workflows/paper.yml' 'uses: ./.github/workflows/unsafe-survey.yml' 'run_workspace_survey:' 'BENCHMARK_SELECTED:' 'PROOFS_SELECTED:' 'PAPER_SELECTED:' 'UNSAFE_SURVEY_SELECTED:' 'scientific-replay-inputs:' 'scientific-replay-leaf:' 'scientific-replay:' 'matrix: $${{ fromJSON(needs.scientific-replay-inputs.outputs.matrix) }}' '--bin hydrate-scientific-payloads' '--no-fail-fast -p algebra_experimental --test nufit_reference_identity' '--no-fail-fast -p lbm_3d --test box_counting_amplitude_identity' '--no-fail-fast -p optics_core --test ruan_fan_source_receipts' 'state=blocked_input' 'state=not_selected' 'state=executed_pass' 'state=executed_fail' "needs.validation-policy.result == 'success'" "needs.validation.result == 'success'" 'make --keep-going validation-resource-contract' 'make --jobs="$$WORKER_BUDGET" --keep-going casimir-optics-discrimination-audit-check' 'make --jobs="$$WORKER_BUDGET" --keep-going docs-freshness'; do \
+	    if ! grep -Fq -- "$$contract" .github/workflows/ci.yml; then echo "ERROR: main CI collector contract is missing: $$contract" >&2; status=1; fi; \
+	done; \
+	if ! printf '%s\n' "$$docs_gate_block" | grep -Fq 'timeout-minutes: 90'; then echo "ERROR: workspace documentation timeout is below the measured cold-build envelope." >&2; status=1; fi; \
+	for hydration_backed_test in \
+	    test_thesis_a_codebook_parity_256d \
+	    test_thesis_a_codebook_parity_512d \
+	    test_thesis_a_codebook_parity_1024d \
+	    test_thesis_a_codebook_parity_2048d \
+	    test_thesis_b_filtration_nesting \
+	    test_thesis_c_2048_to_1024_prefix_cut \
+	    test_thesis_c_1024_to_512_prefix_cut \
+	    test_thesis_c_512_to_256_prefix_cut \
+	    test_thesis_c_full_filtration_cuts \
+	    test_base_universe_size_and_exclusion_count \
+	    test_lambda_32_as_predicate_cut_of_256 \
+	    test_lambda_256_csv_vs_predicates \
+	    test_thesis_d_scalar_shadow_basic \
+	    test_thesis_d_scalar_shadow_addition_mode \
+	    test_dictionary_coupling_sample_256d \
+	    test_c452_c453_lattice_header_schema_stability \
+	    test_c452_c453_embedding_is_injective_and_roundtrip \
+	    test_c452_c453_codomain_and_index_coverage_all_dims \
+	    test_c453_filtration_growth_has_expected_new_points \
+	    test_c453_filtration_layers_are_disjoint_and_partition_2048 \
+	    test_c453_filtration_intersection_cardinalities_are_exact \
+	    test_c453_filtration_is_lexicographic_prefix_chain; do \
+	    occurrences="$$(printf '%s\n' "$$lattice_replay_block" | grep -Fc "cd_external::tests::$$hydration_backed_test")"; \
+	    if [ "$$occurrences" -ne 1 ]; then echo "ERROR: lattice replay must select hydration-backed test exactly once: $$hydration_backed_test" >&2; status=1; fi; \
+	done; \
+	hydration_backed_count="$$(printf '%s\n' "$$lattice_replay_block" | grep -Fc 'cd_external::tests::test_')"; \
+	if [ "$$hydration_backed_count" -ne 22 ]; then echo "ERROR: lattice replay must select exactly 22 hydration-backed tests." >&2; status=1; fi; \
+	for contract in 'hydration_backed_tests=(' 'lattice_status=0' 'for hydration_backed_test in "$${hydration_backed_tests[@]}"' '--ignored --exact --nocapture || lattice_status=1' 'exit "$$lattice_status"'; do \
+	    if ! printf '%s\n' "$$lattice_replay_block" | grep -Fq -- "$$contract"; then echo "ERROR: lattice replay fail-slow contract is missing: $$contract" >&2; status=1; fi; \
+	done; \
+	if printf '%s\n' "$$lattice_replay_block" | grep -Fq "'cd_external::tests::'"; then echo "ERROR: lattice replay uses a broad test-module selector." >&2; status=1; fi; \
+	if printf '%s\n' "$$lattice_replay_block" | grep -Fq 'test_thesis_e_xor_involution_invariants_128d'; then echo "ERROR: lattice replay selects the heavy non-hydration invariant test." >&2; status=1; fi; \
+	physics_target_shards="$$(printf '%s\n' "$$rust_shard_block" | grep -Fc -- '--target-shard-package=gororoba_cli_physics')"; \
+	if [ "$$physics_target_shards" -ne 1 ]; then echo "ERROR: Rust shard block must retain required-feature coverage for gororoba_cli_physics exactly once." >&2; status=1; fi; \
+	for shared_build_package in gororoba_cli_data gororoba_cli_algebra; do \
+	    if printf '%s\n' "$$rust_shard_block" | grep -Fq -- "--target-shard-package=$$shared_build_package"; then echo "ERROR: Rust shard block duplicates $$shared_build_package compilation across target-specific hosted runners." >&2; status=1; fi; \
+	done; \
+	for contract in 'cargo_target_args: "--lib".to_string()' '"--test"' 'emitted_tests != expected_tests' 'INTEGRATION_TEST_SHARD_COUNT: usize = 1' '#[serde(default, rename = "example")]' 'member_manifest.package.autoexamples' 'append_example_target_shard(' 'emitted_examples != expected_examples' 'example_shard_count != expected_example_shard_count'; do \
+	    if ! grep -Fq -- "$$contract" xtask/src/main.rs; then echo "ERROR: target-sharded inventory or emission contract is missing: $$contract" >&2; status=1; fi; \
+	done; \
+	for contract in '--bin|--test|--example)' '[ "$$$$target_option" = --bin ] || [ "$$$$target_option" = --example ]' 'if [ "$$$${#cargo_target_args[@]}" -eq 1 ]; then no_tests_args=(--no-tests=pass); fi'; do \
+	    if ! printf '%s\n' "$$cargo_target_parser_block" | grep -Fq -- "$$contract"; then echo "ERROR: named target parser does not safely admit generated example rows: $$contract" >&2; status=1; fi; \
+	done; \
+	if grep -Fq 'cargo_target_args: "--lib --tests".to_string()' xtask/src/main.rs; then echo "ERROR: target-sharded library row still selects every binary test target." >&2; status=1; fi; \
+	if ! printf '%s\n' "$$docs_gate_block" | grep -Fq 'needs: [validation-core]'; then echo "ERROR: docs-gate must depend only on its routing authority." >&2; status=1; fi; \
+	if printf '%s\n' "$$docs_gate_block" | grep -Fq 'needs.validation.result'; then echo "ERROR: docs-gate hides documentation failures behind aggregate validation." >&2; status=1; fi; \
+	if ! grep -Fq 'cargo doc --locked --keep-going --workspace --exclude cd_papers' Makefile; then echo "ERROR: rustdoc includes the re-export-only cd_papers facade instead of its owning crates." >&2; status=1; fi; \
+	if ! printf '%s\n' "$$docs_cargo_env_line" | grep -Fq 'MAKEFLAGS= MFLAGS= CARGO_MAKEFLAGS='; then echo "ERROR: docs Cargo inherits stale GNU make jobserver descriptors." >&2; status=1; fi; \
+	if ! grep -Fq '$$(DOCS_CARGO_ENV) cargo run --locked -p gororoba_cli_data --bin registry-emit -- book-docs-legacy' Makefile; then echo "ERROR: docs book generation does not reuse the rustdoc Cargo build tree." >&2; status=1; fi; \
+	for contract in '"registry-integrity"' '"gororoba_cli_governance"' '"registry_integrity.rs"'; do \
+	    if ! printf '%s\n' "$$validation_tools_status_block" | grep -Fq "$$contract"; then echo "ERROR: validation-tools-status does not track registry-integrity through its governance owner: $$contract" >&2; status=1; fi; \
+	done; \
+	if ! printf '%s\n' "$$casimir_path_block" | grep -Fq 'rust-toolchain\.toml$$'; then echo "ERROR: Casimir audit routing omits the hashed Rust toolchain identity." >&2; status=1; fi; \
+	if ! printf '%s\n' "$$casimir_path_block" | grep -Fq 'gororoba_cli_provenance'; then echo "ERROR: Casimir audit routing omits its finite-frontier verifier owner." >&2; status=1; fi; \
+	if ! printf '%s\n' "$$casimir_path_block" | grep -Fq 'provenance_store'; then echo "ERROR: Casimir audit routing omits its source-observation contract dependency." >&2; status=1; fi; \
+	if ! printf '%s\n' "$$casimir_path_block" | grep -Fq '\.cargo/config\.toml'; then echo "ERROR: Casimir audit routing omits Cargo configuration inherited by its producers." >&2; status=1; fi; \
+	if ! printf '%s\n' "$$casimir_path_block" | grep -Fq '\.gitattributes'; then echo "ERROR: Casimir audit routing omits attributes governing retained source bytes." >&2; status=1; fi; \
+	if ! printf '%s\n' "$$casimir_path_block" | grep -Fq 'Makefile$$'; then echo "ERROR: Casimir audit routing omits its Make-owned execution recipes." >&2; status=1; fi; \
+	if ! printf '%s\n' "$$benchmark_path_block" | grep -Fq 'crates/gororoba_cli/src/bin/detect_worker_budget\.rs'; then echo "ERROR: benchmark routing omits its cross-architecture worker detector." >&2; status=1; fi; \
+	if ! printf '%s\n' "$$lattice_route_block" | grep -Fq 'cd_kernel'; then echo "ERROR: lattice replay routing omits its Cayley-Dickson kernel dependency." >&2; status=1; fi; \
+	if ! printf '%s\n' "$$box_counting_route_block" | grep -Fq 'verified_core'; then echo "ERROR: box-counting replay routing omits its hardware-topology dependency." >&2; status=1; fi; \
+	if ! printf '%s\n' "$$unsafe_survey_job_block" | grep -Fq 'run_workspace_survey: true'; then echo "ERROR: routed unsafe-survey selection does not run the workspace inventory." >&2; status=1; fi; \
+	if ! printf '%s\n' "$$frontier_check_block" | grep -Fq -- 'verify-finite-frontier'; then echo "ERROR: routed Casimir audit omits finite-frontier verification." >&2; status=1; fi; \
+	if ! printf '%s\n' "$$frontier_check_block" | grep -Fq 'plans/casimir_optics_discrimination_frontier.toml'; then echo "ERROR: finite-frontier verification omits the canonical plan." >&2; status=1; fi; \
+	for cache_job in validation-governance validation-casimir-audit scientific-replay-inputs scientific-replay-leaf; do \
+	    cache_block="$$(sed -n "/^  $$cache_job:/,/^  [a-z].*:/p" .github/workflows/ci.yml)"; \
+	    if ! printf '%s\n' "$$cache_block" | grep -Fq '$${{ github.sha }}-$${{ github.run_id }}-$${{ github.run_attempt }}'; then echo "ERROR: $$cache_job cache key is not run-unique." >&2; status=1; fi; \
+	    if ! printf '%s\n' "$$cache_block" | grep -Fq 'if: success() && steps.'; then echo "ERROR: $$cache_job can retain an incomplete or failed build cache." >&2; status=1; fi; \
+	done; \
+	if ! printf '%s\n' "$$docs_gate_block" | grep -Fq 'if: success() && steps.docs-cache.outputs.cache-primary-key'; then echo "ERROR: docs-gate can retain an incomplete or failed build cache." >&2; status=1; fi; \
+	for contract in 'hydrate_lane() {' 'local selected_paths=(' 'for selected_path in "$${selected_paths[@]}"' 'cp --parents' 'scientific-replay-input-status' "printf 'blocked_input\\n'" '2> "$$staging_root/scientific-replay-hydration-$$lane.stderr.log"' 'command cat "$$staging_root/scientific-replay-hydration-$$lane.stderr.log" >&2' 'all_hydrated=false'; do \
+	    if ! printf '%s\n' "$$hydration_input_block" | grep -Fq -- "$$contract"; then echo "ERROR: per-lane scientific replay hydration contract is missing: $$contract" >&2; status=1; fi; \
+	done; \
+	for lane in lattice nufit box-counting optics; do \
+	    occurrences="$$(printf '%s\n' "$$hydration_input_block" | grep -Fc "hydrate_lane $$lane")"; \
+	    if [ "$$occurrences" -ne 1 ]; then echo "ERROR: scientific replay hydration must invoke $$lane exactly once." >&2; status=1; fi; \
+	done; \
+	for contract in 'hydrate_lane optics' 'data/output/audit/claim-family-evidence-adjudication/optics-replay/ruan-fan-0909.3323v2.pdf'; do \
+	    if ! printf '%s\n' "$$optics_hydration_block" | grep -Fq -- "$$contract"; then echo "ERROR: optics hydration block is missing: $$contract" >&2; status=1; fi; \
+	done; \
+	if ! printf '%s\n' "$$hydration_cache_block" | grep -Fq "if: success() && steps.hydrate.outputs.all_hydrated == 'true'"; then echo "ERROR: scientific replay hydration cache is not gated on complete per-lane success." >&2; status=1; fi; \
+	for contract in 'lane_status_path=' 'state=blocked_input' 'state=orchestration_error'; do \
+	    if ! printf '%s\n' "$$replay_leaf_execution_block" | grep -Fq -- "$$contract"; then echo "ERROR: scientific replay leaf input-state contract is missing: $$contract" >&2; status=1; fi; \
+	done; \
+	for contract in 'ALL_HYDRATED: $${{ needs.scientific-replay-inputs.outputs.all_hydrated }}' 'if [ "$$ALL_HYDRATED" != true ]' "printf 'state=blocked_input\\nleaf_result=%s\\n'"; do \
+	    if ! printf '%s\n' "$$replay_verdict_block" | grep -Fq -- "$$contract"; then echo "ERROR: aggregate scientific replay blocked-input contract is missing: $$contract" >&2; status=1; fi; \
+	done; \
+	if ! printf '%s\n' "$$replay_selection_block" | grep -Fq 'all_hydrated: $${{ steps.hydrate.outputs.all_hydrated }}'; then echo "ERROR: scientific replay input job does not expose complete hydration state." >&2; status=1; fi; \
+	if [ "$$(printf '%s\n' "$$replay_common_route_block" | grep -Fc "common_pattern='")" -ne 1 ]; then echo "ERROR: scientific replay must define exactly one common path trigger." >&2; status=1; fi; \
+	for contract in 'Cargo\.(toml|lock)' 'rust-toolchain\.toml' '\.cargo/config\.toml' 'Makefile' '\.github/workflows/ci\.yml' 'data/retention/scientific-payloads\.json' 'crates/(provenance_store|gororoba_cli_provenance|repo_root)/'; do \
+	    if ! printf '%s\n' "$$replay_common_route_block" | grep -Fq -- "$$contract"; then echo "ERROR: common scientific replay routing omits: $$contract" >&2; status=1; fi; \
+	done; \
+	for lane in lattice nufit box_counting optics; do \
+	    if ! printf '%s\n' "$$replay_common_route_block" | grep -Fq "run_$$lane=true"; then echo "ERROR: common scientific replay trigger does not select $$lane." >&2; status=1; fi; \
+	done; \
+	input_failure_line="$$(printf '%s\n' "$$replay_verdict_block" | grep -nF 'if [ "$$INPUT_RESULT" != success ]' | cut -d: -f1)"; \
+	not_selected_line="$$(printf '%s\n' "$$replay_verdict_block" | grep -nF 'if [ "$$RUN_REPLAY" != true ]' | cut -d: -f1)"; \
+	blocked_input_line="$$(printf '%s\n' "$$replay_verdict_block" | grep -nF 'if [ "$$ALL_HYDRATED" != true ]' | cut -d: -f1)"; \
+	executed_pass_line="$$(printf '%s\n' "$$replay_verdict_block" | grep -nF 'if [ "$$LEAF_RESULT" = success ]' | cut -d: -f1)"; \
+	if [ -z "$$input_failure_line" ] || [ -z "$$not_selected_line" ] || [ -z "$$blocked_input_line" ] || [ -z "$$executed_pass_line" ] || [ "$$input_failure_line" -ge "$$not_selected_line" ] || [ "$$not_selected_line" -ge "$$blocked_input_line" ] || [ "$$blocked_input_line" -ge "$$executed_pass_line" ]; then echo "ERROR: scientific replay verdict precedence must be input failure, not selected, blocked input, then execution result." >&2; status=1; fi; \
+	if ! printf '%s\n' "$$hydration_upload_block" | grep -Fq 'path: $${{ runner.temp }}/scientific-replay-inputs'; then echo "ERROR: selected scientific replay input artifact path is missing from its upload step." >&2; status=1; fi; \
+	optics_route_contract="if grep -Eq '^(crates/optics_core/|data/output/audit/claim-family-evidence-adjudication/optics-replay/(arxiv-source\.download|Fano_Scattering\.tex|ruan-fan-0909\.3323v2\.pdf)$$)' \"\$$RUNNER_TEMP/scientific-replay-changed-paths.txt\"; then run_optics=true; fi"; \
+	if [ "$$(printf '%s\n' "$$replay_selection_block" | grep -Fc -- "$$optics_route_contract")" -ne 1 ]; then echo "ERROR: optics replay source paths must route to run_optics exactly once." >&2; status=1; fi; \
+	if ! printf '%s\n' "$$replay_selection_block" | grep -Fq 'for lane in lattice nufit box-counting optics; do'; then echo "ERROR: optics scientific replay is absent from matrix construction." >&2; status=1; fi; \
+	optics_command='cargo test --locked --profile validation --no-fail-fast -p optics_core --test ruan_fan_source_receipts admitted_archive_tex_and_pdf_have_distinct_verified_identities -- --ignored --exact --nocapture'; \
+	if [ "$$(printf '%s\n' "$$optics_replay_block" | grep -Fc -- "$$optics_command")" -ne 1 ]; then echo "ERROR: optics replay must execute its exact hydrated receipt test once." >&2; status=1; fi; \
+	for contract in "printf 'benchmark=true\\nproofs=true\\npaper=true\\nunsafe_survey=true\\n'" "crates/(algebra_analysis|algebra_experimental|cd_kernel)/" "crates/(provenance_store|gororoba_cli_provenance|repo_root)/" 'Scientific replay routing could not resolve the comparison base; selecting every replay lane.'; do \
+	    if ! grep -Fq -- "$$contract" .github/workflows/ci.yml; then echo "ERROR: scheduled or fail-slow CI routing contract is missing: $$contract" >&2; status=1; fi; \
+	done; \
+	conservative_full_line="$$(printf '%s\n' "$$validation_inputs_block" | grep -nF "echo 'full=true' >> \"\$$GITHUB_OUTPUT\"" | head -n 1 | cut -d: -f1)"; \
+	worker_probe_line="$$(printf '%s\n' "$$validation_inputs_block" | grep -nF 'rustc --edition=2024 -D warnings crates/gororoba_cli/src/bin/detect_worker_budget.rs' | head -n 1 | cut -d: -f1)"; \
+	if [ -z "$$conservative_full_line" ] || [ -z "$$worker_probe_line" ] || [ "$$conservative_full_line" -ge "$$worker_probe_line" ]; then echo "ERROR: validation routing does not initialize full=true before fallible input discovery." >&2; status=1; fi; \
+	for lane in clippy light heavy; do \
+	    if ! grep -Fq "validate-ci-scoped-$$lane" Makefile; then echo "ERROR: missing independently runnable Rust CI shard: $$lane" >&2; status=1; fi; \
+	done; \
+	if ! sed -n '/id: lint/,/name: Check repository hygiene/p' .github/workflows/ci.yml | grep -Fq 'continue-on-error: true'; then echo "ERROR: lint routing failure is not collectable." >&2; status=1; fi; \
+	for condition in \
+	    "if: always() && steps.route.outputs.run_rust == 'true'" \
+	    "if: always() && steps.route.outputs.run_check == 'true'" \
+	    "if: always() && (needs.validation-core.outputs.run_rust == 'true' || needs.validation-core.outputs.run_governance == 'true')" \
+	    "if: always() && needs.validation-core.outputs.casimir_audit == 'true'" \
+	    "if: always() && steps.paths.outputs.dependencies == 'true'" \
+	    "if: always() && steps.paths.outputs.warp == 'true'"; do \
+	    if ! grep -Fq "$$condition" .github/workflows/ci.yml; then echo "ERROR: independent CI leaf lacks an always-based condition: $$condition" >&2; status=1; fi; \
+	done; \
+	if ! grep -Fq 'LINT_OUTCOME: $${{ steps.lint.outcome }}' .github/workflows/ci.yml; then echo "ERROR: final validation collector omits lint routing." >&2; status=1; fi; \
+	if ! grep -Fq 'ROUTE_OUTCOME: $${{ steps.route.outcome }}' .github/workflows/ci.yml; then echo "ERROR: final validation collector omits reverse dependency routing." >&2; status=1; fi; \
+	if ! grep -Fq 'PATHS_OUTCOME: $${{ steps.paths.outcome }}' .github/workflows/ci.yml; then echo "ERROR: final validation collector omits path routing." >&2; status=1; fi; \
+	if ! grep -Fq 'RUST_SHARDS_OUTCOME: $${{ steps.rust-shards.outcome }}' .github/workflows/ci.yml; then echo "ERROR: final validation collector omits Rust shard routing." >&2; status=1; fi; \
+	if ! grep -Fq 'no_tests_args=(--no-tests=pass)' Makefile; then echo "ERROR: binary-only CI shards reject successful zero-test compilation." >&2; status=1; fi; \
+	if [ "$$(sed -n '/id: rust-shards/,/name: Check repository hygiene/p' .github/workflows/ci.yml | grep -Fc "printf 'matrix=%s\\n' \"\$$rust_matrix\" >> \"\$$GITHUB_OUTPUT\"")" -ne 1 ]; then echo "ERROR: dynamic Rust shard matrix must be emitted exactly once." >&2; status=1; fi; \
+	if [ "$$(sed -n '/id: rust-shards/,/name: Check repository hygiene/p' .github/workflows/ci.yml | grep -Fc "printf 'matrix=%s\\n' \"\$$fallback_matrix\" >> \"\$$GITHUB_OUTPUT\"")" -ne 2 ]; then echo "ERROR: fallback Rust shard matrix must be emitted only by the two failure branches." >&2; status=1; fi; \
+	experiment_freshness_target="$$(sed -n '/^casimir-optics-discrimination-experiment-output-check:/p' Makefile)"; \
+	if [ "$$experiment_freshness_target" != 'casimir-optics-discrimination-experiment-output-check: casimir-optics-discrimination-e043-output-check casimir-optics-discrimination-e044-output-check' ]; then echo "ERROR: E-043 and E-044 freshness checks must remain independent prerequisites." >&2; status=1; fi; \
+	for experiment_id in e043 e044; do \
+	    if [ "$$(grep -Ec "^casimir-optics-discrimination-$$experiment_id-output-check: require-ci-validation-authority$$" Makefile)" -ne 1 ]; then echo "ERROR: $$experiment_id freshness check lacks an independent CI-authorized target." >&2; status=1; fi; \
+	done; \
+	fallback_heavy_row='{"lane":"heavy-fallback","target":"heavy","rust_scope":"-p algebra_analysis -p gr_core","clippy_scope":"","cargo_target_args":"--lib --bins --tests --examples","cargo_features":""}'; \
+	if [ "$$(printf '%s\n' "$$rust_shard_block" | grep -Fc "$$fallback_heavy_row")" -ne 1 ]; then echo "ERROR: fallback Rust shard matrix must retain complete heavy-package coverage." >&2; status=1; fi; \
+	if ! sed -n '/name: Retain successful core validation artifacts/,/key: $${{ steps.rust-cache.outputs.cache-primary-key }}/p' .github/workflows/ci.yml | grep -Fq 'if: success()'; then echo "ERROR: core cache retention is not success-only." >&2; status=1; fi; \
+	if ! grep -Fq 'Report collected proof failures' .github/workflows/proofs.yml; then echo "ERROR: proof collector contract is missing." >&2; status=1; fi; \
+	if ! grep -Fq 'data/output/audit/casimir-optics-discrimination/sources/** -text' .gitattributes; then echo "ERROR: hash-bound source-byte contract is missing." >&2; status=1; fi; \
+	for contract in 'id = "ci.validation.scoped"' 'id = "ci.validation.full"'; do \
+	    if ! grep -Fq "$$contract" agents.toml; then echo "ERROR: agents.toml CI entrypoint is missing: $$contract" >&2; status=1; fi; \
+	done; \
+	exit "$$status"
+
+casimir-optics-discrimination-audit-check: casimir-optics-discrimination-output-check casimir-optics-discrimination-frontier-check casimir-optics-discrimination-experiment-output-check
+
+casimir-optics-discrimination-output-check: require-ci-validation-authority
+	$(CARGO_ENV) cargo run --locked --profile validation -p gororoba_cli_physics \
+	    --bin casimir-optics-discrimination-audit -- \
+	    --output-directory data/output/audit/casimir-optics-discrimination \
+	    --check \
+	    --expected-output-directory reports/validation/casimir-optics-discrimination-expected
+
+casimir-optics-discrimination-frontier-check: require-ci-validation-authority
+	$(CARGO_ENV) cargo run --locked --profile validation -p gororoba_cli_provenance \
+	    --bin provenance -- --repo-root . verify-finite-frontier \
+	    --frontier plans/casimir_optics_discrimination_frontier.toml
+
+casimir-optics-discrimination-experiment-output-check: casimir-optics-discrimination-e043-output-check casimir-optics-discrimination-e044-output-check
+
+casimir-optics-discrimination-e043-output-check: require-ci-validation-authority
+	mkdir -p reports/validation/casimir-optics-discrimination-expected
+	$(CARGO_ENV) cargo run --locked --profile validation -p gororoba_cli_physics \
+	    --bin casimir-plate-compare -- \
+	    --output reports/validation/casimir-optics-discrimination-expected/e043-casimir-plate-compare.txt
+	cmp data/output/audit/casimir-optics-discrimination/e043-casimir-plate-compare.txt \
+	    reports/validation/casimir-optics-discrimination-expected/e043-casimir-plate-compare.txt
+
+casimir-optics-discrimination-e044-output-check: require-ci-validation-authority
+	mkdir -p reports/validation/casimir-optics-discrimination-expected
+	$(CARGO_ENV) cargo run --locked --profile validation -p gororoba_cli_physics \
+	    --bin casimir-drude-plasma -- \
+	    --output reports/validation/casimir-optics-discrimination-expected/e044-casimir-drude-plasma.txt
+	cmp data/output/audit/casimir-optics-discrimination/e044-casimir-drude-plasma.txt \
+	    reports/validation/casimir-optics-discrimination-expected/e044-casimir-drude-plasma.txt
 
 .PHONY: validate-static validate-static-and-registry validate-comprehensive
 .PHONY: audit-comprehensive audit-comprehensive-structured validate-supply-chain validate-dataset-experiments gate-fast gate-warm gate-deep audit-deep audit-deep-structured typos machete audit geiger supply-chain-gate ndlb-gate
@@ -262,7 +615,7 @@ validate-static-and-registry: validate-static
 
 # validate-comprehensive: static, registry, Rust, and dependency checks.
 # WHY: Full CI-grade audit. Catches everything including API compat and advisories.
-validate-comprehensive: validate-static-and-registry
+validate-comprehensive: require-ci-validation-authority validate-static-and-registry
 	@echo "=== validate-comprehensive: Rust and dependency checks ==="
 	# rust-regression owns the clippy prerequisite and the two nextest profiles.
 	$(MAKE) rust-regression
@@ -286,7 +639,7 @@ gate-deep: validate-comprehensive
 #      docs-freshness) into a single reviewable target for pre-release or periodic runs.
 # HOW: make audit-comprehensive (standalone, no preconditions required)
 # NOTE: cpd-audit requires pmd; the target will self-report if pmd is absent.
-audit-comprehensive:
+audit-comprehensive: require-ci-validation-authority
 	@echo "=== audit-comprehensive: full opt-in audit suite ==="
 	$(MAKE) rust-clippy
 	@# rust-semver-check is intentionally skipped in audit-comprehensive.
@@ -317,11 +670,14 @@ test: rust-regression
 # without improving the ASCII or terminology checks.
 REPO_UTILITIES_BIN := $(REPO_CARGO_TARGET_DIR)/validation-tools/repo-utilities
 
-check: $(REPO_UTILITIES_BIN)
-	@$(REPO_UTILITIES_BIN) ansi-check --check
-	@$(REPO_UTILITIES_BIN) terminology-gate
-	$(MAKE) cuda-source-ownership
+check: require-ci-validation-authority check-ansi check-terminology cuda-source-ownership
 	@echo "OK: fast shared check suite complete."
+
+check-ansi: $(REPO_UTILITIES_BIN)
+	@$(REPO_UTILITIES_BIN) ansi-check --check
+
+check-terminology: $(REPO_UTILITIES_BIN)
+	@$(REPO_UTILITIES_BIN) terminology-gate
 
 # Governance verifier targets
 registry-verify-markdown-governance:
@@ -332,7 +688,7 @@ registry-verify-markdown-governance:
 # $(VALIDATION_TOOLS_DIR)/. Cache vars and rules live below where
 # VALIDATION_TOOLS_DIR is defined (search "MARKDOWN_REGISTRY_CACHE").
 # This target consumes those cache entries.
-validate-governance: registry-validation-tools
+validate-governance: require-ci-validation-authority registry-validation-tools
 	$(MARKDOWN_REGISTRY_CACHE) verify-all
 	$(GOVERNANCE_VERIFY_CACHE) validate-all
 # execution-planning cross-checks every experiment and lineage row against the
@@ -390,7 +746,7 @@ REPO_UTILITIES_SOURCE_DEPS := $(shell find crates/repo_utilities -type f \( -nam
 $(REPO_UTILITIES_BIN): $(REPO_UTILITIES_SOURCE_DEPS) $(VALIDATION_SOURCE_IDENTITY_FILE)
 	@mkdir -p $(VALIDATION_TOOLS_DIR)
 	@echo "[validation-tools] building repo-utilities in the validation profile"
-	@$(CARGO_ENV) cargo build --profile validation -p repo_utilities --bin repo-utilities
+	@$(CARGO_ENV) cargo build --locked --profile validation -p repo_utilities --bin repo-utilities
 	@$(call stage_tool,$(REPO_CARGO_TARGET_DIR)/validation/repo-utilities,$@)
 	@touch $@
 
@@ -402,10 +758,18 @@ CORE_VALIDATION_SOURCE_DEPS := $(shell find crates xtask -type f \( -name '*.rs'
                                Cargo.toml Cargo.lock rust-toolchain.toml Makefile \
                                crates/lbm_3d_cuda/cuda_source_ownership.toml
 
-# The routing proxy and xtask share one slim Cargo session. The local
-# validation path needs both, while the broad registry bundle below remains a
-# separate tier so ordinary Rust edits do not pay for all registry binaries.
+# The routing proxy has a dedicated stamp because CI validation needs scope
+# classification but does not need xtask. Broad and structured lanes build
+# xtask through the separate core stamp.
 XTASK_CACHE := $(VALIDATION_TOOLS_DIR)/xtask
+ROUTING_VALIDATION_STAMP := $(VALIDATION_TOOLS_DIR)/routing-validation.stamp
+
+$(ROUTING_VALIDATION_STAMP): $(CORE_VALIDATION_SOURCE_DEPS) $(VALIDATION_SOURCE_IDENTITY_FILE)
+	@mkdir -p $(VALIDATION_TOOLS_DIR)
+	@echo "[validation-tools] building the local scope router"
+	@$(CARGO_ENV) cargo build --locked --profile validation -p gororoba_cli_governance --bin workspace-routing-proxy
+	@$(call stage_tool,$(REPO_CARGO_TARGET_DIR)/validation/workspace-routing-proxy,$(WORKSPACE_ROUTING_CACHE))
+	@touch $(ROUTING_VALIDATION_STAMP) $(WORKSPACE_ROUTING_CACHE)
 
 cuda-source-ownership: $(XTASK_CACHE)
 	$(XTASK_CACHE) cuda-source-ownership
@@ -413,13 +777,15 @@ CORE_VALIDATION_STAMP := $(VALIDATION_TOOLS_DIR)/core-validation.stamp
 
 $(CORE_VALIDATION_STAMP): $(CORE_VALIDATION_SOURCE_DEPS) $(VALIDATION_SOURCE_IDENTITY_FILE)
 	@mkdir -p $(VALIDATION_TOOLS_DIR)
-	@echo "[validation-tools] building routing and xtask tools in one Cargo session"
-	@$(CARGO_ENV) cargo build --profile validation -p gororoba_cli_governance --bin workspace-routing-proxy -p xtask --bin xtask
-	@$(call stage_tool,$(REPO_CARGO_TARGET_DIR)/validation/workspace-routing-proxy,$(WORKSPACE_ROUTING_CACHE))
+	@echo "[validation-tools] building xtask for broad or structured validation"
+	@$(CARGO_ENV) cargo build --locked --profile validation -p xtask --bin xtask
 	@$(call stage_tool,$(REPO_CARGO_TARGET_DIR)/validation/xtask,$(XTASK_CACHE))
-	@touch $(CORE_VALIDATION_STAMP) $(WORKSPACE_ROUTING_CACHE) $(XTASK_CACHE)
+	@touch $(CORE_VALIDATION_STAMP) $(XTASK_CACHE)
 
-$(WORKSPACE_ROUTING_CACHE) $(XTASK_CACHE): $(CORE_VALIDATION_STAMP)
+$(WORKSPACE_ROUTING_CACHE): $(ROUTING_VALIDATION_STAMP)
+	@touch $@
+
+$(XTASK_CACHE): $(CORE_VALIDATION_STAMP)
 	@touch $@
 
 $(HOST_PROFILE_CACHE): $(CORE_VALIDATION_STAMP)
@@ -437,10 +803,13 @@ REGISTRY_VALIDATION_BINS := claims-verify registry-check test-inventory \
                             semantic-atoms evidence-provenance registry-integrity \
                             execution-planning governance-verify markdown-registry \
                             project-counter-sync provenance
+REGISTRY_BUNDLED_VALIDATION_BINS := $(filter-out registry-integrity,$(REGISTRY_VALIDATION_BINS))
 REGISTRY_VALIDATION_SOURCE_DEPS := $(shell find crates xtask -type f \( -name '*.rs' -o -name 'Cargo.toml' \) -print) \
                                    Cargo.toml Cargo.lock rust-toolchain.toml Makefile
 REGISTRY_VALIDATION_STAMP := $(VALIDATION_TOOLS_DIR)/registry-validation.stamp
+REGISTRY_INTEGRITY_STAMP := $(VALIDATION_TOOLS_DIR)/registry-integrity.stamp
 REGISTRY_VALIDATION_CACHE_FILES := $(addprefix $(VALIDATION_TOOLS_DIR)/,$(REGISTRY_VALIDATION_BINS))
+REGISTRY_BUNDLED_VALIDATION_CACHE_FILES := $(addprefix $(VALIDATION_TOOLS_DIR)/,$(REGISTRY_BUNDLED_VALIDATION_BINS))
 MARKDOWN_REGISTRY_CACHE := $(VALIDATION_TOOLS_DIR)/markdown-registry
 GOVERNANCE_VERIFY_CACHE := $(VALIDATION_TOOLS_DIR)/governance-verify
 EXECUTION_PLANNING_CACHE := $(VALIDATION_TOOLS_DIR)/execution-planning
@@ -465,39 +834,44 @@ endef
 $(REGISTRY_VALIDATION_STAMP): $(REGISTRY_VALIDATION_SOURCE_DEPS) $(VALIDATION_SOURCE_IDENTITY_FILE)
 	@mkdir -p $(VALIDATION_TOOLS_DIR)
 	@echo "[validation-tools] building registry validation tools in one Cargo session"
-	@$(CARGO_ENV) cargo build --profile validation \
-		-p gororoba_cli_data $(foreach binary,$(filter-out provenance,$(REGISTRY_VALIDATION_BINS)),--bin $(binary)) \
+	@$(CARGO_ENV) cargo build --locked --keep-going --profile validation \
+		-p gororoba_cli_data $(foreach binary,$(filter-out provenance,$(REGISTRY_BUNDLED_VALIDATION_BINS)),--bin $(binary)) \
 		-p gororoba_cli_provenance --bin provenance
-	@for binary in $(REGISTRY_VALIDATION_BINS); do \
-		$(call stage_tool,"$(REPO_CARGO_TARGET_DIR)/validation/$$binary","$(VALIDATION_TOOLS_DIR)/$$binary"); \
-	done
-	@touch $(REGISTRY_VALIDATION_STAMP) $(REGISTRY_VALIDATION_CACHE_FILES)
+	@status=0; \
+	for binary in $(REGISTRY_BUNDLED_VALIDATION_BINS); do \
+		if ! ( $(call stage_tool,"$(REPO_CARGO_TARGET_DIR)/validation/$$binary","$(VALIDATION_TOOLS_DIR)/$$binary") ); then \
+		    echo "ERROR: failed to stage registry validation tool: $$binary" >&2; \
+		    status=1; \
+		fi; \
+	done; \
+	exit "$$status"
+	@touch $(REGISTRY_VALIDATION_STAMP) $(REGISTRY_BUNDLED_VALIDATION_CACHE_FILES)
 
-registry-validation-tools: $(REGISTRY_VALIDATION_STAMP)
+$(REGISTRY_INTEGRITY_STAMP): $(REGISTRY_VALIDATION_SOURCE_DEPS) $(VALIDATION_SOURCE_IDENTITY_FILE)
+	@mkdir -p $(VALIDATION_TOOLS_DIR)
+	@echo "[validation-tools] building the registry-integrity tool from its slim governance owner"
+	@$(CARGO_ENV) cargo build --locked --keep-going --profile validation -p gororoba_cli_governance --bin registry-integrity
+	@$(call stage_tool,$(REPO_CARGO_TARGET_DIR)/validation/registry-integrity,$(REGISTRY_INTEGRITY_CACHE))
+	@touch $(REGISTRY_INTEGRITY_STAMP) $(REGISTRY_INTEGRITY_CACHE)
+
+$(REGISTRY_INTEGRITY_CACHE): $(REGISTRY_INTEGRITY_STAMP)
+	@touch $@
+
+registry-validation-tools: $(REGISTRY_VALIDATION_STAMP) $(REGISTRY_INTEGRITY_CACHE)
 	@echo "OK: registry validation tools cached at $(VALIDATION_TOOLS_DIR)/."
 validation-tools: $(WORKSPACE_ROUTING_CACHE) $(HOST_PROFILE_CACHE) $(XTASK_CACHE) registry-validation-tools
 	@echo "OK: validation-tools cached at $(VALIDATION_TOOLS_DIR)/."
 
-# validate-local-xtask: opt-in Rust-driven validation. Same result as
-# `make validate-local`, but writes per-phase timing JSONL to
-# data/output/audit/<date>/validation-timing-<unix-ts>.jsonl for regression
-# tracking. Set VALIDATION_DRIVER=xtask to make this the default in CI.
-.PHONY: validate-local-xtask
-validate-local-xtask: cache-check $(WORKSPACE_ROUTING_CACHE) $(HOST_PROFILE_CACHE) $(XTASK_CACHE)
-	@$(XTASK_CACHE) validate-local --routing-bin $(WORKSPACE_ROUTING_CACHE) $(if $(VALIDATION_TIMING_OUT),--timing-json $(VALIDATION_TIMING_OUT),)
-
-gate-local-xtask: validate-local-xtask
-	@echo "DEPRECATED: make gate-local-xtask is a compatibility alias for make validate-local-xtask."
-
 # Every file under $(VALIDATION_TOOLS_DIR) that a gate lane executes or
 # compares against. The lock and the cache-check sentinel stay out, so a
-# rebuild launched beside an in-flight validate-local leaves its lock intact.
+# rebuild operation excludes the cache-check sentinel.
 VALIDATION_TOOL_PACKAGES := repo_root repo_utilities gororoba_cli_governance xtask \
                             gororoba_cli_data gororoba_cli_provenance
 
 VALIDATION_TOOL_ARTIFACTS := $(REPO_UTILITIES_BIN) $(WORKSPACE_ROUTING_CACHE) \
                              $(HOST_PROFILE_CACHE) $(XTASK_CACHE) \
-                             $(CORE_VALIDATION_STAMP) $(REGISTRY_VALIDATION_STAMP) \
+                             $(ROUTING_VALIDATION_STAMP) $(CORE_VALIDATION_STAMP) \
+                             $(REGISTRY_VALIDATION_STAMP) $(REGISTRY_INTEGRITY_STAMP) \
                              $(REGISTRY_VALIDATION_CACHE_FILES)
 
 # validation-tools-rebuild discards every staged binary, stamp and identity
@@ -535,97 +909,13 @@ validation-tools-clean:
 	rm -f $(WORKSPACE_ROUTING_CACHE) $(HOST_PROFILE_CACHE)
 	@echo "OK: validation-tools cache cleared."
 
-# validate-local writes $(VALIDATION_LOCK) with its PID and start time. A sibling
-# `make validation-lock-status` target lets editors check whether validation is in
-# flight. The lock is removed in a shell trap on EXIT so crashed gates
-# clean up. The lock surfaces edit-during-read hazards before a gate
-# consumes inconsistent source. The path is set in mk/cache_roots.mk.
-
-.PHONY: validation-lock-status
-validation-lock-status:
-	@if [ -f "$(VALIDATION_LOCK)" ]; then \
-	    pid=$$(awk '/^pid=/ {sub("pid=",""); print}' "$(VALIDATION_LOCK)" 2>/dev/null || echo ""); \
-	    started=$$(awk '/^started=/ {sub("started=",""); print}' "$(VALIDATION_LOCK)" 2>/dev/null || echo ""); \
-	    if [ -n "$$pid" ] && kill -0 "$$pid" 2>/dev/null; then \
-        printf 'validate-local IN FLIGHT: pid=%s started=%s\n' "$$pid" "$$started"; \
-	        exit 1; \
-	    else \
-        printf 'validation lock stale (pid %s not running); removing\n' "$$pid"; \
-	        rm -f "$(VALIDATION_LOCK)"; \
-	    fi; \
-	else \
-        echo 'no validate-local in flight'; \
-	fi
-
-validate-local: cache-check $(WORKSPACE_ROUTING_CACHE) $(HOST_PROFILE_CACHE) validation-tools-check-paths
-	@mkdir -p $(dir $(VALIDATION_LOCK))
-	@if [ -f "$(VALIDATION_LOCK)" ]; then \
-	    prev_pid=$$(awk '/^pid=/ {sub("pid=",""); print}' "$(VALIDATION_LOCK)" 2>/dev/null || echo ""); \
-	    if [ -n "$$prev_pid" ] && kill -0 "$$prev_pid" 2>/dev/null; then \
-        echo "[validate-local] another validation run is in flight (pid=$$prev_pid). Wait or `make validation-lock-status`."; \
-	        exit 1; \
-	    fi; \
-	    rm -f "$(VALIDATION_LOCK)"; \
-	fi
-	@trap 'rm -f "$(VALIDATION_LOCK)"' EXIT INT TERM; \
-	printf 'pid=%s\nstarted=%s\n' "$$$$" "$$(date -Iseconds)" > "$(VALIDATION_LOCK)"; \
-	set -e; \
-	scope=""; \
-	run_rust="true"; \
-	run_governance="true"; \
-	run_check="true"; \
-	eval "$$(cat $(HOST_PROFILE_CACHE))"; \
-	submake_env="WORKER_BUDGET=$$HOST_WORKER_BUDGET CARGO_JOBS=$$HOST_CARGO_JOBS NEXTEST_TEST_THREADS=$$HOST_NEXTEST_TEST_THREADS RUST_TEST_THREADS=$$HOST_RUST_TEST_THREADS RAYON_THREADS=$$HOST_RAYON_THREADS"; \
-        echo "[validate-local] host profile: physical_cores=$$HOST_PHYSICAL_CORES core_ids=$$HOST_PHYSICAL_CORE_IDS l3_cache_bytes=$$HOST_L3_CACHE_BYTES l3_safe_bytes=$$HOST_L3_SAFE_WORKING_SET_BYTES worker_budget=$$HOST_WORKER_BUDGET"; \
-        echo "[validate-local] determining scope..."; \
-	if [ -x "$(WORKSPACE_ROUTING_CACHE)" ]; then \
-	    scope_file="$$(mktemp)"; \
-	    meta_file="$$(mktemp)"; \
-	    $(WORKSPACE_ROUTING_CACHE) --local --verbose 1>"$$scope_file" 2>"$$meta_file" || true; \
-	    scope="$$(cat "$$scope_file" 2>/dev/null || true)"; \
-	    routing_meta="$$(cat "$$meta_file" 2>/dev/null || true)"; \
-	    rm -f "$$scope_file" "$$meta_file"; \
-	    if [ -n "$$routing_meta" ]; then printf '%s\n' "$$routing_meta"; fi; \
-	    printf '%s\n' "$$routing_meta" | grep -q 'run_rust=False' && run_rust="false" || true; \
-	    printf '%s\n' "$$routing_meta" | grep -q 'run_governance=False' && run_governance="false" || true; \
-	    printf '%s\n' "$$routing_meta" | grep -q 'run_check=False' && run_check="false" || true; \
-	else \
-        echo "[validate-local] WARNING: workspace-routing unavailable, running full workspace"; \
-	    scope="--workspace"; \
-	fi; \
-	if [ "$$run_check" = "true" ]; then \
-	    $(MAKE) check $$submake_env; \
-	else \
-        echo "[validate-local] SKIP: no check-relevant (non-Rust) file changes detected."; \
-	fi; \
-	if [ "$$run_rust" = "true" ]; then \
-	    if [ -z "$$scope" ]; then scope="--workspace"; fi; \
-        echo "[validate-local] rust scope: $$scope"; \
-        if [ -n "$(LOCAL_NEXTEST_TIMING_JSON)" ]; then echo "[validate-local] local nextest timing: $(LOCAL_NEXTEST_TIMING_JSON)"; fi; \
-	    $(MAKE) rust-regression-scoped RUST_SCOPE="$$scope" RUST_RUN_HEAVY=0 $$submake_env; \
-	else \
-        echo "[validate-local] SKIP: no Rust-relevant changes detected."; \
-	fi; \
-	if [ "$$run_governance" = "true" ]; then \
-        $(MAKE) validate-governance $$submake_env; \
-	else \
-        echo "[validate-local] SKIP: no registry-policy changes detected."; \
-	fi; \
-    echo "[validate-local] OK: scoped validation passed."
-
-gate-local: validate-local
-	@echo "DEPRECATED: make gate-local is a compatibility alias for make validate-local."
-
-pre-push-gate: validate-local
-	@echo "DEPRECATED: make pre-push-gate is a compatibility alias for make validate-local."
-
-validate-ci-registry: validate-registry
+validate-ci-registry: require-ci-validation-authority validate-registry
 	@echo "OK: CI registry validation passed."
 
 gate-ci-registry: validate-ci-registry
 	@echo "DEPRECATED: make gate-ci-registry is a compatibility alias for make validate-ci-registry."
 
-validate-ci-rust:
+validate-ci-rust: require-ci-validation-authority
 	$(MAKE) validation-tools
 	$(MAKE) rust-regression CARGO_ENV="$(CARGO_ENV_CI)"
 	$(MAKE) validate-rust-integrity CARGO_ENV="$(CARGO_ENV_CI)"
@@ -636,11 +926,25 @@ validate-ci-rust:
 gate-ci-rust: validate-ci-rust
 	@echo "DEPRECATED: make gate-ci-rust is a compatibility alias for make validate-ci-rust."
 
-.PHONY: validate-ci-scoped-rust
-validate-ci-scoped-rust: SHELL := /bin/bash
-validate-ci-scoped-rust: export CI_RUST_SCOPE := $(CI_RUST_SCOPE)
-validate-ci-scoped-rust: export CI_CLIPPY_SCOPE := $(CI_CLIPPY_SCOPE)
-validate-ci-scoped-rust:
+.PHONY: validate-ci-scoped-rust validate-ci-scoped-clippy validate-ci-scoped-light validate-ci-scoped-heavy validate-ci-scoped-rust-lane
+validate-ci-scoped-rust: validate-ci-scoped-clippy validate-ci-scoped-light validate-ci-scoped-heavy
+	@echo "OK: scoped CI Rust validation passed."
+
+validate-ci-scoped-clippy:
+	@$(MAKE) --no-print-directory CI_RUST_LANE=clippy validate-ci-scoped-rust-lane
+
+validate-ci-scoped-light:
+	@$(MAKE) --no-print-directory CI_RUST_LANE=light validate-ci-scoped-rust-lane
+
+validate-ci-scoped-heavy:
+	@$(MAKE) --no-print-directory CI_RUST_LANE=heavy validate-ci-scoped-rust-lane
+
+validate-ci-scoped-rust-lane: SHELL := /bin/bash
+validate-ci-scoped-rust-lane: export CI_RUST_SCOPE := $(CI_RUST_SCOPE)
+validate-ci-scoped-rust-lane: export CI_CLIPPY_SCOPE := $(CI_CLIPPY_SCOPE)
+validate-ci-scoped-rust-lane: export CI_CARGO_TARGET_ARGS := $(CI_CARGO_TARGET_ARGS)
+validate-ci-scoped-rust-lane: export CI_CARGO_FEATURES := $(CI_CARGO_FEATURES)
+validate-ci-scoped-rust-lane: require-ci-validation-authority
 	@set -euo pipefail; \
 	validate_scope() { \
 	    local scope_name="$$1" scope_value="$$2"; \
@@ -660,10 +964,46 @@ validate-ci-scoped-rust:
 	        fi; \
 	    done; \
 	}; \
-	validate_scope CI_RUST_SCOPE "$$CI_RUST_SCOPE"; \
-	validate_scope CI_CLIPPY_SCOPE "$$CI_CLIPPY_SCOPE"; \
-	read -r -a rust_scope <<< "$$CI_RUST_SCOPE"; \
-	read -r -a clippy_scope <<< "$$CI_CLIPPY_SCOPE"; \
+	case "$$CI_RUST_LANE" in \
+	    clippy) \
+	        validate_scope CI_CLIPPY_SCOPE "$$CI_CLIPPY_SCOPE"; \
+	        read -r -a clippy_scope <<< "$$CI_CLIPPY_SCOPE"; \
+	        echo "[ci-rust-clippy] scope: $$CI_CLIPPY_SCOPE"; \
+	        $(CARGO_ENV_CI) cargo clippy --keep-going --locked --profile validation --all-targets "$${clippy_scope[@]}" -- -D warnings; \
+	        ;; \
+	    light|heavy) \
+	        validate_scope CI_RUST_SCOPE "$$CI_RUST_SCOPE"; \
+	        read -r -a rust_scope <<< "$$CI_RUST_SCOPE"; \
+	        ;; \
+	    *) echo "ERROR: CI_RUST_LANE must be clippy, light, or heavy." >&2; exit 1 ;; \
+	esac; \
+	if [ "$$CI_RUST_LANE" = clippy ]; then exit 0; fi; \
+	cargo_target_scope="$${CI_CARGO_TARGET_ARGS:---all-targets}"; \
+	read -r -a cargo_target_args <<< "$$cargo_target_scope"; \
+	cargo_feature_args=(); \
+	no_tests_args=(); \
+	if [ -n "$$CI_CARGO_FEATURES" ]; then \
+	    if [[ ! "$$CI_CARGO_FEATURES" =~ ^[A-Za-z0-9_-]+(,[A-Za-z0-9_-]+)*$$ ]]; then echo "ERROR: CI_CARGO_FEATURES requires a comma-separated feature list." >&2; exit 1; fi; \
+	    cargo_feature_args=(--features "$$CI_CARGO_FEATURES"); \
+	fi; \
+	case "$${cargo_target_args[0]}" in \
+	    --lib) \
+	        if ! { [ "$${#cargo_target_args[@]}" -eq 1 ]; } && \
+	           ! { [ "$${#cargo_target_args[@]}" -eq 4 ] && [ "$${cargo_target_args[1]}" = --bins ] && [ "$${cargo_target_args[2]}" = --tests ] && [ "$${cargo_target_args[3]}" = --examples ]; }; then \
+	            echo "ERROR: library target shard requires --lib or --lib --bins --tests --examples." >&2; exit 1; \
+	        fi; \
+	        if [ "$${#cargo_target_args[@]}" -eq 1 ]; then no_tests_args=(--no-tests=pass); fi; \
+	        ;; \
+	    --bin|--test|--example) \
+	        target_option="$${cargo_target_args[0]}"; \
+	        if [ "$$target_option" = --bin ] || [ "$$target_option" = --example ]; then no_tests_args=(--no-tests=pass); fi; \
+	        if (( $${#cargo_target_args[@]} % 2 != 0 )); then echo "ERROR: named target shard requires option and name pairs." >&2; exit 1; fi; \
+	        for ((target_index=0; target_index<$${#cargo_target_args[@]}; target_index+=2)); do \
+	            if [ "$${cargo_target_args[target_index]}" != "$$target_option" ] || [[ ! "$${cargo_target_args[target_index+1]}" =~ ^[A-Za-z0-9_][A-Za-z0-9_-]*$$ ]]; then echo "ERROR: invalid named target shard." >&2; exit 1; fi; \
+	        done; \
+	        ;; \
+	    *) echo "ERROR: CI_CARGO_TARGET_ARGS must select all targets, a library, or named binary, integration-test, or example targets." >&2; exit 1 ;; \
+	esac; \
 	light_scope=(); heavy_scope=(); \
 	if [ "$${rust_scope[0]}" = --workspace ]; then \
 	    light_scope=(--workspace --exclude algebra_analysis --exclude gr_core); \
@@ -677,17 +1017,18 @@ validate-ci-scoped-rust:
 	        esac; \
 	    done; \
 	fi; \
-	echo "[ci-rust] clippy: $$CI_CLIPPY_SCOPE"; \
-	$(CARGO_ENV_CI) cargo clippy --locked --profile validation --all-targets "$${clippy_scope[@]}" -- -D warnings; \
-	if [ "$${#light_scope[@]}" -gt 0 ]; then \
-	    echo "[ci-rust] tests (validation): $${light_scope[*]}"; \
-	    $(CARGO_ENV_CI) cargo nextest run --locked --cargo-profile validation -P ci --build-jobs $(CARGO_JOBS) --test-threads $(NEXTEST_TEST_THREADS) "$${light_scope[@]}"; \
-	fi; \
-	if [ "$${#heavy_scope[@]}" -gt 0 ]; then \
-	    echo "[ci-rust] tests (test-heavy): $${heavy_scope[*]}"; \
-	    $(CARGO_ENV_CI) cargo nextest run --locked --cargo-profile test-heavy -P heavy --build-jobs $(CARGO_JOBS) --test-threads $(NEXTEST_TEST_THREADS) "$${heavy_scope[@]}"; \
-	fi; \
-	echo "OK: scoped CI Rust validation passed."
+	case "$$CI_RUST_LANE" in \
+	    light) \
+	        if [ "$${#light_scope[@]}" -eq 0 ]; then echo "[ci-rust-light] no applicable packages"; exit 0; fi; \
+	        echo "[ci-rust-light] scope: $${light_scope[*]}"; \
+	        $(CARGO_ENV_CI) cargo nextest run --no-fail-fast "$${no_tests_args[@]}" --locked --cargo-profile test -P ci "$${cargo_target_args[@]}" "$${cargo_feature_args[@]}" --build-jobs $(CARGO_JOBS) --test-threads $(NEXTEST_TEST_THREADS) "$${light_scope[@]}"; \
+	        ;; \
+	    heavy) \
+	        if [ "$${#heavy_scope[@]}" -eq 0 ]; then echo "[ci-rust-heavy] no applicable packages"; exit 0; fi; \
+	        echo "[ci-rust-heavy] scope: $${heavy_scope[*]}"; \
+	        $(CARGO_ENV_CI) cargo nextest run --no-fail-fast --locked --cargo-profile test-heavy -P heavy "$${cargo_target_args[@]}" "$${cargo_feature_args[@]}" --build-jobs $(CARGO_JOBS) --test-threads $(NEXTEST_TEST_THREADS) "$${heavy_scope[@]}"; \
+	        ;; \
+	esac
 
 db-schema-drift-check: $(XTASK_CACHE)
 	$(CARGO_ENV) $(XTASK_CACHE) db-docs --check
@@ -696,12 +1037,12 @@ db-schema-drift-check: $(XTASK_CACHE)
 host-profile: $(XTASK_CACHE)
 	$(XTASK_CACHE) host-profile --format json
 
-validate-ci:
+validate-ci: require-ci-validation-authority
 	$(MAKE) validation-tools
 	$(CARGO_ENV) $(XTASK_CACHE) validate-ci
 	@echo "OK: CI validation completed."
 
-validate-repository:
+validate-repository: require-ci-validation-authority
 	$(MAKE) validation-tools
 	$(CARGO_ENV) $(XTASK_CACHE) validate-repository
 	@echo "OK: repository validation completed."
@@ -727,7 +1068,7 @@ audit-deep-structured: audit-comprehensive-structured
 # repository validation path skips Rust compilation entirely: only
 # validate-ci-registry (governance + schema
 # checks, ~2 min) runs, and it fails fast on the first error.
-validate-repository-fast:
+validate-repository-fast: require-ci-validation-authority
 	$(MAKE) validation-tools
 	$(CARGO_ENV) $(XTASK_CACHE) validate-repository --fast
 	@echo "OK: fast repository validation completed."
@@ -914,32 +1255,23 @@ cache-check-force:
 		printf '[cache-check] OK: cargo dirs at %dMB (soft=%dGB hard=%dGB)\n' "$$TOTAL" "$$((SOFT / 1024))" "$$((HARD / 1024))"; \
 	fi
 
-pre-push-gate-strict: validate-repository
-	@echo "DEPRECATED: make pre-push-gate-strict is a compatibility alias for make validate-repository."
-
-hooks-install:
-	@mkdir -p "$(HOOKS_DIR)"
-	@chmod +x "$(HOOKS_DIR)/pre-push"
-	@git config core.hooksPath "$(HOOKS_DIR)"
-	@echo "OK: git hooks installed. core.hooksPath=$$(git config --get core.hooksPath)"
-	@echo "CI owns automatic validation. Run make validate-local for manual validation."
-
-hooks-install-strict: hooks-install
-	@echo "hooks-install-strict installs the same inactive local validation hook."
-
-hooks-status:
-	@echo "core.hooksPath=$$(git config --get core.hooksPath || echo .git/hooks)"
-	@echo "pre-push hook exists? $$(test -f "$(HOOKS_DIR)/pre-push" && echo yes || echo no)"
-	@echo "CI owns automatic validation; make validate-local remains a manual command."
-
 smoke: check rust-smoke
 	@echo "OK: smoke lane passed."
 
-validate-rust-integrity: registry-validation-tools
-	$(VALIDATION_TOOLS_DIR)/claims-verify --check providers
-	$(VALIDATION_TOOLS_DIR)/test-inventory --check
-	$(VALIDATION_TOOLS_DIR)/registry-check --typed-policy error
+validate-rust-integrity: require-ci-validation-authority registry-validation-tools \
+                         validate-rust-integrity-claims \
+                         validate-rust-integrity-test-inventory \
+                         validate-rust-integrity-typed-policy
 	@echo "OK: Rust integrity validation passed."
+
+validate-rust-integrity-claims: registry-validation-tools
+	$(VALIDATION_TOOLS_DIR)/claims-verify --check providers
+
+validate-rust-integrity-test-inventory: registry-validation-tools
+	$(VALIDATION_TOOLS_DIR)/test-inventory --check
+
+validate-rust-integrity-typed-policy: registry-validation-tools
+	$(VALIDATION_TOOLS_DIR)/registry-check --typed-policy error
 
 registry-control-plane-gate-readonly: validate-governance
 	@echo "DEPRECATED: make registry-control-plane-gate-readonly is a compatibility alias for make validate-governance."
@@ -964,7 +1296,7 @@ math-verify: rust-regression
 rust-test: rust-regression
 	@echo "OK: rust-test is an alias for rust-regression."
 
-rust-clippy:
+rust-clippy: require-ci-validation-authority
 	$(CARGO_ENV) cargo clippy --workspace -- -D warnings
 
 rust-semver-check:
@@ -1017,118 +1349,10 @@ rust-smoke:
 	$(CARGO_ENV) cargo nextest run --build-jobs $(CARGO_JOBS) --test-threads $(NEXTEST_TEST_THREADS) --cargo-profile test-heavy -P smoke -p gr_core --test smoke_gr_core
 	@echo "OK: Rust smoke lane passed."
 
-rust-regression: rust-clippy
+rust-regression: require-ci-validation-authority rust-clippy
 	$(CARGO_ENV) cargo nextest run --build-jobs $(CARGO_JOBS) --test-threads $(NEXTEST_TEST_THREADS) --workspace --exclude algebra_analysis --exclude gr_core
 	$(CARGO_ENV) cargo nextest run --build-jobs $(CARGO_JOBS) --test-threads $(NEXTEST_TEST_THREADS) --cargo-profile test-heavy -P heavy -p algebra_analysis -p gr_core
 	@echo "OK: Rust regression lane passed."
-
-rust-regression-scoped:
-	# workspace-routing source lives beside the data CLI, but
-	# rust-regression-scoped builds it through the slim governance proxy binary.
-	# That keeps scope classification independent of the full data CLI
-	# dependency graph while preserving workspace-routing semantics.
-	#
-	# Prefer the cached binary at $(WORKSPACE_ROUTING_CACHE) to skip cargo's
-	# metadata walk. The validation-tools target dependencies rebuild the cached binary
-	# when workspace_routing.rs changes.
-	#
-	# Preserve routing CLI stderr so scope-selection failures reach the validation
-	# operator. The fallback remains "--workspace" after the diagnostic is
-	# emitted.
-	$(eval RUST_SCOPE ?= $(shell \
-	    if [ -x "$(WORKSPACE_ROUTING_CACHE)" ]; then \
-	        "$(WORKSPACE_ROUTING_CACHE)" --local 2> >(tee /dev/stderr); \
-	    else \
-	        $(CARGO_ENV) cargo run -q -p gororoba_cli_governance --bin workspace-routing-proxy -- --local; \
-	    fi || echo "--workspace"))
-	# Clippy runs only on DIRECTLY changed crates (no reverse-closure expansion).
-	# WHY: clippy lints fire on the package owning the source -- a change in a
-	# hub crate cannot induce a new lint on a downstream consumer whose source
-	# is unchanged. Skipping the closure for clippy saves the bulk of compile
-	# time (gororoba_cli_data with 100+ binaries is the worst offender).
-	$(eval RUST_CLIPPY_SCOPE ?= $(shell \
-	    if [ -x "$(WORKSPACE_ROUTING_CACHE)" ]; then \
-	        "$(WORKSPACE_ROUTING_CACHE)" --local --direct-only 2> >(tee /dev/stderr); \
-	    else \
-	        $(CARGO_ENV) cargo run -q -p gororoba_cli_governance --bin workspace-routing-proxy -- --local --direct-only; \
-	    fi || echo "$(RUST_SCOPE)"))
-	# Nextest in the LOCAL pre-push fast path also runs only on directly
-	# changed crates. Trust the layered model:
-	#   - Direct-changed crate tests + clippy = pre-push smoke gate (< 3 min).
-	#   - Full reverse-closure regression = CI on PR open (validate-ci-rust).
-	# Set RUST_NEXTEST_SCOPE_MODE=closure to opt back into the wide scope for
-	# a single invocation when needed (e.g. after toolchain bumps).
-	$(eval RUST_NEXTEST_SCOPE_MODE ?= direct)
-	$(eval RUST_NEXTEST_SCOPE ?= $(if $(filter direct,$(RUST_NEXTEST_SCOPE_MODE)),$(RUST_CLIPPY_SCOPE),$(RUST_SCOPE)))
-	# Pre-push test kind: `lib` runs only library unit tests; `all` runs
-	# lib + integration test binaries (--lib --tests). Integration test
-	# compile is the largest single contributor to gate wall-time (the
-	# 441-binary link phase, ~4m30s); restricting to --lib at pre-push
-	# makes the gate a true smoke gate. CI on PR open runs the full
-	# `all` suite. Override per invocation:
-	#   make validate-local RUST_NEXTEST_KIND_MODE=all
-	$(eval RUST_NEXTEST_KIND_MODE ?= lib)
-	$(eval RUST_NEXTEST_KINDS ?= $(if $(filter lib,$(RUST_NEXTEST_KIND_MODE)),--lib,--lib --tests))
-	$(eval RUST_RUN_HEAVY ?= 1)
-	@set -e; \
-	if [ -z "$(RUST_SCOPE)" ]; then \
-	    echo "SKIP: no Rust-relevant changes detected."; \
-	else \
-	    echo "[rust-regression-scoped] clippy scope: $(RUST_CLIPPY_SCOPE)"; \
-	    echo "[rust-regression-scoped] nextest scope: $(RUST_NEXTEST_SCOPE) (scope_mode=$(RUST_NEXTEST_SCOPE_MODE) kinds=$(RUST_NEXTEST_KINDS))"; \
-	    if [ -n "$(RUST_CLIPPY_SCOPE)" ]; then \
-	        $(CARGO_ENV) cargo clippy $(RUST_CLIPPY_SCOPE) $(RUST_SCOPED_CLIPPY_TARGETS) -- -D warnings; \
-	    fi; \
-	    local_light_scope=""; \
-	    local_light_packages=""; \
-	    if [ "$(RUST_NEXTEST_SCOPE)" = "--workspace" ]; then \
-	        light_scope="--workspace --exclude algebra_analysis --exclude gr_core"; \
-	        heavy_scope="-p algebra_analysis -p gr_core"; \
-	        local_light_scope="$$light_scope"; \
-	    else \
-	        light_scope=""; \
-	        heavy_scope=""; \
-	        prev=""; \
-	        for token in $(RUST_NEXTEST_SCOPE); do \
-	            if [ "$$prev" = "-p" ]; then \
-	                case "$$token" in \
-	                    algebra_analysis|gr_core) heavy_scope="$$heavy_scope -p $$token" ;; \
-	                    *) \
-	                        light_scope="$$light_scope -p $$token"; \
-	                        local_light_packages="$$local_light_packages $$token" ;; \
-	                esac; \
-	                prev=""; \
-	            elif [ "$$token" = "-p" ]; then \
-	                prev="-p"; \
-	            fi; \
-	        done; \
-	    fi; \
-	    filterset=""; \
-	    if [ "$(RUST_RUN_HEAVY)" != "1" ]; then \
-	        filterset='$(RUST_LOCAL_SKIP_FILTERSET)'; \
-	    fi; \
-	    if [ "$(RUST_NEXTEST_SCOPE)" = "--workspace" ]; then \
-	        if [ -n "$$filterset" ]; then \
-	            echo "[rust-regression-scoped] local skip filter enabled"; \
-	            $(CARGO_ENV) cargo nextest run --build-jobs $(CARGO_JOBS) --test-threads $(NEXTEST_TEST_THREADS) $(RUST_NEXTEST_KINDS) $$local_light_scope -E "$$filterset"; \
-	        else \
-	            $(CARGO_ENV) cargo nextest run --build-jobs $(CARGO_JOBS) --test-threads $(NEXTEST_TEST_THREADS) $(RUST_NEXTEST_KINDS) $$local_light_scope; \
-	        fi; \
-	    elif [ -n "$$local_light_packages" ]; then \
-	        if [ -n "$$filterset" ]; then \
-	            echo "[rust-regression-scoped] local skip filter enabled"; \
-	            $(CARGO_ENV) $(XTASK_CACHE) local-nextest-plan --build-jobs $(CARGO_JOBS) --test-threads $(NEXTEST_TEST_THREADS) --kinds $(RUST_NEXTEST_KIND_MODE) $(if $(LOCAL_NEXTEST_TIMING_JSON),--timing-json-out $(LOCAL_NEXTEST_TIMING_JSON),) --filterset "$$filterset" $$local_light_packages; \
-	        else \
-	            $(CARGO_ENV) $(XTASK_CACHE) local-nextest-plan --build-jobs $(CARGO_JOBS) --test-threads $(NEXTEST_TEST_THREADS) --kinds $(RUST_NEXTEST_KIND_MODE) $(if $(LOCAL_NEXTEST_TIMING_JSON),--timing-json-out $(LOCAL_NEXTEST_TIMING_JSON),) $$local_light_packages; \
-	        fi; \
-	    fi; \
-	    if [ -n "$$heavy_scope" ] && [ "$(RUST_RUN_HEAVY)" = "1" ]; then \
-	        $(CARGO_ENV) cargo nextest run --build-jobs $(CARGO_JOBS) --test-threads $(NEXTEST_TEST_THREADS) --cargo-profile test-heavy -P heavy $$heavy_scope; \
-	    elif [ -n "$$heavy_scope" ]; then \
-	        echo "[rust-regression-scoped] SKIP heavy nextest in local fast path: $$heavy_scope"; \
-	    fi; \
-	    echo "OK: scoped Rust validation passed (clippy + nextest)."; \
-	fi
 
 # WHY: Miri catches UB in unsafe Cayley-Dickson arithmetic (pointer provenance,
 # integer-to-pointer casts, uninit reads) that sanitizers miss at runtime.
@@ -1708,10 +1932,10 @@ registry-wave5-batch2: registry-strict-toml-batch2
 #   make registry-integrity
 # to regenerate registry/schema_signatures.toml before committing.
 # Registry validation will fail on content_sha mismatch otherwise.
-registry-integrity: registry-validation-tools
+registry-integrity: $(REGISTRY_INTEGRITY_CACHE)
 	$(REGISTRY_INTEGRITY_CACHE) --repo-root .
 
-validate-registry-integrity: registry-validation-tools
+validate-registry-integrity: require-ci-validation-authority $(REGISTRY_INTEGRITY_CACHE)
 	$(REGISTRY_INTEGRITY_CACHE) --verify --repo-root .
 	@echo "OK: registry consistency records are current."
 
@@ -1771,7 +1995,7 @@ voyager-heliopause-v2:
 ablation-all: ablation-baselines ablation-axis-a ablation-axis-b ablation-window-sensitivity ablation-mad-decorrelation
 
 registry-strict-toml-batch3-build:
-	$(CARGO_ENV) cargo build --profile validation -p gororoba_cli_data --bin registry-integrity
+	$(CARGO_ENV) cargo build --profile validation -p gororoba_cli_governance --bin registry-integrity
 	$(REPO_CARGO_TARGET_DIR)/validation/registry-integrity --repo-root .
 
 registry-verify-schema-signatures:
@@ -1841,16 +2065,37 @@ registry-verify-wave5-batch4: registry-verify-strict-toml-batch4
 registry-wave5-batch4: registry-strict-toml-batch4
 	@echo "DEPRECATED: make registry-wave5-batch4 is a legacy alias. Use make registry-execution-planning-gate."
 
-validate-registry: registry-validation-tools
-	$(PROVENANCE_CACHE) --repo-root . verify-control-plane --verify-compat-exports
-	$(PROJECT_COUNTER_CACHE) --check
-	$(MARKDOWN_REGISTRY_CACHE) verify-all
-	$(GOVERNANCE_VERIFY_CACHE) validate-all
-	$(VALIDATION_TOOLS_DIR)/semantic-atoms --verify --repo-root .
-	$(VALIDATION_TOOLS_DIR)/evidence-provenance --verify --repo-root .
-	$(REGISTRY_INTEGRITY_CACHE) --verify --repo-root .
-	$(VALIDATION_TOOLS_DIR)/execution-planning --verify --repo-root .
+validate-registry: require-ci-validation-authority registry-validation-tools \
+                   validate-registry-control-plane \
+                   validate-registry-project-counter \
+                   validate-registry-markdown \
+                   validate-registry-governance \
+                   validate-registry-semantic-atoms \
+                   validate-registry-evidence-provenance \
+                   validate-registry-integrity \
+                   validate-registry-execution-planning
 	@echo "OK: registry validation completed in one tool session."
+
+validate-registry-control-plane: registry-validation-tools
+	$(PROVENANCE_CACHE) --repo-root . verify-control-plane --verify-compat-exports
+
+validate-registry-project-counter: registry-validation-tools
+	$(PROJECT_COUNTER_CACHE) --check
+
+validate-registry-markdown: registry-validation-tools
+	$(MARKDOWN_REGISTRY_CACHE) verify-all
+
+validate-registry-governance: registry-validation-tools
+	$(GOVERNANCE_VERIFY_CACHE) validate-all
+
+validate-registry-semantic-atoms: registry-validation-tools
+	$(VALIDATION_TOOLS_DIR)/semantic-atoms --verify --repo-root .
+
+validate-registry-evidence-provenance: registry-validation-tools
+	$(VALIDATION_TOOLS_DIR)/evidence-provenance --verify --repo-root .
+
+validate-registry-execution-planning: registry-validation-tools
+	$(VALIDATION_TOOLS_DIR)/execution-planning --verify --repo-root .
 
 registry-acceptance-gate-readonly: validate-registry
 	@echo "DEPRECATED: make registry-acceptance-gate-readonly is a compatibility alias for make validate-registry."
@@ -2047,7 +2292,9 @@ docs-publish: registry-export-markdown
 
 docs-rustdoc:
 	@mkdir -p "$(DOCS_CARGO_TARGET_DIR)"
-	$(DOCS_CARGO_ENV) cargo doc --locked --keep-going --workspace $(DOCS_FEATURE_FLAGS) --no-deps --document-private-items
+	@# cd_papers is a re-export-only facade. Its owning crates provide the
+	@# canonical API pages, and Rust CI verifies the facade itself.
+	$(DOCS_CARGO_ENV) cargo doc --locked --keep-going --workspace --exclude cd_papers $(DOCS_FEATURE_FLAGS) --no-deps --document-private-items
 
 cd-row-upgrade-batch:
 	@test -n "$(CD_ROW_UPGRADE_LANE)" || (echo "ERROR: set CD_ROW_UPGRADE_LANE=<jacobson1958|freudenthal1951>" && exit 1)
@@ -2087,7 +2334,7 @@ cd-row-upgrade-freudenthal:
 
 .PHONY: docs-book-source
 docs-book-source:
-	$(CARGO_ENV) cargo run --locked --profile validation -p gororoba_cli_data --bin registry-emit -- book-docs-legacy
+	$(DOCS_CARGO_ENV) cargo run --locked -p gororoba_cli_data --bin registry-emit -- book-docs-legacy
 
 docs-book: docs-book-source
 	@command -v $(MD_BOOK) >/dev/null 2>&1 || { echo "ERROR: mdbook not found. Run: cargo install --locked --force mdbook"; exit 1; }
@@ -2648,15 +2895,14 @@ help:
 	@echo "    make test                 Run workspace-wide nextest"
 	@echo "    make smoke                Composite fast smoke lane (check + rust-smoke)"
 	@echo "    make integrity-rust       Cargo-backed integrity lane (claims + inventory + typed policy)"
-	@echo "    make check                Fast local check (ansi + terminology + no-reports)"
+	@echo "    make check                CI-only hygiene check"
 	@echo "    make ansi-check           Verify emoji-blocking UTF-8 character policy"
 	@echo "    make ansi-check-strict    Verify UTF-8 policy + fail on <U+....>/<EMOJI+...> placeholders"
 	@echo "    make verify-pantheon-physicsforge-mapping Verify migration completeness"
 	@echo "    make verify-pantheon-physicsforge-license-headers Verify license headers"
 	@echo "    make rust-smoke           Dedicated Rust smoke suites via nextest"
 	@echo "    make rust-regression      Full Rust regression lane"
-	@echo "    make rust-regression-scoped Scoped Rust regression lane"
-	@echo "    make validate-local       Canonical scoped local validation"
+	@echo "    make validation-resource-contract  Verify CI-only validation boundaries"
 	@echo "    make validate-static      Lightweight hygiene and dependency validation"
 	@echo "    make validate-static-and-registry  Hygiene plus registry validation"
 	@echo "    make validate-comprehensive  Full Rust and dependency validation"

@@ -83,10 +83,6 @@ name = "paper-fetcher"
 path = "src/bin/paper_fetcher.rs"
 
 [[bin]]
-name = "pre-push-hook"
-path = "src/bin/pre_push_hook.rs"
-
-[[bin]]
 name = "makew"
 path = "src/bin/makew.rs"
 

@@ -22,6 +22,10 @@ pub enum CudaError {
     #[error("no CUDA device available (count = 0)")]
     NoDevice,
 
+    /// The CUDA runtime or driver loader is unavailable.
+    #[error("CUDA runtime unavailable")]
+    RuntimeUnavailable,
+
     /// Device ordinal out of range.
     #[error("CUDA device ordinal {ordinal} out of range (have {count} devices)")]
     OrdinalOutOfRange { ordinal: usize, count: usize },

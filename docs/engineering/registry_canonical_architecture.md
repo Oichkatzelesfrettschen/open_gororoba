@@ -365,11 +365,12 @@ legitimate Layer-2 change, run:
 make registry-integrity
 ```
 
-This invokes `gororoba_cli_data --bin registry-integrity` which
-recomputes both `content_sha256` (the file's literal SHA) and
-`schema_sha256` (the SHA of the normalized shape JSON including
-`row_count`). Validation rejects pushes where the file SHA on disk does
-not match the recorded SHA in `schema_signatures.toml`.
+This invokes the dedicated `gororoba_cli_governance --bin
+registry-integrity` owner through a staged validation-profile binary. The tool
+recomputes both `content_sha256` (the file's literal SHA) and `schema_sha256`
+(the SHA of the normalized shape JSON including `row_count`). Validation
+rejects pushes where the file SHA on disk does not match the recorded SHA in
+`schema_signatures.toml`.
 
 ## Audit trail: how to ask "what changed since last week"
 
@@ -491,6 +492,15 @@ before extraction, validates every historical object, and installs only current
 declared paths. Existing matching files are reused; conflicting bytes fail
 preflight. Destination installation is atomic per file, not across the entire
 collection. Run the command again after an interrupted installation.
+
+Repeat `--path <repository-relative-path>` to install a bounded subset. The
+hydrator still verifies the complete compressed archive identity and archive
+inventory, hashes every selected object, installs only selected current paths,
+and confirms that each selected path is materialized after installation. An
+unknown or duplicate selected path fails before extraction. Omitting `--path`
+preserves complete current-path hydration. The JSON report keeps
+`verified_objects` as the complete archive-inventory count and records the
+bounded hash/install denominator separately as `selected_objects`.
 
 ```bash
 mkdir -p .cache/retention

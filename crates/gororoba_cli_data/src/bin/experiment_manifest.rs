@@ -536,7 +536,7 @@ mod tests {
     #[test]
     fn verifies_complete_manifest_contract_and_rejects_missing_hardware() {
         let repo_root = repo_root::resolve!();
-        let retained_path = "data/csv/apt_dimensional_census_summary.csv";
+        let retained_path = "data/output/anomaly/fractal_metric/best_fit.json";
         let retained_hash = sha256_file(&repo_root.join(retained_path)).expect("retained hash");
         let commit = checked_out_commit(&repo_root).expect("checked out commit");
         let command = "cargo test -p materials_core";
@@ -557,7 +557,7 @@ randomness_mode = \"none\"\n\n\
 path = \"{retained_path}\"\n\
 sha256 = \"{retained_hash}\"\n\n\
 [[experiment.output_hash_refs]]\n\
-artifact_id = \"ASOT-0984\"\n\
+artifact_id = \"ASOT-1012\"\n\
 path = \"{retained_path}\"\n\
 sha256 = \"{retained_hash}\"\n",
             sha256_bytes(command.as_bytes())

@@ -45,6 +45,7 @@ cubecl = [
 [dev-dependencies]
 approx = { workspace = true }
 naga = { workspace = true, features = ["wgsl-in", "spv-out"] }
+provenance_store = { workspace = true }
 
 [lints]
 workspace = true

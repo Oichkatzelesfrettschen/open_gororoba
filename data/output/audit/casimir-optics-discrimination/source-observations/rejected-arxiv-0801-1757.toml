@@ -1,0 +1,28 @@
+schema_version = 1
+observation_key = "casimir-optics-discrimination-rejected-arxiv-0801-1757"
+source_key = "REJECTED-ARXIV-0801.1757"
+actor = "codex"
+reason = "Admit retained source bytes through the typed first-observation contract without promoting scientific claims."
+requested_url = "https://arxiv.org/pdf/0801.1757"
+outcome = "body_retained"
+observed_at = "2026-09-12"
+time_precision = "day"
+tool = "curl (audit-manifest attribution)"
+request_evidence_limit = "The retained manifest associates source key, requested URL, observation day, and body digest. Raw request logs, final redirect URLs, and HTTP status are absent."
+absent_prior_expectation_reason = "The audit records observed body identities after retrieval; a hash-bound prerequest body expectation is absent."
+document_identity_limit = "Negative provenance witness: retained tutorial bytes do not support the memory-kernel complete-positivity proposition and carry no evidentiary weight for it."
+
+[request_evidence]
+path = "data/output/audit/casimir-optics-discrimination/source-retrieval-manifest.toml"
+storage_sha256 = "f12acc9372491e7c7408652ea9bc6766d3037a717bece9c26b32bccf4af2c21a"
+encoding = "identity"
+decoded_sha256 = "f12acc9372491e7c7408652ea9bc6766d3037a717bece9c26b32bccf4af2c21a"
+decoded_bytes = 5045
+
+[body]
+path = "data/output/audit/casimir-optics-discrimination/sources/master-equation-tutorial-nonsupporting-2008.pdf"
+storage_sha256 = "19b9184c1c12f2c5688506468637d2e908277c10f66bea6e45e3d4e8f7af10f2"
+encoding = "identity"
+decoded_sha256 = "19b9184c1c12f2c5688506468637d2e908277c10f66bea6e45e3d4e8f7af10f2"
+decoded_bytes = 420529
+

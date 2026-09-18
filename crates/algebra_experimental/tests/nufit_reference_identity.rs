@@ -1,6 +1,7 @@
 //! Fixed-angle membership in source-identified normal-ordering reference intervals.
 
 use algebra_experimental::experimental_predictions::{NuFit60, SigmaContour};
+use provenance_store::retained_archive::RetainedArchive;
 use serde::Deserialize;
 use std::{collections::BTreeSet, error::Error, process::Command};
 
@@ -108,6 +109,16 @@ fn fixture() -> Fixture {
 }
 
 #[test]
+fn nufit_sources_have_retained_archive_identities() -> Result<(), Box<dyn Error>> {
+    let archive = RetainedArchive::load(&repo_root::path!(""))?;
+    for reference in fixture().references {
+        archive.materialization(&reference.source, &reference.sha256)?;
+    }
+    Ok(())
+}
+
+#[test]
+#[ignore = "requires the hydrated scientific payload archive"]
 fn fixed_angle_reference_membership_and_pdf_receipts_agree() -> Result<(), Box<dyn Error>> {
     let fixture = fixture();
     check(&fixture)?;

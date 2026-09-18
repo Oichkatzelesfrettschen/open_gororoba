@@ -36,6 +36,36 @@ struct Sample {
     band_gap: f64,
 }
 
+const BASELINE_FEATURE_INDICES: [usize; 19] = [
+    0, 1, 2, 3, // composition
+    4, 5, 6, 7, 8, // mass
+    24, 25, 26, 27, 28, // valence
+    49, 50, 51, 52, 53, // atomic number
+];
+
+/// Select columns whose elemental properties exist for every recognized element.
+///
+/// The observation mask remains authoritative: an absent selected value rejects
+/// the sample instead of converting missingness to a numerical sentinel.
+fn select_baseline_features(
+    masked_features: &featurizer::MaskedFeatureVector,
+) -> Option<Vec<f64>> {
+    BASELINE_FEATURE_INDICES
+        .iter()
+        .map(|&feature_index| {
+            let value = *masked_features.values.get(feature_index)?;
+            let observed = *masked_features.observed.get(feature_index)?;
+            (observed && value.is_finite()).then_some(value)
+        })
+        .collect()
+}
+
+fn baseline_features(formula: &str) -> Option<Vec<f64>> {
+    let composition_features = featurizer::featurize(formula).ok()?;
+    let masked_features = featurizer::feature_vector(&composition_features);
+    select_baseline_features(&masked_features)
+}
+
 /// Featurize JARVIS materials, skipping those with missing targets or unknown elements.
 fn featurize_jarvis(materials: &[jarvis::JarvisMaterial]) -> Vec<Sample> {
     let mut samples = Vec::new();
@@ -48,9 +78,9 @@ fn featurize_jarvis(materials: &[jarvis::JarvisMaterial]) -> Vec<Sample> {
             Some(v) if v.is_finite() => v,
             _ => continue,
         };
-        let feats = match featurizer::featurize(&mat.formula) {
-            Ok(f) => featurizer::feature_vector(&f),
-            Err(_) => continue,
+        let feats = match baseline_features(&mat.formula) {
+            Some(values) => values,
+            None => continue,
         };
         samples.push(Sample {
             formula: mat.formula.clone(),
@@ -69,9 +99,9 @@ fn featurize_aflow(materials: &[aflow::AflowMaterial]) -> Vec<Sample> {
         if !mat.enthalpy_formation_atom.is_finite() || !mat.egap.is_finite() {
             continue;
         }
-        let feats = match featurizer::featurize(&mat.compound) {
-            Ok(f) => featurizer::feature_vector(&f),
-            Err(_) => continue,
+        let feats = match baseline_features(&mat.compound) {
+            Some(values) => values,
+            None => continue,
         };
         samples.push(Sample {
             formula: mat.compound.clone(),
@@ -263,4 +293,74 @@ fn main() {
     }
 
     println!();
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    fn jarvis_alumina() -> jarvis::JarvisMaterial {
+        jarvis::JarvisMaterial {
+            jid: "JVASP-test".to_string(),
+            formula: "Al2O3".to_string(),
+            elements: vec!["Al".to_string(), "O".to_string()],
+            nelements: 2,
+            energy_per_atom: None,
+            formation_energy_peratom: Some(-3.2),
+            optb88vdw_bandgap: Some(6.1),
+            ehull: None,
+            spg_symbol: None,
+            spg_number: None,
+            density: None,
+            volume: None,
+        }
+    }
+
+    fn aflow_alumina() -> aflow::AflowMaterial {
+        aflow::AflowMaterial {
+            auid: "aflow:test".to_string(),
+            compound: "Al2O3".to_string(),
+            species: vec!["Al".to_string(), "O".to_string()],
+            nspecies: 2,
+            natoms: 5,
+            enthalpy_formation_atom: -3.2,
+            egap: 6.1,
+            density: None,
+            volume_atom: None,
+            spacegroup: None,
+            pearson_symbol: None,
+        }
+    }
+
+    #[test]
+    fn alumina_with_missing_optional_properties_reaches_both_baselines() {
+        let masked_features = featurizer::feature_vector(
+            &featurizer::featurize("Al2O3").expect("Al2O3 must featurize"),
+        );
+        assert!(masked_features.into_complete_values().is_none());
+
+        let jarvis_samples = featurize_jarvis(&[jarvis_alumina()]);
+        let aflow_samples = featurize_aflow(&[aflow_alumina()]);
+
+        assert_eq!(jarvis_samples.len(), 1);
+        assert_eq!(aflow_samples.len(), 1);
+        assert_eq!(jarvis_samples[0].features.len(), 19);
+        assert_eq!(aflow_samples[0].features.len(), 19);
+    }
+
+    #[test]
+    fn baseline_subset_rejects_unobserved_selected_values() {
+        let mut masked_features = featurizer::feature_vector(
+            &featurizer::featurize("Al2O3").expect("Al2O3 must featurize"),
+        );
+        masked_features.observed[BASELINE_FEATURE_INDICES[0]] = false;
+        masked_features.values[BASELINE_FEATURE_INDICES[0]] = 0.0;
+
+        assert!(select_baseline_features(&masked_features).is_none());
+    }
+
+    #[test]
+    fn baseline_rejects_elements_with_uncovered_valence_data() {
+        assert!(baseline_features("Rf").is_none());
+    }
 }

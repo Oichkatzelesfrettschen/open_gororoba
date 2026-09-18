@@ -18,6 +18,7 @@
 //! - Szekely & Rizzo (2004): Energy distance and testing for distances
 //! - Roy (2003): "Discovery and the Scientific Method" (Annals of Statistics)
 
+pub mod calibrated_discrimination;
 pub mod claims_gates;
 pub mod dip;
 pub mod error_analysis;

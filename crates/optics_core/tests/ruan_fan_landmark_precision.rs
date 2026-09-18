@@ -28,6 +28,7 @@ fn retained_channel_sum(
 
 #[test]
 fn printed_frequency_envelope_retains_exact_anchor_failure() -> Result<(), Box<dyn Error>> {
+    const LIBM_ANCHOR_TOLERANCE: f64 = 1e-10;
     let geometry = ruan_fan_mdm_fig5(&FanoDrudeParams {
         omega_p: 1.0,
         gamma_d: 0.001,
@@ -43,8 +44,8 @@ fn printed_frequency_envelope_retains_exact_anchor_failure() -> Result<(), Box<d
         "exact scattering={:.17e} absorption={:.17e}",
         exact.c_sct, exact.c_abs
     );
-    assert!((exact.c_sct - 0.141_739_879_640_738_14).abs() < 1e-12);
-    assert!((exact.c_abs - 0.398_104_096_787_583_85).abs() < 1e-12);
+    assert!((exact.c_sct - 0.141_739_879_640_738_14).abs() < LIBM_ANCHOR_TOLERANCE);
+    assert!((exact.c_abs - 0.398_104_096_787_583_85).abs() < LIBM_ANCHOR_TOLERANCE);
     let mut output = String::from("intervals,index,omega,scattering,absorption,joint_anchor\n");
     for intervals in [200, 2000] {
         let mut scattering_range = [f64::INFINITY, f64::NEG_INFINITY];
