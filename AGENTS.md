@@ -210,7 +210,14 @@ hardware-specific tables are replaced with the scientific stack.
   embedded eight references to one of them. Stripping the copy removed all
   eight, which is the measurement behind `stage_tool`; a reference that
   survives the strip is a runtime bake-in and the scan fails on it.
-- sccache is host configuration, not a repository guarantee.
+- Hosted Rust matrix jobs use sccache 0.15.0 with the GitHub Actions backend.
+  A commit-pinned setup action exports the runner's cache credentials before
+  Cargo starts. Compiler entries share content keys across shards; per-shard
+  target archives remain prohibited because duplicated dependencies evict useful
+  caches. The action reports cache statistics after each job. Rust binary
+  compilation and linking remain uncached, and every validation command runs on
+  cache hits. Measure reuse from the reported hits before claiming a speedup.
+- Local sccache is host configuration, not a repository guarantee.
   `.cargo/config.toml` names it as the rustc wrapper; its cache size
   and location live in `~/.config/sccache/config`. A cache at its size
   ceiling evicts entries between sessions, so a gate tree of tens of
