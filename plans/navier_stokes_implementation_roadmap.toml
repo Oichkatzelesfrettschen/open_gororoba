@@ -1,0 +1,203 @@
+schema_version = 1
+title = "Navier-Stokes numerical reference and continuum verification roadmap"
+baseline_commit = "e036a72b87b9915847cde2ed1908f319cc67eeca"
+last_reviewed = "2026-09-07"
+owner = "open_gororoba"
+evidence_level = "simulation_and_numerical_convergence"
+first_research_phase_complete = false
+continuum_certificate_implemented = false
+purpose = "Compute the original interaction, falsify structural claims, and verify selected continuum trajectories."
+long_range_objective = "Discover and prove cutoff-independent stretching or linearized-evolution bounds."
+execution_order = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M"]
+
+[baseline]
+equation = "dt(u) + P[(u.grad)u] = nu Delta(u)"
+domain = "(R / 2 pi Z)^3"
+data = "Require smooth, real, divergence-free, zero-mean initial data and nu > 0."
+fourier_series = "u(x) = sum_k u_hat[k] exp(i k.x)"
+constraints = ["k.u_hat[k] = 0", "u_hat[-k] = conjugate(u_hat[k])", "u_hat[0] = 0"]
+volume_measure = "(2 pi)^(-3) dx"
+kinetic_energy = "0.5 * sum_k |u_hat[k]|^2"
+sobolev_norm = "For zero-mean fields use ||u||_s^2 = sum_(k != 0) |k|^(2s) |u_hat[k]|^2."
+sobolev_order = "Require s > 5/2 for the Kato comparison argument."
+zero_mode = "Use P_0 = I for general Leray projection; impose zero mean separately. The LBM diagnostic helper projects into the zero-mean subspace."
+modified_equations = ["forcing", "variable viscosity", "stabilization", "spectral filters", "Smagorinsky closures", "algebraically reweighted interactions"]
+evidence_levels = ["simulation", "numerical_convergence", "verified_trajectory", "finite_time_certificate", "specified_data_global_certificate", "conditional_theorem", "arbitrary_data_theorem"]
+promotion_rule = "Never promote convergence, symmetry, conservation, or statistics into a continuum regularity theorem."
+
+[mathematical_corrections]
+majorant_direction = "Use R' >= ell_s R + G_s R^2 + epsilon_s, or equality; <= belongs to the error, not its upper majorant."
+beltrami_norm = "D_s = D_(s+1) on |k|=1 uses the homogeneous norm. Inhomogeneous norms require D_(s+1)=sqrt(2) D_s and a changed c0."
+constant_conversion = "For constants stated using unnormalized L2(dx), multiply K_s and G_s by (2 pi)^(3/2) before using this normalized-volume norm. Verify the source convention rather than copying decimals."
+covariance = "Test all 48 signed coordinate permutations on Z^3. An arbitrary rotation requires rotating the periodic lattice too."
+closed_triads = "The convolution uses p+q=k. LBM extractor labels satisfy k+p+q=0; their receiving-k inputs are -p and -q. Emit all three receivers."
+refinement = "At fixed physical data, halve dx and lattice velocity, quarter dt, quadruple steps, and preserve tau and physical viscosity."
+restored_equalities = ["nu_phys = (tau-1/2) dx^2/(3 dt)", "0.5 d_t ||omega||_2^2 = integral omega^T S omega dx - nu ||grad omega||_2^2"]
+
+[[sources]]
+title = "Morosi and Pizzocchero, Smooth solutions of the Euler and Navier-Stokes equations from the a posteriori analysis of approximate solutions"
+url = "https://arxiv.org/html/1405.3421v4"
+scope = "Use Sections 2 and 4 for norm conventions, bilinear constants and control inequalities; Section 5 for the zero-reference small-data criterion. Convert normalization explicitly."
+
+[[sources]]
+title = "Morosi and Pizzocchero, On approximate solutions of the incompressible Euler and Navier-Stokes equations"
+url = "https://arxiv.org/abs/1104.3832"
+scope = "Trace the original approximate-solution and Galerkin verification framework."
+
+[[milestones]]
+id = "A"
+title = "Correct physical transfer and pass exact falsifiers"
+status = "implemented_numerical_validation"
+paths = ["crates/lbm_core/src/turbulence.rs", "crates/lbm_core/tests/navier_stokes_transfer.rs", "crates/spectral_core/src/warp_physics.rs"]
+requirements = [
+  "Compute N_k = -i P_k sum_(p+q=k) (q.u_hat[p]) u_hat[q] and T_k = Re(conjugate(u_hat[k]).N_k).",
+  "Preserve signs, all vector components, receiving-mode phases, Hermitian partners and both ordered input contractions.",
+  "Compare against the independent ordered convolution; pass exact -1/+1, quadrature phase, missing-mode, cubic-scaling, conservation, projection and covariance controls.",
+  "Reject nonfinite input and arithmetic before amplitude screening can turn invalid data into empty diagnostics.",
+  "Retain scalar warp quantities only as triad_amplitude_proxy and triad_weighted_amplitude; label E7 stabilization as modified equations."
+]
+limits = "Thresholded, low-mode LBM extraction is a selected diagnostic. Use full spectral convolution for complete modal transfer. These computations use ordinary f64."
+
+[[milestones]]
+id = "B"
+title = "Build the 3D spectral reference and direct/FFT agreement"
+status = "implemented_numerical_validation"
+paths = ["crates/spectral_core/src/navier_stokes.rs"]
+requirements = [
+  "Provide FourierMode3D, VectorField3D, LerayProjector, NavierStokesNonlinearity, DirectTriadConvolution, DealiasedConvolution, SobolevNorm and ResidualEvaluator.",
+  "Validate finite coefficients, unique indices, zero mean, Hermitian symmetry and incompressibility with explicit numerical tolerance.",
+  "Support derivatives, Laplacian, curl, positive-viscosity evolution, direct convolution and FFT acceleration.",
+  "Require N>4K to resolve the complete quadratic product, stronger than retained-only N>3K dealiasing.",
+  "Retain discarded nonlinear coefficients at every RK4 stage and reject implicit initial-field truncation.",
+  "Enforce representable FFT array sizes and an explicit caller resource budget."
+]
+limits = "Finite lists denote complete Fourier polynomials with exact absent coefficients. They do not bound an unspecified continuum tail. RK4 acceptance supplies no automatic timestep stability guarantee."
+
+[[milestones]]
+id = "C"
+title = "Validate exact decay and fixed-problem refinement"
+status = "implemented_numerical_validation"
+paths = ["crates/spectral_core/src/navier_stokes.rs", "crates/lbm_3d/src/units.rs", "crates/lbm_3d/tests/validation_taylor_green.rs", "crates/lbm_core/src/turbulence.rs"]
+requirements = [
+  "Verify shear decay and time-discretization order.",
+  "Verify curl(v0)=v0, vanishing projected nonlinearity and exp(-nu t) decay for unit-wave ABC data.",
+  "Evolve genuinely nonlinear, z-dependent 3D Taylor-Green data and compare timestep refinements.",
+  "Label z-independent LBM Taylor-Green as 2D embedded in 3D and compare matched physical domain, viscosity, profile, velocity and endpoint.",
+  "Preserve shell counts, means, integrated powers, component kinetic energies and DC power; test full-grid Parseval accounting."
+]
+limits = "Complete shell accounting is implemented for lbm_core's scalar 2D power_spectrum path. The older spectral_core::ndfft shell-mean helpers still need migration before use as complete energy diagnostics. LBM metadata comparison trusts the declared initial-data identity and solver configuration."
+
+[[milestones]]
+id = "D"
+title = "Bound reconstructed residuals and every error source"
+status = "partial_pointwise_numerical_residual_only"
+paths = ["crates/spectral_core/src/navier_stokes.rs"]
+requirements = [
+  "Create a separate navier_stokes_verify component with certificate, interval, residual, majorant, beltrami, tail_bounds and report modules.",
+  "Represent temporal reconstruction with a computable derivative and continuity across time slabs.",
+  "Enclose initial H^s error, residual H^s norm, D_s and D_(s+1) over complete time intervals.",
+  "Include all quadratic output modes through 2K, time reconstruction error, unresolved input tails, truncation, aliasing, quantization, conversions and arithmetic accumulation.",
+  "Use directed rounding or another proved enclosure scheme and detect overflow, invalid operations and unsupported arithmetic modes."
+]
+limits = "ResidualEvaluator includes the full finite-polynomial nonlinear support at one supplied time. No between-time or arithmetic enclosure is implemented."
+
+[[milestones]]
+id = "E"
+title = "Integrate the rigorous Sobolev majorant"
+status = "not_implemented"
+requirements = [
+  "Prove or import cutoff-independent K_s and G_s for the exact declared norm.",
+  "Enclose a nonnegative R satisfying R' >= -nu R + (G_s D_s + K_s D_(s+1)) R + G_s R^2 + epsilon_s and R(0)>=delta_s.",
+  "Check slab-wide enclosure and comparison hypotheses; certify ||u-v||_s<=R only on the covered existence interval.",
+  "Handle vanishing error with an upper Dini derivative; use the torus zero-mean Poincare eigenvalue lambda1=1 in the viscous term.",
+  "Return CERTIFIED, INCONCLUSIVE, INVALID_INPUT or IMPLEMENTATION_FAILURE; never interpret failure as singularity."
+]
+
+[[milestones]]
+id = "F"
+title = "Certify a nontrivial Beltrami perturbation neighborhood"
+status = "not_implemented"
+requirements = [
+  "Set M=||v0||_s, c0=(G_s+K_s)M, D_s=D_(s+1)=M exp(-nu t), epsilon_s=0 for exact unit-wave Beltrami data.",
+  "Certify delta_s < c0/[G_s expm1(c0/nu)] using enclosed arithmetic and the exact M=0 limit nu/G_s.",
+  "Identify the projected datum explicitly; include conversion and projection errors and a complete tail declaration in its H^s distance.",
+  "Emit independently reproducible human-readable and machine-readable certificates for the stated datum or neighborhood."
+]
+analytic_derivation = "Let A(t)=exp[-nu t+(c0/nu)(1-exp(-nu t))] and Q(t)=[exp((c0/nu)(1-exp(-nu t)))-1]/c0. Then R(t)=delta_s A(t)/(1-G_s delta_s Q(t)); positivity for all t follows from the strict radius. For c0=0 use Q(t)=(1-exp(-nu t))/nu."
+arithmetic_requirement = "Use certified exp/expm1 or log-domain enclosures. A floating underflow to zero does not establish the M=0 case."
+
+[[milestones]]
+id = "G"
+title = "Formalize and audit the core theorem in Rocq"
+status = "not_implemented"
+requirements = [
+  "Formalize Fourier hypotheses, the Beltrami identity, vanishing projected nonlinearity, viscous decay, scalar comparison, perturbation radius and existence interval.",
+  "State the local existence and continuation theorem being used; record every imported analytic assumption.",
+  "Compile proof bodies with the pinned Rocq environment, run the admission detector and inspect Print Assumptions.",
+  "Separate exact-real mathematics from Rust floating-point correspondence, checked arithmetic, parsing and certificate serialization."
+]
+trust_boundary = "verified_core's abstract field axioms instantiated with f64 do not certify floating-point associativity or rounding. A proof that restates result=result does not establish implementation correspondence."
+
+[[milestones]]
+id = "H"
+title = "Certify a genuinely nonlinear finite-time trajectory"
+status = "not_implemented"
+requirements = ["Run after the Beltrami certificate succeeds.", "Enclose all trajectory norms, residuals, initial error, tails and arithmetic on every time slab.", "When inconclusive, refine resolution and timestep until certificate quantities converge; visual agreement is insufficient."]
+
+[[milestones]]
+id = "I"
+title = "Concatenate a certified endpoint with global small-data continuation"
+status = "not_implemented"
+requirements = ["Bound ||u(T)||_s <= ||v(T)||_s+R(T) at a covered endpoint.", "Compare against a proved threshold, such as nu/G_s under the same norm and hypotheses.", "Concatenate certificates and report global scope only for the explicitly covered initial datum or neighborhood."]
+
+[[milestones]]
+id = "J"
+title = "Improve trajectory-dependent stability bounds"
+status = "not_implemented"
+requirements = ["Construct L_v w=nu Delta w-P[(v.grad)w+(w.grad)v].", "Bound the weighted symmetric low-mode matrix, unresolved coupling and high-mode viscous damping together.", "Prove <L_v w,w>_s <= ell_s(t)||w||_s^2 in the infinite-dimensional space.", "Use the corrected upper-majorant inequality and compare with generic bounds on identical trajectories.", "Never interpret a finite matrix eigenvalue as a full continuum bound without a tail estimate."]
+
+[[milestones]]
+id = "K"
+title = "Implement signed helicity and vortex-stretching diagnostics"
+status = "not_implemented"
+requirements = ["Implement i k cross h_k^+/- = +/- |k| h_k^+/- with explicit basis and conjugacy conventions.", "Measure signed physical transfer by helicity class.", "Compute omega=curl u, S=(grad u+grad u^T)/2 and the complete stretching integral.", "Verify the enstrophy balance with matching Fourier and volume normalizations."]
+
+[[milestones]]
+id = "L"
+title = "Falsify algebraic proposals against physical controls"
+status = "not_implemented"
+requirements = ["Preserve phase-sensitive Fourier dynamics when comparing E7, root systems or Cayley-Dickson classifications.", "Use phase-randomized, helicity-matched, spectrum-matched, coordinate-transformed, resolution-scaled and adversarial synthetic controls.", "Declare every map and free parameter; compare against Fourier/helical baselines.", "Treat W(k,p,q)!=1 as modified equations unless exact change-of-basis equivalence is proved.", "Transfer no regularity conclusion between modified and original operators without a separate proof."]
+
+[[milestones]]
+id = "M"
+title = "Search for cutoff-independent estimates"
+status = "not_implemented"
+requirements = ["Seek V <= (1-eta) nu ||grad omega||_2^2 + a(t)||omega||_2^2 with eta>0 and a in L1(0,T).", "Test strain-vorticity alignment and depletion across data, resolution, Reynolds number, time and independent solvers.", "Use observations only to generate conjectures.", "Prove estimates for the original operator, all modes, cutoff-independent constants and exceptional configurations.", "Avoid assuming any condition equivalent to the desired regularity conclusion."]
+
+[certificate_contract]
+implemented = false
+required_fields = ["schema_version", "status", "evidence_level", "equation_identity", "viscosity_enclosure", "domain", "fourier_normalization", "sobolev_convention", "sobolev_order", "initial_data_identity", "initial_data_tail_enclosure", "projection_and_conversion_error", "cutoffs", "reconstruction", "time_slabs", "norm_bounds", "residual_bounds", "aliasing_and_discarded_terms", "arithmetic_model", "constant_sources", "majorant_enclosure", "comparison_theorem", "certificate_scope", "solver_commit", "verifier_commit", "input_hashes", "independent_reproduction"]
+fail_closed = "Do not issue CERTIFIED when required data, constants, tails, reconstruction bounds, arithmetic assumptions or theorem scope are missing."
+
+[acceptance]
+first_research_phase = ["signed_original_transfer", "exact_falsifiers", "genuinely_3d_evolution", "exact_decay", "same_problem_refinement", "explicit_continuum_residual", "temporal_spectral_aliasing_arithmetic_bounds", "rigorous_majorant", "nontrivial_certified_neighborhood", "independent_certificate_reproduction", "precise_evidence_and_theorem_scope"]
+general_regularity_gate = "Keep the first research phase open until every acceptance condition passes. Pursue arbitrary-data claims only after that gate, and require proof."
+
+[reproduction]
+toolchain = "Rust 1.97.0, edition 2024; Cargo.lock retained."
+commands = ["cargo test --locked -p lbm_core --profile validation", "cargo test --locked -p spectral_core --profile validation --lib", "cargo test --locked -p lbm_3d --profile validation --lib units::tests", "cargo test --locked -p lbm_3d --profile validation --test validation_taylor_green", "cargo clippy --locked -p lbm_core --all-targets --profile validation -- -D warnings", "cargo clippy --locked -p spectral_core --lib --tests --profile validation -- -D warnings", "cargo clippy --locked -p lbm_3d --lib --test validation_taylor_green --profile validation -- -D warnings"]
+ci = "The existing validate-ci-scoped-rust lane runs changed owners and reverse dependencies, including integration tests. Full hosted validation remains a separate result."
+environment = "Use native BLAS/LAPACK/OpenBLAS development libraries for spectral_core/lbm_3d. Set an absolute CARGO_TARGET_DIR. On hosts without the optional wrappers, use RUSTC_WRAPPER='', CARGO_ENCODED_RUSTFLAGS='' and CARGO_TARGET_X86_64_UNKNOWN_LINUX_GNU_LINKER=cc without editing repository configuration."
+api_migration = "lbm_core and spectral_core advance to 0.2.0 for corrected transfer signatures, all-receiver extraction and renamed proxy fields; update the pinned gororoba_engine dependency."
+
+[validation_record]
+lbm_core_tests_passed = 56
+spectral_core_library_tests_passed = 137
+lbm_3d_units_tests_passed = 7
+lbm_3d_taylor_green_tests_passed = 6
+scoped_clippy = "Passed with -D warnings for lbm_core, spectral_core and the changed lbm_3d targets."
+format_and_toml = "Changed numerical sources pass stable rustfmt settings; the roadmap parses with the repository's toml crate."
+review_corrections = ["Reject NaN/overflow before amplitude screening.", "Emit all receivers so extracted transfers transform covariantly.", "Check complex FFT array byte lengths against usize/isize limits."]
+consumer_validation_limit = "A local default-feature gororoba_cli_warp check stopped in the pre-existing fitsio-sys build because pkg-config/CFITSIO development prerequisites are unavailable. GPU runtime behavior and the complete workspace remain unvalidated here."
+dependency_warning = "cd_kernel reports the absent optional glslc compiler and CPU fallback. Numerical tests use the CPU paths; no GPU evidence is claimed."
+hosted_ci = "Not established by this local record."

@@ -6,7 +6,11 @@ use gororoba_algebra::lie::e7::geometry::generate_e7_roots;
 use ndarray::{Array3, Zip};
 use spectral_core::ndfft::{fft_3d, ifft_3d, real_to_complex_3d};
 
-/// Imbalance field derived from E7 Lie algebra roots.
+/// E7-derived spectral stabilization for explicitly modified LBM dynamics.
+///
+/// The mask changes velocity during evolution. It is not the unforced,
+/// constant-viscosity Navier-Stokes operator and supplies no continuum
+/// regularity certificate for that operator.
 pub struct E7SpectralFilter {
     pub mask: Array3<f32>,
     #[cfg(feature = "gpu")]

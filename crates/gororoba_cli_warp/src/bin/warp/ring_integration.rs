@@ -259,7 +259,7 @@ pub fn run() -> Result<(), Box<dyn std::error::Error>> {
     if let Some(top) = warp_triads.first() {
         info!(
             "      Top triad: k={:?}, padic_w={:.4}, negdim_w={:.4}, warp_w={:.4}",
-            top.k, top.padic_weight, top.neg_dim_weight, top.warp_weight
+            top.k, top.padic_weight, top.neg_dim_weight, top.triad_weighted_amplitude
         );
     }
 
@@ -555,7 +555,7 @@ pub fn run() -> Result<(), Box<dyn std::error::Error>> {
             .map(|(x, y)| Circle::new((*x, *y), 2, RED.filled())),
     )?;
 
-    // Layer 3: Active algebraic triads (cyan lines, energy flow)
+    // E7 adjacency overlay; line geometry does not encode physical transfer.
     for triad in &active_algebra_triads {
         let (k_x, k_y) = project_to_plane(&triad.k.root);
         let (p_x, p_y) = project_to_plane(&triad.p.root);
@@ -578,7 +578,7 @@ pub fn run() -> Result<(), Box<dyn std::error::Error>> {
         let qx = t.q[0] as f64 * scale;
         let qy = t.q[1] as f64 * scale;
 
-        let alpha = (t.warp_weight / warp_triads[0].warp_weight).min(1.0);
+        let alpha = (t.triad_weighted_amplitude / warp_triads[0].triad_weighted_amplitude).min(1.0);
         let color = HSLColor(0.33, 1.0, 0.4); // Green
         chart.draw_series(LineSeries::new(
             vec![(kx, ky), (px, py), (qx, qy), (kx, ky)],

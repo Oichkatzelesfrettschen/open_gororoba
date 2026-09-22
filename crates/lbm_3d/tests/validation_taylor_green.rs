@@ -1,7 +1,8 @@
-//! Taylor-Green Vortex Decay Validation for LbmSolver3D
+//! Two-dimensional Taylor-Green decay embedded in the three-dimensional LBM solver.
 //!
-//! The Taylor-Green vortex is the standard validation benchmark for LBM solvers.
-//! In a periodic domain, the initial velocity field:
+//! The field is uniform in z and tests a two-dimensional exact incompressible
+//! solution, not the genuinely three-dimensional Taylor-Green evolution.
+//! On a periodic domain with kx = ky, the initial velocity field:
 //!
 //!   u_x(x,y) = U0 * cos(kx * x) * sin(ky * y)
 //!   u_y(x,y) = -U0 * sin(kx * x) * cos(ky * y)
@@ -17,7 +18,10 @@
 //! the collision operator (BGK) and the streaming step are correctly
 //! implemented.
 
-use lbm_3d::solver::LbmSolver3D;
+use lbm_3d::{
+    solver::LbmSolver3D,
+    units::{LatticeUnits, PeriodicFlowParameters, UniformCartesianMesh},
+};
 
 /// Compute the L2 norm of the velocity field.
 fn velocity_l2(solver: &LbmSolver3D) -> f64 {
@@ -38,6 +42,7 @@ fn initialize_taylor_green(solver: &mut LbmSolver3D, u0: f64) {
     let nx = solver.nx;
     let ny = solver.ny;
     let nz = solver.nz;
+    assert_eq!(nx, ny, "equal-amplitude Taylor-Green data require kx = ky");
     let kx = 2.0 * std::f64::consts::PI / nx as f64;
     let ky = 2.0 * std::f64::consts::PI / ny as f64;
 
@@ -260,46 +265,76 @@ fn test_stability_during_evolution() {
     }
 }
 
-/// Grid convergence: decay rate error should decrease with finer grid.
-///
-/// For BGK on D3Q19, the theoretical convergence order is O(dx^2).
-/// We test that the error at N=32 is at least 2x smaller than at N=16.
+/// Compare complete velocity fields on the same (2*pi)^3 torus and physical endpoint.
 #[test]
-fn test_grid_convergence() {
-    let tau = 0.8;
-    let nu = (tau - 0.5) / 3.0;
-    let u0 = 0.005;
-    let n_steps = 50;
+fn test_taylor_green_2d_diffusive_refinement_at_fixed_physical_endpoint() {
+    let spacing = 2.0 * std::f64::consts::PI / 16.0;
+    let mesh = UniformCartesianMesh::new([16; 3], [0.0; 3], spacing).unwrap();
+    let units = LatticeUnits::new(&mesh, spacing * spacing, 1.0).unwrap();
+    let viscosity_m2_s = 0.1;
+    let velocity_scale_m_s = 0.01;
+    let coarse = PeriodicFlowParameters::new(
+        mesh,
+        units.clone(),
+        units.tau_from_kinematic_viscosity(viscosity_m2_s).unwrap(),
+        "taylor-green-2d:ux=cos(x)*sin(y);uy=-sin(x)*cos(y);uz=0",
+        units.velocity_to_lattice(velocity_scale_m_s),
+        20,
+    )
+    .unwrap();
+    let fine = coarse.diffusive_refinement(2).unwrap();
+    coarse.require_same_continuum_problem(&fine).unwrap();
+    assert_eq!(fine.steps(), 4 * coarse.steps());
+    assert_eq!(
+        fine.velocity_scale_lattice(),
+        coarse.velocity_scale_lattice() / 2.0
+    );
 
     let mut errors = Vec::new();
-
-    for &grid_size in &[16_usize, 32] {
-        let mut solver = LbmSolver3D::new(grid_size, grid_size, grid_size, tau);
-        let tau_field = vec![tau; grid_size * grid_size * grid_size];
+    for parameters in [&coarse, &fine] {
+        let [nx, ny, nz] = parameters.mesh().dimensions();
+        let mut solver = LbmSolver3D::new(nx, ny, nz, parameters.tau());
+        let tau_field = vec![parameters.tau(); nx * ny * nz];
         solver
             .set_viscosity_field(tau_field)
             .expect("set viscosity field");
-        initialize_taylor_green(&mut solver, u0);
-
-        let l2_initial = velocity_l2(&solver);
-
-        solver.evolve(n_steps);
+        assert!(!solver.has_forcing());
+        initialize_taylor_green(&mut solver, parameters.velocity_scale_lattice());
+        solver.evolve(parameters.steps());
         solver.compute_macroscopic();
 
-        let l2_final = velocity_l2(&solver);
-        let measured = l2_final / l2_initial;
-
-        let k = 2.0 * std::f64::consts::PI / grid_size as f64;
-        let expected = (-nu * 2.0 * k * k * n_steps as f64).exp();
-        let error = (measured - expected).abs() / expected;
-        errors.push(error);
+        let [lx, ly, _] = parameters.domain_lengths_m();
+        let kx = 2.0 * std::f64::consts::PI / lx;
+        let ky = 2.0 * std::f64::consts::PI / ly;
+        let amplitude = velocity_scale_m_s
+            * (-viscosity_m2_s * (kx * kx + ky * ky) * coarse.end_time_s()).exp();
+        let mut error_squared = 0.0;
+        let mut reference_squared = 0.0;
+        for z in 0..nz {
+            for y in 0..ny {
+                for x in 0..nx {
+                    let [px, py, _] = parameters.mesh().position_m([x, y, z]).unwrap();
+                    let expected = [
+                        amplitude * (kx * px).cos() * (ky * py).sin(),
+                        -amplitude * (kx * px).sin() * (ky * py).cos(),
+                        0.0,
+                    ];
+                    let (_, measured) = solver.get_macroscopic(x, y, z);
+                    for axis in 0..3 {
+                        let physical = parameters.units().velocity_to_si(measured[axis]);
+                        error_squared += (physical - expected[axis]).powi(2);
+                        reference_squared += expected[axis].powi(2);
+                    }
+                }
+            }
+        }
+        errors.push((error_squared / reference_squared).sqrt());
     }
 
-    // Error at N=32 should be significantly less than at N=16
-    // (O(dx^2) convergence means ~4x reduction, allow weaker 2x)
+    // Second-order spatial and low-Mach errors predict a factor near four.
     assert!(
-        errors[1] < errors[0],
-        "Grid convergence failed: error at N=16 = {:.4}, error at N=32 = {:.4}",
+        errors[0].is_finite() && errors[1] < errors[0] / 2.0,
+        "Fixed-problem velocity errors failed to decrease: N=16 {:.6e}, N=32 {:.6e}",
         errors[0],
         errors[1],
     );
