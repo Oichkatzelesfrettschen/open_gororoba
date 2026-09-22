@@ -12,7 +12,7 @@ updated = "2026-08-01"
 authoritative = true
 status = "active"
 status_token = "ACTIVE"
-document_count = 154
+document_count = 158
 [[owner]]
 path = "README_GPU_STEPS.md"
 owner_group = "project"
@@ -896,5 +896,25 @@ removal_reason = "Retained cargo-geiger upstream documentation and required test
 
 [[owner]]
 path = "docs/engineering/casimir_optics_discrimination_contract.md"
+owner_group = "project"
+removal_status = "active"
+
+[[owner]]
+path = "experiments/identifiability/INTEGRATION_NOTES.md"
+owner_group = "project"
+removal_status = "active"
+
+[[owner]]
+path = "experiments/identifiability/README.md"
+owner_group = "project"
+removal_status = "active"
+
+[[owner]]
+path = "experiments/identifiability/RESULTS_2026-09-09.md"
+owner_group = "project"
+removal_status = "active"
+
+[[owner]]
+path = "experiments/identifiability/RESULTS_2026-09-10.md"
 owner_group = "project"
 removal_status = "active"
