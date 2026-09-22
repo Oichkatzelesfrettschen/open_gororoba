@@ -214,9 +214,11 @@ hardware-specific tables are replaced with the scientific stack.
   A commit-pinned setup action exports the runner's cache credentials before
   Cargo starts. Compiler entries share content keys across shards; per-shard
   target archives remain prohibited because duplicated dependencies evict useful
-  caches. The action reports cache statistics after each job. Rust binary
-  compilation and linking remain uncached, and every validation command runs on
-  cache hits. Measure reuse from the reported hits before claiming a speedup.
+  caches. Each shard retains JSON statistics and allowlisted write-error counts
+  in its validation report; raw errors stay on the runner because response
+  metadata can contain signed URLs. The action also reports cache statistics.
+  Rust binary compilation and linking remain uncached. Every validation command
+  runs on cache hits. Measure reuse from the reported hits before claiming a speedup.
 - Local sccache is host configuration, not a repository guarantee.
   `.cargo/config.toml` names it as the rustc wrapper; its cache size
   and location live in `~/.config/sccache/config`. A cache at its size
