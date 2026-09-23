@@ -167,6 +167,7 @@ DOCS_BOOK_CARGO_BUILD_DIR ?= $(REPO_TMP_CARGO_ROOT)/book
 DOCS_BOOK_CARGO_ENV = CARGO_HOME=$(REPO_CARGO_HOME) CARGO_TARGET_DIR=$(DOCS_BOOK_CARGO_TARGET_DIR) CARGO_BUILD_BUILD_DIR=$(DOCS_BOOK_CARGO_BUILD_DIR) MAKEFLAGS= MFLAGS= CARGO_MAKEFLAGS= $(VALIDATION_PARALLEL_ENV)
 # Hosted documentation uses default features; SDK-equipped hosts can opt in.
 DOCS_FEATURE_FLAGS ?=
+DOCS_PROFILE_FLAGS ?=
 DOCS_RUST_SCOPE ?= --workspace
 SEMVER_BASELINE_REV ?= v1.0-methods
 SEMVER_BASELINE_SHA := $(shell git rev-parse --short=12 $(SEMVER_BASELINE_REV) 2>/dev/null || echo unknown)
@@ -388,6 +389,9 @@ validation-resource-contract-collectors:
 	done; \
 	if ! printf '%s\n' "$$docs_book_check_block" | grep -Fq 'timeout-minutes: 2'; then echo "ERROR: pull-request book validation exceeds the two-minute budget." >&2; status=1; fi; \
 	if ! printf '%s\n' "$$docs_publication_block" | grep -Fq 'timeout-minutes: 90'; then echo "ERROR: full documentation publication timeout is below the measured cold-build envelope." >&2; status=1; fi; \
+	if ! printf '%s\n' "$$docs_publication_block" | grep -Fq "github.event.workflow_run.event == 'schedule'"; then echo "ERROR: weekly full documentation publication is missing." >&2; status=1; fi; \
+	if printf '%s\n' "$$docs_publication_block" | grep -Fq "github.event.workflow_run.event == 'push'"; then echo "ERROR: main pushes trigger a full documentation build." >&2; status=1; fi; \
+	if ! printf '%s\n' "$$docs_deploy_block" | grep -Fq "github.event.workflow_run.event == 'schedule'"; then echo "ERROR: weekly full documentation does not deploy." >&2; status=1; fi; \
 	for hydration_backed_test in \
 	    test_thesis_a_codebook_parity_256d \
 	    test_thesis_a_codebook_parity_512d \
@@ -472,7 +476,7 @@ validation-resource-contract-collectors:
 	if ! grep -Fq "if: success() && github.ref == 'refs/heads/main' && matrix.cache_publisher == true && steps.replay-cache.outputs.cache-primary-key" .github/workflows/ci.yml; then echo "ERROR: scientific replay retains more than one build-tree cache per run." >&2; status=1; fi; \
 	if ! printf '%s\n' "$$docs_publication_block" | grep -Fq "if: success() && steps.docs-cache.outputs.cache-primary-key"; then echo "ERROR: docs-publication can retain an incomplete build cache." >&2; status=1; fi; \
 	if [ "$$(printf '%s\n' "$$docs_deploy_block" | grep -Fc 'github-pages-$${{ github.run_attempt }}')" -ne 2 ] || ! printf '%s\n' "$$docs_deploy_block" | grep -Fq 'artifact_name: github-pages-$${{ github.run_attempt }}'; then echo "ERROR: Pages upload and deployment must select one artifact per run attempt." >&2; status=1; fi; \
-	if ! printf '%s\n' "$$docs_deploy_block" | grep -Fq "needs.docs-publication.result == 'success'" || ! printf '%s\n' "$$docs_deploy_block" | grep -Fq "github.event.workflow_run.event == 'push'"; then echo "ERROR: Pages deployment lacks successful main publication or push routing." >&2; status=1; fi; \
+	if ! printf '%s\n' "$$docs_deploy_block" | grep -Fq "needs.docs-publication.result == 'success'" || ! printf '%s\n' "$$docs_deploy_block" | grep -Fq "github.event.workflow_run.event == 'schedule'"; then echo "ERROR: Pages deployment lacks successful weekly main publication." >&2; status=1; fi; \
 	for contract in 'hydrate_lane() {' 'local selected_paths=(' 'for selected_path in "$${selected_paths[@]}"' 'cp --parents' 'scientific-replay-input-status' "printf 'blocked_input\\n'" '2> "$$staging_root/scientific-replay-hydration-$$lane.stderr.log"' 'command cat "$$staging_root/scientific-replay-hydration-$$lane.stderr.log" >&2' 'all_hydrated=false'; do \
 	    if ! printf '%s\n' "$$hydration_input_block" | grep -Fq -- "$$contract"; then echo "ERROR: per-lane scientific replay hydration contract is missing: $$contract" >&2; status=1; fi; \
 	done; \
@@ -2350,7 +2354,7 @@ docs-rustdoc:
 	    fi; \
 	fi; \
 	echo "[docs-rustdoc] scope: $${scope_args[*]}"; \
-	$(DOCS_CARGO_ENV) cargo doc --locked --keep-going "$${scope_args[@]}" $(DOCS_FEATURE_FLAGS) --no-deps --document-private-items
+	$(DOCS_CARGO_ENV) cargo doc --locked --keep-going "$${scope_args[@]}" $(DOCS_PROFILE_FLAGS) $(DOCS_FEATURE_FLAGS) --no-deps --document-private-items
 
 cd-row-upgrade-batch:
 	@test -n "$(CD_ROW_UPGRADE_LANE)" || (echo "ERROR: set CD_ROW_UPGRADE_LANE=<jacobson1958|freudenthal1951>" && exit 1)

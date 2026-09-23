@@ -233,7 +233,7 @@ jobs:
             git diff --no-renames --name-only "$DIFF_BASE" HEAD > reports/validation/changed-paths.txt
             for lane in docs dependencies warp casimir_audit; do
               case "$lane" in
-                docs) pattern='^(docs/book/|crates/|xtask/|Cargo\.(toml|lock)$|rust-toolchain\.toml$|Makefile$|mk/|\.cargo/|\.github/workflows/ci\.yml$)' ;;
+                docs) pattern='^docs/book/|^crates/book_docs/|^registry/book_docs\.toml$|^Cargo\.(toml|lock)$|^rust-toolchain\.toml$|^Makefile$|^mk/|^\.cargo/|^\.github/workflows/(ci|docs-publish)\.yml$' ;;
                 dependencies) pattern='(^|/)Cargo\.(toml|lock)$|(^|/)deny\.toml$|^rust-toolchain\.toml$|^\.github/workflows/ci\.yml$' ;;
                 warp) pattern='^data/h5/|^crates/gororoba_cli_warp/|^crates/data_artifacts_core/|^\.github/workflows/ci\.yml$' ;;
                 casimir_audit) pattern='^crates/(gororoba_cli_physics|gororoba_cli_provenance|materials_core|materials_data|provenance_store|quantum_core|stats_core)/|^data/output/audit/casimir-optics-discrimination/|^plans/casimir_optics_discrimination_frontier\.toml$|^Cargo\.(toml|lock)$|^rust-toolchain\.toml$|^Makefile$|^\.cargo/config\.toml$|^\.gitattributes$|^\.github/workflows/ci\.yml$' ;;
@@ -619,6 +619,14 @@ jobs:
           set -o pipefail
           mkdir -p reports/validation
           make --jobs="$WORKER_BUDGET" --keep-going "validate-ci-scoped-${{ matrix.target }}" 2>&1 | tee "reports/validation/rust-${{ matrix.lane }}.log"
+
+      - name: Check directly changed Rust API documentation
+        if: always() && github.event_name == 'pull_request' && matrix.target == 'clippy' && matrix.clippy_scope != '--workspace' && matrix.clippy_scope != '' && matrix.clippy_scope != '-p cd_papers'
+        env:
+          DOCS_RUST_SCOPE: ${{ matrix.clippy_scope }}
+        run: |
+          set -euo pipefail
+          make --jobs="$WORKER_BUDGET" docs-rustdoc DOCS_PROFILE_FLAGS='--profile validation' DOCS_CARGO_TARGET_DIR="$CARGO_TARGET_DIR" DOCS_CARGO_BUILD_DIR="$GITHUB_WORKSPACE/.cache/gate-cbuild" 2>&1 | tee "reports/validation/rustdoc-${{ matrix.lane }}.log"
 
       - name: Record compiler cache diagnostics
         if: always() && steps.compiler-cache.outcome == 'success'
