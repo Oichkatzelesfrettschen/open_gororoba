@@ -357,6 +357,7 @@ validation-resource-contract-collectors:
 	@status=0; \
 	rust_shard_block="$$(sed -n '/id: rust-shards/,/name: Check repository hygiene/p' .github/workflows/ci.yml)"; \
 	docs_gate_block="$$(sed -n '/^  docs-gate:/,/^  docs-deploy:/p' .github/workflows/ci.yml)"; \
+	docs_deploy_block="$$(sed -n '/^  docs-deploy:/,$$p' .github/workflows/ci.yml)"; \
 	docs_cargo_env_line="$$(sed -n '/^DOCS_CARGO_ENV =/p' Makefile)"; \
 	validation_inputs_block="$$(sed -n '/name: Resolve immutable comparison base and worker budget/,/name: Prepare validation report directory/p' .github/workflows/ci.yml)"; \
 	lattice_replay_block="$$(sed -n '/^[[:space:]]*lattice)/,/^[[:space:]]*nufit)/p' .github/workflows/ci.yml)"; \
@@ -455,6 +456,7 @@ validation-resource-contract-collectors:
 	done; \
 	if ! grep -Fq "if: success() && github.ref == 'refs/heads/main' && matrix.cache_publisher == true && steps.replay-cache.outputs.cache-primary-key" .github/workflows/ci.yml; then echo "ERROR: scientific replay retains more than one build-tree cache per run." >&2; status=1; fi; \
 	if ! printf '%s\n' "$$docs_gate_block" | grep -Fq "if: success() && github.ref == 'refs/heads/main' && steps.docs-cache.outputs.cache-primary-key"; then echo "ERROR: docs-gate can retain an incomplete or pull-request build cache." >&2; status=1; fi; \
+	if [ "$$(printf '%s\n' "$$docs_deploy_block" | grep -Fc 'github-pages-$${{ github.run_attempt }}')" -ne 2 ] || ! printf '%s\n' "$$docs_deploy_block" | grep -Fq 'artifact_name: github-pages-$${{ github.run_attempt }}'; then echo "ERROR: Pages upload and deployment must select one artifact per run attempt." >&2; status=1; fi; \
 	for contract in 'hydrate_lane() {' 'local selected_paths=(' 'for selected_path in "$${selected_paths[@]}"' 'cp --parents' 'scientific-replay-input-status' "printf 'blocked_input\\n'" '2> "$$staging_root/scientific-replay-hydration-$$lane.stderr.log"' 'command cat "$$staging_root/scientific-replay-hydration-$$lane.stderr.log" >&2' 'all_hydrated=false'; do \
 	    if ! printf '%s\n' "$$hydration_input_block" | grep -Fq -- "$$contract"; then echo "ERROR: per-lane scientific replay hydration contract is missing: $$contract" >&2; status=1; fi; \
 	done; \
