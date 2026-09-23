@@ -737,7 +737,13 @@ jobs:
           for lane in lattice nufit box-counting optics; do
             lane_variable="run_${lane//-/_}"
             if [ "${!lane_variable}" = true ]; then
-              replay_matrix="$(jq -c --arg lane "$lane" '. + [{lane: $lane}]' <<< "$replay_matrix")"
+              if [ "$replay_matrix" = '[]' ]; then
+                cache_publisher=true
+              else
+                cache_publisher=false
+              fi
+              replay_matrix="$(jq -c --arg lane "$lane" --argjson cache_publisher "$cache_publisher" \
+                '. + [{lane: $lane, cache_publisher: $cache_publisher}]' <<< "$replay_matrix")"
             fi
           done
           if [ "$replay_matrix" = '[]' ]; then
@@ -925,10 +931,10 @@ jobs:
             ${{ env.CARGO_HOME }}/git
             ${{ env.CARGO_TARGET_DIR }}
             ${{ github.workspace }}/.cache/gate-cbuild
-          key: scientific-replay-${{ matrix.lane }}-v2-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('rust-toolchain.toml', '.cargo/config.toml') }}-${{ hashFiles('Cargo.lock') }}-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
+          key: scientific-replay-shared-v1-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('rust-toolchain.toml', '.cargo/config.toml') }}-${{ hashFiles('Cargo.lock') }}-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
           restore-keys: |
-            scientific-replay-${{ matrix.lane }}-v2-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('rust-toolchain.toml', '.cargo/config.toml') }}-${{ hashFiles('Cargo.lock') }}-${{ github.sha }}-
-            scientific-replay-${{ matrix.lane }}-v2-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('rust-toolchain.toml', '.cargo/config.toml') }}-${{ hashFiles('Cargo.lock') }}-
+            scientific-replay-shared-v1-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('rust-toolchain.toml', '.cargo/config.toml') }}-${{ hashFiles('Cargo.lock') }}-${{ github.sha }}-
+            scientific-replay-shared-v1-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('rust-toolchain.toml', '.cargo/config.toml') }}-${{ hashFiles('Cargo.lock') }}-
             scientific-hydration-v2-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('rust-toolchain.toml', '.cargo/config.toml') }}-${{ hashFiles('Cargo.lock') }}-${{ github.sha }}
             ci-v2-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('rust-toolchain.toml', '.cargo/config.toml') }}-${{ hashFiles('Cargo.lock') }}-
       - uses: actions/download-artifact@v4
@@ -1013,7 +1019,9 @@ jobs:
           if-no-files-found: warn
           retention-days: 14
       - name: Retain scientific replay build artifacts
-        if: success() && steps.replay-cache.outputs.cache-primary-key != '' && steps.replay-cache.outputs.cache-hit != 'true'
+        # One publisher preserves shared dependencies without four duplicate
+        # Cargo build trees competing for the repository cache quota.
+        if: success() && matrix.cache_publisher == true && steps.replay-cache.outputs.cache-primary-key != '' && steps.replay-cache.outputs.cache-hit != 'true'
         uses: actions/cache/save@v4
         with:
           path: |
