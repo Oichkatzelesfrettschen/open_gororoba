@@ -388,6 +388,9 @@ validation-resource-contract-collectors:
 	done; \
 	if ! printf '%s\n' "$$docs_book_check_block" | grep -Fq 'timeout-minutes: 2'; then echo "ERROR: pull-request book validation exceeds the two-minute budget." >&2; status=1; fi; \
 	if ! printf '%s\n' "$$docs_publication_block" | grep -Fq 'timeout-minutes: 90'; then echo "ERROR: full documentation publication timeout is below the measured cold-build envelope." >&2; status=1; fi; \
+	if ! printf '%s\n' "$$docs_publication_block" | grep -Fq "github.event.workflow_run.event == 'schedule'"; then echo "ERROR: weekly full documentation publication is missing." >&2; status=1; fi; \
+	if printf '%s\n' "$$docs_publication_block" | grep -Fq "github.event.workflow_run.event == 'push'"; then echo "ERROR: main pushes trigger a full documentation build." >&2; status=1; fi; \
+	if ! printf '%s\n' "$$docs_deploy_block" | grep -Fq "github.event.workflow_run.event == 'schedule'"; then echo "ERROR: weekly full documentation does not deploy." >&2; status=1; fi; \
 	for hydration_backed_test in \
 	    test_thesis_a_codebook_parity_256d \
 	    test_thesis_a_codebook_parity_512d \
