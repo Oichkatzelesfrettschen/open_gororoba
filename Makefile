@@ -451,10 +451,10 @@ validation-resource-contract-collectors:
 	for cache_job in validation-governance validation-casimir-audit scientific-replay-inputs scientific-replay-leaf; do \
 	    cache_block="$$(sed -n "/^  $$cache_job:/,/^  [a-z].*:/p" .github/workflows/ci.yml)"; \
 	    if ! printf '%s\n' "$$cache_block" | grep -Fq '$${{ github.sha }}-$${{ github.run_id }}-$${{ github.run_attempt }}'; then echo "ERROR: $$cache_job cache key is not run-unique." >&2; status=1; fi; \
-	    if ! printf '%s\n' "$$cache_block" | grep -Fq 'if: success() &&'; then echo "ERROR: $$cache_job can retain an incomplete or failed build cache." >&2; status=1; fi; \
+	    if ! printf '%s\n' "$$cache_block" | grep -Fq "if: success() && github.ref == 'refs/heads/main' &&"; then echo "ERROR: $$cache_job can retain an incomplete or pull-request build cache." >&2; status=1; fi; \
 	done; \
-	if ! grep -Fq 'if: success() && matrix.cache_publisher == true && steps.replay-cache.outputs.cache-primary-key' .github/workflows/ci.yml; then echo "ERROR: scientific replay retains more than one build-tree cache per run." >&2; status=1; fi; \
-	if ! printf '%s\n' "$$docs_gate_block" | grep -Fq 'if: success() && steps.docs-cache.outputs.cache-primary-key'; then echo "ERROR: docs-gate can retain an incomplete or failed build cache." >&2; status=1; fi; \
+	if ! grep -Fq "if: success() && github.ref == 'refs/heads/main' && matrix.cache_publisher == true && steps.replay-cache.outputs.cache-primary-key" .github/workflows/ci.yml; then echo "ERROR: scientific replay retains more than one build-tree cache per run." >&2; status=1; fi; \
+	if ! printf '%s\n' "$$docs_gate_block" | grep -Fq "if: success() && github.ref == 'refs/heads/main' && steps.docs-cache.outputs.cache-primary-key"; then echo "ERROR: docs-gate can retain an incomplete or pull-request build cache." >&2; status=1; fi; \
 	for contract in 'hydrate_lane() {' 'local selected_paths=(' 'for selected_path in "$${selected_paths[@]}"' 'cp --parents' 'scientific-replay-input-status' "printf 'blocked_input\\n'" '2> "$$staging_root/scientific-replay-hydration-$$lane.stderr.log"' 'command cat "$$staging_root/scientific-replay-hydration-$$lane.stderr.log" >&2' 'all_hydrated=false'; do \
 	    if ! printf '%s\n' "$$hydration_input_block" | grep -Fq -- "$$contract"; then echo "ERROR: per-lane scientific replay hydration contract is missing: $$contract" >&2; status=1; fi; \
 	done; \
@@ -465,7 +465,7 @@ validation-resource-contract-collectors:
 	for contract in 'hydrate_lane optics' 'data/output/audit/claim-family-evidence-adjudication/optics-replay/ruan-fan-0909.3323v2.pdf'; do \
 	    if ! printf '%s\n' "$$optics_hydration_block" | grep -Fq -- "$$contract"; then echo "ERROR: optics hydration block is missing: $$contract" >&2; status=1; fi; \
 	done; \
-	if ! printf '%s\n' "$$hydration_cache_block" | grep -Fq "if: success() && steps.hydrate.outputs.all_hydrated == 'true'"; then echo "ERROR: scientific replay hydration cache is not gated on complete per-lane success." >&2; status=1; fi; \
+	if ! printf '%s\n' "$$hydration_cache_block" | grep -Fq "if: success() && github.ref == 'refs/heads/main' && steps.hydrate.outputs.all_hydrated == 'true'"; then echo "ERROR: scientific replay hydration cache is not gated on complete per-lane success on main." >&2; status=1; fi; \
 	for contract in 'lane_status_path=' 'state=blocked_input' 'state=orchestration_error'; do \
 	    if ! printf '%s\n' "$$replay_leaf_execution_block" | grep -Fq -- "$$contract"; then echo "ERROR: scientific replay leaf input-state contract is missing: $$contract" >&2; status=1; fi; \
 	done; \
@@ -524,7 +524,7 @@ validation-resource-contract-collectors:
 	done; \
 	fallback_heavy_row='{"lane":"heavy-fallback","target":"heavy","rust_scope":"-p algebra_analysis -p gr_core","clippy_scope":"","cargo_target_args":"--lib --bins --tests --examples","cargo_features":""}'; \
 	if [ "$$(printf '%s\n' "$$rust_shard_block" | grep -Fc "$$fallback_heavy_row")" -ne 1 ]; then echo "ERROR: fallback Rust shard matrix must retain complete heavy-package coverage." >&2; status=1; fi; \
-	if ! sed -n '/name: Retain successful core validation artifacts/,/key: $${{ steps.rust-cache.outputs.cache-primary-key }}/p' .github/workflows/ci.yml | grep -Fq 'if: success()'; then echo "ERROR: core cache retention is not success-only." >&2; status=1; fi; \
+	if ! sed -n '/name: Retain successful core validation artifacts/,/key: $${{ steps.rust-cache.outputs.cache-primary-key }}/p' .github/workflows/ci.yml | grep -Fq "if: success() && github.ref == 'refs/heads/main' &&"; then echo "ERROR: core cache retention is not success-only on main." >&2; status=1; fi; \
 	if ! grep -Fq 'Report collected proof failures' .github/workflows/proofs.yml; then echo "ERROR: proof collector contract is missing." >&2; status=1; fi; \
 	if ! grep -Fq 'data/output/audit/casimir-optics-discrimination/sources/** -text' .gitattributes; then echo "ERROR: hash-bound source-byte contract is missing." >&2; status=1; fi; \
 	for contract in 'id = "ci.validation.scoped"' 'id = "ci.validation.full"'; do \
