@@ -440,7 +440,7 @@ validation-resource-contract-collectors:
 	for contract in 'workflows: [ci]' 'types: [completed]' 'branches: [main]'; do \
 	    if ! grep -Fq "$$contract" .github/workflows/docs-publish.yml; then echo "ERROR: full site publication lacks successful main CI routing: $$contract" >&2; status=1; fi; \
 	done; \
-	if ! grep -Fq "group: docs-publish-\$${{ github.event.workflow_run.event == 'pull_request' && github.event.workflow_run.id || 'main' }}" .github/workflows/docs-publish.yml; then echo "ERROR: pull-request CI can cancel main documentation publication." >&2; status=1; fi; \
+	if ! grep -Fq 'group: docs-publish-$${{ github.event.workflow_run.event }}-$${{ github.event.workflow_run.head_branch }}' .github/workflows/docs-publish.yml; then echo "ERROR: documentation publication concurrency does not separate CI triggers and branches." >&2; status=1; fi; \
 	for contract in "github.event.workflow_run.conclusion == 'success'" 'github.event.workflow_run.head_repository.full_name == github.repository' "github.event.workflow_run.head_branch == 'main'" 'ref: $${{ github.event.workflow_run.head_sha }}'; do \
 	    if ! printf '%s\n' "$$docs_publication_block" | grep -Fq "$$contract"; then echo "ERROR: full publication lacks exact successful main CI provenance: $$contract" >&2; status=1; fi; \
 	done; \

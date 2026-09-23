@@ -14,7 +14,7 @@ defaults:
     shell: bash
 
 concurrency:
-  group: docs-publish-${{ github.event.workflow_run.event == 'pull_request' && github.event.workflow_run.id || 'main' }}
+  group: docs-publish-${{ github.event.workflow_run.event }}-${{ github.event.workflow_run.head_branch }}
   cancel-in-progress: true
 
 env:
