@@ -337,6 +337,11 @@ validation-resource-contract-workers:
 	if ! grep -Fq 'make --jobs="$$MAKE_JOBS" --keep-going all' .github/workflows/proofs.yml; then echo "ERROR: proof workflow does not pass every detected worker to Make." >&2; status=1; fi; \
 	if ! grep -Fq 'opam install rocq-core.9.1.1 rocq-stdlib.9.1.0 coq-flocq.4.2.2 --jobs="$$OPAMJOBS" --yes' .github/workflows/proofs.yml; then echo "ERROR: proof workflow does not pass every detected worker to opam." >&2; status=1; fi; \
 	if grep -Fq 'ci-rust-$${{ matrix.lane }}' .github/workflows/ci.yml; then echo "ERROR: Rust matrix jobs retain quota-consuming duplicate target caches." >&2; status=1; fi; \
+	rust_cache_block="$$(sed -n '/^  rust-validation:/,/^  scientific-replay-inputs:/p' .github/workflows/ci.yml)"; \
+	for contract in 'SCCACHE_DIR:' 'SCCACHE_CACHE_SIZE: 2G' 'compiler-content-v1-' 'fromJSON(needs.validation-core.outputs.rust_matrix).include[1].lane' 'mozilla-actions/sccache-action@fc920bf0ec8de6ee65d409111f7ec508035751ba' 'version: v0.15.0'; do \
+	    if ! printf '%s\n' "$$rust_cache_block" | grep -Fq "$$contract"; then echo "ERROR: Rust compiler cache contract is missing: $$contract" >&2; status=1; fi; \
+	done; \
+	if printf '%s\n' "$$rust_cache_block" | grep -Fq 'SCCACHE_GHA_ENABLED'; then echo "ERROR: Rust matrix enables rate-limited per-compile GitHub cache writes." >&2; status=1; fi; \
 	if ! grep -Fq 'components: clippy, rustfmt' .github/workflows/proofs.yml; then echo "ERROR: proof workflow does not provision pinned Rust components before parallel rustc calls." >&2; status=1; fi; \
 	for workflow in .github/workflows/ci.yml .github/workflows/proofs.yml .github/workflows/bench-cd-kernel.yml .github/workflows/unsafe-survey.yml; do \
 	    if ! grep -Fq 'detect_worker_budget.rs' "$$workflow"; then echo "ERROR: hosted Rust workflow lacks process-visible worker detection: $$workflow" >&2; status=1; fi; \

@@ -541,6 +541,10 @@ jobs:
     if: always() && needs.validation-core.outputs.run_rust == 'true' && needs.validation-core.outputs.rust_matrix != ''
     runs-on: ubuntu-24.04
     timeout-minutes: 90
+    env:
+      SCCACHE_DIR: ${{ github.workspace }}/.cache/sccache
+      SCCACHE_CACHE_SIZE: 2G
+      SCCACHE_LOG: 'sccache::server=debug/Error executing cache write'
     strategy:
       fail-fast: false
       matrix: ${{ fromJSON(needs.validation-core.outputs.rust_matrix) }}
@@ -553,7 +557,16 @@ jobs:
 
       - uses: taiki-e/install-action@v2
         with:
-          tool: cargo-nextest@0.9.143,sccache@0.15.0
+          tool: cargo-nextest@0.9.143
+
+      - name: Set private compiler cache diagnostic path
+        run: echo "SCCACHE_ERROR_LOG=$RUNNER_TEMP/sccache-write-errors.log" >> "$GITHUB_ENV"
+
+      - name: Configure shared compiler cache
+        id: compiler-cache
+        uses: mozilla-actions/sccache-action@fc920bf0ec8de6ee65d409111f7ec508035751ba # v0.0.11
+        with:
+          version: v0.15.0
 
       - name: Install compiler and data dependencies
         run: |
@@ -584,6 +597,16 @@ jobs:
             ci-v2-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('rust-toolchain.toml', '.cargo/config.toml') }}-${{ hashFiles('Cargo.lock') }}-
             ci-v2-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('rust-toolchain.toml', '.cargo/config.toml') }}-
 
+      - name: Restore shared compiler entries
+        id: compiler-cache-restore
+        uses: actions/cache/restore@v4
+        with:
+          path: ${{ env.SCCACHE_DIR }}
+          key: compiler-content-v1-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('rust-toolchain.toml', '.cargo/config.toml') }}-${{ hashFiles('Cargo.lock') }}-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
+          restore-keys: |
+            compiler-content-v1-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('rust-toolchain.toml', '.cargo/config.toml') }}-${{ hashFiles('Cargo.lock') }}-${{ github.sha }}-
+            compiler-content-v1-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('rust-toolchain.toml', '.cargo/config.toml') }}-${{ hashFiles('Cargo.lock') }}-
+
       - name: Run scoped Rust ${{ matrix.lane }} shard
         timeout-minutes: 80
         env:
@@ -595,6 +618,45 @@ jobs:
           set -o pipefail
           mkdir -p reports/validation
           make --jobs="$WORKER_BUDGET" --keep-going "validate-ci-scoped-${{ matrix.target }}" 2>&1 | tee "reports/validation/rust-${{ matrix.lane }}.log"
+
+      - name: Record compiler cache diagnostics
+        if: always() && steps.compiler-cache.outcome == 'success'
+        run: |
+          set -euo pipefail
+          mkdir -p reports/validation
+          sccache --show-stats --stats-format=json > "reports/validation/sccache-${{ matrix.lane }}.json"
+          write_errors="$(jq -er '.stats.cache_write_errors' "reports/validation/sccache-${{ matrix.lane }}.json")"
+          error_log=/dev/null
+          if [ -f "$SCCACHE_ERROR_LOG" ]; then
+            error_log="$SCCACHE_ERROR_LOG"
+          fi
+          awk -v expected="$write_errors" '
+            BEGIN {
+              marker = "Error executing cache write: "
+              kind_count = split("Unexpected Unsupported ConfigInvalid NotFound PermissionDenied IsADirectory NotADirectory AlreadyExists RateLimited IsSameFile ConditionNotMatch RangeNotSatisfied Unknown", kinds, " ")
+              for (kind_index = 1; kind_index <= kind_count; kind_index++) known[kinds[kind_index]] = 1
+            }
+            index($0, marker) {
+              message = substr($0, index($0, marker) + length(marker))
+              split(message, fields, " ")
+              kind = fields[1]
+              if (!(kind in known) || fields[2] !~ /^\((permanent|temporary|persistent)\)$/ || fields[3] != "at") kind = "Unknown"
+              counts[kind]++
+              observed++
+            }
+            END {
+              printf "expected_write_errors\t%d\nobserved_write_errors\t%d\n", expected, observed
+              for (kind_index = 1; kind_index <= kind_count; kind_index++) printf "%s\t%d\n", kinds[kind_index], counts[kinds[kind_index]]
+              if (observed != expected) exit 1
+            }
+          ' "$error_log" > "reports/validation/sccache-write-errors-${{ matrix.lane }}.tsv"
+
+      - name: Retain one shared compiler entry archive
+        if: success() && matrix.lane == fromJSON(needs.validation-core.outputs.rust_matrix).include[1].lane && steps.compiler-cache-restore.outputs.cache-hit != 'true'
+        uses: actions/cache/save@v4
+        with:
+          path: ${{ env.SCCACHE_DIR }}
+          key: ${{ steps.compiler-cache-restore.outputs.cache-primary-key }}
 
       - name: Upload Rust validation report
         if: always()
