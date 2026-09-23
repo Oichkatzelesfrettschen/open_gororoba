@@ -14,6 +14,7 @@ exclude = ["vendor/proc-macro-error2"]
 members = [
     "crates/algebra_analysis",
     "crates/algebra_experimental",
+    "crates/book_docs",
     "crates/brown_1967",
     "crates/brown_1972",
     "crates/casimir_core",
@@ -458,6 +459,15 @@ incremental = false # user-local Cargo config (~/.cargo/config.toml) may also en
 overflow-checks = true
 debug-assertions = true
 panic = "unwind"
+
+# Book rendering parses TOML and writes Markdown; LLVM optimization adds
+# compile time without improving the hosted source-check boundary.
+[profile.docs-book]
+inherits = "dev"
+opt-level = 0
+debug = 0
+codegen-units = 256
+incremental = false
 
 # Test: faster compile than release; opt-level 1 still inlines generics.
 # For numerically-sensitive tests: cargo test --profile parity

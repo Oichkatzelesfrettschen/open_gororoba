@@ -500,6 +500,7 @@ name = "document-mineru-replay"
 path = "src/bin/document_mineru_replay.rs"
 
 [dependencies]
+book_docs = { path = "../book_docs" }
 repo_root = { workspace = true }
 algebra_analysis = { workspace = true }
 algebra_experimental = { workspace = true }

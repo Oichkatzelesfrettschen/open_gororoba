@@ -156,6 +156,11 @@ crate = "gororoba_cli_algebra"
 description = "Workspace binary discovered from crates/gororoba_cli_algebra/Cargo.toml; registry metadata pending."
 
 [[binary]]
+name = "book-docs-emit"
+crate = "book_docs"
+description = "Workspace binary discovered from cargo metadata in crate book_docs; registry metadata pending."
+
+[[binary]]
 name = "bounce-cosmology"
 crate = "gororoba_cli_physics"
 description = "Bouncing cosmology model simulation"

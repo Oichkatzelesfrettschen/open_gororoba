@@ -162,6 +162,9 @@ DOCS_RUSTDOC_DIR ?= $(DOCS_SITE_DIR)/rustdoc
 DOCS_CARGO_TARGET_DIR ?= $(CURDIR)/target/docs-target
 DOCS_CARGO_BUILD_DIR ?= $(REPO_TMP_CARGO_ROOT)/docs
 DOCS_CARGO_ENV = CARGO_HOME=$(REPO_CARGO_HOME) CARGO_TARGET_DIR=$(DOCS_CARGO_TARGET_DIR) CARGO_BUILD_BUILD_DIR=$(DOCS_CARGO_BUILD_DIR) MAKEFLAGS= MFLAGS= CARGO_MAKEFLAGS= $(VALIDATION_PARALLEL_ENV)
+DOCS_BOOK_CARGO_TARGET_DIR ?= $(CURDIR)/target/book-target
+DOCS_BOOK_CARGO_BUILD_DIR ?= $(REPO_TMP_CARGO_ROOT)/book
+DOCS_BOOK_CARGO_ENV = CARGO_HOME=$(REPO_CARGO_HOME) CARGO_TARGET_DIR=$(DOCS_BOOK_CARGO_TARGET_DIR) CARGO_BUILD_BUILD_DIR=$(DOCS_BOOK_CARGO_BUILD_DIR) MAKEFLAGS= MFLAGS= CARGO_MAKEFLAGS= $(VALIDATION_PARALLEL_ENV)
 # Hosted documentation uses default features; SDK-equipped hosts can opt in.
 DOCS_FEATURE_FLAGS ?=
 DOCS_RUST_SCOPE ?= --workspace
@@ -356,7 +359,8 @@ validation-resource-contract-workers:
 validation-resource-contract-collectors:
 	@status=0; \
 	rust_shard_block="$$(sed -n '/id: rust-shards/,/name: Check repository hygiene/p' .github/workflows/ci.yml)"; \
-	docs_gate_block="$$(sed -n '/^  docs-gate:/,/^  docs-deploy:/p' .github/workflows/ci.yml)"; \
+	docs_book_check_block="$$(sed -n '/^  docs-book-check:/,/^  docs-publication:/p' .github/workflows/ci.yml)"; \
+	docs_publication_block="$$(sed -n '/^  docs-publication:/,/^  docs-deploy:/p' .github/workflows/ci.yml)"; \
 	docs_deploy_block="$$(sed -n '/^  docs-deploy:/,$$p' .github/workflows/ci.yml)"; \
 	docs_cargo_env_line="$$(sed -n '/^DOCS_CARGO_ENV =/p' Makefile)"; \
 	validation_inputs_block="$$(sed -n '/name: Resolve immutable comparison base and worker budget/,/name: Prepare validation report directory/p' .github/workflows/ci.yml)"; \
@@ -378,10 +382,11 @@ validation-resource-contract-collectors:
 	replay_leaf_execution_block="$$(sed -n '/name: Execute hydrated scientific replay leaf/,/name: Upload scientific replay leaf report/p' .github/workflows/ci.yml)"; \
 	optics_replay_block="$$(sed -n '/^[[:space:]]*optics)/,/^[[:space:]]*\*)/p' .github/workflows/ci.yml)"; \
 	replay_verdict_block="$$(sed -n '/name: Report hydrated scientific replay outcomes/,/name: Retain scientific replay verdict/p' .github/workflows/ci.yml)"; \
-	for contract in 'ci-rust-shard-matrix' 'fallback_matrix=' 'CI_CARGO_TARGET_ARGS: $${{ matrix.cargo_target_args }}' 'CI_CARGO_FEATURES: $${{ matrix.cargo_features }}' 'matrix: $${{ fromJSON(needs.validation-core.outputs.rust_matrix) }}' 'make --jobs="$$WORKER_BUDGET" --keep-going "validate-ci-scoped-$${{ matrix.target }}"' 'timeout-minutes: 80' 'fail-fast: false' 'Report collected validation failures' 'Report aggregate validation admission' 'needs: [validation-policy, validation-core, validation-governance, validation-casimir-audit, rust-validation, scientific-replay, benchmark, proofs, paper, unsafe-survey, docs-gate]' 'DOCS_RESULT:' 'RUN_DOCS:' 'for lane in GOVERNANCE CASIMIR_AUDIT DOCS' 'uses: ./.github/workflows/bench-cd-kernel.yml' 'uses: ./.github/workflows/proofs.yml' 'uses: ./.github/workflows/paper.yml' 'uses: ./.github/workflows/unsafe-survey.yml' 'run_workspace_survey:' 'BENCHMARK_SELECTED:' 'PROOFS_SELECTED:' 'PAPER_SELECTED:' 'UNSAFE_SURVEY_SELECTED:' 'scientific-replay-inputs:' 'scientific-replay-leaf:' 'scientific-replay:' 'matrix: $${{ fromJSON(needs.scientific-replay-inputs.outputs.matrix) }}' '--bin hydrate-scientific-payloads' '--no-fail-fast -p algebra_experimental --test nufit_reference_identity' '--no-fail-fast -p lbm_3d --test box_counting_amplitude_identity' '--no-fail-fast -p optics_core --test ruan_fan_source_receipts' 'state=blocked_input' 'state=not_selected' 'state=executed_pass' 'state=executed_fail' "needs.validation-policy.result == 'success'" "needs.validation.result == 'success'" 'make --keep-going validation-resource-contract' 'make --jobs="$$WORKER_BUDGET" --keep-going casimir-optics-discrimination-audit-check' 'make --jobs="$$WORKER_BUDGET" --keep-going docs-freshness'; do \
+	for contract in 'ci-rust-shard-matrix' 'fallback_matrix=' 'CI_CARGO_TARGET_ARGS: $${{ matrix.cargo_target_args }}' 'CI_CARGO_FEATURES: $${{ matrix.cargo_features }}' 'matrix: $${{ fromJSON(needs.validation-core.outputs.rust_matrix) }}' 'make --jobs="$$WORKER_BUDGET" --keep-going "validate-ci-scoped-$${{ matrix.target }}"' 'timeout-minutes: 80' 'fail-fast: false' 'Report collected validation failures' 'Report aggregate validation admission' 'needs: [validation-policy, validation-core, validation-governance, validation-casimir-audit, rust-validation, scientific-replay, benchmark, proofs, paper, unsafe-survey, docs-book-check]' 'DOCS_RESULT:' 'RUN_DOCS:' 'for lane in GOVERNANCE CASIMIR_AUDIT DOCS' 'uses: ./.github/workflows/bench-cd-kernel.yml' 'uses: ./.github/workflows/proofs.yml' 'uses: ./.github/workflows/paper.yml' 'uses: ./.github/workflows/unsafe-survey.yml' 'run_workspace_survey:' 'BENCHMARK_SELECTED:' 'PROOFS_SELECTED:' 'PAPER_SELECTED:' 'UNSAFE_SURVEY_SELECTED:' 'scientific-replay-inputs:' 'scientific-replay-leaf:' 'scientific-replay:' 'matrix: $${{ fromJSON(needs.scientific-replay-inputs.outputs.matrix) }}' '--bin hydrate-scientific-payloads' '--no-fail-fast -p algebra_experimental --test nufit_reference_identity' '--no-fail-fast -p lbm_3d --test box_counting_amplitude_identity' '--no-fail-fast -p optics_core --test ruan_fan_source_receipts' 'state=blocked_input' 'state=not_selected' 'state=executed_pass' 'state=executed_fail' "needs.validation-policy.result == 'success'" "needs.validation.result == 'success'" 'make --keep-going validation-resource-contract' 'make --jobs="$$WORKER_BUDGET" --keep-going casimir-optics-discrimination-audit-check' 'make --jobs="$$WORKER_BUDGET" --keep-going docs-freshness'; do \
 	    if ! grep -Fq -- "$$contract" .github/workflows/ci.yml; then echo "ERROR: main CI collector contract is missing: $$contract" >&2; status=1; fi; \
 	done; \
-	if ! printf '%s\n' "$$docs_gate_block" | grep -Fq 'timeout-minutes: 90'; then echo "ERROR: workspace documentation timeout is below the measured cold-build envelope." >&2; status=1; fi; \
+	if ! printf '%s\n' "$$docs_book_check_block" | grep -Fq 'timeout-minutes: 2'; then echo "ERROR: pull-request book validation exceeds the two-minute budget." >&2; status=1; fi; \
+	if ! printf '%s\n' "$$docs_publication_block" | grep -Fq 'timeout-minutes: 90'; then echo "ERROR: full documentation publication timeout is below the measured cold-build envelope." >&2; status=1; fi; \
 	for hydration_backed_test in \
 	    test_thesis_a_codebook_parity_256d \
 	    test_thesis_a_codebook_parity_512d \
@@ -427,13 +432,15 @@ validation-resource-contract-collectors:
 	    if ! printf '%s\n' "$$cargo_target_parser_block" | grep -Fq -- "$$contract"; then echo "ERROR: named target parser does not safely admit generated example rows: $$contract" >&2; status=1; fi; \
 	done; \
 	if grep -Fq 'cargo_target_args: "--lib --tests".to_string()' xtask/src/main.rs; then echo "ERROR: target-sharded library row still selects every binary test target." >&2; status=1; fi; \
-	if ! printf '%s\n' "$$docs_gate_block" | grep -Fq 'needs: [validation-core]'; then echo "ERROR: docs-gate must depend only on its routing authority." >&2; status=1; fi; \
-	if printf '%s\n' "$$docs_gate_block" | grep -Fq 'needs.validation.result'; then echo "ERROR: docs-gate hides documentation failures behind aggregate validation." >&2; status=1; fi; \
-	if ! printf '%s\n' "$$docs_gate_block" | grep -Fq "needs.validation-core.outputs.docs_full == 'false'"; then echo "ERROR: PR rustdoc scope does not preserve full documentation for documentation and build-control edits." >&2; status=1; fi; \
-	if ! printf '%s\n' "$$docs_gate_block" | grep -Fq "needs.validation-core.outputs.rust_scope || '--workspace'"; then echo "ERROR: PR rustdoc scope lacks a workspace fallback." >&2; status=1; fi; \
+	if ! printf '%s\n' "$$docs_book_check_block" | grep -Fq 'needs: [validation-core]'; then echo "ERROR: docs-book-check must depend only on its routing authority." >&2; status=1; fi; \
+	if printf '%s\n' "$$docs_book_check_block" | grep -Fq 'needs.validation.result'; then echo "ERROR: docs-book-check hides documentation failures behind aggregate validation." >&2; status=1; fi; \
+	if ! printf '%s\n' "$$docs_book_check_block" | grep -Fq 'make --keep-going docs-book'; then echo "ERROR: docs-book-check omits canonical book rendering." >&2; status=1; fi; \
+	if ! printf '%s\n' "$$docs_book_check_block" | grep -Fq 'sudo apt-get install -y clang mold'; then echo "ERROR: docs-book-check omits its configured linker." >&2; status=1; fi; \
+	if ! printf '%s\n' "$$docs_publication_block" | grep -Fq "github.ref == 'refs/heads/main'"; then echo "ERROR: full site publication runs on pull requests." >&2; status=1; fi; \
+	if ! printf '%s\n' "$$docs_publication_block" | grep -Fq 'make --jobs="$$WORKER_BUDGET" --keep-going docs-freshness'; then echo "ERROR: main publication omits the full documentation build." >&2; status=1; fi; \
 	if ! grep -Fq 'scope_args=(--workspace --exclude cd_papers)' Makefile; then echo "ERROR: full rustdoc includes the re-export-only cd_papers facade instead of its owning crates." >&2; status=1; fi; \
 	if ! printf '%s\n' "$$docs_cargo_env_line" | grep -Fq 'MAKEFLAGS= MFLAGS= CARGO_MAKEFLAGS='; then echo "ERROR: docs Cargo inherits stale GNU make jobserver descriptors." >&2; status=1; fi; \
-	if ! grep -Fq '$$(DOCS_CARGO_ENV) cargo run --locked -p gororoba_cli_data --bin registry-emit -- book-docs-legacy' Makefile; then echo "ERROR: docs book generation does not reuse the rustdoc Cargo build tree." >&2; status=1; fi; \
+	if ! grep -Fq '$$(DOCS_BOOK_CARGO_ENV) cargo run --locked --profile docs-book -p book_docs --bin book-docs-emit' Makefile; then echo "ERROR: docs book generation does not use a separate lightweight build tree." >&2; status=1; fi; \
 	for contract in '"registry-integrity"' '"gororoba_cli_governance"' '"registry_integrity.rs"'; do \
 	    if ! printf '%s\n' "$$validation_tools_status_block" | grep -Fq "$$contract"; then echo "ERROR: validation-tools-status does not track registry-integrity through its governance owner: $$contract" >&2; status=1; fi; \
 	done; \
@@ -455,7 +462,7 @@ validation-resource-contract-collectors:
 	    if ! printf '%s\n' "$$cache_block" | grep -Fq "if: success() && github.ref == 'refs/heads/main' &&"; then echo "ERROR: $$cache_job can retain an incomplete or pull-request build cache." >&2; status=1; fi; \
 	done; \
 	if ! grep -Fq "if: success() && github.ref == 'refs/heads/main' && matrix.cache_publisher == true && steps.replay-cache.outputs.cache-primary-key" .github/workflows/ci.yml; then echo "ERROR: scientific replay retains more than one build-tree cache per run." >&2; status=1; fi; \
-	if ! printf '%s\n' "$$docs_gate_block" | grep -Fq "if: success() && github.ref == 'refs/heads/main' && steps.docs-cache.outputs.cache-primary-key"; then echo "ERROR: docs-gate can retain an incomplete or pull-request build cache." >&2; status=1; fi; \
+	if ! printf '%s\n' "$$docs_publication_block" | grep -Fq "if: success() && github.ref == 'refs/heads/main' && steps.docs-cache.outputs.cache-primary-key"; then echo "ERROR: docs-publication can retain an incomplete or pull-request build cache." >&2; status=1; fi; \
 	if [ "$$(printf '%s\n' "$$docs_deploy_block" | grep -Fc 'github-pages-$${{ github.run_attempt }}')" -ne 2 ] || ! printf '%s\n' "$$docs_deploy_block" | grep -Fq 'artifact_name: github-pages-$${{ github.run_attempt }}'; then echo "ERROR: Pages upload and deployment must select one artifact per run attempt." >&2; status=1; fi; \
 	for contract in 'hydrate_lane() {' 'local selected_paths=(' 'for selected_path in "$${selected_paths[@]}"' 'cp --parents' 'scientific-replay-input-status' "printf 'blocked_input\\n'" '2> "$$staging_root/scientific-replay-hydration-$$lane.stderr.log"' 'command cat "$$staging_root/scientific-replay-hydration-$$lane.stderr.log" >&2' 'all_hydrated=false'; do \
 	    if ! printf '%s\n' "$$hydration_input_block" | grep -Fq -- "$$contract"; then echo "ERROR: per-lane scientific replay hydration contract is missing: $$contract" >&2; status=1; fi; \
@@ -2374,7 +2381,7 @@ cd-row-upgrade-freudenthal:
 
 .PHONY: docs-book-source
 docs-book-source:
-	$(DOCS_CARGO_ENV) cargo run --locked -p gororoba_cli_data --bin registry-emit -- book-docs-legacy
+	$(DOCS_BOOK_CARGO_ENV) cargo run --locked --profile docs-book -p book_docs --bin book-docs-emit
 
 docs-book: docs-book-source
 	@command -v $(MD_BOOK) >/dev/null 2>&1 || { echo "ERROR: mdbook not found. Run: cargo install --locked --force mdbook"; exit 1; }
