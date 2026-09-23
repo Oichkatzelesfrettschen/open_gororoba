@@ -164,6 +164,7 @@ DOCS_CARGO_BUILD_DIR ?= $(REPO_TMP_CARGO_ROOT)/docs
 DOCS_CARGO_ENV = CARGO_HOME=$(REPO_CARGO_HOME) CARGO_TARGET_DIR=$(DOCS_CARGO_TARGET_DIR) CARGO_BUILD_BUILD_DIR=$(DOCS_CARGO_BUILD_DIR) MAKEFLAGS= MFLAGS= CARGO_MAKEFLAGS= $(VALIDATION_PARALLEL_ENV)
 # Hosted documentation uses default features; SDK-equipped hosts can opt in.
 DOCS_FEATURE_FLAGS ?=
+DOCS_RUST_SCOPE ?= --workspace
 SEMVER_BASELINE_REV ?= v1.0-methods
 SEMVER_BASELINE_SHA := $(shell git rev-parse --short=12 $(SEMVER_BASELINE_REV) 2>/dev/null || echo unknown)
 SEMVER_BASELINE_ROOT ?= $(CURDIR)/.cache/semver-baselines/$(SEMVER_BASELINE_REV)-$(SEMVER_BASELINE_SHA)
@@ -427,7 +428,9 @@ validation-resource-contract-collectors:
 	if grep -Fq 'cargo_target_args: "--lib --tests".to_string()' xtask/src/main.rs; then echo "ERROR: target-sharded library row still selects every binary test target." >&2; status=1; fi; \
 	if ! printf '%s\n' "$$docs_gate_block" | grep -Fq 'needs: [validation-core]'; then echo "ERROR: docs-gate must depend only on its routing authority." >&2; status=1; fi; \
 	if printf '%s\n' "$$docs_gate_block" | grep -Fq 'needs.validation.result'; then echo "ERROR: docs-gate hides documentation failures behind aggregate validation." >&2; status=1; fi; \
-	if ! grep -Fq 'cargo doc --locked --keep-going --workspace --exclude cd_papers' Makefile; then echo "ERROR: rustdoc includes the re-export-only cd_papers facade instead of its owning crates." >&2; status=1; fi; \
+	if ! printf '%s\n' "$$docs_gate_block" | grep -Fq "needs.validation-core.outputs.docs_full == 'false'"; then echo "ERROR: PR rustdoc scope does not preserve full documentation for documentation and build-control edits." >&2; status=1; fi; \
+	if ! printf '%s\n' "$$docs_gate_block" | grep -Fq "needs.validation-core.outputs.rust_scope || '--workspace'"; then echo "ERROR: PR rustdoc scope lacks a workspace fallback." >&2; status=1; fi; \
+	if ! grep -Fq 'scope_args=(--workspace --exclude cd_papers)' Makefile; then echo "ERROR: full rustdoc includes the re-export-only cd_papers facade instead of its owning crates." >&2; status=1; fi; \
 	if ! printf '%s\n' "$$docs_cargo_env_line" | grep -Fq 'MAKEFLAGS= MFLAGS= CARGO_MAKEFLAGS='; then echo "ERROR: docs Cargo inherits stale GNU make jobserver descriptors." >&2; status=1; fi; \
 	if ! grep -Fq '$$(DOCS_CARGO_ENV) cargo run --locked -p gororoba_cli_data --bin registry-emit -- book-docs-legacy' Makefile; then echo "ERROR: docs book generation does not reuse the rustdoc Cargo build tree." >&2; status=1; fi; \
 	for contract in '"registry-integrity"' '"gororoba_cli_governance"' '"registry_integrity.rs"'; do \
@@ -2295,11 +2298,31 @@ docs-publish: registry-export-markdown
 	$(MAKE) registry-verify-mirrors
 	@echo "OK: TOML-driven markdown mirrors generated and verified for publishing."
 
+docs-rustdoc: SHELL := /bin/bash
+docs-rustdoc: export DOCS_RUST_SCOPE := $(DOCS_RUST_SCOPE)
 docs-rustdoc:
 	@mkdir -p "$(DOCS_CARGO_TARGET_DIR)"
 	@# cd_papers is a re-export-only facade. Its owning crates provide the
 	@# canonical API pages, and Rust CI verifies the facade itself.
-	$(DOCS_CARGO_ENV) cargo doc --locked --keep-going --workspace --exclude cd_papers $(DOCS_FEATURE_FLAGS) --no-deps --document-private-items
+	@scope="$$DOCS_RUST_SCOPE"; \
+	if [[ "$$scope" == *$$'\n'* || "$$scope" == *$$'\r'* ]]; then \
+	    echo 'ERROR: DOCS_RUST_SCOPE requires a single-line package scope.' >&2; exit 1; \
+	fi; \
+	read -r -a scope_args <<< "$$scope"; \
+	if [[ "$$scope" == --workspace ]]; then \
+	    scope_args=(--workspace --exclude cd_papers); \
+	else \
+	    if (( $${#scope_args[@]} == 0 || $${#scope_args[@]} % 2 != 0 )); then \
+	        echo 'ERROR: DOCS_RUST_SCOPE requires --workspace or -p package pairs.' >&2; exit 1; \
+	    fi; \
+	    for ((scope_index=0; scope_index<$${#scope_args[@]}; scope_index+=2)); do \
+	        if [[ "$${scope_args[scope_index]}" != -p || ! "$${scope_args[scope_index+1]}" =~ ^[A-Za-z0-9_][A-Za-z0-9_-]*$$ ]]; then \
+	            echo 'ERROR: invalid DOCS_RUST_SCOPE package pair.' >&2; exit 1; \
+	        fi; \
+	    done; \
+	fi; \
+	echo "[docs-rustdoc] scope: $${scope_args[*]}"; \
+	$(DOCS_CARGO_ENV) cargo doc --locked --keep-going "$${scope_args[@]}" $(DOCS_FEATURE_FLAGS) --no-deps --document-private-items
 
 cd-row-upgrade-batch:
 	@test -n "$(CD_ROW_UPGRADE_LANE)" || (echo "ERROR: set CD_ROW_UPGRADE_LANE=<jacobson1958|freudenthal1951>" && exit 1)
