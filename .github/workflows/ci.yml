@@ -145,6 +145,7 @@ jobs:
     timeout-minutes: 90
     outputs:
       docs: ${{ steps.paths.outputs.docs }}
+      docs_full: ${{ steps.paths.outputs.docs_full }}
       dependencies: ${{ steps.paths.outputs.dependencies }}
       warp: ${{ steps.paths.outputs.warp }}
       casimir_audit: ${{ steps.paths.outputs.casimir_audit }}
@@ -227,7 +228,7 @@ jobs:
           set -euo pipefail
           classify_paths() {
             if [ "$FULL" = true ]; then
-              printf 'docs=true\ndependencies=true\nwarp=true\ncasimir_audit=true\n' >> "$GITHUB_OUTPUT"
+              printf 'docs=true\ndocs_full=true\ndependencies=true\nwarp=true\ncasimir_audit=true\n' >> "$GITHUB_OUTPUT"
               return
             fi
             git diff --no-renames --name-only "$DIFF_BASE" HEAD > reports/validation/changed-paths.txt
@@ -244,9 +245,14 @@ jobs:
                 echo "$lane=false" >> "$GITHUB_OUTPUT"
               fi
             done
+            if grep -Eq '^(docs/|xtask/|mk/|\.cargo/|\.github/workflows/ci\.yml$|Cargo\.(toml|lock)$|rust-toolchain\.toml$|Makefile$)|(^|/)Cargo\.toml$' reports/validation/changed-paths.txt; then
+              echo 'docs_full=true' >> "$GITHUB_OUTPUT"
+            else
+              echo 'docs_full=false' >> "$GITHUB_OUTPUT"
+            fi
           }
           if ! classify_paths; then
-            printf 'docs=true\ndependencies=true\nwarp=true\ncasimir_audit=true\n' >> "$GITHUB_OUTPUT"
+            printf 'docs=true\ndocs_full=true\ndependencies=true\nwarp=true\ncasimir_audit=true\n' >> "$GITHUB_OUTPUT"
             echo "Path classification failed; all independent path-routed leaves remain scheduled." >&2
             exit 1
           fi
@@ -1201,6 +1207,8 @@ jobs:
             docs-v2-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('rust-toolchain.toml', '.cargo/config.toml') }}-${{ hashFiles('Cargo.lock') }}-
             docs-v2-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('rust-toolchain.toml', '.cargo/config.toml') }}-
       - name: Build default-feature docs and check freshness together
+        env:
+          DOCS_RUST_SCOPE: ${{ github.event_name == 'pull_request' && needs.validation-core.outputs.docs_full == 'false' && needs.validation-core.outputs.rust_scope || '--workspace' }}
         run: make --jobs="$WORKER_BUDGET" --keep-going docs-freshness DOCS_CARGO_BUILD_DIR="$GITHUB_WORKSPACE/.cache/docs-cbuild"
       - name: Retain documentation dependencies after validation failures
         if: success() && steps.docs-cache.outputs.cache-primary-key != '' && steps.docs-cache.outputs.cache-hit != 'true'
