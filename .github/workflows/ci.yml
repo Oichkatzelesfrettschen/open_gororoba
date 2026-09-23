@@ -542,7 +542,8 @@ jobs:
     runs-on: ubuntu-24.04
     timeout-minutes: 90
     env:
-      SCCACHE_GHA_ENABLED: 'true'
+      SCCACHE_DIR: ${{ github.workspace }}/.cache/sccache
+      SCCACHE_CACHE_SIZE: 2G
       SCCACHE_LOG: 'sccache::server=debug/Error executing cache write'
     strategy:
       fail-fast: false
@@ -596,6 +597,16 @@ jobs:
             ci-v2-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('rust-toolchain.toml', '.cargo/config.toml') }}-${{ hashFiles('Cargo.lock') }}-
             ci-v2-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('rust-toolchain.toml', '.cargo/config.toml') }}-
 
+      - name: Restore shared compiler entries
+        id: compiler-cache-restore
+        uses: actions/cache/restore@v4
+        with:
+          path: ${{ env.SCCACHE_DIR }}
+          key: compiler-content-v1-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('rust-toolchain.toml', '.cargo/config.toml') }}-${{ hashFiles('Cargo.lock') }}-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
+          restore-keys: |
+            compiler-content-v1-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('rust-toolchain.toml', '.cargo/config.toml') }}-${{ hashFiles('Cargo.lock') }}-${{ github.sha }}-
+            compiler-content-v1-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('rust-toolchain.toml', '.cargo/config.toml') }}-${{ hashFiles('Cargo.lock') }}-
+
       - name: Run scoped Rust ${{ matrix.lane }} shard
         timeout-minutes: 80
         env:
@@ -639,6 +650,13 @@ jobs:
               if (observed != expected) exit 1
             }
           ' "$error_log" > "reports/validation/sccache-write-errors-${{ matrix.lane }}.tsv"
+
+      - name: Retain one shared compiler entry archive
+        if: success() && matrix.lane == fromJSON(needs.validation-core.outputs.rust_matrix).include[1].lane && steps.compiler-cache-restore.outputs.cache-hit != 'true'
+        uses: actions/cache/save@v4
+        with:
+          path: ${{ env.SCCACHE_DIR }}
+          key: ${{ steps.compiler-cache-restore.outputs.cache-primary-key }}
 
       - name: Upload Rust validation report
         if: always()

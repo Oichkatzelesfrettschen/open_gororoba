@@ -210,13 +210,16 @@ hardware-specific tables are replaced with the scientific stack.
   embedded eight references to one of them. Stripping the copy removed all
   eight, which is the measurement behind `stage_tool`; a reference that
   survives the strip is a runtime bake-in and the scan fails on it.
-- Hosted Rust matrix jobs use sccache 0.15.0 with the GitHub Actions backend.
-  A commit-pinned setup action exports the runner's cache credentials before
-  Cargo starts. Compiler entries share content keys across shards; per-shard
-  target archives remain prohibited because duplicated dependencies evict useful
-  caches. Each shard retains JSON statistics and allowlisted write-error counts
-  in its validation report; raw errors stay on the runner because response
-  metadata can contain signed URLs. The action also reports cache statistics.
+- Hosted Rust matrix jobs use sccache 0.15.0 with a bounded local compiler
+  cache. Every shard restores the same content-addressed archive. The first
+  selected test shard publishes one updated archive after successful validation;
+  the archive retains that shard's compiled dependency subset for later runs.
+  One archive operation replaces per-compile GitHub cache writes, which hit
+  the service rate limit when shards ran concurrently. Per-shard target archives
+  remain prohibited because duplicated dependencies evict useful caches.
+  Each shard retains JSON statistics and allowlisted write-error counts in its
+  validation report; raw errors stay on the runner because response metadata
+  can contain signed URLs. The setup action also reports cache statistics.
   Rust binary compilation and linking remain uncached. Every validation command
   runs on cache hits. Measure reuse from the reported hits before claiming a speedup.
 - Local sccache is host configuration, not a repository guarantee.
