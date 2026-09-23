@@ -435,6 +435,7 @@ validation-resource-contract-collectors:
 	if ! printf '%s\n' "$$docs_book_check_block" | grep -Fq 'needs: [validation-core]'; then echo "ERROR: docs-book-check must depend only on its routing authority." >&2; status=1; fi; \
 	if printf '%s\n' "$$docs_book_check_block" | grep -Fq 'needs.validation.result'; then echo "ERROR: docs-book-check hides documentation failures behind aggregate validation." >&2; status=1; fi; \
 	if ! printf '%s\n' "$$docs_book_check_block" | grep -Fq 'make --keep-going docs-book'; then echo "ERROR: docs-book-check omits canonical book rendering." >&2; status=1; fi; \
+	if ! printf '%s\n' "$$docs_book_check_block" | grep -Fq 'sudo apt-get install -y clang mold'; then echo "ERROR: docs-book-check omits its configured linker." >&2; status=1; fi; \
 	if ! printf '%s\n' "$$docs_publication_block" | grep -Fq "github.ref == 'refs/heads/main'"; then echo "ERROR: full site publication runs on pull requests." >&2; status=1; fi; \
 	if ! printf '%s\n' "$$docs_publication_block" | grep -Fq 'make --jobs="$$WORKER_BUDGET" --keep-going docs-freshness'; then echo "ERROR: main publication omits the full documentation build." >&2; status=1; fi; \
 	if ! grep -Fq 'scope_args=(--workspace --exclude cd_papers)' Makefile; then echo "ERROR: full rustdoc includes the re-export-only cd_papers facade instead of its owning crates." >&2; status=1; fi; \

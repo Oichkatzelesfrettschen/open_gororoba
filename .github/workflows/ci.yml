@@ -1178,6 +1178,10 @@ jobs:
       - uses: taiki-e/install-action@v2
         with:
           tool: mdbook@0.4.40,sccache@0.15.0
+      - name: Install configured linker
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y clang mold
       - name: Resolve process-visible worker count
         run: |
           set -euo pipefail
