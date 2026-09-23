@@ -2312,6 +2312,7 @@ docs-rustdoc:
 	if [[ "$$scope" == --workspace ]]; then \
 	    scope_args=(--workspace --exclude cd_papers); \
 	else \
+	    documented_scope=(); \
 	    if (( $${#scope_args[@]} == 0 || $${#scope_args[@]} % 2 != 0 )); then \
 	        echo 'ERROR: DOCS_RUST_SCOPE requires --workspace or -p package pairs.' >&2; exit 1; \
 	    fi; \
@@ -2319,7 +2320,15 @@ docs-rustdoc:
 	        if [[ "$${scope_args[scope_index]}" != -p || ! "$${scope_args[scope_index+1]}" =~ ^[A-Za-z0-9_][A-Za-z0-9_-]*$$ ]]; then \
 	            echo 'ERROR: invalid DOCS_RUST_SCOPE package pair.' >&2; exit 1; \
 	        fi; \
+	        if [[ "$${scope_args[scope_index+1]}" != cd_papers ]]; then \
+	            documented_scope+=(-p "$${scope_args[scope_index+1]}"); \
+	        fi; \
 	    done; \
+	    if (( $${#documented_scope[@]} == 0 )); then \
+	        scope_args=(--workspace --exclude cd_papers); \
+	    else \
+	        scope_args=("$${documented_scope[@]}"); \
+	    fi; \
 	fi; \
 	echo "[docs-rustdoc] scope: $${scope_args[*]}"; \
 	$(DOCS_CARGO_ENV) cargo doc --locked --keep-going "$${scope_args[@]}" $(DOCS_FEATURE_FLAGS) --no-deps --document-private-items
