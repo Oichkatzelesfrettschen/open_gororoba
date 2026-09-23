@@ -626,7 +626,7 @@ jobs:
           DOCS_RUST_SCOPE: ${{ matrix.clippy_scope }}
         run: |
           set -euo pipefail
-          make --jobs="$WORKER_BUDGET" docs-rustdoc DOCS_CARGO_TARGET_DIR="$CARGO_TARGET_DIR" DOCS_CARGO_BUILD_DIR="$GITHUB_WORKSPACE/.cache/gate-cbuild" 2>&1 | tee "reports/validation/rustdoc-${{ matrix.lane }}.log"
+          make --jobs="$WORKER_BUDGET" docs-rustdoc DOCS_PROFILE_FLAGS='--profile validation' DOCS_CARGO_TARGET_DIR="$CARGO_TARGET_DIR" DOCS_CARGO_BUILD_DIR="$GITHUB_WORKSPACE/.cache/gate-cbuild" 2>&1 | tee "reports/validation/rustdoc-${{ matrix.lane }}.log"
 
       - name: Record compiler cache diagnostics
         if: always() && steps.compiler-cache.outcome == 'success'

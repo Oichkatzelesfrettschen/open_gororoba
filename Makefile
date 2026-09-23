@@ -167,6 +167,7 @@ DOCS_BOOK_CARGO_BUILD_DIR ?= $(REPO_TMP_CARGO_ROOT)/book
 DOCS_BOOK_CARGO_ENV = CARGO_HOME=$(REPO_CARGO_HOME) CARGO_TARGET_DIR=$(DOCS_BOOK_CARGO_TARGET_DIR) CARGO_BUILD_BUILD_DIR=$(DOCS_BOOK_CARGO_BUILD_DIR) MAKEFLAGS= MFLAGS= CARGO_MAKEFLAGS= $(VALIDATION_PARALLEL_ENV)
 # Hosted documentation uses default features; SDK-equipped hosts can opt in.
 DOCS_FEATURE_FLAGS ?=
+DOCS_PROFILE_FLAGS ?=
 DOCS_RUST_SCOPE ?= --workspace
 SEMVER_BASELINE_REV ?= v1.0-methods
 SEMVER_BASELINE_SHA := $(shell git rev-parse --short=12 $(SEMVER_BASELINE_REV) 2>/dev/null || echo unknown)
@@ -2353,7 +2354,7 @@ docs-rustdoc:
 	    fi; \
 	fi; \
 	echo "[docs-rustdoc] scope: $${scope_args[*]}"; \
-	$(DOCS_CARGO_ENV) cargo doc --locked --keep-going "$${scope_args[@]}" $(DOCS_FEATURE_FLAGS) --no-deps --document-private-items
+	$(DOCS_CARGO_ENV) cargo doc --locked --keep-going "$${scope_args[@]}" $(DOCS_PROFILE_FLAGS) $(DOCS_FEATURE_FLAGS) --no-deps --document-private-items
 
 cd-row-upgrade-batch:
 	@test -n "$(CD_ROW_UPGRADE_LANE)" || (echo "ERROR: set CD_ROW_UPGRADE_LANE=<jacobson1958|freudenthal1951>" && exit 1)
