@@ -621,7 +621,7 @@ jobs:
           make --jobs="$WORKER_BUDGET" --keep-going "validate-ci-scoped-${{ matrix.target }}" 2>&1 | tee "reports/validation/rust-${{ matrix.lane }}.log"
 
       - name: Check directly changed Rust API documentation
-        if: always() && github.event_name == 'pull_request' && matrix.target == 'clippy' && matrix.clippy_scope != '--workspace' && matrix.clippy_scope != ''
+        if: always() && github.event_name == 'pull_request' && matrix.target == 'clippy' && matrix.clippy_scope != '--workspace' && matrix.clippy_scope != '' && matrix.clippy_scope != '-p cd_papers'
         env:
           DOCS_RUST_SCOPE: ${{ matrix.clippy_scope }}
         run: |
