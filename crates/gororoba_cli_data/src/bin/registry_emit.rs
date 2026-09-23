@@ -2841,16 +2841,7 @@ fn emit_book_docs_mirror(args: BookDocsMirrorArgs) -> Result<(), String> {
 }
 
 fn emit_book_docs_legacy(args: BookDocsLegacyArgs) -> Result<(), String> {
-    let data = read_toml_value(&args.input)?;
-    let docs = narrative_docs(&data);
-    emit_body_markdown_docs(
-        &args.repo_root,
-        &docs,
-        "registry/book_docs.toml",
-        "(No body_markdown captured in registry/book_docs.toml.)",
-        "source_markdown",
-        args.allow_unicode,
-    )?;
+    book_docs::emit_legacy(&args.repo_root, &args.input, args.allow_unicode)?;
     println!(
         "Emitted book-docs legacy markdown from {} into {}.",
         args.input.display(),

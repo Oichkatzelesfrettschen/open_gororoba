@@ -145,7 +145,6 @@ jobs:
     timeout-minutes: 90
     outputs:
       docs: ${{ steps.paths.outputs.docs }}
-      docs_full: ${{ steps.paths.outputs.docs_full }}
       dependencies: ${{ steps.paths.outputs.dependencies }}
       warp: ${{ steps.paths.outputs.warp }}
       casimir_audit: ${{ steps.paths.outputs.casimir_audit }}
@@ -228,7 +227,7 @@ jobs:
           set -euo pipefail
           classify_paths() {
             if [ "$FULL" = true ]; then
-              printf 'docs=true\ndocs_full=true\ndependencies=true\nwarp=true\ncasimir_audit=true\n' >> "$GITHUB_OUTPUT"
+              printf 'docs=true\ndependencies=true\nwarp=true\ncasimir_audit=true\n' >> "$GITHUB_OUTPUT"
               return
             fi
             git diff --no-renames --name-only "$DIFF_BASE" HEAD > reports/validation/changed-paths.txt
@@ -245,14 +244,9 @@ jobs:
                 echo "$lane=false" >> "$GITHUB_OUTPUT"
               fi
             done
-            if grep -Eq '^(docs/|xtask/|mk/|\.cargo/|\.github/workflows/ci\.yml$|Cargo\.(toml|lock)$|rust-toolchain\.toml$|Makefile$)|(^|/)Cargo\.toml$' reports/validation/changed-paths.txt; then
-              echo 'docs_full=true' >> "$GITHUB_OUTPUT"
-            else
-              echo 'docs_full=false' >> "$GITHUB_OUTPUT"
-            fi
           }
           if ! classify_paths; then
-            printf 'docs=true\ndocs_full=true\ndependencies=true\nwarp=true\ncasimir_audit=true\n' >> "$GITHUB_OUTPUT"
+            printf 'docs=true\ndependencies=true\nwarp=true\ncasimir_audit=true\n' >> "$GITHUB_OUTPUT"
             echo "Path classification failed; all independent path-routed leaves remain scheduled." >&2
             exit 1
           fi
@@ -1096,7 +1090,7 @@ jobs:
       run_workspace_survey: true
 
   validation:
-    needs: [validation-policy, validation-core, validation-governance, validation-casimir-audit, rust-validation, scientific-replay, benchmark, proofs, paper, unsafe-survey, docs-gate]
+    needs: [validation-policy, validation-core, validation-governance, validation-casimir-audit, rust-validation, scientific-replay, benchmark, proofs, paper, unsafe-survey, docs-book-check]
     if: always()
     runs-on: ubuntu-24.04
     timeout-minutes: 5
@@ -1107,7 +1101,7 @@ jobs:
           CORE_RESULT: ${{ needs.validation-core.result }}
           GOVERNANCE_RESULT: ${{ needs.validation-governance.result }}
           CASIMIR_AUDIT_RESULT: ${{ needs.validation-casimir-audit.result }}
-          DOCS_RESULT: ${{ needs.docs-gate.result }}
+          DOCS_RESULT: ${{ needs.docs-book-check.result }}
           RUST_RESULT: ${{ needs.rust-validation.result }}
           SCIENTIFIC_REPLAY_RESULT: ${{ needs.scientific-replay.result }}
           BENCHMARK_SELECTED: ${{ needs.validation-policy.outputs.benchmark }}
@@ -1173,9 +1167,52 @@ jobs:
             exit 1
           fi
 
-  docs-gate:
+  docs-book-check:
     needs: [validation-core]
     if: always() && needs.validation-core.outputs.docs == 'true'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 2
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@1.97.0
+      - uses: taiki-e/install-action@v2
+        with:
+          tool: mdbook@0.4.40,sccache@0.15.0
+      - name: Resolve process-visible worker count
+        run: |
+          set -euo pipefail
+          rustc --edition=2024 -D warnings crates/gororoba_cli/src/bin/detect_worker_budget.rs -o "$RUNNER_TEMP/detect-worker-budget"
+          worker_budget="$("$RUNNER_TEMP/detect-worker-budget")"
+          echo "Hosted book validation uses $worker_budget workers from std::thread::available_parallelism()."
+          for variable in CI_WORKER_BUDGET WORKER_BUDGET CARGO_JOBS CARGO_BUILD_JOBS NEXTEST_TEST_THREADS RUST_TEST_THREADS RAYON_THREADS RAYON_NUM_THREADS; do
+            echo "$variable=$worker_budget" >> "$GITHUB_ENV"
+          done
+      - name: Restore book renderer dependencies
+        id: book-cache
+        uses: actions/cache/restore@v4
+        with:
+          path: |
+            ${{ env.CARGO_HOME }}/registry
+            ${{ github.workspace }}/.cache/book-cbuild
+            ${{ github.workspace }}/target/book-target
+          key: docs-book-v1-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('rust-toolchain.toml', '.cargo/config.toml', 'Cargo.lock', 'crates/book_docs/**') }}-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
+          restore-keys: |
+            docs-book-v1-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('rust-toolchain.toml', '.cargo/config.toml', 'Cargo.lock', 'crates/book_docs/**') }}-
+      - name: Render and validate the book source
+        run: make --keep-going docs-book DOCS_BOOK_CARGO_TARGET_DIR="$GITHUB_WORKSPACE/target/book-target" DOCS_BOOK_CARGO_BUILD_DIR="$GITHUB_WORKSPACE/.cache/book-cbuild"
+      - name: Retain book renderer dependencies
+        if: success() && github.ref == 'refs/heads/main' && steps.book-cache.outputs.cache-primary-key != '' && steps.book-cache.outputs.cache-hit != 'true'
+        uses: actions/cache/save@v4
+        with:
+          path: |
+            ${{ env.CARGO_HOME }}/registry
+            ${{ github.workspace }}/.cache/book-cbuild
+            ${{ github.workspace }}/target/book-target
+          key: ${{ steps.book-cache.outputs.cache-primary-key }}
+
+  docs-publication:
+    needs: [validation-core]
+    if: always() && github.ref == 'refs/heads/main' && needs.validation-core.outputs.docs == 'true'
     runs-on: ubuntu-24.04
     timeout-minutes: 90
     steps:
@@ -1210,6 +1247,8 @@ jobs:
             ${{ github.workspace }}/.cache/gate-cbuild
             ${{ github.workspace }}/.cache/docs-cbuild
             ${{ github.workspace }}/target/docs-target
+            ${{ github.workspace }}/.cache/book-cbuild
+            ${{ github.workspace }}/target/book-target
           key: docs-v2-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('rust-toolchain.toml', '.cargo/config.toml') }}-${{ hashFiles('Cargo.lock') }}-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
           restore-keys: |
             docs-v2-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('rust-toolchain.toml', '.cargo/config.toml') }}-${{ hashFiles('Cargo.lock') }}-${{ github.sha }}-
@@ -1217,8 +1256,8 @@ jobs:
             docs-v2-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('rust-toolchain.toml', '.cargo/config.toml') }}-
       - name: Build default-feature docs and check freshness together
         env:
-          DOCS_RUST_SCOPE: ${{ github.event_name == 'pull_request' && needs.validation-core.outputs.docs_full == 'false' && needs.validation-core.outputs.rust_scope || '--workspace' }}
-        run: make --jobs="$WORKER_BUDGET" --keep-going docs-freshness DOCS_CARGO_BUILD_DIR="$GITHUB_WORKSPACE/.cache/docs-cbuild"
+          DOCS_RUST_SCOPE: --workspace
+        run: make --jobs="$WORKER_BUDGET" --keep-going docs-freshness DOCS_CARGO_BUILD_DIR="$GITHUB_WORKSPACE/.cache/docs-cbuild" DOCS_BOOK_CARGO_BUILD_DIR="$GITHUB_WORKSPACE/.cache/book-cbuild"
       - name: Retain documentation dependencies after validation failures
         if: success() && github.ref == 'refs/heads/main' && steps.docs-cache.outputs.cache-primary-key != '' && steps.docs-cache.outputs.cache-hit != 'true'
         uses: actions/cache/save@v4
@@ -1230,6 +1269,8 @@ jobs:
             ${{ github.workspace }}/.cache/gate-cbuild
             ${{ github.workspace }}/.cache/docs-cbuild
             ${{ github.workspace }}/target/docs-target
+            ${{ github.workspace }}/.cache/book-cbuild
+            ${{ github.workspace }}/target/book-target
           key: ${{ steps.docs-cache.outputs.cache-primary-key }}
       - if: always()
         uses: actions/upload-artifact@v4
@@ -1239,8 +1280,8 @@ jobs:
           retention-days: 7
 
   docs-deploy:
-    needs: [validation-policy, validation, docs-gate]
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main' && needs.validation-policy.result == 'success' && needs.validation.result == 'success' && needs.docs-gate.result == 'success'
+    needs: [validation-policy, validation, docs-publication]
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main' && needs.validation-policy.result == 'success' && needs.validation.result == 'success' && needs.docs-publication.result == 'success'
     permissions:
       pages: write
       id-token: write

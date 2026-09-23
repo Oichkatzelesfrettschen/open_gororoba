@@ -259,8 +259,12 @@ One CI workflow admits pull requests and main pushes, with superseded runs
 canceled per event and ref. It routes benchmark, proof, paper, and unsafe-survey
 jobs through reusable workflows, tests affected consumers, and lints directly
 changed owners. Weekly full runs and explicit full dispatch cover the whole workspace.
-Default-feature documentation builds share freshness checks in one job. Set
-`DOCS_FEATURE_FLAGS=--all-features` only on a host with the required SDKs.
+Pull-request documentation checks render the registry-backed mdBook with a
+two-minute job budget. Main publishes the full default-feature Rust API and
+book site in a separate job; Pages deployment requires that publication and
+aggregate validation to pass. A green pull-request book check does not prove
+full Rust API documentation freshness. Set `DOCS_FEATURE_FLAGS=--all-features`
+only on a host with the required SDKs.
 
 ## Registry: SQLite-canonical (since 2026-03-23)
 

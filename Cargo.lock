@@ -941,6 +941,13 @@ dependencies = [
 ]
 
 [[package]]
+name = "book_docs"
+version = "0.1.0"
+dependencies = [
+ "toml 1.1.2+spec-1.1.0",
+]
+
+[[package]]
 name = "boxcar"
 version = "0.2.14"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -4933,6 +4940,7 @@ dependencies = [
  "arrow-array",
  "arrow-ipc",
  "arrow-schema",
+ "book_docs",
  "cd_kernel",
  "chrono",
  "clap",
