@@ -148,6 +148,7 @@ jobs:
       dependencies: ${{ steps.paths.outputs.dependencies }}
       warp: ${{ steps.paths.outputs.warp }}
       casimir_audit: ${{ steps.paths.outputs.casimir_audit }}
+      certificates: ${{ steps.paths.outputs.certificates }}
       run_rust: ${{ steps.route.outputs.run_rust }}
       run_governance: ${{ steps.route.outputs.run_governance }}
       rust_scope: ${{ steps.route.outputs.rust_scope }}
@@ -227,16 +228,17 @@ jobs:
           set -euo pipefail
           classify_paths() {
             if [ "$FULL" = true ]; then
-              printf 'docs=true\ndependencies=true\nwarp=true\ncasimir_audit=true\n' >> "$GITHUB_OUTPUT"
+              printf 'docs=true\ndependencies=true\nwarp=true\ncasimir_audit=true\ncertificates=true\n' >> "$GITHUB_OUTPUT"
               return
             fi
             git diff --no-renames --name-only "$DIFF_BASE" HEAD > reports/validation/changed-paths.txt
-            for lane in docs dependencies warp casimir_audit; do
+            for lane in docs dependencies warp casimir_audit certificates; do
               case "$lane" in
                 docs) pattern='^docs/book/|^crates/book_docs/|^registry/book_docs\.toml$|^Cargo\.(toml|lock)$|^rust-toolchain\.toml$|^Makefile$|^mk/|^\.cargo/|^\.github/workflows/(ci|docs-publish)\.yml$' ;;
                 dependencies) pattern='(^|/)Cargo\.(toml|lock)$|(^|/)deny\.toml$|^rust-toolchain\.toml$|^\.github/workflows/ci\.yml$' ;;
                 warp) pattern='^data/h5/|^crates/gororoba_cli_warp/|^crates/data_artifacts_core/|^\.github/workflows/ci\.yml$' ;;
                 casimir_audit) pattern='^crates/(gororoba_cli_physics|gororoba_cli_provenance|materials_core|materials_data|provenance_store|quantum_core|stats_core)/|^data/output/audit/casimir-optics-discrimination/|^plans/casimir_optics_discrimination_frontier\.toml$|^Cargo\.(toml|lock)$|^rust-toolchain\.toml$|^Makefile$|^\.cargo/config\.toml$|^\.gitattributes$|^\.github/workflows/ci\.yml$' ;;
+                certificates) pattern='^crates/navier_stokes_verify/|^Cargo\.(toml|lock)$|^rust-toolchain\.toml$|^\.cargo/config\.toml$|^\.github/workflows/(ci|navier-stokes-certificates)\.yml$' ;;
               esac
               if grep -Eq "$pattern" reports/validation/changed-paths.txt; then
                 echo "$lane=true" >> "$GITHUB_OUTPUT"
@@ -246,7 +248,7 @@ jobs:
             done
           }
           if ! classify_paths; then
-            printf 'docs=true\ndependencies=true\nwarp=true\ncasimir_audit=true\n' >> "$GITHUB_OUTPUT"
+            printf 'docs=true\ndependencies=true\nwarp=true\ncasimir_audit=true\ncertificates=true\n' >> "$GITHUB_OUTPUT"
             echo "Path classification failed; all independent path-routed leaves remain scheduled." >&2
             exit 1
           fi
@@ -1097,8 +1099,13 @@ jobs:
     with:
       run_workspace_survey: true
 
+  certificates:
+    needs: validation-core
+    if: always() && needs.validation-core.outputs.certificates == 'true'
+    uses: ./.github/workflows/navier-stokes-certificates.yml
+
   validation:
-    needs: [validation-policy, validation-core, validation-governance, validation-casimir-audit, rust-validation, scientific-replay, benchmark, proofs, paper, unsafe-survey, docs-book-check]
+    needs: [validation-policy, validation-core, validation-governance, validation-casimir-audit, rust-validation, scientific-replay, benchmark, proofs, paper, unsafe-survey, docs-book-check, certificates]
     if: always()
     runs-on: ubuntu-24.04
     timeout-minutes: 5
@@ -1110,6 +1117,7 @@ jobs:
           GOVERNANCE_RESULT: ${{ needs.validation-governance.result }}
           CASIMIR_AUDIT_RESULT: ${{ needs.validation-casimir-audit.result }}
           DOCS_RESULT: ${{ needs.docs-book-check.result }}
+          CERTIFICATES_RESULT: ${{ needs.certificates.result }}
           RUST_RESULT: ${{ needs.rust-validation.result }}
           SCIENTIFIC_REPLAY_RESULT: ${{ needs.scientific-replay.result }}
           BENCHMARK_SELECTED: ${{ needs.validation-policy.outputs.benchmark }}
@@ -1124,6 +1132,7 @@ jobs:
           RUN_GOVERNANCE: ${{ needs.validation-core.outputs.run_rust == 'true' || needs.validation-core.outputs.run_governance == 'true' }}
           RUN_CASIMIR_AUDIT: ${{ needs.validation-core.outputs.casimir_audit }}
           RUN_DOCS: ${{ needs.validation-core.outputs.docs }}
+          RUN_CERTIFICATES: ${{ needs.validation-core.outputs.certificates }}
         run: |
           set -euo pipefail
           failure_count=0
@@ -1134,7 +1143,7 @@ jobs:
               failure_count=$((failure_count + 1))
             fi
           done
-          for lane in GOVERNANCE CASIMIR_AUDIT DOCS; do
+          for lane in GOVERNANCE CASIMIR_AUDIT DOCS CERTIFICATES; do
             selected_variable="RUN_${lane}"
             result_variable="${lane}_RESULT"
             selected="${!selected_variable}"

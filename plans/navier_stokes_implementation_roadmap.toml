@@ -3,9 +3,9 @@ title = "Navier-Stokes numerical reference and continuum verification roadmap"
 baseline_commit = "e036a72b87b9915847cde2ed1908f319cc67eeca"
 last_reviewed = "2026-09-07"
 owner = "open_gororoba"
-evidence_level = "simulation_and_numerical_convergence"
+evidence_level = "specified_data_global_certificate_under_documented_analytic_trust"
 first_research_phase_complete = false
-continuum_certificate_implemented = false
+continuum_certificate_implemented = true
 purpose = "Compute the original interaction, falsify structural claims, and verify selected continuum trajectories."
 long_range_objective = "Discover and prove cutoff-independent stretching or linearized-evolution bounds."
 execution_order = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M"]
@@ -90,8 +90,8 @@ limits = "Complete shell accounting is implemented for lbm_core's scalar 2D powe
 [[milestones]]
 id = "D"
 title = "Bound reconstructed residuals and every error source"
-status = "partial_pointwise_numerical_residual_only"
-paths = ["crates/spectral_core/src/navier_stokes.rs"]
+status = "implemented_for_complete_rational_polynomial_reconstructions"
+paths = ["crates/spectral_core/src/navier_stokes.rs", "crates/navier_stokes_verify/src/residual.rs", "crates/navier_stokes_verify/src/interval.rs", "crates/navier_stokes_verify/src/tail_bounds.rs"]
 requirements = [
   "Create a separate navier_stokes_verify component with certificate, interval, residual, majorant, beltrami, tail_bounds and report modules.",
   "Represent temporal reconstruction with a computable derivative and continuity across time slabs.",
@@ -99,12 +99,13 @@ requirements = [
   "Include all quadratic output modes through 2K, time reconstruction error, unresolved input tails, truncation, aliasing, quantization, conversions and arithmetic accumulation.",
   "Use directed rounding or another proved enclosure scheme and detect overflow, invalid operations and unsupported arithmetic modes."
 ]
-limits = "ResidualEvaluator includes the full finite-polynomial nonlinear support at one supplied time. No between-time or arithmetic enclosure is implemented."
+limits = "The separate verifier supports homogeneous H3/H4, at most cubic exact rational temporal polynomials, 64 input modes per coefficient and coordinates through 16. It includes every quadratic residual mode through 2K and requires exact slab continuity. Unknown input/reference tails return INCONCLUSIVE. Recorded coefficients define exact data; unrecorded solver or measurement accuracy is not assumed. General certified tail bounds and a fast-solver reconstruction adapter remain open."
 
 [[milestones]]
 id = "E"
 title = "Integrate the rigorous Sobolev majorant"
-status = "not_implemented"
+status = "implemented_for_homogeneous_h3"
+paths = ["crates/navier_stokes_verify/src/majorant.rs", "crates/navier_stokes_verify/src/beltrami.rs"]
 requirements = [
   "Prove or import cutoff-independent K_s and G_s for the exact declared norm.",
   "Enclose a nonnegative R satisfying R' >= -nu R + (G_s D_s + K_s D_(s+1)) R + G_s R^2 + epsilon_s and R(0)>=delta_s.",
@@ -112,11 +113,14 @@ requirements = [
   "Handle vanishing error with an upper Dini derivative; use the torus zero-mean Poincare eigenvalue lambda1=1 in the viscous term.",
   "Return CERTIFIED, INCONCLUSIVE, INVALID_INPUT or IMPLEMENTATION_FAILURE; never interpret failure as singularity."
 ]
+implemented_method = "Derive cutoff-independent K3=64 and G3=96 directly for normalized-volume H3 using lattice shell sums, Young and Cauchy-Schwarz. Check a continuous piecewise-affine supersolution by exact convex quadratic endpoint inequalities. Quantize only slopes outward; preserve error endpoints exactly across segments and slabs."
+limits = "The bounded subdivision search can return INCONCLUSIVE despite an existing supersolution. Analytic local existence, continuation, comparison and constant derivations remain in the explicit trust boundary; no Rocq correspondence is claimed."
 
 [[milestones]]
 id = "F"
 title = "Certify a nontrivial Beltrami perturbation neighborhood"
-status = "not_implemented"
+status = "implemented_with_documented_analytic_trust_and_same_implementation_replay"
+paths = ["crates/navier_stokes_verify/src/beltrami.rs", "crates/navier_stokes_verify/src/certificate.rs", "crates/navier_stokes_verify/fixtures/beltrami_neighborhood.json"]
 requirements = [
   "Set M=||v0||_s, c0=(G_s+K_s)M, D_s=D_(s+1)=M exp(-nu t), epsilon_s=0 for exact unit-wave Beltrami data.",
   "Certify delta_s < c0/[G_s expm1(c0/nu)] using enclosed arithmetic and the exact M=0 limit nu/G_s.",
@@ -125,6 +129,8 @@ requirements = [
 ]
 analytic_derivation = "Let A(t)=exp[-nu t+(c0/nu)(1-exp(-nu t))] and Q(t)=[exp((c0/nu)(1-exp(-nu t)))-1]/c0. Then R(t)=delta_s A(t)/(1-G_s delta_s Q(t)); positivity for all t follows from the strict radius. For c0=0 use Q(t)=(1-exp(-nu t))/nu."
 arithmetic_requirement = "Use certified exp/expm1 or log-domain enclosures. A floating underflow to zero does not establish the M=0 case."
+fixture = "nu=1; ABC amplitudes A=B=C=1/8; add exact z-component coefficients 2^-100 at +/- (2,1,0). The reference H3 norm is sqrt(3)/8, above the zero-reference small-data threshold 1/96. The complete perturbation H3 norm is sqrt(250)*2^-100 and lies strictly inside the positive enclosed radius."
+reproduction_limit = "The CLI recomputes the complete certificate in a separate process using the same source-identified implementation. This passes deterministic replay, not the independent-implementation acceptance gate."
 
 [[milestones]]
 id = "G"
@@ -143,11 +149,13 @@ id = "H"
 title = "Certify a genuinely nonlinear finite-time trajectory"
 status = "not_implemented"
 requirements = ["Run after the Beltrami certificate succeeds.", "Enclose all trajectory norms, residuals, initial error, tails and arithmetic on every time slab.", "When inconclusive, refine resolution and timestep until certificate quantities converge; visual agreement is insufficient."]
+partial_progress = "Verifier tests cover a complete frozen reference with nonzero nonlinear residual and an all-mode finite-time bound. This is not an evolved fast-solver trajectory or completion of H. The Rocq milestone and solver-to-reconstruction pipeline remain open."
 
 [[milestones]]
 id = "I"
 title = "Concatenate a certified endpoint with global small-data continuation"
 status = "not_implemented"
+partial_progress = "The endpoint test ||v(T)||3+R(T)<=nu/96 and concatenation are implemented and regression-tested with shear data. Reaching that regime from the genuinely nonlinear trajectory required by H remains open. Equality gives a bounded comparison without an exponential-decay assertion."
 requirements = ["Bound ||u(T)||_s <= ||v(T)||_s+R(T) at a covered endpoint.", "Compare against a proved threshold, such as nu/G_s under the same norm and hypotheses.", "Concatenate certificates and report global scope only for the explicitly covered initial datum or neighborhood."]
 
 [[milestones]]
@@ -175,7 +183,9 @@ status = "not_implemented"
 requirements = ["Seek V <= (1-eta) nu ||grad omega||_2^2 + a(t)||omega||_2^2 with eta>0 and a in L1(0,T).", "Test strain-vorticity alignment and depletion across data, resolution, Reynolds number, time and independent solvers.", "Use observations only to generate conjectures.", "Prove estimates for the original operator, all modes, cutoff-independent constants and exceptional configurations.", "Avoid assuming any condition equivalent to the desired regularity conclusion."]
 
 [certificate_contract]
-implemented = false
+implemented = true
+implementation = "crates/navier_stokes_verify/src/certificate.rs: versioned deny_unknown_fields serde schema, complete exact rational inputs and projected datum, all slab bounds, source/lockfile digest, request digest, evidence level, scope and error accounting."
+scope_limit = "Version 1 supports complete rational polynomials only. Source and lockfile hashes identify the verifier independently of optional caller-declared solver/verifier Git context. CI records the checked revision and compiler. Formal verification and an independent implementation remain explicit unmet acceptance gates."
 required_fields = ["schema_version", "status", "evidence_level", "equation_identity", "viscosity_enclosure", "domain", "fourier_normalization", "sobolev_convention", "sobolev_order", "initial_data_identity", "initial_data_tail_enclosure", "projection_and_conversion_error", "cutoffs", "reconstruction", "time_slabs", "norm_bounds", "residual_bounds", "aliasing_and_discarded_terms", "arithmetic_model", "constant_sources", "majorant_enclosure", "comparison_theorem", "certificate_scope", "solver_commit", "verifier_commit", "input_hashes", "independent_reproduction"]
 fail_closed = "Do not issue CERTIFIED when required data, constants, tails, reconstruction bounds, arithmetic assumptions or theorem scope are missing."
 
@@ -185,12 +195,19 @@ general_regularity_gate = "Keep the first research phase open until every accept
 
 [reproduction]
 toolchain = "Rust 1.97.0, edition 2024; Cargo.lock retained."
+verifier_commands = ["cargo test --locked -p navier_stokes_verify", "cargo clippy --locked -p navier_stokes_verify --all-targets -- -D warnings", "cargo run --quiet --locked -p navier_stokes_verify --example verify -- verify crates/navier_stokes_verify/fixtures/beltrami_neighborhood.json > certificate.json 2> certificate-report.txt", "cargo run --quiet --locked -p navier_stokes_verify --example verify -- replay certificate.json"]
+verifier_ci = ".github/workflows/navier-stokes-certificates.yml tests and lints the small independent crate, certifies the Beltrami fixture, replays in a second process and uploads the source-identified certificate and compiler record. Replay is not an independent checking algorithm."
 commands = ["cargo test --locked -p lbm_core --profile validation", "cargo test --locked -p spectral_core --profile validation --lib", "cargo test --locked -p lbm_3d --profile validation --lib units::tests", "cargo test --locked -p lbm_3d --profile validation --test validation_taylor_green", "cargo clippy --locked -p lbm_core --all-targets --profile validation -- -D warnings", "cargo clippy --locked -p spectral_core --lib --tests --profile validation -- -D warnings", "cargo clippy --locked -p lbm_3d --lib --test validation_taylor_green --profile validation -- -D warnings"]
 ci = "The existing validate-ci-scoped-rust lane runs changed owners and reverse dependencies, including integration tests. Full hosted validation remains a separate result."
 environment = "Use native BLAS/LAPACK/OpenBLAS development libraries for spectral_core/lbm_3d. Set an absolute CARGO_TARGET_DIR. On hosts without the optional wrappers, use RUSTC_WRAPPER='', CARGO_ENCODED_RUSTFLAGS='' and CARGO_TARGET_X86_64_UNKNOWN_LINUX_GNU_LINKER=cc without editing repository configuration."
 api_migration = "lbm_core and spectral_core advance to 0.2.0 for corrected transfer signatures, all-receiver extraction and renamed proxy fields; update the pinned gororoba_engine dependency."
 
 [validation_record]
+verifier_tests_passed = 32
+verifier_scoped_clippy = "Passed with -D warnings for all navier_stokes_verify targets."
+verifier_replay = "The Beltrami fixture returned CERTIFIED and reproduced exactly in a separate process. Transcript tampering, unknown tails, strict-radius equality and temporal jumps are covered by regression tests."
+verifier_review = "Separate arithmetic and analytic reviews found no false-certification defect after public input validation was tightened. This is code and mathematical review, not a proof-assistant result."
+rocq_limit = "No Rocq/coqc/opam runtime is available in this environment. No new formal proof is claimed or marked checked."
 lbm_core_tests_passed = 56
 spectral_core_library_tests_passed = 137
 lbm_3d_units_tests_passed = 7
