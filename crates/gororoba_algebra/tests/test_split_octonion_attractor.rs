@@ -114,9 +114,8 @@ fn test_split_octonion_attractor_regression_dim_128_256_guarded() {
         return;
     }
 
-    // The shared repo worker budget is logical_threads / 2, which can be
-    // materially slower than a fully saturated local desktop run. Keep the
-    // default regression budget wide enough for that standardized gate.
+    // The hosted regression runs across every CPU visible to the CI process.
+    // The wall-time bound remains wide enough for variation among hosted CPUs.
     let per_dim_budget_s = env_f64("CD_ATTRACTOR_PER_DIM_BUDGET_S", 60.0);
     let total_budget_s = env_f64("CD_ATTRACTOR_TOTAL_BUDGET_S", 90.0);
     let max_diff_128 = env_f64("CD_ATTRACTOR_MAX_DIFF_128", 0.02);

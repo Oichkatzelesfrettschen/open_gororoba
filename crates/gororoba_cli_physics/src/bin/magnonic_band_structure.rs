@@ -512,7 +512,10 @@ fn run_defect(radius: usize, json: bool) {
         }
         if modes.len() >= 2 {
             let splitting = (modes[1] - modes[0]).abs();
-            println!("\nFirst candidate energy spacing: {:.4} model GHz", splitting);
+            println!(
+                "\nFirst candidate energy spacing: {:.4} model GHz",
+                splitting
+            );
         }
     }
 }

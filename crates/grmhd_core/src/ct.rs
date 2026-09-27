@@ -493,8 +493,7 @@ mod tests {
         let th = std::f64::consts::FRAC_PI_2;
 
         // Compute sqrt(-g) the same way the grid does
-        let sigma: f64 = r * r; // at equator
-        let sqrt_neg_g_raw = sigma.sqrt() * th.sin().abs(); // = 10
+        let sqrt_neg_g_raw = metric.sqrt_neg_g(r, th);
         let sg = sqrt_neg_g_raw * r * std::f64::consts::PI * 2.0 * std::f64::consts::PI;
 
         println!("\n=== SINGLE CELL B-FIELD TRACE at r={} ===", r);

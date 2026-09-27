@@ -1,0 +1,16 @@
+[package]
+name = "book_docs"
+version = "0.1.0"
+edition = { workspace = true }
+license = "MIT"
+description = "Lightweight renderer for the canonical mdBook page registry"
+
+[[bin]]
+name = "book-docs-emit"
+path = "src/main.rs"
+
+[dependencies]
+toml = { workspace = true }
+
+[lints]
+workspace = true

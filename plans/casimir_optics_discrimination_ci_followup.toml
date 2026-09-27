@@ -1,0 +1,1302 @@
+[followup]
+id = "casimir-optics-discrimination-ci-review-closure"
+pr = 185
+diagnostic_head = "602804651073313b253e24a698f78b3e30ab7121"
+execution_policy = "GitHub Actions owns builds, tests, lint, formatting, and repository gates. Local work is limited to source inspection, hashes, and git diff --check."
+publication_policy = "Collect the complete diagnostic-head denominator before one consolidated CI repair. If review findings arrive after that push, let its generation terminate, consolidate the review repairs once, and publish one final closure generation without canceling or superseding an active run."
+completion_gate = "The replacement generation passes, every review thread has an evidence-backed disposition, PR 185 merges, canonical main fast-forwards to the merge, and the isolated worktree is removed after parity proof."
+
+[[task]]
+id = "calibrated-information-finite-output"
+status = "implemented_pending_ci"
+finding = "Finite discrimination inputs can produce non-finite squared information or calibration sensitivity."
+required_change = "Reject each non-finite result as NumericalFailure and retain overflow regressions."
+verification = "Hosted stats_core tests and Clippy pass."
+
+[[task]]
+id = "ci-canonical-worker-environment"
+status = "implemented_pending_ci"
+finding = "Main CI exports worker aliases but omits CARGO_BUILD_JOBS and RAYON_NUM_THREADS."
+required_change = "Export every alias and canonical variable with the unchanged available_parallelism count in each worker setup."
+verification = "Hosted validation-resource-contract and actionlint pass."
+
+[[task]]
+id = "ci-multiple-large-package-shards"
+status = "implemented_pending_ci"
+finding = "The Rust shard generator isolates only one explicit-binary-heavy package."
+required_change = "Accept repeated target-shard packages and partition physics, data, and algebra binaries exactly once."
+verification = "Hosted xtask shard tests prove deterministic complete non-overlapping coverage."
+
+[[task]]
+id = "ci-hydrated-scientific-replay"
+status = "implemented_pending_ci"
+finding = "Hydration-dependent lattice, NuFIT, and box-counting tests remain ignored in ordinary and scheduled validation."
+required_change = "Retrieve the declared archive by pinned identity, materialize only declared paths, and execute the ignored scientific tests in a fail-slow hosted lane."
+verification = "Hosted hydration verifies archive and member hashes, rejects missing materialization, and executes every declared replay test."
+
+[[task]]
+id = "diagnostic-generation-denominator"
+status = "complete"
+finding = "Repeated pushes canceled diagnostic generations before their complete failures were known."
+required_change = "Hold publication until all five workflows for the diagnostic head reach terminal states and their outcomes are classified."
+verification = "Runs 34743205007, 34743205012, 34743205033, 34743205038, and 34743205034 reached terminal state before the replacement push. Proofs, benchmarks, paper, and unsafe survey passed. CI run 34743205007 found one stale native-output-manifest.toml byte mismatch and one E0382 moved-value error duplicated by Clippy and light-5; all other Rust shards passed."
+
+[[task]]
+id = "diagnostic-native-manifest-byte-parity"
+status = "implemented_pending_ci"
+finding = "The retained native output manifest differed from hosted regeneration by one final blank line."
+required_change = "Retain the generator-produced two-newline file ending without changing scientific values."
+verification = "Hosted retained-audit freshness passes and local byte inspection reports final bytes 0a 0a."
+
+[[task]]
+id = "materials-state-validation-owned-graph"
+status = "implemented_pending_ci"
+finding = "A material-record test moved its graph into one mutation and then reused the moved value in a second mutation."
+required_change = "Clone the graph for the first independently mutated fixture."
+verification = "Hosted materials_core tests and workspace Clippy pass."
+
+[[task]]
+id = "review-extreme-column-scale-invariance"
+status = "implemented_pending_ci"
+finding = "Direct column norms can underflow or overflow for finite nuisance scales and erase an exact nuisance direction."
+required_change = "Normalize each column through a maximum-component factor and a bounded scaled norm without multiplying the factors."
+verification = "Hosted stats_core tests preserve exact one-coordinate fits at scales 1e-200 and 1e200."
+
+[[task]]
+id = "review-quantity-basis-single-authority"
+status = "implemented_pending_ci"
+finding = "Vector and tensor payload basis metadata can disagree with the quantity-level basis field."
+required_change = "Keep the payload basis authoritative; reject empty optional aliases and require any populated alias to agree exactly."
+verification = "Hosted materials_core tests accept the single payload authority and reject empty or contradictory aliases."
+
+[[task]]
+id = "review-specimen-substrate-acyclicity"
+status = "implemented_pending_ci"
+finding = "Existence checks alone admit self-referential and multi-specimen substrate cycles."
+required_change = "Walk each single-parent substrate chain and reject the first repeated specimen identity."
+verification = "Hosted materials_core tests reject one-node and two-node cycles."
+
+[[task]]
+id = "review-docs-fail-slow-independence"
+status = "implemented_pending_ci"
+finding = "The documentation job waits for aggregate validation success and therefore hides independently executable documentation failures."
+required_change = "Depend only on validation-core routing output; retain aggregate validation as a separate Pages deployment prerequisite."
+verification = "Hosted validation-resource-contract and actionlint pass, and docs-gate executes whenever routing selects documentation."
+
+[[task]]
+id = "ci-contract-leading-option-literals"
+status = "implemented_pending_ci"
+finding = "The collector contract passed patterns beginning with two hyphens to grep without an option terminator."
+required_change = "Terminate grep options before every literal workflow contract."
+verification = "Hosted validation-resource-contract accepts the scientific replay command literals."
+
+[[task]]
+id = "hydrator-archive-selection-count-semantics"
+status = "implemented_pending_ci"
+finding = "Bounded hydration overloaded the established verified_objects report field with the selected-object count."
+required_change = "Retain the complete archive-inventory count and report the selected hash/install denominator in a separate field."
+verification = "Hosted hydrator tests cover historical archive supersets and bounded one-of-two selection."
+
+[[task]]
+id = "target-shard-duplicate-mutation-isolation"
+status = "implemented_pending_ci"
+finding = "The duplicate target-package mutation also duplicated the routed package scope and exercised the wrong earlier rejection."
+required_change = "Deduplicate only the synthetic routed scope while retaining repeated target-package options."
+verification = "Hosted xtask tests reach and assert the dedicated duplicate target-package diagnostic."
+
+[[task]]
+id = "replacement-generation-denominator"
+status = "complete"
+finding = "CI run 34744700854 exercised the consolidated CI architecture and retained independent leaf outcomes through aggregate failure."
+required_change = "Classify every failed leaf before the final review-closure push."
+verification = "Scientific replay and all three companion workflows passed. Forty CI jobs passed. The three failed leaves reduce to the grep option boundary, the hydrator report-field regression, and the target-shard mutation fixture; each has one tracked repair above."
+
+[[task]]
+id = "review-bounded-distance-finite-result"
+status = "implemented_pending_ci"
+finding = "A finite residual vector can have an overflowing naive Euclidean norm, making bounded profile distance return infinity as a successful result."
+required_change = "Compute the residual norm through maximum-component scaling and reject a result outside the finite output domain."
+verification = "Hosted stats_core tests reject an overflowing two-component bounded-profile distance."
+
+[[task]]
+id = "review-covariance-symmetry-scaled-comparison"
+status = "implemented_pending_ci"
+finding = "Frobenius norms of large finite covariance entries can both overflow and admit an asymmetric covariance."
+required_change = "Scale covariance entries by their maximum magnitude before comparing the relative symmetry error."
+verification = "Hosted stats_core tests reject an asymmetric covariance with 1e200 entries."
+
+[[task]]
+id = "review-fisher-information-finite-result"
+status = "implemented_pending_ci"
+finding = "A noisy signal component can overflow the Fisher-information accumulator and collide with the intentional infinity result for a deterministic null direction."
+required_change = "Reject non-finite accumulation in positive-noise eigendirections while retaining intentional infinity only for deterministic signal components."
+verification = "Hosted stats_core tests reject overflow for covariance one and signal 1e200."
+
+[[task]]
+id = "review-retained-source-exact-denominator"
+status = "complete"
+finding = "The native audit accepted any nonempty subset of the twelve load-bearing retained sources."
+required_change = "Compile and compare the exact source-ID and repository-path denominator before hashing source bytes."
+verification = "Hosted native-audit tests reject replacement of any expected source identity."
+
+[[task]]
+id = "review-retained-source-symlink-boundary"
+status = "complete"
+finding = "Lexically safe retained-source paths could traverse symbolic links and hash bytes outside the repository retention boundary."
+required_change = "Inspect every repository-relative path component with symlink metadata and reject symbolic links before reading bytes."
+verification = "Hosted Unix native-audit tests reject a retained path whose final component is a symbolic link."
+
+[[task]]
+id = "review-frontier-verifier-ci-execution"
+status = "complete"
+finding = "The finite-frontier verifier existed but the routed hosted Casimir audit leaf did not execute it."
+required_change = "Run verify-finite-frontier in the same routed fail-slow CI leaf as native output freshness and pin the command in the validation-resource contract."
+verification = "Hosted validation-policy and routed Casimir audit jobs execute the exact frontier partition verifier."
+
+[[task]]
+id = "final-generation-denominator"
+status = "complete"
+finding = "CI run 34746905311 completed all 47 jobs without cancellation: 43 passed, two independent leaves failed, aggregate validation failed by construction, and docs deployment skipped by admission policy."
+required_change = "Repair the policy contract's source boundary and both stats_core failures in one final follow-up."
+verification = "The four companion workflows passed. Scientific replay, docs-gate, validation-core, and 39 of 40 Rust matrix jobs passed. The independent failures were validation-policy and light-2."
+
+[[task]]
+id = "frontier-contract-source-boundary"
+status = "complete"
+finding = "The policy verifier searched ci.yml for the finite-frontier command even though the command belongs to the routed Make target."
+required_change = "Search workflow contracts in ci.yml and inspect the bounded frontier-check Make recipe separately for its verifier and canonical-plan arguments."
+verification = "Hosted validation-policy passes both source-specific contract checks."
+
+[[task]]
+id = "fixed-nuisance-profile-distance"
+status = "implemented_pending_ci"
+finding = "Clarabel rejected an exact zero-width nuisance box before the overflow-safe distance calculation could classify the finite residual."
+required_change = "Evaluate an all-fixed nuisance box directly at its unique parameter vector and classify every coordinate as active at both bounds."
+verification = "Hosted stats_core tests must return the finite sqrt(2)*1e308 distance for a fixed zero nuisance parameter and reject the overflowing sqrt(2)*1.3e308 distance."
+
+[[task]]
+id = "calibration-fixture-mechanical-edit-repair"
+status = "complete"
+finding = "A broad replacement accidentally changed the established independent-calibration fixture from a unit nuisance column to a 1e308 column."
+required_change = "Restore the original unit nuisance fixture while retaining dedicated extreme-scale tests in their own cases."
+verification = "Hosted stats_core independent_calibration_increases_information passes unchanged semantics."
+
+[[task]]
+id = "account-hosted-runner-admission-rca"
+status = "complete"
+finding = "At exact head a0fcf3a0, four workflows remained queued with zero jobs and the byte-identical proofs workflow ended startup_failure with zero jobs. An exhaustive scan of 548 active owned repositories found zero live hosted jobs outside these records. The public repository uses free standard runners, the Pro account permits 40 concurrent standard jobs, repository Actions are enabled, and September billing reports zero net Actions charges."
+required_change = "Treat the five-run split as pre-job scheduler admission failure rather than source validation, and replay through one repository-controlled event root."
+verification = "The next exact-head ci run creates jobs and reaches a terminal denominator; any repeated zero-job startup failure is escalated with run, check-suite, account-scan, and billing evidence."
+
+[[task]]
+id = "single-ci-event-admission-root"
+status = "complete"
+finding = "One broad pull request independently created benchmark, ci, paper, proofs, and unsafe-survey workflow runs. The reachable job frontier can exceed the account's 40-job concurrency even though each runner correctly uses all process-visible CPUs."
+required_change = "Make ci.yml the sole pull-request and main-push event root, route component paths once, and invoke benchmark, proof, paper, and unsafe-survey evidence through reusable workflows. Preserve manual component dispatch and the monthly unsafe schedule."
+verification = "Hosted actionlint and validation-resource-contract pass; one exact-head pull-request workflow contains each selected component job and the aggregate verdict accounts for selected and skipped components."
+
+[[task]]
+id = "retired-local-validation-target-removal"
+status = "complete"
+finding = "Retired local Make targets remained callable refusal stubs and preserved obsolete orchestration names in the active Make graph."
+required_change = "Remove every local, pre-push, and local-scoped compatibility target and retain a CI policy check that rejects their reintroduction."
+verification = "Hosted validation-resource-contract proves every retired name is unresolved, hook executors remain absent, and CI-only targets reject a non-GitHub execution boundary."
+
+[[task]]
+id = "local-command-worker-limit-removal"
+status = "complete"
+finding = "The shared Cargo environment injected one worker into local mutation and generator commands even though repository validation was closed locally."
+required_change = "Leave Cargo, Rayon, and Rust test worker variables unset outside an admitted GitHub job; preserve exact process-visible CPU propagation inside hosted jobs."
+verification = "Hosted validation-resource-contract observes workers=automatic outside GitHub Actions and the exact supplied worker count inside the trusted boundary."
+
+[[task]]
+id = "scheduler-index-residue"
+status = "complete"
+finding = "Three zero-job runs from May and one August self-hosted run with a completed skipped job remain listed as queued or in_progress. GitHub's cancel endpoint reports each run as already completed."
+required_change = "Exclude the internally terminal records from concurrency accounting and delete their empty or skipped workflow-run records through the explicit run-deletion endpoint."
+verification = "DELETE accepted runs 25907145181, 25907085641, 26596485186, and 31339431698; subsequent GET requests returned HTTP 404 for all four IDs."
+
+[[task]]
+id = "single-root-replacement-generation"
+status = "complete"
+finding = "The a0fcf3a0 generation cannot validate source because GitHub admitted zero jobs."
+required_change = "Publish one consolidated CI admission repair after static source review and do not supersede its generation."
+verification = "Run 34769957057 at exact head 67af5dfa completed 52 jobs without cancellation: 49 passed, one Rust leaf exposed the incorrect overflow fixture, the aggregate failed by construction, and one deployment job skipped by admission policy."
+
+[[task]]
+id = "hydrator-unselected-object-digest"
+status = "implemented_pending_ci"
+finding = "Bounded hydration checked an unselected archive member's byte length without checking its declared object digest."
+required_change = "Hash every archive member while staging only selected objects, and reject a corrupt unselected member before installation."
+verification = "Hosted hydrator tests corrupt an equal-length unselected member and require clean failure."
+
+[[task]]
+id = "finite-frontier-closed-open-dependency"
+status = "implemented_pending_ci"
+finding = "The finite-frontier verifier accepted a closed row whose ordering dependency remained open."
+required_change = "Reject each closed-to-open dependency edge after compiling the complete row map."
+verification = "Hosted finite-frontier tests mutate one closed row to depend on an expected-open row and require the exact diagnostic."
+
+[[task]]
+id = "zero-temperature-observable-selective-integration"
+status = "implemented_pending_ci"
+finding = "Each zero-temperature pressure or energy request evaluated both independent quadrature integrands and discarded one result."
+required_change = "Select the pressure or energy integrand before quadrature while retaining one shared transformed-domain implementation."
+verification = "Hosted quantum_core and routed Casimir audit tests preserve ideal normalization, multilayer order contrast, and the independent energy-derivative identity."
+
+[[task]]
+id = "casimir-toolchain-identity-route"
+status = "implemented_pending_ci"
+finding = "The retained Casimir source-model identity includes rust-toolchain.toml, but the path router omitted that file from the freshness lane."
+required_change = "Route a rust-toolchain.toml change through the Casimir audit freshness check."
+verification = "Hosted validation-policy accepts the route and path classification selects the audit for toolchain-only changes."
+
+[[task]]
+id = "bounded-profile-wide-interval-tolerance"
+status = "implemented_pending_ci"
+finding = "Subtracting opposite-sign finite nuisance bounds could overflow and make feasibility and active-bound tolerances infinite."
+required_change = "Scale tolerances from the maximum endpoint magnitude without forming the interval width."
+verification = "Hosted stats_core tests classify zero as inactive inside [-1e308, 1e308]."
+
+[[task]]
+id = "named-example-policy-dollar-depth"
+status = "implemented_pending_ci"
+finding = "Exact-head run 34781891339 proved the generated example parser correct but exposed a policy-checker mismatch: GNU Make reduced the checker literal to one dollar while sed retained the parser source's two-dollar spelling."
+required_change = "Use four dollars in the Make recipe's single-quoted expected string so the executing shell compares the literal two-dollar parser source."
+verification = "The next exact-head validation-policy job passes validation-resource-contract while the Rust matrix emits and executes the named example row."
+
+[[task]]
+id = "aggregate-docs-verdict"
+status = "implemented_pending_ci"
+finding = "The independent docs job could fail after the aggregate validation job had already reported success."
+required_change = "Make the aggregate verdict depend on docs-gate and require success when documentation routing selects the job or skipped when it does not."
+verification = "Hosted actionlint and validation-resource-contract pass, and the aggregate job reports RUN_DOCS and DOCS_RESULT."
+
+[[task]]
+id = "calibration-sensitivity-direct-augmented-solve"
+status = "implemented_pending_ci"
+finding = "Explicit normal equations underflow for proportionally tiny finite target and nuisance entries and erase a nonzero calibration sensitivity."
+required_change = "Solve the whitened augmented nuisance and calibration least-squares system directly before squaring the requested fitted coordinate."
+verification = "Hosted stats_core tests recover unit sensitivity from a target and nuisance column scaled by 1e-200."
+
+[[task]]
+id = "gold-candidate-symlink-boundary"
+status = "implemented_pending_ci"
+finding = "Canonicalization allowed a declared gold candidate source path or parent component to traverse an in-repository symbolic link."
+required_change = "Inspect every repository-relative path component with symlink_metadata before resolving and hashing the retained source."
+verification = "Hosted materials_core tests reject symbolic links at both an intermediate directory and the final source component."
+
+[[task]]
+id = "source-observation-receipt-reconciliation"
+status = "implemented_pending_ci"
+finding = "The routed Casimir audit verified the retrieval manifest and retained bodies but did not parse or reconcile the twelve first-observation receipts."
+required_change = "Require the exact receipt filename set and reconcile each typed receipt's source identity, URL, observation date, manifest digest and size, and body path, digest, and size."
+verification = "Hosted Casimir audit tests reject source-key, observation-date, request-digest, and body-digest mutations."
+
+[[task]]
+id = "target-inventory-slice-interface"
+status = "implemented_pending_ci"
+finding = "Exact-head run 34781891339 found that target normalization accepted a mutable Vec where the implementation needs only mutable slice operations."
+required_change = "Accept &mut [ShardTarget] so the inventory helper exposes the narrow collection contract required by Clippy."
+verification = "Hosted workspace Clippy passes with warnings denied."
+
+[[task]]
+id = "zero-test-library-shard-admission"
+status = "implemented_pending_ci"
+finding = "Exact-head run 34781891339 compiled the gororoba_cli_algebra library successfully but nextest rejected its intentionally empty library test harness."
+required_change = "Keep the explicit library compilation row and admit a zero-test result only for exact --lib shards."
+verification = "Hosted gororoba_cli_algebra-lib passes while package test, example, and binary harnesses remain separately selected."
+
+[[task]]
+id = "covariance-negative-diagonal-dynamic-range"
+status = "implemented_pending_ci"
+finding = "A global covariance-magnitude tolerance could hide a negative variance when an unrelated diagonal entry was much larger."
+required_change = "Reject every negative covariance diagonal entry before applying scale-aware symmetry and eigensystem tolerances."
+verification = "Hosted materials_core tests reject diag(1e200, -1) as non-positive-semidefinite."
+
+[[task]]
+id = "exact-head-4892d755-denominator"
+status = "complete"
+finding = "Run 34772236288 admitted 52 jobs and reached a complete denominator: 49 passed, validation-core failed on one stale native-output-manifest.toml source identity, aggregate validation failed by construction, and docs deployment skipped. Every Rust shard, all three scientific replays, documentation, benchmarks, proofs, paper, and unsafe survey passed."
+required_change = "Let every job reach a terminal state, classify every independent failure, and preserve the complete denominator before publication."
+verification = "Run 34772236288 completed at exact head 4892d755 with 49 success, two failure, one skipped, and zero canceled jobs."
+
+[[task]]
+id = "validation-routing-expensive-leaf-overlap"
+status = "implemented_pending_ci"
+finding = "The routing job serialized 11m48s of governance and 6m31s of Casimir audit work after routing, delaying Rust fan-out and hiding independent outcomes behind one 22-minute job."
+required_change = "Keep validation-core as the routing authority and run governance plus integrity and the Casimir audit as separately admitted jobs with exact per-runner worker detection."
+verification = "Hosted actionlint and resource contracts pass; Rust shards start after routing; selected governance and Casimir jobs overlap and remain explicit aggregate prerequisites."
+
+[[task]]
+id = "scientific-replay-hydration-fanout"
+status = "implemented_pending_ci"
+finding = "Hydration, lattice replay, NuFIT replay, and box-counting replay ran serially in one 39-minute job."
+required_change = "Materialize the bounded hash-verified payload once, upload the selected inputs, run selected replay leaves through a fail-slow matrix, and aggregate their terminal result."
+verification = "Hosted CI runs every selected leaf independently, retains one report per leaf, and distinguishes not_selected, blocked_input, executed_fail, and executed_pass."
+
+[[task]]
+id = "box-counting-replay-narrow-owner"
+status = "implemented_pending_ci"
+finding = "The retained 16-cubed, 24-step box-counting replay executed in 0.05 seconds, but its gororoba_cli_physics integration target compiled 383 crates for 29m31s."
+required_change = "Move the replay to lbm_3d while preserving the retained input hashes, CPU MRT path, population stability checks, adaptive geometry assertions, and optional evolved-field receipt."
+verification = "Hosted lbm_3d replay passes with the expected scalar and masks, and its build avoids the gororoba_cli_physics umbrella target."
+
+[[task]]
+id = "scientific-replay-lane-cache-retention"
+status = "implemented_pending_ci"
+finding = "The scientific replay restored exact-head and fallback caches but never saved a scientific replay cache, forcing repeated cold compilation."
+required_change = "Save distinct hydration and replay-lane caches with stable Cargo.lock and toolchain fallback prefixes plus run-unique exact-head primary keys."
+verification = "A subsequent hosted head reports cache restoration for each previously built selected lane without concurrent cache-key collisions."
+
+[[task]]
+id = "native-manifest-current-source-identity"
+status = "implemented_pending_ci"
+finding = "Run 34772236288 generated a new stats_core source identity, and the pending selective Lifshitz integration repair changes a second retained source byte identity."
+required_change = "Recompute the exact ordered path-NUL-bytes-NUL source identity and both changed source hashes without altering retained numerical output claims."
+verification = "Hosted Casimir audit freshness reproduces the source manifest and all retained numerical outputs byte-for-byte."
+
+[[task]]
+id = "scientific-replay-selected-input-boundary"
+status = "implemented_pending_ci"
+finding = "The first fan-out draft selected replay jobs independently but hydrated and uploaded all eight inputs, so an unrelated unavailable object could block a selected leaf."
+required_change = "Build hydration and staging path arrays from the selected replay matrix and upload only their path-preserving union."
+verification = "Hosted routing mutations select each replay alone and its hydration receipt contains only that replay's declared inputs."
+
+[[task]]
+id = "ci-run-unique-leaf-cache-keys"
+status = "implemented_pending_ci"
+finding = "A cache key ending at the commit SHA collides across pull-request, push, dispatch, and rerun executions of the same source."
+required_change = "Append run ID and run attempt to each new immutable primary key while retaining commit- and lock-scoped restore prefixes."
+verification = "Hosted policy rejects every new leaf key that omits the run-unique suffix."
+
+[[task]]
+id = "casimir-route-policy-literal"
+status = "implemented_pending_ci"
+finding = "The first route policy draft passed two literal backslashes to fixed-string grep while the workflow regex contains one."
+required_change = "Match the exact one-backslash rust-toolchain path expression in the workflow source."
+verification = "Hosted validation-resource-contract accepts the Casimir toolchain route literal."
+
+[[task]]
+id = "exact-head-41325237-lockfile-precondition"
+status = "implemented_pending_ci"
+finding = "Run 34774800856 admitted 40 concurrent hosted jobs, but the lbm_3d replay relocation added repo_root and sha2 dev-dependencies without adding them to the lbm_3d Cargo.lock package dependency list. Scientific hydration and both benchmark architectures independently stopped at Cargo's --locked precondition before source validation."
+required_change = "Add the two existing workspace packages to the lbm_3d lockfile dependency list, then publish one replacement generation after the canceled run reaches terminal state."
+verification = "Run 34775470409 proved that the workspace's simultaneous sha2 0.10.9 and 0.11.0 packages require the disambiguated sha2 0.11.0 lock dependency. The next replacement generation must pass Cargo's locked dependency-graph check in scientific hydration, both benchmark architectures, and every selected Rust validation leaf."
+
+[[task]]
+id = "long-job-scientific-replay-compile-surface"
+status = "implemented_pending_ci"
+finding = "Run 34772236288 spent 29 minutes 33 seconds compiling 383 crates for the gororoba_cli_physics box-counting integration target and 0.05 seconds executing the retained replay. The runner exposed four CPUs and Cargo received all four."
+required_change = "Keep retained input and dynamics assertions in the narrow lbm_3d integration target, fan out the three replay leaves, and save one cache per replay lane."
+verification = "The replacement box-counting leaf compiles lbm_3d rather than gororoba_cli_physics and reports its setup, build, and test durations independently."
+
+[[task]]
+id = "long-job-documentation-critical-path"
+status = "implemented_pending_ci"
+finding = "Run 34772236288 spent 20 minutes 15 seconds in full-workspace rustdoc and 2 minutes 25 seconds building registry-emit in a second target/profile. The runner exposed four CPUs and CARGO_BUILD_JOBS remained four despite Cargo rejecting a stale inherited GNU make jobserver file descriptor."
+required_change = "Start docs-gate immediately after the four-minute routing authority instead of after governance and Casimir validation; preserve the full-workspace documentation and generated-book evidence as one independently visible leaf."
+verification = "The replacement docs-gate starts after validation-core routing, overlaps governance, Casimir, and Rust leaves, and reports the unchanged process-visible four-worker budget."
+
+[[task]]
+id = "rust-shard-cache-quota-thrash"
+status = "implemented_pending_ci"
+finding = "The repository cache API exposed 13 caches totaling 13.81 GB after one generation. Seven remaining ci-rust shard caches occupied 8.44 GB with duplicate target graphs, while the successfully saved Rocq cache had already been evicted and the next proof job rebuilt the complete toolchain."
+required_change = "Restore every Rust matrix leaf from the one routing cache for the run and stop writing one immutable target cache per shard. Retain caches only for independent owners whose build products have cross-run value."
+verification = "Hosted policy rejects ci-rust matrix cache keys, all Rust leaves restore the exact-run routing key, and the post-run cache inventory contains no new per-shard target caches."
+
+[[task]]
+id = "proof-opam-worker-propagation"
+status = "implemented_pending_ci"
+finding = "The proof workflow passed all four detected CPUs to Make but left opam's switch and package builds to an implicit default."
+required_change = "Export OPAMJOBS from the unchanged std::thread::available_parallelism result and pass it explicitly to both opam build commands."
+verification = "Hosted proof logs report the process-visible worker count and both cold opam commands receive exactly that count."
+
+[[task]]
+id = "exact-head-8c79abde-denominator"
+status = "complete"
+finding = "Run 34775591219 completed all 58 jobs: 54 passed, validation-casimir-audit and Rust light-2 failed independently, aggregate validation failed by construction, and docs deployment skipped. Every other Rust shard, all three scientific replay leaves, docs, proofs, paper, benchmarks, governance, and unsafe survey passed."
+required_change = "Repair the bounded-profile test's precision contract and refresh the four stale retained Casimir outputs in one final generation."
+verification = "The exact-head run reached terminal state with zero canceled jobs and a two-leaf independent failure denominator."
+
+[[task]]
+id = "bounded-profile-test-certificate-tolerance"
+status = "implemented_pending_ci"
+finding = "The tiny-column bounded-profile test required 1e-12 boundary-solution accuracy. Clarabel's 1e-10 objective-gap tolerance permits an interior-point boundary offset proportional to the square root of that gap; run 34777625713 confirmed that even the unsquared 1e-7 certificate threshold remained too strict for the returned primal value."
+required_change = "Require the residual and recovered 1e200 coefficient to remain within the square root of the public solver-certificate tolerance, which still proves that the 1e-200 nuisance column was retained rather than collapsed to zero."
+verification = "Hosted stats_core tests pass the tiny-column case and retain the extreme-column, overflow, feasibility, and exact-fixed-box regressions."
+
+[[task]]
+id = "failed-cache-retention-boundary"
+status = "implemented_pending_ci"
+finding = "Run 34775591219 restored the 1.72 GB documentation cache saved by canceled run 34774800856, and full rustdoc took 24 minutes 43 seconds instead of the prior complete-cache 20 minutes 15 seconds. Cache retention used always(), so canceled or failed jobs could publish partial build trees and displace complete caches."
+required_change = "Save governance, Casimir, hydration, replay, and documentation caches only after their job remains successful; continue uploading diagnostic reports on failure."
+verification = "Hosted policy pins success-only cache writes and the final cache inventory contains only successful owner caches."
+
+[[task]]
+id = "native-audit-output-refresh-after-robust-scaling"
+status = "implemented_pending_ci"
+finding = "Hosted Casimir regeneration in run 34775591219 produced three deterministic solver-output changes after robust nuisance-column scaling. Cargo.lock and the bounded-profile certificate test also changed the native source-model identity."
+required_change = "Retain the three hosted output files byte-for-byte, refresh all 24 ordered source-input hashes and the source-model identity, preserve the generated manifest's two-newline ending, and bind the path-repair receipt to the refreshed manifest hash."
+verification = "Hosted Casimir freshness, source identity, output hashes, byte counts, and path-repair verification all pass on one exact commit."
+
+[[task]]
+id = "material-assay-typed-missingness"
+status = "implemented_pending_ci"
+finding = "Optional purity and composition strings could not distinguish an unmeasured assay, an inapplicable assay, a withheld result, a below-detection result, and an unknown state."
+required_change = "Require every specimen to carry a typed assay status and validate reported records, withholding reasons, and detection-limit values and units."
+verification = "Hosted materials_core tests accept each explicit absence class and reject blank or invalid populated assay metadata."
+
+[[task]]
+id = "bounded-distance-nonzero-underflow"
+status = "implemented_pending_ci"
+finding = "The direct Euclidean norm underflowed a finite nonzero residual such as 1e-200 to zero and incorrectly reported exact nuisance imitation."
+required_change = "Preserve the direct finite norm for ordinary vectors and use component scaling when the direct norm overflows or underflows a nonzero vector."
+verification = "Hosted stats_core tests preserve the 1e-200 distance, reject overflow, and retain existing bounded-profile output parity."
+
+[[task]]
+id = "ci-schedule-and-routing-completeness"
+status = "implemented_pending_ci"
+finding = "Scheduled full validation disabled component evidence, algebra_analysis changes omitted the lattice replay, and a comparison-base failure could leave DIFF_BASE unset before fail-slow path classification."
+required_change = "Select all component workflows on schedule, route algebra_analysis through lattice replay, and establish conservative full-routing outputs before fallible comparison-base work."
+verification = "Hosted CI policy checks the schedule and route contracts; a path-routing failure still exposes initialized values and all selected leaves remain collectable."
+
+[[task]]
+id = "exact-head-9b6fc93e-denominator"
+status = "complete"
+finding = "Run 34777625713 reached a terminal 58-job denominator: 55 jobs passed, Rust light-2 and aggregate validation failed, and docs deployment skipped. The sole independent failure was the bounded-profile tiny-column boundary assertion."
+required_change = "Retain the successful denominator, repair the assertion from the solver's objective-gap certificate, and publish one consolidated replacement only after every pending review correction is ready."
+verification = "The run completed without cancellation; validation-casimir-audit passed, all three scientific replay leaves passed, and docs-gate passed after 29 minutes 49 seconds."
+
+[[task]]
+id = "large-cli-library-integration-target-isolation"
+status = "complete"
+finding = "The gororoba_cli_data --lib --tests row compiled 122 binary test harnesses before executing 249 tests and completed in 13 minutes 39 seconds in run 34775591219 and 10 minutes in run 34777625713. Cargo target selection, rather than a processor cap, created the oversized compilation surface."
+required_change = "Measure separate library, integration-test, example, and binary rows once to distinguish target compilation from test execution and compare the resulting wall time and runner consumption with the combined package row."
+verification = "Run 34781891339 executed the exact split denominator. The split retained coverage but increased the data-package wall-clock tail to 14 minutes 36 seconds and consumed about one hundred runner-minutes, so hosted-target-shard-runner-amplification supersedes the proposed permanent split."
+
+[[task]]
+id = "cd-papers-rustdoc-reexport-inlining"
+status = "complete"
+finding = "Run 34777625713 restored a successful documentation cache and spent 20 minutes 4 seconds in cd_papers. Adding #[doc(no_inline)] preserved the public re-exports but run 34779748262 then spent 28 minutes 2 seconds in the same rustdoc unit. Output duplication did not explain the hosted timing."
+required_change = "Remove the ineffective attributes and retain the failed hosted measurement as the falsifier for re-export inlining as a performance repair."
+verification = "Run 34779748262 was force-canceled after every other job terminated and cargo doc exceeded 33 minutes; the sealed log places the 28-minute critical interval in cd_papers."
+
+[[task]]
+id = "exact-head-022b5308-compile-and-policy-denominator"
+status = "complete"
+finding = "Run 34779748262 detected E0425 because xtask used BTreeSet without importing it. The policy lane also expanded $GITHUB_ENV inside a double-quoted expected literal, searched for the runner's temporary environment-file path in ci.yml, and therefore rejected the present DIFF_BASE initialization."
+required_change = "Import BTreeSet and replace the expansion-prone literal check with a structural check that conservative full=true initialization precedes fallible worker and comparison-base discovery."
+verification = "Run 34779748262 ended canceled after every non-docs job terminated. It exposed the policy quoting defect, the missing import through four independent build surfaces, and the ineffective 28-minute cd_papers rustdoc interval."
+
+[[task]]
+id = "cd-papers-reexport-facade-rustdoc-exclusion"
+status = "implemented_pending_ci"
+finding = "cd_papers owns no implementation API: its public module contains only item and crate re-exports, while the owning crates already receive canonical rustdoc. Hosted runs spent 20 to 28 minutes documenting this facade before releasing the remaining rustdoc queue."
+required_change = "Exclude cd_papers from workspace rustdoc while retaining its source guidance, compile/test coverage, and canonical documentation for every owning crate."
+verification = "Hosted docs-gate reports four workers, omits Documenting cd_papers, completes the full owning-crate rustdoc and mdBook freshness surfaces, and materially reduces wall time."
+
+[[task]]
+id = "hosted-target-shard-runner-amplification"
+status = "implemented_pending_ci"
+finding = "Run 34781891339 used about one hundred runner-minutes for gororoba_cli_data target rows, exceeded the account's forty-job concurrency frontier, and completed its last data row after 14 minutes 36 seconds; the prior combined package row completed in 9 minutes 58 seconds. Each isolated runner rebuilt an overlapping dependency graph, and any same-package integration-test row built all declared binaries for CARGO_BIN_EXE availability."
+required_change = "Stop target-sharding gororoba_cli_data and gororoba_cli_algebra, whose default-feature targets fit one fail-slow shared build. Retain gororoba_cli_physics target routing because its declared GPU, HDF5, NetCDF, and Zarr feature targets require explicit feature rows."
+verification = "The next exact-head Rust matrix contains no data or algebra target-specific rows, retains every required-feature physics target, stays below the hosted concurrency ceiling, and executes the routed package denominator with --no-fail-fast."
+
+[[task]]
+id = "docs-producer-shared-build-tree"
+status = "implemented_pending_ci"
+finding = "Run 34781891339 completed workspace rustdoc in 10 minutes 29 seconds, then spent another 9 minutes 25 seconds compiling registry-emit under a separate validation target and build directory. The successful docs job took 21 minutes 42 seconds even after cd_papers was excluded."
+required_change = "Run registry-emit with the documentation Cargo environment and default development profile so rustdoc and book-source generation share one target, build directory, dependency cache, and unchanged process-visible worker count."
+verification = "The next exact-head docs-gate generates identical checked-in book sources, retains all owning-crate rustdoc, reports four workers, and eliminates the second cold dependency compilation."
+
+[[task]]
+id = "scientific-replay-routing-failure-fallback"
+status = "implemented_pending_ci"
+finding = "Scientific replay path selection exited before writing outputs when an event comparison commit was unavailable, which suppressed otherwise runnable hydrated replay leaves."
+required_change = "Treat comparison-base lookup or diff failure as conservative selection of all three scientific replay lanes and continue through the normal bounded hydration contract."
+verification = "Hosted policy pins the fallback diagnostic and routing failure still emits lattice, NuFIT, and box-counting rows."
+
+[[task]]
+id = "covariance-coordinate-scaled-psd"
+status = "implemented_pending_ci"
+finding = "A global covariance eigenvalue tolerance admitted nonzero covariance on a zero-variance coordinate when another diagonal entry dominated the matrix scale."
+required_change = "Reject nonzero covariance on zero-variance coordinates, normalize all remaining coordinates to a correlation matrix without multiplying variances, and apply symmetry, correlation-bound, and eigenvalue checks in that dimensionless basis."
+verification = "Hosted materials_core tests reject [[1e200,1e190],[1e190,0]] and retain valid singular, asymmetric, indefinite, and dynamic-range cases."
+
+[[task]]
+id = "registry-integrity-cache-owner-tracking"
+status = "implemented_pending_ci"
+finding = "validation-tools-status continued to associate registry-integrity with deleted gororoba_cli_data source paths after the binary moved to gororoba_cli_governance."
+required_change = "Bind each tracked validation binary to its actual package directory and bind registry-integrity to the governance source and manifest."
+verification = "Hosted policy and xtask validation confirm that a governance manifest or registry_integrity.rs change marks the staged tool stale."
+
+[[task]]
+id = "native-audit-obsolete-output-removal"
+status = "implemented_pending_ci"
+finding = "Native audit regeneration overwrote current outputs but retained files listed only by the prior manifest, allowing obsolete model artifacts to remain beside the current manifest."
+required_change = "Before writing, parse the prior native manifest and remove only safe single-component output paths absent from the newly rendered output set; preserve source, receipt, and other auxiliary files."
+verification = "Hosted audit tests remove a previously manifested obsolete table, preserve a current table and the source retrieval manifest, and reject a traversal path before removal."
+
+[[task]]
+id = "exact-head-7af13781-denominator"
+status = "complete"
+finding = "Run 34781891339 reached a terminal 61-job denominator without cancellation. Fifty-seven leaves passed; validation-policy, workspace Clippy, and the empty gororoba_cli_algebra library row were the three independent failures, and aggregate validation failed by construction. Documentation passed in 21 minutes 42 seconds."
+required_change = "Retain the complete denominator, repair all three independent failures, and use its target and documentation timings to remove redundant compilation before the replacement push."
+verification = "The run completed at exact head 7af137813f0d6103144671866d3ad5a7b6caae45; all data target rows, all scientific replay leaves, governance, Casimir audit, proofs, benchmarks, paper, unsafe survey, and docs-gate passed."
+
+[[task]]
+id = "target-sharded-example-test-coverage"
+status = "implemented_pending_ci"
+finding = "Target-sharded packages removed the broad --lib --tests selector but omitted example test targets; gororoba_cli_data therefore omitted the 11 tests in examples/enso_local_outlook.rs."
+required_change = "Inventory automatic and explicit example targets with required features, emit one named example row per package, verify exact library/test/example/binary coverage, and admit --example through the guarded CI target parser."
+verification = "Hosted xtask tests prove automatic file, directory, explicit, and required-feature example coverage; the gororoba_cli_data example row executes in the Rust matrix."
+
+[[task]]
+id = "lattice-replay-hydration-only-selection"
+status = "implemented_pending_ci"
+finding = "The broad cd_external::tests:: ignored-test filter also selected the unrelated 128D full invariant-suite characterization."
+required_change = "Execute exactly the 22 tests marked as requiring the hydrated scientific payload archive, aggregate their failures, and reject both broad module selection and the heavy non-hydration test in CI policy."
+verification = "Hosted lattice replay runs all 22 named hydration-backed tests, reports every failure before exit, and excludes test_thesis_e_xor_involution_invariants_128d."
+
+[[task]]
+id = "scientific-replay-repo-root-routing"
+status = "implemented_pending_ci"
+finding = "Every replay resolves retained inputs through repo_root, but repo_root changes did not route any replay leaf."
+required_change = "Add repo_root to the scientific replay common dependency pattern so each replay leaf runs after path-resolution changes."
+verification = "Hosted routing tests select lattice, NuFIT, and box-counting replay leaves for a repo_root source change."
+
+[[task]]
+id = "retained-source-retrieval-date-validation"
+status = "implemented_pending_ci"
+finding = "The retained source manifest declared retrieval_date, but deserialization ignored that field and accepted deletion, blank values, malformed forms, and impossible calendar dates."
+required_change = "Require a strict nonzero-year YYYY-MM-DD calendar date and add mutation tests for missing, blank, malformed, and impossible values."
+verification = "Hosted Casimir audit tests accept the retained date and reject every date mutation; refreshed source hashes and path-repair evidence bind the changed producer."
+
+[[task]]
+id = "exact-head-67a9c7b0-materials-lockfile-precondition"
+status = "implemented_pending_ci"
+finding = "Run 34783811255 admitted 37 jobs, but the materials_core tempfile dev-dependency was absent from that package's Cargo.lock dependency list. Scientific hydration, documentation, both benchmark architectures, the routed Casimir audit, and every Rust Cargo leaf stopped at Cargo's --locked precondition before source validation."
+required_change = "Add the existing tempfile package to the materials_core lockfile dependency list and refresh the lock-bound native source identity and path-repair digest."
+verification = "The replacement exact-head generation passes Cargo's locked dependency-graph precondition in every Cargo leaf and reaches a complete uncanceled denominator."
+
+[[task]]
+id = "hosted-active-tail-decomposition"
+status = "complete"
+finding = "The final two active jobs in run 34783811255 were the Rocq proof compiler and canonical governance. Both received the runner's unchanged four process-visible CPUs. The proof compile is independent of Cargo.lock and retained useful exact-head proof evidence; governance remained fail-slow but could not establish source validity after the stale lockfile precondition. In the preceding complete run, proof compilation took 4 minutes 57 seconds and governance validation took 3 minutes 58 seconds."
+required_change = "Retain full CPU propagation and fail-slow collection. Treat a tail as a processor-cap defect only when runner telemetry or command wiring shows fewer workers; distinguish that condition from a large dependency closure or one critical-path compilation unit."
+verification = "Workflow source passes four detected workers to Make, Cargo, nextest, libtest, Rayon, and opam without division or clamp; hosted logs report four workers in proof and governance jobs."
+
+[[task]]
+id = "staged-validation-tools-locked-graph"
+status = "implemented_pending_ci"
+finding = "Governance succeeded in run 34783811255 despite the stale committed lockfile because staged validation-tool Cargo builds omitted --locked and could update the runner checkout before executing registry checks."
+required_change = "Run every staged validation-tool Cargo build with --locked and pin those command forms in the hosted resource contract."
+verification = "Hosted validation-policy passes the locked-tool contract, and governance builds and executes its staged tools without changing or bypassing the committed dependency graph."
+
+[[task]]
+id = "exact-head-42ffd1f2-terminal-denominator"
+status = "complete"
+finding = "Run 34784435524 reached a terminal 39-job denominator. Hydration, both benchmarks, proofs, governance, paper, unsafe survey, and all three scientific replay leaves passed. Every Rust shard shared one Bash parser failure, while Casimir audit and documentation shared one missing production dependency."
+required_change = "Terminate the complete denominator before repairing the two independent source defects."
+verification = "The run completed without cancellation at exact head 42ffd1f2a2a38a2cdc15de569a6170d82ed8af17."
+
+[[task]]
+id = "target-parser-command-separators"
+status = "implemented_pending_ci"
+finding = "The generated-target parser omitted semicolons after a multiline fi and done before the next command, so Bash rejected every Rust shard before Cargo execution."
+required_change = "Terminate both compound commands with semicolons while preserving the guarded library, binary, integration-test, and example target grammar."
+verification = "Hosted validation-policy passes and every routed Rust shard enters Cargo with the generated target arguments."
+
+[[task]]
+id = "casimir-audit-production-provenance-dependency"
+status = "implemented_pending_ci"
+finding = "casimir-optics-discrimination-audit imports provenance_store in its production binary, but gororoba_cli_physics declared provenance_store only under dev-dependencies. Rustdoc and the routed native audit both failed with E0432."
+required_change = "Move provenance_store to the package's production dependencies and refresh the Cargo-manifest-bound native source identity."
+verification = "Hosted rustdoc and validation-casimir-audit compile and execute the production binary."
+
+[[task]]
+id = "rust-router-heavy-fallback-coverage"
+status = "implemented_pending_ci"
+finding = "The Rust matrix fallback contains Clippy and light-package tests but omits the heavy algebra_analysis and gr_core test lane when matrix generation fails."
+required_change = "Add the heavy package selector and complete library, binary, test, and example target arguments to the static fallback matrix."
+verification = "Hosted validation-policy requires the exact heavy fallback row, including package scope and complete target arguments, and the exact-head matrix retains that row when generated routing is unavailable."
+
+[[task]]
+id = "drude-smith-finite-static-endpoint"
+status = "implemented_pending_ci"
+finding = "The static conductor predicate treats every positive-strength Drude-Smith model as divergent, although backscatter_c = -1 cancels the 1/xi term and leaves finite static permittivity."
+required_change = "Derive the zero-frequency material response from the selected scattering model and preserve the finite omega_p^2/gamma^2 endpoint."
+verification = "Hosted materials_core tests distinguish the fully backscattered finite endpoint from genuinely divergent Drude and Drude-Smith responses."
+
+[[task]]
+id = "retained-source-role-contract"
+status = "implemented_pending_ci"
+finding = "The retained-source parser ignores each source role, so a non-supporting witness can be relabeled as positive evidence without invalidating the audit."
+required_change = "Deserialize roles and require exact source ID, retained path, and role equality for the complete retained-source set."
+verification = "Hosted Casimir audit mutation tests reject missing and altered roles, including promotion of the non-supporting witness."
+
+[[task]]
+id = "fitted-quantity-specimen-condition-lineage"
+status = "implemented_pending_ci"
+finding = "An experimental fitted quantity can cite direct measurements from another specimen or condition set and still pass graph validation."
+required_change = "Require fitted-input measurements to match the fitted quantity's specimen and conditions unless an explicit typed transfer records the relationship."
+verification = "Hosted materials_core tests reject cross-specimen and cross-condition fitted inputs while accepting matched direct-measurement lineage."
+
+[[task]]
+id = "fisher-scaled-coordinate-accumulation"
+status = "implemented_pending_ci"
+finding = "The covariance pseudoinverse squares a tiny signal coordinate before variance scaling, which can underflow a finite Fisher contribution to zero."
+required_change = "Scale each retained signal coordinate by the covariance-mode standard deviation before squaring and accumulate with overflow-safe arithmetic."
+verification = "Hosted stats_core tests recover 1e-100 information from signal 1e-200 and variance 1e-300."
+
+[[task]]
+id = "covariance-coordinate-scaled-psd-rejection"
+status = "implemented_pending_ci"
+finding = "A global eigenvalue tolerance can hide a physically invalid negative variance when covariance coordinates span extreme scales."
+required_change = "Validate covariance diagonals and coordinate-scaled positive semidefiniteness before applying the numerical pseudoinverse cutoff."
+verification = "Hosted stats_core tests reject diag(1e200, -1) and preserve valid singular covariance handling."
+
+[[task]]
+id = "heavy-fallback-mutation-oracle"
+status = "implemented_pending_ci"
+finding = "Adding the heavy fallback row without a policy oracle left its package scope and target coverage removable while validation-policy still passed."
+required_change = "Require the exact heavy fallback JSON row once inside the bounded Rust-shard workflow block."
+verification = "Hosted validation-policy fails when the heavy target, algebra_analysis or gr_core scope, or complete target arguments are removed from the fallback row."
+
+[[task]]
+id = "covariance-zero-variance-cross-term-rejection"
+status = "implemented_pending_ci"
+finding = "Row-maximum congruence scaling let a zero-variance coordinate borrow its off-diagonal magnitude as a scale and could hide an invalid negative mode."
+required_change = "Normalize through diagonal standard deviations and reject every nonzero covariance attached to a zero-variance coordinate before spectral tolerance."
+verification = "Hosted stats_core tests reject [[1e200, 1e90], [1e90, 0]] and retain valid singular covariance handling."
+
+[[task]]
+id = "pr185-review-thread-denominator"
+status = "in_progress"
+finding = "The paginated review denominator began at 107 threads, increased to 109 after review of 7da85c94, 113 after review of e7b688e0, 117 after review of 340601b1, 121 after review of f28cb6e4, 124 after review of e9581451, 127 after review of 9d532ed8, and 129 after review of 6656dad0. Two threads are resolved and 127 require final exact-head disposition."
+required_change = "Classify every stable thread ID against the final exact-head source, record an evidence-backed disposition, and resolve each implemented or superseded thread after hosted validation."
+verification = "A post-settling-window paginated GraphQL query reports exact set equality with the classified denominator and zero unresolved review threads."
+
+[[task]]
+id = "exact-head-7da85c94-terminal-denominator"
+status = "complete"
+finding = "Run 34813637324 reached a terminal 41-job denominator: 38 jobs passed, validation-policy failed on the newly added heavy-fallback oracle string, aggregate validation failed by construction, and docs deployment skipped. Every executable Rust, materials, statistics, Casimir audit, documentation, governance, proof, replay, benchmark, paper, and survey job passed."
+required_change = "Correct the oracle's representation of literal JSON without changing the validated heavy fallback row, then rerun the complete hosted denominator."
+verification = "The GitHub Actions run completed without cancellation at exact head 7da85c9492b7a3f39b1384522db60f3fc72a4539."
+
+[[task]]
+id = "heavy-fallback-oracle-literal-json"
+status = "implemented_pending_ci"
+finding = "The policy oracle searched the extracted workflow block for backslash-escaped quotes, but the shell variable contains literal JSON quotes, so the valid heavy fallback row produced zero matches."
+required_change = "Match the exact literal JSON row while retaining one bounded occurrence requirement."
+verification = "Hosted validation-policy accepts the intact row and retains mutation sensitivity for its lane, target, package scope, and target arguments."
+
+[[task]]
+id = "materials-baseline-masked-row-retention"
+status = "implemented_pending_ci"
+finding = "The materials baseline converts only fully observed ten-property elemental vectors and silently drops compounds containing any element with one missing optional property, including ordinary Al2O3 inputs."
+required_change = "Consume the typed observation mask or select a declared viable feature subset without converting absence to zero."
+verification = "Hosted baseline tests retain an Al2O3-like row with partial optional properties and preserve typed missingness semantics."
+
+[[task]]
+id = "model-run-fitted-constitutive-identity"
+status = "implemented_pending_ci"
+finding = "A model run can consume an experimental fitted quantity whose fit_model and version differ from the run's constitutive model, while specimen and condition joins still pass."
+required_change = "Bind consuming model runs to the fitted witness model identity and version or require an explicit typed conversion."
+verification = "Hosted materials_core tests reject incompatible fitted witness and model-run constitutive identities and accept exact matches."
+
+[[task]]
+id = "retained-source-evidence-scope-contract"
+status = "implemented_pending_ci"
+finding = "The retained-source parser ignored the top-level scope, allowing source-byte evidence to be relabeled as physical support without invalidating the audit."
+required_change = "Deserialize the scope and require exact equality with the source-inspection-only evidence boundary."
+verification = "Hosted Casimir audit mutation tests reject an evidence-scope promotion."
+
+[[task]]
+id = "retained-source-url-contract"
+status = "implemented_pending_ci"
+finding = "The compiled retained-source set bound IDs, paths, and roles but did not bind each retrieval URL."
+required_change = "Pin every retained source URL in the compiled expected set and require exact ID, URL, path, and role equality."
+verification = "Hosted Casimir audit mutation tests reject a changed source URL while retaining receipt-to-manifest joins."
+
+[[task]]
+id = "measurement-detection-limit-typed-status"
+status = "implemented_pending_ci"
+finding = "Measurement detection limits used an optional tuple, so absence carried no typed reason."
+required_change = "Replace the optional tuple with a required reported-or-typed-missingness status and preserve exact below-detection joins."
+verification = "Hosted materials_core tests validate reported limits, explicit missingness, and quantity-to-measurement limit equality."
+
+[[task]]
+id = "registered-casimir-experiment-output-replay"
+status = "implemented_pending_ci"
+finding = "Registered E-043 and E-044 retained outputs were routed into the Casimir audit but were not regenerated and byte-compared by that lane."
+required_change = "Run both registered binaries with their declared default grids and compare generated bytes with the retained experiment outputs."
+verification = "Hosted validation-casimir-audit replays and byte-compares e043-casimir-plate-compare.txt and e044-casimir-drude-plasma.txt."
+
+[[task]]
+id = "exact-head-340601b1-terminal-denominator"
+status = "complete"
+finding = "Run 34819071461 reached a terminal 41-job denominator: 38 jobs passed, validation-casimir-audit failed on one trailing manifest byte, aggregate validation failed by construction, and docs deployment skipped. Both newly added E-043 and E-044 experiment replays passed byte comparison."
+required_change = "Preserve the successful experiment replays and normalize the generated native manifest to one terminal newline."
+verification = "The GitHub Actions run completed without cancellation at exact head 340601b166e31a95db54d39ea0e1416798bfba13."
+
+[[task]]
+id = "native-manifest-single-terminal-newline"
+status = "complete"
+finding = "The manifest renderer emitted two terminal newlines while repository patch tooling retained one, producing a one-byte freshness mismatch."
+required_change = "Make the renderer deterministically truncate the final entry separator to one terminal newline and refresh the producer, source-model, and path-repair hashes."
+verification = "Hosted validation-casimir-audit regenerates byte-identical native-output-manifest.toml while retaining all declared output entries."
+
+[[task]]
+id = "exact-head-f28cb6e4-terminal-denominator"
+status = "complete"
+finding = "Run 34821607978 reached a terminal 41-job denominator: 40 jobs passed and docs deployment skipped by policy. Every selected Rust, materials, statistics, Casimir audit, governance, documentation, proof, replay, benchmark, paper, and unsafe-survey job passed."
+required_change = "Preserve the one-newline manifest rendering and all exact-head implementation-conformance results while closing newly arrived review findings."
+verification = "GitHub Actions run 34821607978 completed successfully without cancellation at exact head f28cb6e4a37c8d5f49d0738e4aed4cd975d5fbfb."
+
+[[task]]
+id = "retained-source-retrieval-date-contract"
+status = "implemented_pending_ci"
+finding = "The retained-source verifier validated retrieval-date syntax but permitted replacement with another valid calendar date."
+required_change = "Pin the immutable retained observation date and reject a syntactically valid replacement date."
+verification = "Hosted Casimir audit mutation tests reject redating while accepting the retained 2026-09-12 observation date."
+
+[[task]]
+id = "measurement-detection-limit-unit-join"
+status = "implemented_pending_ci"
+finding = "An observed experimental quantity can reference a measurement whose reported detection limit uses a different unit."
+required_change = "Require each observed quantity unit to equal its measurement's reported detection-limit unit."
+verification = "Hosted materials_core tests reject a dimensionally incompatible reported detection limit."
+
+[[task]]
+id = "casimir-frontier-verifier-routing"
+status = "implemented_pending_ci"
+finding = "Changes to gororoba_cli_provenance can alter the canonical frontier verifier without selecting the Casimir audit lane."
+required_change = "Route the provenance CLI source tree through validation-casimir-audit and pin the selector in validation-policy."
+verification = "Hosted routing tests select Casimir audit for a finite-frontier verifier mutation."
+
+[[task]]
+id = "gold-candidate-underlying-doi-contract"
+status = "implemented_pending_ci"
+finding = "Gold optical candidates require a nonempty DOI but do not bind that DOI to the retained source identity."
+required_change = "Pin each candidate's exact underlying DOI and reject attribution mutations."
+verification = "Hosted materials_core tests reject a changed DOI while retaining source-byte identity."
+
+[[task]]
+id = "material-evidence-artifact-recipe-references"
+status = "implemented_pending_ci"
+finding = "Measurements accept nonempty raw-artifact and processing-recipe IDs without resolving them to graph records."
+required_change = "Add typed artifact and recipe inventories, enforce unique IDs, and reject unresolved measurement references."
+verification = "Hosted materials_core tests reject unknown artifact and recipe IDs and accept complete lineage."
+
+[[task]]
+id = "finite-frontier-witness-identity"
+status = "implemented_pending_ci"
+finding = "Closed frontier rows require nonempty witness and verifier text but do not preserve the canonical per-row identities."
+required_change = "Bind each closed row to the expected witness and verifier and add mutation-sensitive tests."
+verification = "Hosted finite-frontier tests reject fabricated nonempty witness and verifier replacements."
+
+[[task]]
+id = "unsafe-survey-routed-pr-execution"
+status = "implemented_pending_ci"
+finding = "Dependency-changing pull requests select the unsafe-survey job but pass a false reusable-workflow input, so the workspace inventory step skips."
+required_change = "Pass the routed selection into run_workspace_survey for pull-request execution and pin the behavior in validation-policy."
+verification = "Hosted dependency routing runs and validates the workspace unsafe inventory."
+
+[[task]]
+id = "fitted-covariance-parameter-basis"
+status = "implemented_pending_ci"
+finding = "Experimental fitted evidence can attach a covariance matrix whose dimension does not cover the fit's undeclared parameter basis."
+required_change = "Declare typed fitted-parameter identities and require covariance dimension equality."
+verification = "Hosted materials_core tests reject incomplete fitted covariance and accept exact parameter-basis coverage."
+
+[[task]]
+id = "exact-head-e9581451-terminal-denominator"
+status = "complete"
+finding = "Run 34826131020 reached a terminal 39-job fail-slow denominator: 27 jobs passed, 10 failed, and 2 skipped. Eight direct failures reduced to two source defects; docs-gate encountered the same provenance compile defect, scientific-replay and aggregate validation reported dependency failures, scientific-replay-leaf skipped after input materialization failed, and docs deployment skipped by pull-request policy."
+required_change = "Replace the unsupported sha2 0.11 LowerHex formatting and reconcile the two materials tests with the narrowed observed-quantity detection-limit contract without weakening either invariant."
+verification = "GitHub Actions run 34826131020 completed without cancellation at exact head e95814519c7bababb4d403d6564b731b74448890."
+
+[[task]]
+id = "finite-frontier-sha256-hex-encoding"
+status = "implemented_pending_ci"
+finding = "sha2 0.11 returns a digest array that does not implement LowerHex, so format!(\"{:x}\", Sha256::digest(...)) prevented every consumer of gororoba_cli_provenance from compiling."
+required_change = "Encode each digest byte with the repository-established two-digit lowercase hexadecimal representation."
+verification = "Hosted provenance, governance, Casimir audit, scientific replay, docs, survey, and workspace Clippy lanes compile and exercise the shared finite-frontier verifier."
+
+[[task]]
+id = "measurement-detection-limit-test-contract-reconciliation"
+status = "implemented_pending_ci"
+finding = "Two materials tests retained expectations from the discarded all-quantity detection-limit join: typed missingness left an incompatible uncertainty attached, and the below-detection mismatch expected the observed-quantity diagnostic."
+required_change = "Use NotReported uncertainty for the typed-missingness regression and retain the exact below-detection value-and-unit diagnostic for censored observations."
+verification = "Hosted materials_core tests preserve observed-quantity unit joins, exact below-detection joins, and typed missingness without fabricating uncertainty."
+
+[[task]]
+id = "fitted-residual-artifact-resolution"
+status = "implemented_pending_ci"
+finding = "Experimental fitted evidence validated a nonempty residual artifact identifier without resolving it against the material graph's typed raw-artifact inventory."
+required_change = "Require each fitted quantity's residual artifact identifier to resolve to a declared raw artifact and retain an exact missing-reference regression."
+verification = "Hosted materials_core tests reject an unknown fitted residual artifact while accepting the complete fitted-evidence graph."
+
+[[task]]
+id = "source-observation-document-limit-identity"
+status = "implemented_pending_ci"
+finding = "Source-observation receipts required nonempty document-identity limits but allowed a replacement statement to promote retained bytes across evidence layers."
+required_change = "Bind every retained receipt to its exact source-specific evidence limitation and reject a nonempty physical-evidence promotion."
+verification = "Hosted Casimir audit tests accept all 12 retained limitations and reject mutation of a receipt's document-identity limit."
+
+[[task]]
+id = "scientific-replay-independent-input-hydration"
+status = "implemented_pending_ci"
+finding = "One combined hydration command blocked every selected scientific replay lane when any lane's retained input could not materialize."
+required_change = "Hydrate and stage each selected lane independently, emit a typed per-lane input status, run unaffected leaves, and retain caches only when every selected lane hydrates."
+verification = "Hosted validation-policy pins the per-lane staging and blocked-input contract; hosted replay leaves report the affected lane as blocked_input while executing independently hydrated lanes."
+
+[[task]]
+id = "exact-head-9d532ed8-terminal-denominator"
+status = "complete"
+finding = "Run 34830883673 reached a terminal 41-job fail-slow denominator: 38 jobs passed, the provenance light-7 shard failed on one stale mutation test, aggregate validation failed by construction, and docs deployment skipped by pull-request policy. Materials, provenance compilation, governance, Casimir audit, documentation, proofs, all three independent replay leaves, workspace Clippy, survey, paper, benchmarks, and every other routed Rust shard passed."
+required_change = "Preserve all successful exact-head evidence and repair the stale actionless-open-row mutation so it removes both admissible action fields."
+verification = "GitHub Actions run 34830883673 completed without cancellation at exact head 9d532ed8592627553c93ae4cfa017d2fbc9667e3."
+
+[[task]]
+id = "finite-frontier-actionless-open-row-mutation"
+status = "implemented_pending_ci"
+finding = "The actionless-open-row regression cleared required_generator but left next_action populated, so the unchanged open-row invariant correctly accepted the mutated fixture and the test called unwrap_err on success. The first repair treated optional next_action as a String and failed to compile in exact-head run 34834493666."
+required_change = "Set optional next_action to None and clear required_generator to construct the intended actionless open row."
+verification = "Hosted gororoba_cli_provenance tests reject the genuinely actionless open row while retaining the exact two-row residual frontier report."
+
+[[task]]
+id = "masked-feature-vector-length-identity"
+status = "implemented_pending_ci"
+finding = "MaskedFeatureVector::into_complete_values accepted a nonempty value vector when its observation mask was shorter, longer, or empty, allowing malformed missingness metadata to be treated as complete."
+required_change = "Require value and observation-mask lengths to match before exposing a complete numerical vector."
+verification = "Hosted materials_core tests reject shorter, longer, and empty masks paired with nonempty values."
+
+[[task]]
+id = "gold-candidate-database-identity"
+status = "implemented_pending_ci"
+finding = "The gold optical candidate catalog accepted any nonempty database ID, commit, and license, so its retained rows could be relabeled as another database revision or license."
+required_change = "Bind the candidate catalog to refractiveindex-info commit c5c2f188e848453def5970e347399d653df2ffc2 under CC0-1.0 and verify the retained license artifact's exact SHA-256."
+verification = "Hosted materials_core mutation tests reject different nonempty database IDs, commits, licenses, and license bytes."
+
+[[task]]
+id = "ruan-fan-pdf-verified-materialization"
+status = "implemented_pending_ci"
+finding = "The Ruan-Fan source-receipt test accepted a retention-manifest entry even when the hash-bound PDF payload remained unmaterialized."
+required_change = "Require verified PDF materialization and execute the ignored receipt test only after an independent optics replay lane hydrates the exact retained payload."
+verification = "Hosted routing and policy checks pin optics matrix membership, select and hydrate the exact PDF once, require the full exact ignored test command in the optics case, and require Materialization::Verified for the retained PDF."
+
+[[task]]
+id = "scientific-replay-blocked-input-aggregate-state"
+status = "implemented_pending_ci"
+finding = "The replay aggregate converted every leaf matrix failure into executed_fail even when a selected lane's typed status was blocked_input."
+required_change = "Expose complete hydration status from the input job and report blocked_input before interpreting the matrix execution result."
+verification = "Hosted validation-policy binds the aggregate verdict to the hydration output, and a selected hydration failure retains state=blocked_input."
+
+[[task]]
+id = "ruan-fan-tracked-source-replay-routing"
+status = "implemented_pending_ci"
+finding = "The ignored combined Ruan-Fan receipt test hashes two tracked source artifacts, but changes to those artifacts did not select the optics replay lane."
+required_change = "Route the retained archive download, TeX source, and hydrated PDF paths through the optics replay lane."
+verification = "Hosted routing policy pins all three receipt inputs and executes their combined exact identity test."
+
+[[task]]
+id = "bounded-profile-active-bound-width-scaling"
+status = "implemented_pending_ci"
+finding = "Active-bound diagnostics scaled tolerance to absolute endpoint magnitude, so every point in a narrow interval with a large offset could be labeled at both bounds."
+required_change = "Use one coordinate tolerance for classification and certificate feasibility, based on interval width plus adjacent-representable endpoint spacing and capped below one-quarter of a nonzero interval."
+verification = "Hosted stats_core tests classify endpoints and midpoints of [1e12, 1e12 + 1], [0, 1e-20], and subnormal [0, 1e-320] intervals distinctly, and reject a large-offset feasibility violation."
+
+[[task]]
+id = "finite-frontier-dependency-graph-identity"
+status = "implemented_pending_ci"
+finding = "The finite-frontier verifier rejected unknown, duplicate, cyclic, and closed-to-open dependencies but accepted deletion or substitution with another valid closed frontier ID."
+required_change = "Bind the complete sorted per-row dependency graph to a compiled SHA-256 identity."
+verification = "Hosted finite-frontier mutation tests reject deleting or replacing the lifshitz-sphere prerequisite with another known closed row."
+
+[[task]]
+id = "exact-head-6656dad0-terminal-denominator"
+status = "complete"
+finding = "Run 34834493666 reached a terminal 42-job fail-slow denominator: 38 jobs passed, workspace Clippy and provenance light-7 failed on the same invalid Option<String>::clear fixture mutation, aggregate validation failed by construction, and docs deployment skipped by pull-request policy. Policy, materials, statistics, governance, Casimir audit, docs, proofs, all four hydrated replay leaves including optics, benchmarks, survey, paper, and every unaffected Rust shard passed."
+required_change = "Set optional next_action to None, retain the newly reviewed dependency-graph and active-bound repairs, and rerun one complete exact-head denominator."
+verification = "GitHub Actions run 34834493666 completed without cancellation at exact head 6656dad02268357d13c71863502750746fa12490."
+
+[[task]]
+id = "finite-frontier-open-row-action-identity"
+status = "implemented_pending_ci"
+finding = "Open frontier rows required a nonempty residual action but allowed the exact recovery action or fallback generator to be silently replaced."
+required_change = "Bind each open frontier ID to the SHA-256 identities of its exact next_action and required_generator fields."
+verification = "Hosted finite-frontier mutation tests replace each open row's action and generator independently and require an identity mismatch."
+
+[[task]]
+id = "retained-source-compiled-body-identity"
+status = "implemented_pending_ci"
+finding = "Retained source bytes and their manifest hashes were mutually checked, but both could change together because the compiled source identity omitted the expected body digest."
+required_change = "Bind every expected retained source to its exact SHA-256 alongside source ID, URL, path, and role."
+verification = "Hosted Casimir audit tests mutate a syntactically valid manifest digest and require an exact retained-source identity mismatch before byte agreement can admit it."
+
+[[task]]
+id = "material-state-typed-missingness"
+status = "implemented_pending_ci"
+finding = "MaterialState used bare Option fields, erasing whether temperature, pressure, atmosphere, phase fraction, orientation, strain, and processing age were not measured, below detection, inapplicable, withheld, or unknown."
+required_change = "Represent every optional material-state property as an observed value or a validated typed Missingness reason."
+verification = "Hosted materials_core tests preserve a below-detection state property and reject malformed state-property detection limits."
+
+[[task]]
+id = "exact-head-590ed05e-terminal-denominator"
+status = "complete"
+finding = "Run 34836722242 reached a terminal 42-job fail-slow denominator: 39 jobs passed, validation-casimir-audit failed on the stale native-output manifest, aggregate validation failed by construction, and docs deployment skipped by pull-request policy. Documentation, proofs, all routed Rust shards, governance, all four scientific replay leaves, benchmarks, survey, paper, policy, and every unaffected validation lane passed."
+required_change = "Refresh the hash-bound native manifest after the final source repairs, retain the three newly reviewed identity and missingness fixes, and run one replacement exact-head denominator."
+verification = "GitHub Actions run 34836722242 completed without cancellation at exact head 590ed05ee55aa4f0871099082032877803c05746."
+
+[[task]]
+id = "retained-source-byte-mutation-regression"
+status = "implemented_pending_ci"
+finding = "The retained-source digest regression changed the manifest digest and expected a runtime byte mismatch, but the compiled source-body identity correctly rejected the manifest mutation first."
+required_change = "Keep the manifest and compiled identity fixed, copy the exact retained corpus to an isolated test root, alter one retained body, and require the runtime SHA-256 mismatch."
+verification = "Hosted gororoba_cli_physics tests retain separate compiled-manifest mutation coverage and retained-byte mutation coverage."
+
+[[task]]
+id = "exact-head-fc206cc4-terminal-denominator"
+status = "complete"
+finding = "Run 34839469460 reached a terminal 42-job fail-slow denominator: 39 jobs passed, the gororoba_cli_physics bins-4 shard failed only because one stale mutation test expected the pre-pin runtime hash error, aggregate validation failed by construction, and docs deployment skipped by pull-request policy. Casimir audit, documentation, workspace Clippy, materials, statistics, provenance, governance, proofs, all scientific replays, benchmarks, survey, paper, and every other routed shard passed."
+required_change = "Repair the stale test so it mutates retained bytes under an unchanged compiled and manifest identity, then run one replacement exact-head denominator."
+verification = "GitHub Actions run 34839469460 completed without cancellation at exact head fc206cc4863a5248375825820e6344e893cdf7d6."
+
+[[task]]
+id = "exact-head-ci-9175fda9"
+status = "complete"
+finding = "Run 34842357168 reached a terminal 42-job fail-slow denominator: 41 jobs passed, docs deployment skipped by pull-request policy, and no job failed."
+required_change = "Retain this successful denominator as validation of the source-identity mutation repair before publishing the subsequent review-driven materials schema corrections."
+verification = "GitHub Actions run 34842357168 completed without cancellation at exact head 9175fda986a1d5e3900d76fb409eee23e2f12f9a."
+
+[[task]]
+id = "specimen-property-typed-missingness"
+status = "complete"
+finding = "Specimen anneal history, thickness, grain size, texture, porosity, and roughness used bare Option fields, erasing the reason each unavailable property was absent."
+required_change = "Use the shared observed-value-or-Missingness representation for state and specimen properties, and validate typed detection-limit and withheld metadata."
+verification = "Hosted materials_core tests preserve a below-detection specimen thickness and reject malformed specimen-property missingness."
+
+[[task]]
+id = "measurement-provenance-calendar-date"
+status = "complete"
+finding = "Measurement provenance accepted any nonempty retrieval-date text, including impossible calendar dates and unstructured unknown markers."
+required_change = "Require an exact, nonzero-year YYYY-MM-DD representation that parses as a Gregorian calendar date."
+verification = "Hosted materials_core tests reject unstructured, impossible, and zero-year retrieval dates and accept a valid leap day."
+
+[[task]]
+id = "exact-head-ci-ab388636"
+status = "complete"
+finding = "Run 34846107733 reached a terminal 42-job fail-slow denominator: 41 jobs passed, docs deployment skipped by pull-request policy, and no job failed."
+required_change = "Retain this successful denominator as validation of typed specimen missingness and calendar-date provenance before publishing the settled-review repairs."
+verification = "GitHub Actions run 34846107733 completed without cancellation at exact head ab388636f23ca0794cd4edebff7e2fa34a582852."
+
+[[task]]
+id = "featurizer-valence-typed-missingness"
+status = "implemented_pending_ci"
+finding = "The elemental table encoded its uncovered valence range for atomic numbers 104 through 112 as zero, and the featurizer marked the resulting statistics as observed physical values."
+required_change = "Represent locally undefined valence-electron counts as absent and propagate that absence through the feature observation mask."
+verification = "Hosted materials_core tests require Rf valence statistics and all five flattened valence coordinates to remain unobserved; the hosted materials-baseline binary test rejects Rf from the OLS input."
+
+[[task]]
+id = "bounded-profile-extreme-column-scaling"
+status = "implemented_pending_ci"
+finding = "Bounded profiling divided the entire nuisance matrix by one global maximum before per-column normalization, so a smaller finite column could underflow to zero and remove an admissible explanation."
+required_change = "Eliminate fixed coordinates before optimization, normalize each original free column independently, and transform bounds and parameters through the objective scale without forming a globally scaled nuisance matrix."
+verification = "Hosted stats_core tests recover the exact bounded fit for a diagonal nuisance matrix spanning 1e400 in finite column scale."
+
+[[task]]
+id = "gold-catalog-material-identity"
+status = "implemented_pending_ci"
+finding = "The gold optical candidate catalog validated the material ID and formula only for nonemptiness, allowing retained Au measurements to be relabeled as another material family."
+required_change = "Pin the catalog material ID and formula to the Au family identity alongside the retained database identity."
+verification = "Hosted materials_core mutation tests reject non-Au material IDs and formulas."
+
+[[task]]
+id = "gold-license-symlink-boundary"
+status = "implemented_pending_ci"
+finding = "Retained candidate source paths rejected symbolic-link components, but the retained database-license path followed symbolic links before hashing."
+required_change = "Resolve both source and license inputs through one repository-relative, component-by-component no-symlink validator before reading bytes."
+verification = "Hosted Unix materials_core tests reject a retained database-license symlink before candidate-source validation."
+
+[[task]]
+id = "bounded-profile-interior-scale-regression"
+status = "implemented_pending_ci"
+finding = "The extreme-column regression placed its exact optimum on the free coordinate's upper bound and required an absolute residual below the solver-certificate tolerance, conflating finite-column preservation with interior-point boundary convergence."
+required_change = "Place the exact optimum strictly inside the finite free interval while retaining the diagonal nuisance matrix's 1e400 scale ratio."
+verification = "Hosted stats_core tests recover the interior exact fit and its 1e200 physical nuisance coordinate without an active-bound barrier confound."
+
+[[task]]
+id = "gold-candidate-compiled-source-identity"
+status = "implemented_pending_ci"
+finding = "A retained gold YAML and its mutable catalog row could change together because the catalog compiled only each source ID and DOI, not the expected retained path and SHA-256."
+required_change = "Bind each recognized gold source ID to its compiled DOI, repository-relative path, and exact retained-byte SHA-256 before runtime catalog/file agreement checks."
+verification = "Hosted materials_core mutation tests reject replacement paths and digests even when mutable catalog fields remain internally consistent."
+
+[[task]]
+id = "material-property-missingness-unit-identity"
+status = "implemented_pending_ci"
+finding = "State and specimen properties accepted any nonempty unit in typed below-detection-limit missingness, allowing dimensionally incompatible absence records."
+required_change = "Validate quantitative property detection limits against each field's SI unit and reject detection-limit semantics for textual properties."
+verification = "Hosted materials_core tests reject metre-valued temperature limits, kelvin-valued thickness limits, and detection limits attached to atmosphere or texture text."
+
+[[task]]
+id = "exact-head-a7ccef32-terminal-denominator"
+status = "complete"
+finding = "Run 34851636950 reached a terminal 42-job fail-slow denominator: 38 jobs passed, validation-casimir-audit failed on three stale retained numerical outputs, the stats_core light-2 shard failed on a boundary-confounded extreme-scale regression, aggregate validation failed by construction, and docs deployment skipped by pull-request policy. Documentation, proofs, governance, materials, workspace Clippy, all scientific replay leaves, benchmarks, survey, paper, and every unaffected Rust shard passed."
+required_change = "Import the exact hosted numerical outputs, preserve their source-model identity, move the scale-preservation regression's optimum into the free interval interior, and retain the two valid review findings added during the run."
+verification = "GitHub Actions run 34851636950 completed without cancellation at exact head a7ccef329e26d0d7ac36bc5ec79496f1aeb507a1."
+
+[[task]]
+id = "exact-head-ci-c0b8c8fa"
+status = "complete"
+finding = "Run 34857077707 reached a terminal 42-job denominator: 41 jobs passed, docs deployment skipped by pull-request policy, and no job failed."
+required_change = "Retain this successful exact-head denominator as validation of the compiled gold-source identity, material-property missingness units, interior extreme-scale regression, and refreshed native outputs before applying the final settled-review repairs."
+verification = "GitHub Actions run 34857077707 completed without cancellation at exact head c0b8c8faae2de87f0ae405db5d279f3ca315d141."
+
+[[task]]
+id = "casimir-experiment-freshness-independent-targets"
+status = "implemented_pending_ci"
+finding = "E-043 and E-044 replayed in consecutive recipe lines of one Make target, so an E-043 failure prevented E-044 from executing despite the parent lane's keep-going policy."
+required_change = "Give E-043 and E-044 separate prerequisite targets so make --keep-going can execute and report each freshness check independently."
+verification = "Hosted validation-casimir-audit invokes both named prerequisite targets through the fail-slow aggregate."
+
+[[task]]
+id = "calibration-sensitivity-rank-identifiability"
+status = "implemented_pending_ci"
+finding = "A coordinate-specific calibration derivative used one arbitrary minimum-norm solution when the augmented nuisance design was rank deficient, making the reported priority basis-dependent."
+required_change = "Require full column rank of the normalized augmented nuisance/calibration design before reporting a coordinate-specific sensitivity while retaining efficient information for rank-deficient projections."
+verification = "Hosted stats_core tests reject the duplicate-column sensitivity as RankDeficientDesign while preserving zero efficient information for the same nuisance span."
+
+[[task]]
+id = "exact-head-71f44072-terminal-denominator"
+status = "complete"
+finding = "Run 34863637761 reached a terminal 42-job fail-slow denominator: 39 jobs passed, workspace Clippy failed on one type-complexity diagnostic in the normalized-design return type, aggregate validation failed by construction, and docs deployment skipped by pull-request policy. Casimir audit, documentation, governance, statistics tests, every routed Rust test shard, proofs, all scientific replay leaves, benchmarks, survey, paper, and policy passed."
+required_change = "Name the normalized-design and column-scale return types without suppressing the warning, refresh the source-bound native manifest, and run one replacement exact-head denominator."
+verification = "GitHub Actions run 34863637761 completed without cancellation at exact head 71f44072e31dbcf1ef55ed07cdd03e940fbb9904."
+
+[[task]]
+id = "exact-head-15471a4a-terminal-denominator"
+status = "complete"
+finding = "Run 34869866019 reached a terminal 42-job fail-slow denominator: 39 jobs passed, dependency policy failed on rustls 0.23.37 under RUSTSEC-2026-0285, aggregate validation failed by construction, and docs deployment skipped by pull-request policy. Workspace Clippy, Casimir audit, documentation, governance, every routed Rust test shard, proofs, all scientific replay leaves, benchmarks, survey, paper, and policy passed."
+required_change = "Update the compatible rustls lock entry to the fixed 0.23.45 release, retain its resolved rustls-webpki update, refresh the source-bound native manifest, and run one replacement exact-head denominator."
+verification = "GitHub Actions run 34869866019 completed without cancellation at exact head 15471a4a703f05286af214d34d8c0f1e9a9e572e."
+
+[[task]]
+id = "exact-head-da54f566-terminal-denominator"
+status = "complete"
+finding = "Run 34875858674 reached a terminal 42-job fail-slow denominator: 39 component jobs passed, docs-gate was canceled at its exact 60-minute job timeout while the workspace rustdoc command remained active, aggregate validation failed by construction, and docs deployment skipped by pull-request policy. Dependency policy, workspace Clippy, Casimir audit, governance, every routed Rust test shard, proofs, all scientific replay leaves, benchmarks, survey, paper, and policy passed."
+required_change = "Set the workspace-wide documentation job timeout to the established 90-minute validation envelope without changing the process-visible worker count, then run one replacement exact-head denominator."
+verification = "GitHub Actions run 34875858674 completed at exact head da54f5668ec311480b563f956dd56ad09a4669b1; docs-gate job 104084195869 ran from 17:41:39Z to 18:41:59Z and its build step was canceled at 18:41:56Z."
+
+[[task]]
+id = "exact-head-8486a096-terminal-denominator"
+status = "complete"
+finding = "Run 34882788520 reached a terminal 42-job denominator: 41 jobs passed, docs deployment skipped by pull-request policy, and no job failed or was canceled."
+required_change = "Retain this successful exact-head denominator as validation of the 90-minute documentation envelope before applying the final settled-review repairs."
+verification = "GitHub Actions run 34882788520 completed without cancellation at exact head 8486a09630bc07a76afb63c6c7203bbe7e74ca0f."
+
+[[task]]
+id = "fisher-information-coordinate-scale-invariance"
+status = "complete"
+finding = "A global covariance-eigenvalue cutoff classified small positive variances as deterministic when coordinates used different units, so Fisher information changed under an invertible coordinate rescaling."
+required_change = "Decompose the coordinate-normalized correlation matrix, transform the signal by the same coordinate scales, and apply rank and null-space tests in that common basis."
+verification = "Hosted stats_core tests preserve unit Fisher information for diag(1, 1e-20) with signal (0, 1e-10) and its unit-rescaled representation."
+
+[[task]]
+id = "gold-candidate-optional-metadata-nonempty"
+status = "complete"
+finding = "Optional gold-candidate metadata accepted Some values containing only empty or whitespace text, making present metadata indistinguishable from malformed absence."
+required_change = "Reject blank temperature, preparation, geometry, method, and uncertainty strings while retaining None as typed absence."
+verification = "Hosted materials_core tests reject empty and whitespace-only optional metadata and accept explicit None values."
+
+[[task]]
+id = "quantity-specific-detection-limit"
+status = "complete"
+finding = "One measurement-level detection-limit unit was applied to every output, so a valid acquisition producing quantities with different units could not be represented."
+required_change = "Store and validate detection-limit status per quantity, using the legacy measurement-level value only for a single-output compatibility record."
+verification = "Hosted materials_core tests accept mixed-unit outputs with independent limits and preserve exact below-detection-limit matching."
+
+[[task]]
+id = "raw-artifact-immutable-provenance"
+status = "complete"
+finding = "RawArtifact stored only an identifier, allowing measurements sharing that identifier to declare contradictory source, locator, or byte-hash provenance."
+required_change = "Bind path, source identity, locator, and SHA-256 to the raw-artifact record and require every referencing measurement to match the immutable provenance."
+verification = "Hosted materials_core tests reject each contradictory measurement field and malformed artifact path or digest metadata."
+
+[[task]]
+id = "cargo-config-scientific-replay-routing"
+status = "complete"
+finding = "A pull request changing only .cargo/config.toml selected no hydrated scientific replay even though every replay leaf inherits Cargo configuration."
+required_change = "Include .cargo/config.toml in the common replay trigger and bind that trigger and all four selected lanes in the CI policy contract."
+verification = "Hosted validation-resource-contract and actionlint pass, and a Cargo-configuration-only path selects lattice, NuFIT, box-counting, and optics replay."
+
+[[task]]
+id = "exact-head-0c7cdf1e-terminal-denominator"
+status = "complete"
+finding = "Run 34886936177 reached a terminal 42-job fail-slow denominator: 39 jobs passed, validation-casimir-audit failed on one roundoff-level stale summary value, aggregate validation failed by construction, docs deployment skipped by pull-request policy, and no job was canceled. Every Rust shard, workspace Clippy, documentation, governance, policy, proofs, scientific replay, benchmarks, paper, and survey passed."
+required_change = "Import the exact hosted derived-information value and its output digest without changing the validated inference implementation."
+verification = "GitHub Actions run 34886936177 completed at exact head 0c7cdf1effd4e89b74028b899cd432cb9e8bc167; the retained expected-output artifact changed augmented_derived_feature_information only from 5.249999999999998 to 5.250000000000002."
+
+[[task]]
+id = "fisher-information-derived-output-freshness"
+status = "complete"
+finding = "Coordinate-normalized Fisher decomposition changed one derived-information value at floating-point roundoff, leaving summary.toml and its manifest output digest stale while every other retained numerical output remained byte-identical."
+required_change = "Retain the exact hosted summary bytes and refresh only the summary output digest and enclosing path-repair receipt."
+verification = "The replacement validation-casimir-audit job reproduces summary.toml and native-output-manifest.toml byte for byte."
+
+[[task]]
+id = "exact-head-ci-32756ee4"
+status = "complete"
+finding = "Run 34889713033 reached a terminal 42-job denominator: 41 jobs passed, docs deployment skipped by pull-request policy, and no job failed or was canceled."
+required_change = "Retain this successful exact-head denominator as validation of the normalized Fisher-information outputs and every preceding published repair before applying the final three review findings."
+verification = "GitHub Actions run 34889713033 completed without cancellation at exact head 32756ee4801d3421a279f5f25797a5e8cebe3619."
+
+[[task]]
+id = "bounded-profile-bound-product-scaling"
+status = "complete"
+finding = "A finite physical bound and finite nuisance-column scale could overflow during multiplication before division by the objective scale, rejecting a profile whose scaled bound and optimum are representable."
+required_change = "Return any feasible unrestricted optimum before QP scaling, then scale active QP bounds with an overflow-aware product ratio that applies the objective divisor before an otherwise overflowing intermediate."
+verification = "Hosted stats_core tests recover the feasible unrestricted one-coordinate optimum 1e-200 for target 1, nuisance response 1e200, and physical bounds [0, 1e200]."
+
+[[task]]
+id = "casimir-audit-makefile-routing"
+status = "complete"
+finding = "A pull request changing only Makefile could alter the Make-owned Casimir replay and freshness recipes without selecting validation-casimir-audit."
+required_change = "Include Makefile in the Casimir audit path trigger and bind that ownership edge in validation-resource-contract-collectors."
+verification = "Hosted validation-resource-contract and actionlint pass, and a Makefile-only path selects the Casimir audit lane."
+
+[[task]]
+id = "box-counting-topology-routing"
+status = "complete"
+finding = "A pull request changing only verified_core could alter the HardwareTopology branch used by LbmSolver3D::evolve_one_step without selecting the ignored hydrated box-counting replay."
+required_change = "Include verified_core in the box-counting replay trigger and bind that dependency edge in validation-resource-contract-collectors."
+verification = "Hosted validation-resource-contract and actionlint pass, and a verified_core-only path selects the box-counting replay lane."
+
+[[task]]
+id = "exact-head-2ec552d9-terminal-denominator"
+status = "complete"
+finding = "Run 34893465090 reached a terminal 42-job fail-slow denominator: 38 jobs passed, validation-casimir-audit failed only on the aggregate source-model digest, the stats_core light-2 shard showed that the bounded QP erased the representable 1e-200 optimum after successful overflow-safe bound scaling, aggregate validation failed by construction, docs deployment skipped by pull-request policy, and no job was canceled. Documentation, routing policy, every other Rust shard, Clippy, governance, proofs, all scientific replay leaves, benchmarks, paper, and survey passed."
+required_change = "Return a feasible unrestricted least-squares optimum as the global bounded optimum before QP scaling, refresh the source-model and path-repair digests, and run one replacement exact-head denominator."
+verification = "GitHub Actions run 34893465090 completed without cancellation at exact head 2ec552d99a3c6b0a016b338fff495bb31c3f5097."
+
+[[task]]
+id = "exact-head-bb854944-terminal-denominator"
+status = "complete"
+finding = "Run 34896807672 reached a terminal 42-job fail-slow denominator: 41 jobs passed, docs deployment skipped by pull-request policy, and no job failed or was canceled."
+required_change = "Retain this successful exact-head denominator as validation of the feasible unrestricted optimum, overflow-safe active-bound scaling, Casimir Makefile routing, and box-counting topology routing before applying the final review findings."
+verification = "GitHub Actions run 34896807672 completed without cancellation at exact head bb854944dd9372c655fccdd39a367ed9131bf0fd."
+
+[[task]]
+id = "lattice-replay-cd-kernel-routing"
+status = "complete"
+finding = "A pull request changing only cd_kernel could alter Cayley-Dickson behavior exercised by the ignored hydrated lattice replay without selecting that replay leaf."
+required_change = "Include cd_kernel in the lattice replay trigger and bind that dependency edge in validation-resource-contract-collectors."
+verification = "Hosted validation-resource-contract and actionlint pass, and a cd_kernel-only path selects the lattice replay lane."
+
+[[task]]
+id = "native-output-deletion-ownership"
+status = "complete"
+finding = "The native audit trusted any safe single-component path in a prior manifest as deletion authority, allowing a stale or malicious manifest to remove retained provenance artifacts."
+required_change = "Restrict obsolete-output deletion to an exact producer-owned filename set while retaining traversal rejection and preserving every path outside that set."
+verification = "Hosted gororoba_cli_physics tests remove a known obsolete producer output and preserve derived-output-manifest.toml even when a prior native manifest lists it as output."
+
+[[task]]
+id = "masked-feature-vector-finite-values"
+status = "complete"
+finding = "MaskedFeatureVector::into_complete_values accepted NaN and infinite features whenever all observation bits were true."
+required_change = "Require equal value and mask lengths, all observation bits true, and every returned feature finite."
+verification = "Hosted materials_core tests reject NaN, positive infinity, and negative infinity from complete-value conversion."
+
+[[task]]
+id = "exact-head-dbb1405a-terminal-denominator"
+status = "complete"
+finding = "Run 34901216506 reached a terminal 42-job fail-slow denominator: 41 jobs passed, docs deployment skipped by pull-request policy, and no job failed or was canceled."
+required_change = "Retain this successful exact-head denominator as validation of lattice routing, producer-owned output cleanup, and finite materials features before applying the three late review findings submitted during the run."
+verification = "GitHub Actions run 34901216506 completed without cancellation at exact head dbb1405a796972e4c20bcda429612d0f4e9bd60a."
+
+[[task]]
+id = "deterministic-fisher-covariance-admissibility"
+status = "complete"
+finding = "A nonzero signal on a zero-variance coordinate returned infinite Fisher information before the remaining covariance correlation block was checked for positive semidefiniteness."
+required_change = "Validate the complete coordinate-normalized covariance spectrum before returning deterministic information."
+verification = "Hosted stats_core tests reject an indefinite three-coordinate correlation block even when an independent zero-variance coordinate carries nonzero signal."
+
+[[task]]
+id = "cuda-runtime-device-count-error-class"
+status = "complete"
+finding = "runtime_device_count converted every cudaGetDeviceCount runtime error to a successful zero count, conflating unavailable CUDA infrastructure with a host that has zero devices."
+required_change = "Map cudaGetDeviceCount errors to RuntimeUnavailable and reserve NoDevice for a successful zero count."
+verification = "Hosted gororoba_gpu_cuda tests map cudaErrorInsufficientDriver to RuntimeUnavailable."
+
+[[task]]
+id = "casimir-audit-provenance-store-routing"
+status = "complete"
+finding = "A provenance_store-only change could alter source-observation receipt types or validation semantics without selecting validation-casimir-audit."
+required_change = "Include provenance_store in the Casimir audit trigger and bind that direct dependency edge in validation-resource-contract-collectors."
+verification = "Hosted validation-resource-contract and actionlint pass, and a provenance_store-only path selects validation-casimir-audit."
+
+[[task]]
+id = "exact-head-aac1bec7-terminal-denominator"
+status = "complete"
+finding = "Run 34905765319 reached a terminal 42-job fail-slow denominator: 39 jobs passed, workspace Clippy failed on items_after_test_module in the new CUDA regression, aggregate validation failed by construction, docs deployment skipped by pull-request policy, and no job was canceled."
+required_change = "Move the CUDA regression module after every production item and run one replacement exact-head denominator."
+verification = "GitHub Actions run 34905765319 completed without cancellation at exact head aac1bec755b0ef3e8a5a2c824be5467a9259952d; every non-aggregate job except workspace Clippy passed."
+
+[[task]]
+id = "cuda-regression-module-order"
+status = "complete"
+finding = "The CUDA runtime-error regression module preceded impl Context, violating the workspace items_after_test_module warnings-as-errors policy."
+required_change = "Place the test module after every production item in context.rs without changing the tested runtime-error mapping."
+verification = "Pinned rustfmt accepts context.rs and replacement workspace Clippy passes."
+
+[[task]]
+id = "exact-head-568f9700-terminal-denominator"
+status = "complete"
+finding = "Run 34909668283 reached a terminal 42-job fail-slow denominator: 41 jobs passed, docs deployment skipped by pull-request policy, and no job failed or was canceled. The Rust and scientific matrix completed in about ten minutes; docs-gate was the sole long tail and completed successfully after about 48 minutes of runner-backed compilation."
+required_change = "Retain this exact-head denominator as validation of the covariance, CUDA error-class, provenance routing, and module-order repairs before applying the review findings submitted during the run."
+verification = "GitHub Actions run 34909668283 completed without cancellation at exact head 568f970088cc0291b8eaa7bd7b71f257e8e37573 with 41 success conclusions and one expected skip."
+
+[[task]]
+id = "casimir-audit-cargo-attribute-routing"
+status = "implemented_pending_ci"
+finding = "Cargo configuration and Git attributes can alter Casimir producer execution or retained source bytes without selecting validation-casimir-audit."
+required_change = "Route .cargo/config.toml and .gitattributes through validation-casimir-audit and bind both ownership edges in the static collector contract."
+verification = "Hosted validation-resource-contract and actionlint must pass, and either path must select validation-casimir-audit."
+
+[[task]]
+id = "benchmark-worker-detector-routing"
+status = "implemented_pending_ci"
+finding = "A detector-only change did not select the ARM benchmark even though that reusable workflow compiles the detector for both hosted architectures."
+required_change = "Route detect_worker_budget.rs through the benchmark component and bind the cross-architecture ownership edge in the static collector contract."
+verification = "Hosted validation-resource-contract and actionlint must pass, and a detector-only path must select both benchmark architectures."
+
+[[task]]
+id = "material-dataset-code-artifact-identities"
+status = "implemented_pending_ci"
+finding = "Material evidence graphs lacked independent dataset records and code-artifact inventories, allowing measurements and model runs to cite unresolved identities."
+required_change = "Add typed Dataset and CodeArtifact nodes, require each measurement artifact to belong to its resolved dataset, and require every model-run code artifact to resolve."
+verification = "Hosted materials_core tests must reject unknown datasets, measurement artifacts outside their dataset, and unknown model code artifacts."
+
+[[task]]
+id = "source-manifest-and-attribution-ownership"
+status = "implemented_pending_ci"
+finding = "The Casimir audit followed a symlinked retrieval manifest and accepted arbitrary nonempty actor, reason, tool, and evidence-limit text in retained source-observation receipts."
+required_change = "Reject symbolic links in every repository-relative manifest path component and bind all common receipt attribution and evidence-limit fields to the retained observation contract."
+verification = "Hosted audit tests must reject a symlinked manifest and mutations of receipt actor or tool attribution."
+
+[[task]]
+id = "exact-head-507e4b9b-terminal-denominator"
+status = "complete"
+finding = "Run 34914101985 reached a terminal 42-job fail-slow denominator: 17 jobs passed, 22 direct or transitive materials_core consumers failed on one unused dataset_ids binding, aggregate validation and docs-gate failed by construction, docs deployment skipped by pull-request policy, and no job was canceled."
+required_change = "Preserve dataset identity uniqueness validation while discarding the unused returned set, then run one replacement exact-head denominator."
+verification = "GitHub Actions run 34914101985 completed without cancellation at exact head 507e4b9b1a132126f685217f0836639a01d865e1; the complete failed-log census contains 24 instances of the same unused-variable diagnostic and no second Rust error code or failed test."
+
+[[task]]
+id = "material-dataset-uniqueness-result-binding"
+status = "implemented_pending_ci"
+finding = "MaterialEvidenceGraph validation assigned the successful dataset unique_ids result even though subsequent lookup uses datasets_by_id, so warnings-as-errors rejected every consumer."
+required_change = "Call unique_ids for validation side effects without binding its returned set."
+verification = "Replacement workspace Clippy and every materials_core consumer must compile without the unused-variable diagnostic."

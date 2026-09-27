@@ -1,0 +1,27 @@
+[transition]
+transition_timestamp = "2026-09-12T12:00:00Z"
+transition_key = "c716-passive-drude-lorentz-analytic-continuation"
+source_claim_id = "C-716"
+expected_prior_status = "Verified"
+experiment_verdict = "Falsifies"
+evidence_artifact_ids = ["LOCAL-CASIMIR-OPTICS-DISCRIMINATION"]
+experiment_ids = []
+exercised_falsifier = "Direct continuation of the legacy Lorentz denominator to imaginary frequency disagrees with epsilon(i*xi), while absolute-value postprocessing cannot restore analyticity or causality."
+proposed_claim_status = "Refuted"
+rationale = "Replace the mixed Fourier-sign convention and absolute-value repairs with one passive exp(-i*omega*t) Drude-Lorentz response. Preserve the historical claim as refuted and allocate a narrower implementation-conformance successor."
+unresolved_assumptions = ["Repository model parameters remain fitted or effective model inputs rather than specimen-calibrated all-frequency dielectric functions.", "Passive model conformance does not establish reversible WO3 state switching or force-mechanism specificity."]
+actor = "casimir-optics-discrimination-audit"
+reason = "Correct a causality-defective optical convention through append-only claim history"
+expected_source_state_sha256 = "5da8f68bfc82e47d75554ea26f1e96f596dcfeeb29162dc60b4d004da3d32d0b"
+expected_claim_id_max = 1756
+reserved_claim_ids = ["C-1757"]
+
+[[successor]]
+proposal_key = "passive-drude-lorentz-analytic-continuation"
+statement = "For the exp(-i*omega*t) convention, repository Drude and Lorentz terms use one passive damping sign, produce nonnegative imaginary permittivity for the audited passive models, and agree with the implemented imaginary-frequency continuation without absolute-value repairs. This establishes local implementation conformance only; specimen response, parameter uncertainty, switching history, and force-mechanism attribution remain unresolved."
+initial_status = "Verified"
+source_or_implementation_boundary = "crates/materials_core/src/optical_database.rs tests the real-axis sign, imaginary-axis oscillator continuation, passive refractive-index branch, loss, and conductivity; data/output/audit/casimir-optics-discrimination/summary.toml records a native Rust replay."
+required_falsifier = "A declared passive model yields negative Im(epsilon) on the audited positive-frequency domain, an oscillator differs from direct analytic continuation at i*xi, or a derived optical quantity requires an absolute-value sign repair."
+where_stated = ["crates/materials_core/src/optical_database.rs", "docs/engineering/casimir_optics_discrimination_contract.md", "data/output/audit/casimir-optics-discrimination/summary.toml"]
+evidence_artifact_ids = ["LOCAL-CASIMIR-OPTICS-DISCRIMINATION"]
+predecessor_relation_kind = "refines"

@@ -11,8 +11,8 @@
 //!   `P[7] = B3`      (magnetic field, phi-component)
 //!
 //! The 3-velocity v^i is defined as u^i / u^t where u^mu is the 4-velocity.
-//! B^i is the magnetic field in the fluid frame (actually the lab-frame
-//! spatial components of the dual of the Faraday tensor).
+//! B^i is the lab-frame magnetic field, given by the spatial components of
+//! the dual Faraday tensor.
 
 /// Number of primitive variables.
 pub const NPRIM: usize = 8;

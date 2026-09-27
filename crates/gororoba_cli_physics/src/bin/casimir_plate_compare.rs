@@ -1,18 +1,20 @@
 //! Casimir force comparison between dielectric plate pairs (Si, Ge, SiO2).
 //!
-//! Sweeps plate separation from 100 nm to 10 um and computes the Casimir
+//! Sweeps plate separation from 100 nm to 10 um at finite temperature and computes the Casimir
 //! energy (J/m^2), force (N/m^2), and eta = E/E_ideal for three symmetric
 //! material pairs: Si/Si, Ge/Ge, SiO2/SiO2.
+//! `E_ideal` is the zero-temperature ideal-mirror reference, so eta can exceed
+//! one when the finite-temperature zero mode dominates at large separation.
 //!
-//! Uses the correct Lifshitz formula with Gauss-Legendre quadrature (Sprint 45).
+//! Uses the Lifshitz formula with Gauss-Legendre quadrature.
 //! Two previously identified bugs in casimir_energy_density are fixed:
 //!   1. s_i = sqrt(p^2 + eps_i - 1), not sqrt(eps_i*p^2 + eps_i - 1)
 //!   2. Integration measure is p dp (not p^2 dp)
 //!
 //! Example usage:
 //! ```bash
-//! cargo run --release --bin casimir-plate-compare
-//! cargo run --release --bin casimir-plate-compare -- --n-matsubara 1000 --n-gauss 64
+//! cargo run --profile validation --bin casimir-plate-compare
+//! cargo run --profile validation --bin casimir-plate-compare -- --n-matsubara 1000 --n-gauss 64
 //! ```
 
 use clap::Parser;
@@ -20,7 +22,12 @@ use materials_core::{
     casimir_energy_ideal, casimir_lifshitz_energy, casimir_lifshitz_force, germanium_optical,
     silica_casimir_optical, silicon_optical,
 };
-use std::{f64::consts::PI, io::Write};
+use std::{
+    f64::consts::PI,
+    fs,
+    io::{self, Write},
+    path::PathBuf,
+};
 
 #[derive(Parser)]
 #[command(name = "casimir-plate-compare")]
@@ -41,6 +48,10 @@ struct Args {
     /// Number of separation points (log-spaced from 100 nm to 10 um)
     #[arg(long, default_value_t = 16)]
     n_points: usize,
+
+    /// Optional retained output path; stdout remains the default.
+    #[arg(long)]
+    output: Option<PathBuf>,
 }
 
 fn main() {
@@ -59,14 +70,9 @@ fn main() {
         .map(|i| d_min * (d_max / d_min).powf(i as f64 / (n - 1).max(1) as f64))
         .collect();
 
-    let stdout = std::io::stdout();
-    let mut out = stdout.lock();
+    let mut out = Vec::new();
 
-    writeln!(
-        out,
-        "# Casimir plate comparison (correct Lifshitz formula, Sprint 45)"
-    )
-    .unwrap();
+    writeln!(out, "# Casimir plate comparison (Lifshitz formula)").unwrap();
     writeln!(
         out,
         "# T={:.1} K, N_Matsubara={}, N_GL={}",
@@ -186,4 +192,11 @@ fn main() {
         2.0 * PI * 8.617_333_262e-5 * args.temperature_k * 1.519_267_447e15,
         args.temperature_k
     );
+    if let Some(path) = &args.output {
+        fs::write(path, &out).expect("write retained Casimir plate comparison");
+    } else {
+        io::stdout()
+            .write_all(&out)
+            .expect("write Casimir plate comparison to stdout");
+    }
 }

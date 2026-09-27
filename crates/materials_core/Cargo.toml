@@ -9,6 +9,7 @@ description = "Materials science: metamaterial absorbers, Tang mass predictions,
 repo_root = { workspace = true }
 algebra_analysis = { workspace = true }
 cd_kernel = { workspace = true }
+chrono = { workspace = true }
 csv = { workspace = true }
 fixedbitset = { workspace = true }
 gauss-quad = { workspace = true }
@@ -32,6 +33,7 @@ periodic-table-on-an-enum = { workspace = true }
 
 [dev-dependencies]
 approx = { workspace = true }
+tempfile = { workspace = true }
 
 [lints]
 workspace = true

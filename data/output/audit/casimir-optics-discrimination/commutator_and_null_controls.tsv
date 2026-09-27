@@ -1,0 +1,6 @@
+control	orientation	value	reference	error	seed	trials	critical_value	false_positive_fraction	simulated_power	analytic_power	resource_scope
+classical_commutator	forward	5.99999999999999978e-2	5.99999999999999978e-2	0.00000000000000000e0							ordinary_classical_control
+classical_commutator	reverse	-5.99999999999999978e-2	-5.99999999999999978e-2	0.00000000000000000e0							ordinary_classical_control
+source_branch_full_factorial_schedule		1.00000000000000000e0	1.00000000000000000e0	0.00000000000000000e0	20260911	100000	2.57582930354890083e0	1.02900000000000005e-2	8.93819999999999948e-1	8.94623655113001126e-1	independent_fixed_threshold_validation
+reported_selected_schedule_unreplayed		9.95361060200000014e-1					2.57582930354890039e0	1.01500000000000006e-2	7.57510000000000017e-1	7.59588000000000019e-1	missing_design_commutator_csv
+matched_active_sham_identity		3.75000000000000000e1	3.75000000000000000e1	0.00000000000000000e0							equal_noise_additional_acquisition

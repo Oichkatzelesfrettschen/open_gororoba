@@ -3,7 +3,7 @@
 
 [engineering_standards]
 authoritative = true
-updated = "2026-02-17"
+updated = "2026-09-12"
 status = "active"
 
 [engineering_standards.toolchain]
@@ -30,14 +30,14 @@ python_ratchet_policy = "Required Python linting applies only to changed files u
 mode = "two_speed"
 fast_iteration_scope = "crate_local"
 fast_iteration_commands = [
-    "WORKER_BUDGET=$(sh scripts/detect_worker_budget.sh) CARGO_BUILD_JOBS=$WORKER_BUDGET cargo check -p <crate> --all-targets",
-    "WORKER_BUDGET=$(sh scripts/detect_worker_budget.sh) CARGO_BUILD_JOBS=$WORKER_BUDGET RAYON_NUM_THREADS=$WORKER_BUDGET RUST_TEST_THREADS=$WORKER_BUDGET cargo nextest run --build-jobs $WORKER_BUDGET --test-threads $WORKER_BUDGET -p <crate> <filter-or-test>",
-    "WORKER_BUDGET=$(sh scripts/detect_worker_budget.sh) CARGO_BUILD_JOBS=$WORKER_BUDGET cargo clippy -p <crate> --all-targets -- -D warnings",
+    "cargo check -p <crate> --all-targets",
+    "cargo nextest run -p <crate> <filter-or-test>",
+    "cargo clippy -p <crate> --all-targets -- -D warnings",
 ]
-checkpoint_push_policy = "Allowed via git push --no-verify for rapid iteration only after focused crate gates pass."
-milestone_gate_policy = "Required for production claims and major merges: make check plus make rust-regression, with algebra_analysis and gr_core routed through cargo nextest --cargo-profile test-heavy, and with Python lint enforced as a changed-file ratchet rather than a full-repo legacy sweep."
-local_push_fast_path = "make validate-local keeps the Rust lint surface intentionally narrow: rust-regression-scoped runs cargo clippy over --lib --tests for the affected packages, then runs light nextest for the scoped regression surface. Full-target clippy coverage remains authoritative in CI and the full rust-regression lane."
-execution_topology = "Detect logical threads at runtime, divide by two to set the worker budget, apply that same budget to Cargo build jobs, nextest test threads, libtest test threads, and Rayon worker pools unless a narrower lane override is required."
+checkpoint_push_policy = "Push branch checkpoints normally; the repository installs no local hooks, and GitHub Actions owns validation verdicts."
+milestone_gate_policy = "Production claims and major merges require successful hosted validation; dispatch ci.yml with full=true for complete workspace and dependency validation."
+local_push_fast_path = "Focused Cargo commands provide developer diagnostics only; push the branch to run changed-owner lint and affected-consumer tests in GitHub Actions."
+execution_topology = "Each hosted Rust job uses std::thread::available_parallelism().get() unchanged for Cargo build jobs, nextest test threads, libtest test threads, Rayon worker pools, and Make --jobs."
 cargo_state_isolation = "Required validation lanes set repo-scoped CARGO_HOME=.cache/cargo-home and CARGO_TARGET_DIR=.cache/gate-target so multiple agents, MCP background checks, or neighboring repos do not contend on shared Cargo package/build locks."
 rationale = "Balance high-velocity iteration with strict milestone integrity."
 
@@ -86,11 +86,11 @@ property_testing = "proptest"
 benchmarking = "criterion"
 python_parallel_test_runner = "pytest-xdist"
 taxonomy = "smoke_regression_heavy"
-smoke_lane = "Dedicated fast suites only (`make smoke`, `make python-smoke`, `make rust-smoke`); Python smoke uses pytest-xdist with the shared worker budget and explicit plugin loading while optional-extension pytest cases marked `requires_ext` stay out of the default smoke lane."
-regression_lane = "Required default non-ignored coverage (`make test`, `make python-regression`, `make rust-regression`); Python regression uses pytest-xdist with the shared worker budget, and pytest cases marked `requires_ext` are excluded until the matching optional stack is installed explicitly."
-heavy_lane = "Ignored, GPU, and research-heavy suites (`make heavy`) with nextest heavy profile routing; opt-in Python extension suites run through `make python-requires-ext`."
+smoke_lane = "GitHub Actions runs the scoped fast suites selected by the changed-path router; focused local Cargo commands remain diagnostic only."
+regression_lane = "GitHub Actions runs required non-ignored coverage over affected consumers and scheduled full-workspace validation with nextest no-fail-fast semantics."
+heavy_lane = "GitHub Actions routes ignored, GPU, and research-heavy suites through their declared hosted workflows and profiles."
 inventory_source = "registry/test_taxonomy.toml via cargo run -p gororoba_cli_data --bin test-inventory -- --check"
-heavy_crate_policy = "Never use standard cargo test for algebra_analysis or gr_core; use cargo nextest with --cargo-profile test-heavy and the repo worker budget (logical threads / 2) for build threads, nextest test threads, libtest threads, and Rayon pools unless a stricter per-test override applies."
+heavy_crate_policy = "Never use standard cargo test for algebra_analysis or gr_core; hosted validation uses cargo nextest with --cargo-profile test-heavy and passes std::thread::available_parallelism().get() unchanged to build threads, nextest test threads, libtest threads, Rayon pools, and Make --jobs."
 
 [engineering_standards.documentation]
 public_api = "warn_missing_docs"

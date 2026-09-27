@@ -19,6 +19,7 @@
 //! - Grover (1996): Quantum search algorithm
 
 pub mod casimir;
+pub mod channel_admissibility;
 pub mod chrono_turbulence;
 pub mod correlation_measures;
 pub mod deka_voudon_qec;

@@ -1,0 +1,28 @@
+schema_version = 1
+observation_key = "casimir-optics-discrimination-lifshitz-1956"
+source_key = "LIFSHITZ-1956"
+actor = "codex"
+reason = "Admit retained source bytes through the typed first-observation contract without promoting scientific claims."
+requested_url = "https://www.jetp.ras.ru/cgi-bin/dn/e_002_01_0073.pdf"
+outcome = "body_retained"
+observed_at = "2026-09-12"
+time_precision = "day"
+tool = "curl (audit-manifest attribution)"
+request_evidence_limit = "The retained manifest associates source key, requested URL, observation day, and body digest. Raw request logs, final redirect URLs, and HTTP status are absent."
+absent_prior_expectation_reason = "The audit records observed body identities after retrieval; a hash-bound prerequest body expectation is absent."
+document_identity_limit = "Retained source bytes support source-proposition review only; they do not establish implementation conformance or physical measurement."
+
+[request_evidence]
+path = "data/output/audit/casimir-optics-discrimination/source-retrieval-manifest.toml"
+storage_sha256 = "f12acc9372491e7c7408652ea9bc6766d3037a717bece9c26b32bccf4af2c21a"
+encoding = "identity"
+decoded_sha256 = "f12acc9372491e7c7408652ea9bc6766d3037a717bece9c26b32bccf4af2c21a"
+decoded_bytes = 5045
+
+[body]
+path = "data/output/audit/casimir-optics-discrimination/sources/lifshitz-planar-media-1956.pdf"
+storage_sha256 = "94f6bd84212c0ae56f5121485507ee447146b1f866dc3b7787f0a2a8651a1d8c"
+encoding = "identity"
+decoded_sha256 = "94f6bd84212c0ae56f5121485507ee447146b1f866dc3b7787f0a2a8651a1d8c"
+decoded_bytes = 1317171
+
