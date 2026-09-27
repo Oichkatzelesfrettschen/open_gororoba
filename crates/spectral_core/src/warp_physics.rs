@@ -1,38 +1,15 @@
-//! Warp Ring Physics: Synthesis of p-adic, negative-dimension, and spectral analysis.
+//! Algebraic amplitude diagnostics with p-adic and spectral weights.
 //!
-//! This module bridges four conceptual domains that converge in the "warp ring"
-//! picture of turbulent energy transfer:
-//!
-//! 1. **Spectral triads**: Three-wave resonance k + p + q = 0 in turbulent flow.
-//!    Each triad transfers energy across scales (Richardson cascade).
-//!
-//! 2. **P-adic modulation**: The ultrametric hierarchy of scales introduces
-//!    a p-adic weighting on triad interaction strengths. Modes whose
-//!    wavenumber ratios have simple p-adic structure interact more strongly.
-//!
-//! 3. **Negative-dimension kernel**: The fractional Laplacian (-Delta)^{alpha/2}
-//!    with alpha < 0 acts as a smoothing (anti-diffusive) operator, creating
-//!    long-range correlations. In turbulence, this models the inverse cascade.
-//!
-//! 4. **Lie-algebraic structure**: E7 root system triads provide a discrete
-//!    template for the continuous spectral triads. The structure constants
-//!    N(k,p) determine which resonant interactions are algebraically favored.
-//!
-//! # Physics Picture
-//! The "warp ring" emerges when we project E7 triads onto 2D and overlay
-//! them with the spectral energy transfer from a turbulent field. The p-adic
-//! modulation weights each triad by its ultrametric distance from the
-//! dominant cascade mode, and the negative-dimension kernel regularizes
-//! the IR divergence that arises in inverse cascades.
-//!
-//! # Connection to Materials
-//! The metamaterial mapping (materials_core) assigns optical parameters
-//! (refractive index, thickness) to each ZD pair. When those parameters
-//! are viewed as spectral weights, they modulate the warp ring geometry:
-//! more "exotic" ZD pairs (higher index contrast) create stronger
-//! warp distortions in the projected E7 structure.
+//! Closed wavevector triples are classified using scalar amplitudes and
+//! user-chosen weights. These scores discard Fourier phase and polarization;
+//! they do not implement the Navier-Stokes nonlinearity or signed transfer.
+//! E7 root overlays are algebraic classifications, with no established
+//! equivalence to the Fourier operator. Applying these weights or filters
+//! during time evolution defines modified equations unless an exact
+//! change-of-basis equivalence is separately proved.
 
 use gororoba_algebra::construction::padic::vp_int;
+use gororoba_algebra::lie::group_theory::is_prime;
 use ndarray::Array2;
 use num_complex::Complex64;
 use std::f64::consts::PI;
@@ -40,7 +17,7 @@ use std::f64::consts::PI;
 /// Configuration for a warp-ring spectral analysis.
 #[derive(Debug, Clone)]
 pub struct WarpRingConfig {
-    /// Prime for p-adic modulation (typically 2 for dyadic cascade)
+    /// Prime for the algebraic p-adic weighting (2 for dyadic indices).
     pub prime: u64,
     /// Fractional Laplacian exponent (alpha < 0 for negative dimension)
     pub alpha: f64,
@@ -66,10 +43,8 @@ impl Default for WarpRingConfig {
 /// Given wavevector magnitudes |k|, |p|, |q|, compute the p-adic weight:
 ///   w = p^{-max(v_p(k_int), v_p(p_int), v_p(q_int))}
 ///
-/// Modes at dyadic scales (k = 2^n) get weight 2^{-n}, reflecting the
-/// hierarchical (ultrametric) structure of the Richardson cascade.
-///
-/// The idea: simple p-adic structure => stronger interaction.
+/// Modes at dyadic indices k = 2^n receive weight 2^{-n}.
+/// This is a chosen classification weight, not a measured interaction rate.
 pub fn padic_triad_weight(k_mag: f64, p_mag: f64, q_mag: f64, prime: u64) -> f64 {
     // Convert to integer wavenumber indices (nearest nonzero integer)
     let k_int = (k_mag.round() as i64).max(1);
@@ -124,7 +99,7 @@ pub fn apply_neg_dim_kernel(
 ///
 /// For each radial wavenumber bin, weights the power by the p-adic valuation
 /// of the bin index. Bins at power-of-p scales get suppressed, revealing
-/// the non-dyadic structure in the cascade.
+/// the non-dyadic index classes in this algebraic diagnostic.
 pub fn padic_power_spectrum(
     field_hat: &Array2<Complex64>,
     domain_size: f64,
@@ -179,27 +154,39 @@ pub struct WarpTriad {
     pub k: [i32; 2],
     pub p: [i32; 2],
     pub q: [i32; 2],
-    /// Spectral energy transfer magnitude
-    pub energy_transfer: f64,
+    /// Scalar three-mode amplitude product, without phase or polarization.
+    pub triad_amplitude_proxy: f64,
     /// P-adic modulation weight
     pub padic_weight: f64,
     /// Negative-dimension kernel weight at mode k
     pub neg_dim_weight: f64,
-    /// Combined warp weight = energy * padic * neg_dim
-    pub warp_weight: f64,
+    /// Amplitude product multiplied by p-adic and spectral weights.
+    pub triad_weighted_amplitude: f64,
 }
 
 /// Extract warp-ring triads from a 2D turbulent field.
 ///
 /// Combines spectral triad extraction with p-adic modulation and
 /// negative-dimension kernel weighting to produce the full warp-ring
-/// triad set.
+/// triad set. Amplitudes retain the normalization of field_hat; supply F/N
+/// for Fourier-series coefficients. Phase invariance is an intentional
+/// limitation of this proxy, not evidence of phase-insensitive dynamics.
 pub fn extract_warp_triads(
     field_hat: &Array2<Complex64>,
     config: &WarpRingConfig,
-    energy_threshold: f64,
+    amplitude_threshold: f64,
 ) -> Vec<WarpTriad> {
     let (nx, ny) = field_hat.dim();
+    assert!(amplitude_threshold.is_finite() && amplitude_threshold >= 0.0);
+    assert!(config.domain_size.is_finite() && config.domain_size > 0.0);
+    assert!(config.alpha.is_finite());
+    assert!(config.epsilon.is_finite() && config.epsilon > 0.0);
+    assert!(is_prime(config.prime));
+    assert!(
+        field_hat
+            .iter()
+            .all(|z| z.re.is_finite() && z.im.is_finite())
+    );
     let half_x = (nx / 2) as i32;
     let half_y = (ny / 2) as i32;
     let l = config.domain_size;
@@ -263,9 +250,11 @@ pub fn extract_warp_triads(
                     let uk = field_hat[[ki, kj]];
                     let up = field_hat[[pi, pj]];
 
-                    // Energy transfer estimate: |u_k| * |u_p|
-                    let energy = uk.norm() * up.norm();
-                    if energy < energy_threshold {
+                    let qi = qx.rem_euclid(nx as i32) as usize;
+                    let qj = qy.rem_euclid(ny as i32) as usize;
+                    let uq = field_hat[[qi, qj]];
+                    let amplitude = uk.norm() * up.norm() * uq.norm();
+                    if !amplitude.is_finite() || amplitude <= amplitude_threshold {
                         continue;
                     }
 
@@ -281,16 +270,19 @@ pub fn extract_warp_triads(
                     let k_phys = (kx_phys * kx_phys + ky_phys * ky_phys).sqrt();
                     let ndw = (k_phys + eps).powf(alpha);
 
-                    let warp_weight = energy * pw * ndw;
+                    let triad_weighted_amplitude = amplitude * pw * ndw;
+                    if !triad_weighted_amplitude.is_finite() || triad_weighted_amplitude <= 0.0 {
+                        continue;
+                    }
 
                     triads.push(WarpTriad {
                         k: [kx, ky],
                         p: [px, py],
                         q: [qx, qy],
-                        energy_transfer: energy,
+                        triad_amplitude_proxy: amplitude,
                         padic_weight: pw,
                         neg_dim_weight: ndw,
-                        warp_weight,
+                        triad_weighted_amplitude,
                     });
                 }
             }
@@ -299,8 +291,8 @@ pub fn extract_warp_triads(
 
     // Sort by warp weight descending
     triads.sort_by(|a, b| {
-        b.warp_weight
-            .partial_cmp(&a.warp_weight)
+        b.triad_weighted_amplitude
+            .partial_cmp(&a.triad_weighted_amplitude)
             .unwrap_or(std::cmp::Ordering::Equal)
     });
     triads
@@ -312,7 +304,7 @@ pub fn extract_warp_triads(
 /// P_warp(k) = P(k) * (k + epsilon)^alpha
 ///
 /// For alpha < 0, this enhances low-k (large-scale) modes and suppresses
-/// high-k modes, modeling the effect of inverse cascade in the warp geometry.
+/// high-k modes. This spectral reweighting does not establish a physical cascade.
 pub fn warp_spectral_density(k_bins: &[f64], power: &[f64], config: &WarpRingConfig) -> Vec<f64> {
     k_bins
         .iter()
@@ -327,6 +319,7 @@ pub fn warp_spectral_density(k_bins: &[f64], power: &[f64], config: &WarpRingCon
 #[cfg(test)]
 mod tests {
     use super::*;
+    use crate::ndfft::fft_2d;
 
     #[test]
     fn test_padic_triad_weight_dyadic() {
@@ -440,11 +433,11 @@ mod tests {
         let config = WarpRingConfig::default();
         let triads = extract_warp_triads(&field, &config, 0.0);
 
-        // Should be sorted by warp_weight descending
+        // Should be sorted by triad_weighted_amplitude descending
         for i in 1..triads.len() {
             assert!(
-                triads[i].warp_weight <= triads[i - 1].warp_weight,
-                "Triads should be sorted by warp_weight descending"
+                triads[i].triad_weighted_amplitude <= triads[i - 1].triad_weighted_amplitude,
+                "Triads should be sorted by triad_weighted_amplitude descending"
             );
         }
     }
@@ -460,7 +453,98 @@ mod tests {
         for t in &triads {
             assert!(t.padic_weight > 0.0, "P-adic weight must be positive");
             assert!(t.neg_dim_weight > 0.0, "Neg-dim weight must be positive");
-            assert!(t.warp_weight >= 0.0, "Warp weight must be non-negative");
+            assert!(
+                t.triad_weighted_amplitude >= 0.0,
+                "Warp weight must be non-negative"
+            );
+        }
+    }
+
+    #[test]
+    fn test_amplitude_proxy_requires_three_modes_and_ignores_phase() {
+        let mut field = Array2::zeros((8, 8));
+        field[[1, 0]] = Complex64::new(2.0, 0.0);
+        field[[0, 1]] = Complex64::new(3.0, 0.0);
+        let config = WarpRingConfig::default();
+        assert!(extract_warp_triads(&field, &config, 0.0).is_empty());
+        field[[7, 7]] = Complex64::new(4.0, 0.0);
+        let before = extract_warp_triads(&field, &config, 0.0);
+        assert!(!before.is_empty());
+        assert!(before.iter().all(|t| t.triad_amplitude_proxy == 24.0));
+        field[[7, 7]] *= Complex64::new(0.0, 1.0);
+        let after = extract_warp_triads(&field, &config, 0.0);
+        assert_eq!(before.len(), after.len());
+        for (a, b) in before.iter().zip(&after) {
+            assert_eq!(a.triad_weighted_amplitude, b.triad_weighted_amplitude);
+        }
+        field.mapv_inplace(|z| z * 2.0);
+        let scaled = extract_warp_triads(&field, &config, 0.0);
+        assert!(scaled.iter().all(|t| t.triad_amplitude_proxy == 192.0));
+    }
+
+    #[test]
+    fn test_overflowed_triad_amplitude_is_rejected() {
+        let mut field = Array2::zeros((8, 8));
+        field[[1, 0]] = Complex64::new(1.0e110, 0.0);
+        field[[0, 1]] = Complex64::new(1.0e110, 0.0);
+        field[[7, 7]] = Complex64::new(1.0e110, 0.0);
+        assert!(extract_warp_triads(&field, &WarpRingConfig::default(), 0.0).is_empty());
+    }
+
+    #[test]
+    fn test_extract_warp_triads_rejects_invalid_config() {
+        let field = Array2::from_elem((8, 8), Complex64::new(1.0, 0.0));
+        for config in [
+            WarpRingConfig {
+                domain_size: 0.0,
+                ..WarpRingConfig::default()
+            },
+            WarpRingConfig {
+                alpha: f64::NAN,
+                ..WarpRingConfig::default()
+            },
+            WarpRingConfig {
+                epsilon: f64::NAN,
+                ..WarpRingConfig::default()
+            },
+            WarpRingConfig {
+                epsilon: 0.0,
+                ..WarpRingConfig::default()
+            },
+            WarpRingConfig {
+                prime: 1,
+                ..WarpRingConfig::default()
+            },
+            WarpRingConfig {
+                prime: 4,
+                ..WarpRingConfig::default()
+            },
+        ] {
+            assert!(
+                std::panic::catch_unwind(|| extract_warp_triads(&field, &config, 0.0)).is_err()
+            );
+        }
+    }
+
+    #[test]
+    fn test_fourier_series_triad_threshold_is_resolution_independent() {
+        let config = WarpRingConfig::default();
+        for size in [8, 16] {
+            let field = Array2::from_shape_fn((size, size), |(x, y)| {
+                let x_phase = 2.0 * PI * x as f64 / size as f64;
+                let y_phase = 2.0 * PI * y as f64 / size as f64;
+                Complex64::new(
+                    x_phase.sin() + y_phase.sin() + (x_phase + y_phase).sin(),
+                    0.0,
+                )
+            });
+            let coefficients = fft_2d(&field).mapv(|value| value / (size * size) as f64);
+            let triads = extract_warp_triads(&coefficients, &config, 0.1);
+            let target = triads
+                .iter()
+                .find(|triad| triad.k == [-1, -1] && triad.p == [0, 1] && triad.q == [1, 0])
+                .unwrap();
+            assert!((target.triad_amplitude_proxy - 0.125).abs() < 1e-12);
         }
     }
 

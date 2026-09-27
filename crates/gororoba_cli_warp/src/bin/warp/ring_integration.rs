@@ -23,7 +23,7 @@ use gororoba_engine::{SimulationConfig, SimulationState};
 use gr_core::{kerr::Kerr, sedenion_geodesic::sedenion_homotopy_step};
 use lbm_core::{
     CX, W,
-    turbulence::{extract_dominant_triads, power_spectrum},
+    turbulence::{count_unique_triads, extract_dominant_triads, power_spectrum},
 };
 use log::info;
 use materials_core::{
@@ -228,9 +228,10 @@ pub fn run() -> Result<(), Box<dyn std::error::Error>> {
     // At force_amp=1e-4, 64x64, Re~10: dominant triple product ~ 5e-11.
     // 1e-12 captures the energetically significant triads, rejects numerical noise.
     let spectral_triads = extract_dominant_triads(&u, &v, 1e-12);
+    let spectral_triad_count = count_unique_triads(&spectral_triads);
     info!(
         "      Found {} spectral triads (standard).",
-        spectral_triads.len()
+        spectral_triad_count
     );
 
     // -- Step 3: Warp Physics -- P-adic Modulation + Neg-Dim Kernel --
@@ -249,8 +250,10 @@ pub fn run() -> Result<(), Box<dyn std::error::Error>> {
         u_hat_warp[[0, 0]].norm() / u_hat[[0, 0]].norm().max(1e-30)
     );
 
-    // Extract warp triads (with p-adic + neg-dim weights)
-    let warp_triads = extract_warp_triads(&u_hat, &warp_config, 1.0);
+    // The forward FFT is unnormalized; the triad threshold uses Fourier-series amplitudes.
+    let sample_count = (nx * ny) as f64;
+    let u_hat_series = u_hat.mapv(|coefficient| coefficient / sample_count);
+    let warp_triads = extract_warp_triads(&u_hat_series, &warp_config, 1e-12);
     info!(
         "      Found {} warp triads (p-adic + neg-dim weighted).",
         warp_triads.len()
@@ -259,7 +262,7 @@ pub fn run() -> Result<(), Box<dyn std::error::Error>> {
     if let Some(top) = warp_triads.first() {
         info!(
             "      Top triad: k={:?}, padic_w={:.4}, negdim_w={:.4}, warp_w={:.4}",
-            top.k, top.padic_weight, top.neg_dim_weight, top.warp_weight
+            top.k, top.padic_weight, top.neg_dim_weight, top.triad_weighted_amplitude
         );
     }
 
@@ -555,7 +558,7 @@ pub fn run() -> Result<(), Box<dyn std::error::Error>> {
             .map(|(x, y)| Circle::new((*x, *y), 2, RED.filled())),
     )?;
 
-    // Layer 3: Active algebraic triads (cyan lines, energy flow)
+    // E7 adjacency overlay; line geometry does not encode physical transfer.
     for triad in &active_algebra_triads {
         let (k_x, k_y) = project_to_plane(&triad.k.root);
         let (p_x, p_y) = project_to_plane(&triad.p.root);
@@ -578,7 +581,7 @@ pub fn run() -> Result<(), Box<dyn std::error::Error>> {
         let qx = t.q[0] as f64 * scale;
         let qy = t.q[1] as f64 * scale;
 
-        let alpha = (t.warp_weight / warp_triads[0].warp_weight).min(1.0);
+        let alpha = (t.triad_weighted_amplitude / warp_triads[0].triad_weighted_amplitude).min(1.0);
         let color = HSLColor(0.33, 1.0, 0.4); // Green
         chart.draw_series(LineSeries::new(
             vec![(kx, ky), (px, py), (qx, qy), (kx, ky)],
@@ -632,7 +635,7 @@ pub fn run() -> Result<(), Box<dyn std::error::Error>> {
     // -- Summary --
     info!("--- Warp Ring Summary ---");
     info!("  LBM: {}x{}, tau={}, {} steps", nx, ny, lbm_tau, lbm_steps);
-    info!("  Spectral triads (standard): {}", spectral_triads.len());
+    info!("  Spectral triads (standard): {}", spectral_triad_count);
     info!("  Warp triads (p-adic + neg-dim): {}", warp_triads.len());
     info!(
         "  Materials: {} ZD layers, {} physical",
