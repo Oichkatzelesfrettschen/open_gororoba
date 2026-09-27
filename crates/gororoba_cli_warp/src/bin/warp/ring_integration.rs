@@ -23,7 +23,7 @@ use gororoba_engine::{SimulationConfig, SimulationState};
 use gr_core::{kerr::Kerr, sedenion_geodesic::sedenion_homotopy_step};
 use lbm_core::{
     CX, W,
-    turbulence::{extract_dominant_triads, power_spectrum},
+    turbulence::{count_unique_triads, extract_dominant_triads, power_spectrum},
 };
 use log::info;
 use materials_core::{
@@ -228,9 +228,10 @@ pub fn run() -> Result<(), Box<dyn std::error::Error>> {
     // At force_amp=1e-4, 64x64, Re~10: dominant triple product ~ 5e-11.
     // 1e-12 captures the energetically significant triads, rejects numerical noise.
     let spectral_triads = extract_dominant_triads(&u, &v, 1e-12);
+    let spectral_triad_count = count_unique_triads(&spectral_triads);
     info!(
         "      Found {} spectral triads (standard).",
-        spectral_triads.len()
+        spectral_triad_count
     );
 
     // -- Step 3: Warp Physics -- P-adic Modulation + Neg-Dim Kernel --
@@ -632,7 +633,7 @@ pub fn run() -> Result<(), Box<dyn std::error::Error>> {
     // -- Summary --
     info!("--- Warp Ring Summary ---");
     info!("  LBM: {}x{}, tau={}, {} steps", nx, ny, lbm_tau, lbm_steps);
-    info!("  Spectral triads (standard): {}", spectral_triads.len());
+    info!("  Spectral triads (standard): {}", spectral_triad_count);
     info!("  Warp triads (p-adic + neg-dim): {}", warp_triads.len());
     info!(
         "  Materials: {} ZD layers, {} physical",
