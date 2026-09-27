@@ -17,7 +17,9 @@ use gororoba_cli::warp_gate_policy::{
 use gororoba_contracts::{WarpRingConfig, WarpRingExperiment, WarpRingResults};
 use gororoba_engine::simulation::{E7SpectralFilter, SimulationConfig3D, SimulationState3D};
 use lbm_3d_cuda::Precision;
-use lbm_core::turbulence::{extract_dominant_triads, power_spectrum, triad_clustering_coefficient};
+use lbm_core::turbulence::{
+    count_unique_triads, extract_dominant_triads, power_spectrum, triad_clustering_coefficient,
+};
 use ndarray::Array2;
 #[cfg(feature = "hdf5-export")]
 use std::collections::BTreeMap;
@@ -445,7 +447,7 @@ fn compute_midplane_spectral_signature(
     let total_power: f64 = power.iter().sum();
     let slope = fit_loglog_slope(&k_axis, &power);
     let triads = extract_dominant_triads(&ux_plane, &uy_plane, 1.0e-12);
-    let triad_count = triads.len() as f64;
+    let triad_count = count_unique_triads(&triads) as f64;
     let triad_clustering = if triads.is_empty() {
         0.0
     } else {

@@ -249,7 +249,7 @@ pub fn extract_warp_triads(
                     let qj = qy.rem_euclid(ny as i32) as usize;
                     let uq = field_hat[[qi, qj]];
                     let amplitude = uk.norm() * up.norm() * uq.norm();
-                    if amplitude <= amplitude_threshold {
+                    if !amplitude.is_finite() || amplitude <= amplitude_threshold {
                         continue;
                     }
 
@@ -266,6 +266,9 @@ pub fn extract_warp_triads(
                     let ndw = (k_phys + eps).powf(alpha);
 
                     let triad_weighted_amplitude = amplitude * pw * ndw;
+                    if !triad_weighted_amplitude.is_finite() || triad_weighted_amplitude <= 0.0 {
+                        continue;
+                    }
 
                     triads.push(WarpTriad {
                         k: [kx, ky],
@@ -471,6 +474,15 @@ mod tests {
         field.mapv_inplace(|z| z * 2.0);
         let scaled = extract_warp_triads(&field, &config, 0.0);
         assert!(scaled.iter().all(|t| t.triad_amplitude_proxy == 192.0));
+    }
+
+    #[test]
+    fn test_overflowed_triad_amplitude_is_rejected() {
+        let mut field = Array2::zeros((8, 8));
+        field[[1, 0]] = Complex64::new(1.0e110, 0.0);
+        field[[0, 1]] = Complex64::new(1.0e110, 0.0);
+        field[[7, 7]] = Complex64::new(1.0e110, 0.0);
+        assert!(extract_warp_triads(&field, &WarpRingConfig::default(), 0.0).is_empty());
     }
 
     #[test]

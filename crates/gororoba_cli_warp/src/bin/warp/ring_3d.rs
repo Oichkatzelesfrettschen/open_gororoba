@@ -17,7 +17,7 @@ use gororoba_contracts::{WarpRingConfig, WarpRingExperiment, WarpRingResults};
 use gororoba_engine::simulation::{
     E7SpectralFilter, LbmBackend3D, SimulationConfig3D, SimulationState3D,
 };
-use lbm_core::turbulence::extract_dominant_triads_3d;
+use lbm_core::turbulence::{count_unique_triads_3d, extract_dominant_triads_3d};
 use std::{error::Error, path::Path};
 use tracing::info;
 
@@ -137,7 +137,10 @@ pub fn run() -> Result<(), Box<dyn Error>> {
 
     let (ux, uy, uz) = state.fluid.try_velocity(nx, ny, nz)?;
     let triads = extract_dominant_triads_3d(&ux, &uy, &uz, 1e-6);
-    info!("      Found {} dominant 3D triads.", triads.len());
+    info!(
+        "      Found {} dominant 3D triads.",
+        count_unique_triads_3d(&triads)
+    );
 
     info!("[4/5] Loading E7 Roots for Geometry Mapping...");
     let roots = generate_e7_roots();
