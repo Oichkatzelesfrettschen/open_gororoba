@@ -284,6 +284,22 @@ fn zero_128_grid_has_no_dominant_triads() {
 }
 
 #[test]
+fn repeated_harmonic_mode_forms_a_closed_triple() {
+    let transverse_velocity = Array3::from_shape_fn((16, 16, 16), |(x, _, _)| {
+        let phase = std::f64::consts::TAU * x as f64 / 16.0;
+        phase.cos() + (2.0 * phase).cos()
+    });
+    let zero = Array3::zeros((16, 16, 16));
+    let triads = extract_dominant_triads_3d(&zero, &transverse_velocity, &zero, 1e-8);
+    assert_eq!(triads.len(), 6);
+    assert!(triads.iter().any(|triad| {
+        let mut modes = [triad.k, triad.p, triad.q];
+        modes.sort_unstable();
+        modes == [[-2, 0, 0], [1, 0, 0], [1, 0, 0]]
+    }));
+}
+
+#[test]
 fn two_dimensional_transfer_uses_both_velocity_components() {
     let t = calculate_triad_energy_transfer(
         [1, 2],

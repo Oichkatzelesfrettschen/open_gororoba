@@ -454,7 +454,7 @@ pub fn extract_dominant_triads_3d(
     let mut triads = Vec::new();
     for &((kx1, ky1, kz1), a_k) in &active_modes {
         for &((kx2, ky2, kz2), a_p) in &active_modes {
-            if (kx1, ky1, kz1) >= (kx2, ky2, kz2) {
+            if (kx1, ky1, kz1) > (kx2, ky2, kz2) {
                 continue;
             }
             let qx = -(kx1 + kx2);
@@ -466,7 +466,7 @@ pub fn extract_dominant_triads_3d(
             if (qx, qy, qz) == (0, 0, 0) {
                 continue;
             }
-            if (qx, qy, qz) <= (kx2, ky2, kz2) {
+            if (qx, qy, qz) < (kx2, ky2, kz2) {
                 continue;
             }
 
