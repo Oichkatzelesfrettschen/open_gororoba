@@ -314,6 +314,10 @@ impl NonlinearityEvaluation {
 
 /// Evaluate `N_k = -i P_k sum_{p+q=k} (q.u_hat[p]) u_hat[q]`.
 pub trait NavierStokesNonlinearity {
+    fn validate_retained_cutoff(&self, retained_cutoff: i32) -> Result<(), SpectralError> {
+        validate_cutoff(retained_cutoff)
+    }
+
     fn evaluate(
         &self,
         field: &VectorField3D,
@@ -398,6 +402,19 @@ impl DealiasedConvolution {
 }
 
 impl NavierStokesNonlinearity for DealiasedConvolution {
+    fn validate_retained_cutoff(&self, retained_cutoff: i32) -> Result<(), SpectralError> {
+        validate_cutoff(retained_cutoff)?;
+        let required = (retained_cutoff as usize)
+            .checked_mul(4)
+            .ok_or_else(|| invalid("FFT cutoff overflows usize"))?;
+        if self.grid_size <= required {
+            return Err(invalid(
+                "full-product dealiasing requires FFT side length N > 4 K",
+            ));
+        }
+        Ok(())
+    }
+
     fn evaluate(
         &self,
         field: &VectorField3D,
@@ -407,7 +424,7 @@ impl NavierStokesNonlinearity for DealiasedConvolution {
         validate_cutoff(retained_cutoff)?;
         field.validate_incompressible_real(constraint_tolerance)?;
         let n = self.grid_size;
-        let k = field.cutoff() as usize;
+        let k = field.cutoff().max(retained_cutoff) as usize;
         if k.checked_mul(4).is_none_or(|required| n <= required) {
             return Err(invalid(
                 "full-product dealiasing requires FFT side length N > 4 K",
@@ -623,7 +640,7 @@ impl<C: NavierStokesNonlinearity> SpectralReferenceSolver<C> {
         constraint_tolerance: f64,
     ) -> Result<Self, SpectralError> {
         validate_viscosity(viscosity)?;
-        validate_cutoff(retained_cutoff)?;
+        nonlinearity.validate_retained_cutoff(retained_cutoff)?;
         validate_tolerance(constraint_tolerance)?;
         Ok(Self {
             nonlinearity,
@@ -1000,6 +1017,28 @@ mod tests {
         // isize::MAX for the first and overflow usize for the second.
         assert!(DealiasedConvolution::new(1_000_000, usize::MAX).is_err());
         assert!(DealiasedConvolution::new(2_000_000, usize::MAX).is_err());
+    }
+
+    #[test]
+    fn fft_solver_rejects_padding_below_retained_cutoff() {
+        assert!(
+            SpectralReferenceSolver::new(
+                DealiasedConvolution::new(5, 125).unwrap(),
+                0.1,
+                2,
+                TOLERANCE,
+            )
+            .is_err()
+        );
+        assert!(
+            SpectralReferenceSolver::new(
+                DealiasedConvolution::new(9, 729).unwrap(),
+                0.1,
+                2,
+                TOLERANCE,
+            )
+            .is_ok()
+        );
     }
 
     #[test]
