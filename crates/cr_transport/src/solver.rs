@@ -1,7 +1,7 @@
 //! Parker Transport Equation (PTE) solver.
 //!
 //! Implements Strang operator splitting:
-//!   1. Spatial diffusion (ADI sweeps, Crank-Nicolson)
+//!   1. Spatial diffusion (positive, conservative backward-Euler sweeps)
 //!   2. Spatial advection (upwind, 1st order)
 //!   3. Adiabatic momentum deceleration (upwind in ln p)
 //!   4. Source injection (explicit Euler)
@@ -316,45 +316,18 @@ impl PteSolver {
                 for along_axis in 0..axis_length {
                     coordinates[axis] = along_axis;
                     let cell = self.idx(coordinates[0], coordinates[1], coordinates[2]);
-                    let half_mu_previous = 0.5
-                        * face_mu[if periodic {
-                            (along_axis + axis_length - 1) % axis_length
-                        } else {
-                            along_axis
-                        }];
-                    let half_mu_next =
-                        0.5 * face_mu[if periodic { along_axis } else { along_axis + 1 }];
+                    let mu_previous = face_mu[if periodic {
+                        (along_axis + axis_length - 1) % axis_length
+                    } else {
+                        along_axis
+                    }];
+                    let mu_next = face_mu[if periodic { along_axis } else { along_axis + 1 }];
                     let center = self.f[cell * self.n_p + p_idx];
-                    let previous = if along_axis > 0 {
-                        coordinates[axis] = along_axis - 1;
-                        let neighbor = self.idx(coordinates[0], coordinates[1], coordinates[2]);
-                        self.f[neighbor * self.n_p + p_idx]
-                    } else if periodic {
-                        coordinates[axis] = axis_length - 1;
-                        let neighbor = self.idx(coordinates[0], coordinates[1], coordinates[2]);
-                        self.f[neighbor * self.n_p + p_idx]
-                    } else {
-                        center
-                    };
-                    let next = if along_axis + 1 < axis_length {
-                        coordinates[axis] = along_axis + 1;
-                        let neighbor = self.idx(coordinates[0], coordinates[1], coordinates[2]);
-                        self.f[neighbor * self.n_p + p_idx]
-                    } else if periodic {
-                        coordinates[axis] = 0;
-                        let neighbor = self.idx(coordinates[0], coordinates[1], coordinates[2]);
-                        self.f[neighbor * self.n_p + p_idx]
-                    } else {
-                        center
-                    };
-                    coordinates[axis] = along_axis;
 
-                    lower[along_axis] = -half_mu_previous;
-                    upper[along_axis] = -half_mu_next;
-                    diagonal[along_axis] = 1.0 + half_mu_previous + half_mu_next;
-                    rhs[along_axis] = center
-                        + half_mu_previous * (previous - center)
-                        + half_mu_next * (next - center);
+                    lower[along_axis] = -mu_previous;
+                    upper[along_axis] = -mu_next;
+                    diagonal[along_axis] = 1.0 + mu_previous + mu_next;
+                    rhs[along_axis] = center;
                 }
 
                 let solution = if periodic {
@@ -365,7 +338,7 @@ impl PteSolver {
                 for (along_axis, value) in solution.into_iter().enumerate() {
                     coordinates[axis] = along_axis;
                     let cell = self.idx(coordinates[0], coordinates[1], coordinates[2]);
-                    self.f[cell * self.n_p + p_idx] = value.max(0.0);
+                    self.f[cell * self.n_p + p_idx] = value;
                 }
             }
         }
@@ -628,7 +601,7 @@ mod tests {
         let observed_amplification = gaussian_mode_amplitude(&solver, axis, 0) / initial_amplitude;
         let discrete_eigenvalue = 4.0 * (std::f64::consts::PI / axis_length as f64).sin().powi(2);
         let full_step_rate = diffusivity * discrete_eigenvalue * solver.dt_s;
-        let half_step_amplification = (1.0 - full_step_rate / 4.0) / (1.0 + full_step_rate / 4.0);
+        let half_step_amplification = 1.0 / (1.0 + full_step_rate / 2.0);
         let expected_amplification = half_step_amplification * half_step_amplification;
         (observed_amplification, expected_amplification, diffusivity)
     }
@@ -708,7 +681,7 @@ mod tests {
     }
 
     #[test]
-    fn uniform_diffusivity_y_sweep_matches_previous_cn_result() {
+    fn uniform_diffusivity_y_sweep_matches_backward_euler() {
         let ny = 10;
         let config = DiffusionConfig {
             kappa_0_au2_per_s: 0.4,
@@ -737,18 +710,10 @@ mod tests {
 
         let tensor = diffusion_tensor([0.0, 1.0, 0.0], 1.0, 1.0, &config);
         let mu = tensor[1][1] * dt_s / dx_au.powi(2);
-        let half_mu = 0.5 * mu;
-        let lower = vec![-half_mu; ny];
-        let diagonal = vec![1.0 + mu; ny];
-        let upper = vec![-half_mu; ny];
-        let mut rhs = vec![0.0; ny];
-        for y in 0..ny {
-            let previous = initial[(y + ny - 1) % ny];
-            let center = initial[y];
-            let next = initial[(y + 1) % ny];
-            rhs[y] = center + half_mu * (previous - 2.0 * center + next);
-        }
-        let expected = PteSolver::cyclic_thomas_solve(&lower, &diagonal, &upper, &rhs);
+        let lower = vec![-mu; ny];
+        let diagonal = vec![1.0 + 2.0 * mu; ny];
+        let upper = vec![-mu; ny];
+        let expected = PteSolver::cyclic_thomas_solve(&lower, &diagonal, &upper, &initial);
 
         solver.diffuse_y_sweep((&field_x, &field_y, &field_z), 1.0, 0, dt_s);
         for (y, expected_value) in expected.iter().enumerate() {
@@ -757,6 +722,68 @@ mod tests {
                 (observed - expected_value).abs() < 1.0e-12,
                 "uniform-K sweep changed y={y}: {observed} vs {expected_value}"
             );
+        }
+    }
+
+    #[test]
+    fn impulse_diffusion_preserves_mass_and_positivity_at_large_diffusion_numbers() {
+        let line_length = 16;
+        for axis in 0..3 {
+            let mut dimensions = [1; 3];
+            dimensions[axis] = line_length;
+            for diffusion_number in [0.5, 2.0, 10.0] {
+                let grid = RigidityGrid::new(2, 1.0, 2.0);
+                let config = DiffusionConfig {
+                    kappa_0_au2_per_s: 1.0,
+                    r_ref_gv: 1.0,
+                    alpha: 0.0,
+                    epsilon_perp: 0.1,
+                    solar_epoch_a: 0.0,
+                };
+                let mut solver = PteSolver::new(
+                    dimensions[0],
+                    dimensions[1],
+                    dimensions[2],
+                    grid,
+                    config,
+                    diffusion_number,
+                    1.0,
+                );
+                let mut field = [0.0; 3];
+                field[axis] = 5.0;
+                let field_components = [
+                    vec![field[0]; line_length],
+                    vec![field[1]; line_length],
+                    vec![field[2]; line_length],
+                ];
+                solver.f[(line_length / 2) * solver.n_p] = 1.0;
+                solver.diffuse_axis_sweep(
+                    axis,
+                    axis != 0,
+                    (
+                        &field_components[0],
+                        &field_components[1],
+                        &field_components[2],
+                    ),
+                    1.0,
+                    0,
+                    diffusion_number,
+                );
+                let values: Vec<f64> = (0..line_length)
+                    .map(|position| solver.f[position * solver.n_p])
+                    .collect();
+                let final_sum: f64 = values.iter().sum();
+                assert!(
+                    values
+                        .iter()
+                        .all(|value| value.is_finite() && *value >= 0.0),
+                    "axis {axis}, diffusion number {diffusion_number}: {values:?}"
+                );
+                assert!(
+                    (final_sum - 1.0).abs() < 1e-12,
+                    "axis {axis}, diffusion number {diffusion_number}: sum {final_sum}"
+                );
+            }
         }
     }
 
