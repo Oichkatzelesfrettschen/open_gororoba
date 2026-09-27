@@ -472,12 +472,9 @@ impl GrmhdCubeclKernel {
 
 pub fn grmhd_cubecl_available() -> bool {
     static CUBECL_AVAILABLE: std::sync::OnceLock<bool> = std::sync::OnceLock::new();
-    *CUBECL_AVAILABLE.get_or_init(|| {
-        if !crate::vulkan::GrmhdVulkanKernel::is_available() {
-            return false;
-        }
-        gororoba_gpu_cubecl::Runtime::probe()
-    })
+    // cubecl-wgpu selects its own backend (Vulkan, Metal, DX12, WebGPU), so its
+    // probe alone decides availability.
+    *CUBECL_AVAILABLE.get_or_init(gororoba_gpu_cubecl::Runtime::probe)
 }
 
 pub fn advance_conserved_cubecl(
