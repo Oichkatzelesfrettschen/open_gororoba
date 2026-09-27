@@ -1,0 +1,28 @@
+schema_version = 1
+observation_key = "casimir-optics-discrimination-riinfo-au-johnson"
+source_key = "RIINFO-AU-JOHNSON"
+actor = "codex"
+reason = "Admit retained source bytes through the typed first-observation contract without promoting scientific claims."
+requested_url = "https://raw.githubusercontent.com/polyanskiy/refractiveindex.info-database/c5c2f188e848453def5970e347399d653df2ffc2/database/data/main/Au/nk/Johnson.yml"
+outcome = "body_retained"
+observed_at = "2026-09-12"
+time_precision = "day"
+tool = "curl (audit-manifest attribution)"
+request_evidence_limit = "The retained manifest associates source key, requested URL, observation day, and body digest. Raw request logs, final redirect URLs, and HTTP status are absent."
+absent_prior_expectation_reason = "The audit records observed body identities after retrieval; a hash-bound prerequest body expectation is absent."
+document_identity_limit = "Retained CC0 table bytes preserve digitized n and k values; the underlying paper and complete specimen, method, calibration, and uncertainty metadata remain authoritative and incomplete."
+
+[request_evidence]
+path = "data/output/audit/casimir-optics-discrimination/source-retrieval-manifest.toml"
+storage_sha256 = "f12acc9372491e7c7408652ea9bc6766d3037a717bece9c26b32bccf4af2c21a"
+encoding = "identity"
+decoded_sha256 = "f12acc9372491e7c7408652ea9bc6766d3037a717bece9c26b32bccf4af2c21a"
+decoded_bytes = 5045
+
+[body]
+path = "data/output/audit/casimir-optics-discrimination/sources/au-Johnson.yml"
+storage_sha256 = "9f4bdab6bd49f7c6a1c48b5fb5482c7448caf4b6de39594a34ecd66dcf592774"
+encoding = "identity"
+decoded_sha256 = "9f4bdab6bd49f7c6a1c48b5fb5482c7448caf4b6de39594a34ecd66dcf592774"
+decoded_bytes = 1707
+

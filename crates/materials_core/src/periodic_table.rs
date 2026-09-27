@@ -38,8 +38,8 @@ pub struct Element {
     pub melting_point: Option<f64>,
     /// Boiling point in Kelvin (None if not applicable)
     pub boiling_point: Option<f64>,
-    /// Number of valence electrons
-    pub valence_electrons: u8,
+    /// Number of valence electrons when the local table defines it.
+    pub valence_electrons: Option<u8>,
     /// Electronegativity (Pauling scale)
     pub electronegativity: Option<f64>,
     /// First ionization energy in eV
@@ -138,31 +138,31 @@ fn build_element(z: u8, pt: PtElement) -> Element {
 }
 
 /// Compute number of valence electrons for an element.
-fn compute_valence_electrons(z: u8) -> u8 {
+fn compute_valence_electrons(z: u8) -> Option<u8> {
     match z {
         // Noble gases
-        2 | 10 | 18 | 36 | 54 | 86 | 118 => 8,
+        2 | 10 | 18 | 36 | 54 | 86 | 118 => Some(8),
         // Alkali metals
-        1 | 3 | 11 | 19 | 37 | 55 | 87 => 1,
+        1 | 3 | 11 | 19 | 37 | 55 | 87 => Some(1),
         // Alkaline earth metals
-        4 | 12 | 20 | 38 | 56 | 88 => 2,
+        4 | 12 | 20 | 38 | 56 | 88 => Some(2),
         // Halogens
-        9 | 17 | 35 | 53 | 85 | 117 => 7,
+        9 | 17 | 35 | 53 | 85 | 117 => Some(7),
         // Carbon group
-        6 | 14 | 32 | 50 | 82 | 114 => 4,
+        6 | 14 | 32 | 50 | 82 | 114 => Some(4),
         // Nitrogen group
-        7 | 15 | 33 | 51 | 83 | 115 => 5,
+        7 | 15 | 33 | 51 | 83 | 115 => Some(5),
         // Oxygen group (chalcogens)
-        8 | 16 | 34 | 52 | 84 | 116 => 6,
+        8 | 16 | 34 | 52 | 84 | 116 => Some(6),
         // Boron group
-        5 | 13 | 31 | 49 | 81 | 113 => 3,
+        5 | 13 | 31 | 49 | 81 | 113 => Some(3),
         // Transition metals (variable, use common oxidation state)
-        21..=30 => ((z - 18) % 10).min(2) + 2,
-        39..=48 => ((z - 36) % 10).min(2) + 2,
-        72..=80 => ((z - 54) % 10).min(2) + 2,
+        21..=30 => Some(((z - 18) % 10).min(2) + 2),
+        39..=48 => Some(((z - 36) % 10).min(2) + 2),
+        72..=80 => Some(((z - 54) % 10).min(2) + 2),
         // Lanthanides/Actinides
-        57..=71 | 89..=103 => 3,
-        _ => 0,
+        57..=71 | 89..=103 => Some(3),
+        _ => None,
     }
 }
 
@@ -474,7 +474,7 @@ mod tests {
         assert_eq!(si.atomic_number, 14);
         assert!(si.is_semiconductor);
         assert!(!si.is_metal);
-        assert_eq!(si.valence_electrons, 4);
+        assert_eq!(si.valence_electrons, Some(4));
         assert_eq!(si.crystal_structure, Some(CrystalStructure::Diamond));
         assert!((si.lattice_constant.unwrap() - 5.431).abs() < 0.001);
     }
@@ -491,13 +491,16 @@ mod tests {
     #[test]
     fn test_valence_electrons() {
         // Alkali metals
-        assert_eq!(compute_valence_electrons(11), 1); // Na
+        assert_eq!(compute_valence_electrons(11), Some(1)); // Na
         // Halogens
-        assert_eq!(compute_valence_electrons(17), 7); // Cl
+        assert_eq!(compute_valence_electrons(17), Some(7)); // Cl
         // Carbon group
-        assert_eq!(compute_valence_electrons(14), 4); // Si
+        assert_eq!(compute_valence_electrons(14), Some(4)); // Si
         // Noble gases
-        assert_eq!(compute_valence_electrons(18), 8); // Ar
+        assert_eq!(compute_valence_electrons(18), Some(8)); // Ar
+        // The local table does not define transition-metal valence for Rf through Cn.
+        assert_eq!(compute_valence_electrons(104), None);
+        assert_eq!(compute_valence_electrons(112), None);
     }
 
     #[test]

@@ -9,7 +9,10 @@
 use cudarc::runtime::result::device as cudart_device;
 use gororoba_gpu_bridge::HardwareCaps;
 
-use crate::error::{CudaError, Result};
+use crate::{
+    context::runtime_device_count,
+    error::{CudaError, Result},
+};
 
 /// CUDA device properties relevant to kernel selection.
 #[derive(Clone, Debug, Default)]
@@ -47,7 +50,7 @@ impl DeviceProbe {
 
     /// Probe a specific device ordinal.
     pub fn query_ordinal(ordinal: usize) -> Result<Self> {
-        let count = cudart_device::get_count().unwrap_or(0).max(0) as usize;
+        let count = runtime_device_count()?;
         if count == 0 {
             return Err(CudaError::NoDevice);
         }
@@ -55,7 +58,8 @@ impl DeviceProbe {
             return Err(CudaError::OrdinalOutOfRange { ordinal, count });
         }
         let i32_ord = ordinal.try_into().unwrap_or(0);
-        let prop = cudart_device::get_device_prop(i32_ord)
+        let prop = std::panic::catch_unwind(|| cudart_device::get_device_prop(i32_ord))
+            .map_err(|_| CudaError::RuntimeUnavailable)?
             .map_err(|e| CudaError::Nvml(format!("get_device_prop({}): {:?}", ordinal, e)))?;
         let major = prop.major.max(0) as u32;
         let minor = prop.minor.max(0) as u32;

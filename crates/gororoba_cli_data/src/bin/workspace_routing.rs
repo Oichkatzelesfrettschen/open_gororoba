@@ -480,7 +480,7 @@ fn classify_changes(
         if GOVERNANCE_PREFIXES
             .iter()
             .any(|prefix| file.starts_with(prefix))
-            || (!file.contains('/') && file.ends_with(".md"))
+            || file.ends_with(".md")
             || is_cargo_manifest(file)
         {
             classification.has_governance_changes = true;
@@ -1139,6 +1139,64 @@ mod tests {
             assert!(!classification.force_workspace);
         }
         Ok(())
+    }
+
+    #[test]
+    fn markdown_at_any_depth_routes_governance_without_workspace_tests() {
+        for local_mode in [false, true] {
+            for path in [
+                "README.md",
+                "experiments/identifiability/INTEGRATION_NOTES.md",
+                "experiments/identifiability/README.md",
+                "experiments/identifiability/RESULTS_2026-09-09.md",
+                "experiments/identifiability/RESULTS_2026-09-10.md",
+                "plans/design.md",
+                "papers/methods.md",
+                "new-directory/nested/document.md",
+            ] {
+                let classification =
+                    super::classify_changes(&[path.into()], &Default::default(), local_mode);
+                assert!(classification.has_governance_changes, "{path}");
+                assert!(classification.has_check_relevant_changes, "{path}");
+                assert!(!classification.force_workspace, "{path}");
+                assert!(!classification.has_shared_rust_changes, "{path}");
+                assert!(classification.affected_crates.is_empty(), "{path}");
+            }
+        }
+    }
+
+    #[test]
+    fn crate_markdown_retains_its_rust_owner_and_adds_governance() {
+        let owners = ["cd_kernel".to_string()].into();
+        for local_mode in [false, true] {
+            let classification = super::classify_changes(
+                &["crates/cd_kernel/README.md".into()],
+                &owners,
+                local_mode,
+            );
+            assert!(classification.has_governance_changes);
+            assert!(classification.has_check_relevant_changes);
+            assert_eq!(classification.affected_crates, owners);
+            assert!(!classification.force_workspace);
+        }
+    }
+
+    #[test]
+    fn unrelated_experiment_files_retain_hygiene_only_routing() {
+        for local_mode in [false, true] {
+            for path in [
+                "experiments/identifiability/results_summary.csv",
+                "experiments/identifiability/requirements.txt",
+                "new-directory/document.md.backup",
+            ] {
+                let classification =
+                    super::classify_changes(&[path.into()], &Default::default(), local_mode);
+                assert!(classification.has_check_relevant_changes, "{path}");
+                assert!(!classification.has_governance_changes, "{path}");
+                assert!(!classification.force_workspace, "{path}");
+                assert!(classification.affected_crates.is_empty(), "{path}");
+            }
+        }
     }
 
     #[test]

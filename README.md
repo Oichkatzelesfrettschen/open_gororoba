@@ -218,12 +218,16 @@ compilation vs O(hours) for monolithic `ring`.
 | Text policy | `make ansi-check`        | Emoji and control-character checks |
 | Terminology | `make terminology-gate`  | 8 banned patterns                  |
 | Governance  | `make governance-gate`   | 7-check registry + integrity       |
-| Manual local | `make validate-local`  | Scoped clippy + test + governance  |
+| Hosted CI | `.github/workflows/ci.yml` | Scoped lint, affected tests, governance, retained audits, and dependency policy |
 
-GitHub Actions owns automatic validation. Local pushes run no validation gate.
-Pull requests and main pushes use affected-component checks; weekly full runs
-cover workspace drift. Documentation, proofs, papers and surveys run on their
-declared inputs, with superseded runs canceled.
+GitHub Actions owns repository validation. The repository installs no local
+Git hook, and legacy local gate entry points fail before building Rust tools. Push
+a branch to trigger the authoritative workflow. Developers may run a focused
+Cargo command to diagnose a named component, but that result is not a
+repository-validation verdict. Pull requests and main pushes use
+affected-component checks; weekly full runs cover workspace drift.
+Documentation, proofs, papers and surveys run on their declared inputs, with
+superseded runs canceled.
 
 ## Toolchain
 

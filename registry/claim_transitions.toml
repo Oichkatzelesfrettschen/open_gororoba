@@ -4,7 +4,7 @@
 # Compatibility export lane: claim_transitions
 [meta]
 surface = "canonical claim transition events"
-event_count = 214
+event_count = 216
 history_policy = "append-only events retain prior status, verdict, evidence, assumptions, and successor IDs"
 
 [[transition]]
@@ -4600,4 +4600,50 @@ transition_spec_sha256 = "49238744ae1fc577fb439495f96c825c6e9a2d681224be1bdc80fd
 [[transition.successors]]
 proposal_key = "parker-driver-si-initialization-conformance"
 canonical_claim_id = "C-1756"
+relation_kind = "refines"
+
+[[transition]]
+event_id = 215
+transition_key = "c716-passive-drude-lorentz-analytic-continuation"
+source_claim_id = "C-716"
+expected_prior_status = "Verified"
+experiment_verdict = "Falsifies"
+proposed_claim_status = "Refuted"
+current_status = "Refuted"
+exercised_falsifier = "Direct continuation of the legacy Lorentz denominator to imaginary frequency disagrees with epsilon(i*xi), while absolute-value postprocessing cannot restore analyticity or causality."
+rationale = "Replace the mixed Fourier-sign convention and absolute-value repairs with one passive exp(-i*omega*t) Drude-Lorentz response. Preserve the historical claim as refuted and allocate a narrower implementation-conformance successor."
+unresolved_assumptions = ["Repository model parameters remain fitted or effective model inputs rather than specimen-calibrated all-frequency dielectric functions.", "Passive model conformance does not establish reversible WO3 state switching or force-mechanism specificity."]
+evidence_artifact_ids = ["LOCAL-CASIMIR-OPTICS-DISCRIMINATION"]
+experiment_ids = []
+actor = "casimir-optics-discrimination-audit"
+reason = "Correct a causality-defective optical convention through append-only claim history"
+transition_timestamp = "2026-09-12T12:00:00Z"
+transition_spec_sha256 = "eef0d38f694559a1f778a5f5b54fbe3921b19e21a0391bf2164ee5c79e03dcea"
+
+[[transition.successors]]
+proposal_key = "passive-drude-lorentz-analytic-continuation"
+canonical_claim_id = "C-1758"
+relation_kind = "refines"
+
+[[transition]]
+event_id = 216
+transition_key = "c730-drude-temperature-heuristic-scope"
+source_claim_id = "C-730"
+expected_prior_status = "Verified"
+experiment_verdict = "MethodologyInvalid"
+proposed_claim_status = "Refuted"
+current_status = "Refuted"
+exercised_falsifier = "The implemented gamma(T)=gamma(0)*(1+(T/T_D)^2) scaling is a quadratic heuristic, not the Bloch-Gruneisen transport integral named by the claim."
+rationale = "Preserve the implemented broadening helper while removing an unsupported physical-model identity. Allocate a successor that states only the tested transformation and its calibration boundary."
+unresolved_assumptions = ["The oscillator coth scaling and quadratic Drude scaling require specimen-specific calibration before physical use.", "Temperature, microstructure, impurity, and film-thickness dependence remain outside the helper."]
+evidence_artifact_ids = ["LOCAL-CASIMIR-OPTICS-DISCRIMINATION"]
+experiment_ids = []
+actor = "casimir-optics-discrimination-audit"
+reason = "Separate a tested numerical transformation from an unsupported transport-model attribution"
+transition_timestamp = "2026-09-12T12:10:00Z"
+transition_spec_sha256 = "d374230cc4caaa3b5628d7fae0408f249579a9a403c7ee5c93bb0cb9dd5803f4"
+
+[[transition.successors]]
+proposal_key = "temperature-broadening-heuristic-implementation"
+canonical_claim_id = "C-1759"
 relation_kind = "refines"

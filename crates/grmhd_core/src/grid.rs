@@ -178,4 +178,29 @@ mod tests {
         // Verify it's in bounds
         assert!(idx < g.n_total());
     }
+
+    #[test]
+    fn test_cell_volume_includes_metric_and_coordinate_jacobians() {
+        let metric = KerrMetric::kerr(0.7);
+        let grid = Grid::new(12, 10, 1, 2.5, 40.0, metric.clone());
+        let i = grid.ng + 4;
+        let j = grid.ng + 3;
+        let r = grid.r(i);
+        let theta = grid.theta(j);
+        let coordinate_cell_volume = grid.sqrt_neg_g_at(i, j) * grid.dx1 * grid.dx2 * grid.dx3;
+        let expected = metric.sigma(r, theta)
+            * theta.sin().abs()
+            * r
+            * std::f64::consts::PI
+            * 2.0
+            * std::f64::consts::PI
+            * grid.dx1
+            * grid.dx2
+            * grid.dx3;
+        let relative_error = (coordinate_cell_volume - expected).abs() / expected;
+        assert!(
+            relative_error < 1e-12,
+            "cell-volume Jacobian mismatch: {coordinate_cell_volume} vs {expected}"
+        );
+    }
 }

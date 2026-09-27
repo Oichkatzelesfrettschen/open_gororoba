@@ -85,7 +85,7 @@ TOMLs from canonical SQLite. Walk-through:
 | `gororoba-db` | `crates/gororoba_db` | `cargo run --release -p gororoba_db --bin gororoba-db -- <subcommand>` | Canonical mutator for claims/insights/experiments + planning/requirements |
 | `provenance` | `crates/gororoba_cli_provenance` | `cargo run --release -p gororoba_cli_provenance --bin provenance -- export-control-plane` | Re-emit `registry/*.toml` from canonical SQLite |
 | `repo-audit` | `crates/gororoba_cli_data` | `cargo run --release -p gororoba_cli_data --bin repo-audit` | Anchored debt counter; supports `--sqlite` for revisions audit |
-| `registry-integrity` | `crates/gororoba_cli_data` | `cargo run --release -p gororoba_cli_data --bin registry-integrity` | Recompute `registry/schema_signatures.toml` after legitimate Layer-2 changes |
+| `registry-integrity` | `crates/gororoba_cli_governance` | `make registry-integrity` | Recompute `registry/schema_signatures.toml` through the dedicated validation-profile cache after legitimate Layer-2 changes |
 
 ## ONNX runtime (turboquant onnx-eval)
 
@@ -107,12 +107,11 @@ real-model RMSE / top-1 / kv-byte metrics per requested bit count.
 
 ## Cache budget policy
 
-The local pre-push validation chain enforces a 250 GB hard cap (and 150 GB
-soft cap) on cargo build artifacts in `.cache/`. Run `make cache-sweep`
-when validation reports cache pressure; the sweep target also clears stale
-debug-profile artifacts in `.cache/gate-cbuild/<hash>/debug/`. The logical
-workflow uses `make validate-local` and the `validation` Cargo profile; the
-`.cache/gate-target` path remains a physical compatibility path.
+GitHub Actions owns repository validation. Workstation cache maintenance uses
+`make cache-status`, `make cache-sweep`, and `make cache-sweep-soft`; these
+maintenance targets do not issue a repository-validation verdict. The
+`.cache/gate-target` path remains a physical compatibility path for focused
+developer builds and generated-artifact tools.
 
 ## Module docs
 

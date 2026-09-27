@@ -6,7 +6,7 @@
 //!
 //! Temperature broadening:
 //! - `at_temperature`: Bose-Einstein coth() broadening of phonon oscillators
-//!   + Bloch-Gruneisen T^2 correction for Drude damping.
+//!   + a quadratic Debye-scaled heuristic for Drude damping.
 //! - `optical_effective_mass`: `m* = n*e^2/(eps_0*omega_p^2)` from carrier
 //!   density and Drude plasma frequency.
 //!
@@ -33,8 +33,10 @@ impl DrudeLorentzParams {
     /// Return a new `DrudeLorentzParams` with thermally broadened
     /// oscillators. Phonon damping uses the Bose-Einstein occupation
     /// `gamma_j(T) = gamma_j(0) * coth(hbar*omega_0j / (2*k_B*T))`.
-    /// Drude damping uses a Bloch-Gruneisen `T^2` correction with the
-    /// user-supplied Debye temperature.
+    /// Drude damping uses the explicit heuristic
+    /// `gamma(T) = gamma(0) * (1 + (T / T_D)^2)` with a user-supplied scale.
+    /// The expression is not a Bloch-Gruneisen transport integral and does
+    /// not represent specimen-calibrated temperature response.
     pub fn at_temperature(&self, temperature_k: f64, debye_t_k: Option<f64>) -> Self {
         let broadened_oscs: Vec<LorentzOscillator> = self
             .oscillators

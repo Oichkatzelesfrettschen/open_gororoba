@@ -11,8 +11,7 @@
 #                         82/82 crates the primary had just compiled,
 #                         the same path hit 19/19 after a targeted clean)
 #   REPO_CARGO_TARGET_DIR Cargo target-dir: uplifted final artifacts,
-#                         the validation-tools copies, the cache-check
-#                         sentinel and the validate-local lock
+#                         the validation-tools copies and cache-check sentinel
 #
 # Default mode keys all three on $(CURDIR), so a linked worktree compiles
 # the dependency graph from nothing in each of the three gate profiles.
@@ -76,13 +75,12 @@ REPO_CARGO_BUILD_DIR ?= $(REPO_CACHE_OWNER)/.cache/gate-cbuild/$(REPO_PATH_HASH)
 REPO_CACHE_ROOT := $(REPO_CACHE_OWNER)/.cache
 REPO_LOCAL_CACHE_ROOT := $(CURDIR)/.cache
 
-# Worktree-local validation state. The stamps compare Make timestamps,
+# Worktree-local tool state. The stamps compare Make timestamps,
 # so they also carry a content identity of the tool sources: the
 # identity file is named by the hash, and a source edit that keeps an
 # older mtime still renames it and rebuilds the tools.
 VALIDATION_TOOLS_DIR := $(REPO_CARGO_TARGET_DIR)/validation-tools
 CACHE_CHECK_SENTINEL := $(VALIDATION_TOOLS_DIR)/cache-check.last
-VALIDATION_LOCK := $(VALIDATION_TOOLS_DIR)/validation.lock
 VALIDATION_SOURCE_IDENTITY := $(shell find crates xtask -type f \( -name '*.rs' -o -name 'Cargo.toml' \) -print0 2>/dev/null | sort -z | xargs -0 sha256sum 2>/dev/null | sha256sum | cut -c1-16)
 
 # A copied validation binary belongs to the worktree that compiled it. Cargo
@@ -152,7 +150,6 @@ print-cache-roots:
 	@printf 'VALIDATION_TOOL_IDENTITY=%s\n' '$(VALIDATION_TOOL_IDENTITY)'
 	@printf 'VALIDATION_TOOL_IDENTITY_FILE=%s\n' '$(VALIDATION_SOURCE_IDENTITY_FILE)'
 	@printf 'CACHE_CHECK_SENTINEL=%s\n' '$(CACHE_CHECK_SENTINEL)'
-	@printf 'VALIDATION_LOCK=%s\n' '$(VALIDATION_LOCK)'
 	@printf 'CACHE_ACCOUNT_DIRS=%s\n' '$(CACHE_ACCOUNT_DIRS)'
 	@printf 'CACHE_SWEEP_TARGET_DIR=%s\n' '$(CACHE_SWEEP_TARGET_DIR)'
 	@printf 'CACHE_SWEEP_CBUILD_ROOT=%s\n' '$(CACHE_SWEEP_CBUILD_ROOT)'
