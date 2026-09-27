@@ -280,8 +280,9 @@ impl PteSolver {
                 let mut lower = vec![0.0_f64; axis_length];
                 let mut diagonal = vec![1.0_f64; axis_length];
                 let mut upper = vec![0.0_f64; axis_length];
+                let mut diffusivity = vec![0.0_f64; axis_length];
 
-                for along_axis in 0..axis_length {
+                for (along_axis, diffusivity_at_cell) in diffusivity.iter_mut().enumerate() {
                     coordinates[axis] = along_axis;
                     let cell = self.idx(coordinates[0], coordinates[1], coordinates[2]);
                     let field = [b_field.0[cell], b_field.1[cell], b_field.2[cell]];
@@ -291,8 +292,38 @@ impl PteSolver {
                             .max(1e-10);
                     let tensor =
                         diffusion_tensor(field, field_magnitude, rigidity_gv, &self.config);
-                    let mu = tensor[axis][axis] * dt_s / (dx * dx);
-                    let half_mu = 0.5 * mu;
+                    *diffusivity_at_cell = tensor[axis][axis];
+                }
+
+                if periodic && axis_length == 1 {
+                    continue;
+                }
+
+                let mut face_mu = vec![0.0_f64; axis_length + usize::from(!periodic)];
+                if periodic {
+                    for face in 0..axis_length {
+                        let next = (face + 1) % axis_length;
+                        face_mu[face] =
+                            0.5 * (diffusivity[face] + diffusivity[next]) * dt_s / (dx * dx);
+                    }
+                } else {
+                    for face in 1..axis_length {
+                        face_mu[face] =
+                            0.5 * (diffusivity[face - 1] + diffusivity[face]) * dt_s / (dx * dx);
+                    }
+                }
+
+                for along_axis in 0..axis_length {
+                    coordinates[axis] = along_axis;
+                    let cell = self.idx(coordinates[0], coordinates[1], coordinates[2]);
+                    let half_mu_previous = 0.5
+                        * face_mu[if periodic {
+                            (along_axis + axis_length - 1) % axis_length
+                        } else {
+                            along_axis
+                        }];
+                    let half_mu_next =
+                        0.5 * face_mu[if periodic { along_axis } else { along_axis + 1 }];
                     let center = self.f[cell * self.n_p + p_idx];
                     let previous = if along_axis > 0 {
                         coordinates[axis] = along_axis - 1;
@@ -318,14 +349,12 @@ impl PteSolver {
                     };
                     coordinates[axis] = along_axis;
 
-                    let has_previous = periodic || along_axis > 0;
-                    let has_next = periodic || along_axis + 1 < axis_length;
-                    lower[along_axis] = if has_previous { -half_mu } else { 0.0 };
-                    upper[along_axis] = if has_next { -half_mu } else { 0.0 };
-                    let neighbor_count =
-                        if has_previous { 1.0 } else { 0.0 } + if has_next { 1.0 } else { 0.0 };
-                    diagonal[along_axis] = 1.0 + half_mu * neighbor_count;
-                    rhs[along_axis] = center + half_mu * (previous - 2.0 * center + next);
+                    lower[along_axis] = -half_mu_previous;
+                    upper[along_axis] = -half_mu_next;
+                    diagonal[along_axis] = 1.0 + half_mu_previous + half_mu_next;
+                    rhs[along_axis] = center
+                        + half_mu_previous * (previous - center)
+                        + half_mu_next * (next - center);
                 }
 
                 let solution = if periodic {
@@ -636,6 +665,99 @@ mod tests {
             (observed - expected).abs() < 1e-10,
             "rotated field amplification {observed} differs from K_yy prediction {expected}"
         );
+    }
+
+    #[test]
+    fn periodic_y_sweep_conserves_line_sum_with_varying_diffusivity() {
+        let ny = 12;
+        let config = DiffusionConfig {
+            kappa_0_au2_per_s: 0.4,
+            r_ref_gv: 1.0,
+            alpha: 0.0,
+            epsilon_perp: 0.1,
+            solar_epoch_a: 0.0,
+        };
+        let grid = RigidityGrid::new(2, 1.0, 2.0);
+        let mut solver = PteSolver::new(1, ny, 1, grid, config, 0.2, 1.0);
+        let mut field_x = vec![0.0; ny];
+        let mut field_y = vec![0.0; ny];
+        let field_z = vec![0.0; ny];
+
+        for y in 0..ny {
+            let angle = 2.0 * std::f64::consts::PI * y as f64 / ny as f64;
+            let cell = solver.idx(0, y, 0);
+            field_x[cell] = angle.cos();
+            field_y[cell] = angle.sin();
+            solver.f[cell * solver.n_p] = 2.0 + 0.4 * (2.0 * angle).cos();
+        }
+
+        let initial_sum: f64 = (0..ny)
+            .map(|y| solver.f[solver.idx(0, y, 0) * solver.n_p])
+            .sum();
+        solver.diffuse_y_sweep((&field_x, &field_y, &field_z), 1.0, 0, 0.2);
+        let final_values: Vec<f64> = (0..ny)
+            .map(|y| solver.f[solver.idx(0, y, 0) * solver.n_p])
+            .collect();
+        let final_sum: f64 = final_values.iter().sum();
+
+        assert!(final_values.iter().all(|value| *value > 0.0));
+        assert!(
+            (final_sum - initial_sum).abs() / initial_sum.abs() < 1.0e-12,
+            "periodic y diffusion changed line sum from {initial_sum} to {final_sum}"
+        );
+    }
+
+    #[test]
+    fn uniform_diffusivity_y_sweep_matches_previous_cn_result() {
+        let ny = 10;
+        let config = DiffusionConfig {
+            kappa_0_au2_per_s: 0.4,
+            r_ref_gv: 1.0,
+            alpha: 0.0,
+            epsilon_perp: 0.1,
+            solar_epoch_a: 0.0,
+        };
+        let grid = RigidityGrid::new(2, 1.0, 2.0);
+        let dt_s = 0.3;
+        let dx_au = 1.0;
+        let mut solver = PteSolver::new(1, ny, 1, grid, config.clone(), dt_s, dx_au);
+        let field_x = vec![0.0; ny];
+        let field_y = vec![1.0; ny];
+        let field_z = vec![0.0; ny];
+        let initial: Vec<f64> = (0..ny)
+            .map(|y| {
+                let angle = 2.0 * std::f64::consts::PI * y as f64 / ny as f64;
+                1.7 + 0.2 * angle.cos() + 0.08 * (2.0 * angle).sin()
+            })
+            .collect();
+        for (y, value) in initial.iter().enumerate() {
+            let cell = solver.idx(0, y, 0);
+            solver.f[cell * solver.n_p] = *value;
+        }
+
+        let tensor = diffusion_tensor([0.0, 1.0, 0.0], 1.0, 1.0, &config);
+        let mu = tensor[1][1] * dt_s / dx_au.powi(2);
+        let half_mu = 0.5 * mu;
+        let lower = vec![-half_mu; ny];
+        let diagonal = vec![1.0 + mu; ny];
+        let upper = vec![-half_mu; ny];
+        let mut rhs = vec![0.0; ny];
+        for y in 0..ny {
+            let previous = initial[(y + ny - 1) % ny];
+            let center = initial[y];
+            let next = initial[(y + 1) % ny];
+            rhs[y] = center + half_mu * (previous - 2.0 * center + next);
+        }
+        let expected = PteSolver::cyclic_thomas_solve(&lower, &diagonal, &upper, &rhs);
+
+        solver.diffuse_y_sweep((&field_x, &field_y, &field_z), 1.0, 0, dt_s);
+        for (y, expected_value) in expected.iter().enumerate() {
+            let observed = solver.f[solver.idx(0, y, 0) * solver.n_p];
+            assert!(
+                (observed - expected_value).abs() < 1.0e-12,
+                "uniform-K sweep changed y={y}: {observed} vs {expected_value}"
+            );
+        }
     }
 
     #[test]
