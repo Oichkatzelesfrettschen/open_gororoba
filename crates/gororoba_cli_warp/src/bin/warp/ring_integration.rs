@@ -250,8 +250,10 @@ pub fn run() -> Result<(), Box<dyn std::error::Error>> {
         u_hat_warp[[0, 0]].norm() / u_hat[[0, 0]].norm().max(1e-30)
     );
 
-    // Extract warp triads (with p-adic + neg-dim weights)
-    let warp_triads = extract_warp_triads(&u_hat, &warp_config, 1.0);
+    // The forward FFT is unnormalized; the triad threshold uses Fourier-series amplitudes.
+    let sample_count = (nx * ny) as f64;
+    let u_hat_series = u_hat.mapv(|coefficient| coefficient / sample_count);
+    let warp_triads = extract_warp_triads(&u_hat_series, &warp_config, 1e-12);
     info!(
         "      Found {} warp triads (p-adic + neg-dim weighted).",
         warp_triads.len()

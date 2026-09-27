@@ -39,6 +39,17 @@ impl UniformCartesianMesh {
             if !(origin_m[axis] + (dimensions[axis] - 1) as f64 * spacing_m).is_finite() {
                 return Err(UnitError("mesh coordinate overflow"));
             }
+            if dimensions[axis] > 1 {
+                let first = origin_m[axis] + spacing_m;
+                let previous = origin_m[axis] + (dimensions[axis] - 2) as f64 * spacing_m;
+                let last = origin_m[axis] + (dimensions[axis] - 1) as f64 * spacing_m;
+                // Rounding can collapse neighboring coordinates at either end of an axis.
+                if first <= origin_m[axis] || last <= previous {
+                    return Err(UnitError(
+                        "mesh spacing does not advance stored coordinates",
+                    ));
+                }
+            }
         }
         Ok(Self {
             dimensions,
@@ -308,9 +319,10 @@ impl PeriodicFlowParameters {
     }
     /// Reject different physical parameters or declared initial-data profiles.
     ///
-    /// Derived binary64 quantities use a relative tolerance of 32 * EPSILON,
-    /// with no absolute tolerance near zero. This accounts for unit-conversion
-    /// rounding; it is not an interval proof of equality of real-valued inputs.
+    /// Mesh origins compare exactly. Derived binary64 quantities use a relative
+    /// tolerance of 32 * EPSILON, with no absolute tolerance near zero. The
+    /// tolerance accounts for unit-conversion rounding; it is not an interval
+    /// proof of equality of real-valued inputs.
     pub fn require_same_continuum_problem(&self, other: &Self) -> Result<(), UnitError> {
         fn equivalent(left: f64, right: f64) -> bool {
             if left == right {
@@ -323,7 +335,7 @@ impl PeriodicFlowParameters {
             return Err(UnitError("initial-data profiles differ"));
         }
         for axis in 0..3 {
-            if !equivalent(self.mesh.origin_m()[axis], other.mesh.origin_m()[axis])
+            if self.mesh.origin_m()[axis] != other.mesh.origin_m()[axis]
                 || !equivalent(self.domain_lengths_m[axis], other.domain_lengths_m[axis])
             {
                 return Err(UnitError("physical periodic domains differ"));
@@ -544,9 +556,23 @@ mod tests {
     }
     #[test]
     fn periodic_domain_endpoint_must_advance_from_origin() {
-        let mesh = UniformCartesianMesh::new([2, 2, 2], [1.0e16, 0.0, 0.0], 0.5).unwrap();
-        let units = LatticeUnits::new(&mesh, 1.0, 1.0).unwrap();
-        assert!(PeriodicFlowParameters::new(mesh, units, 0.8, "harmonic", 0.01, 10).is_err());
+        assert!(UniformCartesianMesh::new([2, 2, 2], [1.0e16, 0.0, 0.0], 0.5).is_err());
+        assert!(UniformCartesianMesh::new([8, 2, 2], [1.0e16, 0.0, 0.0], 0.5).is_err());
+        assert!(UniformCartesianMesh::new([8, 2, 2], [-1.0e16, 0.0, 0.0], 0.5).is_err());
+    }
+    #[test]
+    fn continuum_comparison_rejects_representable_origin_translation() {
+        let mesh = UniformCartesianMesh::new([8, 8, 2], [1.0e16, 0.0, 0.0], 2.0).unwrap();
+        let shifted = UniformCartesianMesh::new([8, 8, 2], [1.0e16 + 2.0, 0.0, 0.0], 2.0).unwrap();
+        let flow = |mesh: UniformCartesianMesh| {
+            let units = LatticeUnits::new(&mesh, 1.0, 1.0).unwrap();
+            PeriodicFlowParameters::new(mesh, units, 0.8, "harmonic", 0.01, 10).unwrap()
+        };
+        assert!(
+            flow(mesh)
+                .require_same_continuum_problem(&flow(shifted))
+                .is_err()
+        );
     }
     #[test]
     fn continuum_comparison_rejects_old_lattice_parameters_and_changed_data() {

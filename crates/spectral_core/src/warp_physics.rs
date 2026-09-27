@@ -9,6 +9,7 @@
 //! change-of-basis equivalence is separately proved.
 
 use gororoba_algebra::construction::padic::vp_int;
+use gororoba_algebra::lie::group_theory::is_prime;
 use ndarray::Array2;
 use num_complex::Complex64;
 use std::f64::consts::PI;
@@ -177,6 +178,10 @@ pub fn extract_warp_triads(
 ) -> Vec<WarpTriad> {
     let (nx, ny) = field_hat.dim();
     assert!(amplitude_threshold.is_finite() && amplitude_threshold >= 0.0);
+    assert!(config.domain_size.is_finite() && config.domain_size > 0.0);
+    assert!(config.alpha.is_finite());
+    assert!(config.epsilon.is_finite() && config.epsilon > 0.0);
+    assert!(is_prime(config.prime));
     assert!(
         field_hat
             .iter()
@@ -314,6 +319,7 @@ pub fn warp_spectral_density(k_bins: &[f64], power: &[f64], config: &WarpRingCon
 #[cfg(test)]
 mod tests {
     use super::*;
+    use crate::ndfft::fft_2d;
 
     #[test]
     fn test_padic_triad_weight_dyadic() {
@@ -483,6 +489,63 @@ mod tests {
         field[[0, 1]] = Complex64::new(1.0e110, 0.0);
         field[[7, 7]] = Complex64::new(1.0e110, 0.0);
         assert!(extract_warp_triads(&field, &WarpRingConfig::default(), 0.0).is_empty());
+    }
+
+    #[test]
+    fn test_extract_warp_triads_rejects_invalid_config() {
+        let field = Array2::from_elem((8, 8), Complex64::new(1.0, 0.0));
+        for config in [
+            WarpRingConfig {
+                domain_size: 0.0,
+                ..WarpRingConfig::default()
+            },
+            WarpRingConfig {
+                alpha: f64::NAN,
+                ..WarpRingConfig::default()
+            },
+            WarpRingConfig {
+                epsilon: f64::NAN,
+                ..WarpRingConfig::default()
+            },
+            WarpRingConfig {
+                epsilon: 0.0,
+                ..WarpRingConfig::default()
+            },
+            WarpRingConfig {
+                prime: 1,
+                ..WarpRingConfig::default()
+            },
+            WarpRingConfig {
+                prime: 4,
+                ..WarpRingConfig::default()
+            },
+        ] {
+            assert!(
+                std::panic::catch_unwind(|| extract_warp_triads(&field, &config, 0.0)).is_err()
+            );
+        }
+    }
+
+    #[test]
+    fn test_fourier_series_triad_threshold_is_resolution_independent() {
+        let config = WarpRingConfig::default();
+        for size in [8, 16] {
+            let field = Array2::from_shape_fn((size, size), |(x, y)| {
+                let x_phase = 2.0 * PI * x as f64 / size as f64;
+                let y_phase = 2.0 * PI * y as f64 / size as f64;
+                Complex64::new(
+                    x_phase.sin() + y_phase.sin() + (x_phase + y_phase).sin(),
+                    0.0,
+                )
+            });
+            let coefficients = fft_2d(&field).mapv(|value| value / (size * size) as f64);
+            let triads = extract_warp_triads(&coefficients, &config, 0.1);
+            let target = triads
+                .iter()
+                .find(|triad| triad.k == [-1, -1] && triad.p == [0, 1] && triad.q == [1, 0])
+                .unwrap();
+            assert!((target.triad_amplitude_proxy - 0.125).abs() < 1e-12);
+        }
     }
 
     #[test]
