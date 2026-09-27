@@ -78,9 +78,12 @@ pub fn grmhd_cubecl_step_kernel(
             flux,
             gcov,
             sqrt_g,
+            n1_u,
             n2_u,
             n3_u,
             n_total,
+            r_min_bits,
+            log_r_ratio_bits,
             gam_m1_bits,
             dir,
         );
@@ -130,7 +133,7 @@ fn precompute_metric(
     gcov[base + 2] = sigma;
     gcov[base + 3] = a_met * sth * sth / sigma;
     gcov[base + 4] = -2.0_f32 * kerr_a * r * sth * sth / sigma;
-    sqrt_g[cell] = sigma * abs_f32(sth);
+    sqrt_g[cell] = sigma * abs_f32(sth) * r;
 }
 
 #[cube]
@@ -210,9 +213,12 @@ fn compute_flux(
     flux: &mut Array<f32>,
     gcov: &Array<f32>,
     sqrt_g: &Array<f32>,
+    n1: usize,
     n2: usize,
     n3: usize,
     n_total: usize,
+    r_min_bits: u32,
+    log_r_ratio_bits: u32,
     gam_m1_bits: u32,
     dir: u32,
 ) {
@@ -236,7 +242,13 @@ fn compute_flux(
     let g_thth = gcov[base + 2];
     let g_phph = gcov[base + 3];
     let g_tph = gcov[base + 4];
-    let sg = sqrt_g[met_idx];
+    let mut sg = sqrt_g[met_idx];
+    if dir == 0 {
+        let radial_index = met_idx / n2;
+        let xi = (radial_index as f32) / ((n1 - 1) as f32);
+        let r = f32::reinterpret(r_min_bits) * f32::exp(xi * f32::reinterpret(log_r_ratio_bits));
+        sg /= r;
+    }
 
     let vsq = g_rr * v1 * v1 + g_thth * v2 * v2 + g_phph * v3 * v3;
     let alpha_sq = -(g_tt + 2.0_f32 * g_tph * v3 + vsq);

@@ -418,7 +418,11 @@ pub fn compute_rhs_1d(
         ws.cons_r = cons::prim2con_cached(&ws.prim_r, gcov_r, eos, sg_r);
 
         // HLL flux at this face
-        let f_hll = riemann::hll_flux(&ws.flux_l, &ws.flux_r, &ws.cons_l, &ws.cons_r, sl, sr);
+        let mut f_hll = riemann::hll_flux(&ws.flux_l, &ws.flux_r, &ws.cons_l, &ws.cons_r, sl, sr);
+        let face_factor = grid.inverse_coordinate_jacobian_at_face(face, dir);
+        for value in &mut f_hll {
+            *value *= face_factor;
+        }
 
         // Accumulate divergence: rhs[i] -= (F_{i+1/2} - F_{i-1/2}) / dx
         // Left cell of this face: cell index = face - 1 - ng (in active coords)
@@ -590,8 +594,12 @@ fn compute_rhs_3d_inner(
                     ws.cons_l = cons::prim2con_cached(&ws.prim_l, gcov_l, eos, sg_l);
                     ws.cons_r = cons::prim2con_cached(&ws.prim_r, gcov_r, eos, sg_r);
 
-                    let f_hll =
+                    let mut f_hll =
                         riemann::hll_flux(&ws.flux_l, &ws.flux_r, &ws.cons_l, &ws.cons_r, sl, sr);
+                    let face_factor = grid.inverse_coordinate_jacobian_at_face(face_i, 0);
+                    for value in &mut f_hll {
+                        *value *= face_factor;
+                    }
 
                     // Store EMF from HLL induction flux at this radial face.
                     // Only write from k == ng to avoid redundant writes across phi.
@@ -725,8 +733,12 @@ fn compute_rhs_3d_inner(
                     ws.cons_l = cons::prim2con_cached(&ws.prim_l, gcov_l, eos, sg_l);
                     ws.cons_r = cons::prim2con_cached(&ws.prim_r, gcov_r, eos, sg_r);
 
-                    let f_hll =
+                    let mut f_hll =
                         riemann::hll_flux(&ws.flux_l, &ws.flux_r, &ws.cons_l, &ws.cons_r, sl, sr);
+                    let face_factor = grid.inverse_coordinate_jacobian_at_face(face_j, 1);
+                    for value in &mut f_hll {
+                        *value *= face_factor;
+                    }
 
                     // Store EMF (only first k writes to avoid races on 2D EMF)
                     if k == ng {
@@ -835,8 +847,12 @@ fn compute_rhs_3d_inner(
                     ws.cons_l = cons::prim2con_cached(&ws.prim_l, gcov_ij, eos, sg);
                     ws.cons_r = cons::prim2con_cached(&ws.prim_r, gcov_ij, eos, sg);
 
-                    let f_hll =
+                    let mut f_hll =
                         riemann::hll_flux(&ws.flux_l, &ws.flux_r, &ws.cons_l, &ws.cons_r, sl, sr);
+                    let face_factor = grid.inverse_coordinate_jacobian_at_face(face_k, 2);
+                    for value in &mut f_hll {
+                        *value *= face_factor;
+                    }
 
                     // Accumulate phi divergence (periodic: both cells always exist)
                     // SAFETY: `v` indexes into NCONS * n_total RHS array.
@@ -864,7 +880,6 @@ fn compute_rhs_3d_inner(
     // Safety: different (i, j, k) write to unique rhs indices (grid.idx is injective).
     {
         let rhs_addr = rhs.as_mut_ptr() as usize;
-        let dr_phys = grid.dx1;
         let dth_phys = grid.dx2 * std::f64::consts::PI;
         let ij_pairs: Vec<(usize, usize)> = (ng..ng + grid.n1)
             .flat_map(|i| (ng..ng + grid.n2).map(move |j| (i, j)))
@@ -872,6 +887,7 @@ fn compute_rhs_3d_inner(
 
         ij_pairs.par_iter().for_each(|&(i, j)| {
             let rp = rhs_addr as *mut f64;
+            let dr_phys = grid.radial_cell_width(i);
             let mc_idx = mc.idx(i, n2t, j);
             let sg = if mc_idx < mc.sqrt_neg_g.len() {
                 mc.sqrt_neg_g[mc_idx]
@@ -1239,6 +1255,73 @@ mod tests {
             for (k, &v) in r.iter().enumerate() {
                 assert!(v.is_finite(), "rhs[{}][{}] = {} is not finite", i, k, v);
             }
+        }
+    }
+
+    #[test]
+    fn steady_spherical_mass_flux_residual_converges_on_log_radius_grid() {
+        let mut previous_residual = f64::INFINITY;
+        for radial_cells in [16, 32, 64] {
+            let grid = Grid::new(radial_cells, 8, 1, 3.0, 30.0, KerrMetric::schwarzschild());
+            let cache = MetricCache::new(&grid);
+            let eos = GammaLaw::harm_default();
+            let mut primitive_grid = PrimGrid::new(grid.n_total());
+            let j = grid.ng + grid.n2 / 2;
+            let theta = grid.theta(j);
+            for i in 0..grid.n1_total() {
+                let radius = grid.r(i);
+                let velocity = 0.001 * radius;
+                let gcov = grid.gcov_at(i, j);
+                let ut = (-(gcov[0] + gcov[1] * velocity * velocity)).sqrt().recip();
+                let density = 1.0 / (grid.sqrt_neg_g_at(i, j) * ut);
+                let state: Prim = [density, 0.0, velocity, 0.0, 0.0, 0.0, 0.0, 0.0];
+                let physical_flux = compute_flux_cached(
+                    &state,
+                    &gcov,
+                    &eos,
+                    grid.metric.sqrt_neg_g(radius, theta),
+                    0,
+                )[0];
+                let coordinate_flux =
+                    physical_flux * std::f64::consts::PI * 2.0 * std::f64::consts::PI;
+                assert!((coordinate_flux - 0.001).abs() < 1e-14);
+                for k in 0..grid.n3_total() {
+                    primitive_grid.set(grid.idx(i, j, k), &state);
+                }
+            }
+            let rhs = compute_rhs_1d(&primitive_grid, &grid, &cache, &eos, 0);
+            let residual = rhs[2..radial_cells - 2]
+                .iter()
+                .map(|cell| cell[0].abs())
+                .fold(0.0_f64, f64::max);
+            assert!(
+                residual < previous_residual,
+                "n={radial_cells}: {residual} >= {previous_residual}"
+            );
+            previous_residual = residual;
+        }
+    }
+
+    #[test]
+    fn stationary_fishbone_moncrief_radial_residual_converges() {
+        let torus = crate::torus::FMTorus::schwarzschild(6.5, 12.0);
+        let eos = GammaLaw::new(torus.gamma);
+        let mut previous_residual = f64::INFINITY;
+        for radial_cells in [24, 48, 96] {
+            let grid = Grid::new(radial_cells, 25, 1, 3.0, 30.0, KerrMetric::schwarzschild());
+            let cache = MetricCache::new(&grid);
+            let primitive_grid = torus.initialize(&grid);
+            let (rhs, _) = compute_rhs_3d(&primitive_grid, &grid, &cache, &eos);
+            let theta_cell = grid.ng + grid.n2 / 2;
+            let residual = (grid.ng..grid.ng + grid.n1)
+                .filter(|&i| (9.0..15.0).contains(&grid.r(i)))
+                .map(|i| rhs[grid.idx(i, theta_cell, grid.ng) * NCONS + 2].abs())
+                .fold(0.0_f64, f64::max);
+            assert!(
+                residual < 0.7 * previous_residual,
+                "radial residual failed to converge at n={radial_cells}: {residual} from {previous_residual}"
+            );
+            previous_residual = residual;
         }
     }
 

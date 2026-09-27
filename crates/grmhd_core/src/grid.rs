@@ -101,6 +101,23 @@ impl Grid {
     pub fn r(&self, i: usize) -> f64 {
         self.x1(i).exp()
     }
+
+    /// Convert a Boyer-Lindquist flux through a coordinate face to the
+    /// corresponding internal-coordinate flux.
+    pub(crate) fn inverse_coordinate_jacobian_at_face(&self, face: usize, direction: usize) -> f64 {
+        match direction {
+            0 => (-(self.x1_min + (face as f64 - self.ng as f64) * self.dx1)).exp(),
+            1 => 1.0 / std::f64::consts::PI,
+            2 => 1.0 / (2.0 * std::f64::consts::PI),
+            _ => panic!("invalid flux direction {direction}"),
+        }
+    }
+
+    /// Physical radial width of a log-radius cell centered at index `i`.
+    pub(crate) fn radial_cell_width(&self, i: usize) -> f64 {
+        2.0 * self.r(i) * (0.5 * self.dx1).sinh()
+    }
+
     /// Physical theta at cell center.
     pub fn theta(&self, j: usize) -> f64 {
         std::f64::consts::PI * self.x2(j)
@@ -202,5 +219,27 @@ mod tests {
             relative_error < 1e-12,
             "cell-volume Jacobian mismatch: {coordinate_cell_volume} vs {expected}"
         );
+    }
+
+    #[test]
+    fn face_flux_jacobians_cancel_cell_volume_coordinate_factors() {
+        let grid = Grid::new(16, 8, 4, 2.5, 40.0, KerrMetric::schwarzschild());
+        let face = grid.ng + 5;
+        let radius = (grid.x1_min + (face - grid.ng) as f64 * grid.dx1).exp();
+        assert!((grid.inverse_coordinate_jacobian_at_face(face, 0) * radius - 1.0).abs() < 1e-14);
+        assert!(
+            (grid.inverse_coordinate_jacobian_at_face(face, 1) * std::f64::consts::PI - 1.0).abs()
+                < 1e-14
+        );
+        assert!(
+            (grid.inverse_coordinate_jacobian_at_face(face, 2) * 2.0 * std::f64::consts::PI - 1.0)
+                .abs()
+                < 1e-14
+        );
+
+        let cell = grid.ng + 5;
+        let expected_width =
+            (grid.x1(cell) + 0.5 * grid.dx1).exp() - (grid.x1(cell) - 0.5 * grid.dx1).exp();
+        assert!((grid.radial_cell_width(cell) - expected_width).abs() / expected_width < 1e-14);
     }
 }
