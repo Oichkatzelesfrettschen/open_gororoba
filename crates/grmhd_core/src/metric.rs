@@ -96,8 +96,8 @@ impl KerrMetric {
     /// Metric determinant sqrt(-g) at (r, theta).
     pub fn sqrt_neg_g(&self, r: f64, theta: f64) -> f64 {
         let sig = self.sigma(r, theta);
-        // sqrt(-g) = sqrt(Sigma) * sin(theta) for Kerr in BL coords
-        sig.sqrt() * theta.sin().abs()
+        // The Boyer-Lindquist determinant is -Sigma^2 sin^2(theta).
+        sig * theta.sin().abs()
     }
 
     /// Lapse function alpha = 1/sqrt(-g^tt).
@@ -116,6 +116,69 @@ impl KerrMetric {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    fn assembled_gcov(components: [f64; 5]) -> [[f64; 4]; 4] {
+        let [g_tt, g_rr, g_thth, g_phph, g_tph] = components;
+        [
+            [g_tt, 0.0, 0.0, g_tph],
+            [0.0, g_rr, 0.0, 0.0],
+            [0.0, 0.0, g_thth, 0.0],
+            [g_tph, 0.0, 0.0, g_phph],
+        ]
+    }
+
+    fn determinant_4x4(mut matrix: [[f64; 4]; 4]) -> f64 {
+        let mut determinant = 1.0;
+        for column in 0..4 {
+            let pivot = (column..4)
+                .max_by(|&left, &right| {
+                    matrix[left][column]
+                        .abs()
+                        .total_cmp(&matrix[right][column].abs())
+                })
+                .expect("matrix column has a pivot");
+            if matrix[pivot][column].abs() < f64::MIN_POSITIVE {
+                return 0.0;
+            }
+            if pivot != column {
+                matrix.swap(pivot, column);
+                determinant = -determinant;
+            }
+            let diagonal = matrix[column][column];
+            determinant *= diagonal;
+            let pivot_row = matrix[column];
+            for row_values in matrix.iter_mut().skip(column + 1) {
+                let factor = row_values[column] / diagonal;
+                for (trailing, value) in row_values.iter_mut().enumerate().skip(column + 1) {
+                    *value -= factor * pivot_row[trailing];
+                }
+            }
+        }
+        determinant
+    }
+
+    fn kernel_inverse(components: [f64; 5]) -> [[f64; 4]; 4] {
+        let [g_tt, g_rr, g_thth, g_phph, g_tph] = components;
+        let determinant = g_tt * g_phph - g_tph * g_tph;
+        let signed_floor = determinant.signum() * determinant.abs().max(1e-40);
+        let inverse_determinant = 1.0 / signed_floor;
+        [
+            [
+                g_phph * inverse_determinant,
+                0.0,
+                0.0,
+                -g_tph * inverse_determinant,
+            ],
+            [0.0, 1.0 / g_rr, 0.0, 0.0],
+            [0.0, 0.0, 1.0 / g_thth, 0.0],
+            [
+                -g_tph * inverse_determinant,
+                0.0,
+                0.0,
+                g_tt * inverse_determinant,
+            ],
+        ]
+    }
 
     #[test]
     fn test_schwarzschild_horizon() {
@@ -152,6 +215,60 @@ mod tests {
         assert!(g_rr > 0.0, "g_rr should be positive (spacelike)");
         assert!(g_thth > 0.0, "g_thth should be positive");
         assert!(g_phph > 0.0, "g_phph should be positive");
+    }
+
+    #[test]
+    fn test_sqrt_neg_g_matches_assembled_metric_determinant() {
+        let cases = [
+            (3.0, 0.37, 0.0),
+            (4.7, 1.13, 0.35),
+            (9.5, 2.41, -0.7),
+            (2.8, 0.82, 0.9),
+        ];
+        for (r, theta, spin) in cases {
+            let metric = KerrMetric::kerr(spin);
+            let determinant = determinant_4x4(assembled_gcov(metric.gcov(r, theta)));
+            let expected = (-determinant).sqrt();
+            let actual = metric.sqrt_neg_g(r, theta);
+            let relative_error = (actual - expected).abs() / expected;
+            assert!(
+                relative_error < 1e-12,
+                "sqrt(-g) mismatch at r={r}, theta={theta}, a={spin}: {actual} vs {expected}"
+            );
+        }
+    }
+
+    #[test]
+    fn test_kernel_inverse_block_multiplies_to_identity_on_exterior_grid() {
+        for spin in [0.0, 0.4, -0.85] {
+            let metric = KerrMetric::kerr(spin);
+            for r in [2.5, 4.0, 12.0] {
+                if r <= metric.r_horizon() {
+                    continue;
+                }
+                for theta in [0.4, 1.2, 2.5] {
+                    let covariant = assembled_gcov(metric.gcov(r, theta));
+                    let contravariant = kernel_inverse(metric.gcov(r, theta));
+                    let covariant_columns: [[f64; 4]; 4] = std::array::from_fn(|column| {
+                        std::array::from_fn(|row| covariant[row][column])
+                    });
+                    for (row, inverse_row) in contravariant.iter().enumerate() {
+                        for (column, covariant_column) in covariant_columns.iter().enumerate() {
+                            let product: f64 = inverse_row
+                                .iter()
+                                .zip(covariant_column)
+                                .map(|(inverse, metric)| inverse * metric)
+                                .sum();
+                            let expected = if row == column { 1.0 } else { 0.0 };
+                            assert!(
+                                (product - expected).abs() < 1e-12,
+                                "inverse identity failed at r={r}, theta={theta}, a={spin}, ({row},{column})={product}"
+                            );
+                        }
+                    }
+                }
+            }
+        }
     }
 
     #[test]
