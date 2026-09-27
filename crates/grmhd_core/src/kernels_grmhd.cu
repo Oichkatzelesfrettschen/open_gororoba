@@ -148,7 +148,6 @@ extern "C" __global__ void compute_flux_kernel(
     double alpha_sq = -(g_tt + 2.0 * g_tph * v3 + vsq);
     double ut = (alpha_sq > 1e-20) ? rsqrt(alpha_sq) : 1.0;
     double inv_ut = 1.0 / ut;
-    double inv_ut_sq = inv_ut * inv_ut;
 
     // Covariant 4-velocity
     double u_r  = g_rr   * ut * v1;
@@ -156,10 +155,19 @@ extern "C" __global__ void compute_flux_kernel(
     double u_ph = g_phph * ut * v3 + g_tph * ut;
     double u_t  = g_tt   * ut + g_tph * ut * v3;
 
-    // Magnetic 4-vector
-    double bt = (b1 * u_r + b2 * u_th + b3 * u_ph) * inv_ut;
-    double bsq = fmax((b1*b1*g_rr + b2*b2*g_thth + b3*b3*g_phph) * inv_ut_sq
-                      + bt*bt*(-inv_ut_sq + vsq), 0.0);
+    // HARM b^t = B^i u_i and b^i = (B^i + b^t u^i) / u^t.
+    double bt = b1 * u_r + b2 * u_th + b3 * u_ph;
+    double b_up[3] = {
+        (b1 + bt * ut * v1) * inv_ut,
+        (b2 + bt * ut * v2) * inv_ut,
+        (b3 + bt * ut * v3) * inv_ut
+    };
+    double b_t_cov = g_tt * bt + g_tph * b_up[2];
+    double b_r_cov = g_rr * b_up[0];
+    double b_th_cov = g_thth * b_up[1];
+    double b_ph_cov = g_tph * bt + g_phph * b_up[2];
+    double bsq = fmax(bt * b_t_cov + b_up[0] * b_r_cov
+                      + b_up[1] * b_th_cov + b_up[2] * b_ph_cov, 0.0);
 
     double w = rho + u + pressure + bsq;
     double ptot = pressure + 0.5 * bsq;
@@ -172,21 +180,21 @@ extern "C" __global__ void compute_flux_kernel(
 
     double v_dir = v_arr[dir];
     double u_up_dir = ut * v_dir;
-    double b_up_dir = (b_arr[dir] + bt * ut * v_arr[dir]) * inv_ut;
+    double b_up_dir = b_up[dir];
 
     // Mass flux
     flux[0 * N_total + cell] = sg * rho * u_up_dir;
 
     // Energy flux
-    double b_cov_t = g_tt * bt;
-    if (dir == 2) b_cov_t += g_tph * b_up_dir;
+    double b_cov_t = g_tt * bt + g_tph * b_up[2];
     double t_dir_t = w * u_up_dir * u_t - b_up_dir * b_cov_t;
     flux[1 * N_total + cell] = sg * (t_dir_t + rho * u_up_dir);
 
     // Momentum flux: T^dir_j for j=0,1,2
     for (int jj = 0; jj < 3; jj++) {
-        double b_up_j = (b_arr[jj] + bt * ut * v_arr[jj]) * inv_ut;
+        double b_up_j = b_up[jj];
         double b_cov_j = g_diag[jj] * b_up_j;
+        if (jj == 2) b_cov_j += g_tph * bt;
         double delta_jd = (jj == dir) ? 1.0 : 0.0;
         flux[(2 + jj) * N_total + cell] = sg * (w * u_up_dir * u_cov[jj]
                                                  + ptot * delta_jd
@@ -250,9 +258,19 @@ extern "C" __global__ void prim2con_kernel(
     double u_ph = g_phph * ut * v3 + g_tph * ut;
     double u_t  = g_tt   * ut + g_tph * ut * v3;
 
-    double bt = (b1*u_r + b2*u_th + b3*u_ph) * inv_ut;
-    double bsq = fmax((b1*b1*g_rr + b2*b2*g_thth + b3*b3*g_phph) / (ut*ut)
-                      + bt*bt*(-1.0/(ut*ut) + vsq), 0.0);
+    // HARM b^t = B^i u_i and b^i = (B^i + b^t u^i) / u^t.
+    double bt = b1 * u_r + b2 * u_th + b3 * u_ph;
+    double b_up[3] = {
+        (b1 + bt * ut * v1) * inv_ut,
+        (b2 + bt * ut * v2) * inv_ut,
+        (b3 + bt * ut * v3) * inv_ut
+    };
+    double b_t_cov = g_tt * bt + g_tph * b_up[2];
+    double b_r_cov = g_rr * b_up[0];
+    double b_th_cov = g_thth * b_up[1];
+    double b_ph_cov = g_tph * bt + g_phph * b_up[2];
+    double bsq = fmax(bt * b_t_cov + b_up[0] * b_r_cov
+                      + b_up[1] * b_th_cov + b_up[2] * b_ph_cov, 0.0);
 
     double w = rho + u + pressure + bsq;
     double ptot = pressure + 0.5*bsq;
@@ -260,12 +278,12 @@ extern "C" __global__ void prim2con_kernel(
     // D = sqrt_g * rho * u^t
     cons[0 * N_total + cell] = sg * rho * ut;
     // E = sqrt_g * (T^t_t + rho * u^t)
-    double T_t_t = w * ut * u_t + ptot - bt * (g_tt*bt + g_tph*0.0 /* simplify */);
+    double T_t_t = w * ut * u_t + ptot - bt * b_t_cov;
     cons[1 * N_total + cell] = sg * (T_t_t + rho * ut);
     // S_j = sqrt_g * T^t_j
-    cons[2 * N_total + cell] = sg * (w * ut * u_r);
-    cons[3 * N_total + cell] = sg * (w * ut * u_th);
-    cons[4 * N_total + cell] = sg * (w * ut * u_ph);
+    cons[2 * N_total + cell] = sg * (w * ut * u_r - bt * b_r_cov);
+    cons[3 * N_total + cell] = sg * (w * ut * u_th - bt * b_th_cov);
+    cons[4 * N_total + cell] = sg * (w * ut * u_ph - bt * b_ph_cov);
     // B^j (cell-centered, div-clean via CT)
     cons[5 * N_total + cell] = sg * b1;
     cons[6 * N_total + cell] = sg * b2;

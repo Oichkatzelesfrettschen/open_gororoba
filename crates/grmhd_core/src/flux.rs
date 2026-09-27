@@ -164,22 +164,20 @@ pub fn compute_flux_cached(
     } else {
         1.0
     };
-    let inv_ut = 1.0 / ut;
-
     // Covariant 4-velocity components
     let u_cov_t = g_tt * ut + g_tph * ut * v3;
     let u_cov_r = g_rr * ut * v1;
     let u_cov_th = g_thth * ut * v2;
     let u_cov_ph = g_phph * ut * v3 + g_tph * ut;
 
-    // Magnetic 4-vector b^mu
-    let bt = (b1 * u_cov_r + b2 * u_cov_th + b3 * u_cov_ph) * inv_ut;
-    let b_up = [
-        bt,
-        (b1 + bt * ut * v1) * inv_ut,
-        (b2 + bt * ut * v2) * inv_ut,
-        (b3 + bt * ut * v3) * inv_ut,
-    ];
+    // Magnetic four-vector from lab-frame B^i, orthogonal to u^mu.
+    let b_up = cons::magnetic_four_vector_from_lab_field(
+        [v1, v2, v3],
+        ut,
+        [u_cov_r, u_cov_th, u_cov_ph],
+        [b1, b2, b3],
+    );
+    let bt = b_up[0];
     let bsq = cons::magnetic_b_squared_from_four_vector(gcov, b_up);
 
     let w = rho + u + pressure + bsq; // total enthalpy
@@ -206,34 +204,23 @@ pub fn compute_flux_cached(
     f[0] = sqrt_neg_g * rho * u_up_dir;
 
     // Energy flux
-    let b_cov_t = g_tt * bt
-        + g_tph
-            * match dir {
-                2 => b_up_dir,
-                _ => 0.0,
-            };
+    let b_cov_t = g_tt * bt + g_tph * b_up[3];
     let t_dir_t = w * u_up_dir * u_cov_t - b_up_dir * b_cov_t;
     f[1] = sqrt_neg_g * (t_dir_t + rho * u_up_dir);
 
     // Momentum flux (SIMD: 3 components packed into f64x4, lane 3 unused)
     {
-        let b_v = [v1, v2, v3];
-        let b_s = [b1, b2, b3];
         let u_cov = [u_cov_r, u_cov_th, u_cov_ph];
         let g_diag = [g_rr, g_thth, g_phph];
 
         // Compute b_up_j for all 3 spatial directions
-        let b_up_j_arr = [
-            (b_s[0] + bt * ut * b_v[0]) * inv_ut,
-            (b_s[1] + bt * ut * b_v[1]) * inv_ut,
-            (b_s[2] + bt * ut * b_v[2]) * inv_ut,
-        ];
+        let b_up_j_arr = [b_up[1], b_up[2], b_up[3]];
 
-        // b_cov_j = g_diag[j] * b_up_j
+        // Kerr's azimuthal covector also includes g_tphi * b^t.
         let b_cov_j_arr = [
             g_diag[0] * b_up_j_arr[0],
             g_diag[1] * b_up_j_arr[1],
-            g_diag[2] * b_up_j_arr[2],
+            g_diag[2] * b_up_j_arr[2] + g_tph * bt,
         ];
 
         // delta: 1.0 where j == dir, else 0.0

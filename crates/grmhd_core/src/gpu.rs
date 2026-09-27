@@ -203,12 +203,31 @@ impl GrmhdGpu {
         Ok(())
     }
 
-    /// Compute fluxes in one direction and accumulate into RHS.
-    fn compute_flux_direction(&mut self, dir: usize) -> Result<()> {
+    fn compute_prim2con(&mut self) -> Result<()> {
+        let nt = self.n_total;
+        let cfg = LaunchConfig::launch_1d(nt as u32);
+        let gam_m1 = self.gam_m1;
+        let n1_i = self.n1 as i32;
+        let n2_i = self.n2 as i32;
+        let n3_i = self.n3 as i32;
+        let nt_i = self.n_total as i32;
+        let mut builder = self.stream.launch_builder(&self.kernels.prim2con);
+        builder.arg(self.buffers.prims.raw());
+        builder.arg(self.buffers.gcov.raw());
+        builder.arg(self.buffers.sqrt_g.raw());
+        builder.arg(self.buffers.cons.raw_mut());
+        builder.arg(&gam_m1);
+        builder.arg(&n1_i);
+        builder.arg(&n2_i);
+        builder.arg(&n3_i);
+        builder.arg(&nt_i);
+        unsafe { builder.launch(cfg) }.context("Launch prim2con")?;
+        Ok(())
+    }
+
+    fn compute_flux(&mut self, dir: usize) -> Result<()> {
         let nt = self.n_total as u32;
         let cfg = LaunchConfig::launch_1d(nt);
-
-        // Compute flux
         let gam_m1 = self.gam_m1;
         let dir_i = dir as i32;
         let n1_i = self.n1 as i32;
@@ -228,6 +247,20 @@ impl GrmhdGpu {
         builder.arg(&n3_i);
         builder.arg(&nt_i);
         unsafe { builder.launch(cfg) }.context("Launch compute_flux")?;
+
+        Ok(())
+    }
+
+    /// Compute fluxes in one direction and accumulate into RHS.
+    fn compute_flux_direction(&mut self, dir: usize) -> Result<()> {
+        let nt = self.n_total as u32;
+        let cfg = LaunchConfig::launch_1d(nt);
+        let dir_i = dir as i32;
+        let n1_i = self.n1 as i32;
+        let n2_i = self.n2 as i32;
+        let n3_i = self.n3 as i32;
+        let nt_i = self.n_total as i32;
+        self.compute_flux(dir)?;
 
         // Accumulate flux divergence into RHS
         let inv_dx = match dir {
@@ -263,26 +296,7 @@ impl GrmhdGpu {
         // Zero RHS by reallocating a zeroed buffer
         self.buffers.rhs = Buffer::alloc_zeros(&self.stream, NCONS * nt).context("Zero RHS")?;
 
-        // Compute prim2con
-        {
-            let cfg = LaunchConfig::launch_1d(nt as u32);
-            let gam_m1 = self.gam_m1;
-            let n1_i = self.n1 as i32;
-            let n2_i = self.n2 as i32;
-            let n3_i = self.n3 as i32;
-            let nt_i = self.n_total as i32;
-            let mut builder = self.stream.launch_builder(&self.kernels.prim2con);
-            builder.arg(self.buffers.prims.raw());
-            builder.arg(self.buffers.gcov.raw());
-            builder.arg(self.buffers.sqrt_g.raw());
-            builder.arg(self.buffers.cons.raw_mut());
-            builder.arg(&gam_m1);
-            builder.arg(&n1_i);
-            builder.arg(&n2_i);
-            builder.arg(&n3_i);
-            builder.arg(&nt_i);
-            unsafe { builder.launch(cfg) }.context("Launch prim2con")?;
-        }
+        self.compute_prim2con()?;
 
         // Flux divergence in all 3 directions
         self.compute_flux_direction(0)?;
@@ -320,6 +334,7 @@ impl GrmhdGpu {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use crate::{cons, eos::GammaLaw, flux, metric::KerrMetric, prims::Prim};
 
     #[test]
     fn test_gpu_init() {
@@ -373,6 +388,124 @@ mod tests {
                     "inverse metric identity failed in cell {cell}: {product} vs {expected}"
                 );
             }
+        }
+    }
+
+    #[test]
+    fn test_gpu_prim2con_and_flux_match_canonical_cpu() {
+        if !gororoba_gpu_cuda::Context::is_available() {
+            eprintln!("No CUDA device, skipping GRMHD prim2con and flux parity test");
+            return;
+        }
+
+        let (n1, n2, n3) = (4, 3, 2);
+        let (r_min, r_max, spin, gamma) = (4.0, 12.0, 0.7, 4.0 / 3.0);
+        let mut solver =
+            GrmhdGpu::new(n1, n2, n3, r_min, r_max, spin, gamma).unwrap_or_else(|error| {
+                panic!("CUDA GRMHD initialization failed on an available device: {error:#}")
+            });
+        let n_total = n1 * n2 * n3;
+        let mut prims = vec![0.0_f64; NPRIM * n_total];
+        for cell in 0..n_total {
+            let i = cell / (n2 * n3);
+            let xi = i as f64 / (n1 - 1) as f64;
+            let radius = r_min * (xi * (r_max / r_min).ln()).exp();
+            let v1 = 0.04 + 0.003 * (cell % 3) as f64;
+            let v2 = -0.025 + 0.002 * (cell % 4) as f64;
+            let v3 = 0.45 / radius;
+            let state = [
+                1.0 + 0.01 * (cell % 5) as f64,
+                0.03 + 0.001 * (cell % 3) as f64,
+                v1,
+                v2,
+                v3,
+                2.3 * v1,
+                2.3 * v2,
+                2.3 * v3,
+            ];
+            for (channel, value) in state.into_iter().enumerate() {
+                prims[channel * n_total + cell] = value;
+            }
+        }
+        solver
+            .upload_prims(&prims)
+            .unwrap_or_else(|error| panic!("CUDA primitive upload failed: {error:#}"));
+
+        let metric = KerrMetric::kerr(spin);
+        let eos = GammaLaw::new(gamma);
+        let mut expected_cons = vec![0.0_f64; NCONS * n_total];
+        for cell in 0..n_total {
+            let i = cell / (n2 * n3);
+            let j = (cell / n3) % n2;
+            let xi = i as f64 / (n1 - 1) as f64;
+            let r = r_min * (xi * (r_max / r_min).ln()).exp();
+            let theta = std::f64::consts::PI * (j as f64 + 0.5) / n2 as f64;
+            let gcov = metric.gcov(r, theta);
+            let sqrt_neg_g = metric.sqrt_neg_g(r, theta);
+            let prim: Prim = std::array::from_fn(|channel| prims[channel * n_total + cell]);
+            let expected = cons::prim2con_cached(&prim, &gcov, &eos, sqrt_neg_g);
+            for channel in 0..NCONS {
+                expected_cons[channel * n_total + cell] = expected[channel];
+            }
+        }
+
+        solver.compute_prim2con().unwrap_or_else(|error| {
+            panic!("CUDA prim2con failed on an available device: {error:#}")
+        });
+        solver
+            .stream
+            .synchronize()
+            .expect("synchronize after CUDA prim2con");
+        let observed_cons = solver
+            .buffers
+            .cons
+            .dtoh_vec()
+            .expect("download CUDA prim2con output");
+        assert_cuda_fp64_parity(&expected_cons, &observed_cons, "CUDA prim2con");
+
+        for dir in 0..3 {
+            let mut expected_flux = vec![0.0_f64; NCONS * n_total];
+            for cell in 0..n_total {
+                let i = cell / (n2 * n3);
+                let j = (cell / n3) % n2;
+                let xi = i as f64 / (n1 - 1) as f64;
+                let r = r_min * (xi * (r_max / r_min).ln()).exp();
+                let theta = std::f64::consts::PI * (j as f64 + 0.5) / n2 as f64;
+                let gcov = metric.gcov(r, theta);
+                let sqrt_neg_g = metric.sqrt_neg_g(r, theta);
+                let prim: Prim = std::array::from_fn(|channel| prims[channel * n_total + cell]);
+                let expected = flux::compute_flux_cached(&prim, &gcov, &eos, sqrt_neg_g, dir);
+                for channel in 0..NCONS {
+                    expected_flux[channel * n_total + cell] = expected[channel];
+                }
+            }
+            solver
+                .compute_flux(dir)
+                .unwrap_or_else(|error| panic!("CUDA direction-{dir} flux failed: {error:#}"));
+            solver.stream.synchronize().unwrap_or_else(|error| {
+                panic!("synchronize after CUDA direction-{dir} flux: {error}")
+            });
+            let observed_flux =
+                solver.buffers.flux.dtoh_vec().unwrap_or_else(|error| {
+                    panic!("download CUDA direction-{dir} flux: {error:#}")
+                });
+            assert_cuda_fp64_parity(
+                &expected_flux,
+                &observed_flux,
+                &format!("CUDA direction-{dir} flux"),
+            );
+        }
+    }
+
+    fn assert_cuda_fp64_parity(expected: &[f64], observed: &[f64], label: &str) {
+        assert_eq!(expected.len(), observed.len());
+        for (index, (&expected, &observed)) in expected.iter().zip(observed).enumerate() {
+            let scale = expected.abs().max(1.0);
+            let relative_or_absolute_error = (expected - observed).abs() / scale;
+            assert!(
+                relative_or_absolute_error < 1.0e-10,
+                "{label} mismatch at {index}: CPU={expected}, CUDA={observed}, normalized error={relative_or_absolute_error}"
+            );
         }
     }
 }

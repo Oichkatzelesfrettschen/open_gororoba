@@ -3,7 +3,8 @@
 //! The shader mirrors `kernels_grmhd.cu`: metric precompute, primitive to
 //! conservative conversion, flux construction, centered flux divergence, and
 //! forward Euler update over 8-channel SoA buffers. WGSL storage uses FP32, so
-//! parity checks compare against the CPU mirror after the same FP32 casts.
+//! parity checks compare device outputs with canonical CPU calculations at
+//! FP32-appropriate tolerances.
 
 use gororoba_gpu_vulkan::{
     Adapter, ComputePipeline, ComputePipelineBuilder, DescriptorPool, DescriptorSet,
@@ -23,6 +24,9 @@ const OP_PRIM2CON: u32 = 1;
 const OP_COMPUTE_FLUX: u32 = 2;
 const OP_FLUX_DIVERGENCE: u32 = 3;
 const OP_EULER_UPDATE: u32 = 4;
+
+#[cfg(test)]
+pub(crate) static GRMHD_DEVICE_TEST_LOCK: std::sync::Mutex<()> = std::sync::Mutex::new(());
 
 pub const GRMHD_VULKAN_WGSL: &str = r#"
 const PI: f32 = 3.1415926535897932384626433832795;
@@ -160,26 +164,32 @@ fn prim2con(cell: u32) {
     if (alpha_sq > 1.0e-20) {
         ut = inverseSqrt(alpha_sq);
     }
-    let inv_ut: f32 = 1.0 / ut;
-
     let u_r: f32 = g_rr * ut * v1;
     let u_th: f32 = g_thth * ut * v2;
     let u_ph: f32 = g_phph * ut * v3 + g_tph * ut;
     let u_t: f32 = g_tt * ut + g_tph * ut * v3;
 
-    let bt: f32 = (b1 * u_r + b2 * u_th + b3 * u_ph) * inv_ut;
-    let bsq_raw: f32 = (b1 * b1 * g_rr + b2 * b2 * g_thth + b3 * b3 * g_phph) / (ut * ut)
-        + bt * bt * (-1.0 / (ut * ut) + vsq);
+    let inv_ut: f32 = 1.0 / ut;
+    let bt: f32 = b1 * u_r + b2 * u_th + b3 * u_ph;
+    let b_up_1: f32 = (b1 + bt * ut * v1) * inv_ut;
+    let b_up_2: f32 = (b2 + bt * ut * v2) * inv_ut;
+    let b_up_3: f32 = (b3 + bt * ut * v3) * inv_ut;
+    let b_t_cov: f32 = g_tt * bt + g_tph * b_up_3;
+    let b_r_cov: f32 = g_rr * b_up_1;
+    let b_th_cov: f32 = g_thth * b_up_2;
+    let b_ph_cov: f32 = g_tph * bt + g_phph * b_up_3;
+    let bsq_raw: f32 = bt * b_t_cov + b_up_1 * b_r_cov
+        + b_up_2 * b_th_cov + b_up_3 * b_ph_cov;
     let bsq: f32 = max(bsq_raw, 0.0);
     let w: f32 = rho + u + pressure + bsq;
     let ptot: f32 = pressure + 0.5 * bsq;
 
     cons.values[soa_index(0u, cell)] = sg * rho * ut;
-    let t_t_t: f32 = w * ut * u_t + ptot - bt * (g_tt * bt);
+    let t_t_t: f32 = w * ut * u_t + ptot - bt * b_t_cov;
     cons.values[soa_index(1u, cell)] = sg * (t_t_t + rho * ut);
-    cons.values[soa_index(2u, cell)] = sg * (w * ut * u_r);
-    cons.values[soa_index(3u, cell)] = sg * (w * ut * u_th);
-    cons.values[soa_index(4u, cell)] = sg * (w * ut * u_ph);
+    cons.values[soa_index(2u, cell)] = sg * (w * ut * u_r - bt * b_r_cov);
+    cons.values[soa_index(3u, cell)] = sg * (w * ut * u_th - bt * b_th_cov);
+    cons.values[soa_index(4u, cell)] = sg * (w * ut * u_ph - bt * b_ph_cov);
     cons.values[soa_index(5u, cell)] = sg * b1;
     cons.values[soa_index(6u, cell)] = sg * b2;
     cons.values[soa_index(7u, cell)] = sg * b3;
@@ -216,16 +226,22 @@ fn compute_flux(cell: u32) {
         ut = inverseSqrt(alpha_sq);
     }
     let inv_ut: f32 = 1.0 / ut;
-    let inv_ut_sq: f32 = inv_ut * inv_ut;
 
     let u_r: f32 = g_rr * ut * v1;
     let u_th: f32 = g_thth * ut * v2;
     let u_ph: f32 = g_phph * ut * v3 + g_tph * ut;
     let u_t: f32 = g_tt * ut + g_tph * ut * v3;
 
-    let bt: f32 = (b1 * u_r + b2 * u_th + b3 * u_ph) * inv_ut;
-    let bsq_raw: f32 = (b1 * b1 * g_rr + b2 * b2 * g_thth + b3 * b3 * g_phph) * inv_ut_sq
-        + bt * bt * (-inv_ut_sq + vsq);
+    let bt: f32 = b1 * u_r + b2 * u_th + b3 * u_ph;
+    let b_up_1: f32 = (b1 + bt * ut * v1) * inv_ut;
+    let b_up_2: f32 = (b2 + bt * ut * v2) * inv_ut;
+    let b_up_3: f32 = (b3 + bt * ut * v3) * inv_ut;
+    let b_t_cov: f32 = g_tt * bt + g_tph * b_up_3;
+    let b_r_cov: f32 = g_rr * b_up_1;
+    let b_th_cov: f32 = g_thth * b_up_2;
+    let b_ph_cov: f32 = g_tph * bt + g_phph * b_up_3;
+    let bsq_raw: f32 = bt * b_t_cov + b_up_1 * b_r_cov
+        + b_up_2 * b_th_cov + b_up_3 * b_ph_cov;
     let bsq: f32 = max(bsq_raw, 0.0);
     let w: f32 = rho + u + pressure + bsq;
     let ptot: f32 = pressure + 0.5 * bsq;
@@ -233,23 +249,21 @@ fn compute_flux(cell: u32) {
     let v_dir: f32 = select3(v1, v2, v3, dir);
     let b_dir: f32 = select3(b1, b2, b3, dir);
     let u_up_dir: f32 = ut * v_dir;
-    let b_up_dir: f32 = (b_dir + bt * ut * v_dir) * inv_ut;
+    let b_up_dir: f32 = select3(b_up_1, b_up_2, b_up_3, dir);
 
     flux.values[soa_index(0u, cell)] = sg * rho * u_up_dir;
-    var b_cov_t: f32 = g_tt * bt;
-    if (dir == 2u) {
-        b_cov_t = b_cov_t + g_tph * b_up_dir;
-    }
+    let b_cov_t: f32 = g_tt * bt + g_tph * b_up_3;
     let t_dir_t: f32 = w * u_up_dir * u_t - b_up_dir * b_cov_t;
     flux.values[soa_index(1u, cell)] = sg * (t_dir_t + rho * u_up_dir);
 
     for (var jj: u32 = 0u; jj < 3u; jj = jj + 1u) {
-        let v_j: f32 = select3(v1, v2, v3, jj);
-        let b_j: f32 = select3(b1, b2, b3, jj);
         let u_cov_j: f32 = select3(u_r, u_th, u_ph, jj);
         let g_diag_j: f32 = select3(g_rr, g_thth, g_phph, jj);
-        let b_up_j: f32 = (b_j + bt * ut * v_j) * inv_ut;
-        let b_cov_j: f32 = g_diag_j * b_up_j;
+        let b_up_j: f32 = select3(b_up_1, b_up_2, b_up_3, jj);
+        var b_cov_j: f32 = g_diag_j * b_up_j;
+        if (jj == 2u) {
+            b_cov_j = b_cov_j + g_tph * bt;
+        }
         var delta_jd: f32 = 0.0;
         if (jj == dir) {
             delta_jd = 1.0;
@@ -604,6 +618,43 @@ pub fn advance_conserved_cpu_reference(
     Ok(cons_new)
 }
 
+#[cfg(test)]
+pub(crate) fn canonical_prim2con_and_flux_f32(
+    config: GrmhdVulkanConfig,
+    prims_soa: &[f32],
+) -> (Vec<f32>, [Vec<f32>; 3]) {
+    use crate::{cons, eos::GammaLaw, flux, metric::KerrMetric, prims::Prim};
+
+    let metric = KerrMetric::kerr(config.kerr_a as f64);
+    let eos = GammaLaw::new(config.gamma as f64);
+    let n_total = config.n_total();
+    let mut cons_soa = vec![0.0_f32; NCONS * n_total];
+    let mut flux_soa = std::array::from_fn(|_| vec![0.0_f32; NCONS * n_total]);
+
+    for cell in 0..n_total {
+        let (i, j, _) = decode_cell_cpu(config, cell);
+        let xi = i as f64 / (config.n1 - 1) as f64;
+        let r = config.r_min as f64 * (xi * (config.r_max as f64 / config.r_min as f64).ln()).exp();
+        let theta = std::f64::consts::PI * (j as f64 + 0.5) / config.n2 as f64;
+        let gcov = metric.gcov(r, theta);
+        let sqrt_neg_g = metric.sqrt_neg_g(r, theta);
+        let prim: Prim =
+            std::array::from_fn(|channel| prims_soa[soa_index_cpu(n_total, channel, cell)] as f64);
+        let conserved = cons::prim2con_cached(&prim, &gcov, &eos, sqrt_neg_g);
+        for channel in 0..NCONS {
+            cons_soa[soa_index_cpu(n_total, channel, cell)] = conserved[channel] as f32;
+        }
+        for (dir, flux_for_dir) in flux_soa.iter_mut().enumerate() {
+            let expected_flux = flux::compute_flux_cached(&prim, &gcov, &eos, sqrt_neg_g, dir);
+            for channel in 0..NCONS {
+                flux_for_dir[soa_index_cpu(n_total, channel, cell)] = expected_flux[channel] as f32;
+            }
+        }
+    }
+
+    (cons_soa, flux_soa)
+}
+
 #[derive(Clone, Copy)]
 struct DispatchParams {
     op: u32,
@@ -899,24 +950,32 @@ fn prim2con_cpu(
         } else {
             1.0
         };
-        let inv_ut = 1.0 / ut;
         let u_r = g_rr * ut * v1;
         let u_th = g_thth * ut * v2;
         let u_ph = g_phph * ut * v3 + g_tph * ut;
         let u_t = g_tt * ut + g_tph * ut * v3;
-        let bt = (b1 * u_r + b2 * u_th + b3 * u_ph) * inv_ut;
-        let bsq = ((b1 * b1 * g_rr + b2 * b2 * g_thth + b3 * b3 * g_phph) / (ut * ut)
-            + bt * bt * (-1.0 / (ut * ut) + vsq))
-            .max(0.0);
+        let inv_ut = 1.0 / ut;
+        let bt = b1 * u_r + b2 * u_th + b3 * u_ph;
+        let b_up = [
+            (b1 + bt * ut * v1) * inv_ut,
+            (b2 + bt * ut * v2) * inv_ut,
+            (b3 + bt * ut * v3) * inv_ut,
+        ];
+        let b_t_cov = g_tt * bt + g_tph * b_up[2];
+        let b_r_cov = g_rr * b_up[0];
+        let b_th_cov = g_thth * b_up[1];
+        let b_ph_cov = g_tph * bt + g_phph * b_up[2];
+        let bsq =
+            (bt * b_t_cov + b_up[0] * b_r_cov + b_up[1] * b_th_cov + b_up[2] * b_ph_cov).max(0.0);
         let w = rho + u + pressure + bsq;
         let ptot = pressure + 0.5 * bsq;
 
         cons[soa_index_cpu(n_total, 0, cell)] = sg * rho * ut;
-        let t_t_t = w * ut * u_t + ptot - bt * (g_tt * bt);
+        let t_t_t = w * ut * u_t + ptot - bt * b_t_cov;
         cons[soa_index_cpu(n_total, 1, cell)] = sg * (t_t_t + rho * ut);
-        cons[soa_index_cpu(n_total, 2, cell)] = sg * (w * ut * u_r);
-        cons[soa_index_cpu(n_total, 3, cell)] = sg * (w * ut * u_th);
-        cons[soa_index_cpu(n_total, 4, cell)] = sg * (w * ut * u_ph);
+        cons[soa_index_cpu(n_total, 2, cell)] = sg * (w * ut * u_r - bt * b_r_cov);
+        cons[soa_index_cpu(n_total, 3, cell)] = sg * (w * ut * u_th - bt * b_th_cov);
+        cons[soa_index_cpu(n_total, 4, cell)] = sg * (w * ut * u_ph - bt * b_ph_cov);
         cons[soa_index_cpu(n_total, 5, cell)] = sg * b1;
         cons[soa_index_cpu(n_total, 6, cell)] = sg * b2;
         cons[soa_index_cpu(n_total, 7, cell)] = sg * b3;
@@ -960,35 +1019,38 @@ fn compute_flux_cpu(
             1.0
         };
         let inv_ut = 1.0 / ut;
-        let inv_ut_sq = inv_ut * inv_ut;
         let u_cov = [
             g_diag[0] * ut * v[0],
             g_diag[1] * ut * v[1],
             g_diag[2] * ut * v[2] + g_tph * ut,
         ];
         let u_t = g_tt * ut + g_tph * ut * v[2];
-        let bt = (b[0] * u_cov[0] + b[1] * u_cov[1] + b[2] * u_cov[2]) * inv_ut;
-        let bsq = ((b[0] * b[0] * g_diag[0] + b[1] * b[1] * g_diag[1] + b[2] * b[2] * g_diag[2])
-            * inv_ut_sq
-            + bt * bt * (-inv_ut_sq + vsq))
-            .max(0.0);
+        let bt = b[0] * u_cov[0] + b[1] * u_cov[1] + b[2] * u_cov[2];
+        let b_up = [
+            (b[0] + bt * ut * v[0]) * inv_ut,
+            (b[1] + bt * ut * v[1]) * inv_ut,
+            (b[2] + bt * ut * v[2]) * inv_ut,
+        ];
+        let b_t_cov = g_tt * bt + g_tph * b_up[2];
+        let b_r_cov = g_diag[0] * b_up[0];
+        let b_th_cov = g_diag[1] * b_up[1];
+        let b_ph_cov = g_tph * bt + g_diag[2] * b_up[2];
+        let bsq =
+            (bt * b_t_cov + b_up[0] * b_r_cov + b_up[1] * b_th_cov + b_up[2] * b_ph_cov).max(0.0);
         let w = rho + u + pressure + bsq;
         let ptot = pressure + 0.5 * bsq;
         let v_dir = v[dir];
         let b_dir = b[dir];
         let u_up_dir = ut * v_dir;
-        let b_up_dir = (b_dir + bt * ut * v_dir) * inv_ut;
+        let b_up_dir = b_up[dir];
 
         flux[soa_index_cpu(n_total, 0, cell)] = sg * rho * u_up_dir;
-        let mut b_cov_t = g_tt * bt;
-        if dir == 2 {
-            b_cov_t += g_tph * b_up_dir;
-        }
+        let b_cov_t = g_tt * bt + g_tph * b_up[2];
         let t_dir_t = w * u_up_dir * u_t - b_up_dir * b_cov_t;
         flux[soa_index_cpu(n_total, 1, cell)] = sg * (t_dir_t + rho * u_up_dir);
         for jj in 0..3 {
-            let b_up_j = (b[jj] + bt * ut * v[jj]) * inv_ut;
-            let b_cov_j = g_diag[jj] * b_up_j;
+            let b_up_j = b_up[jj];
+            let b_cov_j = g_diag[jj] * b_up_j + if jj == 2 { g_tph * bt } else { 0.0 };
             let delta_jd = if jj == dir { 1.0 } else { 0.0 };
             flux[soa_index_cpu(n_total, 2 + jj, cell)] =
                 sg * (w * u_up_dir * u_cov[jj] + ptot * delta_jd - b_up_dir * b_cov_j);
@@ -1072,8 +1134,8 @@ mod tests {
         GrmhdVulkanConfig::new(6, 5, 4, 2.5, 20.0, 0.0, 4.0 / 3.0).unwrap()
     }
 
-    fn acceptance_config() -> GrmhdVulkanConfig {
-        GrmhdVulkanConfig::new(32, 32, 32, 2.5, 20.0, 0.0, 4.0 / 3.0).unwrap()
+    fn parity_config() -> GrmhdVulkanConfig {
+        GrmhdVulkanConfig::new(4, 3, 2, 4.0, 12.0, 0.7, 4.0 / 3.0).unwrap()
     }
 
     fn fixture_prims(config: GrmhdVulkanConfig) -> Vec<f32> {
@@ -1091,6 +1153,47 @@ mod tests {
             prims[soa_index_cpu(n_total, 7, cell)] = -0.00025;
         }
         prims
+    }
+
+    fn moving_magnetized_prims(config: GrmhdVulkanConfig) -> Vec<f32> {
+        let n_total = config.n_total();
+        let mut prims = vec![0.0f32; NPRIM * n_total];
+        for cell in 0..n_total {
+            let i = cell / (config.n2 * config.n3);
+            let xi = i as f32 / (config.n1 - 1) as f32;
+            let radius = config.r_min * (xi * (config.r_max / config.r_min).ln()).exp();
+            let v1 = 0.04 + 0.003 * (cell % 3) as f32;
+            let v2 = -0.025 + 0.002 * (cell % 4) as f32;
+            let v3 = 0.45 / radius;
+            for (channel, value) in [
+                1.0 + 0.01 * (cell % 5) as f32,
+                0.03 + 0.001 * (cell % 3) as f32,
+                v1,
+                v2,
+                v3,
+                2.3 * v1,
+                2.3 * v2,
+                2.3 * v3,
+            ]
+            .into_iter()
+            .enumerate()
+            {
+                prims[soa_index_cpu(n_total, channel, cell)] = value;
+            }
+        }
+        prims
+    }
+
+    fn assert_fp32_parity(expected: &[f32], observed: &[f32], label: &str) {
+        assert_eq!(expected.len(), observed.len());
+        for (index, (&expected, &observed)) in expected.iter().zip(observed).enumerate() {
+            let scale = expected.abs().max(1.0);
+            let relative_or_absolute_error = (expected - observed).abs() / scale;
+            assert!(
+                relative_or_absolute_error < 5.0e-5,
+                "{label} mismatch at {index}: CPU={expected}, device={observed}, normalized error={relative_or_absolute_error}"
+            );
+        }
     }
 
     #[test]
@@ -1149,19 +1252,86 @@ mod tests {
     }
 
     #[test]
-    #[ignore = "requires local Vulkan compute device"]
-    fn grmhd_vulkan_matches_cpu_reference_for_cuda_style_advance() {
-        let config = acceptance_config();
-        let prims = fixture_prims(config);
-        let cpu = advance_conserved_cpu_reference(config, &prims, 0.0001, 10).unwrap();
-        let gpu = GrmhdVulkanKernel::advance_conserved(config, &prims, 0.0001, 10).unwrap();
-        assert_eq!(cpu.len(), gpu.len());
-        for (idx, (expected, observed)) in cpu.iter().zip(gpu.iter()).enumerate() {
-            let scale = expected.abs().max(1.0);
-            let rel = (expected - observed).abs() / scale;
-            assert!(
-                rel < 1.0e-4,
-                "GRMHD Vulkan mismatch at {idx}: cpu={expected}, gpu={observed}, rel={rel}"
+    fn grmhd_vulkan_prim2con_and_flux_match_canonical_cpu() {
+        let _device_guard = GRMHD_DEVICE_TEST_LOCK
+            .lock()
+            .unwrap_or_else(std::sync::PoisonError::into_inner);
+        if !GrmhdVulkanKernel::is_available() {
+            eprintln!("No Vulkan compute device, skipping GRMHD parity test");
+            return;
+        }
+
+        let config = parity_config();
+        let prims = moving_magnetized_prims(config);
+        let (expected_cons, expected_flux) = canonical_prim2con_and_flux_f32(config, &prims);
+        let (_instance, adapter, device) =
+            GrmhdVulkanKernel::build_context().unwrap_or_else(|error| {
+                panic!("Vulkan device is present but context creation failed: {error}")
+            });
+        let pipeline = GrmhdVulkanKernel::build_pipeline(&device).unwrap_or_else(|error| {
+            panic!("Vulkan pipeline failed on an available device: {error}")
+        });
+        let run = GrmhdVulkanRun::new(&device, &adapter, &pipeline, config, &prims).unwrap_or_else(
+            |error| panic!("Vulkan buffers failed on an available device: {error}"),
+        );
+        let dispatch = DispatchScope::new(&device).unwrap_or_else(|error| {
+            panic!("Vulkan dispatch scope failed on an available device: {error}")
+        });
+
+        run.dispatch_op(
+            &dispatch,
+            &pipeline.pipeline,
+            DispatchParams {
+                op: OP_PRECOMPUTE_METRIC,
+                dir: 0,
+                dt: 0.1,
+                work_items: config.n1 * config.n2,
+            },
+        )
+        .unwrap_or_else(|error| {
+            panic!("Vulkan metric precompute failed on an available device: {error}")
+        });
+        run.dispatch_op(
+            &dispatch,
+            &pipeline.pipeline,
+            DispatchParams {
+                op: OP_PRIM2CON,
+                dir: 0,
+                dt: 0.1,
+                work_items: config.n_total(),
+            },
+        )
+        .unwrap_or_else(|error| panic!("Vulkan prim2con failed on an available device: {error}"));
+        let observed_cons = run
+            .cons_buffer
+            .read_f32_slice(NCONS * config.n_total())
+            .unwrap_or_else(|error| panic!("Vulkan prim2con readback failed: {error}"));
+        assert_fp32_parity(&expected_cons, &observed_cons, "Vulkan prim2con");
+
+        for dir in 0..3 {
+            run.dispatch_op(
+                &dispatch,
+                &pipeline.pipeline,
+                DispatchParams {
+                    op: OP_COMPUTE_FLUX,
+                    dir,
+                    dt: 0.1,
+                    work_items: config.n_total(),
+                },
+            )
+            .unwrap_or_else(|error| {
+                panic!("Vulkan direction-{dir} flux failed on an available device: {error}")
+            });
+            let observed_flux = run
+                .flux_buffer
+                .read_f32_slice(NCONS * config.n_total())
+                .unwrap_or_else(|error| {
+                    panic!("Vulkan direction-{dir} flux readback failed: {error}")
+                });
+            assert_fp32_parity(
+                &expected_flux[dir as usize],
+                &observed_flux,
+                &format!("Vulkan direction-{dir} flux"),
             );
         }
     }
