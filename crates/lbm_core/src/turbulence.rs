@@ -422,83 +422,86 @@ pub fn extract_dominant_triads_3d(
     let ky_max = (ny / 8) as i32;
     let kz_max = (nz / 8) as i32;
 
-    let mut triads = Vec::new();
-
-    for kx1 in -kx_max..=kx_max {
-        for ky1 in -ky_max..=ky_max {
-            for kz1 in -kz_max..=kz_max {
-                if kx1 == 0 && ky1 == 0 && kz1 == 0 {
+    // Only modes capable of exceeding the threshold enter the pair search.
+    let mut active_modes = Vec::new();
+    for kx in -kx_max..=kx_max {
+        for ky in -ky_max..=ky_max {
+            for kz in -kz_max..=kz_max {
+                let wavevector = (kx, ky, kz);
+                if wavevector == (0, 0, 0) {
                     continue;
                 }
-                let a_k = amplitude(kx1, ky1, kz1);
-
-                for kx2 in -kx_max..=kx_max {
-                    for ky2 in -ky_max..=ky_max {
-                        for kz2 in -kz_max..=kz_max {
-                            if kx2 == 0 && ky2 == 0 && kz2 == 0 {
-                                continue;
-                            }
-                            if kx1 == kx2 && ky1 == ky2 && kz1 == kz2 {
-                                continue;
-                            }
-
-                            let qx = -(kx1 + kx2);
-                            let qy = -(ky1 + ky2);
-                            let qz = -(kz1 + kz2);
-
-                            if qx.abs() > kx_max || qy.abs() > ky_max || qz.abs() > kz_max {
-                                continue;
-                            }
-                            if qx == 0 && qy == 0 && qz == 0 {
-                                continue;
-                            }
-
-                            // Canonical ordering
-                            let mut triple = [(kx1, ky1, kz1), (kx2, ky2, kz2), (qx, qy, qz)];
-                            triple.sort();
-                            if (kx1, ky1, kz1) != triple[0] || (kx2, ky2, kz2) != triple[1] {
-                                continue;
-                            }
-
-                            let a_p = amplitude(kx2, ky2, kz2);
-                            let a_q = amplitude(qx, qy, qz);
-                            let product = a_k * a_p * a_q;
-                            assert!(product.is_finite(), "nonfinite triad amplitude arithmetic");
-
-                            if product > threshold {
-                                let wavevectors = [[kx1, ky1, kz1], [kx2, ky2, kz2], [qx, qy, qz]];
-                                let velocity = |[x, y, z]: [i32; 3]| {
-                                    [u_hat.get(x, y, z), v_hat.get(x, y, z), w_hat.get(x, y, z)]
-                                        .map(|a| a / norm)
-                                };
-                                for receiver in 0..3 {
-                                    let k = wavevectors[receiver];
-                                    let p = wavevectors[(receiver + 1) % 3];
-                                    let q = wavevectors[(receiver + 2) % 3];
-                                    let incoming_p = p.map(|x| -x);
-                                    let incoming_q = q.map(|x| -x);
-                                    triads.push(SpectralTriad3D {
-                                        k,
-                                        p,
-                                        q,
-                                        energy_transfer: calculate_triad_energy_transfer(
-                                            k,
-                                            incoming_p,
-                                            incoming_q,
-                                            velocity(k),
-                                            velocity(incoming_p),
-                                            velocity(incoming_q),
-                                        ),
-                                    });
-                                }
-                            }
-                        }
-                    }
+                let mode_amplitude = amplitude(kx, ky, kz);
+                assert!(mode_amplitude.is_finite(), "nonfinite mode amplitude");
+                if mode_amplitude > 0.0 {
+                    active_modes.push((wavevector, mode_amplitude));
                 }
             }
         }
     }
+    let maximum_amplitude = active_modes
+        .iter()
+        .map(|(_, mode_amplitude)| *mode_amplitude)
+        .fold(0.0_f64, f64::max);
+    active_modes.retain(|(_, mode_amplitude)| {
+        let first_order =
+            ((*mode_amplitude * maximum_amplitude).next_up() * maximum_amplitude).next_up();
+        let last_order =
+            ((maximum_amplitude * maximum_amplitude).next_up() * *mode_amplitude).next_up();
+        first_order.max(last_order) > threshold
+    });
 
+    let mut triads = Vec::new();
+    for &((kx1, ky1, kz1), a_k) in &active_modes {
+        for &((kx2, ky2, kz2), a_p) in &active_modes {
+            if (kx1, ky1, kz1) >= (kx2, ky2, kz2) {
+                continue;
+            }
+            let qx = -(kx1 + kx2);
+            let qy = -(ky1 + ky2);
+            let qz = -(kz1 + kz2);
+            if qx.abs() > kx_max || qy.abs() > ky_max || qz.abs() > kz_max {
+                continue;
+            }
+            if (qx, qy, qz) == (0, 0, 0) {
+                continue;
+            }
+            if (qx, qy, qz) <= (kx2, ky2, kz2) {
+                continue;
+            }
+
+            let a_q = amplitude(qx, qy, qz);
+            let product = a_k * a_p * a_q;
+            assert!(product.is_finite(), "nonfinite triad amplitude arithmetic");
+            if product > threshold {
+                let wavevectors = [[kx1, ky1, kz1], [kx2, ky2, kz2], [qx, qy, qz]];
+                let velocity = |[x, y, z]: [i32; 3]| {
+                    [u_hat.get(x, y, z), v_hat.get(x, y, z), w_hat.get(x, y, z)]
+                        .map(|coefficient| coefficient / norm)
+                };
+                for receiver in 0..3 {
+                    let k = wavevectors[receiver];
+                    let p = wavevectors[(receiver + 1) % 3];
+                    let q = wavevectors[(receiver + 2) % 3];
+                    let incoming_p = p.map(|component| -component);
+                    let incoming_q = q.map(|component| -component);
+                    triads.push(SpectralTriad3D {
+                        k,
+                        p,
+                        q,
+                        energy_transfer: calculate_triad_energy_transfer(
+                            k,
+                            incoming_p,
+                            incoming_q,
+                            velocity(k),
+                            velocity(incoming_p),
+                            velocity(incoming_q),
+                        ),
+                    });
+                }
+            }
+        }
+    }
     triads
 }
 
