@@ -354,6 +354,9 @@ validation-resource-contract-workers:
 	done; \
 	if ! grep -Fq 'worker_budget="$$(nproc)"' .github/workflows/navier-stokes-certificates.yml; then echo "ERROR: certificate workflow lacks process-visible worker detection." >&2; status=1; fi; \
 	if ! grep -Fq 'for variable in CARGO_BUILD_JOBS RAYON_NUM_THREADS RUST_TEST_THREADS' .github/workflows/navier-stokes-certificates.yml; then echo "ERROR: certificate workflow does not pass the worker count to Rust execution." >&2; status=1; fi; \
+	for contract in 'cargo test --locked --no-fail-fast -p navier_stokes_verify' 'Report collected certificate failures' 'TESTS_OUTCOME:' 'LINT_OUTCOME:' 'REPLAY_OUTCOME:' 'ARTIFACT_OUTCOME:'; do \
+	    if ! grep -Fq "$$contract" .github/workflows/navier-stokes-certificates.yml; then echo "ERROR: certificate workflow does not collect independent results: $$contract" >&2; status=1; fi; \
+	done; \
 	for workflow in .github/workflows/proofs.yml .github/workflows/bench-cd-kernel.yml .github/workflows/paper.yml .github/workflows/unsafe-survey.yml .github/workflows/navier-stokes-certificates.yml; do \
 	    if ! grep -Fq 'workflow_call:' "$$workflow"; then echo "ERROR: component evidence workflow is not reusable: $$workflow" >&2; status=1; fi; \
 	    if grep -Eq '^  (push|pull_request):' "$$workflow"; then echo "ERROR: component workflow retains an independent push or pull-request admission root: $$workflow" >&2; status=1; fi; \

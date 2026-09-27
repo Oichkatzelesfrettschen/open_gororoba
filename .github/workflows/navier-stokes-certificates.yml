@@ -28,10 +28,18 @@ jobs:
             echo "$variable=$worker_budget" >> "$GITHUB_ENV"
           done
       - name: Test exact arithmetic, residuals, majorants and certificates
-        run: cargo test --locked -p navier_stokes_verify
+        id: tests
+        continue-on-error: true
+        run: cargo test --locked --no-fail-fast -p navier_stokes_verify
       - name: Lint verifier and example
+        id: lint
+        if: always()
+        continue-on-error: true
         run: cargo clippy --locked -p navier_stokes_verify --all-targets -- -D warnings
       - name: Certify a nonzero Beltrami perturbation and replay in another process
+        id: replay
+        if: always()
+        continue-on-error: true
         shell: bash
         run: |
           set -euo pipefail
@@ -42,8 +50,32 @@ jobs:
           cargo run --quiet --locked -p navier_stokes_verify --example verify -- verify crates/navier_stokes_verify/fixtures/beltrami_neighborhood.json > "$RUNNER_TEMP/ns-certificate/certificate.json" 2> "$RUNNER_TEMP/ns-certificate/report.txt"
           cargo run --quiet --locked -p navier_stokes_verify --example verify -- replay "$RUNNER_TEMP/ns-certificate/certificate.json" > "$RUNNER_TEMP/ns-certificate/replay.json"
       - uses: actions/upload-artifact@v4
+        id: artifact
+        if: always()
+        continue-on-error: true
         with:
           name: beltrami-neighborhood-certificate
           path: ${{ runner.temp }}/ns-certificate/
           if-no-files-found: error
           retention-days: 30
+      - name: Report collected certificate failures
+        if: always()
+        env:
+          TESTS_OUTCOME: ${{ steps.tests.outcome }}
+          LINT_OUTCOME: ${{ steps.lint.outcome }}
+          REPLAY_OUTCOME: ${{ steps.replay.outcome }}
+          ARTIFACT_OUTCOME: ${{ steps.artifact.outcome }}
+        run: |
+          set -euo pipefail
+          failure_count=0
+          for outcome_variable in TESTS_OUTCOME LINT_OUTCOME REPLAY_OUTCOME ARTIFACT_OUTCOME; do
+            outcome="${!outcome_variable}"
+            printf '%s=%s\n' "$outcome_variable" "$outcome"
+            if [ "$outcome" != success ]; then
+              failure_count=$((failure_count + 1))
+            fi
+          done
+          if [ "$failure_count" -ne 0 ]; then
+            echo "Collected $failure_count failing certificate lane(s)." >&2
+            exit 1
+          fi
