@@ -14,6 +14,8 @@
 // === Constants (set by host at launch via template args) ===
 #define NPRIM 8  // rho, u, v1, v2, v3, B1, B2, B3
 #define NCONS 8  // D, E, S1, S2, S3, B1, B2, B3
+// NVRTC compiles without the host C library, so M_PI is not defined.
+#define GRMHD_PI 3.141592653589793
 
 // Primitive variable indices
 #define RHO 0
@@ -55,7 +57,7 @@ extern "C" __global__ void precompute_metric_kernel(
     // Log-radial coordinate
     double xi = (double)i / (double)(N1 - 1);
     double r = r_min * exp(xi * log(r_max / r_min));
-    double th = M_PI * ((double)j + 0.5) / (double)N2;
+    double th = GRMHD_PI * ((double)j + 0.5) / (double)N2;
 
     double sth = sin(th);
     double cth = cos(th);
@@ -73,14 +75,16 @@ extern "C" __global__ void precompute_metric_kernel(
 
     // Contravariant metric
     double det = gcov[base + 0] * gcov[base + 3] - gcov[base + 4] * gcov[base + 4];
-    double inv_det = 1.0 / fmax(fabs(det), 1e-40);
-    gcon[base + 0] = gcov[base + 3] * inv_det;    // g^tt (with flipped sign from det)
+    double det_magnitude_floor = fmax(fabs(det), 1e-40);
+    double signed_det_floor = det < 0.0 ? -det_magnitude_floor : det_magnitude_floor;
+    double inv_det = 1.0 / signed_det_floor;
+    gcon[base + 0] = gcov[base + 3] * inv_det;    // g^tt
     gcon[base + 1] = delta / sigma;                 // g^rr
     gcon[base + 2] = 1.0 / sigma;                  // g^thth
     gcon[base + 3] = gcov[base + 0] * inv_det;    // g^phph
     gcon[base + 4] = -gcov[base + 4] * inv_det;   // g^tph
 
-    // sqrt(-g) for Kerr-Schild
+    // sqrt(-g) in Boyer-Lindquist coordinates
     sqrt_g[idx] = sigma * fabs(sth);
 
     // Lapse: alpha = 1/sqrt(-g^tt)

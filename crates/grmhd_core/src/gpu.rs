@@ -67,7 +67,10 @@ struct GrmhdBuffers {
 }
 
 fn load_kernels(ctx: &CudaContextHelper) -> Result<GrmhdKernels> {
-    let opts = CompileOptions::for_arch(7, 0);
+    // NVRTC accepts only architectures its toolkit still supports (CUDA 13
+    // dropped sm_70), so the target comes from the device itself.
+    let probe = gororoba_gpu_cuda::DeviceProbe::query().context("Probe CUDA device")?;
+    let opts = CompileOptions::for_arch(probe.major, probe.minor);
     let registry = ModuleRegistry::compile_and_load(
         ctx.raw(),
         KERNEL_SRC,
@@ -320,16 +323,56 @@ mod tests {
 
     #[test]
     fn test_gpu_init() {
-        // Only run if CUDA is available (cheap probe via gpu_cuda).
         if !gororoba_gpu_cuda::Context::is_available() {
             eprintln!("No CUDA device, skipping GPU test");
             return;
         }
 
-        let solver = GrmhdGpu::new(64, 32, 16, 2.5, 40.0, 0.0, 4.0 / 3.0);
-        match solver {
-            Ok(s) => println!("{}", s.grid_info()),
-            Err(e) => eprintln!("GPU init failed (expected without CUDA): {}", e),
+        let solver = GrmhdGpu::new(64, 32, 16, 2.5, 40.0, 0.0, 4.0 / 3.0)
+            .unwrap_or_else(|error| panic!("GPU init failed on a CUDA host: {error:#}"));
+        println!("{}", solver.grid_info());
+    }
+
+    #[test]
+    fn test_gpu_metric_inverse_is_exact_on_exterior_grid() {
+        if !gororoba_gpu_cuda::Context::is_available() {
+            eprintln!("No CUDA device, skipping GPU test");
+            return;
+        }
+
+        let (n1, n2) = (48, 24);
+        let solver = GrmhdGpu::new(n1, n2, 4, 2.5, 40.0, 0.7, 4.0 / 3.0)
+            .unwrap_or_else(|error| panic!("GPU init failed on a CUDA host: {error:#}"));
+        solver
+            .stream
+            .synchronize()
+            .expect("synchronize after metric precompute");
+        let gcov = solver.buffers.gcov.dtoh_vec().expect("download gcov");
+        let gcon = solver.buffers.gcon.dtoh_vec().expect("download gcon");
+
+        // Layout per cell: [tt, rr, thth, phph, tph].
+        for (cell, (lower, upper)) in gcov.chunks_exact(5).zip(gcon.chunks_exact(5)).enumerate() {
+            let [g_tt, g_rr, g_thth, g_pp, g_tp] =
+                [lower[0], lower[1], lower[2], lower[3], lower[4]];
+            let [h_tt, h_rr, h_thth, h_pp, h_tp] =
+                [upper[0], upper[1], upper[2], upper[3], upper[4]];
+            assert!(
+                h_tt < 0.0,
+                "g^tt must be negative outside the horizon, cell {cell}: {h_tt}"
+            );
+            let products = [
+                (h_tt * g_tt + h_tp * g_tp, 1.0),
+                (h_tt * g_tp + h_tp * g_pp, 0.0),
+                (h_tp * g_tp + h_pp * g_pp, 1.0),
+                (h_rr * g_rr, 1.0),
+                (h_thth * g_thth, 1.0),
+            ];
+            for (product, expected) in products {
+                assert!(
+                    (product - expected).abs() < 1e-10,
+                    "inverse metric identity failed in cell {cell}: {product} vs {expected}"
+                );
+            }
         }
     }
 }
