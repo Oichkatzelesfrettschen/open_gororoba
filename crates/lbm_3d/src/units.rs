@@ -247,7 +247,8 @@ impl PeriodicFlowParameters {
         for (axis, length) in domain_lengths_m.iter_mut().enumerate() {
             // A periodic mesh spans N spacings, not the N-1 between stored endpoints.
             *length = exact_count(mesh.dimensions()[axis])? * mesh.spacing_m();
-            if !positive(*length) || !(mesh.origin_m()[axis] + *length).is_finite() {
+            let endpoint = mesh.origin_m()[axis] + *length;
+            if !positive(*length) || !endpoint.is_finite() || endpoint <= mesh.origin_m()[axis] {
                 return Err(UnitError("periodic domain extent overflow or underflow"));
             }
         }
@@ -540,6 +541,12 @@ mod tests {
             close(fine.velocity_scale_m_s(), coarse.velocity_scale_m_s());
             close(fine.end_time_s(), coarse.end_time_s());
         }
+    }
+    #[test]
+    fn periodic_domain_endpoint_must_advance_from_origin() {
+        let mesh = UniformCartesianMesh::new([2, 2, 2], [1.0e16, 0.0, 0.0], 0.5).unwrap();
+        let units = LatticeUnits::new(&mesh, 1.0, 1.0).unwrap();
+        assert!(PeriodicFlowParameters::new(mesh, units, 0.8, "harmonic", 0.01, 10).is_err());
     }
     #[test]
     fn continuum_comparison_rejects_old_lattice_parameters_and_changed_data() {
