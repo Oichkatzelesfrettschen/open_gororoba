@@ -1,31 +1,10 @@
 name: navier-stokes-certificates
 
 on:
-  pull_request:
-    paths:
-      - 'crates/navier_stokes_verify/**'
-      - 'Cargo.toml'
-      - 'Cargo.lock'
-      - 'rust-toolchain.toml'
-      - '.cargo/config.toml'
-      - '.github/workflows/navier-stokes-certificates.yml'
-  push:
-    branches: [main]
-    paths:
-      - 'crates/navier_stokes_verify/**'
-      - 'Cargo.toml'
-      - 'Cargo.lock'
-      - 'rust-toolchain.toml'
-      - '.cargo/config.toml'
-      - '.github/workflows/navier-stokes-certificates.yml'
-  workflow_dispatch:
+  workflow_call:
 
 permissions:
   contents: read
-
-concurrency:
-  group: ns-certificate-${{ github.event.pull_request.number || github.ref }}
-  cancel-in-progress: true
 
 jobs:
   exact-verifier:
@@ -41,6 +20,13 @@ jobs:
       - uses: dtolnay/rust-toolchain@1.97.0
         with:
           components: clippy
+      - name: Resolve process-visible worker count
+        run: |
+          set -euo pipefail
+          worker_budget="$(nproc)"
+          for variable in CARGO_BUILD_JOBS RAYON_NUM_THREADS RUST_TEST_THREADS; do
+            echo "$variable=$worker_budget" >> "$GITHUB_ENV"
+          done
       - name: Test exact arithmetic, residuals, majorants and certificates
         run: cargo test --locked -p navier_stokes_verify
       - name: Lint verifier and example

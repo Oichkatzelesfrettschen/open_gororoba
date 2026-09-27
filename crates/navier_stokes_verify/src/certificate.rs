@@ -264,7 +264,7 @@ fn sha256(bytes: &[u8]) -> String {
     hex(&Sha256::digest(bytes))
 }
 
-/// Hash length-prefixed compile-time sources and dependency lockfile.
+/// Hash length-prefixed verifier library, CLI, and dependency sources.
 pub fn source_sha256() -> String {
     let mut hash = Sha256::new();
     for source in [
@@ -276,6 +276,7 @@ pub fn source_sha256() -> String {
         include_str!("beltrami.rs"),
         include_str!("certificate.rs"),
         include_str!("report.rs"),
+        include_str!("../examples/verify.rs"),
         include_str!("../Cargo.toml"),
         include_str!("../../../Cargo.toml"),
         include_str!("../../../Cargo.lock"),
