@@ -13,7 +13,8 @@
 //! ADI (Alternating Direction Implicit) is used for the diffusion step.
 //! Each spatial sweep solves a tridiagonal system with the Thomas algorithm.
 //! x-axis uses non-periodic BCs (zero-gradient inner, Dirichlet ISM outer).
-//! y/z-axes use periodic BCs (transverse symmetry).
+//! y/z-axes use periodic BCs (transverse symmetry). Each implicit sweep uses
+//! one diagonal tensor component; mixed and antisymmetric terms are omitted.
 
 use crate::{
     diffusion::{DiffusionConfig, diffusion_tensor},
@@ -210,76 +211,165 @@ impl PteSolver {
         x
     }
 
-    /// Spatial diffusion ADI sweep along x-axis for a single momentum bin p_idx.
-    /// Solves: f^{n+1} = f^n + dt * d/dx (K_xx * df/dx)
+    fn cyclic_thomas_solve(a: &[f64], b: &[f64], c: &[f64], d: &[f64]) -> Vec<f64> {
+        let n = d.len();
+        if n <= 1 {
+            return d.to_vec();
+        }
+        if n == 2 {
+            let upper = c[0] + a[0];
+            let lower = a[1] + c[1];
+            let determinant = b[0] * b[1] - upper * lower;
+            return vec![
+                (d[0] * b[1] - upper * d[1]) / determinant,
+                (b[0] * d[1] - lower * d[0]) / determinant,
+            ];
+        }
+
+        // Row 0's lower entry couples to x[n-1] (top-right corner); row n-1's
+        // upper entry couples to x[0] (bottom-left corner). Sherman-Morrison
+        // writes the corners as u v^T with u = (gamma, 0, .., bottom_left) and
+        // v = (1, 0, .., top_right / gamma).
+        let top_right = a[0];
+        let bottom_left = c[n - 1];
+        let gamma = -b[0];
+        let mut modified_b = b.to_vec();
+        modified_b[0] = b[0] - gamma;
+        modified_b[n - 1] = b[n - 1] - bottom_left * top_right / gamma;
+        let mut modified_a = a.to_vec();
+        let mut modified_c = c.to_vec();
+        modified_a[0] = 0.0;
+        modified_c[n - 1] = 0.0;
+
+        let solution = Self::thomas_solve(&modified_a, &modified_b, &modified_c, d);
+        let mut correction_rhs = vec![0.0; n];
+        correction_rhs[0] = gamma;
+        correction_rhs[n - 1] = bottom_left;
+        let correction = Self::thomas_solve(&modified_a, &modified_b, &modified_c, &correction_rhs);
+        let factor = (solution[0] + top_right * solution[n - 1] / gamma)
+            / (1.0 + correction[0] + top_right * correction[n - 1] / gamma);
+        solution
+            .into_iter()
+            .zip(correction)
+            .map(|(value, correction)| value - factor * correction)
+            .collect()
+    }
+
+    /// Advance one diagonal tensor component; mixed and antisymmetric terms are omitted.
+    fn diffuse_axis_sweep(
+        &mut self,
+        axis: usize,
+        periodic: bool,
+        b_field: (&[f64], &[f64], &[f64]),
+        rigidity_gv: f64,
+        p_idx: usize,
+        dt_s: f64,
+    ) {
+        let dimensions = [self.nx, self.ny, self.nz];
+        let axis_length = dimensions[axis];
+        let other_axis = (axis + 1) % 3;
+        let remaining_axis = (axis + 2) % 3;
+        let dx = self.dx_au;
+
+        for fixed_remaining in 0..dimensions[remaining_axis] {
+            for fixed_other in 0..dimensions[other_axis] {
+                let mut coordinates = [0; 3];
+                coordinates[other_axis] = fixed_other;
+                coordinates[remaining_axis] = fixed_remaining;
+                let mut rhs = vec![0.0_f64; axis_length];
+                let mut lower = vec![0.0_f64; axis_length];
+                let mut diagonal = vec![1.0_f64; axis_length];
+                let mut upper = vec![0.0_f64; axis_length];
+
+                for along_axis in 0..axis_length {
+                    coordinates[axis] = along_axis;
+                    let cell = self.idx(coordinates[0], coordinates[1], coordinates[2]);
+                    let field = [b_field.0[cell], b_field.1[cell], b_field.2[cell]];
+                    let field_magnitude =
+                        (field[0] * field[0] + field[1] * field[1] + field[2] * field[2])
+                            .sqrt()
+                            .max(1e-10);
+                    let tensor =
+                        diffusion_tensor(field, field_magnitude, rigidity_gv, &self.config);
+                    let mu = tensor[axis][axis] * dt_s / (dx * dx);
+                    let half_mu = 0.5 * mu;
+                    let center = self.f[cell * self.n_p + p_idx];
+                    let previous = if along_axis > 0 {
+                        coordinates[axis] = along_axis - 1;
+                        let neighbor = self.idx(coordinates[0], coordinates[1], coordinates[2]);
+                        self.f[neighbor * self.n_p + p_idx]
+                    } else if periodic {
+                        coordinates[axis] = axis_length - 1;
+                        let neighbor = self.idx(coordinates[0], coordinates[1], coordinates[2]);
+                        self.f[neighbor * self.n_p + p_idx]
+                    } else {
+                        center
+                    };
+                    let next = if along_axis + 1 < axis_length {
+                        coordinates[axis] = along_axis + 1;
+                        let neighbor = self.idx(coordinates[0], coordinates[1], coordinates[2]);
+                        self.f[neighbor * self.n_p + p_idx]
+                    } else if periodic {
+                        coordinates[axis] = 0;
+                        let neighbor = self.idx(coordinates[0], coordinates[1], coordinates[2]);
+                        self.f[neighbor * self.n_p + p_idx]
+                    } else {
+                        center
+                    };
+                    coordinates[axis] = along_axis;
+
+                    let has_previous = periodic || along_axis > 0;
+                    let has_next = periodic || along_axis + 1 < axis_length;
+                    lower[along_axis] = if has_previous { -half_mu } else { 0.0 };
+                    upper[along_axis] = if has_next { -half_mu } else { 0.0 };
+                    let neighbor_count =
+                        if has_previous { 1.0 } else { 0.0 } + if has_next { 1.0 } else { 0.0 };
+                    diagonal[along_axis] = 1.0 + half_mu * neighbor_count;
+                    rhs[along_axis] = center + half_mu * (previous - 2.0 * center + next);
+                }
+
+                let solution = if periodic {
+                    Self::cyclic_thomas_solve(&lower, &diagonal, &upper, &rhs)
+                } else {
+                    Self::thomas_solve(&lower, &diagonal, &upper, &rhs)
+                };
+                for (along_axis, value) in solution.into_iter().enumerate() {
+                    coordinates[axis] = along_axis;
+                    let cell = self.idx(coordinates[0], coordinates[1], coordinates[2]);
+                    self.f[cell * self.n_p + p_idx] = value.max(0.0);
+                }
+            }
+        }
+    }
+
     fn diffuse_x_sweep(
         &mut self,
         b_field: (&[f64], &[f64], &[f64]),
         rigidity_gv: f64,
         p_idx: usize,
+        dt_s: f64,
     ) {
-        let nx = self.nx;
-        let ny = self.ny;
-        let nz = self.nz;
-        let dt = self.dt_s;
-        let dx = self.dx_au;
+        self.diffuse_axis_sweep(0, false, b_field, rigidity_gv, p_idx, dt_s);
+    }
 
-        for z in 0..nz {
-            for y in 0..ny {
-                // Extract f along x for this (y, z, p) row
-                let mut d = vec![0.0_f64; nx];
-                for (x, d_x) in d.iter_mut().enumerate() {
-                    let fi = self.idx(x, y, z);
-                    *d_x = self.f[fi * self.n_p + p_idx];
-                }
+    fn diffuse_y_sweep(
+        &mut self,
+        b_field: (&[f64], &[f64], &[f64]),
+        rigidity_gv: f64,
+        p_idx: usize,
+        dt_s: f64,
+    ) {
+        self.diffuse_axis_sweep(1, true, b_field, rigidity_gv, p_idx, dt_s);
+    }
 
-                // Build tridiagonal coefficients
-                let mut a = vec![0.0_f64; nx];
-                let mut b = vec![1.0_f64; nx];
-                let mut c = vec![0.0_f64; nx];
-
-                for x in 0..nx {
-                    let fi = self.idx(x, y, z);
-                    let b_vec = [b_field.0[fi], b_field.1[fi], b_field.2[fi]];
-                    let b_mag = (b_vec[0] * b_vec[0] + b_vec[1] * b_vec[1] + b_vec[2] * b_vec[2])
-                        .sqrt()
-                        .max(1e-10);
-                    let k = diffusion_tensor(b_vec, b_mag, rigidity_gv, &self.config);
-                    let kxx = k[0][0];
-                    let mu = kxx * dt / (dx * dx);
-
-                    // Crank-Nicolson: half-implicit
-                    let half_mu = 0.5 * mu;
-                    a[x] = -half_mu;
-                    b[x] = 1.0 + 2.0 * half_mu;
-                    c[x] = -half_mu;
-
-                    // Explicit part added to rhs (one-sided at x boundaries)
-                    let fc = self.f[fi * self.n_p + p_idx];
-                    let fp = if x < nx - 1 {
-                        self.f[self.idx(x + 1, y, z) * self.n_p + p_idx]
-                    } else {
-                        fc // zero-gradient at outer boundary (Dirichlet reset later)
-                    };
-                    let fm = if x > 0 {
-                        self.f[self.idx(x - 1, y, z) * self.n_p + p_idx]
-                    } else {
-                        fc // zero-gradient at inner boundary
-                    };
-                    d[x] = fc + half_mu * (fm - 2.0 * fc + fp);
-                }
-
-                // Fix boundary: x=0 is zero-flux (inner), x=nx-1 is ISM (Dirichlet)
-                a[0] = 0.0;
-                c[nx - 1] = 0.0;
-
-                let sol = Self::thomas_solve(&a, &b, &c, &d);
-                for (x, &s) in sol.iter().enumerate() {
-                    let fi = self.idx(x, y, z);
-                    self.f[fi * self.n_p + p_idx] = s.max(0.0);
-                }
-            }
-        }
+    fn diffuse_z_sweep(
+        &mut self,
+        b_field: (&[f64], &[f64], &[f64]),
+        rigidity_gv: f64,
+        p_idx: usize,
+        dt_s: f64,
+    ) {
+        self.diffuse_axis_sweep(2, true, b_field, rigidity_gv, p_idx, dt_s);
     }
 
     /// Spatial advection step (upwind) for all cells and all momentum bins.
@@ -373,7 +463,7 @@ impl PteSolver {
     /// One full Strang-split timestep.
     ///
     /// Strang splitting order for second-order accuracy:
-    ///   (diffuse/2) -> advect -> decelerate -> inject -> (diffuse/2)
+    ///   x/2 -> y/2 -> z/2 -> advect -> decelerate -> inject -> z/2 -> y/2 -> x/2
     ///
     /// When `lis` is provided, the outer ISM boundary is reapplied after
     /// each step to prevent erosion by diffusion and advection.
@@ -385,11 +475,12 @@ impl PteSolver {
         dm_density: &[f64],
         lis: Option<&dyn Fn(f64) -> f64>,
     ) {
-        // Half-step diffusion: x-sweep only, via diffuse_x_sweep.
-        // TODO: add y-sweep and z-sweep to complete the 3D ADI operator.
+        let diffusion_half_step = 0.5 * self.dt_s;
         for p in 0..self.n_p {
-            let r_gv = self.grid.rigidity(p);
-            self.diffuse_x_sweep(b_field, r_gv, p);
+            let rigidity_gv = self.grid.rigidity(p);
+            self.diffuse_x_sweep(b_field, rigidity_gv, p, diffusion_half_step);
+            self.diffuse_y_sweep(b_field, rigidity_gv, p, diffusion_half_step);
+            self.diffuse_z_sweep(b_field, rigidity_gv, p, diffusion_half_step);
         }
 
         // Spatial advection
@@ -405,6 +496,13 @@ impl PteSolver {
         }
 
         // Reapply outer ISM boundary to prevent erosion from diffusion/advection
+        for p in 0..self.n_p {
+            let rigidity_gv = self.grid.rigidity(p);
+            self.diffuse_z_sweep(b_field, rigidity_gv, p, diffusion_half_step);
+            self.diffuse_y_sweep(b_field, rigidity_gv, p, diffusion_half_step);
+            self.diffuse_x_sweep(b_field, rigidity_gv, p, diffusion_half_step);
+        }
+
         if let Some(f) = lis {
             self.set_boundary_ism(f);
         }
@@ -428,7 +526,117 @@ impl PteSolver {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::{diffusion::DiffusionConfig, grid::RigidityGrid};
+    use crate::{
+        diffusion::{DiffusionConfig, diffusion_tensor},
+        grid::RigidityGrid,
+    };
+
+    fn gaussian_mode_amplitude(solver: &PteSolver, axis: usize, momentum: usize) -> f64 {
+        let dimensions = [solver.nx, solver.ny, solver.nz];
+        let wave_number = 2.0 * std::f64::consts::PI / dimensions[axis] as f64;
+        let mut numerator = 0.0;
+        let mut denominator = 0.0;
+        for z in 0..solver.nz {
+            for y in 0..solver.ny {
+                for x in 0..solver.nx {
+                    let coordinates = [x, y, z];
+                    let mode = (wave_number * coordinates[axis] as f64).cos();
+                    let cell = solver.idx(x, y, z);
+                    numerator += solver.f[cell * solver.n_p + momentum] * mode;
+                    denominator += mode * mode;
+                }
+            }
+        }
+        numerator / denominator
+    }
+
+    fn gaussian_decay_for_axis(axis: usize, field: [f64; 3]) -> (f64, f64, f64) {
+        let axis_length = 24;
+        let grid = RigidityGrid::new(2, 1.0, 2.0);
+        let config = DiffusionConfig {
+            kappa_0_au2_per_s: 0.4,
+            r_ref_gv: 1.0,
+            alpha: 0.0,
+            epsilon_perp: 0.1,
+            solar_epoch_a: 0.0,
+        };
+        let mut solver =
+            PteSolver::new(2, axis_length, axis_length, grid, config.clone(), 0.1, 1.0);
+        let field_magnitude =
+            (field[0] * field[0] + field[1] * field[1] + field[2] * field[2]).sqrt();
+        let tensor = diffusion_tensor(field, field_magnitude, 1.0, &config);
+        let diffusivity = tensor[axis][axis];
+        let mut field_x = vec![field[0]; solver.nx * solver.ny * solver.nz];
+        let mut field_y = vec![field[1]; field_x.len()];
+        let mut field_z = vec![field[2]; field_x.len()];
+
+        for z in 0..solver.nz {
+            for y in 0..solver.ny {
+                for x in 0..solver.nx {
+                    let coordinates = [x, y, z];
+                    let distance = coordinates[axis].min(axis_length - coordinates[axis]) as f64;
+                    let value = (-0.5 * (distance / 4.0).powi(2)).exp();
+                    let cell = solver.idx(x, y, z);
+                    for momentum in 0..solver.n_p {
+                        solver.f[cell * solver.n_p + momentum] = value;
+                    }
+                    field_x[cell] = field[0];
+                    field_y[cell] = field[1];
+                    field_z[cell] = field[2];
+                }
+            }
+        }
+
+        let initial_amplitude = gaussian_mode_amplitude(&solver, axis, 0);
+        let zero_velocity = vec![[0.0; 3]; solver.nx * solver.ny * solver.nz];
+        solver.evolve_one_step(
+            &zero_velocity,
+            (&field_x, &field_y, &field_z),
+            None,
+            &[],
+            None,
+        );
+        let observed_amplification = gaussian_mode_amplitude(&solver, axis, 0) / initial_amplitude;
+        let discrete_eigenvalue = 4.0 * (std::f64::consts::PI / axis_length as f64).sin().powi(2);
+        let full_step_rate = diffusivity * discrete_eigenvalue * solver.dt_s;
+        let half_step_amplification = (1.0 - full_step_rate / 4.0) / (1.0 + full_step_rate / 4.0);
+        let expected_amplification = half_step_amplification * half_step_amplification;
+        (observed_amplification, expected_amplification, diffusivity)
+    }
+
+    #[test]
+    fn test_gaussian_decay_uses_kyy_and_kzz() {
+        let field_along_y = [0.0, 5.0, 0.0];
+        for axis in [1, 2] {
+            let (observed, expected, diffusivity) = gaussian_decay_for_axis(axis, field_along_y);
+            assert!(diffusivity > 0.0);
+            assert!(
+                (observed - expected).abs() < 1e-10,
+                "axis {axis} amplification {observed} differs from K_ii prediction {expected}"
+            );
+        }
+    }
+
+    #[test]
+    fn test_rotated_field_aligned_tensor_diffuses_in_y() {
+        let rotated_field = [3.0, 4.0, 0.0];
+        let (observed, expected, k_yy) = gaussian_decay_for_axis(1, rotated_field);
+        let config = DiffusionConfig {
+            kappa_0_au2_per_s: 0.4,
+            r_ref_gv: 1.0,
+            alpha: 0.0,
+            epsilon_perp: 0.1,
+            solar_epoch_a: 0.0,
+        };
+        let perpendicular =
+            config.epsilon_perp * crate::diffusion::kappa_parallel(1.0, 5.0, &config);
+        assert!(k_yy > perpendicular);
+        assert!(observed < 1.0, "the y-profile did not diffuse: {observed}");
+        assert!(
+            (observed - expected).abs() < 1e-10,
+            "rotated field amplification {observed} differs from K_yy prediction {expected}"
+        );
+    }
 
     #[test]
     fn test_adiabatic_deceleration_shifts_peak() {
@@ -589,6 +797,30 @@ mod tests {
         // All values must remain non-negative
         for v in &solver.f {
             assert!(*v >= 0.0, "f became negative: {v}");
+        }
+    }
+
+    #[test]
+    fn test_cyclic_thomas_matches_dense_solve_with_unequal_corners() {
+        let n = 6;
+        let a: Vec<f64> = (0..n).map(|i| -0.3 - 0.07 * i as f64).collect();
+        let c: Vec<f64> = (0..n).map(|i| -0.2 - 0.11 * i as f64).collect();
+        let b: Vec<f64> = (0..n).map(|i| 2.0 + 0.13 * i as f64).collect();
+        let d: Vec<f64> = (0..n).map(|i| 1.0 + (i as f64).sin()).collect();
+        let x = PteSolver::cyclic_thomas_solve(&a, &b, &c, &d);
+
+        let mut dense = vec![vec![0.0_f64; n]; n];
+        for i in 0..n {
+            dense[i][i] = b[i];
+            dense[i][(i + n - 1) % n] += a[i];
+            dense[i][(i + 1) % n] += c[i];
+        }
+        for (row, expected) in dense.iter().zip(&d) {
+            let product: f64 = row.iter().zip(&x).map(|(m, v)| m * v).sum();
+            assert!(
+                (product - expected).abs() < 1e-12,
+                "cyclic solve residual {product} vs {expected}"
+            );
         }
     }
 }
