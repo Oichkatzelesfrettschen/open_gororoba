@@ -278,6 +278,12 @@ fn extracted_receivers_are_covariant_and_conserve_each_closed_triple() {
 }
 
 #[test]
+fn zero_128_grid_has_no_dominant_triads() {
+    let zero = Array3::zeros((128, 128, 128));
+    assert!(extract_dominant_triads_3d(&zero, &zero, &zero, 1e-6).is_empty());
+}
+
+#[test]
 fn two_dimensional_transfer_uses_both_velocity_components() {
     let t = calculate_triad_energy_transfer(
         [1, 2],
