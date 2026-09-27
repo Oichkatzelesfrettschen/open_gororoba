@@ -20,6 +20,43 @@ use crate::{
 /// Number of conserved variables (same as primitives).
 pub const NCONS: usize = NPRIM;
 
+pub(crate) fn magnetic_b_squared_from_four_vector(gcov: &[f64; 5], b_up: [f64; 4]) -> f64 {
+    let [g_tt, g_rr, g_thth, g_phph, g_tph] = *gcov;
+    let [b_t, b_r, b_th, b_ph] = b_up;
+    let b_t_cov = g_tt * b_t + g_tph * b_ph;
+    let b_ph_cov = g_tph * b_t + g_phph * b_ph;
+    (b_t * b_t_cov + g_rr * b_r * b_r + g_thth * b_th * b_th + b_ph * b_ph_cov).max(0.0)
+}
+
+/// Return the comoving magnetic field strength squared for a primitive state.
+pub(crate) fn magnetic_b_squared_cached(p: &Prim, gcov: &[f64; 5]) -> f64 {
+    let v1 = p[prims::V1];
+    let v2 = p[prims::V2];
+    let v3 = p[prims::V3];
+    let b1 = p[prims::B1];
+    let b2 = p[prims::B2];
+    let b3 = p[prims::B3];
+    let [g_tt, g_rr, g_thth, g_phph, g_tph] = *gcov;
+    let vsq = g_rr * v1 * v1 + g_thth * v2 * v2 + g_phph * v3 * v3;
+    let alpha_sq = -(g_tt + 2.0 * g_tph * v3 + vsq);
+    if alpha_sq <= 0.0 {
+        return 0.0;
+    }
+
+    let ut = 1.0 / alpha_sq.sqrt();
+    let u_cov_r = g_rr * ut * v1;
+    let u_cov_th = g_thth * ut * v2;
+    let u_cov_ph = g_phph * ut * v3 + g_tph * ut;
+    let b_t = (b1 * u_cov_r + b2 * u_cov_th + b3 * u_cov_ph) / ut;
+    let b_up = [
+        b_t,
+        (b1 + b_t * ut * v1) / ut,
+        (b2 + b_t * ut * v2) / ut,
+        (b3 + b_t * ut * v3) / ut,
+    ];
+    magnetic_b_squared_from_four_vector(gcov, b_up)
+}
+
 /// Convert primitive variables to conservative variables at a single cell.
 ///
 /// This is the forward direction (cheap, O(1) per cell).
@@ -89,10 +126,7 @@ pub fn prim2con_cached(p: &Prim, gcov: &[f64; 5], eos: &GammaLaw, sqrt_neg_g: f6
     let b_up_2 = (b2 + bt * ut * v2) / ut;
     let b_up_3 = (b3 + bt * ut * v3) / ut;
 
-    // b^2 = b_mu b^mu = b^t^2 * g_tt + ... (simplified)
-    let bsq = (b1 * b1 * g_rr + b2 * b2 * g_thth + b3 * b3 * g_phph) / (ut * ut)
-        + bt * bt * (-1.0 / (ut * ut) + vsq);
-    let bsq = bsq.max(0.0); // numerical floor
+    let bsq = magnetic_b_squared_from_four_vector(gcov, [bt, b_up_1, b_up_2, b_up_3]);
 
     // Total enthalpy density with magnetic contribution
     let w = rho + u + pressure + bsq;

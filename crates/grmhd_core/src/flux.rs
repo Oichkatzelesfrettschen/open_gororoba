@@ -99,6 +99,33 @@ impl FluxWorkspace {
     }
 }
 
+fn wave_speeds_from_prims(
+    p_l: &Prim,
+    p_r: &Prim,
+    gcov: &[f64; 5],
+    eos: &GammaLaw,
+    dir: usize,
+    alpha: f64,
+) -> (f64, f64) {
+    let sound_speed_squared_l = eos.cs2(p_l[prims::RHO], p_l[prims::UU]);
+    let sound_speed_squared_r = eos.cs2(p_r[prims::RHO], p_r[prims::UU]);
+    let alfven_speed_squared = |p: &Prim| {
+        let magnetic_squared = cons::magnetic_b_squared_cached(p, gcov);
+        let fluid_enthalpy_density = p[prims::RHO] * eos.enthalpy(p[prims::RHO], p[prims::UU]);
+        (magnetic_squared / (fluid_enthalpy_density + magnetic_squared).max(1e-30)).clamp(0.0, 1.0)
+    };
+
+    riemann::wave_speeds(
+        p_l[prims::V1 + dir],
+        p_r[prims::V1 + dir],
+        sound_speed_squared_l,
+        sound_speed_squared_r,
+        alfven_speed_squared(p_l),
+        alfven_speed_squared(p_r),
+        alpha,
+    )
+}
+
 /// Compute the physical flux F^dir(P) from precomputed metric components.
 ///
 /// This is the hot-path variant that avoids sin/cos by accepting cached gcov.
@@ -138,7 +165,6 @@ pub fn compute_flux_cached(
         1.0
     };
     let inv_ut = 1.0 / ut;
-    let inv_ut_sq = inv_ut * inv_ut;
 
     // Covariant 4-velocity components
     let u_cov_t = g_tt * ut + g_tph * ut * v3;
@@ -148,9 +174,13 @@ pub fn compute_flux_cached(
 
     // Magnetic 4-vector b^mu
     let bt = (b1 * u_cov_r + b2 * u_cov_th + b3 * u_cov_ph) * inv_ut;
-    let bsq = ((b1 * b1 * g_rr + b2 * b2 * g_thth + b3 * b3 * g_phph) * inv_ut_sq
-        + bt * bt * (-inv_ut_sq + vsq))
-        .max(0.0);
+    let b_up = [
+        bt,
+        (b1 + bt * ut * v1) * inv_ut,
+        (b2 + bt * ut * v2) * inv_ut,
+        (b3 + bt * ut * v3) * inv_ut,
+    ];
+    let bsq = cons::magnetic_b_squared_from_four_vector(gcov, b_up);
 
     let w = rho + u + pressure + bsq; // total enthalpy
     let ptot = pressure + 0.5 * bsq;
@@ -165,9 +195,9 @@ pub fn compute_flux_cached(
 
     // b^dir
     let b_up_dir = match dir {
-        0 => (b1 + bt * ut * v1) * inv_ut,
-        1 => (b2 + bt * ut * v2) * inv_ut,
-        _ => (b3 + bt * ut * v3) * inv_ut,
+        0 => b_up[1],
+        1 => b_up[2],
+        _ => b_up[3],
     };
 
     let mut f = [0.0f64; NCONS];
@@ -366,24 +396,13 @@ pub fn compute_rhs_1d(
         ws.flux_l = compute_flux_cached(&ws.prim_l, gcov_face, eos, sg_1d, dir);
         ws.flux_r = compute_flux_cached(&ws.prim_r, gcov_face, eos, sg_1d, dir);
 
-        // Wave speed estimate
-        let cs2_l = eos.cs2(ws.prim_l[prims::RHO], ws.prim_l[prims::UU]);
-        let cs2_r = eos.cs2(ws.prim_r[prims::RHO], ws.prim_r[prims::UU]);
         let alpha = if mc_face < mc.lapse.len() {
             mc.lapse[mc_face]
         } else {
             1.0
         };
 
-        let (sl, sr) = riemann::wave_speeds(
-            ws.prim_l[prims::V1 + dir],
-            ws.prim_r[prims::V1 + dir],
-            cs2_l,
-            cs2_r,
-            0.0,
-            0.0, // va2 = 0 for pure hydro
-            alpha,
-        );
+        let (sl, sr) = wave_speeds_from_prims(&ws.prim_l, &ws.prim_r, gcov_face, eos, dir, alpha);
 
         // Compute conservative variables for HLL using cached metric
         let mc_l = mc.idx(i_m1, n2t, j_mid);
@@ -550,23 +569,14 @@ fn compute_rhs_3d_inner(
                     ws.flux_l = compute_flux_cached(&ws.prim_l, gcov_face, eos, sg_face, 0);
                     ws.flux_r = compute_flux_cached(&ws.prim_r, gcov_face, eos, sg_face, 0);
 
-                    let cs2_l = eos.cs2(ws.prim_l[prims::RHO], ws.prim_l[prims::UU]);
-                    let cs2_r = eos.cs2(ws.prim_r[prims::RHO], ws.prim_r[prims::UU]);
                     let alpha = if mc_face < mc.lapse.len() {
                         mc.lapse[mc_face]
                     } else {
                         1.0
                     };
 
-                    let (sl, sr) = riemann::wave_speeds(
-                        ws.prim_l[prims::V1],
-                        ws.prim_r[prims::V1],
-                        cs2_l,
-                        cs2_r,
-                        0.0,
-                        0.0,
-                        alpha,
-                    );
+                    let (sl, sr) =
+                        wave_speeds_from_prims(&ws.prim_l, &ws.prim_r, gcov_face, eos, 0, alpha);
 
                     let mc_l = mc.idx(im1, n2t, j);
                     let mc_r = mc.idx(ip0, n2t, j);
@@ -694,23 +704,14 @@ fn compute_rhs_3d_inner(
                     ws.flux_l = compute_flux_cached(&ws.prim_l, gcov_face, eos, sg_face_th, 1);
                     ws.flux_r = compute_flux_cached(&ws.prim_r, gcov_face, eos, sg_face_th, 1);
 
-                    let cs2_l = eos.cs2(ws.prim_l[prims::RHO], ws.prim_l[prims::UU]);
-                    let cs2_r = eos.cs2(ws.prim_r[prims::RHO], ws.prim_r[prims::UU]);
                     let alpha = if mc_face < mc.lapse.len() {
                         mc.lapse[mc_face]
                     } else {
                         1.0
                     };
 
-                    let (sl, sr) = riemann::wave_speeds(
-                        ws.prim_l[prims::V2],
-                        ws.prim_r[prims::V2],
-                        cs2_l,
-                        cs2_r,
-                        0.0,
-                        0.0,
-                        alpha,
-                    );
+                    let (sl, sr) =
+                        wave_speeds_from_prims(&ws.prim_l, &ws.prim_r, gcov_face, eos, 1, alpha);
 
                     let mc_l = mc.idx(i, n2t, jm1);
                     let mc_r = mc.idx(i, n2t, jp0);
@@ -841,17 +842,8 @@ fn compute_rhs_3d_inner(
                     ws.flux_l = compute_flux_cached(&ws.prim_l, gcov_ij, eos, sg, 2);
                     ws.flux_r = compute_flux_cached(&ws.prim_r, gcov_ij, eos, sg, 2);
 
-                    let cs2_l = eos.cs2(ws.prim_l[prims::RHO], ws.prim_l[prims::UU]);
-                    let cs2_r = eos.cs2(ws.prim_r[prims::RHO], ws.prim_r[prims::UU]);
-                    let (sl, sr) = riemann::wave_speeds(
-                        ws.prim_l[prims::V3],
-                        ws.prim_r[prims::V3],
-                        cs2_l,
-                        cs2_r,
-                        0.0,
-                        0.0,
-                        alpha,
-                    );
+                    let (sl, sr) =
+                        wave_speeds_from_prims(&ws.prim_l, &ws.prim_r, gcov_ij, eos, 2, alpha);
 
                     ws.cons_l = cons::prim2con_cached(&ws.prim_l, gcov_ij, eos, sg);
                     ws.cons_r = cons::prim2con_cached(&ws.prim_r, gcov_ij, eos, sg);
@@ -1382,5 +1374,32 @@ mod tests {
                 );
             }
         }
+    }
+
+    #[test]
+    fn test_magnetic_field_widens_bounded_wave_speeds() {
+        let metric = KerrMetric::schwarzschild();
+        let gcov = metric.gcov(10.0, 1.0);
+        let eos = GammaLaw::harm_default();
+        let mut previous_width = 0.0;
+
+        for magnetic_field in [0.0, 0.1, 0.2, 0.3, 0.4, 0.5] {
+            let state: Prim = [1.0, 0.1, 0.0, 0.0, 0.0, magnetic_field, 0.0, 0.0];
+            let (left_speed, right_speed) =
+                wave_speeds_from_prims(&state, &state, &gcov, &eos, 0, 1.0);
+            let width = right_speed - left_speed;
+            assert!(
+                width > previous_width,
+                "wave width did not increase for B={magnetic_field}: {width} <= {previous_width}"
+            );
+            previous_width = width;
+        }
+
+        // The fast speed saturates at the speed of light, so the bounds stay
+        // finite however strong the field is.
+        let strong_field: Prim = [1.0, 0.1, 0.0, 0.0, 0.0, 10.0, 0.0, 0.0];
+        let (left_speed, right_speed) =
+            wave_speeds_from_prims(&strong_field, &strong_field, &gcov, &eos, 0, 1.0);
+        assert!(left_speed >= -1.1 && right_speed <= 1.1);
     }
 }
