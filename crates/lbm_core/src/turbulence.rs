@@ -45,6 +45,32 @@ pub struct SpectralTriad3D {
     pub energy_transfer: f64,
 }
 
+/// Count unordered closed triples, independent of their receiving-mode records.
+pub fn count_unique_triads(triads: &[SpectralTriad]) -> usize {
+    triads
+        .iter()
+        .map(|triad| {
+            let mut wavevectors = [triad.k, triad.p, triad.q];
+            wavevectors.sort_unstable();
+            wavevectors
+        })
+        .collect::<HashSet<_>>()
+        .len()
+}
+
+/// Count unordered 3D closed triples, independent of their receiving-mode records.
+pub fn count_unique_triads_3d(triads: &[SpectralTriad3D]) -> usize {
+    triads
+        .iter()
+        .map(|triad| {
+            let mut wavevectors = [triad.k, triad.p, triad.q];
+            wavevectors.sort_unstable();
+            wavevectors
+        })
+        .collect::<HashSet<_>>()
+        .len()
+}
+
 /// Result of 2D FFT: complex amplitudes on the (kx, ky) grid.
 #[derive(Debug, Clone)]
 pub struct SpectralField {
@@ -799,10 +825,44 @@ mod tests {
         }
 
         let triads = extract_dominant_triads(&u, &v, 0.0);
+        assert!(!triads.is_empty());
+        assert_eq!(triads.len(), 3 * count_unique_triads(&triads));
         for t in &triads {
             assert_eq!(t.k[0] + t.p[0] + t.q[0], 0, "kx closure violated");
             assert_eq!(t.k[1] + t.p[1] + t.q[1], 0, "ky closure violated");
         }
+    }
+
+    #[test]
+    fn test_unique_triad_count_ignores_receiver_order() {
+        let records_2d = [
+            SpectralTriad {
+                k: [1, 0],
+                p: [0, 1],
+                q: [-1, -1],
+                energy_transfer: 1.0,
+            },
+            SpectralTriad {
+                k: [0, 1],
+                p: [-1, -1],
+                q: [1, 0],
+                energy_transfer: -1.0,
+            },
+            SpectralTriad {
+                k: [-1, -1],
+                p: [1, 0],
+                q: [0, 1],
+                energy_transfer: 0.0,
+            },
+        ];
+        assert_eq!(count_unique_triads(&records_2d), 1);
+        let records_3d = records_2d.map(|record| SpectralTriad3D {
+            k: [record.k[0], record.k[1], 0],
+            p: [record.p[0], record.p[1], 0],
+            q: [record.q[0], record.q[1], 0],
+            energy_transfer: record.energy_transfer,
+        });
+        assert_eq!(count_unique_triads_3d(&records_3d), 1);
     }
 
     #[test]
