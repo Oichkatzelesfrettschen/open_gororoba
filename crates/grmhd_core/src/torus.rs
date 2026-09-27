@@ -122,7 +122,7 @@ impl FMTorus {
         let w_in = self.potential(&grid.metric, self.r_in, std::f64::consts::FRAC_PI_2);
         let w_max = self.potential(&grid.metric, self.r_max, std::f64::consts::FRAC_PI_2);
 
-        let kappa = (self.gamma - 1.0) / self.gamma; // polytropic constant
+        let kappa = (self.gamma - 1.0) / self.gamma;
         let hm1_max = (w_max - w_in).exp() - 1.0; // max enthalpy - 1
 
         if hm1_max <= 0.0 {
@@ -134,9 +134,9 @@ impl FMTorus {
         }
 
         // Determine rho_max normalization
-        // hm1 = kappa * K * rho^(gamma-1) where K is the polytropic constant
+        // h - 1 = K * rho^(gamma-1) / kappa for p = K * rho^gamma.
         // We set K so that rho_max = self.rho_max at the pressure maximum
-        let k_poly = hm1_max / (kappa * self.rho_max.powf(self.gamma - 1.0));
+        let k_poly = hm1_max * kappa / self.rho_max.powf(self.gamma - 1.0);
 
         for i in 0..grid.n1_total() {
             for j in 0..grid.n2_total() {
@@ -151,16 +151,16 @@ impl FMTorus {
 
                     if hm1 > 0.0 && r > self.r_in {
                         // Inside the torus
-                        let rho = (hm1 / (kappa * k_poly)).powf(1.0 / (self.gamma - 1.0));
+                        let rho = (hm1 * kappa / k_poly).powf(1.0 / (self.gamma - 1.0));
                         let u = k_poly * rho.powf(self.gamma) / (self.gamma - 1.0);
 
                         p[RHO] = rho;
                         p[UU] = u;
-                        // Keplerian velocity: v^phi = l / (g_phph + l * g_tph)
-                        let [_, _, _, g_phph, g_tph] = grid.metric.gcov(r, th);
+                        // Constant covariant angular momentum l = -u_phi/u_t.
+                        let [g_tt, _, _, g_phph, g_tph] = grid.metric.gcov(r, th);
                         let denom = g_phph + self.l * g_tph;
                         p[V3] = if denom.abs() > 1e-20 {
-                            self.l / denom
+                            -(g_tph + self.l * g_tt) / denom
                         } else {
                             0.0
                         };
@@ -278,6 +278,34 @@ mod tests {
             "Should have dense torus material, max_rho = {}",
             max_rho
         );
+    }
+
+    #[test]
+    fn initialized_torus_obeys_constant_angular_momentum_and_enthalpy() {
+        let grid = Grid::new(64, 25, 1, 3.0, 30.0, KerrMetric::schwarzschild());
+        let torus = FMTorus::schwarzschild(6.5, 12.0);
+        let primitive_grid = torus.initialize(&grid);
+        let inner_potential =
+            torus.potential(&grid.metric, torus.r_in, std::f64::consts::FRAC_PI_2);
+        let theta_cell = grid.ng + grid.n2 / 2;
+        for radial_cell in grid.ng..grid.ng + grid.n1 {
+            let radius = grid.r(radial_cell);
+            let theta = grid.theta(theta_cell);
+            let primitive = primitive_grid.get(grid.idx(radial_cell, theta_cell, grid.ng));
+            if primitive[RHO] <= 1e-3 {
+                continue;
+            }
+            let [g_tt, _, _, g_phph, g_tph] = grid.metric.gcov(radius, theta);
+            let angular_velocity = primitive[V3];
+            let measured_l =
+                -(g_tph + g_phph * angular_velocity) / (g_tt + g_tph * angular_velocity);
+            let pressure = (torus.gamma - 1.0) * primitive[UU];
+            let enthalpy = 1.0 + torus.gamma * pressure / ((torus.gamma - 1.0) * primitive[RHO]);
+            let expected_enthalpy =
+                (torus.potential(&grid.metric, radius, theta) - inner_potential).exp();
+            assert!((measured_l - torus.l).abs() < 1e-12);
+            assert!((enthalpy - expected_enthalpy).abs() < 1e-12);
+        }
     }
 
     #[test]

@@ -84,8 +84,8 @@ extern "C" __global__ void precompute_metric_kernel(
     gcon[base + 3] = gcov[base + 0] * inv_det;    // g^phph
     gcon[base + 4] = -gcov[base + 4] * inv_det;   // g^tph
 
-    // sqrt(-g) in Boyer-Lindquist coordinates
-    sqrt_g[idx] = sigma * fabs(sth);
+    // The GPU grid uses x1 = ln(r), theta, phi.
+    sqrt_g[idx] = sigma * fabs(sth) * r;
 
     // Lapse: alpha = 1/sqrt(-g^tt)
     double g_tt_up = -A_met / (sigma * delta);
@@ -105,6 +105,8 @@ extern "C" __global__ void compute_flux_kernel(
     double* __restrict__ flux,           // [NCONS * N_total] SoA output
     const double gam_m1,                 // gamma - 1 (EOS)
     const int dir,                       // 0=r, 1=theta, 2=phi
+    const double r_min,
+    const double r_max,
     const int N1,
     const int N2,
     const int N3,
@@ -142,6 +144,11 @@ extern "C" __global__ void compute_flux_kernel(
     double g_phph = gcov[gb + 3];
     double g_tph  = gcov[gb + 4];
     double sg     = sqrt_g[met_idx];
+    if (dir == 0) {
+        double xi = (double)i / (double)(N1 - 1);
+        double r = r_min * exp(xi * log(r_max / r_min));
+        sg /= r;
+    }
 
     // 3-velocity squared and Lorentz factor
     double vsq = g_rr * v1 * v1 + g_thth * v2 * v2 + g_phph * v3 * v3;

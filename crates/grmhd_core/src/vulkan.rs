@@ -132,7 +132,7 @@ fn precompute_metric(cell: u32) {
     gcov.values[base + 2u] = sigma;
     gcov.values[base + 3u] = a_met * sth * sth / sigma;
     gcov.values[base + 4u] = -2.0 * a * r * sth * sth / sigma;
-    sqrt_g.values[cell] = sigma * abs(sth);
+    sqrt_g.values[cell] = sigma * abs(sth) * r;
 }
 
 fn prim2con(cell: u32) {
@@ -217,7 +217,13 @@ fn compute_flux(cell: u32) {
     let g_thth: f32 = load_metric(met_idx, 2u);
     let g_phph: f32 = load_metric(met_idx, 3u);
     let g_tph: f32 = load_metric(met_idx, 4u);
-    let sg: f32 = sqrt_g.values[met_idx];
+    var sg: f32 = sqrt_g.values[met_idx];
+    if (dir == 0u) {
+        let radial_index: u32 = met_idx / params.n2;
+        let xi: f32 = f32(radial_index) / f32(params.n1 - 1u);
+        let r: f32 = params.r_min * exp(xi * log(params.r_max / params.r_min));
+        sg = sg / r;
+    }
 
     let vsq: f32 = g_rr * v1 * v1 + g_thth * v2 * v2 + g_phph * v3 * v3;
     let alpha_sq: f32 = -(g_tt + 2.0 * g_tph * v3 + vsq);
@@ -441,7 +447,7 @@ impl GrmhdVulkanConfig {
 
     pub(crate) fn dx(&self) -> [f32; 3] {
         [
-            (self.r_max / self.r_min).ln() / self.n1 as f32,
+            (self.r_max / self.r_min).ln() / (self.n1 - 1) as f32,
             std::f32::consts::PI / self.n2 as f32,
             2.0 * std::f32::consts::PI / self.n3 as f32,
         ]
@@ -637,7 +643,7 @@ pub(crate) fn canonical_prim2con_and_flux_f32(
         let r = config.r_min as f64 * (xi * (config.r_max as f64 / config.r_min as f64).ln()).exp();
         let theta = std::f64::consts::PI * (j as f64 + 0.5) / config.n2 as f64;
         let gcov = metric.gcov(r, theta);
-        let sqrt_neg_g = metric.sqrt_neg_g(r, theta);
+        let sqrt_neg_g = metric.sqrt_neg_g(r, theta) * r;
         let prim: Prim =
             std::array::from_fn(|channel| prims_soa[soa_index_cpu(n_total, channel, cell)] as f64);
         let conserved = cons::prim2con_cached(&prim, &gcov, &eos, sqrt_neg_g);
@@ -645,7 +651,9 @@ pub(crate) fn canonical_prim2con_and_flux_f32(
             cons_soa[soa_index_cpu(n_total, channel, cell)] = conserved[channel] as f32;
         }
         for (dir, flux_for_dir) in flux_soa.iter_mut().enumerate() {
-            let expected_flux = flux::compute_flux_cached(&prim, &gcov, &eos, sqrt_neg_g, dir);
+            let coordinate_flux_density = sqrt_neg_g / if dir == 0 { r } else { 1.0 };
+            let expected_flux =
+                flux::compute_flux_cached(&prim, &gcov, &eos, coordinate_flux_density, dir);
             for channel in 0..NCONS {
                 flux_for_dir[soa_index_cpu(n_total, channel, cell)] = expected_flux[channel] as f32;
             }
@@ -911,7 +919,7 @@ fn precompute_metric_cpu(config: GrmhdVulkanConfig, gcov: &mut [f32], sqrt_g: &m
             gcov[base + 2] = sigma;
             gcov[base + 3] = a_met * sth * sth / sigma;
             gcov[base + 4] = -2.0 * a * r * sth * sth / sigma;
-            sqrt_g[idx] = sigma * sth.abs();
+            sqrt_g[idx] = sigma * sth.abs() * r;
         }
     }
 }
@@ -1010,7 +1018,13 @@ fn compute_flux_cpu(
         let g_tt = gcov[base];
         let g_diag = [gcov[base + 1], gcov[base + 2], gcov[base + 3]];
         let g_tph = gcov[base + 4];
-        let sg = sqrt_g[met_idx];
+        let mut sg = sqrt_g[met_idx];
+        if dir == 0 {
+            let radial_index = met_idx / config.n2;
+            let xi = radial_index as f32 / (config.n1 - 1) as f32;
+            let radius = config.r_min * (xi * (config.r_max / config.r_min).ln()).exp();
+            sg /= radius;
+        }
         let vsq = g_diag[0] * v[0] * v[0] + g_diag[1] * v[1] * v[1] + g_diag[2] * v[2] * v[2];
         let alpha_sq = -(g_tt + 2.0 * g_tph * v[2] + vsq);
         let ut = if alpha_sq > 1.0e-20 {

@@ -132,7 +132,7 @@ impl GrmhdGpu {
         let n_met = n1 * n2;
         let buffers = allocate_buffers(&stream, n_total, n_met)?;
 
-        let dx1 = (r_max / r_min).ln() / n1 as f64;
+        let dx1 = (r_max / r_min).ln() / (n1 - 1) as f64;
         let dx2 = std::f64::consts::PI / n2 as f64;
         let dx3 = 2.0 * std::f64::consts::PI / n3 as f64;
 
@@ -230,6 +230,8 @@ impl GrmhdGpu {
         let cfg = LaunchConfig::launch_1d(nt);
         let gam_m1 = self.gam_m1;
         let dir_i = dir as i32;
+        let r_min = self.r_min;
+        let r_max = self.r_max;
         let n1_i = self.n1 as i32;
         let n2_i = self.n2 as i32;
         let n3_i = self.n3 as i32;
@@ -242,6 +244,8 @@ impl GrmhdGpu {
         builder.arg(self.buffers.flux.raw_mut());
         builder.arg(&gam_m1);
         builder.arg(&dir_i);
+        builder.arg(&r_min);
+        builder.arg(&r_max);
         builder.arg(&n1_i);
         builder.arg(&n2_i);
         builder.arg(&n3_i);
@@ -441,7 +445,7 @@ mod tests {
             let r = r_min * (xi * (r_max / r_min).ln()).exp();
             let theta = std::f64::consts::PI * (j as f64 + 0.5) / n2 as f64;
             let gcov = metric.gcov(r, theta);
-            let sqrt_neg_g = metric.sqrt_neg_g(r, theta);
+            let sqrt_neg_g = metric.sqrt_neg_g(r, theta) * r;
             let prim: Prim = std::array::from_fn(|channel| prims[channel * n_total + cell]);
             let expected = cons::prim2con_cached(&prim, &gcov, &eos, sqrt_neg_g);
             for channel in 0..NCONS {
@@ -472,7 +476,7 @@ mod tests {
                 let r = r_min * (xi * (r_max / r_min).ln()).exp();
                 let theta = std::f64::consts::PI * (j as f64 + 0.5) / n2 as f64;
                 let gcov = metric.gcov(r, theta);
-                let sqrt_neg_g = metric.sqrt_neg_g(r, theta);
+                let sqrt_neg_g = metric.sqrt_neg_g(r, theta) * if dir == 0 { 1.0 } else { r };
                 let prim: Prim = std::array::from_fn(|channel| prims[channel * n_total + cell]);
                 let expected = flux::compute_flux_cached(&prim, &gcov, &eos, sqrt_neg_g, dir);
                 for channel in 0..NCONS {
