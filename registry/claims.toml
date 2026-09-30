@@ -2222,7 +2222,7 @@ where_stated = "crates/algebra_analysis/src/crystal_bands.rs (test_d16_flat_band
 [[claim]]
 id = "C-1256"
 last_verified = "2026-03-11"
-statement = "The D=32 ZD motif graph has integer spectrum and flat band fraction = 0.5 (from 15 components, 210 total eigenvalues)."
+statement = "The D=32 ZD motif graph has integer spectrum and flat band fraction = 0.5 (from 15 top-level cross-pair components (low < 16 <= high), 210 total eigenvalues)."
 status = "Verified"
 where_stated = "crates/algebra_analysis/src/crystal_bands.rs (test_d32_flat_band_fraction)"
 
@@ -10564,7 +10564,7 @@ where_stated = "`crates/gororoba_cli_data/src/bin/multi_dataset_ultrametric.rs`,
 [[claim]]
 id = "C-443"
 last_verified = "2026-02-06"
-statement = "Pathion (dim=32) zero-divisor complement graph decomposes into 15 connected components with two distinct motif types: 8 heptacross (complete 7-partite K_{2,2,2,2,2,2,2}) and 7 mixed-degree components [4^12, 12^2]. This is structurally distinct from the sedenion (dim=16) pattern of 7 octahedral K_{2,2,2} components."
+statement = "Pathion (dim=32) zero-divisor complement graph over the top-level cross pairs (low < 16 <= high; 2-blade planes joined by mutual annihilation) decomposes into 15 connected components, the 15 strut emanation tables (the complete plane graph has 22: these 15 plus 7 lifted sedenion box-kite components) with two distinct motif types: 8 heptacross (complete 7-partite K_{2,2,2,2,2,2,2}) and 7 mixed-degree components [4^12, 12^2]. This is structurally distinct from the sedenion (dim=16) pattern of 7 octahedral K_{2,2,2} components."
 status = "Verified"
 where_stated = "`crates/algebra_analysis/src/boxkites.rs` (motif_components_for_cross_assessors, test_motif_census_32d_summary, test_complement_graph_regression_dim16), `docs/INSIGHTS.md` (I-006)"
 
@@ -10835,7 +10835,7 @@ where_stated = "`crates/algebra_analysis/src/projective_geometry.rs` (find_minim
 [[claim]]
 id = "C-481"
 last_verified = "2026-02-09"
-statement = "Face Sign Census at dim=32 (pathions): 2408 triangular faces across 15 components split into 3 regimes. (A) 7 heptacross components (84 edges, 280 triangles): all 4 FaceSignPattern realized (102 TwoSameOneOpp, 108 OneSameTwoOpp, 36 AllSame, 34 AllOpposite). (B) 1 special heptacross (84 edges, 280 triangles): only 2 patterns with 3:1 ratio (210 TwoSameOneOpp, 70 AllOpposite). (C) 7 mixed components (36 edges, 24 triangles): only 2 patterns with 3:1 ratio (18 TwoSameOneOpp, 6 AllOpposite). The 3:1 TwoSameOneOpp:AllOpposite ratio is universal in pure-regime components across dim=16 and dim=32."
+statement = "Face Sign Census at dim=32 (pathions): 2408 triangular faces across the 15 top-level cross-pair components (low < 16 <= high) split into 3 regimes. (A) 7 heptacross components (84 edges, 280 triangles): all 4 FaceSignPattern realized (102 TwoSameOneOpp, 108 OneSameTwoOpp, 36 AllSame, 34 AllOpposite). (B) 1 special heptacross (84 edges, 280 triangles): only 2 patterns with 3:1 ratio (210 TwoSameOneOpp, 70 AllOpposite). (C) 7 mixed components (36 edges, 24 triangles): only 2 patterns with 3:1 ratio (18 TwoSameOneOpp, 6 AllOpposite). The 3:1 TwoSameOneOpp:AllOpposite ratio is universal in pure-regime components across dim=16 and dim=32."
 status = "Verified"
 where_stated = "`crates/algebra_analysis/src/boxkites.rs` (generic_face_sign_census, edge_sign_type_exact)"
 
@@ -11369,7 +11369,7 @@ where_stated = "`CURRENT::PATH crates/cd_kernel/src/cayley_dickson/mod.rs (LEGAC
 [[claim]]
 id = "C-557"
 last_verified = "2026-02-09"
-statement = "Component Scaling Laws Verified at Practical Dimensions: The Cayley-Dickson zero-divisor motif component count formula (dim/2 - 1 components, dim/2 - 2 nodes per component) holds exactly across all tested dimensions 16, 32, 64, 128, 256, and 512. This validates the universal scaling pattern that enables prediction of graph structure at any dimension without explicit enumeration."
+statement = "Component Scaling Laws Verified at Practical Dimensions: The Cayley-Dickson zero-divisor motif component count formula (dim/2 - 1 components, dim/2 - 2 nodes per component, for the top-level cross-pair graph with low < dim/2 <= high; the complete plane graph also holds the lifted lower-dimension components, 22 at dim=32) holds exactly across all tested dimensions 16, 32, 64, 128, 256, and 512. This validates the universal scaling pattern that enables prediction of graph structure at any dimension without explicit enumeration."
 status = "Verified"
 where_stated = "`crates/algebra_analysis/src/boxkites.rs` (test_component_scaling_across_dimensions)"
 
@@ -14508,7 +14508,7 @@ where_stated = "crates/gr_core/"
 [[claim]]
 id = "C-980"
 last_verified = "2026-03-05"
-statement = "Pathion gravity predicts a discrete 15+1 macroscopic splintering of the Kerr photon ring. The non-associative 32D Carter constant diagonalizes into 16 complex planes corresponding to the 15 connected components of the Zero-Divisor graph, creating distinct nested sub-rings."
+statement = "Pathion gravity predicts a discrete 15+1 macroscopic splintering of the Kerr photon ring. The non-associative 32D Carter constant diagonalizes into 16 complex planes corresponding to the 15 strut emanation tables (connected components of the top-level cross-pair Zero-Divisor graph), creating distinct nested sub-rings."
 status = "Refuted"
 status_note = "Phase A1 complete. Rust Carlson integral engine over 32D Pathions implemented. Bounded via Solar System Crucible: alpha_pathion < 1e-24 s^-2 based on 1-year DE440 heliocentric drift residual (LLR constraint). Rocq verification of branch cut boundaries pending. | Legacy status token: Pending | ADJUDICATED 2026-08-06 by the claim falsification fleet: status Refuted, fleet finding refuted. DURABLE CHECK that would decide this claim: Test in crates/pathion_ellip converting pathion_deflection output to microarcseconds for M87* (6.5e9 Msun, 16.8 Mpc), asserting the spread across the 16 planes exceeds the EHT ring width 3.8 uas; the claim requires it, the observation excludes it. Source locator: EHT 2019 ApJL 875 L1 Table 1 and Sec. 7. Retained finding: data/output/audit/2026-08-06/claim-falsification-fleet-l-misc.toml"
 where_stated = "crates/pathion_ellip/src/pathion_shadow.rs"
