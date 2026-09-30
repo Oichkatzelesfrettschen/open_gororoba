@@ -14,12 +14,14 @@
       arXiv:math/0703745, section 6: 14 assessors per table, tables for
       S = 9..15 are the "sand mandalas", S <= 8 hold Pleiades of 7 box-kites).
 
-    EPISTEMIC BOUNDARY: the two size lists below are computational facts
-    established by Rust (algebra_analysis::boxkites, tests
-    test_zd_plane_components_all_dims and test_motif_census_32d_summary), not
-    kernel-checked here: the Cayley-Dickson sign table at dim=32 exceeds
-    practical Rocq memory limits for vm_compute. Everything derived from the
-    lists (counts, sums, information capacity) is kernel-checked.
+    EPISTEMIC BOUNDARY: the two size lists below are definitions transcribed
+    from the Rust census (algebra_analysis::boxkites, tests
+    test_zd_plane_components_all_dims and test_motif_census_32d_summary);
+    their agreement with the zero-product graph is established there, not
+    kernel-checked here, because the Cayley-Dickson sign table at dim=32
+    exceeds practical Rocq memory limits for vm_compute. Everything derived
+    from the lists (counts, sums, information capacity) is kernel-checked,
+    and the file introduces no axioms.
 
     References:
     - Moreno (1998): The zero divisors of the Cayley-Dickson algebras
@@ -36,26 +38,23 @@ Open Scope R_scope.
 Definition pathion_dim : nat := 32%nat.
 
 (** Component sizes of the complete plane graph at dim=32. *)
-Parameter pathion_all_plane_component_sizes : list nat.
-Axiom pathion_all_plane_component_sizes_spec :
-  pathion_all_plane_component_sizes = (repeat 12%nat 7 ++ repeat 14%nat 15)%list.
+Definition pathion_all_plane_component_sizes : list nat :=
+  (repeat 12%nat 7 ++ repeat 14%nat 15)%list.
 
 (** Component sizes of the top-level cross-pair graph at dim=32. *)
-Parameter pathion_cross_pair_component_sizes : list nat.
-Axiom pathion_cross_pair_component_sizes_spec :
-  pathion_cross_pair_component_sizes = repeat 14%nat 15.
+Definition pathion_cross_pair_component_sizes : list nat := repeat 14%nat 15.
 
 Lemma pathion_all_plane_components_count :
   length pathion_all_plane_component_sizes = 22%nat.
-Proof. rewrite pathion_all_plane_component_sizes_spec. reflexivity. Qed.
+Proof. reflexivity. Qed.
 
 Lemma pathion_all_plane_vertex_count :
   fold_right Nat.add 0%nat pathion_all_plane_component_sizes = 294%nat.
-Proof. rewrite pathion_all_plane_component_sizes_spec. reflexivity. Qed.
+Proof. reflexivity. Qed.
 
 Lemma pathion_cross_pair_components_count :
   length pathion_cross_pair_component_sizes = 15%nat.
-Proof. rewrite pathion_cross_pair_component_sizes_spec. reflexivity. Qed.
+Proof. reflexivity. Qed.
 
 (** Number of strut emanation tables (cross-pair components) at dim=32. *)
 Definition pathion_n_components : nat := length pathion_cross_pair_component_sizes.
