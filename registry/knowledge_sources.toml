@@ -5,8 +5,8 @@
 
 [knowledge_sources]
 generated_at = "deterministic"
-tracked_markdown_count = 139
-manual_source_count = 88
+tracked_markdown_count = 158
+manual_source_count = 107
 markdown_mirror_count = 0
 generated_markdown_count = 51
 artifact_report_count = 0
@@ -22,13 +22,13 @@ generated = false
 status = "active"
 migration_priority = "medium"
 toml_backing = "agents.toml"
-sha256 = "af4a3a7184a99a8c47a2ad1c9ff2da76de72f6829e203c32d5f1cff12cffa913"
-size_bytes = 49580
-line_count = 853
-claim_ref_count = 20
+sha256 = "ff97109ecb5b3a7192b774a470ce385eaee982bbc69282a9cc5f19a6e0b6bb43"
+size_bytes = 56750
+line_count = 959
+claim_ref_count = 21
 insight_ref_count = 2
 experiment_ref_count = 1
-link_count = 353
+link_count = 367
 link_sample = ["$(CURDIR)/.cache/gate-target", "$(HOME)/worktrees", "*.md", ".cache", ".cache/", ".cache/exp-<name>-target/", ".cache/gate-target/debug/.cache/gate-target", ".cargo/config.toml"]
 
 [[document]]
@@ -41,13 +41,13 @@ generated = false
 status = "active"
 migration_priority = "medium"
 toml_backing = "registry/entrypoint_docs.toml"
-sha256 = "af4a3a7184a99a8c47a2ad1c9ff2da76de72f6829e203c32d5f1cff12cffa913"
-size_bytes = 49580
-line_count = 853
-claim_ref_count = 20
+sha256 = "ff97109ecb5b3a7192b774a470ce385eaee982bbc69282a9cc5f19a6e0b6bb43"
+size_bytes = 56750
+line_count = 959
+claim_ref_count = 21
 insight_ref_count = 2
 experiment_ref_count = 1
-link_count = 353
+link_count = 367
 link_sample = ["$(CURDIR)/.cache/gate-target", "$(HOME)/worktrees", "*.md", ".cache", ".cache/", ".cache/exp-<name>-target/", ".cache/gate-target/debug/.cache/gate-target", ".cargo/config.toml"]
 
 [[document]]
@@ -60,14 +60,14 @@ generated = false
 status = "active"
 migration_priority = "medium"
 toml_backing = "registry/entrypoint_docs.toml"
-sha256 = "88acb91d0d7b0e44fe4dcc93c84c14509befe9bd217ba69e886cff540ac7c91e"
-size_bytes = 11934
-line_count = 234
+sha256 = "ec15c3983a281d0fce01f2e83ec5831d8a898b28dd11800cc362cd5d7beb163e"
+size_bytes = 12521
+line_count = 243
 claim_ref_count = 2
 insight_ref_count = 0
 experiment_ref_count = 0
 link_count = 117
-link_sample = [".cache/", ".claude/", ".codex", ".githooks/", ".github/", ".gororoba.db", ".lia.cache", ".nra.cache"]
+link_sample = [".cache/", ".claude/", ".codex", ".githooks/", ".github/", ".github/workflows/ci.yml", ".gororoba.db", ".lia.cache"]
 
 [[document]]
 id = "DOC-0004"
@@ -323,14 +323,14 @@ generated = true
 status = "active"
 migration_priority = "critical"
 toml_backing = "registry/requirements.toml"
-sha256 = "8465f695239cc31ebc382f4afe37406748ae6de75f04a8bfd32c0750d66041ea"
-size_bytes = 8439
-line_count = 157
+sha256 = "bc64d58c5ba31562f1fd3171382039cb84130c2e0244cc40bc423d8e6352d6b0"
+size_bytes = 8359
+line_count = 156
 claim_ref_count = 0
 insight_ref_count = 0
 experiment_ref_count = 0
-link_count = 88
-link_sample = [".cache/", ".cache/gate-cbuild/<hash>/debug/", ".cache/gate-target", "1.97.0", "3.11", "3.12", "3.13+", "9.1.1"]
+link_count = 86
+link_sample = [".cache/gate-target", "1.97.0", "3.11", "3.12", "3.13+", "9.1.1", "GitHub release: https://github.com/google/shaderc/releases (prebuilt glslc tarball). System-pkg fallback: paru -S shaderc on Arch.", "GitHub release: https://github.com/pmd/pmd/releases (Java tool; download tarball + JAVA_HOME). System-package fallback: paru -S pmd on Arch."]
 
 [[document]]
 id = "DOC-0018"
@@ -556,6 +556,44 @@ link_sample = [".cache/", ".cache/cargo-default/", ".cache/cbuild/", ".cache/exp
 
 [[document]]
 id = "DOC-0030"
+path = "docs/engineering/casimir_optics_discrimination_contract.md"
+title = "Casimir, optics, and calibrated discrimination"
+kind = "manual_source"
+authoring_mode = "manual"
+generated = false
+status = "active"
+migration_priority = "high"
+toml_backing = "registry/research_narratives.toml"
+sha256 = "b7f4d4a713618eae56ded1445eb71ddf3a11c39c022856156d9cd2ec852ee296"
+size_bytes = 15847
+line_count = 352
+claim_ref_count = 0
+insight_ref_count = 0
+experiment_ref_count = 0
+link_count = 77
+link_sample = ["/2", "0.0065246449", "0.67018369", "0.9953610602", "1.0", "2*pi*R*d*P(d)/3", "2.7242957e-8", "5.0049074e-8"]
+
+[[document]]
+id = "DOC-0031"
+path = "docs/engineering/claim-family-evidence-adjudication.md"
+title = "Claim-family evidence adjudication"
+kind = "manual_source"
+authoring_mode = "manual"
+generated = false
+status = "active"
+migration_priority = "high"
+toml_backing = "registry/research_narratives.toml"
+sha256 = "ba0c8443fbf69713c8bc6d5d2bedb1ffe22eb59ee7db31a62c00e67904b4b977"
+size_bytes = 10483
+line_count = 104
+claim_ref_count = 8
+insight_ref_count = 0
+experiment_ref_count = 6
+link_count = 18
+link_sample = ["data/output/audit/claim-family-evidence-adjudication/", "data/output/audit/discrimination-target-interpretation/", "plans/claim-family-evidence-adjudication.toml", "plans/external-execution-targets.toml"]
+
+[[document]]
+id = "DOC-0032"
 path = "docs/engineering/claim-theorem-identity-frontier-2026_08_04.md"
 title = "Claim theorem identity and falsification frontier"
 kind = "manual_source"
@@ -574,7 +612,7 @@ link_count = 45
 link_sample = ["registry/canonical/control_plane.sqlite3"]
 
 [[document]]
-id = "DOC-0031"
+id = "DOC-0033"
 path = "docs/engineering/claims-oracle-quarantine-report-2026-08-02.md"
 title = "P0 Oracle Quarantine and Claim Transition Report"
 kind = "manual_source"
@@ -593,7 +631,7 @@ link_count = 20
 link_sample = ["data/output/audit/2026-08-02/claim_transition_results.toml", "data/output/audit/2026-08-02/claim_transition_schema_blocker.toml", "data/output/audit/2026-08-02/negative_controls.toml", "data/output/audit/2026-08-02/publication_revalidation_results.toml", "data/output/audit/2026-08-02/validation_results.toml", "origin/main", "photon-graviton-ward-tcmt-source-contract-2026-08-02.md"]
 
 [[document]]
-id = "DOC-0032"
+id = "DOC-0034"
 path = "docs/engineering/clippy_allow_inventory_2026_05_09.md"
 title = "`#[allow(clippy::*)]` inventory (2026-05-09, DEBT-TEST-2 Phase A)"
 kind = "manual_source"
@@ -612,7 +650,7 @@ link_count = 22
 link_sample = [".abs_diff()", ".iter().enumerate()", "// allow:", "// allow: <reason>", "crates/data_core/src/catalogs/desi_bao.rs:134", "data/output/debt_baseline_2026_05_09.toml"]
 
 [[document]]
-id = "DOC-0033"
+id = "DOC-0035"
 path = "docs/engineering/cpd_top20_classification_2026_05_09.md"
 title = "CPD top-20 cluster classification (2026-05-09)"
 kind = "manual_source"
@@ -631,7 +669,7 @@ link_count = 46
 link_sample = ["// @generated", "crates/gororoba_cli_data/src/bin/cpd_report.rs", "data/output/audit/<date>/cpd_top20.txt", "plans/repo_debt_roadmap_2026_04_11.toml"]
 
 [[document]]
-id = "DOC-0034"
+id = "DOC-0036"
 path = "docs/engineering/cubecl_vulkan_cuda_parity_matrix.md"
 title = "cubecl + Vulkan + CUDA Parity Matrix (task #136)"
 kind = "manual_source"
@@ -650,7 +688,7 @@ link_count = 47
 link_sample = ["LbmSolver3DCuda::new_mrt().step()", "compute.rs", "crates/<crate>/tests/<kernel>_<backend>_parity.rs", "crates/cd_kernel/tests/turboquant_cubecl_parity.rs", "crates/gpu_parity_harness/", "crates/lbm_vulkan/shaders/lbm_d3q19.wgsl", "dark_halo_vulkan.rs", "lbm_3d_cuda/src/lib.rs"]
 
 [[document]]
-id = "DOC-0035"
+id = "DOC-0037"
 path = "docs/engineering/evidence_ledger_operating_contract_2026_08_01.md"
 title = "Evidence ledger operating contract"
 kind = "manual_source"
@@ -669,7 +707,7 @@ link_count = 67
 link_sample = [".githooks/pre-push", "docs/NEXT_ACTIONS.md", "docs/ROADMAP.md", "docs/engineering/scientific-frontier-map-2026_08_02.md", "docs/engineering/validation-workflow-rca-2026_08_02.md", "plans/repo_debt_taxonomy_roadmap_2026_06_04.toml", "proofs/", "provenance index --knowledge-sources registry/knowledge_sources.toml"]
 
 [[document]]
-id = "DOC-0036"
+id = "DOC-0038"
 path = "docs/engineering/experiment_manifest_schema.md"
 title = "Experiment reproducibility manifest schema"
 kind = "manual_source"
@@ -688,7 +726,7 @@ link_count = 72
 link_sample = ["crates/gororoba_cli_data/src/bin/experiment_manifest.rs", "data/artifacts/ARTIFACTS_MANIFEST.csv", "docs/engineering/evidence_ledger_operating_contract_2026_08_01.md", "registry/experiments.toml", "registry/project.toml", "registry/source_manifest.toml"]
 
 [[document]]
-id = "DOC-0037"
+id = "DOC-0039"
 path = "docs/engineering/experiments_missing_binary_disposition_2026_05_09.md"
 title = "Experiments without registered binaries: 2026-05-09 disposition"
 kind = "manual_source"
@@ -707,7 +745,7 @@ link_count = 29
 link_sample = ["crates/*/Cargo.toml [[bin]]", "crates/algebra_experimental/", "crates/gororoba_cli_data/src/bin/cpd_report.rs", "crates/gororoba_cli_data/src/bin/repo_audit.rs", "data/output/debt_baseline_2026_04_30.toml", "data/output/debt_baseline_2026_05_09.toml", "docs/engineering/sqlite_canonical_write_plane_design.md", "grep -c \"binary_registered = false\" registry/experiments.toml"]
 
 [[document]]
-id = "DOC-0038"
+id = "DOC-0040"
 path = "docs/engineering/formal_proof_field_schema_2026_05_09.md"
 title = "`formal_proof` field schema (DEBT-CLAIMS-PROOF design)"
 kind = "manual_source"
@@ -726,7 +764,7 @@ link_count = 53
 link_sample = ["2503.14738", "C1262_FlatBandFractionHalf.v#flat_band_d64_le_half", "claim_revisions.field_name", "crates/provenance_store/src/lib.rs::claim_update_status_note", "data/output/audit/<date>/formal_proof_backfill_distribution.toml", "data/output/debt_baseline_2026_05_09.toml", "proofs/theories/", "proofs/theories/<file>.v[#theorem]"]
 
 [[document]]
-id = "DOC-0039"
+id = "DOC-0041"
 path = "docs/engineering/issue_127_build_time_codegen_scope.md"
 title = "Issue #127: Full Build-Time Data Generation Scope"
 kind = "manual_source"
@@ -745,7 +783,7 @@ link_count = 29
 link_sample = ["build.rs::emit_crystal_structures()", "build.rs::emit_mineral_metadata()", "character_tables.rs", "crates/materials_data/data/crystal/crystal_structures.toml", "crates/materials_data/data/optical/mineral_metadata.toml", "crates/materials_data/data/optical/sellmeier_models.toml", "crystal_symmetry.rs", "data/v1/"]
 
 [[document]]
-id = "DOC-0040"
+id = "DOC-0042"
 path = "docs/engineering/issue_136_lbm_d3q19_vulkan_scope.md"
 title = "LBM D3Q19 Vulkan + cubecl Port Scope (#136 follow-up)"
 kind = "manual_source"
@@ -764,7 +802,7 @@ link_count = 26
 link_sample = ["crates/lbm_3d/src/solver.rs", "crates/lbm_vulkan/shaders/lbm_d3q19.wgsl", "crates/lbm_vulkan/src/lbm_d3q19_cubecl.rs", "crates/lbm_vulkan/src/lbm_d3q19_vulkan.rs", "crates/lbm_vulkan/tests/lbm_d3q19_parity.rs", "crates/lbm_vulkan/tests/lbm_d3q19_vulkan_parity.rs", "docs/engineering/cubecl_vulkan_cuda_parity_matrix.md"]
 
 [[document]]
-id = "DOC-0041"
+id = "DOC-0043"
 path = "docs/engineering/issue_136_phase2_finalization.md"
 title = "Issue #136 Phase 2 Finalization Status"
 kind = "manual_source"
@@ -783,7 +821,7 @@ link_count = 10
 link_sample = ["docs/engineering/cubecl_vulkan_cuda_parity_matrix.md", "tests/turboquant_cubecl_parity.rs"]
 
 [[document]]
-id = "DOC-0042"
+id = "DOC-0044"
 path = "docs/engineering/local-governance-gate-evidence-2026_08_01.md"
 title = "Local governance gate evidence"
 kind = "manual_source"
@@ -792,17 +830,36 @@ generated = false
 status = "active"
 migration_priority = "high"
 toml_backing = "registry/research_narratives.toml"
-sha256 = "0f5999329474d255b7e457ed66bce4c6c30bcbb5d52252f0dfa282d2e52def48"
-size_bytes = 5407
-line_count = 102
+sha256 = "e968e0ed29257a2ee361782418be0c6c5fd2383d8535b752c049f9a077bd0de4"
+size_bytes = 5261
+line_count = 97
 claim_ref_count = 2
 insight_ref_count = 0
 experiment_ref_count = 0
-link_count = 28
+link_count = 24
 link_sample = ["binaries.toml", "docs/engineering/evidence_ledger_operating_contract_2026_08_01.md", "docs/engineering/validation-workflow-rca-2026_08_02.md", "experiments.toml", "project.toml", "reports/gates/2026-08-01/233501/"]
 
 [[document]]
-id = "DOC-0043"
+id = "DOC-0045"
+path = "docs/engineering/magnonic-isolated-bundle-time-reversal.md"
+title = "Magnonic isolated bundles and time reversal"
+kind = "manual_source"
+authoring_mode = "manual"
+generated = false
+status = "active"
+migration_priority = "high"
+toml_backing = "registry/research_narratives.toml"
+sha256 = "74d8ef8586de56a2a5b732d0508cdf7369f095f58ba7a0e197b4c3923b3b9667"
+size_bytes = 5920
+line_count = 135
+claim_ref_count = 1
+insight_ref_count = 0
+experiment_ref_count = 1
+link_count = 41
+link_sample = ["2 pi S/N", "B = G^(-1/2)", "crates/quantum_core/tests/magnonic_source_projection.rs", "data/output/audit/magnonic-source-projection/adjudication.toml", "delta_eps_s=0.05/0.10", "r = 1/(2N)", "||B-I|| (||B||+1) <= eta/(1-eta)", "||B||^2 <= 1/(1-eta)"]
+
+[[document]]
+id = "DOC-0046"
 path = "docs/engineering/markdown-governance-ignored-boundary.md"
 title = "Markdown governance ignored boundary"
 kind = "manual_source"
@@ -821,7 +878,7 @@ link_count = 20
 link_sample = [".github/copilot-instructions.md", "REQUIREMENTS.md", "archive/root_cleanup_2026-04-03/**/.gemini/plans/*.md", "crates/brown_1972/*.md", "data/benchmarks/parity_report.md", "docs/*.md", "docs/book/src/**/*.md", "docs/monograph/*.md"]
 
 [[document]]
-id = "DOC-0044"
+id = "DOC-0047"
 path = "docs/engineering/materials-data-source-contract-2026_08_01.md"
 title = "Materials data source contract"
 kind = "manual_source"
@@ -840,7 +897,7 @@ link_count = 29
 link_sample = ["OUT_DIR/generated_*.rs", "build.rs", "crates/materials_core", "crates/materials_core/data/crystal_symmetry.toml", "crates/materials_core/data/optical_constants.toml", "crates/materials_core/src/crystal_symmetry.rs", "crates/materials_core/src/optical_database.rs", "crates/materials_core/src/optical_database/"]
 
 [[document]]
-id = "DOC-0045"
+id = "DOC-0048"
 path = "docs/engineering/photon-graviton-ward-tcmt-source-contract-2026-08-02.md"
 title = "Photon-graviton Ward and TCMT source contract"
 kind = "manual_source"
@@ -859,7 +916,7 @@ link_count = 27
 link_sample = ["crates/gr_core/src/photon_graviton", "crates/gr_core/src/photon_graviton/tensor_types.rs", "crates/gr_core/src/photon_graviton_tcmt", "crates/optics_core/src/fano_tcmt.rs", "data/output/audit/2026-08-02/source_inventory.toml", "registry/source_lanes/web_references.toml", "ward.rs"]
 
 [[document]]
-id = "DOC-0046"
+id = "DOC-0049"
 path = "docs/engineering/pre_push_gate_optimization.md"
 title = "Pre-push validation optimization, 2026-05-11..12"
 kind = "manual_source"
@@ -868,17 +925,17 @@ generated = false
 status = "active"
 migration_priority = "high"
 toml_backing = "registry/research_narratives.toml"
-sha256 = "15aecd4a988dbecf917ddc40e838df40fd7d489e694f30e563c24600731afa99"
-size_bytes = 9138
-line_count = 192
+sha256 = "091b08aa8d7d62f60ea095be5175afa508ea375ff59cc796b0c51217635853bb"
+size_bytes = 9135
+line_count = 193
 claim_ref_count = 0
 insight_ref_count = 0
 experiment_ref_count = 0
-link_count = 98
-link_sample = [".cache/gate-target/validation-tools/", ".cache/gate-target/validation-tools/cache-check.last", ".cache/gate-target/validation-tools/host-profile.sh", ".cache/gate-target/validation-tools/validation.lock", ".cache/gate-target/validation-tools/workspace-routing", ".cache/gate-target/validation-tools/xtask", ".cargo/config.toml", ".github/workflows/ci.yml"]
+link_count = 90
+link_sample = [".cache/gate-target/validation-tools/", ".cache/gate-target/validation-tools/cache-check.last", ".cache/gate-target/validation-tools/host-profile.sh", ".cache/gate-target/validation-tools/workspace-routing", ".cache/gate-target/validation-tools/xtask", ".cargo/config.toml", ".github/workflows/ci.yml", ".rs"]
 
 [[document]]
-id = "DOC-0047"
+id = "DOC-0050"
 path = "docs/engineering/registry_canonical_architecture.md"
 title = "Registry canonical architecture: a four-layer walkthrough"
 kind = "manual_source"
@@ -887,17 +944,17 @@ generated = false
 status = "active"
 migration_priority = "high"
 toml_backing = "registry/research_narratives.toml"
-sha256 = "da0b42462f5e2c86eb483fdd6a59a853e4b849a8689f048808435472c3bfc0f0"
-size_bytes = 17310
-line_count = 356
+sha256 = "5b793963cd7b3709414e474c79aa03d4b9e5b78157ac69e9c76739212af882e9"
+size_bytes = 28754
+line_count = 541
 claim_ref_count = 4
-insight_ref_count = 0
+insight_ref_count = 8
 experiment_ref_count = 0
-link_count = 120
-link_sample = [".gitignore", "// @generated", "control_plane.sqlite3-shm", "control_plane.sqlite3-wal", "crates/gororoba_cli_data/src/bin/repo_audit.rs", "crates/provenance_store/src/lib.rs", "db/migrations/*.sql", "db/migrations/0015_revisions_audit.sql"]
+link_count = 172
+link_sample = [".gitignore", "// @generated", "<first-two-hash-digits>/<next-two>/<sha256>", "control_plane.sqlite3-shm", "control_plane.sqlite3-wal", "crates/gororoba_cli_data/src/bin/repo_audit.rs", "crates/provenance_store/src/lib.rs", "data/output/audit/insight-canonical-admission/specs/"]
 
 [[document]]
-id = "DOC-0048"
+id = "DOC-0051"
 path = "docs/engineering/registry_sqlite_canonical_rca_2026_05_17.md"
 title = "RCA: book_docs.toml + schema_signatures.toml drift (2026-05-17)"
 kind = "manual_source"
@@ -916,7 +973,7 @@ link_count = 36
 link_sample = ["AGENTS.md", "bibliography.notes", "book_docs.toml", "plans/repo_debt_roadmap_2026_04_11.toml", "registry/", "registry/*", "registry/*.toml", "registry/binaries.toml"]
 
 [[document]]
-id = "DOC-0049"
+id = "DOC-0052"
 path = "docs/engineering/repo_audit_metric_taxonomy.md"
 title = "repo-audit metric taxonomy"
 kind = "manual_source"
@@ -935,7 +992,7 @@ link_count = 83
 link_sample = ["--sqlite registry/canonical/control_plane.sqlite3", ".rs", ".v", "/* SAFETY:", "// ...", "// SAFETY:", "/// ...", "^\\s*(?://|/\\*)\\s*(?:TODO|FIXME|XXX|HACK)\\b"]
 
 [[document]]
-id = "DOC-0050"
+id = "DOC-0053"
 path = "docs/engineering/repository-architecture-evidence-map-2026_08_10.md"
 title = "Repository architecture and evidence map"
 kind = "manual_source"
@@ -954,7 +1011,7 @@ link_count = 115
 link_sample = [".cu", "bench_kernels.rs", "crates/lbm_3d/src/lattice.rs", "crates/lbm_3d/src/solver/bgk.rs", "crates/lbm_3d_cuda/cuda_source_ownership.toml", "crates/lbm_3d_cuda/src", "cs_sq = 1/3", "cuda_source_ownership.toml"]
 
 [[document]]
-id = "DOC-0051"
+id = "DOC-0054"
 path = "docs/engineering/rocq-proof-gate-evidence-2026_08_01.md"
 title = "Rocq proof gate evidence"
 kind = "manual_source"
@@ -973,7 +1030,7 @@ link_count = 30
 link_sample = [".v", "1.97.0", "4.2.2", "5.4.0", "9.1.1", "Admitted.", "C1467_XORSignCocycle.v", "proofs/theories"]
 
 [[document]]
-id = "DOC-0052"
+id = "DOC-0055"
 path = "docs/engineering/scientific-frontier-map-2026_08_02.md"
 title = "Scientific frontier map and falsification queue"
 kind = "manual_source"
@@ -992,7 +1049,7 @@ link_count = 59
 link_sample = ["/var/tmp/open_gororoba-research-20260802/", "C1539_MorSkewSymm.v", "C1638_OctonionDowncastNoZeroDivisors.v", "avx2_primitives.rs", "crates/gororoba_cli_data/src/bin/bartol_spdf_crossval.rs", "crates/gr_core/src/forces/chingon_bivector_drag.rs", "crates/gr_core/src/fractal_metric.rs", "crates/gr_core/src/nbody_integration.rs"]
 
 [[document]]
-id = "DOC-0053"
+id = "DOC-0056"
 path = "docs/engineering/sqlite_canonical_write_plane_design.md"
 title = "SQLite canonical-write-plane design for the registry layer"
 kind = "manual_source"
@@ -1011,7 +1068,7 @@ link_count = 79
 link_sample = ["1.0", "1.00", "Mxxx_fts5_triggers.sql", "aot.set_trailing(\"\\n\")", "claim.schema.json", "crates/gororoba_db/", "crates/gororoba_db/src/bin/gororoba_db.rs", "experiment.schema.json"]
 
 [[document]]
-id = "DOC-0054"
+id = "DOC-0057"
 path = "docs/engineering/staples-retained-result-audit.md"
 title = "Retained Staples result audit"
 kind = "manual_source"
@@ -1030,7 +1087,7 @@ link_count = 7
 link_sample = ["dataset.json", "replay.toml"]
 
 [[document]]
-id = "DOC-0055"
+id = "DOC-0058"
 path = "docs/engineering/theorem-identity-disambiguation-2026_08_04.md"
 title = "Theorem identity disambiguation"
 kind = "manual_source"
@@ -1049,7 +1106,7 @@ link_count = 0
 link_sample = []
 
 [[document]]
-id = "DOC-0056"
+id = "DOC-0059"
 path = "docs/engineering/unsafe_safety_methodology_2026_05_09.md"
 title = "Unsafe-block SAFETY-coverage methodology (DEBT-UNSAFE-1 reframe)"
 kind = "manual_source"
@@ -1068,7 +1125,7 @@ link_count = 12
 link_sample = ["crates/gororoba_cli_data/src/bin/repo_audit.rs", "crates/lbm_3d/src/solver.rs", "data/output/debt_baseline_2026_05_09.toml"]
 
 [[document]]
-id = "DOC-0057"
+id = "DOC-0060"
 path = "docs/engineering/validation-workflow-rca-2026_08_02.md"
 title = "Validation workflow RCA and operating model"
 kind = "manual_source"
@@ -1077,17 +1134,17 @@ generated = false
 status = "active"
 migration_priority = "high"
 toml_backing = "registry/research_narratives.toml"
-sha256 = "45fe12a69e810ac1b43e3e0779cc84d93a8b1e691e4512b484332d27282243e5"
-size_bytes = 17633
-line_count = 322
+sha256 = "0205237960d53901b110034ecd399fa5a73d650b39bcc852acebfe5306019ef0"
+size_bytes = 23790
+line_count = 411
 claim_ref_count = 0
 insight_ref_count = 0
 experiment_ref_count = 0
-link_count = 116
-link_sample = ["$(REPO_CARGO_TARGET_DIR)/validation-tools/", "./makew validate-ci", ".cache/gate-target", "/var/tmp/open_gororoba-validation-20260802/", "crates/gororoba_cli_data/src/bin/claims_verify.rs", "crates/gororoba_cli_data/src/bin/evidence_provenance.rs", "crates/gororoba_cli_data/src/bin/execution_planning.rs", "crates/gororoba_cli_data/src/bin/governance_verify.rs"]
+link_count = 134
+link_sample = ["$(REPO_CARGO_TARGET_DIR)/validation-tools/", ".cache/gate-target", "/var/tmp/open_gororoba-validation-20260802/", "AGENTS.md", "agents.toml", "ci.yml", "crates/gororoba_cli_data/src/bin/claims_verify.rs", "crates/gororoba_cli_data/src/bin/evidence_provenance.rs"]
 
 [[document]]
-id = "DOC-0058"
+id = "DOC-0061"
 path = "docs/engineering/voyager2-bartol-amda-boundary-2026_08_01.md"
 title = "Voyager 2 Bartol to AMDA evidence boundary"
 kind = "manual_source"
@@ -1106,7 +1163,7 @@ link_count = 4
 link_sample = ["*_amda_merged_hourly.asc", "data/external/voyager2/", "docs/engineering/voyager2_v2_bartol_spdf_1990_1995_findings_2026_04_19.txt"]
 
 [[document]]
-id = "DOC-0059"
+id = "DOC-0062"
 path = "docs/external_sources/BUNDY_2015_MANGA_OVERVIEW.md"
 title = "BUNDY_2015_MANGA_OVERVIEW"
 kind = "generated_markdown"
@@ -1125,7 +1182,7 @@ link_count = 0
 link_sample = []
 
 [[document]]
-id = "DOC-0060"
+id = "DOC-0063"
 path = "docs/external_sources/C010_NONLOCAL_ALGEBRAIC_METAMATERIALS_SOURCES.md"
 title = "C-010 Non-Local Algebraic Metamaterials Sources"
 kind = "generated_markdown"
@@ -1144,7 +1201,7 @@ link_count = 24
 link_sample = ["crates/algebra_analysis/src/boxkites.rs", "crates/algebra_analysis/src/crystal_bands.rs", "crates/algebra_analysis/src/homotopy_algebra.rs", "crates/algebra_analysis/src/reggiani.rs", "crates/cosmology_core/src/sersic.rs", "crates/quantum_core/src/magnonic_crystal.rs", "data/csv/c010_nonlocal_material_calibrations.csv", "data/papers/corpus/dutt_2022_synthetic_frequency_boundaries.pdf"]
 
 [[document]]
-id = "DOC-0061"
+id = "DOC-0064"
 path = "docs/external_sources/C053_PATHION_METAMATERIAL_MAPPING_SOURCES.md"
 title = "C-053 Pathion Metamaterial Mapping Sources"
 kind = "generated_markdown"
@@ -1163,7 +1220,7 @@ link_count = 5
 link_sample = ["crates/gororoba_cli_physics/src/bin/c053_pathion_metamaterial_mapping.rs", "crates/gororoba_cli_physics/tests/c053_pathion_metamaterial_mapping.rs", "crates/materials_core/src/pathion_toy_mapping.rs", "data/csv/c053_pathion_tmm_summary.csv"]
 
 [[document]]
-id = "DOC-0062"
+id = "DOC-0065"
 path = "docs/external_sources/C071_FRB_ULTRAMETRIC_SOURCES.md"
 title = "C-071: FRB Ultrametric Structure -- Data Provenance"
 kind = "generated_markdown"
@@ -1182,7 +1239,7 @@ link_count = 12
 link_sample = ["crates/gororoba_cli_data/src/bin/frb_ultrametric.rs", "crates/stats_core/src/ultrametric.rs", "data/csv/c071_frb_ultrametric.csv", "data/csv/c071_frb_ultrametric_cat1.csv", "data/csv/c071_frb_ultrametric_cat2.csv", "data/external/chime_frb_cat1.csv", "data/external/chime_frb_cat2.csv"]
 
 [[document]]
-id = "DOC-0063"
+id = "DOC-0066"
 path = "docs/external_sources/DATASET_MANIFEST.md"
 title = "Dataset Manifest"
 kind = "generated_markdown"
@@ -1201,7 +1258,7 @@ link_count = 1
 link_sample = []
 
 [[document]]
-id = "DOC-0064"
+id = "DOC-0067"
 path = "docs/external_sources/DE_MARRAIS_BOXKITES_III.md"
 title = "2004 Math0403113 Boxkites Iii"
 kind = "generated_markdown"
@@ -1220,7 +1277,7 @@ link_count = 0
 link_sample = []
 
 [[document]]
-id = "DOC-0065"
+id = "DOC-0068"
 path = "docs/external_sources/DE_MARRAIS_CATAMARAN.md"
 title = "Voyage by Catamaran"
 kind = "generated_markdown"
@@ -1239,7 +1296,7 @@ link_count = 0
 link_sample = []
 
 [[document]]
-id = "DOC-0066"
+id = "DOC-0069"
 path = "docs/external_sources/DE_MARRAIS_FLYING_HIGHER.md"
 title = "Flying Higher Than A Box-Kite"
 kind = "generated_markdown"
@@ -1258,7 +1315,7 @@ link_count = 0
 link_sample = []
 
 [[document]]
-id = "DOC-0067"
+id = "DOC-0070"
 path = "docs/external_sources/DE_MARRAIS_PLACEHOLDER_I.md"
 title = "Placeholder Substructures I"
 kind = "generated_markdown"
@@ -1277,7 +1334,7 @@ link_count = 0
 link_sample = []
 
 [[document]]
-id = "DOC-0068"
+id = "DOC-0071"
 path = "docs/external_sources/DE_MARRAIS_PLACEHOLDER_III.md"
 title = "Placeholder Substructures III"
 kind = "generated_markdown"
@@ -1296,7 +1353,7 @@ link_count = 0
 link_sample = []
 
 [[document]]
-id = "DOC-0069"
+id = "DOC-0072"
 path = "docs/external_sources/DE_MARRAIS_PRESTO_DIGITIZATION.md"
 title = "Presto! Digitization: Part I"
 kind = "generated_markdown"
@@ -1315,7 +1372,7 @@ link_count = 0
 link_sample = []
 
 [[document]]
-id = "DOC-0070"
+id = "DOC-0073"
 path = "docs/external_sources/DE_MARRAIS_WOLFRAM_SLIDES.md"
 title = "2004 Wolfram Science Slides"
 kind = "generated_markdown"
@@ -1334,7 +1391,7 @@ link_count = 0
 link_sample = []
 
 [[document]]
-id = "DOC-0071"
+id = "DOC-0074"
 path = "docs/external_sources/EXCEPTIONAL_COSMOLOGY_SOURCES.md"
 title = "Exceptional Cosmology Sources"
 kind = "manual_source"
@@ -1353,7 +1410,7 @@ link_count = 13
 link_sample = ["crates/cosmology_core/src/spectral.rs", "crates/gororoba_cli_data/src/bin/zd_spectral_dimension.rs", "data/results/spectral_dimension_manifold_coupling.csv", "docs/C037_NUMERICAL_COINCIDENCE_AUDIT.md", "docs/C041_F4_STRING_DIMENSION_COINCIDENCE_AUDIT.md", "docs/EXCEPTIONAL_COSMOLOGY.md", "proofs/verified/C035_CasimirQuarter.v", "proofs/verified/C036_TrialityClusteringBound.v"]
 
 [[document]]
-id = "DOC-0072"
+id = "DOC-0075"
 path = "docs/external_sources/HELIOSPHERE_DATASET_PROGRESS_2026-03-09.md"
 title = "Heliosphere Dataset Progress 2026-03-09"
 kind = "generated_markdown"
@@ -1372,7 +1429,7 @@ link_count = 120
 link_sample = ["11.79x", "12.42x", "P10-J-HVM_PA-4-SUMM-MERGED-1HR-V1.0", "P11-J-HVM-PA-4-SUMM-MERGED-1HR-V1.0", "P11-S-HVM-PA-4-MERGED-ENC-1HR-V1.0", "cassini_1998_amda_cruise_hourly.asc", "cassini_1999_amda_cruise_hourly.asc", "cassini_2000_amda_cruise_hourly.asc"]
 
 [[document]]
-id = "DOC-0073"
+id = "DOC-0076"
 path = "docs/external_sources/INDEX.md"
 title = "External Sources"
 kind = "generated_markdown"
@@ -1391,7 +1448,7 @@ link_count = 88
 link_sample = ["docs/external_sources/*.md", "docs/external_sources/BUNDY_2015_MANGA_OVERVIEW.md", "docs/external_sources/C010_NONLOCAL_ALGEBRAIC_METAMATERIALS_SOURCES.md", "docs/external_sources/C053_PATHION_METAMATERIAL_MAPPING_SOURCES.md", "docs/external_sources/C071_FRB_ULTRAMETRIC_SOURCES.md", "docs/external_sources/DATASET_MANIFEST.md", "docs/external_sources/DE_MARRAIS_BOXKITES_III.md", "docs/external_sources/DE_MARRAIS_CATAMARAN.md"]
 
 [[document]]
-id = "DOC-0074"
+id = "DOC-0077"
 path = "docs/external_sources/INVERSE_CD_FORMALISM.md"
 title = "Inverse Cayley-Dickson Formalism"
 kind = "generated_markdown"
@@ -1410,7 +1467,7 @@ link_count = 0
 link_sample = []
 
 [[document]]
-id = "DOC-0075"
+id = "DOC-0078"
 path = "docs/external_sources/LELLI_2016_SPARC.md"
 title = "LELLI_2016_SPARC"
 kind = "generated_markdown"
@@ -1429,7 +1486,7 @@ link_count = 0
 link_sample = []
 
 [[document]]
-id = "DOC-0076"
+id = "DOC-0079"
 path = "docs/external_sources/LI_2020_SPARC_NFW_FITS.md"
 title = "LI_2020_SPARC_NFW_FITS"
 kind = "generated_markdown"
@@ -1448,7 +1505,7 @@ link_count = 0
 link_sample = []
 
 [[document]]
-id = "DOC-0077"
+id = "DOC-0080"
 path = "docs/external_sources/MERGUS_BRIDGE_SOURCES.md"
 title = "Mergus Bridge Sources"
 kind = "manual_source"
@@ -1467,7 +1524,7 @@ link_count = 1
 link_sample = []
 
 [[document]]
-id = "DOC-0078"
+id = "DOC-0081"
 path = "docs/external_sources/MOSTER_2013_SMHM.md"
 title = "MOSTER_2013_SMHM"
 kind = "generated_markdown"
@@ -1486,7 +1543,7 @@ link_count = 0
 link_sample = []
 
 [[document]]
-id = "DOC-0079"
+id = "DOC-0082"
 path = "docs/external_sources/NANOGRAV_15YR_PRIMARY_SOURCES.md"
 title = "NANOGrav 15-Year Primary Sources"
 kind = "manual_source"
@@ -1505,7 +1562,7 @@ link_count = 9
 link_sample = ["crates/gororoba_cli_data/src/nanograv_timing.rs", "crates/gororoba_cli_data/src/nanograv_timing_model.rs", "data/csv/nanograv_15yr_pairwise_hd_audit.csv", "data/csv/nanograv_15yr_propagation_pulsars.csv", "data/csv/nanograv_15yr_timing_inventory.csv", "data/csv/nanograv_15yr_timing_refit_preflight.csv", "reports/nanograv_15yr_propagation_audit.toml", "reports/nanograv_15yr_timing_inventory.toml"]
 
 [[document]]
-id = "DOC-0080"
+id = "DOC-0083"
 path = "docs/external_sources/NANOGRAV_TIMING_ENGINE_SOURCES.md"
 title = "NANOGrav Timing Engine Sources"
 kind = "manual_source"
@@ -1524,7 +1581,7 @@ link_count = 64
 link_sample = [".par", "DMJUMP@...", "FB0..FBn", "JUMP@...", "crates/gororoba_cli_data/src/bin/nanograv_timing_phase1_independent.rs", "crates/gororoba_cli_data/src/nanograv_timing_engine.rs", "crates/gororoba_cli_data/src/nanograv_timing_model.rs", "data/csv/nanograv_phase1_independent_avt_whitening_sweep.csv"]
 
 [[document]]
-id = "DOC-0081"
+id = "DOC-0084"
 path = "docs/external_sources/OMNI_DATA_AUDIT_2026-03-10.md"
 title = "OMNI Data Audit (2026-03-10)"
 kind = "generated_markdown"
@@ -1543,7 +1600,7 @@ link_count = 49
 link_sample = [".dat", "crates/data_core/src/catalogs/omni.rs", "data/external/omni2/omni2_1997_amda_hourly.csv", "data/external/omni2/omni2_1998_amda_hourly.csv", "data/external/omni2/omni2_1999_amda_hourly.csv", "data/external/omni2/omni2_2000_amda_hourly.csv", "data/external/omni2/omni2_2001_amda_hourly.csv", "data/external/omni2/omni2_2002_amda_hourly.csv"]
 
 [[document]]
-id = "DOC-0082"
+id = "DOC-0085"
 path = "docs/external_sources/OPEN_CLAIMS_SOURCES.md"
 title = "Open Claims Sources (Inbox)"
 kind = "generated_markdown"
@@ -1562,7 +1619,7 @@ link_count = 3
 link_sample = ["docs/CLAIMS_EVIDENCE_MATRIX.md", "docs/external_sources/", "docs/external_sources/*.md"]
 
 [[document]]
-id = "DOC-0083"
+id = "DOC-0086"
 path = "docs/external_sources/PIONEER_FLYBY_ANOMALY_SOURCES.md"
 title = "Pioneer and Flyby Anomaly Primary Sources"
 kind = "generated_markdown"
@@ -1581,7 +1638,7 @@ link_count = 11
 link_sample = ["10.1103/PhysRevD.65.082004", "10.1103/PhysRevLett.100.091102", "Pioneer merged/encounter", "data/external/flyby_anomaly/anderson_2008_flyby_catalog.csv", "data/external/pioneer_anomaly/pioneer_anomaly_benchmark.csv"]
 
 [[document]]
-id = "DOC-0084"
+id = "DOC-0087"
 path = "docs/external_sources/REGGIANI_MANIFOLD_CLAIMS.md"
 title = "Reggiani 2024 manifold identifications (C-005)"
 kind = "generated_markdown"
@@ -1600,7 +1657,7 @@ link_count = 5
 link_sample = ["data/papers/corpus/reggiani_2024_2411.18881.pdf", "data/papers/corpus/reggiani_2024_2411.18881.txt", "docs/SEDENION_ATLAS.md", "tests/test_reggiani_alignment.py", "tests/test_reggiani_standard_zero_divisors.py"]
 
 [[document]]
-id = "DOC-0085"
+id = "DOC-0088"
 path = "docs/external_sources/SEDENION_ZD_EXPERIMENTAL.md"
 title = "Sedenion Zero-Divisor Experimental Connections"
 kind = "generated_markdown"
@@ -1619,7 +1676,7 @@ link_count = 0
 link_sample = []
 
 [[document]]
-id = "DOC-0086"
+id = "DOC-0089"
 path = "docs/external_sources/SOHO_ARCHIVE_MIRROR_AUDIT_2026-03-09.md"
 title = "SOHO Archive Mirror Audit (2026-03-09)"
 kind = "generated_markdown"
@@ -1638,7 +1695,7 @@ link_count = 5
 link_sample = ["9.9881729"]
 
 [[document]]
-id = "DOC-0087"
+id = "DOC-0090"
 path = "docs/external_sources/WESTFALL_2019_MANGA_DRP.md"
 title = "WESTFALL_2019_MANGA_DRP"
 kind = "generated_markdown"
@@ -1657,7 +1714,7 @@ link_count = 0
 link_sample = []
 
 [[document]]
-id = "DOC-0088"
+id = "DOC-0091"
 path = "docs/external_sources/WHEEL_ALGEBRA_TAXONOMY.md"
 title = "Wheel Algebra Taxonomy"
 kind = "generated_markdown"
@@ -1676,7 +1733,7 @@ link_count = 0
 link_sample = []
 
 [[document]]
-id = "DOC-0089"
+id = "DOC-0092"
 path = "docs/external_sources/WOW_SIGNAL_SOURCES.md"
 title = "Wow! Signal Source Dossier"
 kind = "generated_markdown"
@@ -1695,7 +1752,7 @@ link_count = 9
 link_sample = ["data/csv/bl_6equj5_gbt_manifest.csv", "data/csv/wow1977_transcription.csv", "data/external/wow_1977_printout.jpg", "di_YYYYMMDD/spliced_blcNN_guppi_MJDTTTTT_TARGET_OBSNUM/"]
 
 [[document]]
-id = "DOC-0090"
+id = "DOC-0093"
 path = "docs/external_sources/X87_AVX_ACCUMULATION_SOURCES.md"
 title = "x87 / AVX Accumulation Sources"
 kind = "generated_markdown"
@@ -1714,7 +1771,7 @@ link_count = 18
 link_sample = ["26568.pdf", "26569.pdf", "2^-53 / 2^-64"]
 
 [[document]]
-id = "DOC-0091"
+id = "DOC-0094"
 path = "docs/external_sources/ysu_engine_gpu_patterns.md"
 title = "YSU-engine GPU Optimization Patterns: Technique Reference"
 kind = "generated_markdown"
@@ -1733,7 +1790,7 @@ link_count = 2
 link_sample = []
 
 [[document]]
-id = "DOC-0092"
+id = "DOC-0095"
 path = "docs/generated/THEOREMS_REGISTRY_MIRROR.md"
 title = "Theorems"
 kind = "generated_markdown"
@@ -1751,7 +1808,7 @@ link_count = 486
 link_sample = ["proofs/verified/C001_CDNonAssociative.v", "proofs/verified/C002_SedenionZDAndNormFail.v", "proofs/verified/C003_AssessorsBoxkites.v", "proofs/verified/C004_PSL27Order168.v", "proofs/verified/C005_ZDAnnihilatorGeometry.v", "proofs/verified/C006_GWAlgebraicAnchor.v", "proofs/verified/C007_BHMassAlgebraicAnchor.v", "proofs/verified/C008_AlphaFreeParameter.v"]
 
 [[document]]
-id = "DOC-0093"
+id = "DOC-0096"
 path = "docs/glossary.md"
 title = "open_gororoba glossary"
 kind = "manual_source"
@@ -1770,7 +1827,7 @@ link_count = 25
 link_sample = [".cache/registry.sqlite3", "VF=0.0", "cd_kernel/", "crates/gororoba_cli_data/src/bin/repo_utilities.rs", "data/output/audit/2026-04-30/", "registry/*.toml", "registry/canonical/control_plane.sqlite3", "registry/schema_signatures.toml"]
 
 [[document]]
-id = "DOC-0094"
+id = "DOC-0097"
 path = "docs/lions_commentary_cd_kernel.md"
 title = "Lion's Commentary on the Cayley-Dickson Kernel"
 kind = "manual_source"
@@ -1789,7 +1846,7 @@ link_count = 86
 link_sample = ["arith.rs", "associator.rs", "cariow_factorization.rs", "fast_associator.rs", "mod.rs", "predicates.rs", "sedenion.rs", "signature.rs"]
 
 [[document]]
-id = "DOC-0095"
+id = "DOC-0098"
 path = "docs/monograph/MERGED_MONOGRAPH.md"
 title = "Cayley-Dickson Zero-Divisor Dark Matter: A Unified Monograph"
 kind = "manual_source"
@@ -1807,7 +1864,7 @@ link_count = 5
 link_sample = ["C003_AssessorsBoxkites.v", "C031_HurwitzComplete.v", "C1007_CDPropertyLoss.v"]
 
 [[document]]
-id = "DOC-0096"
+id = "DOC-0099"
 path = "docs/physics/sedenion_standard_model.md"
 title = "Sedenion Standard Model: Algebraic Origin of Fermion Masses and Mixing"
 kind = "manual_source"
@@ -1825,7 +1882,7 @@ link_count = 249
 link_sample = [".djvu.txt", ".pdf", ".venv", "/Export", "/_next/data/.../title/<id>.json", "/home/eirikr/.venvs/cd-archive-tools", "/page/<printed-page>/mode/1up", "10.1007/978-1-4612-3694-8_24"]
 
 [[document]]
-id = "DOC-0097"
+id = "DOC-0100"
 path = "docs/preregistered/README.md"
 title = "Preregistered Hypotheses"
 kind = "manual_source"
@@ -1843,7 +1900,7 @@ link_count = 0
 link_sample = []
 
 [[document]]
-id = "DOC-0098"
+id = "DOC-0101"
 path = "docs/reports/POST_RC1_32D_EVIDENCE_NOTE.md"
 title = "Post-RC1 32D Evidence Note"
 kind = "manual_source"
@@ -1861,7 +1918,7 @@ link_count = 24
 link_sample = ["block_size_sensitivity_32d.csv", "data_source_audit.json", "densified_null_audit_32d_4family.json", "densified_provenance_qa.json", "diagnostic_stack_densified_32d.csv", "heliosheath_5family_64d.json", "heliosheath_block_sweep_32d.csv", "invariance_fast_wind_no_ulysses_32d.csv"]
 
 [[document]]
-id = "DOC-0099"
+id = "DOC-0102"
 path = "docs/reports/POST_RC1_CROSS_DOMAIN_EVIDENCE_NOTE.md"
 title = "Cross-Domain Evidence Note: CD Associator as Phase-Geometry Diagnostic"
 kind = "manual_source"
@@ -1879,7 +1936,7 @@ link_count = 25
 link_sample = ["cassini.rs", "cluster.rs", "maven_mag.rs", "messenger.rs", "mms.rs", "psp_fields.rs", "rosetta.rs", "solar_orbiter_mag.rs"]
 
 [[document]]
-id = "DOC-0100"
+id = "DOC-0103"
 path = "docs/reports/RC1_EVIDENCE_NOTE.md"
 title = "RC1 Evidence Note"
 kind = "manual_source"
@@ -1897,7 +1954,7 @@ link_count = 31
 link_sample = ["42fd5622981c...", "47eb16fc1965...", "96347a0c62b9...", "boxkite_cpu.csv", "boxkite_parity.json", "boxkite_vulkan.csv", "data/output/heliosphere/ablations/", "data/output/heliosphere/ablations/boxkite_parity.json"]
 
 [[document]]
-id = "DOC-0101"
+id = "DOC-0104"
 path = "docs/reports/brown_1972_dissertation_roadmap_2026-03-27.md"
 title = "Brown 1972 Dissertation Roadmap (2026-03-27)"
 kind = "manual_source"
@@ -1915,7 +1972,7 @@ link_count = 45
 link_sample = ["6.4-6.7", "6.5 / 6.7", "6.9(i)/(ii)/(iii)", "Brown1972ChapterVII.v", "BrownAssessorEquivalence.v", "C1538_MorZDSymmetry.v", "CDFusedBilinear.v", "CDPowerAssociative.v"]
 
 [[document]]
-id = "DOC-0102"
+id = "DOC-0105"
 path = "docs/reports/cd_cross_domain_synthesis_2026_03_28.md"
 title = "Cayley-Dickson Associator: Cross-Domain Synthesis Report"
 kind = "manual_source"
@@ -1933,7 +1990,7 @@ link_count = 11
 link_sample = []
 
 [[document]]
-id = "DOC-0103"
+id = "DOC-0106"
 path = "docs/reports/cd_legacy_pre1954_roadmap_2026-03-27.md"
 title = "Cayley-Dickson Legacy Pre-1954 Roadmap (2026-03-27)"
 kind = "manual_source"
@@ -1951,7 +2008,7 @@ link_count = 5
 link_sample = ["~/Documents/Projects/CayleyDickson"]
 
 [[document]]
-id = "DOC-0104"
+id = "DOC-0107"
 path = "docs/reports/diii_d_project_proposal_draft.md"
 title = "DIII-D Project Information Form: Draft Proposal"
 kind = "manual_source"
@@ -1969,7 +2026,7 @@ link_count = 0
 link_sample = []
 
 [[document]]
-id = "DOC-0105"
+id = "DOC-0108"
 path = "docs/reports/enso_91103_outlook_2026_09_01.md"
 title = "ENSO and local precipitation outlook for 91103"
 kind = "manual_source"
@@ -1987,7 +2044,7 @@ link_count = 4
 link_sample = ["reports/enso_91103_outlook_2026-09-01.toml", "reports/enso_91103_source_snapshot_2026-09-01.toml"]
 
 [[document]]
-id = "DOC-0106"
+id = "DOC-0109"
 path = "docs/reports/fusion_enrollment_forms_ready_to_submit.md"
 title = "Fusion Data Access Forms -- Ready for Manual Submission"
 kind = "manual_source"
@@ -2005,7 +2062,7 @@ link_count = 0
 link_sample = []
 
 [[document]]
-id = "DOC-0107"
+id = "DOC-0110"
 path = "docs/reports/root_promoted/bielefeld_jacobson_prefilled_form.md"
 title = "bielefeld_jacobson_prefilled_form"
 kind = "manual_source"
@@ -2023,7 +2080,7 @@ link_count = 0
 link_sample = []
 
 [[document]]
-id = "DOC-0108"
+id = "DOC-0111"
 path = "docs/reports/root_promoted/cdaweb-voyager-datasets.md"
 title = "cdaweb-voyager-datasets"
 kind = "manual_source"
@@ -2041,7 +2098,7 @@ link_count = 0
 link_sample = []
 
 [[document]]
-id = "DOC-0109"
+id = "DOC-0112"
 path = "docs/reports/root_promoted/jacobson_googlebooks_accessible_berkeley.md"
 title = "jacobson_googlebooks_accessible_berkeley"
 kind = "manual_source"
@@ -2059,7 +2116,7 @@ link_count = 0
 link_sample = []
 
 [[document]]
-id = "DOC-0110"
+id = "DOC-0113"
 path = "docs/reports/root_promoted/jacobson_googlebooks_accessible_virginia.md"
 title = "jacobson_googlebooks_accessible_virginia"
 kind = "manual_source"
@@ -2077,7 +2134,7 @@ link_count = 0
 link_sample = []
 
 [[document]]
-id = "DOC-0111"
+id = "DOC-0114"
 path = "docs/reports/root_promoted/jacobson_googlebooks_classic_search_results.md"
 title = "jacobson_googlebooks_classic_search_results"
 kind = "manual_source"
@@ -2095,7 +2152,7 @@ link_count = 0
 link_sample = []
 
 [[document]]
-id = "DOC-0112"
+id = "DOC-0115"
 path = "docs/reports/root_promoted/jacobson_googlebooks_search_results.md"
 title = "jacobson_googlebooks_search_results"
 kind = "manual_source"
@@ -2113,7 +2170,7 @@ link_count = 0
 link_sample = []
 
 [[document]]
-id = "DOC-0113"
+id = "DOC-0116"
 path = "docs/reports/root_promoted/leipzig_freudenthal_request_login.md"
 title = "leipzig_freudenthal_request_login"
 kind = "manual_source"
@@ -2131,7 +2188,7 @@ link_count = 0
 link_sample = []
 
 [[document]]
-id = "DOC-0114"
+id = "DOC-0117"
 path = "docs/reports/root_promoted/researchgate_huang_security_check.md"
 title = "researchgate_huang_security_check"
 kind = "manual_source"
@@ -2149,7 +2206,7 @@ link_count = 0
 link_sample = []
 
 [[document]]
-id = "DOC-0115"
+id = "DOC-0118"
 path = "docs/reports/root_promoted/ucsd_jacobson_chapter_detail.md"
 title = "ucsd_jacobson_chapter_detail"
 kind = "manual_source"
@@ -2167,7 +2224,7 @@ link_count = 0
 link_sample = []
 
 [[document]]
-id = "DOC-0116"
+id = "DOC-0119"
 path = "docs/reports/sedenion_standard_model_commit_audit_2026-03-27.md"
 title = "sedenion_standard_model Commit Audit (2026-03-27)"
 kind = "manual_source"
@@ -2185,7 +2242,7 @@ link_count = 87
 link_sample = ["d28e79a2..HEAD", "docs/physics/sedenion_standard_model.md"]
 
 [[document]]
-id = "DOC-0117"
+id = "DOC-0120"
 path = "docs/reports/turboquant_architecture_2026-03-29.md"
 title = "TurboQuant Architecture Document"
 kind = "manual_source"
@@ -2203,7 +2260,7 @@ link_count = 1
 link_sample = ["crates/cd_kernel/src/turboquant/"]
 
 [[document]]
-id = "DOC-0118"
+id = "DOC-0121"
 path = "docs/reports/turboquant_cd_optimization_analysis.md"
 title = "TurboQuant x Cayley-Dickson Optimization Analysis"
 kind = "manual_source"
@@ -2221,7 +2278,7 @@ link_count = 13
 link_sample = ["algebra_analysis/src/moreno.rs", "cd_kernel/src/", "gororoba_algebra/src/construction/cd_tower.rs", "gororoba_algebra/src/gpu/avt_pack.rs", "lbm_3d_cuda/"]
 
 [[document]]
-id = "DOC-0119"
+id = "DOC-0122"
 path = "docs/reports/turboquant_claims_2026-03-28.md"
 title = "TurboQuant Claims Registry (2026-03-28)"
 kind = "manual_source"
@@ -2239,7 +2296,7 @@ link_count = 10
 link_sample = ["cd ~/Github/cratesgororobas/fwht && cargo test"]
 
 [[document]]
-id = "DOC-0120"
+id = "DOC-0123"
 path = "docs/requirements/algebra.md"
 title = "Requirements: Algebra Engine (Cayley-Dickson, de Marrais, Reggiani)"
 kind = "generated_markdown"
@@ -2257,7 +2314,7 @@ link_count = 11
 link_sample = ["1.97.0", "crates/cd_kernel/", "crates/gororoba_algebra/", "sh scripts/detect_native_blas.sh"]
 
 [[document]]
-id = "DOC-0121"
+id = "DOC-0124"
 path = "docs/requirements/analysis.md"
 title = "Requirements: Analysis (Topology + Embeddings)"
 kind = "generated_markdown"
@@ -2275,7 +2332,7 @@ link_count = 7
 link_sample = ["src/holo_tensor_net.py", "src/topology_analysis.py", "src/vis_advanced_projections.py", "src/vis_box_kites.py", "src/vis_hyper_mera*.py"]
 
 [[document]]
-id = "DOC-0122"
+id = "DOC-0125"
 path = "docs/requirements/astro.md"
 title = "Requirements: Astronomy Data Fetching"
 kind = "generated_markdown"
@@ -2293,7 +2350,7 @@ link_count = 5
 link_sample = ["data/external/PROVENANCE.local.json", "docs/BIBLIOGRAPHY.md", "docs/external_sources/DATASET_MANIFEST.md"]
 
 [[document]]
-id = "DOC-0123"
+id = "DOC-0126"
 path = "docs/requirements/cpp.md"
 title = "Requirements: C++ Kernels (Conan + CMake)"
 kind = "generated_markdown"
@@ -2311,7 +2368,7 @@ link_count = 6
 link_sample = ["cpp/"]
 
 [[document]]
-id = "DOC-0124"
+id = "DOC-0127"
 path = "docs/requirements/heliosphere.md"
 title = "Requirements: Heliosphere Data"
 kind = "generated_markdown"
@@ -2329,7 +2386,7 @@ link_count = 7
 link_sample = []
 
 [[document]]
-id = "DOC-0125"
+id = "DOC-0128"
 path = "docs/requirements/latex.md"
 title = "Requirements: LaTeX (PDF Build)"
 kind = "generated_markdown"
@@ -2347,7 +2404,7 @@ link_count = 6
 link_sample = ["docs/latex/", "docs/latex/out/"]
 
 [[document]]
-id = "DOC-0126"
+id = "DOC-0129"
 path = "docs/requirements/materials.md"
 title = "Requirements: Materials Datasets"
 kind = "generated_markdown"
@@ -2365,7 +2422,7 @@ link_count = 0
 link_sample = []
 
 [[document]]
-id = "DOC-0127"
+id = "DOC-0130"
 path = "docs/requirements/particle.md"
 title = "Requirements: Particle Data Workflows"
 kind = "generated_markdown"
@@ -2383,7 +2440,7 @@ link_count = 4
 link_sample = ["data/external/"]
 
 [[document]]
-id = "DOC-0128"
+id = "DOC-0131"
 path = "docs/requirements/quantum-docker.md"
 title = "Requirements: Quantum (Qiskit via Docker)"
 kind = "generated_markdown"
@@ -2401,7 +2458,7 @@ link_count = 0
 link_sample = []
 
 [[document]]
-id = "DOC-0129"
+id = "DOC-0132"
 path = "docs/requirements/rocq.md"
 title = "Requirements: Rocq Proof Checking"
 kind = "generated_markdown"
@@ -2419,7 +2476,7 @@ link_count = 14
 link_sample = [".v", "FP24Representable.v", "Flocq.Core", "coq-flocq.4.2.2", "proofs/", "proofs/theories", "proofs/verified"]
 
 [[document]]
-id = "DOC-0130"
+id = "DOC-0133"
 path = "docs/research/crossing-detector-statistical-benefit.md"
 title = "Crossing-detector statistical benefit and operational utility"
 kind = "manual_source"
@@ -2438,7 +2495,7 @@ link_count = 26
 link_sample = ["data/output/audit/staples-causal-validation/findings.toml", "data/output/audit/staples-causal-validation/protocol.toml", "data/output/audit/staples-causal-validation/research/adopted-calibration-findings.toml", "frontier.csv", "frontier.svg", "mathematical-fixture.json", "plans/crossing-detector-operational-utility.toml", "report.json"]
 
 [[document]]
-id = "DOC-0131"
+id = "DOC-0134"
 path = "docs/research/nanograv_15yr_cayley_dickson_synthesis_2026.md"
 title = "NANOGrav 15-Year Cayley-Dickson Synthesis"
 kind = "manual_source"
@@ -2457,7 +2514,7 @@ link_count = 143
 link_sample = [".out", ".par", ".res", ".tim", "2.1.0", "J0709+0458_PINT_20230131.wb", "J1312+0051_PINT_20230131.wb", "J1713+0747_PINT_20230131.wb"]
 
 [[document]]
-id = "DOC-0132"
+id = "DOC-0135"
 path = "docs/tickets/TICKET_PIONEER_FLYBY_FRACTAL_BRIDGE.md"
 title = "Ticket: Pioneer/Flyby Fractal Bridge"
 kind = "generated_markdown"
@@ -2475,7 +2532,7 @@ link_count = 7
 link_sample = ["best_fit.json", "crates/gr_core/src/fractal_metric.rs", "fit_grid.csv", "nbody_integration.rs"]
 
 [[document]]
-id = "DOC-0133"
+id = "DOC-0136"
 path = "docs/toolchain/heasarc-catalog-walker.md"
 title = "HEASARC Catalog-of-Catalogs Walker (plan P6A.S5.T1)"
 kind = "manual_source"
@@ -2493,7 +2550,7 @@ link_count = 24
 link_sample = ["/tables", "crates/data_core/src/catalogs/heasarc_enumerate.rs", "crates/data_core/src/formats/votable.rs", "data_servers.toml#heasarc_w3browse", "download_stack.rs", "registry/data_servers.toml", "registry/datasets.toml", "registry/heasarc_catalogs.toml"]
 
 [[document]]
-id = "DOC-0134"
+id = "DOC-0137"
 path = "docs/toolchain/mast-enumeration-policy.md"
 title = "MAST (STScI) Catalog Enumeration Policy (plan P6A.S5.T2)"
 kind = "manual_source"
@@ -2511,7 +2568,7 @@ link_count = 10
 link_sample = ["data_servers.toml#mast_s3_zarr", "hst_fetch.rs", "jwst_fetch.rs", "registry/data_servers.toml#mast_api", "registry/datasets.toml", "registry/mast_catalogs.toml"]
 
 [[document]]
-id = "DOC-0135"
+id = "DOC-0138"
 path = "docs/toolchain/nightly-2026-04-05-ice.md"
 title = "Nightly 2026-04-05 ICE Captures"
 kind = "manual_source"
@@ -2529,7 +2586,7 @@ link_count = 20
 link_sample = [".gitignore:52", "Cargo.toml:2", "Cargo.toml:441-721", "rust-toolchain.toml", "rust-toolchain.toml:2"]
 
 [[document]]
-id = "DOC-0136"
+id = "DOC-0139"
 path = "docs/toolchain/shell-retirement.md"
 title = "Shell Script Retirement Decision Log"
 kind = "manual_source"
@@ -2537,8 +2594,8 @@ authoring_mode = "manual"
 generated = false
 status = "active"
 migration_priority = "high"
-sha256 = "1c9c9797d4459a6c1f624533f259b5c4940c19080c054e9edf470486c3939cbf"
-size_bytes = 6157
+sha256 = "76210bc46f51244f6b1f1dabfe1ec3633cc7ecfa87592c676f50429c2c023170"
+size_bytes = 6159
 line_count = 89
 claim_ref_count = 0
 insight_ref_count = 0
@@ -2547,7 +2604,79 @@ link_count = 39
 link_sample = ["bin/", "bin/build_fix.sh", "bin/check_gemini.sh", "bin/do_commit.sh", "bin/micromamba", "bin/run_quantum_container.sh", "bin/temp_commit.sh", "crates/xtask/src/bin/bootstrap_xdg.rs"]
 
 [[document]]
-id = "DOC-0137"
+id = "DOC-0140"
+path = "experiments/identifiability/INTEGRATION_NOTES.md"
+title = "Integration notes"
+kind = "manual_source"
+authoring_mode = "manual"
+generated = false
+status = "active"
+migration_priority = "medium"
+sha256 = "9367d7a1575e0915f7df3630ecea1242499ff4b2ec0360e69f4c0185bb885712"
+size_bytes = 10354
+line_count = 114
+claim_ref_count = 0
+insight_ref_count = 0
+experiment_ref_count = 0
+link_count = 29
+link_sample = ["README.md", "experiments/", "forward physics -> sensitivity/Jacobian -> identifiability -> claim registry", "test_identifiability_compiler.py", "|sin(theta_h)-sin(theta_h/2)| -> 0", "||P_N(h)-P_N(h/2)||_2 -> 0"]
+
+[[document]]
+id = "DOC-0141"
+path = "experiments/identifiability/README.md"
+title = "Identifiability experiment compiler"
+kind = "manual_source"
+authoring_mode = "manual"
+generated = false
+status = "active"
+migration_priority = "medium"
+sha256 = "0194a111ff7250d3f48abeeee253fbc72fff4c92ca1136be4f1ee3a0fd8f6d74"
+size_bytes = 2577
+line_count = 35
+claim_ref_count = 0
+insight_ref_count = 0
+experiment_ref_count = 0
+link_count = 14
+link_sample = ["python -m pip install -r experiments/identifiability/requirements.txt", "python -m pytest experiments/identifiability/test_identifiability_compiler.py", "python experiments/identifiability/identifiability_compiler.py", "results_summary.csv"]
+
+[[document]]
+id = "DOC-0142"
+path = "experiments/identifiability/RESULTS_2026-09-09.md"
+title = "Results: 2026-09-09"
+kind = "manual_source"
+authoring_mode = "manual"
+generated = false
+status = "active"
+migration_priority = "medium"
+sha256 = "60fdc418e059b888da79362f098d2e665a272242beb56a8e854d34e801df2f26"
+size_bytes = 8078
+line_count = 66
+claim_ref_count = 0
+insight_ref_count = 0
+experiment_ref_count = 0
+link_count = 6
+link_sample = []
+
+[[document]]
+id = "DOC-0143"
+path = "experiments/identifiability/RESULTS_2026-09-10.md"
+title = "Executed next experiments \\u2014 2026-09-10"
+kind = "manual_source"
+authoring_mode = "manual"
+generated = false
+status = "active"
+migration_priority = "medium"
+sha256 = "d17bfec2ef7e1d0e82fddfaf70cd78eeea0f2c69b75ea802ddc64a80e711a800"
+size_bytes = 6708
+line_count = 63
+claim_ref_count = 0
+insight_ref_count = 0
+experiment_ref_count = 0
+link_count = 48
+link_sample = ["0.000211", "0.00213", "0.00289", "0.00408", "0.00462", "0.00870", "0.00923", "0.01%"]
+
+[[document]]
+id = "DOC-0144"
 path = "plans/README.md"
 title = "plans/"
 kind = "manual_source"
@@ -2565,7 +2694,223 @@ link_count = 18
 link_sample = ["../README_GPU_STEPS.md", "<topic>.md", "<topic>_<YYYY_MM_DD>.toml", "plans/", "plans/*.md", "plans/*.toml", "plans/archive/", "post_gate_optimization_2026_05_12.toml"]
 
 [[document]]
-id = "DOC-0138"
+id = "DOC-0145"
+path = "tools/vendor/cargo-geiger/README.md"
+title = "README"
+kind = "manual_source"
+authoring_mode = "manual"
+generated = false
+status = "active"
+migration_priority = "medium"
+sha256 = "62a4e9b37998111f33bc1651f44ae35605987303999ce1c4f35ddb9506bc13c4"
+size_bytes = 3266
+line_count = 90
+claim_ref_count = 0
+insight_ref_count = 0
+experiment_ref_count = 0
+link_count = 6
+link_sample = ["Cargo.toml"]
+
+[[document]]
+id = "DOC-0146"
+path = "tools/vendor/cargo-geiger/cargo-geiger-serde/README.md"
+title = "README"
+kind = "manual_source"
+authoring_mode = "manual"
+generated = false
+status = "active"
+migration_priority = "medium"
+sha256 = "75e9f06b949d2d0668482daa790f43f8fab3003baacdb7378fc5df2b4444d665"
+size_bytes = 53
+line_count = 1
+claim_ref_count = 0
+insight_ref_count = 0
+experiment_ref_count = 0
+link_count = 1
+link_sample = []
+
+[[document]]
+id = "DOC-0147"
+path = "tools/vendor/cargo-geiger/cargo-geiger/README.md"
+title = "README"
+kind = "manual_source"
+authoring_mode = "manual"
+generated = false
+status = "active"
+migration_priority = "medium"
+sha256 = "62a4e9b37998111f33bc1651f44ae35605987303999ce1c4f35ddb9506bc13c4"
+size_bytes = 3266
+line_count = 90
+claim_ref_count = 0
+insight_ref_count = 0
+experiment_ref_count = 0
+link_count = 6
+link_sample = ["Cargo.toml"]
+
+[[document]]
+id = "DOC-0148"
+path = "tools/vendor/cargo-geiger/geiger/README.md"
+title = "README"
+kind = "manual_source"
+authoring_mode = "manual"
+generated = false
+status = "active"
+migration_priority = "medium"
+sha256 = "df4088ec06daefa51a171239fc3b7fd073d96503b7e02d5c27d737d3bb41bc21"
+size_bytes = 2160
+line_count = 78
+claim_ref_count = 0
+insight_ref_count = 0
+experiment_ref_count = 0
+link_count = 7
+link_sample = ["README.md"]
+
+[[document]]
+id = "DOC-0149"
+path = "tools/vendor/cargo-geiger/test_crates/test1_package_with_no_deps/README.md"
+title = "README"
+kind = "manual_source"
+authoring_mode = "manual"
+generated = false
+status = "active"
+migration_priority = "medium"
+sha256 = "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+size_bytes = 0
+line_count = 0
+claim_ref_count = 0
+insight_ref_count = 0
+experiment_ref_count = 0
+link_count = 0
+link_sample = []
+
+[[document]]
+id = "DOC-0150"
+path = "tools/vendor/cargo-geiger/test_crates/test2_package_with_shallow_deps/README.md"
+title = "README"
+kind = "manual_source"
+authoring_mode = "manual"
+generated = false
+status = "active"
+migration_priority = "medium"
+sha256 = "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+size_bytes = 0
+line_count = 0
+claim_ref_count = 0
+insight_ref_count = 0
+experiment_ref_count = 0
+link_count = 0
+link_sample = []
+
+[[document]]
+id = "DOC-0151"
+path = "tools/vendor/cargo-geiger/test_crates/test3_package_with_nested_deps/README.md"
+title = "README Title"
+kind = "manual_source"
+authoring_mode = "manual"
+generated = false
+status = "active"
+migration_priority = "medium"
+sha256 = "0fa3dfedee0f66ffb6feefb84a1449fc502c63200ef4c12d7325feeaac06932d"
+size_bytes = 155
+line_count = 11
+claim_ref_count = 0
+insight_ref_count = 0
+experiment_ref_count = 0
+link_count = 0
+link_sample = []
+
+[[document]]
+id = "DOC-0152"
+path = "tools/vendor/cargo-geiger/test_crates/test4_workspace_with_top_level_package/README.md"
+title = "README Title"
+kind = "manual_source"
+authoring_mode = "manual"
+generated = false
+status = "active"
+migration_priority = "medium"
+sha256 = "8b8326fadde73483658c365126d367c7dc877e2c82c96fe4a0ed8ea51aa9fb24"
+size_bytes = 59
+line_count = 6
+claim_ref_count = 0
+insight_ref_count = 0
+experiment_ref_count = 0
+link_count = 0
+link_sample = []
+
+[[document]]
+id = "DOC-0153"
+path = "tools/vendor/cargo-geiger/test_crates/test6_cargo_lock_out_of_date/README_DIFFERENT_NAME.md"
+title = "README_DIFFERENT_NAME"
+kind = "manual_source"
+authoring_mode = "manual"
+generated = false
+status = "active"
+migration_priority = "medium"
+sha256 = "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+size_bytes = 0
+line_count = 0
+claim_ref_count = 0
+insight_ref_count = 0
+experiment_ref_count = 0
+link_count = 0
+link_sample = []
+
+[[document]]
+id = "DOC-0154"
+path = "tools/vendor/cargo-geiger/test_crates/test7_package_with_patched_dep/README_DIFFERENT_NAME.md"
+title = "README_DIFFERENT_NAME"
+kind = "manual_source"
+authoring_mode = "manual"
+generated = false
+status = "active"
+migration_priority = "medium"
+sha256 = "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+size_bytes = 0
+line_count = 0
+claim_ref_count = 0
+insight_ref_count = 0
+experiment_ref_count = 0
+link_count = 0
+link_sample = []
+
+[[document]]
+id = "DOC-0155"
+path = "tools/vendor/cargo-geiger/test_crates/test8_package_with_build_rs_no_deps/README.md"
+title = "README"
+kind = "manual_source"
+authoring_mode = "manual"
+generated = false
+status = "active"
+migration_priority = "medium"
+sha256 = "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+size_bytes = 0
+line_count = 0
+claim_ref_count = 0
+insight_ref_count = 0
+experiment_ref_count = 0
+link_count = 0
+link_sample = []
+
+[[document]]
+id = "DOC-0156"
+path = "tools/vendor/cargo-geiger/test_crates/test9_package_with_git_deps/README.md"
+title = "README"
+kind = "manual_source"
+authoring_mode = "manual"
+generated = false
+status = "active"
+migration_priority = "medium"
+sha256 = "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+size_bytes = 0
+line_count = 0
+claim_ref_count = 0
+insight_ref_count = 0
+experiment_ref_count = 0
+link_count = 0
+link_sample = []
+
+[[document]]
+id = "DOC-0157"
 path = "vendor/proc-macro-error2/CHANGELOG.md"
 title = "v2.0.1 (2024-09-06)"
 kind = "manual_source"
@@ -2583,7 +2928,7 @@ link_count = 69
 link_sample = ["1.61", "AsRef/AsMut<String> for MacroError", "From<&str/String>", "From<MacroError> for proc_macro/proc_macro2::TokenStream", "Result<T, &str/String>::abort_or_exit()", "build.rs", "v1.*"]
 
 [[document]]
-id = "DOC-0139"
+id = "DOC-0158"
 path = "vendor/proc-macro-error2/README.md"
 title = "Makes error reporting in procedural macros nice and easy"
 kind = "manual_source"

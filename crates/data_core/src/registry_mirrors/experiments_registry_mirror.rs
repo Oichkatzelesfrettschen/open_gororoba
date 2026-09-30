@@ -6,7 +6,7 @@
 //!
 //! Authoritative source: `registry/canonical/control_plane.sqlite3`.
 //!
-//! Total experiments: 256
+//! Total experiments: 285
 //!
 //! ## E-001: Cayley-Dickson Motif Census
 //!
@@ -713,37 +713,37 @@
 //! ## E-043: Casimir Plate Force Comparison
 //!
 //! - Binary: `casimir-plate-compare`
-//! - Input: None (analytical Drude-Lorentz models from optical database)
-//! - Output: stdout (force density and eta values)
+//! - Input: Analytical Drude-Lorentz models from the optical database; temperature and quadrature settings are recorded in output.
+//! - Output: data/output/audit/casimir-optics-discrimination/e043-casimir-plate-compare.txt
 //! - Deterministic: `true`
 //! - Seed: `0`
 //! - GPU: `false`
 //! - Claims: C-738, C-739
 //!
 //! Method:
-//! Computes Casimir force for Si/Ge/SiO2 symmetric plate pairs using corrected Lifshitz formula with Gauss-Legendre quadrature over transverse momentum. Verifies Si > Ge > SiO2 force ordering and eta < 1 at T=0.
+//! Computes finite-temperature Casimir energy and pressure for Si, Ge, and SiO2 symmetric plate pairs using Gauss-Legendre quadrature. The reported eta is relative to zero-temperature ideal-mirror energy and can exceed one in the thermal regime.
 //!
 //! Run command:
 //! ```bash
-//! cargo run --release --bin casimir-plate-compare
+//! cargo run --profile validation -p gororoba_cli_physics --bin casimir-plate-compare -- --output data/output/audit/casimir-optics-discrimination/e043-casimir-plate-compare.txt
 //! ```
 //!
 //! ## E-044: Casimir Drude vs Plasma Model Discrepancy
 //!
 //! - Binary: `casimir-drude-plasma`
-//! - Input: None (analytical Drude parameters from Rakic 1998)
-//! - Output: stdout (discrepancy percentages per material and distance)
+//! - Input: Analytical Drude-Lorentz parameters; temperature and quadrature settings are recorded in output.
+//! - Output: data/output/audit/casimir-optics-discrimination/e044-casimir-drude-plasma.txt
 //! - Deterministic: `true`
 //! - Seed: `0`
 //! - GPU: `false`
 //! - Claims: C-740, C-741
 //!
 //! Method:
-//! Computes Drude-plasma discrepancy for Au/Ag/Cu metallic plates at separations 100nm-5um. Tests n=0 TE contribution controversy: Drude gives r_TE=0, plasma gives finite r_TE from omega_p. Measures percentage discrepancy growth with distance.
+//! Computes the finite-temperature Drude-plasma energy discrepancy for Au, Ag, and Cu from 100 nm to 5 um. The TE zero-frequency prescription drives a relative discrepancy that grows as the thermal zero mode becomes dominant.
 //!
 //! Run command:
 //! ```bash
-//! cargo run --release --bin casimir-drude-plasma
+//! cargo run --profile validation -p gororoba_cli_physics --bin casimir-drude-plasma -- --output data/output/audit/casimir-optics-discrimination/e044-casimir-drude-plasma.txt
 //! ```
 //!
 //! ## E-045: Wow! Signal Transcription Integrity
@@ -4433,4 +4433,497 @@
 //! Run command:
 //! ```bash
 //!
+//! ```
+//!
+//! ## E-287: NuFit release-specific reference membership audit
+//!
+//! - Binary: `cargo-test:algebra_experimental:nufit_reference_identity`
+//! - Input: Retained NuFit6.0 and6.1 PDF tables, exact SHA256 identities and four normal-ordering analysis variants; fixed scorecard theta23=48.99.
+//! - Output: Rust integration test output
+//! - Deterministic: `true`
+//! - GPU: `false`
+//! - Claims: C-1719, C-1720, C-1722
+//!
+//! Method:
+//! Rust integration tests verify source PDF hashes, reference-column identities and fixed-angle membership. Extended fixtures verify all six NuFit6.0 IC24 and IC19 contours, periodic CP-A165 and CP-B93 memberships, preserved historical composite literals, and dm21/dm31 marginal-bound ratio boxes. NuFit6.1 coverage remains theta23 only; historical source attribution and joint ratio confidence remain unresolved.
+//!
+//! Run command:
+//! ```bash
+//! cargo test -p algebra_experimental --test nufit_reference_identity --profile validation
+//! ```
+//!
+//! ## E-288: Moreno source and Rocq theorem hypothesis comparison
+//!
+//! - Binary: `external:rocq:9.1.1`
+//! - Input: Hash-retained Moreno e-print TeX Corollary 1.6, Proposition 1.7 and following Remark; source-matched Rocq bodies and concrete sedenion interface.
+//! - Output: Focused theorem-body replay, Printed concrete and abstract assumptions, Source-to-theorem implication map
+//! - Deterministic: `true`
+//! - GPU: `false`
+//! - Claims: C-1721
+//!
+//! Method:
+//! Replay the two Moreno theorem bodies with the exact commands in formal_replay_commands of the source map, then query their assumptions using the freshly compiled objects. Match Rocq 9.1.1 and OCaml 5.5.0 to retained primary dependency objects; retain the rejected OCaml 5.4.0 attempt. Compare theorem conclusions and hypotheses against literal TeX with conjugate overbars. The separate C1262 arithmetic body belongs to the graph/source audit and establishes no Moreno theorem.
+//!
+//! Run command:
+//! ```bash
+//! /usr/bin/rocq compile -Q /home/eirikr/Github/open_gororoba/proofs/theories OpenGororoba -Q .cache/moreno-proof-check '' -o .cache/moreno-proof-check/moreno_proof_assumption_query.vo data/output/audit/claim-family-evidence-adjudication/moreno_proof_assumption_query.v
+//! ```
+//!
+//! ## E-289: Ruan-Fan retained producer replay and source receipt reconciliation
+//!
+//! - Binary: `p2b-ruan-fan-reproduction`
+//! - Input: Frozen numerical protocol and retained 80-decimal independent pole output; newly retrieved arXiv0909.3323v2 archive and separately hashed extracted TeX and PDF.
+//! - Output: Complete numerical replay TOML, Source-receipt test output, Bounded adjudication and unresolved source-landmark discrepancy
+//! - Deterministic: `true`
+//! - GPU: `false`
+//! - Claims: C-1705, C-1706, C-1707, C-1709
+//!
+//! Method:
+//! Replay the unchanged pole/fit producer, retain every numerical field and compare parsed output with historical evidence after excluding only the code_commit_sha metadata field. Preserve the original0.01 error gates, fitting freedom and malformed producer TeX-hash metadata. Verify new source receipts separately with Rust SHA256 tests and inspect primary TeX method and rounded landmarks.
+//!
+//! Run command:
+//! ```bash
+//! cargo run -p optics_core --bin p2b-ruan-fan-reproduction --profile validation -- data/output/audit/claim-family-evidence-adjudication/optics-replay/reproduction.toml 81a4ca6e8e3a2f9b4d00b5e14b0ddd739088a7d9 data/output/audit/2026-08-04/p2b-independent-pole-output.txt
+//! ```
+//!
+//! ## E-290: Independent Ward component contractions and zero-virtuality intercepts
+//!
+//! - Binary: `cargo-test:gr_core:ward_independent_residuals`
+//! - Input: Declared Euclidean off-shell fixture, virtuality ladder and fixed-domain quadrature refinement; shared worldline tensors with independent contractions and Lagrange intercepts.
+//! - Output: data/output/audit/claim-family-evidence-adjudication/ward-independent-residuals.toml
+//! - Deterministic: `true`
+//! - GPU: `false`
+//! - Claims: C-1635, C-1637, C-1666
+//!
+//! Method:
+//! Independent reverse-order contraction, lower-point RHS assembly, omission controls and zero-intercept evaluation. Separate electromagnetic, gravitational, tadpole and on-shell predicates.
+//!
+//! Run command:
+//! ```bash
+//! cargo test -p gr_core --test ward_independent_residuals --profile validation -- --nocapture
+//! ```
+//!
+//! ## E-291: Evolving CPU CUDA population parity and graph dependency reuse
+//!
+//! - Binary: `cargo-test:lbm_3d_cuda:test_gpu_cpu_equivalence`
+//! - Input: 8 cubed periodic evolving FP32 BGK density/shear fixture, 12 steps; force replacement and odd-step reinitialization; admitted RTX 4070 Ti.
+//! - Output: data/output/audit/claim-family-evidence-adjudication/lbm-instrument-repair.toml
+//! - Deterministic: `true`
+//! - GPU: `true`
+//! - Claims: C-1696, C-1700
+//!
+//! Method:
+//! Compare cell-major distributions and independently summed density at the same evolution stage; compare direct/captured paths while preserving cudarc dependency tracking.
+//!
+//! Run command:
+//! ```bash
+//! cargo test -p lbm_3d_cuda --test test_gpu_cpu_equivalence --profile validation -- --include-ignored --nocapture
+//! ```
+//!
+//! ## E-294: Magnonic pristine-defect participation and periodic-wall spatial diagnostics
+//!
+//! - Binary: `cargo-test:quantum_core:magnonic_localization`
+//! - Input: Repository reference parameters; paired pristine/defect radii 2,3,4; 20-cell periodic wall supercell.
+//! - Output: Finite paired spectra and continuous localization observations, Both-wall spatial accounting, Bounded implementation adjudication
+//! - Deterministic: `true`
+//! - GPU: `false`
+//! - Claims: C-1690, C-1693
+//!
+//! Method:
+//! Independently assemble open patches; compare producer gap-selected eigenvalues; retain all normalized participation and center/edge probabilities plus degenerate-group projector weights. Count periodic sign transitions and retain both-wall spatial weights. Preserve historical E-142.
+//!
+//! Run command:
+//! ```bash
+//! cargo test -p quantum_core --test magnonic_localization --profile validation -- --nocapture --test-threads=1
+//! ```
+//!
+//! ## E-295: Exact finite cross-assessor motif adjacency rank and spectral witnesses
+//!
+//! - Binary: `cargo-test:algebra_analysis:motif_exact_rank`
+//! - Input: All cross-assessor motif components at dimensions16,32,64,128,256; integer adjacency and prime1000000007.
+//! - Output: All243 component adjacencies and exact rank witnesses, Five finite dimension summaries, Explicit unproved dimension extensions
+//! - Deterministic: `true`
+//! - GPU: `false`
+//! - Claims: C-1715, C-1716, C-1717, C-1718
+//!
+//! Method:
+//! Compare rational rank upper bounds from repeated columns with modular-rank lower bounds for every component; verify cocktail-party adjacency and exact integer Laplacian eigenvectors; distinguish population and sample spacing variance.
+//!
+//! Run command:
+//! ```bash
+//! MOTIF_EXACT_OUTPUT=$PWD/data/output/audit/claim-family-evidence-adjudication/motif-exact-rank.toml cargo test -p algebra_analysis --profile validation --test motif_exact_rank -- --nocapture
+//! ```
+//!
+//! ## E-296: QGP fit-scoring objective identity and independent bounded minimization
+//!
+//! - Binary: `cargo-test:qgp_scaling:epsilon_objective_identity`
+//! - Input: Exact retained ALICE table1 CSV, six points above5GeV; n=6.1, one epsilon bounded0.1..20; historical diagonal weights and0.98 variance factor preserved.
+//! - Output: Independent objective minima, Corrected same-weight scorer equality, Preserved historical mismatch and variance scaling
+//! - Deterministic: `true`
+//! - GPU: `false`
+//! - Claims: C-1710, C-1711
+//!
+//! Method:
+//! Independent20001-point grid plus golden refinement corroborates the fitted objective. Explicit historical plus-shift oracle preserves the differing scored minimum; corrected production curve and scorer must equal the fitted objective at equal weights. Source population and covariance admission remain separate.
+//!
+//! Run command:
+//! ```bash
+//! cargo test -p qgp_scaling --test epsilon_objective_identity --profile validation -- --nocapture
+//! ```
+//!
+//! ## E-297: Open-x population transport and independently checked face mass inventory
+//!
+//! - Binary: `cargo-test:lbm_3d:open_x_flux`
+//! - Input: Independent outgoing/interior packet fixtures; nonuniform 5x3x2 domain for20 evolving steps; explicitly selected zero-gradient incoming-population outflow; synthetic B=0 no-DM runner.
+//! - Output: data/output/audit/claim-family-evidence-adjudication/open-x-flux-result.toml
+//! - Deterministic: `true`
+//! - GPU: `false`
+//! - Claims: C-1684
+//!
+//! Method:
+//! Verify analytical packet destinations and fixed-direction face sums independently of the flux ledger; measure streaming, reconstruction and collision mass residuals; retain a zero-budget failure.
+//!
+//! Run command:
+//! ```bash
+//! cargo test -p lbm_3d --test open_x_flux --profile validation -- --nocapture
+//! ```
+//!
+//! ## E-298: Paired direct-step MRT null controls with retained population admission failures
+//!
+//! - Binary: `external:euclid-null-pilot-retained:8e3c3bbe66002936`
+//! - Input: Sealed Euclid catalog and 100 retained numerical input arrays; paired 16-cubed CPU FP64/CUDA FP32, 24 direct MRT steps, tau .8, alpha .1, ten matched noise seeds.
+//! - Output: data/output/audit/claim-family-evidence-adjudication/null-pilot-adjudication.toml
+//! - Deterministic: `true`
+//! - GPU: `true`
+//! - Claims: C-1696, C-1700, C-1702
+//!
+//! Method:
+//! Inspect post-step D3Q19 populations every step; preserve every trial and first failed predicate; compare admitted same-stage host box counts. Independently audit array hashes and demonstrate adaptive-threshold amplitude invariance.
+//!
+//! Run command:
+//! ```bash
+//! From the audit directory, use the retained binary: ./null-pilot-producer-before-mrt-correction.bin --catalog euclid-physical-measurements.parquet --grid 16 --steps 24 --tau 0.8 --dx-kpc 1 --alpha-zd 0.1 --density-floor 0.045 --softening-eps 0.5 --smagorinsky-cs 0 --mrt --null-hypothesis --null-n-trials 10 --seed 42 --max-relative-mass-error 0.00001 --max-mach 0.3 --null-evidence-dir <fresh-backend-directory>; add --cpu for CPU. Each parent directory must exist and each evidence directory must be fresh. Expected historical exit is 1.
+//! ```
+//!
+//! ## E-299: Magnonic source-table projected spectra and admitted subspace invariants
+//!
+//! - Binary: `cargo-test:quantum_core:magnonic_source_projection`
+//! - Input: Hash-retained arXiv:2601.03210v2 tables, original source Figure 5/6 rasters, supplemental valley-curvature propositions and declared rectangular geometry.
+//! - Output: Source-frequency raster-support comparisons, Rectangular-folding and geometry residuals, Retained gap failures and subspace invariants, Local valley-patch flux with declared embedding, Independent homogeneous-frequency unit replay
+//! - Deterministic: `true`
+//! - GPU: `false`
+//! - Claims: C-1688, C-1692, C-1694
+//!
+//! Method:
+//! Construct bonds independently from geometric distances/directional orbital projections; compare complex matrices and rectangular folding; compare rendered spectral support with fixed 0.03 GHz error gate and repository-reference negative control; admit separated subspaces before determinant-link topology; compare embedded-orbital local flux across mass/valley signs and grids. Retain the failed inset-contaminated extraction and its coordinate-bound intake amendment.
+//!
+//! Run command:
+//! ```bash
+//! MAGNONIC_SOURCE_WRITE_RESULTS=1 cargo test -p quantum_core --test magnonic_source_projection --test magnonic_source_parameters --profile validation -- --nocapture
+//! ```
+//!
+//! ## E-300: MRT force-density impulse correction and evolving FP32 population conformance
+//!
+//! - Binary: `cargo-test:lbm_3d_cuda:mrt_population_conformance`
+//! - Input: Periodic D3Q19 MRT 8-cubed field, tau 0.8, twelve steps, spatially varying density/velocity, prescribed time-independent force density and matched unforced control. CPU scalar-tail extension covers two shapes and three relaxation times.
+//! - Output: data/output/audit/claim-family-evidence-adjudication/mrt-force-density-conformance-result.toml
+//! - Deterministic: `true`
+//! - GPU: `true`
+//! - Claims: C-1282
+//!
+//! Method:
+//! Compare post-step populations and independently reduced density/raw momentum across CPU, standard FP32 CUDA push SoA direct, and explicit captured graph pairs. Independently require the prescribed total force-density impulse. Retain the shared pre-correction failure and both producer identities.
+//!
+//! Run command:
+//! ```bash
+//! cargo test -p lbm_3d_cuda --test mrt_population_conformance --profile validation; on explicitly admitted CUDA hardware run the built test harness with --ignored --nocapture and MRT_CONFORMANCE_OUTPUT naming a fresh receipt.
+//! ```
+//!
+//! ## E-301: Photon-graviton counterterm proper-time measure and Ward contraction scope
+//!
+//! - Binary: `cargo-test:gr_core:ward_source_scope`
+//! - Input: Source arXiv:2601.23279v1 Eqs.4.9/4.10/A.13 and 7.3-7.7; retained scalar-source gr-qc/0412095v2; two mass fixtures with independent Simpson counterterm integration, transverse polarization/gauge basis pairs, and original full-vector residuals.
+//! - Output: data/output/audit/ward-residual-scope/adjudication.toml
+//! - Deterministic: `true`
+//! - GPU: `false`
+//! - Claims: C-1635, C-1637, C-1666
+//!
+//! Method:
+//! Isolate renormalized-minus-unrenormalized tensors and compare with independently assembled A.13 tree coefficients times integral exp(-m^2*T)/T. Retain the erroneous extra-T-squared failure. Evaluate transverse projected, full-vector and regular-node UV predicates separately with omission controls.
+//!
+//! Run command:
+//! ```bash
+//! cargo test -p gr_core --profile validation --offline --test ward_source_scope --test ward_independent_residuals -- --nocapture
+//! ```
+//!
+//! ## E-302: Ruan-Fan printed-frequency envelope at fixed source geometry
+//!
+//! - Binary: `cargo-test:optics_core:ruan_fan_landmark_precision`
+//! - Input: Frozen hypothetical printed-frequency rounding envelope [0.22815,0.22825], fixed source geometry and material parameters; historical positive-order weighted cross-section sum.
+//! - Output: data/output/audit/optics-landmark-identity/frequency-adjudication.toml
+//! - Deterministic: `true`
+//! - GPU: `false`
+//! - Claims: C-1707
+//!
+//! Method:
+//! Evaluate uniform grids of 200 and 2000 intervals with unchanged source-anchor gates. Separate signed-order recurrence roundoff from the historical weighted expression. Report sampled joint matches without claiming continuous exclusion or author-declared uncertainty.
+//!
+//! Run command:
+//! ```bash
+//! cargo test -p optics_core --test ruan_fan_landmark_precision --profile validation --offline -- --nocapture
+//! ```
+//!
+//! ## E-303: Ruan-Fan Figure 5 source-vector and curve identity extraction
+//!
+//! - Binary: `external:optics-figure5-vector-extractor:e9ae82daed8e9085`
+//! - Input: Exact Figure 5 EPS members from the retained arXiv0909.3323v2 source archive; separate circle, fitted-stroke and printed-prose identities.
+//! - Output: data/output/audit/optics-landmark-identity/source-adjudication.toml
+//! - Deterministic: `true`
+//! - GPU: `false`
+//! - Claims: C-1707
+//!
+//! Method:
+//! Compile the retained standalone Rust extractor with rustc 1.97.0 and warnings as errors. Extract affine drawing coordinates and curve roles, retain neighboring markers, and evaluate drawn fitted geometry. Replay in a fresh directory and compare exact stdout and CSV bytes.
+//!
+//! Run command:
+//! ```bash
+//! /tmp/optics-figure5-vector-extractor data/output/audit/optics-landmark-identity
+//! ```
+//!
+//! ## E-304: Distributional photon-graviton source identity and finite Ward predicates
+//!
+//! - Binary: `cargo-test:gr_core:ward_distributional_identity`
+//! - Input: Source arXiv:2601.23279v1 Eqs.4.3-4.11 and Appendix B, retained TeX archive, and scalar gr-qc/0412095v2 Eqs.3.3-3.11 at xi_bar=0. Three fixed proper times, independently transcribed tensor components, periodic delta and signed endpoint controls; retained integrated/transverse/UV fixtures.
+//! - Output: data/output/audit/ward-distributional-identity/adjudication.toml
+//! - Deterministic: `true`
+//! - GPU: `false`
+//! - Claims: C-1635, C-1637, C-1666
+//!
+//! Method:
+//! Independently compare unreduced orbital/fermion source tensors and analytic contact distributions with production Eq.4.11; omit B.4/B.36 and endpoint contributions separately. Derive the scalar momentum/counterterm mapping, test the small-field branch and source UV coefficients, and retain each original integrated gate.
+//!
+//! Run command:
+//! ```bash
+//! cargo test -p gr_core --test ward_distributional_identity --test ward_source_scope --test ward_independent_residuals --profile validation --offline -- --nocapture
+//! ```
+//!
+//! ## E-305: Source-fitted magnonic exact-coefficient global spectral gap certificate
+//!
+//! - Binary: `cargo-test:quantum_core:magnonic_global_gap_certificate`
+//! - Input: Exact stored dyadic on-site and hopping coefficients for source Table I/II; boundaries [2,6] and [1,2,4,6,7], maximum dyadic depth 10, external gap gate 1e-10 GHz.
+//! - Output: data/output/audit/magnonic-global-gap-certificate/exclusive-create-replay/results.toml
+//! - Deterministic: `true`
+//! - GPU: `false`
+//! - Claims: C-1688, C-1747, C-1751
+//!
+//! Method:
+//! Construct directed enclosures with explicit pi and trigonometric remainders. Bound full-square eigensolver orthogonality and spectral residuals, then subtract the cellwise Hamiltonian variation. Verify prefix-free exact-area torus cover. Invoke the analytic zero-Chern argument only for exactly real hoppings and admitted separated bundles.
+//!
+//! Run command:
+//! ```bash
+//! MAGNONIC_GAP_OUTPUT=data/output/audit/magnonic-global-gap-certificate/exclusive-create-replay cargo test -p quantum_core --test magnonic_global_gap_certificate --profile validation --offline retain_table_i_then_table_ii_global_certificate -- --ignored --nocapture
+//! ```
+//!
+//! ## E-306: Corrected MRT paired null replay with retained initial-field Mach failures
+//!
+//! - Binary: `euclid-df-sweep`
+//! - Input: Unchanged E-298 catalog and all 100 numerical input arrays; corrected E-300 MRT producer, periodic 16-cubed, 24 steps, tau .8, alpha .1 and ten matched noise seeds.
+//! - Output: data/output/audit/corrected-mrt-null-replay/adjudication.toml
+//! - Deterministic: `true`
+//! - GPU: `true`
+//! - Claims: C-1696, C-1700, C-1702
+//!
+//! Method:
+//! Retain every condition, inspect post-step populations under unchanged gates, compare paired input hashes and independent receipt admission, and isolate zero-force first-step equilibrium streaming.
+//!
+//! Run command:
+//! ```bash
+//! cargo build -p gororoba_cli_physics --bin euclid-df-sweep --features euclid-catalog,gpu --profile validation; run euclid-df-sweep --catalog data/output/audit/claim-family-evidence-adjudication/euclid-physical-measurements.parquet --grid 16 --steps 24 --tau 0.8 --dx-kpc 1 --alpha-zd 0.1 --density-floor 0.045 --softening-eps 0.5 --smagorinsky-cs 0 --mrt --null-hypothesis --null-n-trials 10 --seed 42 --max-relative-mass-error 0.00001 --max-mach 0.3 --null-evidence-dir <fresh-directory>; add --cpu for CPU. Both retained producer exits are 1.
+//! ```
+//!
+//! ## E-307: CUJET source-vector extraction and matched centrality component-box feasibility
+//!
+//! - Binary: `external:qgp-cujet-vector-extractor:4ab62909f190d3c4`
+//! - Input: arXiv1508.00552v3 Figure3(a) native stream and HEPData59944v1/t19; charged Pb-Pb2.76 TeV20-30 percent, three source schemes and65 reference rows.
+//! - Output: data/output/audit/qgp-cujet-source-curves/extraction/summary.toml
+//! - Deterministic: `true`
+//! - GPU: `false`
+//! - Claims: C-1711
+//!
+//! Method:
+//! Extract duplicated native polylines, verify axes and styles, compute whole-bin graphical envelopes, exclude the bin containing12.5 GeV and intersect shared normalization feasibility ranges. Preserve source calibration, covariance and acceptance limitations.
+//!
+//! Run command:
+//! ```bash
+//! rustc --edition 2024 -D warnings -O data/output/audit/qgp-cujet-source-curves/extract_cujet_vectors.rs -o .cache/qgp-source-curves/extract-cujet-vectors; .cache/qgp-source-curves/extract-cujet-vectors data/output/audit/qgp-cujet-source-curves <fresh-output-directory>
+//! ```
+//!
+//! ## E-308: ALICE participant table identity and historical reporting preservation
+//!
+//! - Binary: `cargo-test:qgp_scaling:alice_participant_reference`
+//! - Input: ALICE-PUBLIC-2018-011 Table1 PDF page7, nine typed participant-distribution rows and separately preserved historical arrays.
+//! - Output: data/output/audit/qgp-participant-reference-intake/adjudication.toml
+//! - Deterministic: `true`
+//! - GPU: `false`
+//! - Claims: C-1714
+//!
+//! Method:
+//! Verify typed reference values and population metadata against retained transcription; separate event RMS and systematic mean uncertainty; preserve historical arrays and strict5 percent diagnostic while correcting CLI source labels.
+//!
+//! Run command:
+//! ```bash
+//! cargo test -p qgp_scaling --test alice_participant_reference --profile validation; cargo test -p gororoba_cli_physics --bin arleo-falmagne-scaling --profile validation participant_
+//! ```
+//!
+//! ## E-309: Directional path estimator identity and fixed-field numerical conformance
+//!
+//! - Binary: `cargo-test:qgp_scaling:directional_path_identity`
+//! - Input: Retained arXiv2212.01324v1 Eq9/12/17; declared forward rays, independent rectangles and unequal sampled fields; Pb208 hard-sphere optical fields at fixed b0/8 fm on64/128/256 grids.
+//! - Output: data/output/audit/qgp-directional-path-identity/adjudication.toml
+//! - Deterministic: `true`
+//! - GPU: `false`
+//! - Claims: C-1710, C-1713
+//!
+//! Method:
+//! Compare joint path moments with exact rectangle and independently enumerated ray-cell intersections. Test weighting, units, symmetries and failed support admission; report raw moments and fixed-b grid sensitivity separately from physical fit conformance.
+//!
+//! Run command:
+//! ```bash
+//! cargo test -p qgp_scaling --test directional_path_identity --profile validation -- --nocapture; cargo test -p qgp_scaling --lib --profile validation directional_path::tests
+//! ```
+//!
+//! ## E-310: Outgoing BDMPS source convolution and independent numerical identity
+//!
+//! - Binary: `cargo-test:qgp_scaling:bdmps_quenching_identity`
+//! - Input: Arleo hep-ph/0210104v3 Eq2.7 and BDMS hep-ph/0106347v1 Eq18b; fixed alpha_s0.5, C_R4/3, u0.5/2/10, n3/6.1/10.
+//! - Output: data/output/audit/qgp-quenching-weight-identity/adjudication.toml
+//! - Deterministic: `true`
+//! - GPU: `false`
+//! - Claims: C-1710
+//!
+//! Method:
+//! Full asymptotic outgoing spectrum Laplace functional and exact Gamma-mixture convolution; independent compactified Simpson mean/transform and nested Simpson outer convolution, delta-loss omission control, paired numerical orders and coordinate identity.
+//!
+//! Run command:
+//! ```bash
+//! cargo test -p qgp_scaling --profile validation --test bdmps_quenching_identity -- --nocapture
+//! ```
+//!
+//! ## E-311: ALICE pp spectrum population, measure and exact table admission
+//!
+//! - Binary: `cargo-test:data_core:hepdata_pp_identity`
+//! - Input: ALICE arXiv1802.09145v2 Eq2, Sec3.1 and Fig3; HEPData86210v1 Table4 JSON and YAML,39 bins and two energy groups.
+//! - Output: data/output/audit/qgp-pp-spectrum-calibration/adjudication.toml
+//! - Deterministic: `true`
+//! - GPU: `false`
+//! - Claims: C-1710
+//!
+//! Method:
+//! Preserve lexical numerical fields and select explicit group/qualifier spans. Compare all rows to independent provider YAML decoding; reject identity, units, group, uncertainty and decimal-order ambiguity. Declare physical fit freedom and covariance prerequisites before calibration.
+//!
+//! Run command:
+//! ```bash
+//! cargo test -p data_core --profile validation --test hepdata_pp_identity -- --nocapture; cargo test -p data_core --lib --profile validation catalogs::hepdata_table::tests
+//! ```
+//!
+//! ## E-312: Magnetic diffusivity units and evolving periodic transport admission
+//!
+//! - Binary: `cargo-test:lbm_3d:mhd_diffusivity_identity`
+//! - Input: Frozen periodic MhdField update at76002323; declared lattice/SI diffusivity maps, transverse Fourier fields and invalid-state controls.
+//! - Output: data/output/audit/mhd-magnetic-diffusivity/adjudication.toml
+//! - Deterministic: `true`
+//! - GPU: `false`
+//! - Claims: C-1685
+//!
+//! Method:
+//! Check finite-grid Laplacian amplification and energy, explicit diffusion admission, SI conversion, rejected-state preservation and retained valid arithmetic; separate centered-induction instability from diffusion conformance.
+//!
+//! Run command:
+//! ```bash
+//! cargo test -p lbm_3d --profile validation --test mhd_diffusivity_identity -- --nocapture
+//! ```
+//!
+//! ## E-313: Centered induction RK3 conformance and prescribed-velocity convergence
+//!
+//! - Binary: `cargo-test:lbm_3d:mhd_rk3_identity`
+//! - Input: Retained E-312 Euler failure; frozen periodic Fourier, longitudinal damping and shear controls.
+//! - Output: data/output/audit/mhd-centered-induction-integrator/adjudication.toml
+//! - Deterministic: `true`
+//! - GPU: `false`
+//! - Claims: C-1685
+//!
+//! Method:
+//! Explicit SSPRK3 selection with independent complex-gain, convergence, physical-stretching and rejected-stage controls; separate scalar uniform-velocity stability from general coupled MHD.
+//!
+//! Run command:
+//! ```bash
+//! cargo test -p lbm_3d --profile validation --test mhd_rk3_identity -- --nocapture
+//! ```
+//!
+//! ## E-314: Pinned charged fragmentation interpolation identity
+//!
+//! - Binary: `cargo-test:qgp_scaling:dss_fragmentation_identity`
+//! - Input: Two byte-matched pinned DSS charged LO/NLO grids and unmodified JeffersonLab mirror source; explicit default-real32 and default-real64 compiler variants.
+//! - Output: data/output/audit/qgp-fragmentation-interpolation/adjudication.toml
+//! - Deterministic: `true`
+//! - GPU: `false`
+//! - Claims: C-1710
+//!
+//! Method:
+//! Independent Rust immutable-grid interpolation versus separately compiled source with source-real precision, charge and output measure fixed.
+//!
+//! Run command:
+//! ```bash
+//! cargo test -p qgp_scaling --profile validation --test dss_fragmentation_identity -- --nocapture
+//! ```
+//!
+//! ## E-315: THEMIS-D retrospective chronology quarantine and frozen-model replication
+//!
+//! - Binary: `staples-intake-amendment`
+//! - Input: All 166 retained E-283 THEMIS-D crossing dates, the frozen timestamp-only quarantine protocol, and the original THEMIS-A fitted models.
+//! - Output: Byte-preserving derived-input manifest and ledger, Frozen-model external replication summary and support audit
+//! - Deterministic: `true`
+//! - GPU: `false`
+//! - Claims: (none)
+//!
+//! Method:
+//! Quarantine every occurrence within closed timestamp-reversal intervals with inverse byte provenance. Preserve every planned date and apply the unchanged causal runner and frozen models with zero new fits. Retain the original 2000 paired daily-file bootstrap and 0.005 discrimination requirement. Whole-file timestamp selection makes the result retrospective and conditional on admitted support.
+//!
+//! Run command:
+//! ```bash
+//! cargo run --profile validation -p gororoba_cli_physics --bin staples-intake-amendment -- --parent-manifest data/output/audit/staples-causal-validation/external-intake-manifest.json --input-root .cache/staples-external-intake --protocol data/output/audit/external-crossing-intake-amendment/protocol.toml --out-dir .cache/external-crossing-derived-inputs
+//! ```
+//!
+//! ## E-316: Source-defined proton collisional scales and explicit-length admission
+//!
+//! - Binary: `solar`
+//! - Input: NRL 2019 collision-time and thermal-speed conventions; finite synthetic SI inputs and invalid-input controls.
+//! - Output: Source and implementation conformance findings
+//! - Deterministic: `true`
+//! - GPU: `false`
+//! - Claims: (none)
+//!
+//! Method:
+//! Check source-rounded electron-volt oracle, temperature/density/length scaling, invalid inputs, record denominator and output metadata.
+//!
+//! Run command:
+//! ```bash
+//! cargo test -p data_core --lib catalogs::wind_swe::tests --profile validation && cargo test -p gororoba_cli_physics --bin solar collision_diagnostic --profile validation
+//! ```
+//!
+//! ## E-317: Synthetic Parker SI driver initialization and radial-law conformance
+//!
+//! - Binary: `solar`
+//! - Input: Declared SI radial slab, wind speed, number density and reference radial field; two grid resolutions and two lattice speed normalizations.
+//! - Output: Source and implementation conformance findings
+//! - Deterministic: `true`
+//! - GPU: `false`
+//! - Claims: (none)
+//!
+//! Method:
+//! Recover SI field and angle at the same physical radii across changed grids and timesteps; independently compare radial and azimuthal component ratios.
+//!
+//! Run command:
+//! ```bash
+//! cargo test -p gororoba_cli_physics --bin solar synthetic_parker --profile validation && cargo test -p lbm_3d --lib --profile validation
 //! ```

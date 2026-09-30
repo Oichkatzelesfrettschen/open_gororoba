@@ -1,8 +1,10 @@
 (** * C-999: Pathion ZD graph information capacity bounds Bekenstein entropy.
 
-    Claim C-999: The 15 connected components of the Pathion (dim=32)
-    zero-divisor graph provide a discrete combinatorial entropy of
-    15 * ln 2 bits.
+    Claim C-999: The 15 strut emanation tables of the Pathion (dim=32)
+    zero-divisor graph, i.e. the 15 connected components of the top-level
+    cross-pair graph (convention in PathionZDGraph.v; the complete plane
+    graph has 22 components), provide a discrete combinatorial entropy of
+    15 * ln 2 nats under a one-binary-channel-per-table model.
 
     This is NOT a physical prediction but a structural correspondence.
 
@@ -40,7 +42,8 @@ Theorem C999_bekenstein_exceeds_pathion :
     bekenstein_entropy area l_P_sq > pathion_information_capacity.
 Proof.
   intros area l_P_sq Ha Hl Hbig.
-  unfold bekenstein_entropy, pathion_information_capacity, pathion_n_components.
+  unfold bekenstein_entropy, pathion_information_capacity.
+  rewrite pathion_zd_components.
   assert (Hln2 := ln2_pos).
   assert (H4lp : 4 * l_P_sq > 0) by lra.
   (* Goal: area / (4 * l_P_sq) > INR 15 * ln 2 *)

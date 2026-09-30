@@ -369,7 +369,7 @@ numeric_constants = ["005", "02", "06", "2024", "2026", "7", "9.1"]
 key_tokens = ["C005_ZDAnnihilatorGeometry", "G2", "Kernel", "REGGIANI_GEOMETRIC_VALIDATION", "Reggiani", "Rocq", "V_2", "Verified", "algebra_analysis", "c005_grassmannian_zd_analysis", "checked", "crates", "csv", "data", "divisors", "docs", "geometry", "grassmannian", "identifications", "implies"]
 depends_on_step_ids = []
 line_start = 1
-line_end = 1564
+line_end = 1579
 
 [[step]]
 id = "DS-000019"
@@ -389,7 +389,7 @@ numeric_constants = ["010", "03", "12", "2026", "7", "9.1"]
 key_tokens = ["C010_NONLOCAL_ALGEBRAIC_METAMATERIALS", "C010_NONLOCAL_ALGEBRAIC_METAMATERIALS_SOURCES", "C010_ZDGraphDisconnected", "Closed", "Falsifiable", "Kernel", "MANIFEST", "Negative", "PC", "Result", "Rocq", "ZD", "absorber_benchmark", "absorbers", "algebra_analysis", "are", "bin", "boxkites", "c010_nonlocal_material_calibrations", "canonical"]
 depends_on_step_ids = ["DS-000018"]
 line_start = 1
-line_end = 1564
+line_end = 1579
 
 [[step]]
 id = "DS-000020"
@@ -409,7 +409,7 @@ numeric_constants = ["02", "03", "031", "1", "16", "2", "2026", "4", "8", "9.1"]
 key_tokens = ["C030_SEDENION_LAGRANGIAN_BYPASS", "C031_HURWITZ_QUANTIZATION_SOURCES", "C031_HurwitzComplete", "CD", "Hilbert", "Hurwitz", "Kernel", "Rocq", "SEDENION_FIELD_THEORY", "Verified", "action", "admit", "algebras", "analysis", "any", "associative", "c031_hurwitz_norm_composition_checks", "checked", "compatible", "composition"]
 depends_on_step_ids = ["DS-000019"]
 line_start = 1
-line_end = 1564
+line_end = 1579
 
 [[step]]
 id = "DS-000021"
@@ -429,7 +429,7 @@ numeric_constants = ["02", "04", "087", "2", "2026"]
 key_tokens = ["A_inf", "Verified", "ab", "analysis", "bc", "c087_associator_independence_audit", "c087_associator_independence_summary", "csv", "data", "follows", "independence", "py", "scripts", "src", "statistical", "test_c087_associator_independence_audit", "tests"]
 depends_on_step_ids = ["DS-000020"]
 line_start = 1
-line_end = 1564
+line_end = 1579
 
 [[step]]
 id = "DS-000022"
@@ -449,7 +449,7 @@ numeric_constants = ["0", "03", "07", "1", "1129", "16", "2", "2026", "9.1"]
 key_tokens = ["C957_VoudonZD", "Froloff", "Hurwitz", "Kernel", "Moreno", "Rocq", "Sedenion", "Verified", "but", "checked", "dim", "divisor", "edge", "establishes", "exist", "failure", "graph", "has", "hurwitz_fails_implies_zd_persistent", "least"]
 depends_on_step_ids = ["DS-000021"]
 line_start = 1
-line_end = 1564
+line_end = 1579
 
 [[step]]
 id = "DS-000023"
@@ -469,7 +469,7 @@ numeric_constants = ["0.2", "03", "10", "10.32", "1136", "15", "18", "2026", "5.
 key_tokens = ["CV", "Cayley", "Dickson", "Falsified", "NANOGrav", "Topological", "Verified", "against", "algebraic", "avt_filter", "background", "bin", "confirming", "correlation", "crates", "cross", "deterministic", "drop", "explains", "field"]
 depends_on_step_ids = ["DS-000022"]
 line_start = 1
-line_end = 1564
+line_end = 1579
 
 [[step]]
 id = "DS-000024"
@@ -489,7 +489,7 @@ numeric_constants = ["0.20", "06", "08", "1", "100", "114", "1157", "2", "20", "
 key_tokens = ["ADJUDICATED", "AU", "CHECK", "Compute", "DURABLE", "Horizons", "Legacy", "MEASURED", "New", "OMNI", "Pending", "Pioneer", "Provisional", "Radial", "Requires", "Retained", "Solar", "Ulysses", "Voyager", "against"]
 depends_on_step_ids = ["DS-000023"]
 line_start = 1
-line_end = 1564
+line_end = 1579
 
 [[step]]
 id = "DS-000025"
@@ -509,7 +509,7 @@ numeric_constants = ["0", "03", "08", "1", "10", "1000", "1170", "14", "2026"]
 key_tokens = ["D3Q19", "LBM", "Phi_i", "Verified", "body", "crates", "e_ia", "error", "exact", "f64", "follows", "force", "lattice", "lbm_3d", "machine", "mass", "over", "precision", "preserves", "relative"]
 depends_on_step_ids = ["DS-000024"]
 line_start = 1
-line_end = 1564
+line_end = 1579
 
 [[step]]
 id = "DS-000026"
@@ -529,7 +529,7 @@ numeric_constants = ["03", "12", "1360", "2", "2024", "2026", "256", "280", "3",
 key_tokens = ["AVX", "FMA", "IEEE", "LOC", "NEW", "Packed", "Rust", "SIMD", "Verified", "Zen", "__m256d", "_mm256_extractf128_pd", "_mm256_fmadd_pd", "_mm256_hadd_pd", "accumulation", "accumulator", "accurate", "add", "algebra_analysis", "applies"]
 depends_on_step_ids = ["DS-000025"]
 line_start = 1
-line_end = 1564
+line_end = 1579
 
 [[step]]
 id = "DS-000027"
@@ -549,7 +549,7 @@ numeric_constants = ["03", "05", "10", "100", "12", "128", "1349", "1361", "16",
 key_tokens = ["Criterion", "FP", "Horner", "ILP", "Kahan", "Verified", "accumulation", "accumulator", "against", "algebra_analysis", "all", "asm", "beat", "because", "benches", "benchmarked", "carried", "chain", "compensated", "crates"]
 depends_on_step_ids = ["DS-000026"]
 line_start = 1
-line_end = 1564
+line_end = 1579
 
 [[step]]
 id = "DS-000028"
@@ -569,7 +569,7 @@ numeric_constants = ["0", "0.001", "0.002", "0.004", "0.008", "0.016", "0.294", 
 key_tokens = ["Across", "MaNGA", "SNR", "Signal", "Verified", "alpha_zd", "bin", "binary", "blocker", "calibration", "can", "cannot", "constant", "crates", "csv", "currently", "dapall_selection", "data", "detected", "e183"]
 depends_on_step_ids = ["DS-000027"]
 line_start = 1
-line_end = 1564
+line_end = 1579
 
 [[step]]
 id = "DS-000029"
@@ -589,7 +589,7 @@ numeric_constants = ["0.808", "0.95", "03", "1.09", "1.62", "1410", "17", "2", "
 key_tokens = ["CD", "DC14", "DETECTED", "Galaxy", "H3", "Hypothesis", "PEAK", "PSD", "Rayleigh", "Verified", "ZD", "above", "across", "adds", "algebraic", "all", "alone", "any", "appear", "baryonic"]
 depends_on_step_ids = ["DS-000028"]
 line_start = 1
-line_end = 1564
+line_end = 1579
 
 [[step]]
 id = "DS-000030"
@@ -23041,12 +23041,12 @@ claim_id = "C-1256"
 claim_refs = ["C-1256"]
 step_index = 1
 step_kind = "derivation_step"
-text = "The D=32 ZD motif graph has integer spectrum and flat band fraction = 0.5 (from 15 components, 210 total eigenvalues)."
-text_sha256 = "cb653c91411b8baa7b84722181028e45165ef81eb0a5a0db9f48dbcfd238f59d"
+text = "The D=32 ZD motif graph has integer spectrum and flat band fraction = 0.5 (from 15 top-level cross-pair components (low < 16 <= high), 210 total eigenvalues)."
+text_sha256 = "8041393fc1fcfec38fd3c1f8917b3d3307c810645efbacb6bb0d70757b54dae3"
 equation_refs = []
 symbol_refs = []
-numeric_constants = ["0.5", "15", "210", "32"]
-key_tokens = ["ZD", "band", "components", "eigenvalues", "flat", "fraction", "graph", "has", "integer", "motif", "spectrum", "total"]
+numeric_constants = ["0.5", "15", "16", "210", "32"]
+key_tokens = ["ZD", "band", "components", "cross", "eigenvalues", "flat", "fraction", "graph", "has", "high", "integer", "level", "low", "motif", "pair", "spectrum", "top", "total"]
 depends_on_step_ids = []
 line_start = 0
 line_end = 0
@@ -76081,12 +76081,12 @@ claim_id = "C-443"
 claim_refs = ["C-443"]
 step_index = 1
 step_kind = "derivation_step"
-text = "Pathion (dim=32) zero-divisor complement graph decomposes into 15 connected components with two distinct motif types: 8 heptacross (complete 7-partite K_{2,2,2,2,2,2,2}) and 7 mixed-degree components [4^12, 12^2]. This is structurally distinct from the sedenion (dim=16) pattern of 7 octahedral K_{2,2,2} components."
-text_sha256 = "15812b85c4bd7a2d5ef2c2f41ed3119072a281a76f3f8d65afd24bf3eaf7ae51"
+text = "Pathion (dim=32) zero-divisor complement graph over the top-level cross pairs (low < 16 <= high; 2-blade planes joined by mutual annihilation) decomposes into 15 connected components, the 15 strut emanation tables (the complete plane graph has 22: these 15 plus 7 lifted sedenion box-kite components) with two distinct motif types: 8 heptacross (complete 7-partite K_{2,2,2,2,2,2,2}) and 7 mixed-degree components [4^12, 12^2]. This is structurally distinct from the sedenion (dim=16) pattern of 7 octahedral K_{2,2,2} components."
+text_sha256 = "be298b344d571afed22a26f703c240995ac7c21bb7a7d38c51814e61b76297d6"
 equation_refs = []
 symbol_refs = []
-numeric_constants = ["12", "15", "16", "2", "32", "4", "7", "8"]
-key_tokens = ["K_", "Pathion", "complement", "complete", "components", "connected", "decomposes", "degree", "dim", "distinct", "divisor", "graph", "heptacross", "into", "mixed", "motif", "octahedral", "partite", "pattern", "sedenion"]
+numeric_constants = ["12", "15", "16", "2", "22", "32", "4", "7", "8"]
+key_tokens = ["K_", "Pathion", "annihilation", "blade", "box", "complement", "complete", "components", "connected", "cross", "decomposes", "degree", "dim", "distinct", "divisor", "emanation", "graph", "has", "heptacross", "high"]
 depends_on_step_ids = []
 line_start = 0
 line_end = 0
@@ -78541,12 +78541,12 @@ claim_id = "C-481"
 claim_refs = ["C-481"]
 step_index = 1
 step_kind = "derivation_step"
-text = "Face Sign Census at dim=32 (pathions): 2408 triangular faces across 15 components split into 3 regimes. (A) 7 heptacross components (84 edges, 280 triangles): all 4 FaceSignPattern realized (102 TwoSameOneOpp, 108 OneSameTwoOpp, 36 AllSame, 34 AllOpposite). (B) 1 special heptacross (84 edges, 280 triangles): only 2 patterns with 3:1 ratio (210 TwoSameOneOpp, 70 AllOpposite). (C) 7 mixed components (36 edges, 24 triangles): only 2 patterns with 3:1 ratio (18 TwoSameOneOpp, 6 AllOpposite). The 3:1 TwoSameOneOpp:AllOpposite ratio is universal in pure-regime components across dim=16 and dim=32."
-text_sha256 = "ed7d301fc498106cf618170714ba2903ba8100e0d58f56c2546dd56a292b52fb"
+text = "Face Sign Census at dim=32 (pathions): 2408 triangular faces across the 15 top-level cross-pair components (low < 16 <= high) split into 3 regimes. (A) 7 heptacross components (84 edges, 280 triangles): all 4 FaceSignPattern realized (102 TwoSameOneOpp, 108 OneSameTwoOpp, 36 AllSame, 34 AllOpposite). (B) 1 special heptacross (84 edges, 280 triangles): only 2 patterns with 3:1 ratio (210 TwoSameOneOpp, 70 AllOpposite). (C) 7 mixed components (36 edges, 24 triangles): only 2 patterns with 3:1 ratio (18 TwoSameOneOpp, 6 AllOpposite). The 3:1 TwoSameOneOpp:AllOpposite ratio is universal in pure-regime components across dim=16 and dim=32."
+text_sha256 = "d6086b2be1dcf8bf0ca70bd93aaad7dcf0f939e45d8358cea0e1127866fdc7af"
 equation_refs = []
 symbol_refs = []
 numeric_constants = ["1", "102", "108", "15", "16", "18", "2", "210", "24", "2408", "280", "3", "32", "34", "36", "4", "6", "7", "70", "84"]
-key_tokens = ["AllOpposite", "AllSame", "Census", "Face", "FaceSignPattern", "OneSameTwoOpp", "Sign", "TwoSameOneOpp", "across", "all", "components", "dim", "edges", "faces", "heptacross", "into", "mixed", "only", "pathions", "patterns"]
+key_tokens = ["AllOpposite", "AllSame", "Census", "Face", "FaceSignPattern", "OneSameTwoOpp", "Sign", "TwoSameOneOpp", "across", "all", "components", "cross", "dim", "edges", "faces", "heptacross", "high", "into", "level", "low"]
 depends_on_step_ids = []
 line_start = 0
 line_end = 0
@@ -83021,12 +83021,12 @@ claim_id = "C-557"
 claim_refs = ["C-557"]
 step_index = 1
 step_kind = "status_update"
-text = "Component Scaling Laws Verified at Practical Dimensions: The Cayley-Dickson zero-divisor motif component count formula (dim/2 - 1 components, dim/2 - 2 nodes per component) holds exactly across all tested dimensions 16, 32, 64, 128, 256, and 512. This validates the universal scaling pattern that enables prediction of graph structure at any dimension without explicit enumeration."
-text_sha256 = "cbf6fc273b95db1d29acea1429ee336411706665cc8ffce16ad0184e44c5e463"
+text = "Component Scaling Laws Verified at Practical Dimensions: The Cayley-Dickson zero-divisor motif component count formula (dim/2 - 1 components, dim/2 - 2 nodes per component, for the top-level cross-pair graph with low < dim/2 <= high; the complete plane graph also holds the lifted lower-dimension components, 22 at dim=32) holds exactly across all tested dimensions 16, 32, 64, 128, 256, and 512. This validates the universal scaling pattern that enables prediction of graph structure at any dimension without explicit enumeration."
+text_sha256 = "01564b7c19207e47289fb257bc80621326ed3fcf29c795be2cec53c018433eaf"
 equation_refs = []
 symbol_refs = []
-numeric_constants = ["1", "128", "16", "2", "256", "32", "512", "64"]
-key_tokens = ["Cayley", "Component", "Dickson", "Dimensions", "Laws", "Practical", "Scaling", "Verified", "across", "all", "any", "component", "components", "count", "dim", "dimension", "dimensions", "divisor", "enables", "enumeration"]
+numeric_constants = ["1", "128", "16", "2", "22", "256", "32", "512", "64"]
+key_tokens = ["Cayley", "Component", "Dickson", "Dimensions", "Laws", "Practical", "Scaling", "Verified", "across", "all", "also", "any", "complete", "component", "components", "count", "cross", "dim", "dimension", "dimensions"]
 depends_on_step_ids = []
 line_start = 0
 line_end = 0

@@ -51,7 +51,7 @@ const ASSESSOR_FRACTION: f64 = 0.5;
 pub struct HarmonicHaloConfig {
     /// ZD forcing strength (0.0 = disabled, typical 0.001--0.1).
     pub alpha_zd: f64,
-    /// Number of motif-component modes to include (default: dim/2 - 1).
+    /// Number of motif-component modes to include (default: dim/2 - 1, the strut emanation tables of the top-level cross-pair graph).
     pub n_modes: usize,
     /// Total motif components for this CD dimension (= dim/2 - 1).
     pub n_components: usize,

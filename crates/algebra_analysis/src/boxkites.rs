@@ -510,15 +510,53 @@ impl MotifComponent {
     }
 }
 
-/// Build the diagonal zero-product graph over cross-assessors and return its
-/// connected components, sorted by (node count, lexicographic node set).
+/// Connected components of the diagonal zero-product graph over the
+/// top-level cross pairs `(low, high)` with `low in [1, dim/2)` and
+/// `high in [dim/2, dim)`, sorted by (node count, lexicographic node set).
+///
+/// Convention: a vertex is the 2-blade plane `span{e_low, e_high}`; an edge
+/// joins two planes when some sign choice gives `(e_i + s*e_j)(e_k + t*e_l) = 0`;
+/// vertices without an edge are dropped. Pairs with both indices below `dim/2`
+/// (the lifted sedenion assessors) or both at or above it are outside the
+/// vertex set. At dim=32 this yields 15 components of 14 planes, one per
+/// strut constant S in 1..=15 (de Marrais emanation tables); the complete
+/// zero-divisor graph over all index pairs has 22 components, see
+/// [`motif_components_for_all_planes`].
 ///
 /// Uses XOR-bucket pruning: only pairs with matching `xor_key(low, high)` can
 /// form a diagonal zero-product (necessary condition from the expansion
 /// `(e_i + s*e_j)(e_k + t*e_l)` requiring `i^k == j^l` for cancellation).
 pub fn motif_components_for_cross_assessors(dim: usize) -> Vec<MotifComponent> {
-    let nodes = cross_assessors(dim);
+    motif_components_for_nodes(dim, cross_assessors(dim))
+}
 
+/// Connected components of the complete diagonal zero-product graph: vertices
+/// are every plane `span{e_p, e_q}` with `1 <= p < q < dim`, and two planes are
+/// adjacent when `(e_p + s*e_q)(e_r + t*e_u) = 0` for some signs. The relation
+/// is symmetric under exchange of the factors
+/// (`test_zd_plane_relation_is_symmetric`), so one product order defines the
+/// edge. Planes with no edge are dropped.
+///
+/// Component sizes: dim=16 gives 7 x 6 (the 42 assessors in 7 box-kites);
+/// dim=32 gives 7 x 12 + 15 x 14 = 294 planes, where each 12-plane component
+/// is a sedenion box-kite together with its copy shifted by 16 and each
+/// 14-plane component is a strut emanation table; dim=64 gives
+/// 7 x 24 + 15 x 28 + 31 x 30 = 1518 planes.
+pub fn motif_components_for_all_planes(dim: usize) -> Vec<MotifComponent> {
+    assert!(
+        dim >= 4 && dim.is_power_of_two(),
+        "dim must be a power of two >= 4, got {dim}"
+    );
+    let mut nodes = Vec::with_capacity((dim - 1) * (dim - 2) / 2);
+    for p in 1..dim {
+        for q in (p + 1)..dim {
+            nodes.push((p, q));
+        }
+    }
+    motif_components_for_nodes(dim, nodes)
+}
+
+fn motif_components_for_nodes(dim: usize, nodes: Vec<CrossPair>) -> Vec<MotifComponent> {
     // XOR-bucket pruning: only check pairs within the same bucket
     let mut buckets: HashMap<usize, Vec<CrossPair>> = HashMap::new();
     for &a in &nodes {

@@ -594,8 +594,13 @@ fn test_motif_census_32d_has_k2_multipartite() {
 fn test_motif_census_32d_summary() {
     // Record the dim=32 census as a regression test.
     //
-    // Results (discovered 2026-02-06):
-    //   15 components, all with 14 nodes (7 cross-assessor pairs).
+    // Convention: vertices are the top-level cross pairs (low < 16 <= high),
+    // edges are mutual diagonal zero-products. The lifted sedenion assessors
+    // (both indices < 16) and their shifted copies are outside this vertex
+    // set; `test_zd_plane_components_all_dims` counts them (22 components).
+    //
+    // Results:
+    //   15 components, all with 14 nodes (one strut emanation table each).
     //   8 are K_{2,2,2,2,2,2,2} (heptacross: 14 nodes, 84 edges, degree-12 regular).
     //   7 have mixed degree [4^12, 12^2] with 36 edges -- a new motif class.
     let comps = motif_components_for_cross_assessors(32);
@@ -604,7 +609,7 @@ fn test_motif_census_32d_summary() {
     assert_eq!(
         comps.len(),
         15,
-        "dim=32 should have exactly 15 motif components"
+        "dim=32 top-level cross-pair graph has 15 components (strut emanation tables)"
     );
 
     // All components have 14 nodes.
@@ -1363,7 +1368,7 @@ fn test_generic_face_sign_census_dim16_matches_c479() {
 #[test]
 #[ignore = "heavy research lane: exhaustive face-sign census"]
 fn test_generic_face_sign_census_dim32() {
-    // dim=32 has 15 components, each with 14 nodes.
+    // Top-level cross-pair convention: 15 components, each with 14 nodes.
     // Two motif classes: 8 heptacross (84 edges) and 7 mixed (36 edges).
     let census = generic_face_sign_census(32);
 
@@ -7013,4 +7018,96 @@ fn binomial(n: usize, k: usize) -> usize {
         result = result * (n - i) / (i + 1);
     }
     result
+}
+
+/// Sorted (component size, multiplicity) census of a component list.
+fn size_census(comps: &[MotifComponent]) -> Vec<(usize, usize)> {
+    let mut m: std::collections::BTreeMap<usize, usize> = std::collections::BTreeMap::new();
+    for c in comps {
+        *m.entry(c.nodes.len()).or_default() += 1;
+    }
+    m.into_iter().collect()
+}
+
+#[test]
+fn test_zd_plane_components_all_dims() {
+    // Convention: vertices are all planes span{e_p, e_q} (1 <= p < q < dim)
+    // that take part in a zero-product; edges are mutual annihilation of
+    // (e_p +- e_q) and (e_r +- e_u).
+    let all16 = motif_components_for_all_planes(16);
+    assert_eq!(
+        size_census(&all16),
+        vec![(6, 7)],
+        "dim=16: 7 box-kites of 6"
+    );
+
+    // dim=32: 7 x 12 (sedenion box-kite plus its +16 copy) + 15 x 14 (strut ETs).
+    let all32 = motif_components_for_all_planes(32);
+    assert_eq!(size_census(&all32), vec![(12, 7), (14, 15)]);
+    assert_eq!(all32.iter().map(|c| c.nodes.len()).sum::<usize>(), 294);
+    for c in all32.iter().filter(|c| c.nodes.len() == 12) {
+        let lo = c.nodes.iter().filter(|n| n.1 < 16).count();
+        let hi = c.nodes.iter().filter(|n| n.0 >= 16).count();
+        assert_eq!(
+            (lo, hi),
+            (6, 6),
+            "12-plane component = box-kite + shifted copy"
+        );
+    }
+    // The 14-plane components are exactly the top-level cross-pair components.
+    let cross32: Vec<_> = all32.iter().filter(|c| c.nodes.len() == 14).collect();
+    let top32 = motif_components_for_cross_assessors(32);
+    assert_eq!(cross32.len(), top32.len());
+    for (a, b) in cross32.iter().zip(top32.iter()) {
+        assert_eq!(a.nodes, b.nodes);
+    }
+
+    // dim=64: 7 x 24 + 15 x 28 + 31 x 30 = 1518 planes.
+    let all64 = motif_components_for_all_planes(64);
+    assert_eq!(size_census(&all64), vec![(24, 7), (28, 15), (30, 31)]);
+    assert_eq!(all64.iter().map(|c| c.nodes.len()).sum::<usize>(), 1518);
+    let top64 = motif_components_for_cross_assessors(64);
+    assert_eq!(size_census(&top64), vec![(30, 31)]);
+}
+
+#[test]
+fn test_zd_plane_relation_is_symmetric() {
+    // Every ordered pair of planes: a*b = 0 for some signs iff b*a = 0 for some signs.
+    for dim in [16usize, 32] {
+        let mut planes = Vec::new();
+        for p in 1..dim {
+            for q in (p + 1)..dim {
+                planes.push((p, q));
+            }
+        }
+        for (i, &a) in planes.iter().enumerate() {
+            for &b in &planes[i..] {
+                assert_eq!(
+                    diagonal_zero_products_exact(dim, a, b).is_empty(),
+                    diagonal_zero_products_exact(dim, b, a).is_empty(),
+                    "asymmetric zero-product at dim={dim}: {a:?} vs {b:?}"
+                );
+            }
+        }
+    }
+}
+
+#[test]
+fn test_motif_census_32d_strut_tables_match_de_marrais() {
+    // Each 14-plane component is the emanation table of strut S = (low ^ high) - 16.
+    // S in 1..=8 gives a heptacross (Pleiades of 7 box-kites); S in 9..=15 gives
+    // the mixed-degree "sand mandala" (3 box-kites sharing one strut).
+    let comps = motif_components_for_cross_assessors(32);
+    let mut struts = Vec::new();
+    for c in &comps {
+        let keys: std::collections::BTreeSet<usize> =
+            c.nodes.iter().map(|&(lo, hi)| (lo ^ hi) - 16).collect();
+        assert_eq!(keys.len(), 1, "one strut constant per component");
+        let s = *keys.iter().next().unwrap();
+        let heptacross = c.k2_multipartite_part_count() == 7;
+        assert_eq!(heptacross, s <= 8, "S={s}: heptacross iff S <= 8");
+        struts.push(s);
+    }
+    struts.sort_unstable();
+    assert_eq!(struts, (1..=15).collect::<Vec<_>>());
 }
