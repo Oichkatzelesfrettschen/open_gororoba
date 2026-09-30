@@ -7093,6 +7093,7 @@ fn test_zd_plane_relation_is_symmetric() {
 }
 
 #[test]
+#[ignore = "heavy research lane: exhaustive motif census"]
 fn test_motif_census_32d_strut_tables_match_de_marrais() {
     // Each 14-plane component is the emanation table of strut S = (low ^ high) - 16.
     // S in 1..=8 gives a heptacross (Pleiades of 7 box-kites); S in 9..=15 gives
