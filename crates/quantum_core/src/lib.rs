@@ -57,6 +57,7 @@ pub mod tensor_networks;
 pub mod tight_binding;
 pub mod two_fluid;
 pub mod vacuum_audit;
+pub mod vacuum_response;
 
 #[cfg(any(feature = "gpu", feature = "cubecl", feature = "vulkan"))]
 pub mod gpu;

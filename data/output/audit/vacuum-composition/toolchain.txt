@@ -1,0 +1,5 @@
+The Rocq Prover, version 9.3.0
+compiled with OCaml 5.5.1
+The OCaml toplevel, version 5.5.1
+rustc 1.97.0 (2d8144b78 2026-07-07)
+12

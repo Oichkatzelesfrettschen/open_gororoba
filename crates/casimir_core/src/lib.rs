@@ -1,26 +1,14 @@
-//! Worldline Monte Carlo Casimir energy computation.
+//! Real-scalar Dirichlet worldline interaction energies in 3+1 dimensions.
 //!
-//! Implements the v-loop algorithm from White et al. (2021) for computing
-//! Casimir vacuum energy densities in custom geometries via the worldline
-//! path integral. The method generates closed random loops, scales them
-//! to different proper times, and checks boundary intersections to estimate
-//! the Casimir energy density at each spatial point.
+//! Gaussian centered Brownian polygons sample the free path measure.
+//! Distinct-body hit masks implement subtraction of single-body energies.
+//! Point and grid evaluations produce loop-center energy density in
+//! hbar=c=1 units; the integrated plate estimator produces energy per area.
+//! Geometry discretization and integration cutoffs require convergence checks.
+//! Single-body self stress and electromagnetic materials require other models.
 //!
-//! # Modules
-//!
-//! - `vloop` -- Closed worldline loop generation (v-loop algorithm)
-//! - `geometry` -- Casimir boundary definitions (plates, spheres, cylinders)
-//! - `energy` -- Monte Carlo integration of the worldline path integral
-//! - `ascii_render` -- Terminal cross-section visualizations
-//!
-//! # Validation target
-//!
-//! Parallel plates: E/A = -pi^2 / (720 a^3) (Casimir 1948).
-//!
-//! # References
-//! - White et al. (2021): EPJ C 81, 677. DOI:10.1140/epjc/s10052-021-09484-z
-//! - Gies, Langfeld, Moyaerts (2003): JHEP 0306, 018
-//! - Casimir (1948): Proc. Kon. Ned. Akad. Wet. 51, 793
+//! Reference: Gies, Langfeld, Moyaerts, JHEP 0306 (2003) 018,
+//! DOI:10.1088/1126-6708/2003/06/018, Eqs. 8, 11, 13 and 44.
 
 pub mod ascii_render;
 pub mod energy;
@@ -30,11 +18,13 @@ pub mod vloop;
 // Re-export primary types
 pub use ascii_render::{AsciiGrid, energy_cross_section};
 pub use energy::{
-    CasimirEnergyField3D, CasimirEnergyResult, WorldlineCasimirConfig, casimir_energy_at_point,
-    casimir_energy_field_3d, casimir_energy_profile, casimir_parallel_plates_exact,
+    CasimirComputationError, CasimirEnergyField3D, CasimirEnergyResult, WorldlineCasimirConfig,
+    casimir_energy_at_point, casimir_energy_field_3d, casimir_energy_profile,
+    casimir_parallel_plates_exact, scalar_parallel_plates_exact, scalar_parallel_plates_worldline,
+    try_casimir_energy_at_point,
 };
 pub use geometry::{
-    CasimirGeometry, InfiniteCylinder, ParallelPlates, PillarInCavity, SolidSphere,
-    SphereInCylinder,
+    CasimirGeometry, InfiniteCylinder, InteractionGeometryError, ParallelPlates, PillarInCavity,
+    SolidSphere, SphereInCylinder,
 };
 pub use vloop::{WorldlineLoop, generate_unit_loop};

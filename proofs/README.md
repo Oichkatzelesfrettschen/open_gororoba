@@ -192,3 +192,40 @@ the authority for integrating the branch.
 - [WasmCert development port](https://github.com/WasmCert/WasmCert-Coq/tree/882c621bd9316eff815f49a251c77e9547eb35c7)
 - [CertiRocq](https://github.com/CertiRocq/certirocq)
 - [Rust extraction](https://github.com/AU-COBRA/coq-rust-extraction)
+
+## Vacuum response composition
+
+The registered vacuum modules separate finite-dimensional mathematics from
+physical attribution:
+
+- `FiniteComplexPassivity` uses `CDComplex` amplitudes, supplied diagonal
+  spectra, norm-preserving maps, product energies and finite truncation tails.
+- `FiniteCompositePassivity` permits arbitrary joint amplitudes, proves the
+  additive spectral bound and cyclic ground-state passivity, and checks a
+  normalized state that cannot factor into subsystem states.
+- `PassiveMechanicalMemory` proves exact finite-matrix quadratic increments,
+  storage nonnegativity, coupled auxiliary-memory balance and supply bounds.
+  A smooth-trajectory/time-derivative bridge remains a separate obligation.
+- `GaussianCoherence` proves PSD sampled variance, coherence range and ideal
+  quasistatic echo cancellation under the declared classical Gaussian model,
+  and complex dephasing Choi positivity for the explicit I/Z mixture.
+- `VacuumCounterexamples` proves the PSD interval of the supplied complex
+  depolarizing Choi quadratic form, separately from memory admissibility.
+- `VacuumSpectralModels` proves ordered oscillator-line consequences,
+  harmonic softening variance and cutoff scaling with explicit parameters.
+- `WorldlineInteraction` proves scalar subtraction and two-body selection.
+- `VacuumAnalyticLimits` constructs uniformly bounded weighted finite sums
+  with arbitrarily large unweighted energy; infinite-series limits remain
+  outside that theorem.
+
+The same `all` command compiles the modules through the process-visible CPU
+jobserver. The composition run checked all318 registered source bodies,
+all318 kernel modules and83 new named declaration contexts. Retained source
+and object digests, tool versions and assumption reports live under
+`data/output/audit/vacuum-composition/`. The local source/object archive is
+retained separately from Git; its identity appears in `replay-results.toml`.
+Real-arithmetic proofs and numerical tests measure separate surfaces.
+`plans/vacuum_integration_contract.toml` maps all35 original leaves to their
+actual evidence and remaining gate. The `vacuum-response-audit` binary unit
+tests verify coverage and reject missing, duplicated, cyclic, stale or
+unjustifiably closed rows.

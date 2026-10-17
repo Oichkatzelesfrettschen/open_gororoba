@@ -1,24 +1,11 @@
-//! Worldline v-loop generation algorithm (White 2021).
+//! Gaussian Brownian bridges for a real-scalar worldline path integral.
 //!
-//! Generates closed random loops in 3D used for Monte Carlo evaluation
-//! of the Casimir energy via the worldline path integral. The v-loop
-//! algorithm produces loops that are closed by construction (the sum
-//! of all displacement vectors is exactly zero).
-//!
-//! # Algorithm (White 2021, Eqs. 7-9)
-//!
-//! 1. Generate N-1 Gaussian random vectors w_i (3D).
-//! 2. Normalize: v_bar_i = sqrt(2*(N+1-i)/(N+2-i)) * w_i / |w_i|
-//! 3. Compensate: v_i = v_bar_i - (1/(N+2-i)) * sum_{k<i} v_k
-//! 4. Accumulate positions: y_i = y_{i-1} + v_i
-//! 5. Close: y_N = -sum(y_1 ... y_{N-1})
-//!
-//! The resulting unit loop has RMS radius = 1 and zero center of mass.
-//! Scaling by sqrt(T) gives a loop at proper time T.
-//!
-//! # References
-//! - White et al. (2021): EPJ C 81, 677. DOI:10.1140/epjc/s10052-021-09484-z
-//! - Gies, Langfeld, Moyaerts (2003): JHEP 0306, 018
+//! The polygon measure is exp(-N * sum |delta y|^2 / 4). Independent
+//! Gaussian increments of variance 2/N are conditioned to sum to zero,
+//! integrated, and translated to zero center of mass. The closing edge joins
+//! the last stored vertex to the first; storing a duplicate endpoint would
+//! bias the center-of-mass measure. Finite polygons approach continuous loops
+//! as their vertex count grows (Gies, Langfeld, Moyaerts, Sec. 3).
 
 use rand::RngExt;
 use rand_distr::StandardNormal;
@@ -36,7 +23,10 @@ impl WorldlineLoop {
         self.points.len()
     }
 
-    /// Check closure: |sum of points| should be ~ 0.
+    /// Centering residual: norm of the sum of vertices.
+    ///
+    /// The historical method name refers to centering, not endpoint closure.
+    /// Polygon closure uses the implicit last-to-first edge.
     pub fn closure_error(&self) -> f64 {
         let mut sum = [0.0; 3];
         for p in &self.points {
@@ -72,82 +62,48 @@ impl WorldlineLoop {
     }
 }
 
-/// Generate a unit v-loop with N points.
+/// Sample the centered N-vertex Brownian bridge with variance 2/N increments.
 ///
-/// The loop is closed by construction: sum of all displacements = 0.
-/// Each point lies in 3D Euclidean space. The RMS distance from origin
-/// is O(1) (unit scale).
+/// Conditioning Gaussian increments by subtracting their sample mean gives
+/// the exact discrete bridge measure. Recentring changes neither increments
+/// nor their covariance. The polygon includes its closing last-to-first edge.
 ///
-/// # Arguments
-/// * `n_points` - Number of points on the loop (must be >= 3).
-/// * `rng` - Random number generator.
+/// # Panics
+/// Panics when fewer than three vertices are requested.
 pub fn generate_unit_loop<R: RngExt>(n_points: usize, rng: &mut R) -> WorldlineLoop {
-    assert!(n_points >= 3, "v-loop requires at least 3 points");
-
-    let n = n_points;
-    let nf = n as f64;
-
-    // Step 1: Generate N-1 random displacement vectors
-    let mut displacements = vec![[0.0; 3]; n];
-
-    // Running sum for the compensation step
-    let mut cumsum = [0.0; 3];
-
-    #[allow(clippy::needless_range_loop)] // Index i used for float conversion and array indexing
-    for i in 0..(n - 1) {
-        let if64 = i as f64;
-
-        // Generate 3D Gaussian vector
-        let w: [f64; 3] = [
-            rng.sample::<f64, _>(StandardNormal),
-            rng.sample::<f64, _>(StandardNormal),
-            rng.sample::<f64, _>(StandardNormal),
-        ];
-
-        // Normalize to unit length
-        let norm = (w[0] * w[0] + w[1] * w[1] + w[2] * w[2]).sqrt();
-        if norm < 1e-30 {
-            continue; // Skip degenerate samples (astronomically unlikely)
+    assert!(
+        n_points >= 3,
+        "a Brownian polygon requires at least three vertices"
+    );
+    let increment_scale = (2.0 / n_points as f64).sqrt();
+    let mut increments = Vec::with_capacity(n_points);
+    let mut increment_mean = [0.0; 3];
+    for _ in 0..n_points {
+        let increment: [f64; 3] =
+            std::array::from_fn(|_| rng.sample::<f64, _>(StandardNormal) * increment_scale);
+        for (mean, value) in increment_mean.iter_mut().zip(increment) {
+            *mean += value / n_points as f64;
         }
-
-        // Scale factor: sqrt(2 * (N+1-i) / (N+2-i))
-        let scale = (2.0 * (nf + 1.0 - if64) / (nf + 2.0 - if64)).sqrt();
-
-        // v_bar_i = scale * w / |w|
-        let mut v = [0.0; 3];
-        for d in 0..3 {
-            v[d] = scale * w[d] / norm;
-        }
-
-        // Compensate: v_i = v_bar_i - (1/(N+2-i)) * cumsum
-        let comp_factor = 1.0 / (nf + 2.0 - if64);
-        for d in 0..3 {
-            v[d] -= comp_factor * cumsum[d];
-        }
-
-        displacements[i] = v;
-
-        // Update cumulative sum
-        for d in 0..3 {
-            cumsum[d] += v[d];
+        increments.push(increment);
+    }
+    let mut position = [0.0; 3];
+    let mut points = Vec::with_capacity(n_points);
+    for increment in increments {
+        points.push(position);
+        for ((coordinate, displacement), mean) in
+            position.iter_mut().zip(increment).zip(increment_mean)
+        {
+            *coordinate += displacement - mean;
         }
     }
-
-    // Last displacement closes the loop: v_{N-1} = -cumsum
-    for d in 0..3 {
-        displacements[n - 1][d] = -cumsum[d];
-    }
-
-    // Accumulate positions from displacements
-    let mut points = vec![[0.0; 3]; n];
-    points[0] = displacements[0];
-    for i in 1..n {
-        for d in 0..3 {
-            points[i][d] = points[i - 1][d] + displacements[i][d];
+    let mut worldline = WorldlineLoop { points };
+    let center = worldline.center_of_mass();
+    for point in &mut worldline.points {
+        for (coordinate, mean) in point.iter_mut().zip(center) {
+            *coordinate -= mean;
         }
     }
-
-    WorldlineLoop { points }
+    worldline
 }
 
 #[cfg(test)]
@@ -157,48 +113,19 @@ mod tests {
     use rand_chacha::ChaCha8Rng;
 
     #[test]
-    fn test_loop_closure() {
-        // The v-loop guarantees that displacements sum to zero (the loop
-        // returns to the origin). The position sum (= N * center_of_mass)
-        // is NOT guaranteed to be zero -- it can grow as O(sqrt(N)).
-        // We check that the loop's last point returns to (approximately)
-        // the first point's predecessor, i.e., the loop is truly closed.
+    fn centered_polygon_closes_through_implicit_edge() {
         let mut rng = ChaCha8Rng::seed_from_u64(42);
-        let n = 100;
-        let wl = generate_unit_loop(n, &mut rng);
-
-        // Check return-to-start: last_point + disp_{0} should give points[0]
-        // Equivalently, sum of displacements should be zero
-        let mut disp_sum = wl.points[0];
-        for pair in wl.points.windows(2) {
-            for (ds, (&curr, &prev)) in disp_sum.iter_mut().zip(pair[1].iter().zip(pair[0].iter()))
-            {
-                *ds += curr - prev;
+        let worldline = generate_unit_loop(200, &mut rng);
+        assert!(worldline.closure_error() < 1e-10);
+        let mut displacement_sum = [0.0; 3];
+        for vertex in 0..worldline.n_points() {
+            let next = (vertex + 1) % worldline.n_points();
+            for (dimension, sum) in displacement_sum.iter_mut().enumerate() {
+                *sum += worldline.points[next][dimension] - worldline.points[vertex][dimension];
             }
         }
-        let err = (disp_sum[0].powi(2) + disp_sum[1].powi(2) + disp_sum[2].powi(2)).sqrt();
-        assert!(
-            err < 1e-10,
-            "displacement closure error = {err} (should be < 1e-10)"
-        );
-    }
-
-    #[test]
-    fn test_loop_displacement_closure() {
-        let mut rng = ChaCha8Rng::seed_from_u64(42);
-        let n = 200;
-        let wl = generate_unit_loop(n, &mut rng);
-
-        // Check that displacements sum to zero
-        let mut disp_sum = wl.points[0];
-        for pair in wl.points.windows(2) {
-            for (ds, (&curr, &prev)) in disp_sum.iter_mut().zip(pair[1].iter().zip(pair[0].iter()))
-            {
-                *ds += curr - prev;
-            }
-        }
-        let err = (disp_sum[0].powi(2) + disp_sum[1].powi(2) + disp_sum[2].powi(2)).sqrt();
-        assert!(err < 1e-10, "displacement sum should be zero: {err}");
+        assert!(displacement_sum.iter().all(|value| value.abs() < 1e-12));
+        assert_ne!(worldline.points.first(), worldline.points.last());
     }
 
     #[test]
@@ -240,5 +167,31 @@ mod tests {
         let mut rng = ChaCha8Rng::seed_from_u64(7);
         let wl = generate_unit_loop(3, &mut rng);
         assert_eq!(wl.n_points(), 3);
+    }
+
+    #[test]
+    fn centered_bridge_has_correct_covariance_and_scale() {
+        let n_points = 64;
+        let n_samples = 6000;
+        let mut rng = ChaCha8Rng::seed_from_u64(9237);
+        let mut radius_squared = 0.0;
+        let mut half_increment_squared = 0.0;
+        for _ in 0..n_samples {
+            let worldline = generate_unit_loop(n_points, &mut rng);
+            assert!(
+                worldline
+                    .center_of_mass()
+                    .iter()
+                    .all(|coordinate| coordinate.abs() < 1e-12)
+            );
+            for point in &worldline.points {
+                radius_squared += point[0] * point[0] / n_points as f64;
+            }
+            half_increment_squared +=
+                (worldline.points[n_points / 2][0] - worldline.points[0][0]).powi(2);
+        }
+        let expected_variance = (1.0 - 1.0 / (n_points * n_points) as f64) / 6.0;
+        assert!((radius_squared / n_samples as f64 - expected_variance).abs() < 0.009);
+        assert!((half_increment_squared / n_samples as f64 - 0.5).abs() < 0.035);
     }
 }

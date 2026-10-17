@@ -213,3 +213,11 @@ theories/R2VBTransformDP4.v
 verified/C1629_IDCT8DP4ExactBound.v
 theories/NullityTwelveQuadraticLocus.v
 theories/SedenionFoldTransport.v
+theories/PassiveMechanicalMemory.v
+theories/FiniteComplexPassivity.v
+theories/VacuumCounterexamples.v
+theories/GaussianCoherence.v
+theories/WorldlineInteraction.v
+theories/VacuumSpectralModels.v
+theories/FiniteCompositePassivity.v
+theories/VacuumAnalyticLimits.v

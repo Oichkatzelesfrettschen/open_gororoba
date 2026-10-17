@@ -1,0 +1,31 @@
+# Bounded primary-source reconciliation
+
+Retrieved 2026-10-17 during the vacuum-composition followup. Bodies and derived text remain in this temporary directory. Network response bodies total under 6 MB. SHA256SUMS records current completed files; files ending .txt are pdftotext derivatives. Failed retrievals: export.arxiv API 429; initial DESI Crossref request 429; APS abstract 403; APS harvest fulltext 401; QET PDF exceeded 1.8MB configured maximum before body transfer. The arXiv QET search subsequently recovered an open primary preprint, so the full-text access gap is resolved for that version. No repository files were edited.
+
+## Exact QET source
+
+M. Y. Abd-Rabbou, Irfan Siddique, Saeed Haddadi, Cong-Feng Qiao, Scalable repeater architecture for long-range quantum energy teleportation in gapped systems. Physical Review A 114(2), 022601; publisher-registered date 2026-08-03. DOI https://doi.org/10.1103/9mwm-b828 . Crossref DOI metadata identifies title, authors, article number and date. OpenAlex reports closed publisher access and no repository, but an independent exact-title arXiv search finds https://arxiv.org/abs/2601.18327 . Thus OpenAlex repository coverage is incomplete for this item.
+
+Inspected primary full-text HTML: https://arxiv.org/html/2601.18327v1 . Abstract explicitly says the significance lies not in net energy gain. Section II specifies a one-dimensional anisotropic XY spin chain with open boundaries. Sections III-IV separate monolithic postselection costs, local-link preparation, probabilistic swaps, purification and nested repetition. Section IV.3 and Eq26 assert asymptotic quadratic error suppression under iterative basis permutations, citing Appendix B. Those statements are model/theoretical claims, not apparatus measurements. The local-energy extraction sign and global resource ledger remain separate. Publication status does not independently verify the scaling theorem.
+
+Recommended bounded action: replace the old exact-citation-unverified status with identified-source/full-text-inspected-v1, and keep resource-scaling independently-unverified. Formalization should use explicit local completely positive instruments, branch probabilities and preparation/reset costs. Before adopting scaling as a theorem, mechanically derive the Bell-diagonal recurrence and its success-conditioned consumption; one fidelity scalar alone may omit relevant error distribution.
+
+## Exact DESI source
+
+Official paper index https://data.desi.lbl.gov/doc/papers/ identifies the July30,2026 key paper and three supporting papers. Exact primary paper: DESI DR2 Results IV: Alcock-Paczynski Measurements from the Lyman Alpha Forest and Cosmological Constraints, https://arxiv.org/abs/2607.27410 . Download https://arxiv.org/pdf/2607.27410 resolves to v3, arXiv margin date Aug4,2026, manuscript Dated Aug6,2026. Preserve both dates. Primary validation support: Herbold et al., Validation of the DESI DR2 Ly-alpha forest full-shape analysis, https://arxiv.org/abs/2607.27411 ; inspected full HTML v1 https://arxiv.org/html/2607.27411v1 . Official index also identifies 2607.27412 mock catalogues and 2607.27413 one-dimensional/three-dimensional prediction mapping; those full texts were not retrieved.
+
+Inspected main abstract page3: AP precision1% at z_eff2.33; D_H/r_d8.600+/-0.066 and D_M/r_d39.32+/-0.33. H0=66.5+/-1.3 km/s/Mpc requires LambdaCDM plus BBN prior. w0-wa preference2.7sigma for DESI+CMB,3.2sigma adding supernovae. Main validation discussion names mocks, blinding, data splits, minimum separation cuts and model systematics. These are cosmological distance/model constraints, not direct measurements of ultraviolet vacuum inventory. No cosmological likelihood or raw data replay was executed.
+
+Recommended bounded action: close exact source identity and inspectability gaps; retain cosmological likelihood replay as distinct work and exclude those data from laboratory fuel or material-response evidence.
+
+## Scalar worldline subtraction authority
+
+Holger Gies, Kurt Langfeld, Laurent Moyaerts, Casimir Effect on the Worldline, JHEP0306(2003)018, https://arxiv.org/abs/hep-th/0303264 ; full https://arxiv.org/pdf/hep-th/0303264 resolves to v2 June13,2003. DOI https://doi.org/10.1088/1126-6708/2003/06/018 .
+
+Inspected Sec2.1 Eqs1-11: a real scalar, D=d+1 Euclidean spacetime dimensions, units hbar=c=1. Eq8 prefactor -1/[2(4pi)^(D/2)], proper-time weight T^(-1-D/2), space/time integration. Eq11 static E=Gamma/L_time. Thus d=3 gives D=4, prefactor -1/(32pi^2) and T^-3 before any spatial integration. A formula with (4pi)^1.5 and T^-2.5 describes a different dimension unless an explicit reduction/measure derivation supplies missing factors.
+
+Sec2.2 Eq13: E_interaction=E[V1+V2]-E[V1]-E[V2], with separate energies already relative to zero potential. Subtraction occurs in integrands. Single-body self-stress requires separate renormalization and is explicitly outside that interaction definition.
+
+Sec4.2 Eq44: for two nonnegative body potentials, loop weight is 1-exp(-A1)-exp(-A2)+exp(-(A1+A2))=(1-exp(-A1))(1-exp(-A2)); it lies[0,1]. Dirichlet limit gives1 only for loops intersecting both bodies. The global energy prefactor is negative; statistical uncertainty uses its absolute magnitude. Eq46 plate result is the real-scalar Dirichlet interaction, not the electromagnetic two-polarization value. EM -pi^2/(720a^3) and scalar -pi^2/(1440a^3) must carry separate labels.
+
+Recommended bounded action: repair the existing estimator's dimension, interaction hit predicate, positive uncertainty and units together, preserving raw source-specific self-energy methods under explicit names if needed. Validate scalar parallel plates, dilation, translation, coordinate-grid integration and proper-time/loop-point convergence. A Monte Carlo convergence test supports numerical implementation, not real-material validity. Material response requires separate Lifshitz/scattering inputs.

@@ -269,13 +269,15 @@ material-model sensitivity, numerical convergence and nuisance mimicry.
 The live frontier retains an open selected-schedule artifact dependency;
 new vacuum checks do not close that historical evidence gap.
 
-casimir_core's worldline estimator needs a separate repair before use as a
-precision oracle. Source inspection finds a negative error prefactor, a
-single-boundary hit criterion, scalar/EM normalization ambiguity, and local-
-density versus integrated-energy units. Those source findings require their
-own subtraction derivation and scale/convergence tests. The present change
-records the dependency rather than treating a finite Monte Carlo result as
-validated force data.
+The compositional followup repairs casimir_core's scalar worldline estimator.
+The real-scalar 3+1D measure uses -1/(32*pi^2) and T^-3, with explicit
+two-distinct-body subtraction, positive statistical uncertainty and Gaussian
+Brownian bridge loops. Local density has inverse-length^4 units; spatially
+integrated plate energy per area has inverse-length^3 units. A separate plate
+estimator analytically integrates center position and proper time. The
+retained polygon refinement still shows substantial continuum bias, separate
+from Monte Carlo standard error. The implementation remains a conditional
+scalar model rather than a precision electromagnetic or real-material oracle.
 
 The monograph modules casimir_vacuum, viscous_vacuum and banach_tarski_resonance
 contain physical interpretations beyond their executable evidence. A force
@@ -325,9 +327,10 @@ refuted inferences, conditional model results and blocked physical tests.
     a local conditional extraction follows state preparation and an earlier
     operation elsewhere. The full energy account includes both operations,
     shared-state preparation, controllers and repeated-cycle restoration.
-    The attachment's exact 2026 repeater paper and DESI analysis remain
-    independently unverified here; neither citation stands in for a
-    laboratory energy inventory or complete device-resource account.
+    The followup recovers the exact 2026 repeater paper and DESI analysis.
+    Their identified primary text and remaining replay limits appear in
+    section 11; neither citation supplies a laboratory energy inventory or
+    complete device-resource account.
   - Algebraic dimension is a representation property. Physical spacetime
     dimension needs a measurement map. Holographic codes require channels,
     errors, matched baselines and recovery metrics; mathematical recovery
@@ -479,3 +482,104 @@ The oscillator helper uses delta lines, rather than a dissipative continuum.
 The memory helper proves an instantaneous continuous identity, rather than
 a sampled-integrator guarantee. Finite numerical checks supplement the
 stated derivations and leave experimental premises open.
+
+11. Compositional implementation and formal coverage
+--------------------------------------------------
+
+plans/vacuum_integration_contract.toml reconciles all 35 original leaf IDs.
+Each row names numerical/source witnesses, applicable Rocq declarations,
+dependencies and its remaining gate. The integration test checks exact set
+coverage, acyclic dependencies, regular relative witness paths, registered
+proof sources and lexical declaration identity. Those checks measure linkage;
+Rocq compilation, kernel replay and assumption reports establish execution.
+
+FiniteComplexPassivity reuses the repository's CDComplex arithmetic. Arbitrary
+finite-dimensional normalized complex amplitudes obey a supplied diagonal
+spectral lower bound. Norm-preserving transforms preserve normalization under
+composition; a cyclic ground-state protocol supplies Wout<=0. A common energy
+offset cancels. Tensor product amplitudes obey additive subsystem energies;
+a finite truncation obeys an explicitly bounded tail-energy error. The
+norm-preservation premise permits more maps than physical unitary evolution;
+linearity, realizability and an infinite-field limit remain separate.
+
+VacuumCounterexamples proves positivity of the explicit normalized qubit
+depolarizing Choi quadratic form exactly for -1/3<=lambda<=1. Its Bell
+quadratic decomposition includes arbitrary complex amplitudes. That result
+concerns the supplied matrix. Derivation of a channel from a memory equation
+and the general Choi equivalence theorem remain separate obligations.
+
+PassiveMechanicalMemory proves finite-matrix bilinearity, the exact quadratic
+increment, symmetric auxiliary-memory balance, nonnegative dissipation and
+the coupled mechanical storage identity. A directional coefficient becomes a
+time derivative only after the trajectory's differentiability and evolution
+premises are discharged. The numerical QuadraticMechanics owner evaluates
+coupled mass/support/damping forms and multiple memory branches with explicit
+matrix-correction diagnostics and an independent power residual. The numerical
+power residual supplies floating-point evidence rather than an exact proof.
+
+GaussianCoherence proves PSD covariance gives nonnegative sampled phase
+variance and coherence in(0,1] under the declared classical Gaussian formula.
+Balanced ideal echo cancels quasistatic phase; zero coupling leaves relaxation.
+The explicit I/Z Kraus mixture realizes the modeled Gaussian phase factor
+through the existing KrausChannel owner. Complex Bell decomposition proves
+the supplied dephasing Choi form positive for admissible mixture weights.
+The channel models phase noise; population relaxation uses a separate channel.
+A quantum vacuum bath derivation remains a separate obligation.
+VacuumSpectralModels proves vacuum ordered-line asymmetry, Bose balance,
+quartic cutoff scaling and increased harmonic variance under stable softening.
+WorldlineInteraction proves integrand subtraction, both-body selection,
+interaction-weight bounds and scalar/polarization scaling identities.
+
+The vacuum-response-audit command composes existing optical-response owners,
+finite-difference curvature, stable local mechanics, declared thermal
+quasistatic covariance, exact undamped harmonic Ramsey/Hahn filters and the
+existing nuisance
+information solver. Ideal and gold reference parameters are computed models.
+The mechanical temperature, coupling, uncertainty scale and calibration
+precision are investigator inputs. A material-model lookup selects neither a
+specimen nor a measured response. Matrix PSD corrections are numerical model
+changes, explicitly reported by their owner. Pressure-refinement differences
+are estimates rather than certified error bounds. Ordered quantum line
+weights remain separate from the classical thermal covariance.
+
+The quasistatic branch demonstrates a constructive competing prediction:
+more attractive curvature softens stable support, increases thermal variance
+and reduces Ramsey coherence at fixed coupling. The harmonic branch evolves
+both thermal initial coordinates and has frequency-dependent filter zeros;
+its coherence ordering can reverse. A duration sweep can distinguish static
+offsets from harmonic motion. The echo/Ramsey ratio cancels a shared
+multiplicative relaxation factor within the declared model. A support-stiffness nuisance can mimic
+that change exactly. An independently constraining calibration can restore
+model information, but analyst-selected calibration supplies no measured
+mechanism discrimination. The material_records and calibrated_discrimination
+owners retain authority over empirical specimen joins and matched inference.
+
+Primary-source followup observations and post-fetch hashes are retained in
+data/output/audit/vacuum-composition/source-reconciliation.txt and
+data/output/audit/vacuum-composition/source-body-SHA256SUMS.
+Full responses remain in the local cache, separate from repository summaries.
+
+- Abd-Rabbou et al., Physical Review A114,022601(2026), DOI
+  10.1103/9mwm-b828; primary arXiv2601.18327v1 was inspected. The abstract
+  explicitly separates the result from net energy gain. Preparation,
+  probabilistic swaps, purification, nesting and repeat-until-success costs
+  remain inputs to an independently unverified resource-scaling argument.
+- DESI DR2 ResultsIV, arXiv2607.27410v3 and Herbold et al. validation
+  arXiv2607.27411v1 were inspected through the official DESI paper index.
+  Their distances and conditional cosmological-model constraints supply
+  different observables from laboratory work capacity. Likelihood replay
+  remains unexecuted.
+- Gies, Langfeld and Moyaerts, JHEP0306(2003)018,
+  hep-th/0303264v2, Eqs8,13 and44 ground the scalar dimension, disconnected
+  single-body subtraction and both-body interaction predicate.
+- The Setterfield2023 article is recovered through DOI
+  10.47363/JPSOS/2023(5)220 and byte-identical publisher/archive PDFs, SHA256
+  cd5ebc0d817a4fdd324755113c62be74dd9054445ff02219f8d7c381dcbaa278.
+  Monograph pp34-35 and the original1.7e57 pairs/s derivation remain
+  unrecovered. Article access changes attribution coverage, not validity.
+
+The leaf dispositions deliberately retain physical measurements, undefined
+models, source gaps and unformalized analytic arguments. The formal corpus
+uses Stdlib real-number assumptions; each retained assumption report records
+its actual context. The integration does not establish a universal vacuum
+fuel theorem, a measured coherence improvement or infinite-dimensional QFT.

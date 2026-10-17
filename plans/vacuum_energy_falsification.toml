@@ -170,12 +170,12 @@ residual = "The test covers representable commutator squared norms and normaliza
 
 [[leaf]]
 id = "worldline-interaction-oracle"
-state = "requires_separate_repair"
+state = "conditional_model"
 claim = "Worldline finiteness validates scalar interaction energy, EM normalization and local density."
 owner = "crates/casimir_core/src/energy.rs"
 falsifier = "Derive self-energy subtraction, field multiplicity, observable units and nonnegative estimator uncertainty, then refine loops and proper-time bounds."
-witness = "Inspected source uses any boundary hit, negative error prefactor and EM coefficient for a scalar label."
-residual = "The audit does not supply the independent worldline repair and convergence campaign."
+witness = "The followup implements scalar3+1D subtraction, distinct-body masks, Gaussian Brownian bridges, positive statistical error, scalar plate normalization and seeded parallel convergence controls."
+residual = "Finite-polygon continuum bias remains substantial and separate from statistical error; local-grid and proper-time refinements remain required for precision use."
 
 [[leaf]]
 id = "boundary-coherence-mechanism"
@@ -283,7 +283,7 @@ claim = "Remote conditional energy extraction establishes net energy gain withou
 owner = "crates/quantum_core/src/vacuum_audit.rs"
 falsifier = "Account for Alice's operation, Bob's output, shared-state preparation, controls and repeated-cycle resource restoration."
 witness = "Total energy relative to the initial global ground state remains bounded below."
-residual = "The attachment's specific2026 repeater citation remains independently unverified."
+residual = "The exact PRA114,022601 paper and arXiv2601.18327v1 are identified and inspected; success-conditioned resource scaling and the local-instrument derivation remain independently unverified."
 
 [[leaf]]
 id = "piezo-pyroelectric-conversion"
@@ -332,9 +332,9 @@ residual = "Specimen, temperature/strain-dependent coefficients and a thermodyna
 
 [[leaf]]
 id = "latest-cosmology-laboratory-inventory"
-state = "blocked_source"
+state = "blocked_measurement"
 claim = "A2026 DESI model comparison validates a laboratory vacuum-fuel density."
 owner = "docs/engineering/vacuum_energy_falsification_audit.txt"
 falsifier = "Inspect the exact cosmology source and its likelihood; derive the separately measurable laboratory quantity and map."
-witness = "Cosmological inference and laboratory work capacity are distinct observables."
-residual = "The attachment's exact2026 DESI analysis and data were not reingested."
+witness = "DESI DR2 ResultsIV,arXiv2607.27410v3 and validation2607.27411v1 are identified and inspected; their observables are cosmological distances and conditional model constraints."
+residual = "Cosmological likelihood replay remains unexecuted; a laboratory observable and a derived physical map remain separately required."

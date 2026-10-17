@@ -1,0 +1,421 @@
+[contract]
+title = "Vacuum composition, formal coverage and residual obligations"
+source_ledger = "plans/vacuum_energy_falsification.toml"
+leaf_count = 35
+scope = "Each row reconciles one original proposition. Integration dispositions classify evidence; they do not assert universal scientific closure."
+proof_boundary = "Declaration references are checked lexically; separate Rocq compilation, kernel replay and assumption reports establish proof execution."
+
+[[leaf]]
+id = "ground-state-occupation"
+disposition = "formal_model"
+formal = [
+  "proofs/theories/VacuumSpectralModels.v::vacuum_ordered_line_asymmetry",
+  "proofs/theories/VacuumSpectralModels.v::oscillator_variance_survives_zero_occupation",
+]
+implementation = [
+  "crates/quantum_core/src/vacuum_audit.rs::oscillator_line_weights",
+]
+dependencies = []
+physical_validation = "unperformed"
+next_gate = "Specify an interacting detector before assigning particles."
+
+[[leaf]]
+id = "cyclic-ground-state-work"
+disposition = "formal_model"
+formal = [
+  "proofs/theories/FiniteComplexPassivity.v::cyclic_ground_state_passive",
+  "proofs/theories/FiniteComplexPassivity.v::cyclic_available_work_bound",
+  "proofs/theories/FiniteCompositePassivity.v::normalized_joint_ground_bound",
+]
+implementation = ["crates/quantum_core/src/vacuum_audit.rs::diagonal_ergotropy"]
+dependencies = []
+physical_validation = "unperformed"
+next_gate = "Verify closed control resources, the common Hamiltonian and finite spectral truncation for an apparatus."
+
+[[leaf]]
+id = "absolute-energy-offset-control"
+disposition = "formal_model"
+formal = [
+  "proofs/theories/FiniteComplexPassivity.v::cyclic_work_offset_invariant",
+]
+implementation = ["crates/quantum_core/src/vacuum_audit.rs::diagonal_ergotropy"]
+dependencies = ["cyclic-ground-state-work"]
+physical_validation = "unperformed"
+next_gate = "A gravitational stress tensor requires a separately defined renormalized theory."
+
+[[leaf]]
+id = "ultraviolet-inventory"
+disposition = "formal_model"
+formal = [
+  "proofs/theories/VacuumSpectralModels.v::ultraviolet_cutoff_quartic_scaling",
+]
+implementation = ["crates/quantum_core/examples/vacuum_falsification.rs"]
+dependencies = []
+physical_validation = "unperformed"
+next_gate = "Supply a measured observable and valid density-of-states or gravitational renormalization map."
+
+[[leaf]]
+id = "galaxy-energy-equality"
+disposition = "numerical_counterexample"
+formal = []
+implementation = ["crates/quantum_core/examples/vacuum_falsification.rs"]
+dependencies = []
+physical_validation = "unperformed"
+next_gate = "Recover the historical luminosity assumptions before attributing a physical galaxy total."
+
+[[leaf]]
+id = "davies-historical-attribution"
+disposition = "source_reconciled"
+formal = []
+implementation = [
+  "data/output/audit/vacuum-passivity/source-retrieval-notes.txt",
+]
+dependencies = []
+physical_validation = "unperformed"
+next_gate = "Original print-page facsimiles remain unread; HTML supplies the inspected context."
+
+[[leaf]]
+id = "monograph-page-provenance"
+disposition = "source_open"
+formal = []
+implementation = [
+  "data/output/audit/vacuum-composition/source-reconciliation.txt",
+]
+dependencies = []
+physical_validation = "unperformed"
+next_gate = "Recover actual monograph pages34-35; the newly recovered chapter locator supplies pp28-52 only."
+
+[[leaf]]
+id = "virtual-pair-rate-population"
+disposition = "source_open"
+formal = []
+implementation = [
+  "data/output/audit/vacuum-composition/source-reconciliation.txt",
+]
+dependencies = ["ground-state-occupation"]
+physical_validation = "unperformed"
+next_gate = "Recover the original1.7e57 pairs/s derivation and an operational particle observable; the2023 article is recovered."
+
+[[leaf]]
+id = "ordered-vacuum-emission"
+disposition = "formal_model"
+formal = [
+  "proofs/theories/VacuumSpectralModels.v::ordered_lines_obey_bose_balance",
+  "proofs/theories/VacuumSpectralModels.v::vacuum_ordered_line_asymmetry",
+]
+implementation = [
+  "crates/quantum_core/src/vacuum_audit.rs::oscillator_line_weights",
+]
+dependencies = ["ground-state-occupation"]
+physical_validation = "unperformed"
+next_gate = "Measure the ordered spectrum and detector backaction for a dissipative device."
+
+[[leaf]]
+id = "static-casimir-cycle"
+disposition = "formal_model"
+formal = [
+  "proofs/theories/PassiveMechanicalMemory.v::conservative_cycle_cancels",
+]
+implementation = [
+  "crates/quantum_core/examples/vacuum_falsification.rs",
+  "crates/materials_core/src/multilayer_lifshitz.rs",
+]
+dependencies = []
+physical_validation = "unperformed"
+next_gate = "The conservative fixed-parameter model excludes unmeasured modulation, charge, contact and thermal channels."
+
+[[leaf]]
+id = "driven-casimir-energy-source"
+disposition = "measurement_open"
+formal = [
+  "proofs/theories/FiniteComplexPassivity.v::cyclic_available_work_bound",
+]
+implementation = [
+  "data/output/audit/vacuum-passivity/source-retrieval-notes.txt",
+]
+dependencies = ["closed-energy-resource-account"]
+physical_validation = "unperformed"
+next_gate = "Reconstruct the driven experiment's complete pump, preparation and reset energy budget."
+
+[[leaf]]
+id = "closed-energy-resource-account"
+disposition = "formal_model"
+formal = [
+  "proofs/theories/PassiveMechanicalMemory.v::resource_closed_supply_bound",
+]
+implementation = [
+  "crates/quantum_core/src/vacuum_audit.rs::energy_closure_residual",
+  "crates/quantum_core/src/vacuum_response.rs::power",
+]
+dependencies = []
+physical_validation = "unperformed"
+next_gate = "Measure all transfers, storage and correlated uncertainty; first-law closure alone cannot establish the source or entropy admissibility."
+
+[[leaf]]
+id = "passive-exponential-memory"
+disposition = "formal_model"
+formal = [
+  "proofs/theories/PassiveMechanicalMemory.v::coupled_mechanical_storage_balance",
+  "proofs/theories/PassiveMechanicalMemory.v::memory_dissipation_nonnegative",
+  "proofs/theories/PassiveMechanicalMemory.v::symmetric_quadratic_increment",
+]
+implementation = ["crates/quantum_core/src/vacuum_response.rs::power"]
+dependencies = []
+physical_validation = "unperformed"
+next_gate = "Smooth-trajectory calculus and time-integration error remain separate from the exact directional storage identity."
+
+[[leaf]]
+id = "positive-kernel-quantum-admissibility"
+disposition = "formal_counterexample"
+formal = [
+  "proofs/theories/VacuumCounterexamples.v::depolarizing_choi_psd_interval",
+  "proofs/theories/VacuumCounterexamples.v::depolarizing_negative_half_witness",
+]
+implementation = [
+  "crates/quantum_core/src/channel_admissibility.rs::positive_exponential_kernel_can_violate_complete_positivity",
+]
+dependencies = ["passive-exponential-memory"]
+physical_validation = "unperformed"
+next_gate = "Derive each candidate channel from its actual dynamics; the supplied Choi matrix proof does not prove general Choi equivalence."
+
+[[leaf]]
+id = "commutator-population-conservation"
+disposition = "numerical_counterexample"
+formal = []
+implementation = [
+  "crates/algebra_experimental/src/novel_algorithms/zpe_lbm_collision.rs::basis_commutator_changes_population_sum",
+]
+dependencies = []
+physical_validation = "unperformed"
+next_gate = "A physical D3Q19 map requires constrained moments, positivity, thermal calibration and continuum evidence."
+
+[[leaf]]
+id = "commutator-field-amplitude"
+disposition = "numerical_counterexample"
+formal = []
+implementation = [
+  "crates/algebra_experimental/src/novel_algorithms/zpe_lbm_collision.rs::normalization_removes_operand_magnitude",
+]
+dependencies = ["commutator-population-conservation"]
+physical_validation = "unperformed"
+next_gate = "The retained normalized algebraic experiment remains an algebraic perturbation rather than a field-strength model."
+
+[[leaf]]
+id = "worldline-interaction-oracle"
+disposition = "implementation_repaired"
+formal = [
+  "proofs/theories/WorldlineInteraction.v::interaction_subtraction_factorizes",
+  "proofs/theories/WorldlineInteraction.v::dirichlet_requires_both_bodies",
+  "proofs/theories/WorldlineInteraction.v::scalar_plate_dilation",
+]
+implementation = [
+  "crates/casimir_core/src/energy.rs::scalar_parallel_plates_worldline",
+  "crates/casimir_core/src/vloop.rs::generate_unit_loop",
+]
+dependencies = []
+physical_validation = "unperformed"
+next_gate = "Finite polygons retain substantial continuum bias; local quadrature and proper-time cutoffs need independent convergence before precision qualification."
+
+[[leaf]]
+id = "boundary-coherence-mechanism"
+disposition = "model_composed_measurement_open"
+formal = [
+  "proofs/theories/GaussianCoherence.v::gaussian_coherence_range",
+  "proofs/theories/GaussianCoherence.v::gaussian_phase_normalized_choi_psd",
+  "proofs/theories/VacuumSpectralModels.v::stable_softening_increases_zero_point_variance",
+  "proofs/theories/GaussianCoherence.v::ideal_echo_cancels_quasistatic_phase",
+]
+implementation = [
+  "crates/gororoba_cli_physics/src/bin/vacuum_response_audit.rs",
+  "crates/quantum_core/src/vacuum_response.rs::sampled_gaussian_coherence",
+  "crates/quantum_core/src/vacuum_response/harmonic.rs::thermal_harmonic_coherence",
+  "crates/quantum_core/src/measurement_formalism.rs::gaussian_phase_noise",
+]
+dependencies = ["ordered-vacuum-emission", "passive-exponential-memory"]
+physical_validation = "unperformed"
+next_gate = "The composed ideal/Drude reference uses analyst parameters and classical quasistatic and harmonic thermal covariance with explicit temporal filters; specimen response, measured spectrum and independent coupling calibration remain required."
+
+[[leaf]]
+id = "empirical-panel-reconstruction"
+disposition = "source_open"
+formal = []
+implementation = [
+  "crates/materials_core/src/material_records.rs",
+  "data/output/audit/vacuum-passivity/source-retrieval-notes.txt",
+]
+dependencies = []
+physical_validation = "unperformed"
+next_gate = "Ingest source archives with license, point-level units, specimen conditions and uncertainty before reconstructing empirical panels."
+
+[[leaf]]
+id = "sampling-memory-artifact"
+disposition = "numerical_counterexample"
+formal = []
+implementation = [
+  "crates/quantum_core/examples/vacuum_falsification.rs::undersampled_fundamental_aliases_to_slow_envelope",
+]
+dependencies = []
+physical_validation = "unperformed"
+next_gate = "Original scripts remain unrecovered; spectral and temporal refinement must precede physical memory inference."
+
+[[leaf]]
+id = "fourier-summability-stability"
+disposition = "analytic_counterexample_recorded"
+formal = []
+implementation = ["docs/engineering/vacuum_energy_falsification_audit.txt"]
+dependencies = []
+physical_validation = "unperformed"
+next_gate = "The resonant witness is analytically derived in the audit; complete ODE/unbounded-response formalization remains a separate proof obligation."
+
+[[leaf]]
+id = "residue-energy-convergence"
+disposition = "formal_counterexample"
+formal = [
+  "proofs/theories/VacuumAnalyticLimits.v::weighted_bound_does_not_bound_unweighted_energy",
+]
+implementation = ["docs/engineering/vacuum_energy_falsification_audit.txt"]
+dependencies = []
+physical_validation = "unperformed"
+next_gate = "The arbitrary finite partial-sum family is proved; an infinite-series limit bridge remains separately unformalized."
+
+[[leaf]]
+id = "input-independent-linear-transform"
+disposition = "formal_counterexample"
+formal = [
+  "proofs/theories/VacuumSpectralModels.v::input_independent_nonzero_map_is_not_additive",
+]
+implementation = ["docs/engineering/vacuum_energy_falsification_audit.txt"]
+dependencies = []
+physical_validation = "unperformed"
+next_gate = "A replacement transform needs input-dependent coefficients plus separate span and independence proofs."
+
+[[leaf]]
+id = "fractional-oscillator-limit"
+disposition = "analytic_counterexample_recorded"
+formal = []
+implementation = ["docs/engineering/vacuum_energy_falsification_audit.txt"]
+dependencies = []
+physical_validation = "unperformed"
+next_gate = "Specify the fractional derivative, units, causal initial domain and passive constitutive response before implementation."
+
+[[leaf]]
+id = "material-order-device-integration"
+disposition = "measurement_open"
+formal = []
+implementation = ["crates/materials_core/src/material_records.rs"]
+dependencies = ["empirical-panel-reconstruction"]
+physical_validation = "unperformed"
+next_gate = "Specimen-bound phase, dielectric-loss, microwave and integrated coherence measurements remain unprovided."
+
+[[leaf]]
+id = "algebraic-physical-uniqueness"
+disposition = "model_composed_measurement_open"
+formal = []
+implementation = [
+  "crates/stats_core/src/calibrated_discrimination.rs::efficient_information",
+  "crates/gororoba_cli_physics/src/bin/vacuum_response_audit.rs",
+]
+dependencies = ["boundary-coherence-mechanism"]
+physical_validation = "unperformed"
+next_gate = "Computed nuisance mimicry and analyst-specified calibration do not replace support-matched held-out measurements."
+
+[[leaf]]
+id = "holographic-encoding-physical-interpretation"
+disposition = "definition_open"
+formal = ["proofs/theories/FiniteComplexPassivity.v::isometry_composition"]
+implementation = ["docs/engineering/vacuum_energy_falsification_audit.txt"]
+dependencies = []
+physical_validation = "unperformed"
+next_gate = "Norm-preserving mathematical encodings require separate error/recovery channels and a derived measured gravity map."
+
+[[leaf]]
+id = "time-crystal-work-resource"
+disposition = "measurement_open"
+formal = [
+  "proofs/theories/FiniteComplexPassivity.v::cyclic_ground_state_passive",
+]
+implementation = ["crates/quantum_core/src/vacuum_audit.rs"]
+dependencies = ["cyclic-ground-state-work", "closed-energy-resource-account"]
+physical_validation = "unperformed"
+next_gate = "Specify equilibrium/driven regime and measure drive, preparation and repeated-cycle restoration."
+
+[[leaf]]
+id = "quantum-energy-teleportation-net-work"
+disposition = "source_reconciled_model_open"
+formal = [
+  "proofs/theories/FiniteComplexPassivity.v::tensor_additive_energy",
+  "proofs/theories/FiniteComplexPassivity.v::cyclic_ground_state_passive",
+  "proofs/theories/FiniteCompositePassivity.v::joint_ground_state_cyclic_passive",
+]
+implementation = [
+  "data/output/audit/vacuum-composition/source-reconciliation.txt",
+]
+dependencies = ["closed-energy-resource-account"]
+physical_validation = "unperformed"
+next_gate = "The recovered QET primary source disclaims net gain; local CP instruments, postselection probabilities and success-conditioned resource scaling remain independently unverified."
+
+[[leaf]]
+id = "piezo-pyroelectric-conversion"
+disposition = "measurement_open"
+formal = [
+  "proofs/theories/PassiveMechanicalMemory.v::resource_closed_supply_bound",
+]
+implementation = [
+  "crates/quantum_core/src/vacuum_audit.rs::energy_closure_residual",
+]
+dependencies = ["closed-energy-resource-account"]
+physical_validation = "unperformed"
+next_gate = "Measure mechanical and thermal inputs, delivered electrical work and preparation/reset under a matched sham."
+
+[[leaf]]
+id = "material-phase-velocity-gravity"
+disposition = "definition_open"
+formal = [
+  "proofs/theories/VacuumSpectralModels.v::equal_units_do_not_determine_a_map",
+]
+implementation = ["docs/engineering/vacuum_energy_falsification_audit.txt"]
+dependencies = []
+physical_validation = "unperformed"
+next_gate = "Equal speed units do not derive an action, gravitational coupling or detector prediction."
+
+[[leaf]]
+id = "scalar-field-actuator-definition"
+disposition = "definition_open"
+formal = []
+implementation = ["docs/engineering/vacuum_energy_falsification_audit.txt"]
+dependencies = []
+physical_validation = "unperformed"
+next_gate = "Supply an action, symmetries, units, stable Hamiltonian, couplings and distinct falsifiable prediction."
+
+[[leaf]]
+id = "banach-tarski-energy-duplication"
+disposition = "definition_open"
+formal = [
+  "proofs/theories/FiniteComplexPassivity.v::cyclic_ground_state_passive",
+]
+implementation = [
+  "crates/verified_core/src/monograph/banach_tarski_resonance.rs",
+]
+dependencies = ["closed-energy-resource-account"]
+physical_validation = "unperformed"
+next_gate = "Define a physical measurable finite-energy operation; the retained monograph interpretation remains a hypothesis."
+
+[[leaf]]
+id = "ferroelectric-iteration-phase-boundary"
+disposition = "analytic_counterexample_recorded"
+formal = []
+implementation = ["docs/engineering/vacuum_energy_falsification_audit.txt"]
+dependencies = []
+physical_validation = "unperformed"
+next_gate = "A thermodynamic model requires specimen-dependent free-energy coefficients and competing minima rather than iteration failure."
+
+[[leaf]]
+id = "latest-cosmology-laboratory-inventory"
+disposition = "source_reconciled_model_open"
+formal = []
+implementation = [
+  "data/output/audit/vacuum-composition/source-reconciliation.txt",
+]
+dependencies = []
+physical_validation = "unperformed"
+next_gate = "DESI source identity and inspected full text are recovered; cosmological likelihood replay and any laboratory map remain separate."

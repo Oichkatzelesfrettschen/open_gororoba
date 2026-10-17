@@ -1,0 +1,64 @@
+
+CONTEXT SUMMARY
+===============
+
+* Theory: Set is predicative
+
+* Theory: Rewrite rules are not allowed
+
+* Axioms:
+    OpenGororoba.SStructuralGaps.s3_hurwitz_uniqueness
+    OpenGororoba.TightBindingTopology.trs_swaps_valleys
+    OpenGororoba.SStructuralGaps.s5_three_generations_from_T
+    OpenGororoba.SStructuralGaps.s3_hurwitz_dim_must_be_1248
+    OpenGororoba.SStructuralGaps.su3_f
+    OpenGororoba.SStructuralGaps.s7_spinor_rank_is_rho
+    OpenGororoba.CarlsonIntegrals.RF_equal_args
+    OpenGororoba.TightBindingTopology.bandwidth
+    OpenGororoba.SStructuralGaps.s2_brown_thm715_abstract
+    OpenGororoba.SStructuralGaps.s4_f4_is_aut_j3o
+    OpenGororoba.SStructuralGaps.s1_g2_stabilizer_is_su3
+    OpenGororoba.CDFidelity.wht_assoc_image
+    OpenGororoba.CarlsonIntegrals.RJ
+    OpenGororoba.CarlsonIntegrals.RF
+    OpenGororoba.SStructuralGaps.abstract_sed_mul_lo
+    OpenGororoba.SStructuralGaps.abstract_sed_mul_hi
+    OpenGororoba.SStructuralGaps.s7_clifford_8_periodicity
+    OpenGororoba.SStructuralGaps.s6_aut_oct_is_g2
+    OpenGororoba.TightBindingTopology.valley_integral_Kp
+    OpenGororoba.CarlsonIntegrals.RF_positive
+    OpenGororoba.SStructuralGaps.s4_e8_octonionic_origin
+    Stdlib.Logic.FunctionalExtensionality.functional_extensionality_dep
+    OpenGororobaVerified.C958_ZDGraphTopology.zd_graph_three_components
+    Stdlib.Reals.ClassicalDedekindReals.sig_not_dec
+    OpenGororoba.TightBindingTopology.chern_integral_linear
+    OpenGororoba.CarlsonIntegrals.RJ_symmetric_23
+    OpenGororoba.CarlsonIntegrals.RJ_symmetric_13
+    OpenGororoba.CarlsonIntegrals.RJ_symmetric_12
+    OpenGororoba.TightBindingTopology.chern_splits_into_valleys
+    Stdlib.Reals.ClassicalDedekindReals.sig_forall_dec
+    OpenGororoba.TightBindingTopology.group_velocity_bandwidth_bound
+    Stdlib.Logic.Classical_Prop.classic
+    OpenGororoba.TightBindingTopology.chern_integral
+    OpenGororoba.MorenoSedenionInstance.SedMorSkew.im_rx_eq_im_lx
+    OpenGororoba.MorenoSedenionInstance.SedMorSkew.im_lx_eq_im_rx
+    OpenGororoba.SStructuralGaps.s2_brown_thm714_trace_restriction
+    OpenGororoba.CDFidelity.wht_preserves_associator
+    OpenGororoba.SStructuralGaps.s2_brown_lemma717_normalized_zero_divisors
+    OpenGororoba.TightBindingTopology.max_group_velocity
+    OpenGororoba.TightBindingTopology.valley_integral_K
+    OpenGororoba.CarlsonIntegrals.RF_symmetric_23
+    OpenGororoba.CarlsonIntegrals.RF_symmetric_13
+    OpenGororoba.CarlsonIntegrals.RF_symmetric_12
+
+* Constants/Inductives relying on type-in-type: <none>
+
+* Constants/Inductives relying on unsafe (co)fixpoints: <none>
+
+* Inductives whose positivity is assumed: <none>
+
+* Inductives relying on indices not mattering:
+    Corelib.Init.Datatypes.eq_true
+    Stdlib.btauto.Algebra.null
+    Stdlib.Logic.EqdepFacts.eq_dep
+    Corelib.Init.Logic.eq

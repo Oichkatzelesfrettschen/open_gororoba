@@ -1,0 +1,63 @@
+[replay]
+date = "2026-10-16"
+timezone = "America/Los_Angeles"
+base_commit = "f540610412409004c4f8f0843dbee6352e6a293a"
+evidence_class = "formal_models_and_implementation_diagnostics"
+producer = "crates/gororoba_cli_physics/src/bin/vacuum_response_audit.rs"
+command = "cargo run --locked --offline -p gororoba_cli_physics --bin vacuum-response-audit -- --output data/output/audit/vacuum-composition/model-report.json"
+report = "data/output/audit/vacuum-composition/model-report.json"
+report_cases = 6
+input_manifest = "data/output/audit/vacuum-composition/model-input-SHA256SUMS"
+input_scope = "Declared numerical, ledger and direct model-owner inputs; compiler transitive inputs remain outside this manifest."
+build_boundary = "Managed isolated worktree with separate target directory and primary shared cargo-home/build-dir. Local worker variables remained unset."
+compiler_wrapper = "RUSTC_WRAPPER= for named diagnostics after sandbox sccache Operation not permitted."
+repository_validation = "Ordinary scoped GitHub Actions workflow owns repository validation."
+
+[focused_checks]
+quantum_library_passed = 350
+quantum_library_ignored = 1
+response_tests = 19
+measurement_formalism_tests = 5
+casimir_package_tests = 30
+composition_runner_tests = 10
+worldline_cli_tests = 2
+quantum_clippy = "cargo clippy --locked --offline -p quantum_core --lib --tests -- -D warnings: passed"
+casimir_clippy = "cargo clippy --locked --offline -p casimir_core --all-targets -- -D warnings: passed"
+cli_clippy = "cargo clippy --locked --offline -p gororoba_cli_physics --bin vacuum-response-audit --bin worldline-casimir -- -D warnings: passed"
+ledger_coverage = "Exact equality with all35 original leaf IDs; unique IDs, admissible dispositions, acyclic dependencies, regular relative witness paths and registered lexical theorem identities."
+mutation_checks = "Missing/duplicate/invented leaves, cycles, unknown dependencies, stale declarations, path escape, missing proof registration, unearned physical closure and changed retained predictions reject."
+
+[proofs]
+build_result = "passed"
+kernel_result = "passed"
+format_followup = "Trimmed proof-report trailing whitespace and one proof EOF blank line; rebuilt the affected modules and separately kernel-checked VacuumCounterexamples and GaussianCoherence."
+assumption_inventory_result = "passed"
+rocq = "9.3.0"
+ocaml = "5.5.1"
+stdlib = "9.2.0"
+visible_cpus = 12
+build_command = 'opam exec --switch=rocq-9.3 -- make -C proofs --jobs="$(nproc)" --keep-going all check-admissions'
+registered_sources = 318
+kernel_modules = 318
+new_modules = 8
+new_named_declaration_contexts = 83
+admission_scanner_tests = 5
+admission_tokens = 0
+source_hashes = "data/output/audit/vacuum-composition/proof-source-SHA256SUMS"
+object_hashes = "data/output/audit/vacuum-composition/proof-object-SHA256SUMS"
+named_assumptions = "data/output/audit/vacuum-composition/proof-assumptions.txt"
+full_kernel_context = "data/output/audit/vacuum-composition/proof-kernel-context.txt"
+new_declaration_assumptions = "Classical real decision principles, classical logic and functional extensionality; the actual per-declaration contexts are retained. Existing project axioms appear separately in the complete corpus context."
+archive = ".cache/vacuum-composition-source-observations/proof-replay/source-and-objects.tar.zst"
+archive_owner = "Canonical checkout local retained cache; archive bytes remain outside Git."
+archive_sha256 = "7277c0a696a6303ab47008faee56a2b45b4b345eb1d779d0a0d0e2cca4b793e0"
+
+[limits]
+physical_validation = "All35 integration rows retain physical_validation=unperformed."
+passivity = "Finite diagonal spectra and explicitly normalized complex amplitudes; norm-preserving maps require additional physical unitary realization."
+mechanics = "Finite coupled quadratic models and instantaneous directional identities; smooth trajectory/time derivative and numerical integration remain separate."
+coherence = "Classical quasistatic or undamped thermal harmonic Gaussian phase models. I/Z Kraus realization models phase averaging; population relaxation, quantum-vacuum bath derivation and empirical calibration remain separate."
+worldline = "Real scalar Dirichlet interaction in3+1 dimensions. At5000 loops,512 vertices retain about13.35 percent continuum polygon bias; SEM excludes discretization/quadrature bias."
+materials = "Ideal and reference local gold Drude models; specimen binding and measured optical response remain unprovided."
+sources = "Recovered QET/DESI primary texts do not establish net work or laboratory energy inventory. Monograph pp34-35 and original1.7e57 pairs/s derivation remain unrecovered."
+formal_boundary = "Real arithmetic kernel proofs do not certify floating-point execution or physical hypotheses. Finite partial-sum results do not establish an infinite-series limit."

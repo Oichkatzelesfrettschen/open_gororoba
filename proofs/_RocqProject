@@ -313,3 +313,11 @@ theories/CDFidelity.v
 verified/C1474_FuelAdequacy.v
 theories/NullityTwelveQuadraticLocus.v
 theories/SedenionFoldTransport.v
+theories/PassiveMechanicalMemory.v
+theories/FiniteComplexPassivity.v
+theories/VacuumCounterexamples.v
+theories/GaussianCoherence.v
+theories/WorldlineInteraction.v
+theories/VacuumSpectralModels.v
+theories/FiniteCompositePassivity.v
+theories/VacuumAnalyticLimits.v

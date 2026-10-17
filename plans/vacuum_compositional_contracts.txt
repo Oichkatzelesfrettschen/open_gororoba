@@ -1,0 +1,69 @@
+Vacuum response composition and proof implementation plan
+========================================================
+
+The vacuum falsification ledger records 35 propositions with mixed mathematical,
+source and empirical obligations. A falsifier inventory alone leaves reusable
+positive models and their composition unimplemented. The new work connects
+finite-dimensional work bounds, coupled mechanical memory and sampled Gaussian
+coherence while retaining the original layer boundaries.
+
+The execution uses Rust 1.97.0, nalgebra, and Rocq 9.3.0 / Stdlib 9.2.0.
+Independent proof files compile under the existing all-visible-CPU Make
+jobserver. Kernel replay and assumption reports measure separate surfaces.
+
+Ordered deliverables
+--------------------
+1. Reconcile all 35 leaf IDs with source evidence, numerical APIs, theorem
+   declarations and remaining measurement requirements. Preserve historical
+   source observations; append newly recovered sources with post-fetch hashes.
+2. Prove arbitrary finite-dimensional complex-amplitude spectral lower bounds,
+   cyclic ground-state work, additive-offset invariance, and compositional
+   dimension lifting under explicit normalization/isometry premises. Reuse
+   repository complex definitions where available.
+3. Implement coupled mechanical storage with symmetric positive mass/support,
+   nonnegative damping and auxiliary passive-memory modes. Validate dimensions,
+   finite arithmetic and matrix domains. Test non-diagonal cross terms and
+   instantaneous supply = storage derivative + dissipation.
+4. Implement PSD sampled classical Gaussian displacement covariance, calibrated
+   coupling and signed pulse quadrature. Test Ramsey, ideal quasistatic echo,
+   zero coupling, invalid covariance and relaxation. Keep ordered quantum noise
+   on its separately declared contract.
+5. Prove the corresponding finite-dimensional storage identity, supply bound,
+   Gaussian variance nonnegativity, coherence range and echo cancellation.
+   Prove scalar Choi admissibility separately from classical passivity.
+6. Repair repository-aligned worldline interaction issues only after deriving
+   the scalar proper-time dimension, self-energy subtraction and Brownian
+   measure from the primary source. A finite stochastic output cannot close
+   normalization or convergence obligations. Retain explicit residuals.
+7. Add a deterministic composition example and a machine-checked 35-leaf
+   integration manifest. Check witness paths/declarations and reject stale,
+   duplicate, missing or unjustifiably closed physical rows.
+8. Run focused Rust tests/Clippy, complete multicore proof compilation,
+   admission scan, kernel replay and assumption inventories. Independently
+   review, run hosted CI, merge, synchronize canonical main and retain or
+   archive worktrees according to measured outstanding edits.
+
+Review focus
+------------
+- PSD tolerance must not silently admit an unstable physical model.
+- Classical covariance and ordered quantum spectra have different contracts.
+- Real-valued proofs do not certify floating-point execution.
+- Finite-dimensional/truncated results do not establish infinite-field limits.
+- Source recovery and model validation do not establish a measured device.
+- The canonical material/provenance/statistical owners remain the owners of
+  specimen joins and matched-control inference; the new model must compose
+  through those owners rather than duplicate their vocabularies.
+
+Execution state
+---------------
+Completed: all35 source/contract rows; eight finite-dimensional proof modules;
+coupled storage and sampled/harmonic Gaussian models; explicit phase Kraus
+channel; scalar worldline repair; report producer and mutation checks.
+Completed: all318-source multicore compile, admission scanner and83 named
+assumption contexts; targeted numerical diagnostics and final review.
+Completed: full-corpus kernel replay and final small-variance channel
+regression; all350 quantum library tests passed with one pre-existing ignored
+test. Final retained source, object and numerical identities were refreshed.
+In progress: hosted CI and integration.
+Pending: exact-head hosted CI, merge, canonical synchronization and managed
+worktree archival. Existing dirty worktrees remain separately retained.

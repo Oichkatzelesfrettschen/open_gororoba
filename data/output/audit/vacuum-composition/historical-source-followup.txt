@@ -1,0 +1,71 @@
+# Bounded historical-source followup
+
+Audit window: 2026-10-17T04:37Z to approximately 04:40Z. Files remain outside the repository in a new temporary evidence directory. Every digest in SHA256SUMS was computed after retrieval. Curl followed redirects; response headers and server timestamps were not retained. UTC file modification times identify completed local writes. Body retrieval and source attribution do not validate the physical models asserted by an author.
+
+## New result: the 2023 virtual-particles paper is recoverable
+
+The earlier failed author-linked URL remains a real failed retrieval, but the paper's contents are now accessible through two independent locators.
+
+1. Crossref title query:
+   https://api.crossref.org/works?query.title=Reviewing%20the%20Role%20of%20Virtual%20Particles%20in%20the%20Vacuum&rows=5
+   Saved crossref-title.json, completed 2026-10-17T04:37:37Z.
+   Exact matching first item identifies Barry Setterfield, title Reviewing the Role of Virtual Particles in the Vacuum, DOI 10.47363/jpsos/2023(5)220, published 2023-11-27. The registered resource URL is https://srcpublishers.com/physics-optics-sciences-jpsos/article/view/1575/1658 .
+
+2. DOI redirect:
+   https://doi.org/10.47363/JPSOS/2023(5)220
+   Saved virtual-particles-doi-response.html, completed 2026-10-17T04:37:47Z.
+   The actual returned viewer HTML links this PDF:
+   https://srcpublishers.com/physics-optics-sciences-jpsos/article/download/1575/1658/5712
+   Saved setterfield-virtual-particles-2023.pdf, completed 2026-10-17T04:38:01Z.
+
+3. Wayback availability API:
+   https://archive.org/wayback/available?url=www.onlinescientificresearch.com/articles/reviewing-the-role-of-virtual-particles-in-the-vacuum.pdf
+   Saved wayback-virtual-particles-pdf.json. It returned snapshot 20260114022837, available=true, status200.
+   Actual archived PDF:
+   https://web.archive.org/web/20260114022837id_/https://onlinescientificresearch.com/articles/reviewing-the-role-of-virtual-particles-in-the-vacuum.pdf
+   Saved setterfield-virtual-particles-2023-wayback.pdf, completed 2026-10-17T04:38:01Z.
+
+The current-publisher and archived PDF bodies have identical SHA-256:
+cd5ebc0d817a4fdd324755113c62be74dd9054445ff02219f8d7c381dcbaa278
+
+Both bodies are valid unencrypted PDF1.4 documents. pdfinfo reports 9 pages and 1142970 bytes. The file command's heuristic reported 39 pages; pdfinfo is the structural inspection used for page count. pdftotext -layout successfully extracted both text layers into corresponding .txt files.
+
+The PDF's printed footer identifies Journal of Physics & Optics Sciences, 2023, volume5(6), pages1-9, and its DOI. The current metadata landing page https://srcpublishers.com/physics-optics-sciences-jpsos/article/view/1575 was also retrieved as virtual-particles-article-metadata.html. That current page has some copyright metadata dated2025; the DOI/Crossref publication identity and PDF identify2023. Preserve the difference rather than treating all current page metadata as original2023 metadata.
+
+Text evidence:
+
+- PDF page2, text lines91-108: author asserts a cosmic-ocean analogy of interacting ZPE waves generating virtual pairs and at least21 types; the passage supplies an interpretation rather than a number-operator/detector measurement.
+- PDF page3, text lines139-174: author quotes Leuchs et al.2010 and Urban et al.2013 for speculative vacuum-permittivity/light-speed models. Those quotations are attribution; upstream model validity was not independently audited in this followup.
+- PDF page8 reference8, text lines459-461: cites the2013 NPA monograph pp53-55. Reference18 on page9 cites pp138-160; reference21 cites pp258-297; reference28 cites pp72-137. The bibliography text has an unusual author rendering 'Maryland US'; retain source text rather than normalizing that into new authorship evidence.
+- The extracted text contains no exact1.7e57 pairs/s derivation. Searches for 1.7, 1057, 10^57,10 57 and pair/second combinations returned either zero relevant matches or unrelated references. Image-only mathematical content was not OCR-audited, so the text-layer search does not prove the entire graphical paper lacks the number.
+
+## Targeted adjacent author papers
+
+Crossref monograph bibliographic query returned related Setterfield papers, rather than the monograph itself:
+https://api.crossref.org/works?query.bibliographic=Cosmology%20and%20the%20Zero%20Point%20Energy%20Setterfield%202013&rows=3
+Saved crossref-monograph.json.
+
+- DOI10.47363/jpsos/2023(5)204, Reviewing Redshifts and the Zero Point Energy, resolved to a viewer linking https://srcpublishers.com/physics-optics-sciences-jpsos/article/download/1539/1615/5563 . Retrieved as2023-redshift.pdf, completed2026-10-17T04:39:04Z, extracted to2023-redshift.txt.
+- DOI10.47363/jpsos/2026(8)394, Reviewing Zero Point Energy Developments Plus some Unexpected Outcomes, resolved to a viewer linking https://srcpublishers.com/physics-optics-sciences-jpsos/article/download/8214/8551/30378 . Retrieved as2026-zpe-developments.pdf, completed2026-10-17T04:39:04Z, extracted to2026-zpe-developments.txt.
+- The2026 paper reference21, text lines774-777, cites Setterfield2013 'Exploring the Vacuum' as a chapter in Cosmology and the Zero Point Energy, NPA Monograph Series1, editor G.Volk, pp28-52. That supplies a new chapter-page locator encompassing pp34-35, while leaving those actual pages unrecovered.
+- Text-layer searches of both adjacent papers recovered no exact1.7e57 rate derivation. The papers' own assertions about ZPE origin, variable constants, biology and cosmology remain assertions; retrieval supplies neither measurement validation nor agreement with established QFT.
+
+## Monograph and pair-rate residuals
+
+The author2024 presentation was retrieved again as presentation.html. HTML lines52-53 embed numerical magnitudes as small PNG images and cite the2013 monograph pp34-35. Line58 cites p35 for a qualitative Casimir account. The presentation supplies quoted/recast book content, not original page facsimiles. The monograph TOC was retrieved again as monograph-toc.html.
+
+Bounded Wayback CDX searches:
+
+- setterfield.org/* with PDF MIME filter: timed out after18s with zero response bytes; a failed request is not an empty search result.
+- setterfield.org/*cosmology*: returned[].
+- www.setterfield.org/* with original filename cosmology/Cosmology filter: returned five captures, consisting of cosmologyconference.htm, Cosmology_cover.png, earlycosmos.html and filaments_cosmos.jpg. The returned list is retained in wayback-www-cosmology-index.json.
+- www.setterfield.org/*.pdf: returned[].
+- www.setterfield.org/* with monograph/Monograph filter: returned[].
+- www.setterfield.org/* with book/Book filter: timed out after18s with zero response bytes and no saved response body.
+- An availability query for an explicitly guessed www.setterfield.org/Cosmology.pdf returned an empty snapshot map. A guessed worldsci abstracts6800.pdf URL also had an empty snapshot map; the guess supplies no title attribution and is not a recovered monograph source.
+
+Archive.org exact monograph-title search returned numFound0. A Barry plus Zero Point query returned31 mixed records; the first25 inspected records were unrelated astronomy/media items. Those results establish their bounded query surfaces only. They do not prove archive-wide absence.
+
+The author-linked FreeFind index was queried for1.7,57 and pairs second. Saved author-search-pair-rate.html, author-search-57.html and author-search-pairs-second.html. The1.7 query returned10 items with redshift/constant-table contexts rather than the target rate;57 and pairs second returned larger result sets with the first10 inspected. The latter search led to https://www.barrysetterfield.org/ReviewZPE/Reviewing_ZPE.html , retrieved as author-reviewing-zpe.html; the targeted rate search in that HTML remained negative. Google returned a JS challenge page; Bing returned unrelated generic results, so their saved bodies establish failed search utility rather than target-source absence.
+
+Full2013 monograph pp34-35 and the original1.7e57 pairs/s derivation remain unrecovered. The2023 virtual-particles article-content gap is resolved through the DOI publisher and byte-identical Wayback body. Source-attribution progress changes that one access status and leaves physical-validity questions separate.

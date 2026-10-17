@@ -47,3 +47,10 @@ noise = "Isolated equilibrium oscillator line weights; continuum response and de
 memory = "Instantaneous continuous classical storage identity; integration error and quantum-channel admissibility remain separate."
 accounting = "A closed first-law residual does not establish entropy admissibility, completeness of measured channels, or vacuum extraction."
 sources = "The monograph pages34-35 and original1.7e57 pairs/s derivation remain unrecovered. Exact2026 QET/DESI references and empirical numerical archives remain independently unverified."
+
+[composition_replay]
+base_commit = "f540610412409004c4f8f0843dbee6352e6a293a"
+reason = "The compositional module export changes the declared lib.rs input identity; the original numerical producer and its19-row output remain byte-identical on replay."
+prior_input_manifest_sha256 = "df7d988b80fce547289795f9ffd655c340ac47684246ba0c33c0c2515d5d00e6"
+command = "cargo run --locked --offline --quiet -p quantum_core --example vacuum_falsification"
+output_comparison = "cmp against the retained model-checks.tsv; refresh the declared input hashes only after exact output equality."
